@@ -1,0 +1,43 @@
+{
+  "name": "spaceerp",
+  "version": "0.0.0",
+  "authors": [
+    "spaceShipLabs"
+  ],
+  "description": "erp",
+  "main": "app.js",
+  "moduleType": [
+    "globals"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "assets/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "3.0.0",
+    "colorbox": "1.4.3",
+    "font-awesome": "3.1.0",
+    "fullcalendar": "1.6.0",
+    "chosen": "0.9.11",
+    "isotope": "1.5.25",
+    "bootstrap-timepicker": "0.1.1",
+    "detectizr": "1.4.5",
+    "html5shiv": "3.6.2",
+    "jquery-cookie": "1.2.0",
+    "jgrowl": "1.2.7-1",
+    "slimScroll": "0.2.5",
+    "jquery-validate": "1.9.0",
+    "jquery-migrate": "1.2.1",
+    "jquery": "1.10.2",
+    "modernizr": "2.6.2",
+    "respond-minmax": "1.1.0",
+    "jquery-ui": "1.10.3",
+    "jQueryAlerts": "~1.0.0"
+  }
+}
