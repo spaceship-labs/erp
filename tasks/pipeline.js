@@ -15,8 +15,9 @@
 // (if you're using LESS with the built-in default config, you'll want
 //  to change `assets/styles/importer.less` instead.)
 var cssFilesToInject = [
-	'styles/**/*.css',
-    'style/style.default.css'
+	//'styles/**/*.css',
+	'styles/*.css',
+
 ];
 
 
@@ -28,16 +29,19 @@ var jsFilesToInject = [
 	// are brought in here
 	'js/dependencies/**/*.js',
 
-    "/bower_components/jquery/jquery.min.js",
-    "/bower_components/jquery-migrate/jquery-migrate.min.js",
-    "/bower_components/jquery-ui/ui/minified/i18n/jquery-ui-i18n.min.js",
-    
-    "/bower_components/bootstrap/dist/js/bootstrap.min.js",
-    "/bower_components/modernizr/modernizr.min.js",
-    "/bower_components/jquery-cookie/jquery.cookies.js",
+	"/bower_components/jquery-migrate/jquery-migrate.min.js",
+	"/bower_components/jquery-ui/ui/minified/jquery-ui.min.js",
+	"/bower_components/bootstrap/dist/js/bootstrap.min.js",
+	"/bower_components/modernizr/modernizr.js",
+	"/bower_components/jquery-cookie/jquery.cookie.js",
+	"/bower_components/flot/jquery.flot.js",
+	"/bower_components/flot/jquery.flot.resize.js",
+	"/bower_components/slimScroll/slimScroll.min.js",
 	// All of the rest of your client-side js files
 	// will be injected here in no particular order.
-	'js/**/*.js'
+	//'js/**/*.js',
+	"js/themejs/*.js",
+	"/js/custom.js"
 ];
 
 

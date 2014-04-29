@@ -2,24 +2,24 @@
 Created by: Mienard Lumaad (@themepixels)
 */
 
-@import url('jquery.ui.css');
-@import url('animate.min.css');
-@import url('animate.delay.css');
-@import url('isotope.css');
-@import url('colorbox.css');
-@import url('uniform.tp.css');
-@import url('colorpicker.css');
-@import url('jquery.jgrowl.css');
-@import url('jquery.alerts.css');
-@import url('jquery.tagsinput.css');
-@import url('ui.spinner.css');
-@import url('jquery.chosen.css');
-@import url('fullcalendar.css');
-@import url('roboto.css');
-@import url('lato.css');
-@import url('font-awesome.min.css');
-@import url('bootstrap.css');
-@import url('bootstrap-theme.min.css');
+@import url('css/jquery.ui.css');
+@import url('css/animate.min.css');
+@import url('css/animate.delay.css');
+@import url('css/isotope.css');
+@import url('css/colorbox.css');
+@import url('css/uniform.tp.css');
+@import url('css/colorpicker.css');
+@import url('css/jquery.jgrowl.css');
+@import url('css/jquery.alerts.css');
+@import url('css/jquery.tagsinput.css');
+@import url('css/ui.spinner.css');
+@import url('css/jquery.chosen.css');
+@import url('css/fullcalendar.css');
+@import url('css/roboto.css');
+@import url('css/lato.css');
+@import url('css/font-awesome.min.css');
+@import url('css/bootstrap.css');
+@import url('css/bootstrap-theme.min.css');
 
 
 /***** RESET BROWSER STYLE *****/

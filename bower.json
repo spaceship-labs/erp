@@ -38,6 +38,7 @@
     "modernizr": "2.6.2",
     "respond-minmax": "1.1.0",
     "jquery-ui": "1.10.3",
-    "jQueryAlerts": "~1.0.0"
+    "jQueryAlerts": "~1.0.0",
+    "flot": "0.7.0"
   }
 }
