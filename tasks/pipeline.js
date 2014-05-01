@@ -16,8 +16,10 @@
 //  to change `assets/styles/importer.less` instead.)
 var cssFilesToInject = [
 	//'styles/**/*.css',
-	'styles/*.css',
-
+	'/bower_components/roboto-fontface/roboto-fontface.css',
+	'/bower_components/lato/css/lato.css',
+	'/bower_components/sass-bootstrap-glyphicons/css/bootstrap-glyphicons.css',
+	'styles/*.css'
 ];
 
 
