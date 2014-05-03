@@ -24,6 +24,6 @@ module.exports = {
 					   })
 
 	, index: function(req,res){
-		res.view();
+		Common.view(res.view);
 	}
 };

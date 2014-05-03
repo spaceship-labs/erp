@@ -38,6 +38,7 @@
     <link rel="stylesheet" href="/bower_components/roboto-fontface/roboto-fontface.css">
     <link rel="stylesheet" href="/bower_components/lato/css/lato.css">
     <link rel="stylesheet" href="/bower_components/sass-bootstrap-glyphicons/css/bootstrap-glyphicons.css">
+    <link rel="stylesheet" href="/styles/bootstrap-resposive.min.css">
     <link rel="stylesheet" href="/styles/importer.css">
     <link rel="stylesheet" href="/styles/style.default.css">
     <!--STYLES END-->
@@ -55,18 +56,20 @@
             <ul class="headmenu">
                 <li class="odd">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <span class="count">4</span>
-                        <span class="head-icon head-message"></span>
-                        <span class="headmenu-label">Messages</span>
+                        <span class="count"><%=companies.length%></span>
+                        <span class="head-icon  head-contracts"></span>
+                        <span class="headmenu-label">Empresas</span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li class="nav-header">Messages</li>
-                        <li><a href=""><span class="glyphicon glyphicon-envelope"></span> New message from <strong>Jack</strong> <small class="muted"> - 19 hours ago</small></a></li>
-                        <li><a href=""><span class="glyphicon glyphicon-envelope"></span> New message from <strong>Daniel</strong> <small class="muted"> - 2 days ago</small></a></li>
-                        <li><a href=""><span class="glyphicon glyphicon-envelope"></span> New message from <strong>Jane</strong> <small class="muted"> - 3 days ago</small></a></li>
-                        <li><a href=""><span class="glyphicon glyphicon-envelope"></span> New message from <strong>Tanya</strong> <small class="muted"> - 1 week ago</small></a></li>
-                        <li><a href=""><span class="glyphicon glyphicon-envelope"></span> New message from <strong>Lee</strong> <small class="muted"> - 1 week ago</small></a></li>
-                        <li class="viewmore"><a href="messages.html">View More Messages</a></li>
+                        <li class="nav-header">Cambiar empresa</li>
+			<% for(var i=0;i<companies.length;i++){ %>
+				<li><a href="<%= companies[i].url %>">
+					<img src="<%= companies[i].icon %>" alt="" />
+					<strong><%= companies[i].name %></strong>
+					<small><%= companies[i].desc %></small>
+				</a></li>
+			<% } %>
+
                     </ul>
                 </li>
                 <li>
@@ -153,7 +156,7 @@
             <ul class="nav nav-tabs nav-stacked">
             	<li class="nav-header">Navigation</li>
                 <li class="active"><a href="dashboard.html"><span class="iconfa-laptop"></span> Tablero</a></li>
-                <li><a href="buttons.html"><span class="iconfa-user"></span>Usuarios</a></li>
+                <li><a href="/users/"><span class="iconfa-user"></span>Usuarios</a></li>
                 <li class="dropdown"><a href=""><span class="iconfa-pencil"></span> Forms</a>
                 	<ul>
                     	<li><a href="forms.html">Form Styles</a></li>
