@@ -5,7 +5,8 @@ passport.use(new LocalStrategy(function(username, password, done){
 	process.nextTick(function () {
 		User.findOne().where({
 			or: [
-				{ user: username }
+				{ name: username },
+				{ email: username }
 			]
 		}).exec(function(err, user) {
 			if (err) { return done(null, err); }
@@ -19,11 +20,11 @@ passport.use(new LocalStrategy(function(username, password, done){
 }));
 
 passport.serializeUser(function(user,done){
-	done(null, user.id);
+	done(null, user);
 });
 
-passport.deserializeUser(function(id,done){
-	User.findOne(id).exec(function (err, user){
+passport.deserializeUser(function(id,done){	
+	User.findOne(id.id).exec(function (err, user){
 		done(err, user);
 	});
 });

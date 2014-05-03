@@ -1,5 +1,5 @@
 /**
-* User.js
+* Companies.js
 *
 * @description :: TODO: You might write a short summary of how this model works and what it represents here.
 * @docs        :: http://sailsjs.org/#!documentation/models
@@ -8,18 +8,13 @@
 module.exports = {
 
 	attributes: {
-		default_company:'integer'
-		,email:'string'
-		,password:'string'
-		,role:'integer'
-		,name:'string'
-		,last_name:'string'
+		name:'string'
 		,icon:'string'
+		,description:'string'
+		,address:'string'
+		,zipcode:'string'
 		,active:'integer'
-		,phone:'string'
-		,registration_date:'date'
-		,access_date:'date'
+
 	}
-	
 };
 

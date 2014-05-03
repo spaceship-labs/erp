@@ -160,8 +160,5 @@ jQuery(document).ready(function(){
 			jQuery('.chatmenu').remove();
 		}
 		
-	}
-
-	console.log("tu mama1!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-	
+	}	
 });

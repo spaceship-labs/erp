@@ -1,0 +1,15 @@
+<%
+	var alphabets= ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']; 
+%>
+
+<ul class="alphabets">
+	<% var ch;
+	for(var i=0;i<alphabets.length;i++){
+		ch = alphabets[i];
+		if(alphabets_company.indexOf(ch) != -1){ %>
+			<li><a href=""><%= ch %></a></li>
+		<% }else {%>
+			<li><%= ch%></li>
+		<% } %>
+	<% } %>
+</ul>

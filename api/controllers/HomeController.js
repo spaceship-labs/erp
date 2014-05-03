@@ -7,7 +7,9 @@
 var passport = require('passport');
 module.exports = {
 	login: function(req,res){
-		res.view();
+		res.view({
+			layout:null
+		});
 	}
 
 	, logout: function(req,res){
@@ -22,12 +24,6 @@ module.exports = {
 					   })
 
 	, index: function(req,res){
-		if(req.user && req.user.id){
-			User.find({id:req.user.id},{user:1}).exec(function(err,user){
-				res.view({user:user[0]});
-			})
-		}else
-			res.redirect('/home/login');
-
+		res.view();
 	}
 };
