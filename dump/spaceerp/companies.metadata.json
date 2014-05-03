@@ -1,0 +1,1 @@
+{ "options" : { "create" : "companies" }, "indexes" : [ { "v" : 1, "key" : { "_id" : 1 }, "ns" : "spaceerp.companies", "name" : "_id_" }, { "v" : 1, "key" : { "id" : 1 }, "unique" : true, "ns" : "spaceerp.companies", "name" : "id_1", "sparse" : true } ] }
