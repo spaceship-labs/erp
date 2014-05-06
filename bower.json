@@ -41,6 +41,7 @@
     "flot": "0.7.0",
     "roboto-fontface": "~0.1.4",
     "lato": "~0.2.0",
-    "sass-bootstrap-glyphicons": "~1.0.0"
+    "sass-bootstrap-glyphicons": "~1.0.0",
+    "angular-sails": "~1.0.4"
   }
 }

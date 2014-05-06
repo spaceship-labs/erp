@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" ng-app="spaceerp">
   <head>
     <title>New Sails App</title>
 <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -236,7 +236,7 @@
         
         <div class="pageheader">
             <form action="results.html" method="post" class="searchbar">
-                <input type="text" name="keyword" placeholder="To search type and hit enter..." />
+                <input type="text" name="keyword" placeholder="To search type and hit enter..." ng-model='searchInput' />
             </form>
             <div class="pageicon"><span class="<%= page.icon || 'iconfa-home' %>"></span></div>
             <div class="pagetitle">
@@ -326,6 +326,8 @@
     <script src="/bower_components/flot/jquery.flot.js"></script>
     <script src="/bower_components/flot/jquery.flot.resize.js"></script>
     <script src="/bower_components/slimScroll/slimScroll.min.js"></script>
+    <script src="/bower_components/angular/angular.min.js"></script>
+    <script src="/bower_components/angular-sails/dist/angular-sails.min.js"></script>
     <script src="/js/themejs/chat.js"></script>
     <script src="/js/themejs/colorpicker.js"></script>
     <script src="/js/themejs/excanvas.min.js"></script>
@@ -337,6 +339,7 @@
     <script src="/js/themejs/jquery.uniform.min.js"></script>
     <script src="/js/themejs/responsive-tables.js"></script>
     <script src="/js/themejs/ui.spinner.min.js"></script>
+    <script src="/js/controller.js"></script>
     <script src="/js/custom.js"></script>
     <!--SCRIPTS END-->
     <script type="text/javascript">

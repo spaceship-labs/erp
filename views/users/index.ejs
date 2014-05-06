@@ -1,38 +1,42 @@
 <%
 	var alphabets= ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']; 
 %>
+<div ng-controller='userShowAllCTL' >
 
-<ul class="alphabets">
-	<% var ch;
-	for(var i=0;i<alphabets.length;i++){
-		ch = alphabets[i];
-		if(alphabets_company.indexOf(ch) != -1){ %>
-			<li><a href="/users/index/<%=ch%>"><%= ch %></a></li>
-		<% }else {%>
-			<li><%= ch%></li>
+	<ul class="alphabets">
+		<% var ch;
+		for(var i=0;i<alphabets.length;i++){
+			ch = alphabets[i];
+			if(alphabets_company.indexOf(ch) != -1){ %>
+				<li><span ng-click="searchInputSelect='<%=ch%>'"><%= ch %></span></li>
+			<% }else {%>
+				<li><%= ch%></li>
+			<% } %>
 		<% } %>
-	<% } %>
-</ul>
-<div class="peoplelist">
-	<div class="row-fluid">
-	<% for(var i=0;i<users.length;i++){ %>
-		<div class="span6">
-			<div class="peoplewrapper">
-				<div class="thumb">
-					<img src="" alt="" />
-				</div>
-				<div class="peopleinfo">
-					<h4><%= users[i].name %></h4>
-					<ul>
-						<li><span>Registro:</span>1</li>
-						<li><span>ultimo Acceso:</span></li>
-						<li><span>Email:</span></li>
-						<li><span>Telefono</span></li>
-						<li><span>Aplicaciones</span></li>
-					</ul>
+	</ul>
+	<div class="peoplelist">
+		<div class="row-fluid">
+			<div class="span6" ng-repeat='user in users | filter:userFilter'>
+				<div class="peoplewrapper">
+					<div class="thumb">
+						<img ng-src="{{user.icon}}" alt="" />
+					</div>
+					<div class="peopleinfo">
+						<h4>{{user.name}}</h4>
+						<ul>
+							<li><span>Registro:</span>{{user.registration_date}}</li>
+							<li><span>ultimo Acceso:</span>{{user.createAt}}</li>
+							<li><span>Email:</span>{{user.email}}</li>
+							<li><span>Telefono</span>{{user.phone}}</li>
+							<li><span>Aplicaciones</span></li>
+						</ul>
+					</div>
 				</div>
 			</div>
+
+	
+
 		</div>
-	<% } %>
 	</div>
+
 </div>

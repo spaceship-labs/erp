@@ -39,11 +39,14 @@ var jsFilesToInject = [
 	"/bower_components/flot/jquery.flot.js",
 	"/bower_components/flot/jquery.flot.resize.js",
 	"/bower_components/slimScroll/slimScroll.min.js",
+	"/bower_components/angular/angular.min.js",
+	"/bower_components/angular-sails/dist/angular-sails.min.js",
+
 	// All of the rest of your client-side js files
 	// will be injected here in no particular order.
 	//'js/**/*.js',
 	"js/themejs/*.js",
-	"/js/custom.js"
+	"/js/*.js",
 ];
 
 
