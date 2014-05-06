@@ -238,10 +238,10 @@
             <form action="results.html" method="post" class="searchbar">
                 <input type="text" name="keyword" placeholder="To search type and hit enter..." />
             </form>
-            <div class="pageicon"><span class="iconfa-laptop"></span></div>
+            <div class="pageicon"><span class="<%= page.icon || 'iconfa-home' %>"></span></div>
             <div class="pagetitle">
                 <h5>All Features Summary</h5>
-                <h1>Dashboard</h1>
+                <h1> <%=page.name || 'Dashboard' %></h1>
             </div>
         </div><!--pageheader-->
         

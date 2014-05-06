@@ -24,6 +24,11 @@ module.exports = {
 					   })
 
 	, index: function(req,res){
-		Common.view(res.view);
+		Common.view(res.view,{
+			page:{
+				icon:'iconfa-home'
+				,name:'Tablero'
+			}
+		});
 	}
 };
