@@ -19,6 +19,7 @@ var cssFilesToInject = [
 	'/bower_components/roboto-fontface/roboto-fontface.css',
 	'/bower_components/lato/css/lato.css',
 	'/bower_components/sass-bootstrap-glyphicons/css/bootstrap-glyphicons.css',
+	'/bower_components/chosen/chosen/chosen.css',
 	'styles/*.css'
 ];
 
@@ -33,6 +34,7 @@ var jsFilesToInject = [
 	'/bower_components/jquery/jquery.min.js',
 	"/bower_components/jquery-migrate/jquery-migrate.min.js",
 	"/bower_components/jquery-ui/ui/minified/jquery-ui.min.js",
+	"/bower_components/chosen/chosen/chosen.jquery.min.js",
 	"/bower_components/bootstrap/dist/js/bootstrap.min.js",
 	"/bower_components/modernizr/modernizr.js",
 	"/bower_components/jquery-cookie/jquery.cookie.js",
@@ -41,6 +43,7 @@ var jsFilesToInject = [
 	"/bower_components/slimScroll/slimScroll.min.js",
 	"/bower_components/angular/angular.min.js",
 	"/bower_components/angular-sails/dist/angular-sails.min.js",
+	"/bower_components/jquery-form/jquery.form.js",
 
 	// All of the rest of your client-side js files
 	// will be injected here in no particular order.

@@ -17,7 +17,7 @@ module.exports = {
 		,icon:'string'
 		,active:'integer'
 		,phone:'string'
-		,registration_date:'date'
+		,registration_date:'date'//createAt
 		,access_date:'date'
 	}
 	

@@ -12,6 +12,6 @@ module.exports.view = function(view,data){
 			data.companies.push(obj);
 		}
 		view(data);	
-	});
-	
+	});	
 }
+

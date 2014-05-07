@@ -33,10 +33,63 @@
 					</div>
 				</div>
 			</div>
-
-	
-
 		</div>
 	</div>
+</div>
+<div class="clearfix"></div>
+<div class="span6">
+	<div class="alert alert-block unseen userAlert">
+		<button data-dismiss="alert" class="close" type="button">×</button>
+		<h4>Mensaje</h4>
+		<p>El usuario se creo exitosamente</p>
+	</div>
 
+	<div class="widgetbox">
+	    <h4 class="widgettitle">Nuevo Usuario</h4>
+	     <div class="widgetcontent nopadding">
+			<form action='/users/create/' method='post' accept-charset='utf-8' enctype='multipart/form-data' class='stdform stdform2 userCreate' />
+				<p><label for='name'>Nombre*</label><span class='field'><input type='text' name='name' class='required'  /></span></p>
+				
+				<p><label for='last_name'>Apellidos*</label><span class='field'><input type='text' name='last_name' class='required'  /></span></p>
+				
+				<p><label for='email'>Email*</label><span class='field'><input type='text' name='email' class='required'  /></span></p>
+				
+				<p><label for='password'>Contraseña*</label><span class='field'><input type='password' name='password' class='required password' /></span></p>
+				
+				<p><label for='app_select'>Aplicaciones</label>
+				<span class="field">
+					<select name='app_select[]' multiple='multiple' class='chzn-select' data-placeholder="Agregar Aplicaciones..." >
+								<option value='id'>name</option>
+					</select>
+				</span></p>
+				<p>
+					<label>Avatar</label>
+	
+					<span class='field'>
+						<span class="fileupload fileupload-new" data-provides="fileupload">
+							<span class="input-append">
+							<span class="uneditable-input span2">
+							    <i class="iconfa-file fileupload-exists"></i>
+							    <span class="fileupload-preview"></span>
+							</span>
+							<span class="btn btn-file">
+								<span class="fileupload-new">Archivo</span>
+								<span class="fileupload-exists">Cambiar</span>
+								<input type="file" name='icon_input' />
+							</span>
+							<a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remove</a>
+						</span>
+					    </span>
+					</span>
+				</p>			
+						
+				<input type='hidden' name='default_company' value='1' />
+			
+				<p class="stdformbutton">
+	                <button class="btn btn-primary">Guardar</button>
+	                <button type="reset" class="btn">Resetear</button>
+	            </p>
+			</form>
+		</div>
+	</div>
 </div>

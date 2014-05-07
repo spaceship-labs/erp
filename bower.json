@@ -42,6 +42,7 @@
     "roboto-fontface": "~0.1.4",
     "lato": "~0.2.0",
     "sass-bootstrap-glyphicons": "~1.0.0",
-    "angular-sails": "~1.0.4"
+    "angular-sails": "~1.0.4",
+    "jquery-form": "~3.46.0"
   }
 }

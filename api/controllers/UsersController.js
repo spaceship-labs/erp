@@ -5,9 +5,11 @@
  * @docs        :: http://sailsjs.org/#!documentation/controllers
  */
 
+var fs = require('fs')
+, bcrypt = require('bcrypt');
+
 module.exports = {
 	index: function(req,res){
-		//var filter = req.params.id;
 		User.find({default_company:req.user.default_company}).exec(function(err,user){
 			var alphabets_company = []
 			, index;
@@ -17,7 +19,11 @@ module.exports = {
 			}
 
 			Common.view(res.view,{
-				alphabets_company:alphabets_company
+				page:{
+					icon:'iconfa-briefcase'
+					,name:'Usuarios'
+				}
+				, alphabets_company:alphabets_company
 			});
 		});
 	}
@@ -29,8 +35,42 @@ module.exports = {
 		})
 	}
 
+	, create: function(req,res){	
+		var response = {
+			status:false
+			, msg:'ocurrio un error'
+		}	
+		, form = req.params.all() || {};
+		form.id || delete form.id;
+		form.active = 1;
+		form.password = bcrypt.hashSync(form.password,bcrypt.genSaltSync(10));
+		User.create(form).exec(function(err,user){
+			if(err) return res.json(response);
+			fs.readFile(req.files.icon_input.path,function(err,data){
+				if(err) return res.json(response);
+				var ext = req.files.icon_input.name.split('.')
+				, id = user.id;
+				if(ext.length){
+					ext = ext[ext.length-1];
+					id += '.'+ext;
+				}
+
+				fs.writeFile(__dirname+'/../../assets/uploads/'+id,data,function(err,data){
+					if(err) return res.json(response);
+					User.update({id:user.id},{icon:id},function(err){
+						if(err) return res.json(response);
+						res.json({
+							status:true
+							, msg:'El usuario se creo exitosamente'
+						});
+					});
+				});	
+			});
+		});
+		
+	}
+
 	, edit: function(req,res){
 		Common.view(res.view);
 	}
 };
-
