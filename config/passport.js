@@ -19,12 +19,13 @@ passport.use(new LocalStrategy(function(username, password, done){
 	});
 }));
 
-passport.serializeUser(function(user,done){
+passport.serializeUser(function(user,done){ 
 	done(null, user);
 });
 
 passport.deserializeUser(function(id,done){	
 	User.findOne(id.id).exec(function (err, user){
+		user.select_company = user.default_company;	
 		done(err, user);
 	});
 });

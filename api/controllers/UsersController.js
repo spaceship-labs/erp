@@ -10,26 +10,26 @@ var fs = require('fs')
 
 module.exports = {
 	index: function(req,res){
-		User.find({default_company:req.user.default_company}).exec(function(err,user){
+		User.find({default_company:req.user.select_company}).exec(function(err,user){
 			var alphabets_company = []
 			, index;
 			for(var i=0;i<user.length;i++){
 				index = user[i].name[0].toUpperCase();
 				alphabets_company.push(index);
 			}
-
-			Common.view(res.view,{
-				page:{
-					icon:'iconfa-briefcase'
-					,name:'Usuarios'
-				}
-				, alphabets_company:alphabets_company
+			
+			
+			Apps.find().exec(function(err,app){
+				Common.view(res.view,{
+					 apps:app
+					, alphabets_company:alphabets_company
+				},req);
 			});
 		});
 	}
 
 	, all: function(req,res){
-		User.find({default_company:req.user.default_company},{password:0}).exec(function(err,user){
+		User.find({default_company:req.user.select_company},{password:0}).exec(function(err,user){
 			if(!err)
 				res.json(user);
 		})
@@ -43,10 +43,22 @@ module.exports = {
 		, form = req.params.all() || {};
 		form.id || delete form.id;
 		form.active = 1;
+		form.app_select = form.app_select || [];//null apps;
+		if(!form.app_select.pop){
+			form.app_select = [form.app_select];
+		}
+		form.default_company = req.user.select_company;
+		
+		var tmp = {}
+		tmp[req.user.select_company] = form.app_select.slice();
+		form.companies= [tmp];
+
+		delete form.app_select;
+		console.log(form);
 		form.password = bcrypt.hashSync(form.password,bcrypt.genSaltSync(10));
 		User.create(form).exec(function(err,user){
 			if(err) return res.json(response);
-			fs.readFile(req.files.icon_input.path,function(err,data){
+			fs.readFile(req.files.icon_input && req.files.icon_input.path,function(err,data){
 				if(err) return res.json(response);
 				var ext = req.files.icon_input.name.split('.')
 				, id = user.id;

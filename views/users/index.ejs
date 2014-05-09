@@ -58,8 +58,10 @@
 				
 				<p><label for='app_select'>Aplicaciones</label>
 				<span class="field">
-					<select name='app_select[]' multiple='multiple' class='chzn-select' data-placeholder="Agregar Aplicaciones..." >
-								<option value='id'>name</option>
+					<select name='app_select' multiple='multiple' class='chzn-select' data-placeholder="Agregar Aplicaciones..." >
+								<% for(var i=0;i<apps.length;i++){ %>
+									<option value='<%= apps[i].controller %>'><%=apps[i].name%></option>
+								<% } %>
 					</select>
 				</span></p>
 				<p>

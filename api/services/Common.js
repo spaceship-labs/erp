@@ -1,6 +1,5 @@
-module.exports.view = function(view,data){
+module.exports.view = function(view,data,req){
 	data = data || {};
-	data.page = data.page || {};
 	Companies.find().exec(function(err,comp){
 		data.companies = [];
 		for(var i=0;i<comp.length;i++){
@@ -8,10 +7,18 @@ module.exports.view = function(view,data){
 			obj.name = comp[i].name;
 			obj.desc = comp[i].description;
 			obj.url = '/main/select_companie/'+comp[i].id;
-			obj.icon = '/main/select_companie/'+comp[i].icon;
+			obj.icon = comp[i].icon;
 			data.companies.push(obj);
 		}
-		view(data);	
+		
+		if(req && req.user && !data.page){//iconfa...
+			data.page = {};
+			Apps.findOne({controller:req.options.controller}).exec(function(err,app){
+				data.page = app;
+				view(data);	
+			});
+		}else
+			view(data);	
 	});	
 }
 
