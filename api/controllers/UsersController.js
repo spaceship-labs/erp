@@ -10,7 +10,10 @@ var fs = require('fs')
 
 module.exports = {
 	index: function(req,res){
-		User.find({default_company:req.user.select_company}).exec(function(err,user){
+		var find = {}
+		, select_company = req.session.select_company || req.user.select_company;
+		find['companies.'+select_company] ={$exists:1};
+		User.find(find).exec(function(err,user){
 			var alphabets_company = []
 			, index;
 			for(var i=0;i<user.length;i++){
@@ -29,7 +32,10 @@ module.exports = {
 	}
 
 	, all: function(req,res){
-		User.find({default_company:req.user.select_company},{password:0}).exec(function(err,user){
+		var find = {}
+		, select_company = req.session.select_company || req.user.select_company;
+		find['companies.'+select_company] ={$exists:1};
+		User.find(find,{password:0}).exec(function(err,user){
 			if(!err)
 				res.json(user);
 		})
@@ -47,14 +53,16 @@ module.exports = {
 		if(!form.app_select.pop){
 			form.app_select = [form.app_select];
 		}
-		form.default_company = req.user.select_company;
-		
-		var tmp = {}
-		tmp[req.user.select_company] = form.app_select.slice();
-		form.companies= [tmp];
 
+		var select_company = req.session.select_company || req.user.select_company;
+		form.default_company = select_company;
+		
+		form.app_select.push('home');
+		form.app_select.push('main');
+		var tmp = {}
+		tmp[select_company] = form.app_select.slice();
+		form.companies = tmp;
 		delete form.app_select;
-		console.log(form);
 		form.password = bcrypt.hashSync(form.password,bcrypt.genSaltSync(10));
 		User.create(form).exec(function(err,user){
 			if(err) return res.json(response);

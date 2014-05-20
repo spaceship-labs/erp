@@ -20,11 +20,6 @@ module.exports = {
 		,registration_date:'date'//createAt
 		,access_date:'date'
 		
-		,companies:'array'//idCompani:appsName
-			/*
-			[
-				{id123123123123123:[app1,app2,app3]}
-			]
-			*/
+		,companies:'json'//idCompany:[app1,app2]
 	}	
 };

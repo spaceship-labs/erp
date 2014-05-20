@@ -16,11 +16,15 @@ module.exports.policies = {
 
   // Default policy for all controllers and actions
   // (`true` allows public access) 
-  '*':'sessionAuth',
-  'home':{
-    'login':true,
-    'auth':true
+  '*':'sessionAuth'
+  , home:{
+      login:true
+    , auth:true
   }
+  , main:{
+    select_company:true
+  }
+
   /*
 	// Here's an example of adding some policies to a controller
 	RabbitController: {

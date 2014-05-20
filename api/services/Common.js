@@ -6,7 +6,7 @@ module.exports.view = function(view,data,req){
 			var obj = {};
 			obj.name = comp[i].name;
 			obj.desc = comp[i].description;
-			obj.url = '/main/select_companie/'+comp[i].id;
+			obj.url = '/main/select_company/'+comp[i].id;
 			obj.icon = comp[i].icon;
 			data.companies.push(obj);
 		}
@@ -20,5 +20,4 @@ module.exports.view = function(view,data,req){
 		}else
 			view(data);	
 	});	
-}
-
+};
