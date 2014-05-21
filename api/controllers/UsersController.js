@@ -6,25 +6,26 @@
  */
 
 var fs = require('fs')
-, bcrypt = require('bcrypt');
+, bcrypt = require('bcrypt')
+, moment = require('moment');
 
 module.exports = {
 	index: function(req,res){
 		var find = {}
 		, select_company = req.session.select_company || req.user.select_company;
 		find['companies.'+select_company] ={$exists:1};
-		User.find(find).exec(function(err,user){
+		User.find(find).exec(function(err,users){
 			var alphabets_company = []
 			, index;
-			for(var i=0;i<user.length;i++){
-				index = user[i].name[0].toUpperCase();
+			for(var i=0;i<users.length;i++){
+				index = users[i].name[0].toUpperCase();
 				alphabets_company.push(index);
 			}
 			
 			
-			Apps.find().exec(function(err,app){
+			Apps.find().exec(function(err,apps){
 				Common.view(res.view,{
-					 apps:app
+					 apps:apps
 					, alphabets_company:alphabets_company
 				},req);
 			});
@@ -35,9 +36,14 @@ module.exports = {
 		var find = {}
 		, select_company = req.session.select_company || req.user.select_company;
 		find['companies.'+select_company] ={$exists:1};
-		User.find(find,{password:0}).exec(function(err,user){
-			if(!err)
-				res.json(user);
+		User.find(find,{password:0}).exec(function(err,users){
+			if(!err){
+				for(var i=0;i<users.length;i++){
+					users[i].createdAtString = timeFormat(users[i].createdAt);
+					users[i].apps = users[i].companies[select_company].toString();
+				}
+				res.json(users);
+			}
 		})
 	}
 
@@ -94,3 +100,12 @@ module.exports = {
 		Common.view(res.view);
 	}
 };
+
+function timeFormat(date){
+	date = moment(date);
+	var now = moment();
+	if(now.diff(date,'days',true)<1){
+		return date.lang('es').fromNow();
+	}
+	return date.lang('es').format('LLLL');
+}

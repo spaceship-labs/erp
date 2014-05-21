@@ -25,7 +25,8 @@
     "passport": "^0.2.0",
     "passport-local": "^1.0.0",
     "bcrypt": "^0.7.8",
-    "sails-mongo": "^0.10.0-rc3"
+    "sails-mongo": "^0.10.0-rc3",
+    "moment": "^2.6.0"
   },
   "scripts": {
     "start": "node app.js",
