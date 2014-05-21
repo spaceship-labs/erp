@@ -1,1 +1,94 @@
 <p>edit!</p>
+<div class="span4 profile-left">
+        <div class="widgetbox profile-photo">
+        <div class="headtitle">
+            <div class="btn-group">
+                <button data-toggle="dropdown" class="btn dropdown-toggle">Opciones <span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                  <li><a href="#" class="change-icon-button">Cambiar Icono</a></li>
+                  <li><a class="confirmbutton" href="/users/users/destroy_icon/12">Quitar Icono</a></li> 
+                </ul>
+            </div>            
+            <h4 class="widgettitle">Icono</h4>
+        </div>
+        <div class="widgetcontent">
+            <div class="profilethumb" style="background:none">
+                <img src="/uploads/users/icon/profile/12.jpg?r=470599861" alt="Javier">
+                <form action="/users/users/update_icon/12" method="post" accept-charset="utf-8" enctype="multipart/form-data" class="hidden" id="change-icon">
+                    <hr>
+                    <span class="field">
+                        <span class="fileupload fileupload-new" data-provides="fileupload">
+                            <span class="input-append">
+                                <span class="uneditable-input span2">
+                                    <i class="iconfa-file fileupload-exists"></i>
+                                    <span class="fileupload-preview"></span>
+                                </span>
+                                <span class="btn btn-file">
+                                    <span class="fileupload-new">Archivo</span>
+                                    <span class="fileupload-exists">Cambia</span>
+                                    <input type="file" name="icon_input">
+                                </span>
+                                <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remove</a>
+                            </span>
+                        </span>
+                    </span>
+                    <button type="submit" class="btn btn-primary">Actualizar Icono</button>
+                </form>
+            </div><!--profilethumb-->
+        </div>
+    </div>
+        
+        
+    <div class="widgetbox tags">
+            <h4 class="widgettitle">Aplicaciones</h4>
+            <div class="widgetcontent">
+                <ul class="taglist">
+                    
+                    <li><a href="/users/users/delete_app/29">Sistema <span class="close">×</span></a></li>
+                    <li><a href="/users/users/delete_app/31">Contratos <span class="close">×</span></a></li>
+                    <li><a href="/users/users/delete_app/32">Reservaciones <span class="close">×</span></a></li>                </ul>
+                <form class="" action="/users/users/add_app" method="post">
+                    <p>
+                        <select name="app_input">
+                            <option value="1">Sistema</option><option value="3">Usuarios</option><option value="8">Contratos</option><option value="9">Reservaciones</option><option value="10">Clientes</option><option value="11">Propiedades</option>                        </select>
+                        <input type="hidden" name="user_id" value="12">
+                        <button type="submit" class="btn btn-primary">Agregar Aplicacion</button>
+                    </p>
+                </form>
+            </div>
+    </div>
+        
+        
+  
+        
+</div>
+<div class="span8">
+    <form action="/users/users/update/0" class="editprofileform" method="post">
+        
+        <div class="widgetbox personal-information">
+            <h4 class="widgettitle">Información de la Empresa</h4>
+            <div class="widgetcontent">
+                <p><label for="name_input">Nombre:</label>
+                <span class="field"><input type="text" name="name_input" class="input-xlarge" value="Javier"></span></p>              
+
+                <p><label for="last_name_input">Apellido</label>
+                <span class="field"><input type="text" name="last_name_input" class="input-xlarge" value="bardem"></span></p>
+            
+                <p><label for="email_input">Email</label>
+                <span class="field"><input type="text" name="email_input" class="input-xlarge" value="javier"></span></p>
+                
+                <p><label for="phone_input">Telefono</label>
+                <span class="field"><input type="text" name="phone_input" class="input-xlarge" value="555"></span></p>
+                
+                <input type="hidden" value="12" name="user_id">
+
+            </div>
+        </div>
+        
+
+        <p>
+        	<button type="submit" class="btn btn-primary">Actualizar Usuario</button> &nbsp; <a class="confirmbutton" href="/users/users/deactivate/12">Desactivar</a>
+        </p>
+        
+    </form>
+</div>

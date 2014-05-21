@@ -97,7 +97,7 @@ module.exports = {
 	}
 
 	, edit: function(req,res){
-		Common.view(res.view);
+		Common.view(res.view,{},req);
 	}
 };
 

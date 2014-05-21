@@ -22,7 +22,11 @@
 						<img ng-src="{{user.icon}}" alt="" />
 					</div>
 					<div class="peopleinfo">
-						<h4>{{user.name}}</h4>
+						<h4>
+							<a href="/users/edit/{{user.id}}">
+							{{user.name}}
+							</a>
+						</h4>
 						<ul>
 							<li><span>Registro: </span>{{user.createdAtString}}</li>
 							<li><span>ultimo Acceso: </span></li>
