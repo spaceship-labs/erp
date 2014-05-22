@@ -12,7 +12,7 @@ jQuery(function($){
 
 	$('#change-icon').ajaxForm(function(data){
 		if(data.status){	
-			$('.profilethumb img').attr('src','/uploads/users/'+data.img);
+			$('.profilethumb img').attr('src','/uploads/users/'+data.data);
 			console.log(data)
 		}
 	});

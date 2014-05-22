@@ -120,12 +120,12 @@ module.exports = {
 	//en versiones superiores req.files no funciona!
 		var form = req.params.all();
 		if(form.userId){
-			if(form.method in editAjax)
-				editAjax[form.method](req,res,form,function(err,fileName){
+			if(form.method in update)
+				update[form.method](req,res,form,function(err,data){
 					var data = {
 						 status: true
 						,msg: 'actualizado'
-						,img: fileName
+						,data: data
 					};
 					if(err){
 						data.status = false;
@@ -146,9 +146,11 @@ function timeFormat(date){
 	return date.lang('es').format('LLLL');
 }
 
-var editAjax = {
-	updateIcon: function(req,res,form,cb){
-		var files = req.file('icon_input')._files,
+var update = {
+	icon: function(req,res,form,cb){
+		var dirSave = __dirname+'/../../assets/uploads/users/'
+		, dirPublic = __dirname+'/../../.tmp/public/uploads/users/'
+		files = req.file('icon_input')._files,
 		fileName = new Date().getTime();
 		if(files.length){
 			var ext = files[0].stream.filename.split('.');
@@ -159,24 +161,23 @@ var editAjax = {
 		}
 		User.findOne({id:form.userId}).exec(function(err,user){
 			if(err) return cb && cb(err);
-			var lastIcon = fileName==user.icon?false:user.icon;
-
-			req.file('icon_input').upload(__dirname+'/../../assets/uploads/users/'+fileName,function(err,files){
-				if(!lastIcon){
-					return cb && cb(err,fileName);
-				}             	
-			});                   	
-                                              	
-			if(lastIcon){         	
-				fs.unlink(__dirname+'/../../assets/uploads/users/'+lastIcon);
-				User.update({id:form.userId},{icon:fileName},function(err,user){
-					return cb && cb(err,fileName);
+			req.file('icon_input').upload(dirSave+fileName,function(err,files){
+				if(err) return cb && cb(err);
+				fs.unlink(dirSave+user.icon,function(){
+					//silence warning if not exists.
 				});
-			}
-		
+				User.update({id:form.userId},{icon:fileName},function(err,user){
+					if(err) return cb && cb(err);
+
+					fs.createReadStream(dirSave+fileName).pipe(fs.createWriteStream(dirPublic+fileName))
+					.on('finish',function(){
+						return cb && cb(null,fileName);
+					}).on('error',function(){
+						return cb && cb(true);
+					});
+				});
+			});
 		});
-
-
 	}
 
 };
