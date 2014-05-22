@@ -81,7 +81,7 @@ module.exports = {
 					id += '.'+ext;
 				}
 
-				fs.writeFile(__dirname+'/../../assets/uploads/'+id,data,function(err,data){
+				fs.writeFile(__dirname+'/../../assets/uploads/users'+id,data,function(err,data){
 					if(err) return res.json(response);
 					User.update({id:user.id},{icon:id},function(err){
 						if(err) return res.json(response);
@@ -90,14 +90,50 @@ module.exports = {
 							, msg:'El usuario se creo exitosamente'
 						});
 					});
-				});	
+				});
 			});
 		});
 		
 	}
 
 	, edit: function(req,res){
-		Common.view(res.view,{},req);
+		var id
+		, select_company = req.session.select_company || req.user.select_company;
+		if(id = req.params.id){
+			User.findOne({id:id}).exec(function(err,user){
+				if(err) return null;
+
+				Apps.find().exec(function(err,apps){
+					if(err) return ;
+					Common.view(res.view,{
+					 	  user:user
+						, select_company:select_company
+						, apps:apps
+					},req);			
+				});
+			});
+		
+		}
+	}
+
+	, editAjax: function(req,res){
+	//en versiones superiores req.files no funciona!
+		var form = req.params.all();
+		if(form.userId){
+			if(form.method in editAjax)
+				editAjax[form.method](req,res,form,function(err,fileName){
+					var data = {
+						 status: true
+						,msg: 'actualizado'
+						,img: fileName
+					};
+					if(err){
+						data.status = false;
+						data.msg = 'Ocurrio un error';
+					}
+					res.json(data);
+				});
+		}
 	}
 };
 
@@ -109,3 +145,38 @@ function timeFormat(date){
 	}
 	return date.lang('es').format('LLLL');
 }
+
+var editAjax = {
+	updateIcon: function(req,res,form,cb){
+		var files = req.file('icon_input')._files,
+		fileName = new Date().getTime();
+		if(files.length){
+			var ext = files[0].stream.filename.split('.');
+			if(ext.length){
+				ext = ext[ext.length-1];
+				fileName += '.'+ext;
+			}
+		}
+		User.findOne({id:form.userId}).exec(function(err,user){
+			if(err) return cb && cb(err);
+			var lastIcon = fileName==user.icon?false:user.icon;
+
+			req.file('icon_input').upload(__dirname+'/../../assets/uploads/users/'+fileName,function(err,files){
+				if(!lastIcon){
+					return cb && cb(err,fileName);
+				}             	
+			});                   	
+                                              	
+			if(lastIcon){         	
+				fs.unlink(__dirname+'/../../assets/uploads/users/'+lastIcon);
+				User.update({id:form.userId},{icon:fileName},function(err,user){
+					return cb && cb(err,fileName);
+				});
+			}
+		
+		});
+
+
+	}
+
+};
