@@ -72,28 +72,15 @@ module.exports = {
 		form.password = bcrypt.hashSync(form.password,bcrypt.genSaltSync(10));
 		User.create(form).exec(function(err,user){
 			if(err) return res.json(response);
-			fs.readFile(req.files.icon_input && req.files.icon_input.path,function(err,data){
+			update.icon(req,res,{userId:user.id},function(err,file){
 				if(err) return res.json(response);
-				var ext = req.files.icon_input.name.split('.')
-				, id = user.id;
-				if(ext.length){
-					ext = ext[ext.length-1];
-					id += '.'+ext;
-				}
-
-				fs.writeFile(__dirname+'/../../assets/uploads/users'+id,data,function(err,data){
-					if(err) return res.json(response);
-					User.update({id:user.id},{icon:id},function(err){
-						if(err) return res.json(response);
-						res.json({
-							status:true
-							, msg:'El usuario se creo exitosamente'
-						});
-					});
+				res.json({
+					status:true
+					, msg:'El usuario se creo exitosamente'
 				});
+				
 			});
-		});
-		
+		});	
 	}
 
 	, edit: function(req,res){
@@ -128,7 +115,6 @@ module.exports = {
 	}
 
 	, editAjax: function(req,res){
-	//en versiones superiores req.files no funciona!
 		var form = req.params.all();
 		if(form.userId){
 			if(form.method in update)
