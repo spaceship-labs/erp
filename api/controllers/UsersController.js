@@ -40,7 +40,7 @@ module.exports = {
 			if(!err){
 				for(var i=0;i<users.length;i++){
 					users[i].createdAtString = timeFormat(users[i].createdAt);
-					users[i].apps = users[i].companies[select_company].toString();
+					users[i].apps = users[i].companies[select_company]?users[i].companies[select_company].toString():[];
 				}
 				res.json(users);
 			}
@@ -102,13 +102,24 @@ module.exports = {
 		if(id = req.params.id){
 			User.findOne({id:id}).exec(function(err,user){
 				if(err) return null;
-
 				Apps.find().exec(function(err,apps){
 					if(err) return ;
+					user.apps = [];
+					if(user.companies[select_company]){
+						for(var i=0;i<apps.length;i++){
+							if(user.companies[select_company].indexOf(apps[i].controller)!=-1){
+								var tmp = {
+									  name:apps[i].name
+									, ctl:apps[i].controller
+								}
+							user.apps.push(tmp);
+							}
+						}
+					}
 					Common.view(res.view,{
 					 	  user:user
 						, select_company:select_company
-						, apps:apps
+						, apps:apps?apps:[]
 					},req);			
 				});
 			});
@@ -179,5 +190,39 @@ var update = {
 			});
 		});
 	}
+	, apps:function(req,res,form,cb){
+		var select_company = req.session.select_company || req.user.select_company
+		, update = {};
+		update[select_company] = form.apps;
+		User.update({id:form.userId},{companies:update},function(err,users){
+			if(err) return cb && cb(err);
+			var tmp = users.length && users[0].companies[select_company];
+			Apps.find({controller:{$in:tmp}}).exec(function(err,apps){	
+				return cb && cb(err,apps);
+			});
+		});
+	}
+	
+	, info:function(req,res,form,cb){
+		console.log(form);
+        	var id = form.userId
+		,validate = ['name','last_name','phone','email','active'];
+		
+		for(var i in form){
+			if(validate.indexOf(i)==-1)
+				delete form[i];
 
+		}
+		console.log(form);
+		User.update({id:id},form).exec(function(err,user){
+			console.log(user);
+			if(user && form.active!=undefined){	
+				user = {
+					activeN:user[0].active?0:1
+					,active:user[0].active?'Desactivar':'Activar'
+				};
+			}
+			return cb && cb(err,user);
+		});
+	}
 };

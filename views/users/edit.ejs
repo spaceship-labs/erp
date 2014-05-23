@@ -1,4 +1,9 @@
-<div class="span4 profile-left">
+<div class="span4 profile-left userEdit" ng-controller='userEditCTL'>
+	<div class="alert alert-block unseen">
+		<button data-dismiss="alert" class="close" type="button">×</button>
+		<h4>Mensaje</h4>
+			<p style="margin: 8px 0">El usuario se ha actualizado exitosamente</p>
+		</div>
         <div class="widgetbox profile-photo">
         <div class="headtitle">
             <div class="btn-group">
@@ -13,7 +18,7 @@
         <div class="widgetcontent">
             <div class="profilethumb" style="background:none">
                 <img src="/uploads/users/<%= user.icon %>" alt="<%= user.name %>">
-                <form action="/users/editAjax" method="post" accept-charset="utf-8" enctype="multipart/form-data" class='ajaxForm' id="change-icon">
+                <form action="/users/editAjax" method="post" accept-charset="utf-8" enctype="multipart/form-data" class='hidden' id="change-icon">
 
                     <hr>
                     <span class="field">
@@ -46,15 +51,15 @@
             <div class="widgetcontent">
                 <ul class="taglist">
                     <%if(select_company) { 
-		    	var appsUser = user.companies[select_company];
+		    	var appsUser = user.apps;
 			for(var i=0;i<appsUser.length;i++){ %>
-				<li><a href="/users/users/delete_app/29"><%=appsUser[i]%> <span class="close">×</span></a></li>
+				<li><a href="<%=appsUser[i].ctl%>"><%=appsUser[i].name%> <span class="close">×</span></a></li>
 				
 			
 			<% }
 		     } %>
                 </ul>
-                <form class="" action="/users/users/add_app" method="post">
+                <form id="addApps" action="/users/users/add_app" method="post">
                     <p>
                         <select name="app_input" class='chzn-select'>
 				<% for(var i=0;i<apps.length;i++){ %>
@@ -74,32 +79,35 @@
         
 </div>
 <div class="span8">
-    <form action="/users/users/update/0" class="editprofileform" method="post">
+    <form action="/users/editAjax" class="editprofileform" method="post">
         
         <div class="widgetbox personal-information">
             <h4 class="widgettitle">Información de la Empresa</h4>
             <div class="widgetcontent">
-                <p><label for="name_input">Nombre:</label>
-                <span class="field"><input type="text" name="name_input" class="input-xlarge" value="<%= user.name %>"></span></p> 
+                <p><label for="name">Nombre:</label>
+                <span class="field"><input type="text" name="name" class="input-xlarge" value="<%= user.name %>"></span></p> 
 
-                <p><label for="last_name_input">Apellido</label>
-                <span class="field"><input type="text" name="last_name_input" class="input-xlarge" value="<%= user.last_name %>"></span></p>
+                <p><label for="last_name">Apellido</label>
+                <span class="field"><input type="text" name="last_name" class="input-xlarge" value="<%= user.last_name %>"></span></p>
             
-                <p><label for="email_input">Email</label>
-                <span class="field"><input type="text" name="email_input" class="input-xlarge" value="<%=user.email %>"></span></p>
+                <p><label for="email">Email</label>
+                <span class="field"><input type="text" name="email" class="input-xlarge" value="<%=user.email %>"></span></p>
                 
-                <p><label for="phone_input">Telefono</label>
-                <span class="field"><input type="text" name="phone_input" class="input-xlarge" value="<%= user.phone %>"></span></p>
+                <p><label for="phone">Telefono</label>
+                <span class="field"><input type="text" name="phone" class="input-xlarge" value="<%= user.phone %>"></span></p>
                 
-                <input type="hidden" value="12" name="user_id">
-
             </div>
         </div>
         
 
         <p>
-        	<button type="submit" class="btn btn-primary">Actualizar Usuario</button> &nbsp; <a class="confirmbutton" href="/users/users/deactivate/12">Desactivar</a>
+		<%var active = {
+			1:[0,'Desactivar']
+			, 0:[1,'Activar']
+		} %>
+        	<button type="submit" class="btn btn-primary">Actualizar Usuario</button> &nbsp; <a class="confirmbutton" href="<%=active[user.active][0]%>"><%=active[user.active][1]%></a>
         </p>
-        
+        <input type="hidden" name='method' value='info' />
+	<input type="hidden" name="userId" value='<%= user.id %>' />
     </form>
 </div>

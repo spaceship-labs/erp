@@ -23,3 +23,9 @@ app.controller('userShowAllCTL',function($scope,$sails){
 
 	}
 });
+
+app.controller('userEditCTL',function($scope){
+	$scope.updateTags = function(){
+	
+	}
+});
