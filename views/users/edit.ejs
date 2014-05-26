@@ -18,8 +18,9 @@
         <div class="widgetcontent">
             <div class="profilethumb" style="background:none">
                 <img src="/uploads/users/<%= user.icon %>" alt="<%= user.name %>">
-                <form action="/users/editAjax" method="post" accept-charset="utf-8" enctype="multipart/form-data" class='hidden' id="change-icon">
-
+                <form action="/users/editAjax" method="post" accept-charset="utf-8" enctype="multipart/form-data" class="hidden" id="change-icon">
+		    <input type="hidden" name="userId" value="<%= user.id %>" />
+		    <input type="hidden" name="method" value="icon" />
                     <hr>
                     <span class="field">
                         <span class="fileupload fileupload-new" data-provides="fileupload">
@@ -37,8 +38,6 @@
                             </span>
                         </span>
                     </span>
-		    <input type="hidden" name="userId" value='<%= user.id %>' />
-		    <input type="hidden" name="method" value='icon' />
                     <button type="submit" class="btn btn-primary">Actualizar Icono</button>
                 </form>
             </div><!--profilethumb-->
@@ -61,7 +60,7 @@
                 </ul>
                 <form id="addApps" action="/users/users/add_app" method="post">
                     <p>
-                        <select name="app_input" class='chzn-select'>
+                        <select name="app_input" class="chzn-select">
 				<% for(var i=0;i<apps.length;i++){ %>
 					<%= apps %>
 					<option value="<%=apps[i].controller %>"><%= apps[i].name %></option>
@@ -107,7 +106,7 @@
 		} %>
         	<button type="submit" class="btn btn-primary">Actualizar Usuario</button> &nbsp; <a class="confirmbutton" href="<%=active[user.active][0]%>"><%=active[user.active][1]%></a>
         </p>
-        <input type="hidden" name='method' value='info' />
-	<input type="hidden" name="userId" value='<%= user.id %>' />
+        <input type="hidden" name="method" value="info" />
+	<input type="hidden" name="userId" value="<%= user.id %>" />
     </form>
 </div>
