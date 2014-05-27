@@ -98,7 +98,7 @@ module.exports = {
 									  name:apps[i].name
 									, ctl:apps[i].controller
 								}
-							user.apps.push(tmp);
+								user.apps.push(tmp);
 							}
 						}
 					}
@@ -114,22 +114,7 @@ module.exports = {
 	}
 
 	, editAjax: function(req,res){
-		var form = req.params.all();
-		if(form.userId){
-			if(form.method in update)
-				update[form.method](req,form,function(err,data){
-					var data = {
-						 status: true
-						,msg: 'actualizado'
-						,data: data
-					};
-					if(err){
-						data.status = false;
-						data.msg = 'Ocurrio un error';
-					}
-					res.json(data);
-				});
-		}
+		Common.editAjax(req,res,update);
 	}
 };
 

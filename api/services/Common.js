@@ -62,3 +62,23 @@ module.exports.updateIcon = function(req,opts,cb){
 	});
 
 };
+
+module.exports.editAjax = function(req,res,update){
+	var form = req.params.all();
+	if(form.userId){
+		if(form.method in update)
+			update[form.method](req,form,function(err,data){
+				var data = {
+					 status: true
+					,msg: 'actualizado'
+					,data: data
+				};
+				if(err){
+					data.status = false;
+					data.msg = 'Ocurrio un error';
+				}
+				res.json(data);
+			});
+	}
+	
+};
