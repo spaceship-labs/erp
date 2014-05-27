@@ -26,14 +26,17 @@ module.exports.view = function(view,data,req){
 	});	
 };
 
-var fs = require('fs');
+var fs = require('fs')
+, im = require('imagemagick');
 module.exports.updateIcon = function(req,opts,cb){
 	var dirSave = opts.dirSave
 	, dirPublic = opts.dirPublic
 	, Model = opts.Model
 	, form = opts.form
+	, prefix = opts.prefix || false
 	, files = req.file('icon_input')._files
-	, fileName = new Date().getTime();
+	, fileName = new Date().getTime()
+	, measuresIcon = ['80x80','50x50','184x73','177x171'];
 	if(files.length){
 		var ext = files[0].stream.filename.split('.');
 		if(ext.length){
@@ -45,18 +48,41 @@ module.exports.updateIcon = function(req,opts,cb){
 		if(err) return cb && cb(err);
 		req.file('icon_input').upload(dirSave+fileName,function(err,files){
 			if(err) return cb && cb(err);
-			fs.unlink(dirSave+user.icon,function(){
+
+			var lastIcon = user.icon;
+			fs.unlink(dirSave+lastIcon,function(){
 				//silence warning if not exists.
 			});
 			Model.update({id:form.userId},{icon:fileName},function(err,user){
 				if(err) return cb && cb(err);
-
-				fs.createReadStream(dirSave+fileName).pipe(fs.createWriteStream(dirPublic+fileName))
-				.on('finish',function(){
-					return cb && cb(null,fileName);
-				}).on('error',function(){
-					return cb && cb(true);
-				});
+				measuresIcon.forEach(function(v){
+					fs.unlink(dirSave+v+lastIcon,function(){
+						//silence warning if not exists.
+					});
+					
+					var wh = v.split('x')
+					, opts = {
+						srcPath:dirSave+fileName
+						,dstPath:dirSave+v+fileName
+						,width:wh[0]
+						,height:wh[1]
+					}
+					im.crop(opts,function(err,stdout,stderr){
+						if(err) return cb && cb(err);
+						if(prefix==v){
+							fs.createReadStream(dirSave+v+fileName).pipe(fs.createWriteStream(dirPublic+v+fileName))
+							.on('finish',function(){
+								return cb && cb(null,prefix+fileName);
+							}).on('error',function(){
+								return cb && cb(true);
+							});
+						
+						}
+					});
+					if(!prefix){
+						return cb && cb(null,fileName);
+					}
+				});	
 			});
 		});
 	});

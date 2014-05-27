@@ -134,6 +134,7 @@ var update = {
 			,dirSave : __dirname+'/../../assets/uploads/users/'
 			,dirPublic:  __dirname+'/../../.tmp/public/uploads/users/'
 			,Model:User
+			,prefix:'177x171'
 		},cb);
 	}
 	, apps:function(req,form,cb){
