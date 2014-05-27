@@ -1,7 +1,7 @@
 jQuery(function($){
 	$('.chzn-select').chosen();
 
-	$('.userCreate').ajaxForm(function(data){
+	$('.userCreate, .companyCreate').ajaxForm(function(data){
 		$('.userAlert p').text(data.msg).parent().show();
 	});
 
@@ -46,6 +46,8 @@ jQuery(function($){
 			self.text(d.data.active);
 		});
 	});
+
+	$('.fileupload').fileupload();
 
 	var updateApps = function(addApp){
 		var li = $('.taglist li'),

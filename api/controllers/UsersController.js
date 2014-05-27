@@ -5,8 +5,7 @@
  * @docs        :: http://sailsjs.org/#!documentation/controllers
  */
 
-var fs = require('fs')
-, bcrypt = require('bcrypt')
+var bcrypt = require('bcrypt')
 , moment = require('moment');
 
 module.exports = {
@@ -72,7 +71,7 @@ module.exports = {
 		form.password = bcrypt.hashSync(form.password,bcrypt.genSaltSync(10));
 		User.create(form).exec(function(err,user){
 			if(err) return res.json(response);
-			update.icon(req,res,{userId:user.id},function(err,file){
+			update.icon(req,{userId:user.id},function(err,file){
 				if(err) return res.json(response);
 				res.json({
 					status:true
@@ -118,7 +117,7 @@ module.exports = {
 		var form = req.params.all();
 		if(form.userId){
 			if(form.method in update)
-				update[form.method](req,res,form,function(err,data){
+				update[form.method](req,form,function(err,data){
 					var data = {
 						 status: true
 						,msg: 'actualizado'
@@ -144,39 +143,15 @@ function timeFormat(date){
 }
 
 var update = {
-	icon: function(req,res,form,cb){
-		var dirSave = __dirname+'/../../assets/uploads/users/'
-		, dirPublic = __dirname+'/../../.tmp/public/uploads/users/'
-		files = req.file('icon_input')._files,
-		fileName = new Date().getTime();
-		if(files.length){
-			var ext = files[0].stream.filename.split('.');
-			if(ext.length){
-				ext = ext[ext.length-1];
-				fileName += '.'+ext;
-			}
-		}
-		User.findOne({id:form.userId}).exec(function(err,user){
-			if(err) return cb && cb(err);
-			req.file('icon_input').upload(dirSave+fileName,function(err,files){
-				if(err) return cb && cb(err);
-				fs.unlink(dirSave+user.icon,function(){
-					//silence warning if not exists.
-				});
-				User.update({id:form.userId},{icon:fileName},function(err,user){
-					if(err) return cb && cb(err);
-
-					fs.createReadStream(dirSave+fileName).pipe(fs.createWriteStream(dirPublic+fileName))
-					.on('finish',function(){
-						return cb && cb(null,fileName);
-					}).on('error',function(){
-						return cb && cb(true);
-					});
-				});
-			});
-		});
+	icon: function(req,form,cb){
+		Common.updateIcon(req,{
+			form:form
+			,dirSave : __dirname+'/../../assets/uploads/users/'
+			,dirPublic:  __dirname+'/../../.tmp/public/uploads/users/'
+			,Model:User
+		},cb);
 	}
-	, apps:function(req,res,form,cb){
+	, apps:function(req,form,cb){
 		var select_company = req.session.select_company || req.user.select_company
 		, update = {};
 		update[select_company] = form.apps;
@@ -189,8 +164,7 @@ var update = {
 		});
 	}
 	
-	, info:function(req,res,form,cb){
-		console.log(form);
+	, info:function(req,form,cb){
         	var id = form.userId
 		,validate = ['name','last_name','phone','email','active'];
 		
@@ -199,7 +173,6 @@ var update = {
 				delete form[i];
 
 		}
-		console.log(form);
 		User.update({id:id},form).exec(function(err,user){
 			console.log(user);
 			if(user && form.active!=undefined){	
