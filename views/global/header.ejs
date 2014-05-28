@@ -1,0 +1,39 @@
+<div class="header">
+    <div class="logo">
+        <a href="/home/index"><img src="/images/logo.png" alt="" /></a>
+    </div>
+    <div class="headerinner">
+        <ul class="headmenu">
+            <li class="odd">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <span class="count"><%=companies.length%></span>
+                    <span class="head-icon  head-contracts"></span>
+                    <span class="headmenu-label">Empresas</span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li class="nav-header">Cambiar empresa</li>
+		<% for(var i=0;i<companies.length;i++){ %>
+			<li><a href="<%= companies[i].url %>">
+				<img src="/uploads/companies/<%= companies[i].icon %>" alt="" />
+				<strong><%= companies[i].name %></strong>
+				<small><%= companies[i].desc %></small>
+			</a></li>
+		<% } %>
+
+                </ul>
+            </li>
+            <li class="right">
+                <div class="userloggedinfo">
+                    <img src="/images/photos/thumb1.png" alt="" />
+                    <div class="userinfo">
+                        <h5><%- req.user.name %><small>- <%-req.user.email%></small></h5>
+                        <ul>
+                            <li><a href="editprofile.html">Configuracion</a></li>
+                            <li><a href="/home/logout">Cerrar sesion</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+        </ul><!--headmenu-->
+    </div>
+</div>
