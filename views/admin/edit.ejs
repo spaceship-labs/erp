@@ -1,4 +1,9 @@
-<div class="span4 profile-left">
+<div class="span4 profile-left profileEdit">
+	<div class="alert alert-block unseen">
+		<button data-dismiss="alert" class="close" type="button">×</button>
+		<h4>Mensaje</h4>
+			<p style="margin: 8px 0">El usuario se ha actualizado exitosamente</p>
+		</div>
         <div class="widgetbox profile-photo">
         <div class="headtitle">
             <div class="btn-group">
@@ -49,7 +54,7 @@
 			<% } %>
 		</ul>
 
-                <form class="" action="/erp-admin/companies/add_app" method="post">
+                <form id="addApps" action="/admin/companies/add_app" method="post">
                     <p>
                         <select name="app_input">
 				<%for(var i=0;i<allApps.length;i++){ %>
@@ -58,6 +63,7 @@
 			</select>
                         <input type="hidden" name="company_id" value="39">
                         <button type="submit" class="btn btn-primary">Agregar Aplicaciones</button>
+			<input type="hidden" name="url" value="/admin/" />
                     </p>
                 </form>
             </div>
@@ -79,7 +85,7 @@
         
 </div><!--span4-->
 <div class="span8">
-    <form action="/erp-admin/companies/update/0" class="editprofileform" method="post">
+    <form action="/admin/editAjax" class="editprofileform ajaxForm" method="post">
         
         <div class="widgetbox personal-information">
             <h4 class="widgettitle">Información de la Empresa</h4>
@@ -95,14 +101,19 @@
 
                 <p><label for="description_input">Descripción:</label>
                 <span class="field"><textarea name="description" class="span8" rows="3" cols="50"><%=company.description%></textarea></span></p>
-                <input type="hidden" value="<%=company.id%>" name="userId">
+                <input type="hidden" value="<%=company.id%>" name="userId" />
+		<input type="hidden" value="info" name="method" />
 
             </div>
         </div>
         
 
         <p>
-        	<button type="submit" class="btn btn-primary">Actualizar Empresa</button> &nbsp; <a class="confirmbutton" href="/erp-admin/companies/deactivate/39">Desactivar</a>
+		<%var active = {
+			1:[0,'Desactivar']
+			, 0:[1,'Activar']
+		} %>
+        	<button type="submit" class="btn btn-primary">Actualizar Empresa</button> &nbsp; <a class="confirmbutton"  data-url="/admin/" href="<%=active[company.active][0]%>"><%=active[company.active][1]%></a>
         </p>
         
     </form>

@@ -89,6 +89,30 @@ module.exports.updateIcon = function(req,opts,cb){
 
 };
 
+module.exports.updateInfoProfile = function(req,opts,cb){
+	var id = opts.id
+	, validate = opts.validate || []
+	, Model = opts.Model
+	, form = opts.form;
+
+	if(validate.length){
+		for(var i in form){
+			if(validate.indexOf(i)==-1)
+				delete form[i];
+		}
+	
+	}
+	Model.update({id:id},form).exec(function(err,m){
+		if(m && form.active!=undefined){	
+			m = {
+				activeN:m[0].active?0:1
+				,active:m[0].active?'Desactivar':'Activar'
+			};
+		}
+		return cb && cb(err,m);
+	});
+};
+
 module.exports.editAjax = function(req,res,update){
 	var form = req.params.all();
 	if(form.userId){

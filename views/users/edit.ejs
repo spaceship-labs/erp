@@ -1,4 +1,4 @@
-<div class="span4 profile-left userEdit" ng-controller='userEditCTL'>
+<div class="span4 profile-left profileEdit" ng-controller='userEditCTL'>
 	<div class="alert alert-block unseen">
 		<button data-dismiss="alert" class="close" type="button">×</button>
 		<h4>Mensaje</h4>
@@ -68,6 +68,7 @@
 				<% } %>                        
 			</select>
                         <button type="submit" class="btn btn-primary">Agregar Aplicacion</button>
+			<input type="hidden" name="url" value="/users/" />
                     </p>
                 </form>
             </div>
@@ -104,7 +105,7 @@
 			1:[0,'Desactivar']
 			, 0:[1,'Activar']
 		} %>
-        	<button type="submit" class="btn btn-primary">Actualizar Usuario</button> &nbsp; <a class="confirmbutton" href="<%=active[user.active][0]%>"><%=active[user.active][1]%></a>
+        	<button type="submit" class="btn btn-primary">Actualizar Usuario</button> &nbsp; <a class="confirmbutton"  data-url="/users/" href="<%=active[user.active][0]%>"><%=active[user.active][1]%></a>
         </p>
         <input type="hidden" name="method" value="info" />
 	<input type="hidden" name="userId" value="<%= user.id %>" />

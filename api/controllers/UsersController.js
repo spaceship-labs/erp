@@ -140,7 +140,7 @@ var update = {
 	, apps:function(req,form,cb){
 		var select_company = req.session.select_company || req.user.select_company
 		, update = {};
-		update[select_company] = form.apps;
+		update[select_company] = form.apps || [];
 		User.update({id:form.userId},{companies:update},function(err,users){
 			if(err) return cb && cb(err);
 			var tmp = users.length && users[0].companies[select_company];
@@ -151,23 +151,11 @@ var update = {
 	}
 	
 	, info:function(req,form,cb){
-        	var id = form.userId
-		,validate = ['name','last_name','phone','email','active'];
-		
-		for(var i in form){
-			if(validate.indexOf(i)==-1)
-				delete form[i];
-
-		}
-		User.update({id:id},form).exec(function(err,user){
-			console.log(user);
-			if(user && form.active!=undefined){	
-				user = {
-					activeN:user[0].active?0:1
-					,active:user[0].active?'Desactivar':'Activar'
-				};
-			}
-			return cb && cb(err,user);
-		});
+		Common.updateInfoProfile(req,{
+			form:form
+			,id:form.userId
+			,Model:User
+			,validate:['name','last_name','phone','email','active']
+		},cb);
 	}
 };

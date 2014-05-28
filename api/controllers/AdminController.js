@@ -1,5 +1,5 @@
 /**
- * Erp-adminController.js 
+ * AdminController.js 
  *
  * @description ::
  * @docs        :: http://sailsjs.org/#!documentation/controllers
@@ -41,7 +41,7 @@ module.exports = {
 			find['companies.'+id] = {$exists:1};
 			User.find(find).exec(function(err,users){	
 				Apps.find({controller:{$in:company.app}}).exec(function(err,apps){
-					Apps.find({controller:{$nin:company.app}}).exec(function(err,allApps){
+					Apps.find({controller:{'!':company.app}}).exec(function(err,allApps){
 						Common.view(res.view,{
 							company:company || {}
 							, users:users || []
@@ -69,5 +69,23 @@ var update = {
 			,Model:Companies
 		},cb);
 		
+	}
+	, info:function(req,form,cb){
+		Common.updateInfoProfile(req,{
+			form:form
+			,id:form.userId
+			,Model:Companies
+			,validate:['name','address','zipcode','description','active']
+		},cb);
+	}
+	, apps:function(req,form,cb){
+		var apps = form.apps || [];
+		Companies.update({id:form.userId},{app:form.apps}).exec(function(err,company){
+			if(err) return cb && cb(err);
+			company = company.length && company[0];
+			Apps.find({controller:{$in:company.app}}).exec(function(err,apps){
+				return cb && cb(err,apps);
+			});
+		});
 	}
 };

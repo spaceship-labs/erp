@@ -16,15 +16,15 @@ jQuery(function($){
 		}
 	});
 
-	$('.userEdit .taglist').on('click','.close',function(e){
+	$('.profileEdit .taglist').on('click','.close',function(e){
 		e.preventDefault();
 		$(this).parent().parent().remove();
-		updateApps();
+		updateApps(false,$('input[name="url"]').val());
 	});
 
-	$('.userEdit #addApps').on('submit',function(e){
+	$('.profileEdit #addApps').on('submit',function(e){
 		e.preventDefault();
-		updateApps($(this).find('select').val());
+		updateApps($(this).find('select').val(),$(this).find('input[name="url"]').val());
 	});
 
 	$('.editprofileform').ajaxForm(function(data){
@@ -40,7 +40,8 @@ jQuery(function($){
 			,userId:$('input[name="userId"]').val()
 			,method:'info'
 		}
-		$.post('/users/editAjax',data,function(d){
+		
+		$.post(self.data('url')+'editAjax',data,function(d){
 			$('.alert').removeClass('unseen').find('p').text(data.msg);
 			self.attr('href',d.data.activeN)
 			self.text(d.data.active);
@@ -49,8 +50,8 @@ jQuery(function($){
 
 	$('.fileupload').fileupload();
 
-	var updateApps = function(addApp){
-		var li = $('.taglist li'),
+	var updateApps = function(addApp,url){
+		var li = $('.profileEdit .taglist li'),
 		apps = [];
 		for(var i=0;i<li.length;i++){
 			apps.push(li.eq(i).children().attr('href'));
@@ -63,7 +64,8 @@ jQuery(function($){
 		if(addApp){
 			data.apps.push(addApp)
 		}
-		$.post('/users/editAjax',data,function(data){
+		$.post(url+'editAjax',data,function(data){
+			console.log(data);
 			var taglist = $('.taglist')
 			, template = ""
 			, apps = data.data;
