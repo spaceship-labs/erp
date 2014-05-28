@@ -14,6 +14,8 @@ module.exports = {
 		,address:'string'
 		,zipcode:'string'
 		,active:'integer'
+		,app:'array'
+		,default_currency:'array'
 
 	}
 };

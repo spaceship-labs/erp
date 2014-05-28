@@ -29,15 +29,16 @@
 <div id="mainwrapper" class="mainwrapper">
     <%- partial('global/header') -%> 
     <%- partial('global/menu') -%> 
+
     <div class="rightpanel">
         <ul class="breadcrumbs">
-            <li><a href="/"><i class="iconfa-home"></i></a> <span class="separator"></span></li>
+            <li><a href="/home/"><i class="iconfa-home"></i></a> <span class="separator"></span></li>
             <li>Tablero</li>
         </ul>
         
         <div class="pageheader">
             <form action="results.html" method="post" class="searchbar">
-                <input type="text" name="keyword" placeholder="To search type and hit enter..." ng-model='searchInput' />
+                <input type="text" name="keyword" placeholder="Buscar..." ng-model='searchInput' />
             </form>
             <div class="pageicon"><span class="<%= page.icon || 'iconfa-home' %>"></span></div>
             <div class="pagetitle">
@@ -87,6 +88,7 @@
     <script src="/bower_components/angular/angular.min.js"></script>
     <script src="/bower_components/angular-sails/dist/angular-sails.min.js"></script>
     <script src="/bower_components/jquery-form/jquery.form.js"></script>
+    <script src="/js/themejs/bootstrap-fileupload.min.js"></script>
     <script src="/js/themejs/chat.js"></script>
     <script src="/js/themejs/colorpicker.js"></script>
     <script src="/js/themejs/excanvas.min.js"></script>

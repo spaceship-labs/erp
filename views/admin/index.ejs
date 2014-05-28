@@ -1,0 +1,94 @@
+<div class="span6"><h4 class="widgettitle">Empresas</h4>
+<table id="dyntable" class="table table-bordered">
+	<tbody>
+		<tr>
+			<th>Nombre</th>
+			<th>Descripción</th>
+			<th>Editar</th>
+		</tr>
+		<%for(var i=0;i<companies.length;i++){ %>
+		<tr class="">
+			<td><%=companies[i].name%></td>
+			<td><%=companies[i].desc%></td>
+			<td>
+				<a href="/admin/edit/<%=companies[i].id%>">
+					<span class="iconfa-edit"></span>
+				</a>
+			</td>
+		</tr>
+		<% } %>
+	</tbody>
+</table>
+</div>
+<div class="span6">
+	<div class="alert alert-block unseen userAlert">
+		<button data-dismiss="alert" class="close" type="button">×</button>
+		<h4>Mensaje</h4>
+		<p>La compania se creo exitosamente</p>
+	</div>
+	<div class="widgetbox">
+    <h4 class="widgettitle">Nueva Empresa</h4>
+    <div class="widgetcontent nopadding">                            
+		<form action="/admin/create/" method="post" accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 companyCreate" >
+			<p><label for="name">Nombre*</label>
+			<span class="field"><input type="text" name="name" class="input-large"></span></p>
+			
+			<p><label for="description">Descripción</label>
+			<span class="field"><textarea name="description" class="" rows="8" cols="25"></textarea></span></p>
+			<p>
+				<label>Icono</label>
+
+				<span class="field">
+					<span class="fileupload fileupload-new" data-provides="fileupload">
+						<span class="input-append">
+							<span class="uneditable-input span2">
+							    <i class="iconfa-file fileupload-exists"></i>
+							    <span class="fileupload-preview"></span>
+							</span>
+							<span class="btn btn-file">
+								<span class="fileupload-new">Archivo</span>
+								<span class="fileupload-exists">Cambiar</span>
+								<input type="file" name="icon_input">
+							</span>
+							<a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remove</a>
+						</span>
+				    </span>
+				</span>
+			</p>			
+
+			<p><label for="address">Dirección</label>
+			<span class="field"><input type="text" name="address" class="input-large"></span></p>
+			
+			<p><label for="zipcode">Código Postal</label>
+			<span class="field"><input type="text" name="zipcode" class="input-large"></span></p>
+			
+			<p><label for="default_currency">Moneda Principal</label>
+			<span class="field"><select name="default_currency" class='chzn-select'>
+				<option value="1">Dollars (USD)</option><option value="2">Pesos (MXN)</option><option value="3">Euro (EUR)</option>				
+			</select></span></p>
+
+			<p><label for="currencies_select">Monedas</label>
+			<span class="field">
+				<select name="currencies_select" multiple="multiple" class="chzn-select" data-placeholder="Agregar Monedas...">
+					<option value="1">Dollars (USD)</option>
+					<option value="2">Pesos (MXN)</option>
+					<option value="3">Euro (EUR)</option>
+				</select>
+			</span></p>
+
+			<p><label for="app">Aplicaciones</label>
+			<span class="field">
+				<select name="app" multiple="multiple" class="chzn-select" data-placeholder="Agregar Aplicaciones...">
+					<%for(var i=0;i<apps.length;i++){ %>
+						<option value="<%=apps[i].controller%>"><%=apps[i].name%></option>
+					<% } %>
+				</select>	
+			</span></p>
+			<p class="stdformbutton">
+                <button class="btn btn-primary">Guardar</button>
+                <button type="reset" class="btn">Resetear</button>
+            </p>
+			
+		</form>
+	</div>
+</div></div>

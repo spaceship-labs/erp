@@ -1,0 +1,120 @@
+<div class="span4 profile-left profileEdit">
+	<div class="alert alert-block unseen">
+		<button data-dismiss="alert" class="close" type="button">×</button>
+		<h4>Mensaje</h4>
+			<p style="margin: 8px 0">El usuario se ha actualizado exitosamente</p>
+		</div>
+        <div class="widgetbox profile-photo">
+        <div class="headtitle">
+            <div class="btn-group">
+                <button data-toggle="dropdown" class="btn dropdown-toggle">Opciones <span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                  <li><a href="#" class="change-icon-button">Cambiar Icono</a></li>
+                  <li><a class="confirmbutton" href="/erp-admin/companies/destroy_icon/39">Quitar Icono</a></li> 
+                </ul>
+            </div>            
+            <h4 class="widgettitle">Icono</h4>
+        </div>
+        <div class="widgetcontent">
+            <div class="profilethumb">
+                <img src="/uploads/companies/<%=company.icon%>" alt="Oasis Cancún">
+                <form action="/admin/editAjax" method="post" accept-charset="utf-8" enctype="multipart/form-data" class="hidden" id="change-icon">
+		    <input type="hidden" name='method' value='icon' />
+		    <input type="hidden" name='userId' value='<%=company.id%>' />
+                    <hr>
+                    <span class="field">
+                        <span class="fileupload fileupload-new" data-provides="fileupload">
+                            <span class="input-append">
+                                <span class="uneditable-input span2">
+                                    <i class="iconfa-file fileupload-exists"></i>
+                                    <span class="fileupload-preview"></span>
+                                </span>
+                                <span class="btn btn-file">
+                                    <span class="fileupload-new">Archivo</span>
+                                    <span class="fileupload-exists">Cambia</span>
+                                    <input type="file" name="icon_input">
+                                </span>
+                                <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remove</a>
+                            </span>
+                        </span>
+                    </span>
+                    <button type="submit" class="btn btn-primary">Actualizar Icono</button>
+                </form>
+            </div><!--profilethumb-->
+        </div>
+    </div>
+        
+        
+    <div class="widgetbox tags">
+            <h4 class="widgettitle">Aplicaciones</h4>
+            <div class="widgetcontent">
+                <ul class="taglist">
+			<%for(var i=0;i<apps.length;i++){%>
+				<li><a href="<%=apps[i].controller%>"><%=apps[i].name%><span class="close">×</span></a></li>
+			<% } %>
+		</ul>
+
+                <form id="addApps" action="/admin/companies/add_app" method="post">
+                    <p>
+                        <select name="app_input">
+				<%for(var i=0;i<allApps.length;i++){ %>
+					<option value="<%=allApps[i].controller%>"><%=allApps[i].name%></option>
+				<% } %>
+			</select>
+                        <input type="hidden" name="company_id" value="39">
+                        <button type="submit" class="btn btn-primary">Agregar Aplicaciones</button>
+			<input type="hidden" name="url" value="/admin/" />
+                    </p>
+                </form>
+            </div>
+    </div>
+        
+        
+    <div class="widgetbox tags">
+            <h4 class="widgettitle">Usuarios</h4>
+            <div class="widgetcontent">
+                <ul class="taglist">
+			<% for(var i=0;i<users.length;i++){ %>
+				<li><a href="/admin/user/<%=users[i].id %>"><%=users[i].name%><span class="close iconfa-edit"></span></a></li>
+			<% } %>
+
+		</ul>
+                <a href="/erp-admin/users/new_user/" style="display:block;margin-top:10px">+ Agregar Usuarios</a>
+            </div>
+    </div>
+        
+</div><!--span4-->
+<div class="span8">
+    <form action="/admin/editAjax" class="editprofileform ajaxForm" method="post">
+        
+        <div class="widgetbox personal-information">
+            <h4 class="widgettitle">Información de la Empresa</h4>
+            <div class="widgetcontent">
+                <p><label for="name_input">Nombre:</label>
+                <span class="field"><input type="text" name="name" class="input-xlarge" value="<%=company.name%>"></span></p>              
+
+                <p><label for="address_input">Dirección</label>
+                <span class="field"><input type="text" name="address" class="input-xlarge" value="<%=company.address%>"></span></p>
+            
+                <p><label for="zipcode_input">Código Postal</label>
+                <span class="field"><input type="text" name="zipcode" class="input-xlarge" value="<%=company.zipcode%>"></span></p>
+
+                <p><label for="description_input">Descripción:</label>
+                <span class="field"><textarea name="description" class="span8" rows="3" cols="50"><%=company.description%></textarea></span></p>
+                <input type="hidden" value="<%=company.id%>" name="userId" />
+		<input type="hidden" value="info" name="method" />
+
+            </div>
+        </div>
+        
+
+        <p>
+		<%var active = {
+			1:[0,'Desactivar']
+			, 0:[1,'Activar']
+		} %>
+        	<button type="submit" class="btn btn-primary">Actualizar Empresa</button> &nbsp; <a class="confirmbutton"  data-url="/admin/" href="<%=active[company.active][0]%>"><%=active[company.active][1]%></a>
+        </p>
+        
+    </form>
+</div><!--span8-->

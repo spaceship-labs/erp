@@ -5,8 +5,7 @@
  * @docs        :: http://sailsjs.org/#!documentation/controllers
  */
 
-var fs = require('fs')
-, bcrypt = require('bcrypt')
+var bcrypt = require('bcrypt')
 , moment = require('moment');
 
 module.exports = {
@@ -72,7 +71,7 @@ module.exports = {
 		form.password = bcrypt.hashSync(form.password,bcrypt.genSaltSync(10));
 		User.create(form).exec(function(err,user){
 			if(err) return res.json(response);
-			update.icon(req,res,{userId:user.id},function(err,file){
+			update.icon(req,{userId:user.id},function(err,file){
 				if(err) return res.json(response);
 				res.json({
 					status:true
@@ -99,7 +98,7 @@ module.exports = {
 									  name:apps[i].name
 									, ctl:apps[i].controller
 								}
-							user.apps.push(tmp);
+								user.apps.push(tmp);
 							}
 						}
 					}
@@ -115,22 +114,7 @@ module.exports = {
 	}
 
 	, editAjax: function(req,res){
-		var form = req.params.all();
-		if(form.userId){
-			if(form.method in update)
-				update[form.method](req,res,form,function(err,data){
-					var data = {
-						 status: true
-						,msg: 'actualizado'
-						,data: data
-					};
-					if(err){
-						data.status = false;
-						data.msg = 'Ocurrio un error';
-					}
-					res.json(data);
-				});
-		}
+		Common.editAjax(req,res,update);
 	}
 };
 
@@ -144,42 +128,19 @@ function timeFormat(date){
 }
 
 var update = {
-	icon: function(req,res,form,cb){
-		var dirSave = __dirname+'/../../assets/uploads/users/'
-		, dirPublic = __dirname+'/../../.tmp/public/uploads/users/'
-		files = req.file('icon_input')._files,
-		fileName = new Date().getTime();
-		if(files.length){
-			var ext = files[0].stream.filename.split('.');
-			if(ext.length){
-				ext = ext[ext.length-1];
-				fileName += '.'+ext;
-			}
-		}
-		User.findOne({id:form.userId}).exec(function(err,user){
-			if(err) return cb && cb(err);
-			req.file('icon_input').upload(dirSave+fileName,function(err,files){
-				if(err) return cb && cb(err);
-				fs.unlink(dirSave+user.icon,function(){
-					//silence warning if not exists.
-				});
-				User.update({id:form.userId},{icon:fileName},function(err,user){
-					if(err) return cb && cb(err);
-
-					fs.createReadStream(dirSave+fileName).pipe(fs.createWriteStream(dirPublic+fileName))
-					.on('finish',function(){
-						return cb && cb(null,fileName);
-					}).on('error',function(){
-						return cb && cb(true);
-					});
-				});
-			});
-		});
+	icon: function(req,form,cb){
+		Common.updateIcon(req,{
+			form:form
+			,dirSave : __dirname+'/../../assets/uploads/users/'
+			,dirPublic:  __dirname+'/../../.tmp/public/uploads/users/'
+			,Model:User
+			,prefix:'177x171'
+		},cb);
 	}
-	, apps:function(req,res,form,cb){
+	, apps:function(req,form,cb){
 		var select_company = req.session.select_company || req.user.select_company
 		, update = {};
-		update[select_company] = form.apps;
+		update[select_company] = form.apps || [];
 		User.update({id:form.userId},{companies:update},function(err,users){
 			if(err) return cb && cb(err);
 			var tmp = users.length && users[0].companies[select_company];
@@ -189,26 +150,12 @@ var update = {
 		});
 	}
 	
-	, info:function(req,res,form,cb){
-		console.log(form);
-        	var id = form.userId
-		,validate = ['name','last_name','phone','email','active'];
-		
-		for(var i in form){
-			if(validate.indexOf(i)==-1)
-				delete form[i];
-
-		}
-		console.log(form);
-		User.update({id:id},form).exec(function(err,user){
-			console.log(user);
-			if(user && form.active!=undefined){	
-				user = {
-					activeN:user[0].active?0:1
-					,active:user[0].active?'Desactivar':'Activar'
-				};
-			}
-			return cb && cb(err,user);
-		});
+	, info:function(req,form,cb){
+		Common.updateInfoProfile(req,{
+			form:form
+			,id:form.userId
+			,Model:User
+			,validate:['name','last_name','phone','email','active']
+		},cb);
 	}
 };
