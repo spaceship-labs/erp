@@ -21,10 +21,15 @@
 </table>
 </div>
 <div class="span6">
+	<div class="alert alert-block unseen userAlert">
+		<button data-dismiss="alert" class="close" type="button">×</button>
+		<h4>Mensaje</h4>
+		<p>La compania se creo exitosamente</p>
+	</div>
 	<div class="widgetbox">
     <h4 class="widgettitle">Nueva Empresa</h4>
     <div class="widgetcontent nopadding">                            
-		<form action="/admin/create/" method="post" accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2" >
+		<form action="/admin/create/" method="post" accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 companyCreate" >
 			<p><label for="name">Nombre*</label>
 			<span class="field"><input type="text" name="name" class="input-large"></span></p>
 			

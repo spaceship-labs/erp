@@ -98,6 +98,13 @@
             	<li class="nav-header">Navigation</li>
 		<% var activeC='active'; %>
                 <li class="<%=active=='home'?activeC:''%>"><a href="/home/"><span class="iconfa-laptop"></span> Tablero</a></li>
+		<li class="dropdown <%=active=='admin'?activeC:'' %>">
+			<a href=""><span class="iconfa-cog"></span>Sistema</a>
+			<ul>
+				<li><a href="/admin">Empresas</a></li>
+				<li><a href="/admin">Monedas</a></li>
+			</ul>
+		<li>
                 <li class="dropdown <%=active=='users'?activeC:'' %>"><a href=""><span class="iconfa-user"></span>Usuarios</a>
                 	<ul>
                     	<li><a href="/users/">Usuarios</a></li>

@@ -20,7 +20,7 @@ module.exports = {
 			, msg:'ocurrio un error'
 		};
 		delete form.id;
-		console.log(form);
+		form.active = 1;
 		Companies.create(form).exec(function(err,company){
 			if(err) return res.json(response);
 			update.icon(req,{userId:company.id},function(err,files){				
