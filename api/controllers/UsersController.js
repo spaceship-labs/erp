@@ -16,9 +16,13 @@ module.exports = {
 		User.find(find).exec(function(err,users){
 			var alphabets_company = []
 			, index;
+
+			
 			for(var i=0;i<users.length;i++){
-				index = users[i].name[0].toUpperCase();
-				alphabets_company.push(index);
+				if(users[i].name){
+					index = users[i].name[0].toUpperCase();
+					alphabets_company.push(index);
+				}
 			}
 			
 			
