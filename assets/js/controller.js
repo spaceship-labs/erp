@@ -4,7 +4,7 @@ app.config(['$sailsProvider', function ($sailsProvider) {
     $sailsProvider.url = 'http://localhost:1337';
 }]);
 
-app.controller('userShowAllCTL',function($scope,$sails){
+app.controller('userCTL',function($scope,$sails){
 	jQuery.get('/users/all',function(data){
 		$scope.users = data;
 		$scope.$apply()
@@ -22,10 +22,10 @@ app.controller('userShowAllCTL',function($scope,$sails){
 		return u && u.name.match(reg);
 
 	}
-});
-
-app.controller('userEditCTL',function($scope){
 	$scope.updateTags = function(){
 	
+	}
+	$scope.sup = function(){
+		console.log('sup');
 	}
 });
