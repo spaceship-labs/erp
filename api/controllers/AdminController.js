@@ -70,6 +70,7 @@ module.exports = {
 				//, {createdAt:{$gte:new Date(2010,4,1),$lt:new Date()}}
 			}).exec(function(err,Ex){
 				Currency.find({currency_code:{$in:comp.currencies}}).exec(function(err,cs){
+					console.log('algo',Ex);
 					mon.rates = Ex.rates;
 					var data = {};
 					for(var i=0;i<cs.length;i++){

@@ -43,7 +43,7 @@
 			<p><select name="base_currency">
 					<option value="<%=currencyCode%>"><%=currency%></option>
 				<% for(var i in currencies){%>
-					<option value="<%=currencies[i].currency_code%>"><%=currencies[i].name +" ("+currencies[i].currency_code+")"%></option>	
+					<option value="<%=currencies[i].code%>"><%=currencies[i].name +" ("+currencies[i].currency_code+")"%></option>	
 
 				<% } %>
 			</select></p>
