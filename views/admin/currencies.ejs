@@ -1,0 +1,75 @@
+<div class="row-fluid editCurrencies">
+
+<div class="span7">
+	<div class="alert alert-block unseen userAlert">
+		<button data-dismiss="alert" class="close" type="button">×</button>
+		<h4>Mensaje</h4>
+			<p style="margin: 8px 0">El usuario se ha actualizado exitosamente</p>
+	</div>
+    <h4 class="widgettitle">Tipo de cambio</h4>
+<div class="widgetcontent">
+	<p>
+		El tipo de cambio es a
+		<%=currency%>
+	</p>
+	<% for(var i in currencies){
+		var current = currencies[i];
+	%>
+		<form action="/admin/editAjax" method="post" accept-charset="utf-8">
+			<p>
+			<%=current.name%> 
+			<input type="text" name="rate" value="<%=current.change%>">
+			<input type="hidden" name="method" value="currency" />
+			<input type="hidden" name="currency" value="<%=current.code%>" />
+			<input type="hidden" name="userId" value="<%=current.id%>" />
+			<%=current.comission?current.postName:"" %>
+			</p>
+			<p class="stdformbutton"><button class="btn btn-primary">Guardar</button></p>
+		</form>
+
+	<%}%>
+</div>
+<h4 class="widgettitle">Tipo de cambio historico</h4>
+<div class="widgetcontent">
+	<div id="data_div" class="hidden">[{"label":"MXN","color":"#422","data":[[1398661200000,0],[1398747600000,0],[1398834000000,13.0922],[1398920400000,0],[1399006800000,0],[1399093200000,0],[1399179600000,0],[1399266000000,0],[1399352400000,0],[1399438800000,12.9783],[1399525200000,12.9601],[1399611600000,12.9514],[1399698000000,0],[1399784400000,0],[1399870800000,0],[1399957200000,0],[1400043600000,0],[1400130000000,0],[1400216400000,0],[1400302800000,0],[1400389200000,0],[1400475600000,0],[1400562000000,12.9302],[1400648400000,12.909],[1400734800000,12.8873],[1400821200000,12.8765],[1400907600000,0],[1400994000000,0],[1401080400000,12.8618],[1401166800000,12.8617],[1401253200000,12.8684]]},{"label":"EUR","color":"#668","data":[[1398661200000,0],[1398747600000,0],[1398834000000,0.721038],[1398920400000,0],[1399006800000,0],[1399093200000,0],[1399179600000,0],[1399266000000,0],[1399352400000,0],[1399438800000,0.718954],[1399525200000,0.722457],[1399611600000,0.722549],[1399698000000,0],[1399784400000,0],[1399870800000,0],[1399957200000,0],[1400043600000,0],[1400130000000,0],[1400216400000,0],[1400302800000,0],[1400389200000,0],[1400475600000,0],[1400562000000,0.729806],[1400648400000,0.72982],[1400734800000,0.732657],[1400821200000,0.733628],[1400907600000,0],[1400994000000,0],[1401080400000,0.732778],[1401166800000,0.733361],[1401253200000,0.735549]]}]</div>
+	<div id="chart_div" style="height: 350px; width: 100%; padding: 0px; position: relative;"><canvas class="base" width="573" height="350"></canvas><canvas class="overlay" width="573" height="350" style="position: absolute; left: 0px; top: 0px;"></canvas><div class="tickLabels" style="font-size:smaller"><div class="xAxis x1Axis" style="color:#545454"><div class="tickLabel" style="position:absolute;text-align:center;left:59px;top:329px;width:47px">1/5</div><div class="tickLabel" style="position:absolute;text-align:center;left:113px;top:329px;width:47px">4/5</div><div class="tickLabel" style="position:absolute;text-align:center;left:167px;top:329px;width:47px">7/5</div><div class="tickLabel" style="position:absolute;text-align:center;left:220px;top:329px;width:47px">10/5</div><div class="tickLabel" style="position:absolute;text-align:center;left:274px;top:329px;width:47px">13/5</div><div class="tickLabel" style="position:absolute;text-align:center;left:327px;top:329px;width:47px">16/5</div><div class="tickLabel" style="position:absolute;text-align:center;left:381px;top:329px;width:47px">19/5</div><div class="tickLabel" style="position:absolute;text-align:center;left:435px;top:329px;width:47px">22/5</div><div class="tickLabel" style="position:absolute;text-align:center;left:488px;top:329px;width:47px">25/5</div><div class="tickLabel" style="position:absolute;text-align:center;left:542px;top:329px;width:47px">28/5</div></div><div class="yAxis y1Axis" style="color:#545454"><div class="tickLabel" style="position:absolute;text-align:right;top:307px;right:552px;width:21px">0.0</div><div class="tickLabel" style="position:absolute;text-align:right;top:254px;right:552px;width:21px">2.5</div><div class="tickLabel" style="position:absolute;text-align:right;top:202px;right:552px;width:21px">5.0</div><div class="tickLabel" style="position:absolute;text-align:right;top:150px;right:552px;width:21px">7.5</div><div class="tickLabel" style="position:absolute;text-align:right;top:98px;right:552px;width:21px">10.0</div><div class="tickLabel" style="position:absolute;text-align:right;top:46px;right:552px;width:21px">12.5</div><div class="tickLabel" style="position:absolute;text-align:right;top:-6px;right:552px;width:21px">15.0</div></div></div><div class="legend"><div style="position: absolute; width: 40px; height: 44px; top: 9px; left: 38px; opacity: 0.85; background-color: rgb(255, 255, 255);"> </div><table style="position:absolute;top:9px;left:38px;;font-size:smaller;color:#545454"><tbody><tr><td class="legendColorBox"><div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid #422;overflow:hidden"></div></div></td><td class="legendLabel">MXN</td></tr><tr><td class="legendColorBox"><div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid #668;overflow:hidden"></div></div></td><td class="legendLabel">EUR</td></tr></tbody></table></div></div>
+</div></div><!--span8-->
+<div class="span5 profile-left">
+	 <div class="widgetbox tags">
+	<h4 class="widgettitle">Configuración de Moneda</h4>
+	<div class="widgetcontent">
+		<form method="post" action="/admin/editAjax" accept-charset="utf-8">
+			<p>Moneda Base</p>
+			<p><select name="base_currency">
+					<option value="<%=currencyCode%>"><%=currency%></option>
+				<% for(var i in currencies){%>
+					<option value="<%=currencies[i].currency_code%>"><%=currencies[i].name +" ("+currencies[i].currency_code+")"%></option>	
+
+				<% } %>
+			</select></p>
+
+			<p><label for="currency_comission_input">Porcentaje de Comisión por Cambio de Moneda</label></p>
+			<p><input name="currency_comission" value="<%=comissionVal%>"></p>
+			<input type="hidden" name="method" value="baseCurrency" />
+			<input type="hidden" name="userId" value="true" />
+			<p class="stdformbutton"><button class="btn btn-primary">Guardar</button></p>
+
+		</form>
+		<hr>
+		<form method="post" action="/erp-admin/currencies/add_currency" accept-charset="utf-8">
+			<p><label for="currency_select">Monedas</label></p>
+			<p><select name="currency_select">
+				<% for(var i=0;i<allCurrencies.length;i++){%>
+					<option value="<%=allCurrencies[i].currency_code%>"><%=allCurrencies[i].name +" ("+allCurrencies[i].currency_code+")"%></option>	
+
+				<% } %>
+
+
+			</select></p>
+				
+						<ul class="list-nostyle list-inline"><li><span class="btn"> <a href="/erp-admin/currencies/remove_currency/2" class="iconfa-remove"></a> USD </span></li><li><span class="btn"> <a href="/erp-admin/currencies/remove_currency/5" class="iconfa-remove"></a> MXN </span></li><li><span class="btn"> <a href="/erp-admin/currencies/remove_currency/4" class="iconfa-remove"></a> EUR </span></li></ul>
+			<p class="stdformbutton"><button class="btn btn-primary">Agregar Moneda</button></p>
+		</form>
+	</div>	
+</div></div><!--span4-->                
+</div>

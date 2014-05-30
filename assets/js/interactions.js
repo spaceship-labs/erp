@@ -1,8 +1,10 @@
 jQuery(function($){
 	$('.chzn-select').chosen();
 
-	$('.userCreate, .companyCreate').ajaxForm(function(data){
-		$('.userAlert p').text(data.msg).parent().show();
+	$('.userCreate, .companyCreate, .editCurrencies form').ajaxForm(function(data){
+		var alt = $('.userAlert p');
+		alt.text(data.msg).parent().show();
+		$(window).scrollTop(alt.parent().position().top-10);
 	});
 
 	$('.change-icon-button').on('click',function(e){
