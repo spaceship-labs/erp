@@ -84,10 +84,11 @@ module.exports = {
 				Currency.find().exec(function(err,cs){
 					if(err) return res.json(response);
 					mon.rates = Ex.rates;
-					var data = {};
+					var data = {}
+					,noSelect = [];
 					for(var i=0;i<cs.length;i++){
 						var current = cs[i];
-						if(comp.currencies.indexOf(current.currency_code)!=-1){
+						if(comp.currencies.indexOf(current.currency_code)!=-1 || comp.base_currency==current.currency_code){
 							if(current.currency_code!=comp.base_currency){	
 								var change = mon(1).from(comp.base_currency).to(current.currency_code).toFixed(6)
 								, comission = comp.currency_comission && (change*(1+comp.currency_comission/100));
@@ -103,14 +104,16 @@ module.exports = {
 								var current_currency = current.name+" ("+current.currency_code +")"
 								, current_code = current.currency_code
 							}
+						}else{
+							noSelect.push(cs[i]);
 						}
 					}
 					res.json({
-						currencies:data
-						,currency:current_currency
-						,currencyCode:current_code
+						currencies:data||{}
+						,currency:current_currency||"agrega moneda"
+						,currencyCode:current_code||false
 						,comissionVal:comp.currency_comission
-						,allCurrencies:cs
+						,allCurrencies:noSelect||[]
 					})
 				});
 			});	
@@ -118,7 +121,8 @@ module.exports = {
 	}
 	,chartsData: function(req,res){
 		var select_company = req.session.select_company || req.user.select_company
-		,response = false;
+		,response = false
+		,mo = money;
 		Companies.findOne({id:select_company}).exec(function(err,comp){
 			if(err) return res.json(response);
 			var index
@@ -164,7 +168,8 @@ module.exports = {
 							add = days[d];
 						}
 						for(var l in data){
-							data[l].push([add.updatedAt.getTime(),add.rates[l]]);
+							mo.rates = add.rates;
+							data[l].push([add.updatedAt.getTime(),mo(1).from(comp.base_currency).to(l)]);
 						}
 					}
 					var response = [];
@@ -212,7 +217,6 @@ var update = {
 		});
 	}
 	, currency:function(req,form,cb){
-		console.log(form);
 		var select_company = req.session.select_company || req.user.select_company
 		, find = form.userId==-1?{}:{companyId:form.userId}
 		Exchange_rates.findOne({$query:find,orderby:{updatedAt:-1}}).exec(function(err,ex){
@@ -243,7 +247,10 @@ var update = {
 	}
 	, baseCurrency: function(req,form,cb){
 		var select_company = req.session.select_company || req.user.select_company
-		,validate = ['currency_comission','base_currency'];
+		,validate = ['currency_comission'];
+		if(form.base_currency!="false"){
+			validate.push("base_currency");
+		}
 		for(var i in form){
 			if(validate.indexOf(i)==-1)
 				delete form[i];

@@ -38,7 +38,8 @@ app.controller('currencyCTL',function($scope){
 		$.get('/admin/chartsData',function(data){
 			$scope.charts = data;
 			$scope.$apply();
-			exchange_rates();
+			if(data.length)
+				exchange_rates();
 		});
 	}
 

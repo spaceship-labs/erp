@@ -8,9 +8,12 @@
 	</div>
     <h4 class="widgettitle">Tipo de cambio</h4>
 <div class="widgetcontent">
-	<p>
-		El tipo de cambio es a
+	<p ng-if="!currencyCode">
 		{{currency}}
+	</p>
+	<p ng-if="currencyCode">
+		El tipo de cambio es a
+		{{currency}}	
 	</p>
 		<form action="/admin/editAjax" method="post" accept-charset="utf-8" ng-repeat="current in currencies">
 			<p>
@@ -30,7 +33,7 @@
 	<div id='data_div' class='hidden'>
 		{{charts}}
 	</div>
-	<div id='chart_div' style='height:350px;width:100%'></div>
+	<div id='chart_div' style='height:350px;width:100%' ng-if="charts.length" ></div>
 </div></div><!--span8-->
 <div class="span5 profile-left">
 	 <div class="widgetbox tags">
@@ -53,16 +56,18 @@
 		</form>
 		<hr>
 		<form method="post" action="/admin/editAjax" accept-charset="utf-8">
-			<p><label for="currency_select">Monedas</label></p>
-			<p><select name="currency">
-				<option ng-repeat="i in allCurrencies" value="{{i.currency_code}}">{{i.name+" ("+i.currency_code+")"}}</option>
-				<input type="hidden" name="method" value="addCurrency" />
-				<input type="hidden" name="userId" value="true" />
+			<div class="currency_wrap" ng-if="allCurrencies.length">
+				<p><label for="currency_select">Monedas</label></p>
+				<p><select name="currency">
+					<option ng-repeat="i in allCurrencies" value="{{i.currency_code}}">{{i.name+" ("+i.currency_code+")"}}</option>
+					<input type="hidden" name="method" value="addCurrency" />
+					<input type="hidden" name="userId" value="true" />
 
-			</select></p>
+				</select></p>
+			</div>
 				
 			<ul class="list-nostyle list-inline removeCurrency">
-				<li>
+				<li ng-if="currencyCode">
 					<span class="btn"> 
 						<a href="{{currencyCode}}" class="iconfa-remove"></a>
 						{{currencyCode}}
@@ -75,7 +80,7 @@
 					</span>
 				</li>
 			</ul>
-			<p class="stdformbutton"><button class="btn btn-primary">Agregar Moneda</button></p>
+			<p class="stdformbutton" ng-if="allCurrencies.length"><button class="btn btn-primary">Agregar Moneda</button></p>
 		</form>
 	</div>	
 </div></div><!--span4-->                
