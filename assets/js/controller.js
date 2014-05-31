@@ -25,11 +25,9 @@ app.controller('userCTL',function($scope,$sails){
 });
 
 app.controller('currencyCTL',function($scope){
-	console.log("asda");
 	var $ = jQuery
 	, updateContent = function(){
 		$.get('/admin/currenciesJson',function(data){
-			console.log(data);
 			for(var i in data){
 				$scope[i] = data[i];
 			}
@@ -41,7 +39,7 @@ app.controller('currencyCTL',function($scope){
 			if(data.length)
 				exchange_rates();
 		});
-	}
+	};
 
 	$('.editCurrencies form').ajaxForm(function(data){
 		updateContent();

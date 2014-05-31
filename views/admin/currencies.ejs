@@ -41,7 +41,7 @@
 	<div class="widgetcontent">
 		<form method="post" action="/admin/editAjax" accept-charset="utf-8">
 			<p>Moneda Base</p>
-			<p><select name="base_currency">
+			<p><select name="base_currency" >
 					<option value="{{currencyCode}}">{{currency}}</option>
 					<option ng-repeat="i in currencies" value="{{i.code}}">{{i.name}}</option>
 
