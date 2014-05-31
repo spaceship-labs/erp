@@ -22,10 +22,43 @@ app.controller('userCTL',function($scope,$sails){
 		return u && u.name.match(reg);
 
 	}
-	$scope.updateTags = function(){
-	
+});
+
+app.controller('currencyCTL',function($scope){
+	console.log("asda");
+	var $ = jQuery
+	, updateContent = function(){
+		$.get('/admin/currenciesJson',function(data){
+			console.log(data);
+			for(var i in data){
+				$scope[i] = data[i];
+			}
+			$scope.$apply();
+		});
+		$.get('/admin/chartsData',function(data){
+			$scope.charts = data;
+			$scope.$apply();
+			exchange_rates();
+		});
 	}
-	$scope.sup = function(){
-		console.log('sup');
-	}
+
+	$('.editCurrencies form').ajaxForm(function(data){
+		updateContent();
+		var alt = $('.userAlert p');
+		alt.text(data.msg).parent().show();
+		$(window).scrollTop(alt.parent().position().top-10);
+	});
+
+	$('.removeCurrency').on("click","a",function(e){
+		e.preventDefault();
+		
+		$.post('/admin/editAjax',{
+			method:"removeCurrency"
+			,currency:$(this).attr('href')
+			,userId:true
+		}
+		, updateContent
+		);
+	});
+	updateContent();
 });

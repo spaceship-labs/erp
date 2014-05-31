@@ -1,7 +1,7 @@
 jQuery(function($){
 	$('.chzn-select').chosen();
 
-	$('.userCreate, .companyCreate, .editCurrencies form').ajaxForm(function(data){
+	$('.userCreate, .companyCreate').ajaxForm(function(data){
 		var alt = $('.userAlert p');
 		alt.text(data.msg).parent().show();
 		$(window).scrollTop(alt.parent().position().top-10);
@@ -51,6 +51,7 @@ jQuery(function($){
 	});
 
 	$('.fileupload').fileupload();
+
 
 	var updateApps = function(addApp,url){
 		var li = $('.profileEdit .taglist li'),
