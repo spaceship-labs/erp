@@ -62,7 +62,12 @@ module.exports = {
 	}
 	
 	, currencies: function(req,res){
-		Common.view(res.view);	
+		Common.view(res.view,{
+			page:{
+				name:'Monedas'
+				,icon:'iconfa-money'
+			}
+		});	
 	}
 
 	, currenciesJson: function(req,res){
