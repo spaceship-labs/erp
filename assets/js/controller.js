@@ -32,6 +32,15 @@ app.controller('currencyCTL',function($scope){
 				$scope[i] = data[i];
 			}
 			$scope.$apply();
+			$('form').ajaxForm(function(data){
+				updateContent();
+				var alt = $('.userAlert p');
+				alt.text(data.msg).parent().show();
+				$(window).scrollTop(alt.parent().position().top-10);
+			});
+			
+
+
 		});
 		$.get('/admin/chartsData',function(data){
 			$scope.charts = data;
@@ -40,13 +49,6 @@ app.controller('currencyCTL',function($scope){
 				exchange_rates();
 		});
 	};
-
-	$('.editCurrencies form').ajaxForm(function(data){
-		updateContent();
-		var alt = $('.userAlert p');
-		alt.text(data.msg).parent().show();
-		$(window).scrollTop(alt.parent().position().top-10);
-	});
 
 	$('.removeCurrency').on("click","a",function(e){
 		e.preventDefault();

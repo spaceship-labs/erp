@@ -163,14 +163,16 @@ module.exports = {
 						var d = allEx[i].createdAt.getDate()
 						, add;
 						if(!(d in days)){
-							add = allEx[i];
-						}else{
-							add = days[d];
+							days[d] = allEx[i];
 						}
+					}
+					for(var i in days){
 						for(var l in data){
-							mo.rates = add.rates;
-							data[l].push([add.updatedAt.getTime(),mo(1).from(comp.base_currency).to(l)]);
+							mo.rates = days[i].rates;
+							mo.base = "USD";
+							data[l].push([days[i].updatedAt.getTime(),mo(1).from(comp.base_currency).to(l)]);
 						}
+					
 					}
 					var response = [];
 					for(i in data){

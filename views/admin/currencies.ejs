@@ -22,7 +22,7 @@
 			<input type="hidden" name="method" value="currency" />
 			<input type="hidden" name="currency" value="{{current.code}}" />
 			<input type="hidden" name="userId" value="{{current.id}}" />
-			{{current.comission?current.postName:"" }}
+			{{current.comission?" ("+current.postName+")":"" }}
 			</p>
 			<p class="stdformbutton"><button class="btn btn-primary">Guardar</button></p>
 		</form>

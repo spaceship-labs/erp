@@ -83,3 +83,11 @@ jQuery(function($){
 		});		
 	}
 });
+
+function updateChosen(select){
+	select = select || jQuery('select');
+	
+	select.attr()
+	jQuery('.chzn-container').remove();
+	select.chosen();
+}
