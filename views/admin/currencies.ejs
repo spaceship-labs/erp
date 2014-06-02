@@ -1,0 +1,87 @@
+<div class="row-fluid editCurrencies" ng-controller='currencyCTL'>
+
+<div class="span7">
+	<div class="alert alert-block unseen userAlert">
+		<button data-dismiss="alert" class="close" type="button">×</button>
+		<h4>Mensaje</h4>
+			<p style="margin: 8px 0">El usuario se ha actualizado exitosamente</p>
+	</div>
+    <h4 class="widgettitle">Tipo de cambio</h4>
+<div class="widgetcontent">
+	<p ng-if="!currencyCode">
+		{{currency}}
+	</p>
+	<p ng-if="currencyCode">
+		El tipo de cambio es a
+		{{currency}}	
+	</p>
+		<form action="/admin/editAjax" method="post" accept-charset="utf-8" ng-repeat="current in currencies">
+			<p>
+			{{current.name}} 
+			<input type="text" name="rate" value="{{current.change}}">
+			<input type="hidden" name="method" value="currency" />
+			<input type="hidden" name="currency" value="{{current.code}}" />
+			<input type="hidden" name="userId" value="{{current.id}}" />
+			{{current.comission?" ("+current.postName+")":"" }}
+			</p>
+			<p class="stdformbutton"><button class="btn btn-primary">Guardar</button></p>
+		</form>
+
+</div>
+<h4 class="widgettitle">Tipo de cambio historico</h4>
+<div class="widgetcontent">
+	<div id='data_div' class='hidden'>
+		{{charts}}
+	</div>
+	<div id='chart_div' style='height:350px;width:100%' ng-if="charts.length" ></div>
+</div></div><!--span8-->
+<div class="span5 profile-left">
+	 <div class="widgetbox tags">
+	<h4 class="widgettitle">Configuración de Moneda</h4>
+	<div class="widgetcontent">
+		<form method="post" action="/admin/editAjax" accept-charset="utf-8">
+			<p>Moneda Base</p>
+			<p><select name="base_currency" >
+					<option value="{{currencyCode}}">{{currency}}</option>
+					<option ng-repeat="i in currencies" value="{{i.code}}">{{i.name}}</option>
+
+			</select></p>
+
+			<p><label for="currency_comission_input">Porcentaje de Comisión por Cambio de Moneda</label></p>
+			<p><input name="currency_comission" value="{{comissionVal}}"></p>
+			<input type="hidden" name="method" value="baseCurrency" />
+			<input type="hidden" name="userId" value="true" />
+			<p class="stdformbutton"><button class="btn btn-primary">Guardar</button></p>
+
+		</form>
+		<hr>
+		<form method="post" action="/admin/editAjax" accept-charset="utf-8">
+			<div class="currency_wrap" ng-if="allCurrencies.length">
+				<p><label for="currency_select">Monedas</label></p>
+				<p><select name="currency">
+					<option ng-repeat="i in allCurrencies" value="{{i.currency_code}}">{{i.name+" ("+i.currency_code+")"}}</option>
+					<input type="hidden" name="method" value="addCurrency" />
+					<input type="hidden" name="userId" value="true" />
+
+				</select></p>
+			</div>
+				
+			<ul class="list-nostyle list-inline removeCurrency">
+				<li ng-if="currencyCode">
+					<span class="btn"> 
+						<a href="{{currencyCode}}" class="iconfa-remove"></a>
+						{{currencyCode}}
+					</span>
+				</li>
+				<li ng-repeat="i in currencies">
+					<span class="btn"> 
+						<a href="{{i.code}}" class="iconfa-remove"></a>
+						{{i.code}}
+					</span>
+				</li>
+			</ul>
+			<p class="stdformbutton" ng-if="allCurrencies.length"><button class="btn btn-primary">Agregar Moneda</button></p>
+		</form>
+	</div>	
+</div></div><!--span4-->                
+</div>

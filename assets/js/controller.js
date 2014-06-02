@@ -22,10 +22,44 @@ app.controller('userCTL',function($scope,$sails){
 		return u && u.name.match(reg);
 
 	}
-	$scope.updateTags = function(){
-	
-	}
-	$scope.sup = function(){
-		console.log('sup');
-	}
+});
+
+app.controller('currencyCTL',function($scope){
+	var $ = jQuery
+	, updateContent = function(){
+		$.get('/admin/currenciesJson',function(data){
+			for(var i in data){
+				$scope[i] = data[i];
+			}
+			$scope.$apply();
+			$('form').ajaxForm(function(data){
+				updateContent();
+				var alt = $('.userAlert p');
+				alt.text(data.msg).parent().show();
+				$(window).scrollTop(alt.parent().position().top-10);
+			});
+			
+
+
+		});
+		$.get('/admin/chartsData',function(data){
+			$scope.charts = data;
+			$scope.$apply();
+			if(data.length)
+				exchange_rates();
+		});
+	};
+
+	$('.removeCurrency').on("click","a",function(e){
+		e.preventDefault();
+		
+		$.post('/admin/editAjax',{
+			method:"removeCurrency"
+			,currency:$(this).attr('href')
+			,userId:true
+		}
+		, updateContent
+		);
+	});
+	updateContent();
 });

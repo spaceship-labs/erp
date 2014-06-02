@@ -15,7 +15,9 @@ module.exports = {
 		,zipcode:'string'
 		,active:'integer'
 		,app:'array'
-		,default_currency:'array'
+		,base_currency:'string'
+		,currency_comission:'float'
+		,currencies:'array'
 
 	}
 };

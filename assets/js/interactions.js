@@ -2,7 +2,9 @@ jQuery(function($){
 	$('.chzn-select').chosen();
 
 	$('.userCreate, .companyCreate').ajaxForm(function(data){
-		$('.userAlert p').text(data.msg).parent().show();
+		var alt = $('.userAlert p');
+		alt.text(data.msg).parent().show();
+		$(window).scrollTop(alt.parent().position().top-10);
 	});
 
 	$('.change-icon-button').on('click',function(e){
@@ -50,6 +52,7 @@ jQuery(function($){
 
 	$('.fileupload').fileupload();
 
+
 	var updateApps = function(addApp,url){
 		var li = $('.profileEdit .taglist li'),
 		apps = [];
@@ -80,3 +83,11 @@ jQuery(function($){
 		});		
 	}
 });
+
+function updateChosen(select){
+	select = select || jQuery('select');
+	
+	select.attr()
+	jQuery('.chzn-container').remove();
+	select.chosen();
+}
