@@ -8,6 +8,7 @@
  *
  */
 module.exports = function(req, res, next) {
+	if(req.isSocket) return next();
 
 	if(req.isAuthenticated()){
 		var select_company = req.session.select_company || req.user.select_company

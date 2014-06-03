@@ -23,6 +23,7 @@ module.exports = {
 		};
 		delete form.id;
 		form.active = 1;
+		form.req = req;
 		Companies.create(form).exec(function(err,company){
 			if(err) return res.json(response);
 			update.icon(req,{userId:company.id},function(err,files){				

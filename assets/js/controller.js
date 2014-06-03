@@ -22,6 +22,10 @@ app.controller('userCTL',function($scope,$sails){
 		return u && u.name.match(reg);
 
 	}
+
+	$scope.sup = function(){
+		console.log('sup')
+	};
 });
 
 app.controller('currencyCTL',function($scope){
@@ -62,4 +66,38 @@ app.controller('currencyCTL',function($scope){
 		);
 	});
 	updateContent();
+});
+
+app.controller('noticeCTL',function($scope){
+	io.socket.on('update',function(data){
+		if(data)
+			update();
+	});
+
+	var $ = jQuery
+	, update = function(){
+		io.socket.get('/home/noticeSuscribe',function(data){
+			console.log(data);
+			for(var i in data){
+				$scope[i] = data[i];
+			}
+			$scope.models = {};
+			for(var m=0;m<data.modify.length;m++){
+				console.log(data.modify[m]);
+				$scope.models[data.modify[m].model] = {};
+				jQuery.post('/home/noticeModifyInfo',{model:data.modify[m].model,mId:data.modify[m].id},function(d){
+					$scope.models[d.model][d.id] = d.info;	
+					$scope.$apply();
+				});
+			}
+		});
+	
+	};
+	
+	$scope.translate = {
+		update:'actualizo'
+		,create:'creo'
+		,destroy:'elimino'
+	}
+	update();
 });

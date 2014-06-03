@@ -69,6 +69,7 @@ module.exports = {
 		form.companies = tmp;
 		delete form.app_select;
 		form.password = bcrypt.hashSync(form.password,bcrypt.genSaltSync(10));
+		form.req = req;
 		User.create(form).exec(function(err,user){
 			if(err) return res.json(response);
 			update.icon(req,{userId:user.id},function(err,file){

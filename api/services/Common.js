@@ -34,7 +34,7 @@ module.exports.updateIcon = function(req,opts,cb){
 	, Model = opts.Model
 	, form = opts.form
 	, prefix = opts.prefix || false
-	, files = req.file('icon_input')._files
+	, files = req.file && req.file('icon_input')._files || []
 	, fileName = new Date().getTime()
 	, measuresIcon = ['80x80','50x50','184x73','177x171'];
 	if(files.length){
@@ -96,6 +96,7 @@ module.exports.updateInfoProfile = function(req,opts,cb){
 	, form = opts.form;
 
 	if(validate.length){
+		validate.push('req');
 		for(var i in form){
 			if(validate.indexOf(i)==-1)
 				delete form[i];
@@ -115,6 +116,7 @@ module.exports.updateInfoProfile = function(req,opts,cb){
 
 module.exports.editAjax = function(req,res,update){
 	var form = req.params.all();
+	form.req = req;
 	if(form.userId){
 		if(form.method in update)
 			update[form.method](req,form,function(err,data){
