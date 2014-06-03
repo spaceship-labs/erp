@@ -10,6 +10,14 @@ var bcrypt = require('bcrypt')
 
 module.exports = {
 	index: function(req,res){
+		Apps.find().exec(function(err,apps){
+			Common.view(res.view,{
+				 apps:apps
+			},req);
+		});
+	}
+
+	, indexJson: function(req,res){
 		var find = {}
 		, select_company = req.session.select_company || req.user.select_company;
 		find['companies.'+select_company] ={$exists:1};
@@ -20,13 +28,11 @@ module.exports = {
 				index = users[i].name[0].toUpperCase();
 				alphabets_company.push(index);
 			}
-			
-			
+						
 			Apps.find().exec(function(err,apps){
-				Common.view(res.view,{
-					 apps:apps
-					, alphabets_company:alphabets_company
-				},req);
+				res.json(
+					alphabets_company
+				);
 			});
 		});
 	}

@@ -5,11 +5,20 @@ app.config(['$sailsProvider', function ($sailsProvider) {
 }]);
 
 app.controller('userCTL',function($scope,$sails){
-	jQuery.get('/users/all',function(data){
-		$scope.users = data;
-		$scope.$apply()
-	});
-
+	$scope.alphabets = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']; 
+	var updateList = function(){
+		jQuery.get('/users/all',function(data){
+			console.log(data);
+			$scope.users = data;
+			$scope.$apply();
+		});
+		jQuery.get('/users/indexJson',function(data){
+			console.log(data);
+			$scope.alphabets_company = data;
+			$scope.$apply();
+		});
+		
+	}
 	$scope.userFilter = function(u){
 		var prefix = '^';
 		if($scope.searchInputSelect && !$scope.searchInput){
@@ -27,7 +36,15 @@ app.controller('userCTL',function($scope,$sails){
 		console.log('sup')
 	};
 
-	updateNotices($scope,'/home/noticeSuscribeApp',{app:'users'});
+	updateNotices($scope,'/home/noticeSuscribeApp',{app:'users'},function(){
+		updateList();	
+	});
+
+	$scope.selectLetter = function(l){
+		if(l)
+			$scope.searchInputSelect = l;
+	}
+	updateList();
 });
 
 app.controller('userEditCTL',function($scope){
@@ -38,7 +55,6 @@ app.controller('createCompanyCTL',function($scope){
 	var update = function(){
 		jQuery.get('/admin/indexJson',function(data){
 			if(data){
-				console.log(data);
 				$scope.companyDash = data;
 				$scope.$apply();
 			}
@@ -98,14 +114,15 @@ app.controller('noticeCTL',function($scope){
 	updateNotices($scope,'/home/noticeSuscribeAll');
 });
 
-function updateNotices($scope,url,dt){
+function updateNotices($scope,url,dt,cb){
 	io.socket.on('update',function(data){
-		if(data)
+		if(data){
 			updateNotices($scope,url,dt);
+			return cb && cb();
+		}
 	});
 	io.socket.get(url,dt,function(data){
 		if(data && data.noticesN){
-			console.log(data);
 			for(var i in data){
 				$scope[i] = data[i];
 			}
