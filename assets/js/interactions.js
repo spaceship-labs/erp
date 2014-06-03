@@ -1,7 +1,7 @@
 jQuery(function($){
 	$('.chzn-select').chosen();
 
-	$('.userCreate, .companyCreate').ajaxForm(function(data){
+	$('.userCreate').ajaxForm(function(data){
 		var alt = $('.userAlert p');
 		alt.text(data.msg).parent().show();
 		$(window).scrollTop(alt.parent().position().top-10);

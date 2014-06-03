@@ -26,6 +26,32 @@ app.controller('userCTL',function($scope,$sails){
 	$scope.sup = function(){
 		console.log('sup')
 	};
+
+	updateNotices($scope,'/home/noticeSuscribeApp',{app:'users'});
+});
+
+app.controller('userEditCTL',function($scope){
+	updateNotices($scope,'/home/noticeSuscribeSingle',{modify:jQuery('input[name="userId"]').val()});
+});
+
+app.controller('createCompanyCTL',function($scope){
+	var update = function(){
+		jQuery.get('/admin/indexJson',function(data){
+			if(data){
+				console.log(data);
+				$scope.companyDash = data;
+				$scope.$apply();
+			}
+		});
+	};
+	update();
+	jQuery('.companyCreate').ajaxForm(function(data){
+		var alt = jQuery('.userAlert p');
+		alt.text(data.msg).parent().show();
+		jQuery(window).scrollTop(alt.parent().position().top-10);
+		update();
+	});
+	updateNotices($scope,'/home/noticeSuscribeApp',{app:'admin'});
 });
 
 app.controller('currencyCTL',function($scope){
@@ -69,35 +95,34 @@ app.controller('currencyCTL',function($scope){
 });
 
 app.controller('noticeCTL',function($scope){
+	updateNotices($scope,'/home/noticeSuscribeAll');
+});
+
+function updateNotices($scope,url,dt){
 	io.socket.on('update',function(data){
 		if(data)
-			update();
+			updateNotices($scope,url,dt);
 	});
-
-	var $ = jQuery
-	, update = function(){
-		io.socket.get('/home/noticeSuscribe',function(data){
+	io.socket.get(url,dt,function(data){
+		if(data && data.noticesN){
 			console.log(data);
 			for(var i in data){
 				$scope[i] = data[i];
 			}
 			$scope.models = {};
-			for(var m=0;m<data.modify.length;m++){
-				console.log(data.modify[m]);
-				$scope.models[data.modify[m].model] = {};
-				jQuery.post('/home/noticeModifyInfo',{model:data.modify[m].model,mId:data.modify[m].id},function(d){
-					$scope.models[d.model][d.id] = d.info;	
+			for(var m=0;m<data.modifyN.length;m++){
+				$scope.models[data.modifyN[m].model] = {};
+				jQuery.post('/home/noticeModifyInfo',{model:data.modifyN[m].model,mId:data.modifyN[m].id},function(d){
+					$scope.models[d.modelN][d.id] = d.info;	
 					$scope.$apply();
 				});
 			}
-		});
-	
-	};
-	
+		}
+	});
 	$scope.translate = {
 		update:'actualizo'
 		,create:'creo'
 		,destroy:'elimino'
 	}
-	update();
-});
+
+}

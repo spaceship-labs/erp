@@ -1,15 +1,3 @@
-<div id="dashboard-left" class="col-md-8" ng-controller="noticeCTL">
-	<h4 class="widgettitle"><span class="icon-comment icon-white"></span> Notificaciónes</h4>
-	<div class="widgetcontent nopadding">
-		<ul class="commentlist">
-			<li ng-repeat="notice in notices">
-				<img ng-src="/uploads/users/80x80{{users[notice.userId].icon}}" alt="" class="pull-left">
-				<div class="comment-info">
-					<h4></h4>
-					<h5><span class="iconfa-group"></span><a href="/{{notice.app}}">{{apps[notice.app].name}}</a></h5>
-					<p>{{users[notice.userId].name}} {{users[notice.userId].last_name}} {{translate[notice.operation]}} el {{apps[notice.app].name.toLowerCase()}} <a href="/{{notice.app}}/edit/{{notice.modifyId}}">{{ models[notice.model][notice.modifyId].name}} </a>    <span class="muted">hace 6 mess</span></p>               
-				</div>
-			</li>
-		</ul>
-	</div>
-</div><!--col-md-8-->
+<div ng-controller="noticeCTL">
+	<%- partial('../global/notices') -%> 
+</div>
