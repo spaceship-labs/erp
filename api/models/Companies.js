@@ -20,5 +20,21 @@ module.exports = {
 		,currencies:'array'
 
 	}
+	,afterCreate: function(val,cb){
+		Notifications.after(Companies,val,'create');
+		cb()
+	}
+	,afterUpdate: function(val,cb){
+		Notifications.after(Companies,val,'update');
+		cb();
+	}
+	,beforeUpdate:function(val,cb){
+		Notifications.before(val);
+		cb();
+	}
+	, beforeCreate: function(val,cb){
+		Notifications.before(val);
+		cb();
+	}
 };
 

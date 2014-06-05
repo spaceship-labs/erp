@@ -1,3 +1,4 @@
+<div class="wrap_createCompany" ng-controller="createCompanyCTL">
 <div class="span6"><h4 class="widgettitle">Empresas</h4>
 <table id="dyntable" class="table table-bordered">
 	<tbody>
@@ -6,19 +7,18 @@
 			<th>Descripción</th>
 			<th>Editar</th>
 		</tr>
-		<%for(var i=0;i<companies.length;i++){ %>
-		<tr class="">
-			<td><%=companies[i].name%></td>
-			<td><%=companies[i].desc%></td>
+		<tr class="" ng-repeat="company in companyDash">
+			<td>{{company.name}}</td>
+			<td>{{company.description}}</td>
 			<td>
-				<a href="/admin/edit/<%=companies[i].id%>">
+				<a href="/admin/edit/{{company.id}}">
 					<span class="iconfa-edit"></span>
 				</a>
 			</td>
 		</tr>
-		<% } %>
 	</tbody>
 </table>
+<%- partial('../global/notices') -%> 
 </div>
 <div class="span6">
 	<div class="alert alert-block unseen userAlert">
@@ -64,15 +64,17 @@
 			
 			<p><label for="default_currency">Moneda Principal</label>
 			<span class="field"><select name="default_currency" class='chzn-select'>
-				<option value="1">Dollars (USD)</option><option value="2">Pesos (MXN)</option><option value="3">Euro (EUR)</option>				
+				<%for(var i=0;i<currencies.length;i++){ %>
+					<option value="<%=currencies[i].currency_code%>"><%=currencies[i].name%> (<%=currencies[i].currency_code%>)</option>
+				<%}%>
 			</select></span></p>
 
 			<p><label for="currencies_select">Monedas</label>
 			<span class="field">
 				<select name="currencies_select" multiple="multiple" class="chzn-select" data-placeholder="Agregar Monedas...">
-					<option value="1">Dollars (USD)</option>
-					<option value="2">Pesos (MXN)</option>
-					<option value="3">Euro (EUR)</option>
+				<%for(var i=0;i<currencies.length;i++){ %>
+					<option value="<%=currencies[i].currency_code%>"><%=currencies[i].name%> (<%=currencies[i].currency_code%>)</option>
+				<%}%>
 				</select>
 			</span></p>
 
@@ -91,4 +93,6 @@
 			
 		</form>
 	</div>
-</div></div>
+</div>
+</div>
+</div>

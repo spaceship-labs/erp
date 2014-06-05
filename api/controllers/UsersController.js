@@ -10,6 +10,14 @@ var bcrypt = require('bcrypt')
 
 module.exports = {
 	index: function(req,res){
+		Apps.find().exec(function(err,apps){
+			Common.view(res.view,{
+				 apps:apps
+			},req);
+		});
+	}
+
+	, indexJson: function(req,res){
 		var find = {}
 		, select_company = req.session.select_company || req.user.select_company;
 		find['companies.'+select_company] ={$exists:1};
@@ -24,13 +32,11 @@ module.exports = {
 					alphabets_company.push(index);
 				}
 			}
-			
-			
+						
 			Apps.find().exec(function(err,apps){
-				Common.view(res.view,{
-					 apps:apps
-					, alphabets_company:alphabets_company
-				},req);
+				res.json(
+					alphabets_company
+				);
 			});
 		});
 	}
@@ -73,6 +79,7 @@ module.exports = {
 		form.companies = tmp;
 		delete form.app_select;
 		form.password = bcrypt.hashSync(form.password,bcrypt.genSaltSync(10));
+		form.req = req;
 		User.create(form).exec(function(err,user){
 			if(err) return res.json(response);
 			update.icon(req,{userId:user.id},function(err,file){

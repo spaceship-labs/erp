@@ -10,11 +10,21 @@ module.exports = {
 	index: function(req,res){
 		Apps.find().exec(function(err,apps){
 			if(err) throw err;
-			Common.view(res.view,{
-				apps:apps || []
+			Currency.find().exec(function(err,currencies){
+				Common.view(res.view,{
+					apps:apps || []
+					,currencies:currencies || []
+				});
+				
 			});
 		});
 	}
+	, indexJson:function(req,res){
+		Companies.find().exec(function(err,comp){
+			res.json(comp);
+		});
+	}
+
 	, create: function(req,res){
 		var form = req.params.all() || {}
 		, response = {
@@ -23,6 +33,7 @@ module.exports = {
 		};
 		delete form.id;
 		form.active = 1;
+		form.req = req;
 		Companies.create(form).exec(function(err,company){
 			if(err) return res.json(response);
 			update.icon(req,{userId:company.id},function(err,files){				

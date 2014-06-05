@@ -1,4 +1,4 @@
-<div class="span4 profile-left profileEdit" ng-controller='userEditCTL'>
+<div class="span4 profile-left profileEdit">
 	<div class="alert alert-block unseen">
 		<button data-dismiss="alert" class="close" type="button">×</button>
 		<h4>Mensaje</h4>
@@ -110,4 +110,8 @@
         <input type="hidden" name="method" value="info" />
 	<input type="hidden" name="userId" value="<%= user.id %>" />
     </form>
+    <div ng-controller='userEditCTL'>
+    
+	    <%// partial('../global/notices') -%> 
+    </div>
 </div>

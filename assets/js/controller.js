@@ -5,11 +5,20 @@ app.config(['$sailsProvider', function ($sailsProvider) {
 }]);
 
 app.controller('userCTL',function($scope,$sails){
-	jQuery.get('/users/all',function(data){
-		$scope.users = data;
-		$scope.$apply()
-	});
-
+	$scope.alphabets = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']; 
+	var updateList = function(){
+		jQuery.get('/users/all',function(data){
+			console.log(data);
+			$scope.users = data;
+			$scope.$apply();
+		});
+		jQuery.get('/users/indexJson',function(data){
+			console.log(data);
+			$scope.alphabets_company = data;
+			$scope.$apply();
+		});
+		
+	}
 	$scope.userFilter = function(u){
 		var prefix = '^';
 		if($scope.searchInputSelect && !$scope.searchInput){
@@ -23,8 +32,42 @@ app.controller('userCTL',function($scope,$sails){
 
 	}
 	$scope.sup = function(){
-		console.log('fff');
+		console.log('sup')
+	};
+
+	updateNotices($scope,'/home/noticeSuscribeApp',{app:'users'},function(){
+		updateList();	
+	});
+
+	$scope.selectLetter = function(l){
+		if(l)
+			$scope.searchInputSelect = l;
 	}
+	updateList();
+});
+
+app.controller('userEditCTL',function($scope){
+	updateNotices($scope,'/home/noticeSuscribeSingle',{modify:jQuery('input[name="userId"]').val()});
+});
+
+app.controller('createCompanyCTL',function($scope){
+	var update = function(){
+		jQuery.get('/admin/indexJson',function(data){
+			if(data){
+				$scope.companyDash = data;
+				$scope.$apply();
+			}
+		});
+	};
+	update();
+	jQuery('.companyCreate').ajaxForm(function(data){
+		var alt = jQuery('.userAlert p');
+		alt.text(data.msg).parent().show();
+		jQuery(window).scrollTop(alt.parent().position().top-10);
+		update();
+	});
+	updateNotices($scope,'/home/noticeSuscribeApp',{app:'admin'});
+>>>>>>> ea85c49577906d43f76e1752362ce4e4be51e60c
 });
 
 app.controller('currencyCTL',function($scope){
@@ -66,3 +109,37 @@ app.controller('currencyCTL',function($scope){
 	});
 	updateContent();
 });
+
+app.controller('noticeCTL',function($scope){
+	updateNotices($scope,'/home/noticeSuscribeAll');
+});
+
+function updateNotices($scope,url,dt,cb){
+	io.socket.on('update',function(data){
+		if(data){
+			updateNotices($scope,url,dt);
+			return cb && cb();
+		}
+	});
+	io.socket.get(url,dt,function(data){
+		if(data && data.noticesN){
+			for(var i in data){
+				$scope[i] = data[i];
+			}
+			$scope.models = {};
+			for(var m=0;m<data.modifyN.length;m++){
+				$scope.models[data.modifyN[m].model] = {};
+				jQuery.post('/home/noticeModifyInfo',{model:data.modifyN[m].model,mId:data.modifyN[m].id},function(d){
+					$scope.models[d.modelN][d.id] = d.info;	
+					$scope.$apply();
+				});
+			}
+		}
+	});
+	$scope.translate = {
+		update:'actualizo'
+		,create:'creo'
+		,destroy:'elimino'
+	}
+
+}
