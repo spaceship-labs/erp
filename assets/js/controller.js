@@ -22,6 +22,9 @@ app.controller('userCTL',function($scope,$sails){
 		return u && u.name.match(reg);
 
 	}
+	$scope.sup = function(){
+		console.log('fff');
+	}
 });
 
 app.controller('currencyCTL',function($scope){
