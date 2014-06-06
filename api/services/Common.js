@@ -54,7 +54,7 @@ module.exports.updateIcon = function(req,opts,cb){
 			fs.unlink(dirSave+lastIcon,function(){
 				//silence warning if not exists.
 			});
-			Model.update({id:form.userId},{icon:fileName},function(err,user){
+			Model.update({id:form.userId},{icon:fileName,req:form.req},function(err,user){
 				if(err) return cb && cb(err);
 				measuresIcon.forEach(function(v){
 					fs.unlink(dirSave+v+lastIcon,function(){
