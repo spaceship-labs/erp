@@ -8,12 +8,12 @@ app.controller('userCTL',function($scope,$sails){
 	$scope.alphabets = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']; 
 	var updateList = function(){
 		jQuery.get('/users/all',function(data){
-			console.log(data);
 			$scope.users = data;
 			$scope.$apply();
+			if(data[0])
+				$scope.searchInputSelect = data[0].name[0];
 		});
 		jQuery.get('/users/indexJson',function(data){
-			console.log(data);
 			$scope.alphabets_company = data;
 			$scope.$apply();
 		});
@@ -47,7 +47,56 @@ app.controller('userCTL',function($scope,$sails){
 });
 
 app.controller('userEditCTL',function($scope){
+	var appsList = []
+	, updateContent = function(){
+		console.log(jQuery('input[name="userId"]').val())
+		jQuery.get('/users/editJson/'+jQuery('input[name="userId"]').val(),function(data){
+			for(var i in data){
+				$scope[i] = data[i];
+			}
+			$scope.$apply();
+			nameApps(data.user.apps);
+			console.log(data);
+			updateChosen();
+		});
+	};
+	updateContent();
 	updateNotices($scope,'/home/noticeSuscribeSingle',{modify:jQuery('input[name="userId"]').val()});
+	$scope.addApp = function(){
+		if($scope.selectApp){
+			var apps = appsList;
+			apps.push($scope.selectApp);
+			var data = {
+				method:'apps'
+				,apps:apps
+				,userId:jQuery('input[name="userId"]').val()
+			};
+			
+			jQuery.post(jQuery('.profileEdit #addApps input[name="url"]').val()+'editAjax',data,function(d){
+				updateContent();
+			});
+			
+		}
+	};
+
+	$scope.removeApp = function(remove){
+		appsList.splice(appsList.indexOf(remove),1);
+		var data = {
+			method:'apps'
+			,apps:appsList
+			,userId:jQuery('input[name="userId"]').val()
+		};
+		jQuery.post(jQuery('.profileEdit #addApps input[name="url"]').val()+'editAjax',data,function(d){
+			updateContent();
+		});
+	};
+
+	var nameApps = function(dataApps){
+		appsList = [];
+		for(var i=0;i<dataApps.length;i++){
+			appsList.push(dataApps[i].ctl);
+		}
+	};
 });
 
 app.controller('createCompanyCTL',function($scope){

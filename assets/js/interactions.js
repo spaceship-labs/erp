@@ -18,16 +18,18 @@ jQuery(function($){
 		}
 	});
 
-	$('.profileEdit .taglist').on('click','.close',function(e){
+	$('.Admin.profileEdit .taglist').on('click','.close',function(e){
 		e.preventDefault();
 		$(this).parent().parent().remove();
 		updateApps(false,$('input[name="url"]').val());
 	});
-
-	$('.profileEdit #addApps').on('submit',function(e){
+	
+	
+	$('.Admin.profileEdit #addApps').on('submit',function(e){
 		e.preventDefault();
 		updateApps($(this).find('select').val(),$(this).find('input[name="url"]').val());
 	});
+	
 
 	$('.editprofileform').ajaxForm(function(data){
 		$('.alert').removeClass('unseen').find('p').text(data.msg)

@@ -1,4 +1,4 @@
-<div class="span4 profile-left profileEdit">
+<div class="span4 profile-left profileEdit"  ng-controller='userEditCTL'>
 	<div class="alert alert-block unseen">
 		<button data-dismiss="alert" class="close" type="button">×</button>
 		<h4>Mensaje</h4>
@@ -49,27 +49,19 @@
             <h4 class="widgettitle">Aplicaciones</h4>
             <div class="widgetcontent">
                 <ul class="taglist">
-                    <%if(select_company) { 
-		    	var appsUser = user.apps;
-			for(var i=0;i<appsUser.length;i++){ %>
-				<li><a href="<%=appsUser[i].ctl%>"><%=appsUser[i].name%> <span class="close">×</span></a></li>
-				
-			
-			<% }
-		     } %>
+			<li ng-repeat="app in user.apps">
+				<a href="{{app.ctl}}" ng-click="$event.preventDefault()">{{app.name}} <span class="close" ng-click="removeApp(app.ctl); $event.preventDefault()">×</span></a>
+			</li>
+
                 </ul>
-                <form id="addApps" action="/users/users/add_app" method="post">
+                <form id="addApps" action="/users/add_app" method="post" ng-submit="addApp(); $event.preventDefault()">
                     <p>
-                        <select name="app_input" class="chzn-select">
-				<% for(var i=0;i<apps.length;i++){ %>
-					<%= apps %>
-					<option value="<%=apps[i].controller %>"><%= apps[i].name %></option>
-					
-				<% } %>                        
+                        <select name="app_input" class="chzn-select" ng-model="selectApp">
+				<option ng-repeat="ap in apps" value="{{ap.controller}}">{{ap.name}}</option>
 			</select>
                         <button type="submit" class="btn btn-primary">Agregar Aplicacion</button>
-			<input type="hidden" name="url" value="/users/" />
                     </p>
+			<input type="hidden" name="url" value="/users/" />
                 </form>
             </div>
     </div>
@@ -110,7 +102,7 @@
         <input type="hidden" name="method" value="info" />
 	<input type="hidden" name="userId" value="<%= user.id %>" />
     </form>
-    <div ng-controller='userEditCTL'>
+    <div>
     
 	    <%// partial('../global/notices') -%> 
     </div>

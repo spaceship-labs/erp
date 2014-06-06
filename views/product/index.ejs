@@ -1,0 +1,75 @@
+<div ng-controller="addProductCTL">
+   <div class="span6">
+   <div class="alert alert-block unseen">
+	<button data-dismiss="alert" class="close" type="button">×</button>
+	<h4>Mensaje</h4>
+		<p style="margin: 8px 0">El usuario se ha actualizado exitosamente</p>
+   </div>
+	<div class="widgetbox">
+		<h4 class="widgettitle">Nuevo producto</h4>
+		<div class="widgetcontent nopadding">                            
+			<form action="/product/createProduct" method="get" accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine">
+				<p>
+					<label for="name">Nombre*</label>
+					<span class="field"><input type="text" name="name" class="input-large"></span>
+				</p>
+				<p><label for="app">tipo de venta</label>
+					<span class="field">
+						<select name='sales_type' multiple='multiple' class='chzn-select form-control large' data-placeholder="Agregar tipo">
+								<option value='rent'>Renta</option>
+								<option value='vent'>Venta</option>
+								<option value='service'>Servicio</option>
+						</select>
+
+					</span>
+				</p>
+				<p>
+					<label for="fields">Campos</label>
+					<span class="field">
+						<select name='fields' multiple='multiple' class='chzn-select form-control large' data-placeholder="Agregar campo">
+								<option ng-repeat="field in fields" value='{{field.name}}'>{{field.name}}</option>
+						</select>
+					</span>
+				</p>
+				<p class="stdformbutton">
+			                <button class="btn btn-primary">Guardar</button>
+			                <button type="reset" class="btn">Resetear</button>
+				</p>
+			</form>
+		</div>
+	</div>
+   </div>
+   <div class="span6">
+	<div class="widgetbox">
+		<h4 class="widgettitle">Nuevo tipo de campo</h4>
+		<div class="widgetcontent nopadding">
+			<form action="/product/createField" method="post" accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine">
+				<p>
+					<label for="name">Nombre*</label>
+					<span class="field"><input type="text" name="name" class="input-large"></span>
+				</p>
+				<p>
+					<label for="fields">tipo</label>
+					<span class="field">
+			                        <select name="type" ng-model="typeSelect">
+							<%for(var i=0;i<types.length;i++){ %>
+								<option value="<%=types[i]%>"><%=types[i]%></option>
+							<%}%>
+						</select>
+					</span>
+				</p>
+				<p ng-if=typeSelect=='select'>
+					<label for="name">valores</label>
+					<span class="field">
+						<input type="text" name="values" class="input-large">
+					</span>
+				</p>
+				<p class="stdformbutton">
+					<button class="btn btn-primary">Guardar</button>
+					<button type="reset" class="btn">Resetear</button>
+				</p>
+			</form>
+		</div>
+	</div>
+   </div>
+</div>

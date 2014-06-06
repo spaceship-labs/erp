@@ -123,6 +123,41 @@ module.exports = {
 		
 		}
 	}
+	, editJson: function(req,res){
+		var id
+		, select_company = req.session.select_company || req.user.select_company;
+		if(id = req.params.id){
+			User.findOne({id:id}).exec(function(err,user){
+				if(err) return null;
+				Apps.find().exec(function(err,apps){
+					if(err) return ;
+					user.apps = [];
+					var notApp = [];
+					if(user.companies[select_company]){
+						for(var i=0;i<apps.length;i++){
+							if(user.companies[select_company].indexOf(apps[i].controller)!=-1){
+								var tmp = {
+									  name:apps[i].name
+									, ctl:apps[i].controller
+								}
+								user.apps.push(tmp);
+								notApp.push(tmp.ctl)
+							}
+						}
+					}
+					Apps.find({controller:{'!':notApp}}).exec(function(err,appNo){
+						if(err) return res.json(false);
+						res.json({
+						 	  user:user
+							, select_company:select_company
+							, apps:appNo?appNo:[]
+						});				
+					});
+				});
+			});
+		
+		}
+	}
 
 	, editAjax: function(req,res){
 		Common.editAjax(req,res,update);

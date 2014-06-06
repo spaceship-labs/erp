@@ -1,4 +1,4 @@
-<div class="span4 profile-left profileEdit">
+<div class="span4 profile-left profileEdit Admin">
 	<div class="alert alert-block unseen">
 		<button data-dismiss="alert" class="close" type="button">×</button>
 		<h4>Mensaje</h4>
@@ -75,7 +75,7 @@
             <div class="widgetcontent">
                 <ul class="taglist">
 			<% for(var i=0;i<users.length;i++){ %>
-				<li><a href="/admin/user/<%=users[i].id %>"><%=users[i].name%><span class="close iconfa-edit"></span></a></li>
+				<li><a href="/users/edit/<%=users[i].id %>"><%=users[i].name%><span class="close iconfa-edit"></span></a></li>
 			<% } %>
 
 		</ul>
