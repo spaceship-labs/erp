@@ -10,8 +10,9 @@ app.controller('userCTL',function($scope,$sails){
 		jQuery.get('/users/all',function(data){
 			$scope.users = data;
 			$scope.$apply();
-			if(data[0])
-				$scope.searchInputSelect = data[0].name[0];
+			if(data)
+				$scope.searchInputSelect = 'a';
+				//$scope.searchInputSelect = data[0].name[0];
 		});
 		jQuery.get('/users/indexJson',function(data){
 			$scope.alphabets_company = data;
