@@ -12,7 +12,6 @@ var notification = function(type,collection,val){
 			sails.io.sockets.in('notices').emit('update',{data:true});
 		});
 	}
-	console.log(Apps)
 };
 
 module.exports = {

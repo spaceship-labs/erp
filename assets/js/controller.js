@@ -67,7 +67,6 @@ app.controller('createCompanyCTL',function($scope){
 		update();
 	});
 	updateNotices($scope,'/home/noticeSuscribeApp',{app:'admin'});
->>>>>>> ea85c49577906d43f76e1752362ce4e4be51e60c
 });
 
 app.controller('currencyCTL',function($scope){
@@ -112,6 +111,27 @@ app.controller('currencyCTL',function($scope){
 
 app.controller('noticeCTL',function($scope){
 	updateNotices($scope,'/home/noticeSuscribeAll');
+});
+
+app.controller('addProductCTL',function($scope){
+	jQuery('form').ajaxForm(function(data){
+		if(data){
+			updateContent();
+			jQuery('.alert p').text(data.text).parent().removeClass('unseen');
+		
+		}
+	});
+
+	var updateContent = function(){
+		jQuery.get('/product/indexJson',function(data){
+			$scope.fields = data;
+			console.log(data);
+			$scope.$apply();
+			updateChosen();
+		});
+	};
+
+	updateContent();
 });
 
 function updateNotices($scope,url,dt,cb){

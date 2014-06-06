@@ -85,9 +85,8 @@ jQuery(function($){
 });
 
 function updateChosen(select){
-	select = select || jQuery('select');
-	
-	select.attr()
+	select = select || jQuery('.chzn-select');
+	select.attr({class:'chzn-select',id:'',style:''});
 	jQuery('.chzn-container').remove();
-	select.chosen();
+	jQuery('.chzn-select').chosen();
 }

@@ -33,7 +33,6 @@ module.exports = {
 	}
 	//notices
 	, noticeSuscribeAll: function(req,res){
-		console.log(req.session.passport.user);
 		var comp = []
 		, apps = [];
 		for(var i in req.session.passport.user.companies){
