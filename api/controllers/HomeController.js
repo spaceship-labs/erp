@@ -40,7 +40,7 @@ module.exports = {
 			apps = apps.concat(req.session.passport.user.companies[i])
 		}
 
-		Common.noticeSuscribe(req,{companyId:comp,app:apps},function(err,data){
+		Common.noticeSuscribe(req,{companyId:{$in:comp},app:{$in:apps}},function(err,data){
 			if(err) return res.json(false);
 			res.json(data);
 		});
@@ -54,7 +54,7 @@ module.exports = {
 			for(var i in req.session.passport.user.companies){
 				comp.push(i);
 			}
-			Common.noticeSuscribe(req,{companyId:comp,app:params.app},function(err,data){
+			Common.noticeSuscribe(req,{companyId:{$in:comp},app:params.app},function(err,data){
 				if(err) return res.json(false);
 				res.json(data);
 			});
