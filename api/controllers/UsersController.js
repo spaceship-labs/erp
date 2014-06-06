@@ -146,6 +146,7 @@ var update = {
 			,dirPublic:  __dirname+'/../../.tmp/public/uploads/users/'
 			,Model:User
 			,prefix:'177x171'
+			,dirAssets:'/uploads/users/'
 		},cb);
 	}
 	, apps:function(req,form,cb){

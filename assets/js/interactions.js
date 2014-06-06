@@ -14,7 +14,7 @@ jQuery(function($){
 
 	$('#change-icon').ajaxForm(function(data){
 		if(data.status){	
-			$('.profilethumb img').attr('src','/uploads/users/'+data.data);
+			$('.profilethumb img').attr('src',data.data);
 		}
 	});
 

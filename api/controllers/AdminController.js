@@ -213,7 +213,8 @@ var update = {
 			,dirSave : __dirname+'/../../assets/uploads/companies/'
 			,dirPublic:  __dirname+'/../../.tmp/public/uploads/companies/'
 			,Model:Companies
-			,prefix:'50x50'
+			,prefix:'177x171'
+			,dirAssets:'/uploads/companies/'
 		},cb);
 		
 	}

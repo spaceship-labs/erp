@@ -34,6 +34,7 @@ module.exports.updateIcon = function(req,opts,cb){
 	, Model = opts.Model
 	, form = opts.form
 	, prefix = opts.prefix || false
+	, dirAssets = opts.dirAssets
 	, files = req.file && req.file('icon_input')._files || []
 	, fileName = new Date().getTime()
 	, measuresIcon = ['80x80','50x50','184x73','177x171'];
@@ -72,7 +73,7 @@ module.exports.updateIcon = function(req,opts,cb){
 						if(prefix==v){
 							fs.createReadStream(dirSave+v+fileName).pipe(fs.createWriteStream(dirPublic+v+fileName))
 							.on('finish',function(){
-								return cb && cb(null,prefix+fileName);
+								return cb && cb(null,dirAssets+prefix+fileName);
 							}).on('error',function(){
 								return cb && cb(true);
 							});
