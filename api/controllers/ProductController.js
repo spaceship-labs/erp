@@ -18,6 +18,43 @@ module.exports = {
 			res.json(fields);	
 		});
 	}
+
+	,products: function(req,res){
+		Sales_type.find().exec(function(err,sales_type){
+			Common.view(res.view,{
+				sales_type:sales_type
+			});			
+		});
+	}
+	,productsJson: function(req,res){
+		var find = {}
+		, form = req.params.all();
+		find.company = req.session.select_company || req.user.select_company;
+		if(form.type)
+			find.sales_type = form.type;
+		Product_type.find(find).exec(function(err,products){
+			if(err) return res.json(false);
+			res.json(products);
+		});
+	}
+
+	,productJson: function(req,res){
+		var form = req.params.all()
+		, select_company = req.session.select_company || req.user.select_company;
+		Product_type.findOne({name:form.name}).exec(function(err,product){
+			if(err || !product) return res.json(false);
+			Custom_fields.find({company:select_company,user:req.user.id,name:{$in:product.fields}})
+			.exec(function(err,fields){
+				if(err) return res.json(false);
+				product.fields = fields;
+				Sales_type.find({type:{$in:product.sales_type}}).exec(function(err,sales){
+					product.sales_type = sales;
+					res.json(product);
+				});
+			});
+			
+		});
+	}
 	
 	,createField: function(req,res){
 		var form = req.params.all();

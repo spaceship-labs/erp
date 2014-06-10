@@ -2,29 +2,30 @@
     
     <div class="leftmenu">        
         <ul class="nav nav-tabs nav-stacked">
-        	<li class="nav-header">Navigation</li>
-	<% var activeC='active'; %>
-            <li class="<%=active=='home'?activeC:''%>"><a href="/home/"><span class="iconfa-laptop"></span> Tablero</a></li>
-	<li class="dropdown <%=active=='admin'?activeC:'' %>">
-		<a href=""><span class="iconfa-cog"></span>Sistema</a>
-		<ul>
-			<li><a href="/admin">Empresas</a></li>
-			<li><a href="/admin/currencies">Monedas</a></li>
-		</ul>
-	<li>
-            <li class="dropdown <%=active=='users'?activeC:'' %>"><a href=""><span class="iconfa-user"></span>Usuarios</a>
-            	<ul>
-                	<li><a href="/users/">Usuarios</a></li>
-                    <li><a href="registration.html">Permisos</a></li>
-                </ul>
-            </li>
-	<li class="dropdown <%=active=='product'?activeC:'' %>">
-		<a href=""><span class="iconfa-inbox"></span>Productos</a>
-		<ul>
-			<li><a href="/product">Agregar tipo</a></li>
-		</ul>
-	<li>
-        </ul>
+		<li class="nav-header">Navigation</li>
+		<% var activeC='active'; %>
+		<li class="<%=active=='home'?activeC:''%>"><a href="/home/"><span class="iconfa-laptop"></span> Tablero</a></li>
+		<li class="dropdown <%=active=='admin'?activeC:'' %>">
+			<a href=""><span class="iconfa-cog"></span>Sistema</a>
+			<ul>
+				<li><a href="/admin">Empresas</a></li>
+				<li><a href="/admin/currencies">Monedas</a></li>
+			</ul>
+		<li>
+		<li class="dropdown <%=active=='users'?activeC:'' %>"><a href=""><span class="iconfa-user"></span>Usuarios</a>
+			<ul>
+				<li><a href="/users/">Usuarios</a></li>
+				<li><a href="registration.html">Permisos</a></li>
+			</ul>
+		</li>
+		<li class="dropdown <%=active=='product'?activeC:'' %>">
+			<a href=""><span class="iconfa-inbox"></span>Productos</a>
+			<ul>
+				<li><a href="/product">Agregar tipo</a></li>
+				<li><a href="/product/products">Agregar producto</a></li>
+			</ul>
+		<li>
+	</ul>
     </div><!--leftmenu-->
     
 </div><!-- leftpanel -->

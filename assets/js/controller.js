@@ -184,6 +184,27 @@ app.controller('addProductCTL',function($scope){
 	updateContent();
 });
 
+app.controller('productCTL',function($scope){
+	var modal = jQuery('#modalType');
+	modal.modal();
+	$scope.update = function(){
+		jQuery.get('/product/productsJson',{type:$scope.typeModel},function(products){
+			$scope.products = products;
+			$scope.$apply();
+		});
+	};
+	
+	$scope.update();
+	$scope.selectProduct = function(){
+		if($scope.nameModel){
+			//modal.modal('toggle');
+			jQuery.get('/product/productJson',{name:$scope.nameModel},function(product){
+				$scope.product = product;
+			});
+		}
+	};
+});
+
 function updateNotices($scope,url,dt,cb){
 	io.socket.on('update',function(data){
 		if(data){
