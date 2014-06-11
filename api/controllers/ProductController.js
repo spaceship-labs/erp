@@ -7,9 +7,13 @@
 
 module.exports = {
 	index: function(req,res){
-		Common.view(res.view,{
-			types:Custom_fields.attributes.type.enum
-		});	
+		Sales_type.find().exec(function(err,sales_type){
+			if(err) throw err;
+			Common.view(res.view,{
+				sales_type:sales_type
+				,types:Custom_fields.attributes.type.enum
+			});		
+		});
 	}
 
 	,indexJson: function(req,res){
@@ -66,10 +70,10 @@ module.exports = {
 		}
 		Custom_fields.create(form).exec(function(err,field){
 			if(err) return res.json({text:'Ocurrio un error.'});
-			res.json({text:'Producto agregado.'});
+			res.json({text:'Campo agregado.'});
 		});
 	}
-	,createProduct: function(req,res){
+	,createProductType: function(req,res){
 		var form = req.params.all()
 		, sales_type = (form.sales_type && form.sales_type.pop)?form.sales_type:[form.sales_type];
 		form = formValidate(form,['name','sales_type','fields']);
@@ -80,8 +84,21 @@ module.exports = {
 		form.user = req.user.id;
 		Product_type.create(form).exec(function(err,product){
 			if(err) return res.json({text:'Ocurrio un error.'});
-			res.json({text:'Campo agregado.'});
+			res.json({text:'Producto agregado.'});
 		});
+	}
+	,createProduct: function(req,res){
+		var form = req.params.all();
+		delete form.id;
+		delete form._;
+		if(form){
+			form.user = req.user.id;
+			form.company = req.session.select_company || req.user.select_company;
+			Product.create(form).exec(function(err,product){
+				if(err) return res.json('Ocurrio un error.');
+				res.json('Producto creado.');	
+			});	
+		}
 	}
 };
 

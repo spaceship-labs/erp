@@ -8,7 +8,7 @@
 	<div class="widgetbox">
 		<h4 class="widgettitle">Nuevo producto</h4>
 		<div class="widgetcontent nopadding">                            
-			<form action="/product/createProduct" method="get" accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine">
+			<form action="/product/createProductType" method="get" accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine">
 				<p>
 					<label for="name">Nombre*</label>
 					<span class="field"><input type="text" name="name" class="input-large"></span>
@@ -16,9 +16,9 @@
 				<p><label for="app">tipo de venta</label>
 					<span class="field">
 						<select name='sales_type' multiple='multiple' class='chzn-select form-control large' data-placeholder="Agregar tipo">
-								<option value='rent'>Renta</option>
-								<option value='vent'>Venta</option>
-								<option value='service'>Servicio</option>
+							<%for(var i=0;i<sales_type.length;i++){%>
+								<option value='<%=sales_type[i].type%>'><%=sales_type[i].name%></option>
+							<%}%>
 						</select>
 
 					</span>

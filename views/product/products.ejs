@@ -7,28 +7,16 @@
 		<p style="margin: 8px 0"></p>
    </div>
 	<div class="widgetbox">
-		<h4 class="widgettitle">Nuevo producto</h4>
+		<h4 class="widgettitle">Producto: {{product.name}}</h4>
 		<div class="widgetcontent nopadding">                            
-			<form action="/product/createProduct" method="get" accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine">
-				<p>
-					<label for="name">Nombre*</label>
-					<span class="field"><input type="text" name="name" class="input-large"></span>
-				</p>
-				<p><label for="app">tipo de venta</label>
+			<form action="/product/createProduct" method="get" accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine" id="createProduct">
+				<p ng-repeat="field in product.fields">
+					<label for="{{field.name}}">{{field.name}}</label>
 					<span class="field">
-						<select name='sales_type' multiple='multiple' class='chzn-select form-control large' data-placeholder="Agregar tipo">
-								<option value='rent'>Renta</option>
-								<option value='vent'>Venta</option>
-								<option value='service'>Servicio</option>
-						</select>
-
-					</span>
-				</p>
-				<p>
-					<label for="fields">Campos</label>
-					<span class="field">
-						<select name='fields' multiple='multiple' class='chzn-select form-control large' data-placeholder="Agregar campo">
-								<option ng-repeat="field in fields" value='{{field.name}}'>{{field.name}}</option>
+						<input type="{{field.type}}" name="{{field.name}}" class="input-large" ng-if="field.type=='text'">
+						<textarea  name="{{field.name}}" cols="30" rows="10" ng-if="field.type=='textarea'"></textarea>
+						<select name='{{field.name}}' class='chzn-select form-control large' data-placeholder="Agregar tipo" ng-if="field.type=='select'">
+							<option ng-repeat="v in field.values" value="{{v}}">{{v}}</option>
 						</select>
 					</span>
 				</p>
@@ -36,6 +24,7 @@
 			                <button class="btn btn-primary">Guardar</button>
 			                <button type="reset" class="btn">Resetear</button>
 				</p>
+				<input type="hidden"  name="product_type" value="{{product.id}}"/>
 			</form>
 		</div>
 	</div>

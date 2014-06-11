@@ -200,9 +200,15 @@ app.controller('productCTL',function($scope){
 			//modal.modal('toggle');
 			jQuery.get('/product/productJson',{name:$scope.nameModel},function(product){
 				$scope.product = product;
+				$scope.$apply();
+				modal.modal('toggle');
+				console.log(product);
 			});
 		}
 	};
+	jQuery('form#createProduct').ajaxForm(function(status){
+		jQuery('.alert').removeClass('unseen').find('p').text(status);
+	});
 });
 
 function updateNotices($scope,url,dt,cb){
