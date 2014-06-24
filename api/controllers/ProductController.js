@@ -59,7 +59,16 @@ module.exports = {
 			
 		});
 	}
-	
+
+	,filters: function(req,res){
+		var select_company = req.session.select_company || req.user.select_company;
+		Custom_fields.find({user:req.user.id,company:select_company}).exec(function(err,custom_fields){
+			Common.view(res.view,{
+				fields:custom_fields
+			});
+		});
+	}
+
 	,createField: function(req,res){
 		var form = req.params.all();
 		form = formValidate(form,['name','type','values']);
