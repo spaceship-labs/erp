@@ -50,14 +50,12 @@ app.controller('userCTL',function($scope,$sails){
 app.controller('userEditCTL',function($scope){
 	var appsList = []
 	, updateContent = function(){
-		console.log(jQuery('input[name="userId"]').val())
 		jQuery.get('/users/editJson/'+jQuery('input[name="userId"]').val(),function(data){
 			for(var i in data){
 				$scope[i] = data[i];
 			}
 			$scope.$apply();
 			nameApps(data.user.apps);
-			console.log(data);
 			updateChosen();
 		});
 	};
@@ -175,7 +173,6 @@ app.controller('addProductCTL',function($scope){
 	var updateContent = function(){
 		jQuery.get('/product/indexJson',function(data){
 			$scope.fields = data;
-			console.log(data);
 			$scope.$apply();
 			updateChosen();
 		});
@@ -202,9 +199,11 @@ app.controller('productCTL',function($scope){
 				$scope.product = product;
 				$scope.$apply();
 				modal.modal('toggle');
-				console.log(product);
 			});
 		}
+	};
+	$scope.cancel = function(){
+		window.location.href = "/";
 	};
 	jQuery('form#createProduct').ajaxForm(function(status){
 		jQuery('.alert').removeClass('unseen').find('p').text(status);
