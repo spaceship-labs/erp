@@ -19,8 +19,9 @@
     <link rel="stylesheet" href="/bower_components/chosen/chosen/chosen.css">
     <link rel="stylesheet" href="/styles/bootstrap-fileupload.min.css">
     <link rel="stylesheet" href="/styles/bootstrap-resposive.min.css">
+    <link rel="stylesheet" href="/styles/default.css">
     <link rel="stylesheet" href="/styles/importer.css">
-    <link rel="stylesheet" href="/styles/style.default.css">
+    <link rel="stylesheet" href="/styles/style-american-sign.css">
     <!--STYLES END-->
 	
   </head>
@@ -38,12 +39,13 @@
         
         <div class="pageheader">
             <form action="results.html" method="post" class="searchbar">
-                <input type="text" name="keyword" placeholder="Buscar..." ng-model='searchInput' />
+                <input type="text" name="keyword" placeholder="Escribe para realizar una busqueda" ng-model='searchInput' />
             </form>
-            <div class="pageicon"><span class="<%= page.icon || 'iconfa-home' %>"></span></div>
+            <div class="pageicon"><span class="<%= page.icon || 'iconfa-th-large' %>"></span></div>
             <div class="pagetitle">
                 <!-- <h5>All Features Summary</h5> -->
                 <h1> <%=page.name || 'Dashboard' %></h1>
+                <p class="page-description">AQUI PODRAS VISUALIZAR Y ADMINISRAR TODO TU PROCESO DE VENTA</p>
             </div>
         </div><!--pageheader-->
         

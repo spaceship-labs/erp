@@ -1,14 +1,15 @@
 <div class="header">
     <div class="logo">
-        <a href="/home/index"><img src="/images/logo.png" alt="" /></a>
+        <a href="/home/index"><img src="/images/logo-as.png" alt="logo" width="200" /></a>
     </div>
     <div class="headerinner">
         <ul class="headmenu">
             <li class="odd">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <span class="count"><%=companies.length%></span>
-                    <span class="head-icon  head-contracts"></span>
-                    <span class="headmenu-label">Empresas</span>
+                    <!--<span class="count"><%=companies.length%></span>-->
+                    <!--<span class="head-icon  head-contracts"></span>-->
+                    <span class="iconfa-home menu-icon"></span>
+                    <span class="headmenu-label">Inicio</span>
                 </a>
                 <ul class="dropdown-menu">
                     <li class="nav-header">Cambiar empresa</li>
@@ -22,13 +23,21 @@
 
                 </ul>
             </li>
+            <li>
+                <a href="#">
+                    <!--<span class="count"><%=companies.length%></span>-->
+                    <span class="iconfa-barcode menu-icon"></span>
+                    <span class="headmenu-label">Venta</span>
+                </a>
+            </li>
             <li class="right">
                 <div class="userloggedinfo">
                     <img src="/uploads/users/80x80<%=req.user.icon%>" alt="" />
                     <div class="userinfo">
                         <h5><%- req.user.name %><small>- <%-req.user.email%></small></h5>
                         <ul>
-                            <li><a href="/users/edit/<%=req.user.id%>">Configuracion</a></li>
+                            <li><a href="#">Editar perfil</a></li>
+                            <li><a href="/users/edit/<%=req.user.id%>">Configuracion de cuenta</a></li>
                             <li><a href="/home/logout">Cerrar sesion</a></li>
                         </ul>
                     </div>
