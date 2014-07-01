@@ -85,7 +85,7 @@ module.exports = {
 	,createProductType: function(req,res){
 		var form = req.params.all()
 		, sales_type = (form.sales_type && form.sales_type.pop)?form.sales_type:[form.sales_type];
-		form = formValidate(form,['name','sales_type','fields']);
+		form = formValidate(form,['name','sales_type','fields','price','description']);
 		for(var i=0;i<sales_type.length;i++){
 			form[sales_type[i]] = true;
 		}
