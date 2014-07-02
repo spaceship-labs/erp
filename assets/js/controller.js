@@ -165,19 +165,26 @@ app.controller('addProductCTL',function($scope){
 	jQuery('form').ajaxForm(function(data){
 		if(data){
 			updateContent();
-			jQuery('.alert p').text(data.text).parent().removeClass('unseen');
-		
+			jQuery('.alert p').text(data.text).parent().removeClass('unseen');	
 		}
 	});
 
 	var updateContent = function(){
-		jQuery.get('/product/indexJson',function(data){
+		jQuery.get('/product/editCategoryJson',{catID:jQuery('input[name="catID"]').val()},function(data){
 			$scope.fields = data;
 			$scope.$apply();
-			updateChosen();
 		});
 	};
 
+	$scope.removeField = function(e,id){
+		e.preventDefault();
+		if(id){
+			jQuery.get('/product/removeField',{fieldID:id},function(data){
+				updateContent();
+			});			
+		}
+		return false;
+	};
 	updateContent();
 });
 
@@ -194,8 +201,7 @@ app.controller('productCTL',function($scope){
 	$scope.update();
 	$scope.selectProduct = function(){
 		if($scope.nameModel){
-			//modal.modal('toggle');
-			jQuery.get('/product/productJson',{name:$scope.nameModel},function(product){
+			jQuery.get('/product/productJson',{id:$scope.nameModel},function(product){
 				$scope.product = product;
 				$scope.$apply();
 				modal.modal('toggle');

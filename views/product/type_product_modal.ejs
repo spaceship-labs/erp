@@ -13,8 +13,7 @@
 					<label for="type">Tipo</label>
 					<span class="field">
 						<select name='type' class='chzn-select form-control large' data-placeholder="Selecciona un tipo" ng-model="typeModel" ng-change="update()">
-								<option value=""></option>
-								<option ng-repeat="field in fields" value='{{field.name}}'>{{field.name}}</option>
+
 								<% for(var i=0;i<sales_type.length;i++){ %>
 									<option value='<%=sales_type[i].type%>'><%=sales_type[i].name%></option>
 								<%}%>
@@ -25,7 +24,7 @@
 					<label for="name">Nombre*</label>
 					<span class="field">
 						<select name='name' class='chzn-selects form-control large' data-placeholder="Agregar campo" ng-model="nameModel">
-								<option ng-repeat="product in products" value='{{product.name}}'>{{product.name}}</option>
+								<option ng-repeat="product in products" value='{{product.id}}'>{{product.name}}</option>
 						</select>
 					</span>
 				</p>

@@ -42,11 +42,10 @@ module.exports = {
 	}
 
 	,productJson: function(req,res){
-		var form = req.params.all()
-		, select_company = req.session.select_company || req.user.select_company;
-		Product_type.findOne({name:form.name}).exec(function(err,product){
+		var id = req.param('id');
+		Product_type.findOne({id:id}).exec(function(err,product){
 			if(err || !product) return res.json(false);
-			Custom_fields.find({company:select_company,user:req.user.id,name:{$in:product.fields}})
+			Custom_fields.find({product:id})
 			.exec(function(err,fields){
 				if(err) return res.json(false);
 				product.fields = fields;
@@ -70,9 +69,7 @@ module.exports = {
 
 	,createField: function(req,res){
 		var form = req.params.all();
-		form = formValidate(form,['name','type','values']);
-		form.company = req.session.select_company || req.user.select_company;
-		form.user = req.user.id;
+		form = formValidate(form,['name','type','values','product']);
 		if(form.values){
 			form.values = form.values.split(',');
 		}
@@ -124,6 +121,29 @@ module.exports = {
 				
 		}else
 			res.notFound();
+	}
+	, updateCategory: function(req,res){
+		var form = req.params.all();
+		if(form.catID){
+			form = formValidate(form,['catID','name','sales_type','description']);
+			Product_type.update({id:form.catID},form).exec(function(err,sale){
+				if(err) return res.json({text:'Ocurrio un error.'});
+				res.json({text:'Categoria actualizada.'});
+			});	
+		}
+	}
+	, editCategoryJson: function(req,res){
+		var id = req.param('catID');	
+		Custom_fields.find({product:id}).exec(function(err,fields){
+			res.json(fields);
+		});	
+	}
+	, removeField: function(req,res){
+		var fieldID = req.param('fieldID');
+		Custom_fields.destroy({id:fieldID}).exec(function(err){
+			if(err) return res.json({text:'Ocurrio un error.'});
+			res.json({text:'Campo eliminado.'});
+		});
 	}
 };
 
