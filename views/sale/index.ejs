@@ -1,0 +1,32 @@
+<div ng-controller="aleCTL">
+    <div class="row-fluid">
+        <div class="col-md-12">
+            <h4 class="widgettitle"><span class="iconfa-pencil"></span> Ventas</h4>
+            <div class="widgetcontent custom-table nopadding">
+                <table class="table table-striped">
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Vendedor</th>
+                        <th>Status</th>
+                        <th>Monto</th>
+                        <th>Editar</th>
+                    </tr>
+                    <% for(var i = 0; i< 3; i++){ %>
+                    <tr>
+                        <td>25-06-2014</td>
+                        <td><a href="#">Salvador Barron</a></td>
+                        <td>En proceso</td>
+                        <td>$2,500.00 MXN</td>
+                        <td><a href="/sale/edit/1"><span class="table-icon iconfa-file"></span></a></td>
+                    </tr>
+                    <% } %>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+</div>

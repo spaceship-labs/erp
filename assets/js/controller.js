@@ -210,6 +210,45 @@ app.controller('productCTL',function($scope){
 	});
 });
 
+app.controller('salesCTL',function($scope){
+    jQuery('form').ajaxForm(function(data){
+        if(data){
+            updateContent();
+            jQuery('.alert p').text(data.text).parent().removeClass('unseen');
+
+        }
+    });
+
+    var updateContent = function(){
+        jQuery.get('/sale/indexJson',function(data){
+            $scope.fields = data;
+            $scope.$apply();
+            updateChosen();
+        });
+    };
+
+    updateContent();
+});
+
+app.controller('saleAddCTL',function($scope){
+    jQuery('form').ajaxForm(function(data){
+        if(data){
+            updateContent();
+            jQuery('.alert p').text(data.text).parent().removeClass('unseen');
+
+        }
+    });
+
+    var updateContent = function(){
+        jQuery.get('/client/indexJson',function(data){
+            $scope.fields = data;
+            $scope.$apply();
+        });
+    };
+
+    updateContent();
+});
+
 function updateNotices($scope,url,dt,cb){
 	io.socket.on('update',function(data){
 		if(data){

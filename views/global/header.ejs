@@ -5,7 +5,7 @@
     <div class="headerinner">
         <ul class="headmenu">
             <li class="odd">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="/home">
                     <!--<span class="count"><%=companies.length%></span>-->
                     <!--<span class="head-icon  head-contracts"></span>-->
                     <span class="iconfa-home menu-icon"></span>
@@ -13,21 +13,21 @@
                 </a>
                 <ul class="dropdown-menu">
                     <li class="nav-header">Cambiar empresa</li>
-		<% for(var i=0;i<companies.length;i++){ %>
-			<li><a href="<%= companies[i].url %>">
-				<img src="/uploads/companies/50x50<%= companies[i].icon %>" alt="" />
-				<strong><%= companies[i].name %></strong>
-				<small><%= companies[i].desc %></small>
-			</a></li>
-		<% } %>
+                    <% for(var i=0;i<companies.length;i++){ %>
+                        <li><a href="<%= companies[i].url %>">
+                            <img src="/uploads/companies/50x50<%= companies[i].icon %>" alt="" />
+                            <strong><%= companies[i].name %></strong>
+                            <small><%= companies[i].desc %></small>
+                        </a></li>
+                    <% } %>
 
                 </ul>
             </li>
             <li>
-                <a href="#">
+                <a href="/sale">
                     <!--<span class="count"><%=companies.length%></span>-->
                     <span class="iconfa-barcode menu-icon"></span>
-                    <span class="headmenu-label">Venta</span>
+                    <span class="headmenu-label">Ventas</span>
                 </a>
             </li>
             <li class="right">

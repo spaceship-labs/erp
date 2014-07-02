@@ -12,7 +12,8 @@
 				<li><a href="/admin/currencies">Monedas</a></li>
 			</ul>
 		<li>
-		<li class="dropdown <%=active=='users'?activeC:'' %>"><a href=""><span class="iconfa-user"></span>Usuarios</a>
+		<li class="dropdown <%=active=='users'?activeC:'' %>">
+            <a href=""><span class="iconfa-user"></span>Usuarios</a>
 			<ul>
 				<li><a href="/users/">Usuarios</a></li>
 				<li><a href="registration.html">Permisos</a></li>
@@ -26,6 +27,20 @@
 				<li><a href="/product/filters">productos</a></li>
 			</ul>
 		<li>
+        <li class="dropdown <%=active=='client'?activeC:'' %>">
+            <a href=""><span class="iconfa-inbox"></span>Ventas</a>
+            <ul>
+                <li><a href="/sale">Listado</a></li>
+                <li><a href="/sale/create">Nueva venta</a></li>
+            </ul>
+        <li>
+        <li class="dropdown <%=active=='client'?activeC:'' %>">
+            <a href=""><span class="iconfa-user"></span>Clientes</a>
+            <ul>
+                <li><a href="/client">Clientes</a></li>
+                <li><a href="/client/create">Agregar cliente</a></li>
+            </ul>
+        <li>
 	</ul>
     </div><!--leftmenu-->
     
