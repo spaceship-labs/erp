@@ -18,20 +18,22 @@
 	</div>
 	<div class="widgetcontent custom-table nopadding">
 		<table class="table table-striped">
-			<tr>
-				<th>ID</th>
-				<th>Nombre</th>
-				<th>Descripción</th>
-				<th>Tipo</th>
-				<th>Editar</th>
-			</tr>
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Nombre</th>
+					<th>Descripción</th>
+					<th>Tipo</th>
+					<th>Editar</th>
+				</tr>
+			</thead>
 			<% for(var i = 0; i< 3; i++){ %>
 				<tr>
-					<td>25-06-2014</td>
-					<td><a href="#">Producto UNO</a></td>
-					<td>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</td>
-					<td>Rotulación</td>
-					<td><a href="#"><span class="table-icon fa fa-edit"></span></a></td>
+					<td data-title="ID">254014</td>
+					<td data-title="Nombre"><a href="#">Producto UNO</a></td>
+					<td data-title="Descripcion">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</td>
+					<td data-title="Tipo">Rotulación</td>
+					<td data-title="Editar"><a href="#"><span class="table-icon fa fa-edit"></span></a></td>
 				</tr>
 			<% } %>
 		</table>
