@@ -4,22 +4,22 @@
         <ul class="nav nav-tabs nav-stacked">
 		<li class="nav-header">Navegación</li>
 		<% var activeC='active'; %>
-		<li class="<%=active=='home'?activeC:''%>"><a href="/home/"><span class="iconfa-th-large"></span> Tablero</a></li>
+		<li class="<%=active=='home'?activeC:''%>"><a href="/home/"><span class="fa fa-th-large"></span> Tablero</a></li>
 		<li class="dropdown <%=active=='admin'?activeC:'' %>">
-			<a href=""><span class="iconfa-laptop"></span>Sistema</a>
+			<a href=""><span class="fa fa-laptop"></span>Sistema</a>
 			<ul>
 				<li><a href="/admin">Empresas</a></li>
 				<li><a href="/admin/currencies">Monedas</a></li>
 			</ul>
 		<li>
-		<li class="dropdown <%=active=='users'?activeC:'' %>"><a href=""><span class="iconfa-user"></span>Usuarios</a>
+		<li class="dropdown <%=active=='users'?activeC:'' %>"><a href=""><span class="fa fa-user"></span>Usuarios</a>
 			<ul>
 				<li><a href="/users/">Usuarios</a></li>
 				<li><a href="registration.html">Permisos</a></li>
 			</ul>
 		</li>
 		<li class="dropdown <%=active=='product'?activeC:'' %>">
-			<a href=""><span class="iconfa-inbox"></span>Productos</a>
+			<a href=""><span class="fa fa-cubes"></span>Productos</a>
 			<ul>
 				<li><a href="/product">Categorias</a></li>
 				<li><a href="/product/products">Agregar producto</a></li>
