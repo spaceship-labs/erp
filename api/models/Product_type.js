@@ -20,6 +20,11 @@ module.exports = {
 		,service:defaultFalse
 		,company:'string'
 		,user:'string'
+		,description:'string'
+		,product:{
+			collection:'product'
+			,via:'product_type'
+		}
 
 	}
 };
