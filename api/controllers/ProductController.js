@@ -11,7 +11,6 @@ module.exports = {
 			if(err) throw err;
 			Common.view(res.view,{
 				sales_type:sales_type
-				,types:Custom_fields.attributes.type.enum
 			});		
 		});
 	}
@@ -108,6 +107,23 @@ module.exports = {
 				res.json('Producto creado.');	
 			});	
 		}
+	}
+	,editCategory: function(req,res){
+		var id = req.param('id');
+		if(id){
+			Sales_type.find().exec(function(err,sales_type){
+				if(err) throw err;
+				Product_type.findOne({id:id}).exec(function(err,product){
+					Common.view(res.view,{
+						product:product
+						,types:Custom_fields.attributes.type.enum
+						,sales_type:sales_type
+					});
+				});
+			});
+				
+		}else
+			res.notFound();
 	}
 };
 
