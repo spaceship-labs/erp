@@ -1,0 +1,95 @@
+<div ng-controller="addProductCTL">
+   <div class="span6">
+   <div class="alert alert-block unseen">
+	<button data-dismiss="alert" class="close" type="button">×</button>
+	<h4>Mensaje</h4>
+		<p style="margin: 8px 0">El usuario se ha actualizado exitosamente</p>
+   </div>
+	<div class="widgetbox">
+		<h4 class="widgettitle"><%=product.name%></h4>
+		<div class="widgetcontent nopadding">                            
+			<form action="/product/updateCategory" method="get" accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine">
+				<input type="hidden" name="catID" value="<%=product.id%>" />
+				<p>
+					<label for="name">Nombre*</label>
+					<span class="field"><input type="text" name="name" class="input-large" value="<%=product.name%>"></span>
+				</p>
+				<p><label for="app">Tipo de venta*</label>
+					<span class="field">
+						<select name='sales_type' multiple='multiple' class='chzn-select form-control large' data-placeholder="Agregar tipo">
+							<%for(var i=0;i<sales_type.length;i++){
+								var selected = product.sales_type.indexOf(sales_type[i].type)!=-1?'selected':'';
+							%>
+								<option value='<%=sales_type[i].type%>' <%=selected%>><%=sales_type[i].name%></option>
+							<%}%>
+						</select>
+
+					</span>
+				</p>
+				<p>
+					<label for="description">Descripcion*</label>
+					<span class="field"><input type="text" name="description" class="input-large" value="<%=product.description || ''%>"></span>
+				</p>
+				<!--
+				<p>
+				        <label for="fields">Campos</label>
+				        <span class="field">
+				                <select name='fields' multiple='multiple' class='chzn-select form-control large'>
+		                	                <option ng-repeat="field in fields" value='{{field.name}}'>{{field.name}}</option>
+				                </select>
+				        </span>
+				</p>
+				-->
+				<p class="stdformbutton">
+			                <button class="btn btn-primary">Guardar</button>
+			                <button type="reset" class="btn">Resetear</button>
+				</p>
+			</form>
+		</div>
+	</div>
+   </div>
+   <div class="span6">
+	<div class="widgetbox">
+		<h4 class="widgettitle">Nuevo campo</h4>
+		<div class="widgetcontent nopadding">
+			<form action="/product/createField" method="post" accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine">
+				<input type="hidden" name="product" value="<%=product.id%>" />
+				<p>
+					<label for="name">Nombre*</label>
+					<span class="field"><input type="text" name="name" class="input-large"></span>
+				</p>
+				<p>
+					<label for="fields">Tipo*</label>
+					<span class="field">
+			                        <select name="type" ng-model="typeSelect">
+							<%for(var i=0;i<types.length;i++){ %>
+								<option value="<%=types[i]%>"><%=types[i]%></option>
+							<%}%>
+						</select>
+					</span>
+				</p>
+				<p ng-if=typeSelect=='select'>
+					<label for="name">valores</label>
+					<span class="field">
+						<input type="text" name="values" class="input-large">
+					</span>
+				</p>
+				<p class="stdformbutton">
+					<button class="btn btn-primary">Guardar</button>
+					<button type="reset" class="btn">Resetear</button>
+				</p>
+			</form>
+		</div>
+	</div>
+   </div>
+<div class="widgetbox tags span4 profile-left">
+            <h4 class="widgettitle">Campos en <%=product.name%></h4>
+            <div class="widgetcontent">
+                <ul class="taglist">
+			<li ng-repeat="field in fields">
+				<a href="{{field.id}}" ng-click="removeField($event,field.id)">{{field.name}}<span class="close">×</span></a>
+			</li>
+                </ul>
+            </div>
+    </div>
+</div>

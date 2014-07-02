@@ -17,8 +17,18 @@ module.exports = {
 
 		dtCreated	: { type: 'date' },
 
-        sale_client : {
+        client : {
             model : "Sale_Client"
+        },
+
+        quotes : {
+            collection : "Sale_Quote",
+            via : "sale"
+        },
+
+        invoices : {
+            collection : "Sale_Invoice",
+            via : "sale"
         }
 
 	}

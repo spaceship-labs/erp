@@ -16,6 +16,9 @@ module.exports = {
 			,enum:['text','textarea','select']
 		}
 		,values:'array'
+	  	,product:{
+	  		model : 'product_type',
+	  	}
 	}
 };
 

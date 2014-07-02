@@ -16,7 +16,7 @@ module.exports = {
     index: function (req, res) {
         Common.view(res.view,{
             page:{
-                icon:'iconfa-inbox-large'
+                icon:'fa fa-th-large'
                 ,name:'Ventas'
             }
         },req);

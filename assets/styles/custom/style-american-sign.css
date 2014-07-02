@@ -2,12 +2,21 @@
 .header{background: #171617}
 strong{font-weight: bold;}
 /*Global orange #EA4723*/
+
+/*Login page*/
+body.loginpage{background: #282828}
+.inputwrapper button{background: #EA4723;border:1px solid #EA4723;}
+.inputwrapper button:focus, .inputwrapper button:active, .inputwrapper button:hover{background: #de3a15;border:1px solid #de3a15;}
+/*---*/
+
 .headmenu > li > a:hover{background: #EA4723}
 .headmenu > li > a:hover .menu-icon{color: #fff}
 .headmenu > li > a .menu-icon{color: #8B8A8B;font-size: 48px}
 .userloggedinfo .userinfo h5{font-weight: bold;}
+.userloggedinfo img{border-radius: 50%}
 
 .nav-tabs.nav-stacked > li.active > a, .nav-tabs.nav-stacked > li.active > a:hover, .nav-tabs.nav-stacked > li.active > a:focus{background:#EA4723!important;}
+.leftmenu .nav-header{color: #fff}
 .leftmenu .nav-tabs.nav-stacked > li.active > a{background-color: #EA4723;border-bottom-color: #EA4723;}
 
 .pageicon{border: 3px solid #EA4723;color: #EA4723}
@@ -34,3 +43,9 @@ a, a:hover, a:link, a:active, a:focus{color: #EA4723}
 .custom-table table td:nth-child(2){text-decoration: underline;}
 .custom-table table.table-striped > tbody > tr:nth-child(odd) > td{background: #D9D8D8}
 .custom-table table tr:hover , .custom-table table tr:hover td{background: #F3EC08!important}
+
+.buttons-box{margin-bottom: 14px}
+.buttons-box .button-orange{border: 1px solid #EA4723;color: #EA4723;font-size: 15px}
+.buttons-box .button-orange + .button-orange{margin-left: 4px}
+.buttons-box .button-orange:hover{background: #EA4723;color: #fff}
+.btn-default:hover, .btn-default:focus, .btn-default:active, .btn-default.active, .open .dropdown-toggle.btn-default{background: #EA4723;border-color: #EA4723;color: #fff;}

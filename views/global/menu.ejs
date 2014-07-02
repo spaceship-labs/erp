@@ -2,11 +2,11 @@
     
     <div class="leftmenu">        
         <ul class="nav nav-tabs nav-stacked">
-		<li class="nav-header">Navigation</li>
+		<li class="nav-header">Navegación</li>
 		<% var activeC='active'; %>
-		<li class="<%=active=='home'?activeC:''%>"><a href="/home/"><span class="iconfa-laptop"></span> Tablero</a></li>
+		<li class="<%=active=='home'?activeC:''%>"><a href="/home/"><span class="fa fa-th-large"></span> Tablero</a></li>
 		<li class="dropdown <%=active=='admin'?activeC:'' %>">
-			<a href=""><span class="iconfa-cog"></span>Sistema</a>
+			<a href=""><span class="fa fa-laptop"></span>Sistema</a>
 			<ul>
 				<li><a href="/admin">Empresas</a></li>
 				<li><a href="/admin/currencies">Monedas</a></li>
@@ -20,9 +20,9 @@
 			</ul>
 		</li>
 		<li class="dropdown <%=active=='product'?activeC:'' %>">
-			<a href=""><span class="iconfa-inbox"></span>Productos</a>
+			<a href=""><span class="fa fa-cubes"></span>Categorias</a>
 			<ul>
-				<li><a href="/product">Categorias</a></li>
+				<li><a href="/product">Agregar categoria</a></li>
 				<li><a href="/product/products">Agregar producto</a></li>
 				<li><a href="/product/filters">productos</a></li>
 			</ul>

@@ -17,9 +17,11 @@ module.exports = {
 
 		address	: { type: 'string' },
 
+        rfc     : { type : 'string' },
+
         sales : {
             collection : "Sale",
-            via : "Sale"
+            via : "client"
         }
 
 	}

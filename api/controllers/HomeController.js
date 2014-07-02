@@ -26,7 +26,7 @@ module.exports = {
 	, index: function(req,res){
 		Common.view(res.view,{
 			page:{
-				icon:'iconfa-th-large'
+				icon:'fa fa-th-large'
 				,name:'Tablero'
 			}
 		},req);
