@@ -39,6 +39,7 @@ table, caption, tbody, tfoot, thead, tr, th, td {
 	line-height: 21px;
 	outline: none;
 }
+.clear{clear: both;}
 
 ::selection { background: #ccc; color: #fff; text-shadow: none; } /* Safari */
 ::-moz-selection { background: #ccc; color: #fff; text-shadow: none; } /* Firefox */

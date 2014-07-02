@@ -12,27 +12,30 @@
 		</div>
 	</div>
 	<%- partial('../global/notices') -%>
-	<div class="row-fluid">
+	<div class="clear"></div>
+	<div class="row">
 		<div class="col-md-12">
 			<h4 class="widgettitle"><span class="fa fa-pencil"></span> Cotizaciones</h4>
 			<div class="widgetcontent custom-table nopadding">
 				<table class="table table-striped">
-					<tr>
-						<th>Fecha</th>
-						<th>Vendedor</th>
-						<th>Status</th>
-						<th>Monto</th>
-						<th>PDF</th>
-						<th>Enviar por mail</th>
-					</tr>
+					<thead>
+						<tr>
+							<th>Fecha</th>
+							<th>Vendedor</th>
+							<th>Status</th>
+							<th>Monto</th>
+							<th>PDF</th>
+							<th>Enviar por mail</th>
+						</tr>
+					</thead>
 					<% for(var i = 0; i< 3; i++){ %>
 						<tr>
-							<td>25-06-2014</td>
-							<td><a href="#">Salvador Barron</a></td>
-							<td>En proceso</td>
-							<td>$2,500.00 MXN</td>
-							<td><a href="#"><span class="table-icon fa fa-file-pdf-o"></span></a></td>
-							<td><a href="#"><span class="table-icon fa fa-send"></span></a></td>
+							<td data-title="Fecha">25-06-2014</td>
+							<td data-title="Vendedor"><a href="#">Salvador Barron</a></td>
+							<td data-title="Status">En proceso</td>
+							<td data-title="Monto">$2,500.00 MXN</td>
+							<td data-title="PDF"><a href="#"><span class="table-icon fa fa-file-pdf-o"></span></a></td>
+							<td data-title="Enviar por mail"><a href="#"><span class="table-icon fa fa-send"></span></a></td>
 						</tr>
 					<% } %>
 				</table>
@@ -40,24 +43,26 @@
 		</div> 
 		
 	</div>
-
-	<div class="row-fluid">
+	<div class="clear"></div>
+	<div class="row">
 		<div class="col-md-5">
 			<h4 class="widgettitle"><span class="fa fa-cog"></span> Ordenes de trabajo</h4>
 			<div class="widgetcontent custom-table nopadding">
 				<table class="table table-striped">
-					<tr>
-						<th>Fecha</th>
-						<th>Asignado a</th>
-						<th>Status</th>
-						<th>Concepto</th>
-					</tr>
+					<thead>
+						<tr>
+							<th>Fecha</th>
+							<th>Asignado a</th>
+							<th>Status</th>
+							<th>Concepto</th>
+						</tr>
+					</thead>
 					<% for(var i = 0; i< 3; i++){ %>
 						<tr>
-							<td>25-06-2014</td>
-							<td><a href="#">Salvador Barron</a></td>
-							<td>En proceso</td>
-							<td>$2,500.00 MXN</td>
+							<td data-title="Fecha">25-06-2014</td>
+							<td data-title="Asignado a"><a href="#">Salvador Barron</a></td>
+							<td data-title="Status">En proceso</td>
+							<td data-title="Concepto">$2,500.00 MXN</td>
 						</tr>
 					<% } %>
 				</table>
@@ -67,18 +72,20 @@
 			<h4 class="widgettitle"><span class="fa fa-money"></span> Facturación</h4>
 			<div class="widgetcontent custom-table nopadding">
 				<table class="table table-striped">
-					<tr>
-						<th>Tipo</th>
-						<th>Descripcion</th>
-						<th>Cantidad</th>
-						<th>Monto</th>
-					</tr>
+					<thead>
+						<tr>
+							<th>Tipo</th>
+							<th>Descripcion</th>
+							<th>Cantidad</th>
+							<th>Monto</th>
+						</tr>
+					</thead>
 					<% for(var i = 0; i< 3; i++){ %>
 						<tr>
-							<td>Branding</td>
-							<td><a href="#">Lorem ipsum dolor sit amet</a></td>
-							<td>3</td>
-							<td>$5000.00 MXN</td>
+							<td data-title="Tipo">Branding</td>
+							<td data-title="Descripcion"><a href="#">Lorem ipsum dolor sit amet</a></td>
+							<td data-title="Cantidad">3</td>
+							<td data-title="Monto">$5000.00 MXN</td>
 						</tr>
 					<% } %>
 				</table>

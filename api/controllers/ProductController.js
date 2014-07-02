@@ -11,8 +11,9 @@ module.exports = {
 			if(err) throw err;
 			Common.view(res.view,{
 				page:{
-					icon:'fa fa-cubes'
-					,name:'Productos'
+					description:'AQUI PODRAS VISUALIZAR Y ADMINISRAR TODOS TUS PRODUCTOS',
+					icon:'fa fa-cubes',
+					name:'Productos'
 				},				
 				sales_type:sales_type
 			});		
@@ -30,8 +31,9 @@ module.exports = {
 		Sales_type.find().exec(function(err,sales_type){
 			Common.view(res.view,{
 				page:{
-					icon:'fa fa-cubes'
-					,name:'Productos'
+					description:'AQUI PODRAS VISUALIZAR Y ADMINISRAR TODOS TUS PRODUCTOS',
+					icon:'fa fa-cubes',
+					name:'Productos'
 				},	
 				sales_type:sales_type
 			});			
@@ -68,15 +70,17 @@ module.exports = {
 
 	,filters: function(req,res){
 		var select_company = req.session.select_company || req.user.select_company
-		Product.find({user:req.user.id,company:select_company}).populate('product_type').exec(function(err,products){
+		Product_type.find({user:req.user.id,company:select_company}).exec(function(err,products){
 			if(err) throw err;
 				Common.view(res.view,{
 					page:{
-						icon:'fa fa-cubes'
+						description:'AQUI PODRAS VISUALIZAR Y ADMINISRAR TODOS TUS PRODUCTOS'
+						,icon:'fa fa-cubes'
 						,name:'Productos'
 					}			
 					, products:products	
 				});
+
 		});
 	}
 
