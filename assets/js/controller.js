@@ -165,7 +165,9 @@ app.controller('addProductCTL',function($scope){
 	jQuery('form').ajaxForm(function(data){
 		if(data){
 			updateContent();
-			jQuery('.alert p').text(data.text).parent().removeClass('unseen');	
+			jQuery('.alert p').text(data.text).parent().removeClass('unseen');
+			if(data.url)
+				window.location.href = data.url;
 		}
 	});
 

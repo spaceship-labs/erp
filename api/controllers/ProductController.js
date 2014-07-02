@@ -93,7 +93,7 @@ module.exports = {
 	,createProductType: function(req,res){
 		var form = req.params.all()
 		, sales_type = (form.sales_type && form.sales_type.pop)?form.sales_type:[form.sales_type];
-		form = formValidate(form,['name','sales_type','fields','price','description']);
+		form = formValidate(form,['name','sales_type','fields','description']);
 		for(var i=0;i<sales_type.length;i++){
 			form[sales_type[i]] = true;
 		}
@@ -101,7 +101,7 @@ module.exports = {
 		form.user = req.user.id;
 		Product_type.create(form).exec(function(err,product){
 			if(err) return res.json({text:'Ocurrio un error.'});
-			res.json({text:'Producto agregado.'});
+			res.json({text:'Producto agregado.',url:'product/editCategory/'+product.id});
 		});
 	}
 	,createProduct: function(req,res){
