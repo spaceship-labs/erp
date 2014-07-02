@@ -32,7 +32,7 @@ jQuery(document).ready(function(){
 		  
 		  var lwidth = '260px';
 		  if(jQuery(window).width() < 340) {
-					 lwidth = '260px';
+					 lwidth = '240px';
 		  }
 		  
 		  if(!jQuery(this).hasClass('open')) {
@@ -58,18 +58,13 @@ jQuery(document).ready(function(){
 	
 	// show/hide left menu
 	jQuery(window).resize(function() {
-		  if(jQuery('.topbar').is(':visible')) {
-				if(jQuery('.barmenu').hasClass('open')) {
-						 jQuery('.rightpanel, .headerinner').css({marginLeft: '260px'});
-						 jQuery('.logo, .leftpanel').css({marginLeft: 0});
-				} else {
-						 jQuery('.rightpanel, .headerinner').css({marginLeft: 0});
-						 jQuery('.logo, .leftpanel').css({marginLeft: '-260px'});
-				}
-		  } else {
-				jQuery('.rightpanel, .headerinner').css({marginLeft: '260px'});
+		if(!jQuery('.topbar').is(':visible')) {
+		     jQuery('.rightpanel, .headerinner').css({marginLeft: '260px'});
 				jQuery('.logo, .leftpanel').css({marginLeft: 0});
-		  }
+		} else {
+		     jQuery('.rightpanel, .headerinner').css({marginLeft: 0});
+				jQuery('.logo, .leftpanel').css({marginLeft: '-260px'});
+		}
    });
 	
 	// dropdown menu for profile image
