@@ -10,6 +10,10 @@ module.exports = {
 		Sales_type.find().exec(function(err,sales_type){
 			if(err) throw err;
 			Common.view(res.view,{
+				page:{
+					icon:'fa fa-cubes'
+					,name:'Productos'
+				},				
 				sales_type:sales_type
 			});		
 		});
@@ -25,6 +29,10 @@ module.exports = {
 	,products: function(req,res){
 		Sales_type.find().exec(function(err,sales_type){
 			Common.view(res.view,{
+				page:{
+					icon:'fa fa-cubes'
+					,name:'Productos'
+				},	
 				sales_type:sales_type
 			});			
 		});
@@ -62,6 +70,10 @@ module.exports = {
 		var select_company = req.session.select_company || req.user.select_company;
 		Custom_fields.find({user:req.user.id,company:select_company}).exec(function(err,custom_fields){
 			Common.view(res.view,{
+				page:{
+					icon:'fa fa-cubes'
+					,name:'Productos'
+				},			
 				fields:custom_fields
 			});
 		});

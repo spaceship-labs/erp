@@ -21,10 +21,10 @@
     <link rel="stylesheet" href="/styles/bootstrap-resposive.min.css">
     <link rel="stylesheet" href="/styles/default.css">
     <link rel="stylesheet" href="/styles/importer.css">
-    <link rel="stylesheet" href="/styles/style-american-sign.css">
     <!--STYLES END-->
 	
   </head>
+  <link rel="stylesheet" href="/styles/custom/<%= sails.config.template_config.cssFile %>">
 
   <!--<body>-->
 <div id="mainwrapper" class="mainwrapper">
@@ -33,7 +33,7 @@
 
     <div class="rightpanel">
         <ul class="breadcrumbs">
-            <li><a href="/home/"><i class="iconfa-home"></i></a> <span class="separator"></span></li>
+            <li><a href="/home/"><i class="fa fa-home"></i></a> <span class="separator"></span></li>
             <li>Tablero</li>
         </ul>
         
@@ -41,7 +41,7 @@
             <form action="results.html" method="post" class="searchbar">
                 <input type="text" name="keyword" placeholder="Escribe para realizar una busqueda" ng-model='searchInput' />
             </form>
-            <div class="pageicon"><span class="<%= page.icon || 'iconfa-th-large' %>"></span></div>
+            <div class="pageicon"><span class="<%= page.icon || 'fa fa-th-large' %>"></span></div>
             <div class="pagetitle">
                 <!-- <h5>All Features Summary</h5> -->
                 <h1> <%=page.name || 'Dashboard' %></h1>
