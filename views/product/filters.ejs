@@ -25,15 +25,17 @@
 				<th>Tipo</th>
 				<th>Editar</th>
 			</tr>
-			<% for(var i = 0; i< 3; i++){ %>
+			<%for(var i=0;i<products.length;i++){
+				var product = products[i];
+			%>
 				<tr>
-					<td>25-06-2014</td>
-					<td><a href="#">Producto UNO</a></td>
-					<td>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</td>
-					<td>Rotulación</td>
+					<td><%=product.id%></td>
+					<td><a href="#"><%=product.product_type.name%></a></td>
+					<td><%=product.product_type.description%></td>
+					<td><%=product.product_type.sales_type.toString()%></td>
 					<td><a href="#"><span class="table-icon fa fa-edit"></span></a></td>
 				</tr>
-			<% } %>
+			<%}%>
 		</table>
 	</div>
 </div> 

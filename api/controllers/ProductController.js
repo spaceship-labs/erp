@@ -67,15 +67,16 @@ module.exports = {
 	}
 
 	,filters: function(req,res){
-		var select_company = req.session.select_company || req.user.select_company;
-		Custom_fields.find({user:req.user.id,company:select_company}).exec(function(err,custom_fields){
-			Common.view(res.view,{
-				page:{
-					icon:'fa fa-cubes'
-					,name:'Productos'
-				},			
-				fields:custom_fields
-			});
+		var select_company = req.session.select_company || req.user.select_company
+		Product.find({user:req.user.id,company:select_company}).populate('product_type').exec(function(err,products){
+			if(err) throw err;
+				Common.view(res.view,{
+					page:{
+						icon:'fa fa-cubes'
+						,name:'Productos'
+					}			
+					, products:products	
+				});
 		});
 	}
 
