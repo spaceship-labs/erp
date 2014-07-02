@@ -21,9 +21,11 @@
     <link rel="stylesheet" href="/styles/bootstrap-resposive.min.css">
     <link rel="stylesheet" href="/styles/default.css">
     <link rel="stylesheet" href="/styles/importer.css">
-    <link rel="stylesheet" href="/styles/style-american-sign.css">
     <!--STYLES END-->
-	
+    <!--STYLE TEMPLATE-->
+    <link rel="stylesheet" href="/styles/custom/<%= sails.config.template_config.cssFile %>">
+
+
   </head>
 
 <body class="loginpage">
@@ -31,7 +33,7 @@
 <div class="loginpanel">
     <div class="loginpanelinner">
         
-        <div class="logo animate0 bounceIn"><img src="/images/logos/space_logo.png" alt="" /></div>
+        <div class="logo animate0 bounceIn"><img src="/images/logos/<%= sails.config.template_config.logo %>" alt="logo" width="230" /></div>
         <form id="login" action="/home/auth" method="post">
             
             <div class="inputwrapper login-alert">
