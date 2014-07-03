@@ -231,7 +231,7 @@ app.controller('salesCTL',function($scope){
         jQuery.get('/sale/indexJson',function(data){
             $scope.fields = data;
             $scope.$apply();
-            updateChosen();
+            //updateChosen();
         });
     };
 
@@ -249,6 +249,65 @@ app.controller('saleAddCTL',function($scope){
 
     var updateContent = function(){
         jQuery.get('/client/indexJson',function(data){
+            $scope.fields = data;
+            $scope.$apply();
+        });
+    };
+
+    updateContent();
+});
+
+app.controller('saleEditCTL',function($scope){
+    alert(id);
+    var saleId = jQuery('#sale_id').val();
+    jQuery('form').ajaxForm(function(data){
+        if(data){
+            updateContent();
+            jQuery('.alert p').text(data.text).parent().removeClass('unseen');
+
+        }
+    });
+
+    var updateContent = function(){
+        jQuery.get('/sale/edit/' + saleId,function(data){
+            $scope.fields = data;
+            $scope.$apply();
+        });
+    };
+
+    updateContent();
+});
+
+app.controller('clientAddCTL',function($scope){
+    jQuery('form').ajaxForm(function(data){
+        if(data){
+            updateContent();
+            jQuery('.alert p').text(data.text).parent().removeClass('unseen');
+
+        }
+    });
+
+    var updateContent = function(){
+        jQuery.get('/clients/indexJson',function(data){
+            $scope.fields = data;
+            $scope.$apply();
+        });
+    };
+
+    updateContent();
+});
+
+app.controller('clientEditCTL',function($scope){
+    jQuery('form').ajaxForm(function(data){
+        if(data){
+            updateContent();
+            jQuery('.alert p').text(data.text).parent().removeClass('unseen');
+
+        }
+    });
+
+    var updateContent = function(){
+        jQuery.get('/clients/indexJson',function(data){
             $scope.fields = data;
             $scope.$apply();
         });

@@ -11,26 +11,30 @@ module.exports = {
 
 		name	: { type: 'string' },
 
-		phone	: { type: 'string' },
+        description : { type : 'string'},
 
-		company	: { type: 'string' },
+        amount  : { type:'float' },
 
-		address	: { type: 'string' },
+        file    : { type: 'string' },
 
-        rfc     : { type : 'string' },
+        create_datetime : { type : 'datetime' },
 
-        sales : {
-            collection : "Sale",
-            via : "client"
+        user : {
+            model : 'User'
+        },
+
+        sale : {
+            model : "Sale"
         }
+
 
 	}
     ,afterCreate: function(val,cb){
-        Notifications.after(Sale_Client,val,'create');
+        Notifications.after(Sale_Invoice,val,'create');
         cb()
     }
     ,afterUpdate: function(val,cb){
-        Notifications.after(Sale_Client,val,'update');
+        Notifications.after(Sale_Invoice,val,'update');
         cb();
     }
     ,beforeUpdate:function(val,cb){

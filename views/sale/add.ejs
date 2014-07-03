@@ -1,0 +1,53 @@
+<div ng-controller="saleAddCTL">
+    <div class="span6">
+        <div class="alert alert-block unseen">
+            <button data-dismiss="alert" class="close" type="button">×</button>
+            <h4>Mensaje</h4>
+            <p style="margin: 8px 0">El usuario se ha actualizado exitosamente</p>
+        </div>
+        <div class="widgetbox">
+            <h4 class="widgettitle">Escoger cliente existente</h4>
+            <div class="widgetcontent nopadding">
+                <form action="/client/add" method="get" accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine">
+                    <p>
+                        <label>Selecciona : </label>
+						<span class="field">
+                            <select name='name' class='chzn-selects form-control large' data-placeholder="Escoger" ng-model="nameModel">
+                                <option value='1'>Salvador Barron</option>
+                            </select>
+                        </span>
+                    </p>
+                    <p class="stdformbutton">
+                        <button class="btn btn-primary">Guardar</button>
+                    </p>
+                </form>
+            </div>
+
+            <h4 class="widgettitle">Agregar nuevo cliente</h4>
+            <div class="widgetcontent nopadding">
+                <form action="/client/add" method="get" accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine">
+                    <p>
+                        <label for="name">Nombre*</label>
+                        <span class="field"><input type="text" name="name" class="input-large"></span>
+                    </p>
+                    <p>
+                        <label for="description">Direccion*</label>
+                        <span class="field"><input type="text" name="address" class="input-large"></span>
+                    </p>
+                    <p>
+                        <label for="price">RFC*</label>
+                        <span class="field"><input type="text" name="RFC" class="input-large"></span>
+                    </p>
+                    <p>
+                        <label for="fields">Telefono</label>
+                        <span class="field"><input type="text" name="RFC" class="input-large"></span>
+					</span>
+                    </p>
+                    <p class="stdformbutton">
+                        <button class="btn btn-primary">Guardar</button>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

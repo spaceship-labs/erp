@@ -31,12 +31,27 @@ module.exports.routes = {
      controller:'home'
   },
 
-
   // Custom routes here...
 
 
   // If a request to a URL doesn't match any of the custom routes above, it is matched 
   // against Sails route blueprints.  See `config/blueprints.js` for configuration options
   // and examples.
+
+    '/clients' : {
+        controller : 'sale',
+        action : 'clients'
+    },
+
+    '/clients/add' : {
+        controller : 'sale',
+        action : 'addClient'
+    },
+
+    '/clients/edit' : {
+        controller : 'sale',
+        action : 'editClient'
+    }
+
 
 };

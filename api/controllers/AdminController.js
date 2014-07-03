@@ -76,7 +76,7 @@ module.exports = {
 		Common.view(res.view,{
 			page:{
 				name:'Monedas'
-				,icon:'iconfa-money'
+				,icon:'fa fa-money'
 			}
 		});	
 	}

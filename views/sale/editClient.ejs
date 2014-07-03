@@ -1,0 +1,47 @@
+<div ng-controller="clientEditCTL">
+    <div class="span6">
+        <div class="alert alert-block unseen">
+            <button data-dismiss="alert" class="close" type="button">×</button>
+            <h4>Mensaje</h4>
+            <p style="margin: 8px 0">El usuario se ha actualizado exitosamente</p>
+        </div>
+        <div class="widgetbox">
+            <h4 class="widgettitle"><%=client.name%></h4>
+            <div class="widgetcontent nopadding">
+                <form action="/clients/update" method="get" accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine">
+                    <input type="hidden" name="catID" value="" />
+                    <p>
+                        <label for="name">Nombre*</label>
+                        <span class="field"><input type="text" name="name" class="input-large" value=""></span>
+                    </p>
+                    <p><label for="app">Direccion*</label>
+                        <span class="field"><input type="text" name="address" class="input-large" value=""></span>
+                    </p>
+                    <p>
+                        <label for="description">RFC*</label>
+                        <span class="field"><input type="text" name="rfc" class="input-large" value=""></span>
+                    </p>
+                    <p>
+                        <label for="description">Telefono</label>
+                        <span class="field"><input type="text" name="phone" class="input-large" value=""></span>
+                    </p>
+                    <!--
+                    <p>
+                            <label for="fields">Campos</label>
+                            <span class="field">
+                                    <select name='fields' multiple='multiple' class='chzn-select form-control large'>
+                                                <option ng-repeat="field in fields" value='{{field.name}}'>{{field.name}}</option>
+                                    </select>
+                            </span>
+                    </p>
+                    -->
+                    <p class="stdformbutton">
+                        <button class="btn btn-primary">Guardar</button>
+                        <button type="reset" class="btn">Resetear</button>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>

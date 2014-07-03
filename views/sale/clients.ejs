@@ -1,0 +1,29 @@
+<div ng-controller="clientCTL">
+    <div class="row-fluid">
+        <div class="col-md-11">
+            <h4 class="widgettitle"><a class="iconfa-pencil" style="color:white;">+ Agregar</a></h4>
+            <div class="widgetcontent custom-table nopadding">
+                <table class="table table-striped">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Direccion</th>
+                        <th>Telefono</th>
+                        <th>RFC</th>
+                    </tr>
+                    <% for(var i = 0; i< 4; i++){ %>
+                    <tr>
+                        <td>1061<%- i %></td>
+                        <td><a href="/client/edit/1">Salvador Barron</a></td>
+                        <td>SM 2 MZ 1 LT 10 calle noria</td>
+                        <td>9984 3519532</td>
+                        <td>VECJ880326 XXX</td>
+                    </tr>
+                    <% } %>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+</div>

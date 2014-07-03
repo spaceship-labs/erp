@@ -1,5 +1,5 @@
 /**
- * ClientController.js
+ * SaleController.js
  *
  * @description ::
  * @docs        :: http://sailsjs.org/#!documentation/controllers
@@ -7,32 +7,39 @@
 
 module.exports = {
 
-
-
     /**
-     * `ClientController.index`
+     * `SaleController.index`
      */
 
     index: function (req, res) {
         Common.view(res.view,{
             page:{
-                icon:'fa fa-th-large'
+                icon:'fa fa-cubes'
                 ,name:'Ventas'
             }
         },req);
     },
 
     indexJson: function (req, res) {
-        return res.json({
-            todo: 'Not implemented yet!'
+        Sale.find().exec(function(err,sales){
+            res.json(sales);
         });
     },
 
   /**
-   * `ClientController.add`
+   * `SaleController.add`
    */
 
-  add: function (req, res) {
+  add : function (req,res){
+      Common.view(res.view,{
+          page:{
+              icon:'fa fa-cubes'
+              ,name:'Nueva Venta'
+          }
+      },req);
+  },
+
+  create: function (req, res) {
       var form = req.params.all() || {}
           , response = {
               status:false
@@ -54,15 +61,19 @@ module.exports = {
 
       });
   },
-
-
-
-
   /**
-   * `ClientController.edit`
+   * `SaleController.edit`
    */
 
-  edit: function (req, res) {
+  edit : function (req,res){
+      Common.view(res.view,{
+          page:{
+              icon:'fa fa-cubes'
+              ,name:'Nueva Venta'
+          }
+      },req);
+  },
+  update: function (req, res) {
       var id = req.params.id;
       Sale.findOne({id:id}).exec(function(err,sale){
           if(err) throw err;
@@ -81,5 +92,39 @@ module.exports = {
               });
           });
       });
-  }
+  },
+
+  clients : function(req,res){
+      Common.view(res.view,{
+          page:{
+              icon:'fa fa-cubes'
+              ,name:'Clientes'
+          }
+      },req);
+  },
+
+  addClient : function(req,res){
+      Common.view(res.view,{
+          page:{
+              icon:'fa fa-cubes'
+              ,name:'Cliente'
+          }
+      },req);
+  },
+
+    editClient : function(req,res){
+        Common.view(res.view,{
+            page:{
+                icon:'fa fa-cubes'
+                ,name:'Cliente'
+            }
+        },req);
+    },
+
+    clientsJson : function(req,res){
+        Sale_Client.find().exec(function(err,sales){
+            res.json(sales);
+        });
+    }
+
 };

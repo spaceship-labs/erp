@@ -13,9 +13,9 @@ module.exports = {
 
 		status	: { type: 'string' },
 
-		total_amount	: { type: 'decimal' },
+		total_amount	: { type: 'float' },
 
-		dtCreated	: { type: 'date' },
+		create_datetime	: { type: 'datetime' },
 
         client : {
             model : "Sale_Client"
@@ -32,5 +32,21 @@ module.exports = {
         }
 
 	}
+    ,afterCreate: function(val,cb){
+        Notifications.after(Sale,val,'create');
+        cb()
+    }
+    ,afterUpdate: function(val,cb){
+        Notifications.after(Sale,val,'update');
+        cb();
+    }
+    ,beforeUpdate:function(val,cb){
+        Notifications.before(val);
+        cb();
+    }
+    , beforeCreate: function(val,cb){
+        Notifications.before(val);
+        cb();
+    }
 
 };
