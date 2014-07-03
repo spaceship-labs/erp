@@ -10,7 +10,9 @@ module.exports = {
   attributes: {
 	//create
 	rates:'json'
-	,companyId:'string'//currency current form
+	,companyId:{
+		model:'companies'
+	}//currency current form
   }
 };
 
