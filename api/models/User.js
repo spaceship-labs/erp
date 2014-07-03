@@ -8,7 +8,9 @@
 module.exports = {
 
 	attributes: {
-		default_company:'integer'
+		default_company:{
+			model:'companies'
+		}
 		,email:'string'
 		,password:'string'
 		,role:'integer'
