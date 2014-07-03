@@ -25,18 +25,29 @@ body.loginpage{background: #282828}
 .page-description{color: #CCCCCC}
 .widgettitle{background: #EA4723;text-transform: uppercase;}
 .widgettitle span{font-size: 16px}
+.widgettitle a{color: #fff!important;text-transform: none!important;}
+.widgettitle a span{font-size: 16px;vertical-align: initial;}
 .widgetcontent{border: 2px solid #EA4723;}
 a, a:hover, a:link, a:active, a:focus{color: #EA4723}
 .btn-primary , .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary{background: #EA4723;border-color: #EA4723}
 .alphabets li span{color: #EA4723}
 
-.main-client{padding: 30px 12px}
+.main-client{margin-bottom: 6px;padding: 8px 12px}
 .main-client .client-info{margin-left: 95px}
 .main-client .client-info p{line-height: 16px}
-.commentlist li{min-height: 83px}
+
+.item-list{height: 186px;overflow: auto;padding-top: 5px}
+.item-list .item{line-height: 16px}
+.item-list .item + .item{border-top: 1px solid gray}
+
+.commentlist {height: 330px;overflow: auto}
+.commentlist li{min-height: 68px;padding: 8px 15px}
+.commentlist li img{width: 50px}
 .commentlist li p{margin: 0}
 
 .custom-table table{margin-bottom: 0!important;width: 100%}
+.custom-table table th{position: relative;}
+.custom-table table th:last-child:after{content: "";background: #EA4723;height: 100%;position: absolute;right: -1px;top: 0;width: 1px}
 .custom-table table th,.custom-table table td{font-size: 12px;padding: 6px;}
 .custom-table table th{background: #282828!important;border: none!important;color: #fff;font-size: 13px;}
 .custom-table table .table-icon{color: #282828;font-size: 15px}
@@ -55,7 +66,7 @@ a, a:hover, a:link, a:active, a:focus{color: #EA4723}
 
 .peoplelist .peoplewrapper{height: auto;}
 
-@media only screen and (max-width: 480px) {
+@media only screen and (max-width: 650px) {
 	/* Force table to not be like tables anymore */
 	.custom-table table,
 	.custom-table thead,
