@@ -66,6 +66,13 @@ a, a:hover, a:link, a:active, a:focus{color: #EA4723}
 
 .peoplelist .peoplewrapper{height: auto;}
 
+.input-large, .fileupload .uneditable-input , .chzn-container , .chzn-container-single .chzn-drop, form textarea{max-width: 100%}
+
+@media only screen and  (max-width: 1280px){
+	.widgettitle a.pull-right{display: block;float: none!important;margin-top: 2px}
+
+}
+
 @media only screen and (max-width: 650px) {
 	/* Force table to not be like tables anymore */
 	.custom-table table,
