@@ -1,0 +1,46 @@
+<div class="span7">
+	<div class="alert alert-block unseen">
+		<button data-dismiss="alert" class="close" type="button">×</button>
+		<h4>Mensaje</h4>
+			<p style="margin: 8px 0"></p>
+	</div>
+     <div class="widgetbox">
+     	<h4 class="widgettitle"><%=product.name%></h4>
+     	<div class="widgetcontent nopadding">                            
+     		<form action="/product/updateProduct" method="get" accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine commonForm" id="createProduct">
+			<input type="hidden" name='productID' value='<%=product.id%>' />
+			<%for(var i=0;i<fields.length;i++){ 
+				var field = fields[i];
+				var nowValue=product[field.name] || '';
+			%>
+	     			<p>
+	     				<label for="<%=field.name%>"><%=field.name%></label>
+	     				<span class="field">
+						<% if(field.type=='text'){%>
+		     					<input type="<%=field.type%>" name="<%=field.name%>" class="input-large" value="<%=nowValue%>" >
+						<% }else if(field.type=='textarea'){ %>
+		     					<textarea  name="<%=field.name%>" cols="30" rows="10" ><%=nowValue%></textarea>
+						<%}else if(field.type=='select'){%>
+		     					<select name='<%=field.name%>' class='chzn-select form-control large' data-placeholder="selecciona" >
+							<option value=""></option>
+							<%for(var v=0;v<field.values.length;v++){
+								var values = field.values[v];
+							%>
+	     							<option  value="<%=values%>" <%=nowValue==values?'selected':''%>><%=values%></option>
+							
+							<% }%>
+		     					</select>
+						<% }else if(field.type=='fecha'){ %>
+		     					<input type="date" name="<%=field.name%>" value="<%=nowValue%>">
+						<% } %>
+	     				</span>
+	     			</p>
+			<% } %>
+     			<p class="stdformbutton">
+     		                <button class="btn btn-primary">Guardar</button>
+     		                <button type="reset" class="btn">Resetear</button>
+     			</p>
+     		</form>
+     	</div>
+     </div>
+</div>
