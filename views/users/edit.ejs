@@ -70,38 +70,37 @@
   
         
 </div>
-<div class="span8">
-    <form action="/users/editAjax" class="editprofileform" method="post">
-        
-        <div class="widgetbox personal-information">
-            <h4 class="widgettitle">Información de la Empresa</h4>
-            <div class="widgetcontent">
-                <p><label for="name">Nombre:</label>
-                <span class="field"><input type="text" name="name" class="input-xlarge" value="<%= user.name %>"></span></p> 
+<div class="span8">        
+    <div class="widgetbox personal-information">
+        <h4 class="widgettitle">Información de la Empresa</h4>
+        <div class="widgetcontent">
+            <form action="/users/editAjax" class="editprofileform stdform stdform2" method="post">
 
-                <p><label for="last_name">Apellido</label>
-                <span class="field"><input type="text" name="last_name" class="input-xlarge" value="<%= user.last_name %>"></span></p>
-            
-                <p><label for="email">Email</label>
-                <span class="field"><input type="text" name="email" class="input-xlarge" value="<%=user.email %>"></span></p>
+                    <p><label for="name">Nombre:</label>
+                    <span class="field"><input type="text" name="name" class="input-xlarge" value="<%= user.name %>"></span></p> 
+
+                    <p><label for="last_name">Apellido</label>
+                    <span class="field"><input type="text" name="last_name" class="input-xlarge" value="<%= user.last_name %>"></span></p>
                 
-                <p><label for="phone">Telefono</label>
-                <span class="field"><input type="text" name="phone" class="input-xlarge" value="<%= user.phone %>"></span></p>
-                
-            </div>
+                    <p><label for="email">Email</label>
+                    <span class="field"><input type="text" name="email" class="input-xlarge" value="<%=user.email %>"></span></p>
+                    
+                    <p><label for="phone">Telefono</label>
+                    <span class="field"><input type="text" name="phone" class="input-xlarge" value="<%= user.phone %>"></span></p>
+                    <p class="stdformbutton">
+                    <%var active = {
+                        1:[0,'Desactivar']
+                        , 0:[1,'Activar']
+                    } %>
+                    
+                        <button type="submit" class="btn btn-primary">Actualizar Usuario</button> &nbsp; <a class="confirmbutton"  data-url="/users/" href="<%=active[user.active][0]%>"><%=active[user.active][1]%></a>
+                    </p>
+                    <input type="hidden" name="method" value="info" />
+                    <input type="hidden" name="userId" value="<%= user.id %>" />
+                </form>                
         </div>
+    </div>
         
-
-        <p>
-		<%var active = {
-			1:[0,'Desactivar']
-			, 0:[1,'Activar']
-		} %>
-        	<button type="submit" class="btn btn-primary">Actualizar Usuario</button> &nbsp; <a class="confirmbutton"  data-url="/users/" href="<%=active[user.active][0]%>"><%=active[user.active][1]%></a>
-        </p>
-        <input type="hidden" name="method" value="info" />
-	<input type="hidden" name="userId" value="<%= user.id %>" />
-    </form>
     <div>
     
 	    <%// partial('../global/notices') -%> 
