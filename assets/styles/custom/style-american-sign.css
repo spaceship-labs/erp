@@ -5,7 +5,7 @@ strong{font-weight: bold;}
 /*Global orange #EA4723*/
 
 /*Login page*/
-body.loginpage{background: #282828}
+body.loginpage{background: #282828;overflow: hidden;}
 .inputwrapper button{background: #EA4723;border:1px solid #EA4723;}
 .inputwrapper button:focus, .inputwrapper button:active, .inputwrapper button:hover{background: #de3a15;border:1px solid #de3a15;}
 /*---*/
