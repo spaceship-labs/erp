@@ -28,14 +28,15 @@ module.exports = {
 	}
 
 	,products: function(req,res){
-		Sales_type.find().exec(function(err,sales_type){
+		var select_company = req.session.select_company || req.user.select_company;
+		Product_type.find({company:select_company,user:req.user.id}).exec(function(err,product_type){
 			Common.view(res.view,{
 				page:{
 					description:'AQUI PODRAS VISUALIZAR Y ADMINISRAR TODOS TUS PRODUCTOS',
 					icon:'fa fa-cubes',
 					name:'Productos'
 				},	
-				sales_type:sales_type
+				product_type:product_type
 			});			
 		});
 	}
@@ -110,16 +111,43 @@ module.exports = {
 		});
 	}
 	,createProduct: function(req,res){
-		var form = req.params.all();
-		delete form.id;
-		delete form._;
+		var form = formValidate(req.params.all(),['name','product_type']);
 		if(form){
 			form.user = req.user.id;
 			form.company = req.session.select_company || req.user.select_company;
 			Product.create(form).exec(function(err,product){
-				if(err) return res.json('Ocurrio un error.');
-				res.json('Producto creado.');	
+				if(err) return res.json({text:'Ocurrio un error.'});
+				res.json({text:'Producto creado.',url:'/product/edit/'+product.id});
 			});	
+		}
+	}
+	,edit: function(req,res){
+		var id = req.param('id');
+		if(id){
+			Product.findOne({id:id}).exec(function(err,product){
+				Custom_fields.find({product:product.product_type}).exec(function(err,fields){
+					Common.view(res.view,{
+						product:product
+						,fields:fields
+					});
+				});
+			});
+		
+		}else
+			res.notFound();
+	
+	}
+	,updateProduct: function(req,res){
+		var form = req.params.all()
+		, id;
+		if(id = form.productID){
+			delete form.productID;
+			delete form.id;
+			delete form._;
+			Product.update({id:id},form).exec(function(err,product){
+				if(err) return res.json({text:'Ocurrio un error.'});
+				res.json({text:'Producto actualizado.'});			
+			});
 		}
 	}
 	,editCategory: function(req,res){
@@ -142,8 +170,9 @@ module.exports = {
 	, updateCategory: function(req,res){
 		var form = req.params.all();
 		if(form.catID){
-			form = formValidate(form,['catID','name','sales_type','description']);
-			Product_type.update({id:form.catID},form).exec(function(err,sale){
+			var id = form.catID;
+			form = formValidate(form,['name','sales_type','description']);
+			Product_type.update({id:id},form).exec(function(err,sale){
 				if(err) return res.json({text:'Ocurrio un error.'});
 				res.json({text:'Categoria actualizada.'});
 			});	

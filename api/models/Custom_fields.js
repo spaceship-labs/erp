@@ -9,15 +9,9 @@ module.exports = {
 
 	attributes: {
 		name:'string'
-		,user:{
-			model:'user'
-		}
-		,company:{
-			model:'companies'
-		}
 		,type:{
 			type:'string'
-			,enum:['text','textarea','select']
+			,enum:['text','textarea','select','fecha']
 		}
 		,values:'array'
 	  	,product:{

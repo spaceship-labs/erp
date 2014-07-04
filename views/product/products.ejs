@@ -1,32 +1,44 @@
 <div ng-controller="productCTL">
-    <%- partial('type_product_modal') -%> 
-   <div class="span6">
-   <div class="alert alert-block unseen">
-	<button data-dismiss="alert" class="close" type="button">×</button>
-	<h4>Mensaje</h4>
-		<p style="margin: 8px 0"></p>
-   </div>
+    <% //partial('type_product_modal') -%> 
+   <div class="span5">
+	<div class="alert alert-block unseen">
+		<button data-dismiss="alert" class="close" type="button">×</button>
+		<h4>Mensaje</h4>
+			<p style="margin: 8px 0"></p>
+	</div>
 	<div class="widgetbox">
-		<h4 class="widgettitle">Nuevo: {{product.name}}</h4>
-		<div class="widgetcontent nopadding">                            
-			<form action="/product/createProduct" method="get" accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine" id="createProduct">
-				<p ng-repeat="field in product.fields">
-					<label for="{{field.name}}">{{field.name}}</label>
-					<span class="field">
-						<input type="{{field.type}}" name="{{field.name}}" class="input-large" ng-if="field.type=='text'">
-						<textarea  name="{{field.name}}" cols="30" rows="10" ng-if="field.type=='textarea'"></textarea>
-						<select name='{{field.name}}' class='chzn-select form-control large' data-placeholder="Agregar tipo" ng-if="field.type=='select'">
-							<option ng-repeat="v in field.values" value="{{v}}">{{v}}</option>
-						</select>
-					</span>
-				</p>
-				<p class="stdformbutton">
-			                <button class="btn btn-primary">Guardar</button>
-			                <button type="reset" class="btn">Resetear</button>
-				</p>
-				<input type="hidden"  name="product_type" value="{{product.id}}"/>
-			</form>
+		<h4 class="widgettitle">Nuevo producto</h4>
+		<div class="widgetcontent nopadding">
+	      <form 
+		      action="/product/createProduct"
+		      class='stdform stdform2 commonForm'
+	      />
+			<p>
+				<label for="type">Categoria</label>
+				<span class="field">
+					<select name='product_type' class='chzn-select form-control large' data-placeholder="Selecciona un tipo" ng-model="typeModel" >
+
+							<% for(var i=0;i<product_type.length;i++){ %>
+								<option value='<%=product_type[i].id%>'><%=product_type[i].name%></option>
+							<%}%>
+					</select>
+				</span>
+			</p>
+			<p>
+				<label for="name">Nombre*</label>
+				<span class="field">
+					<input type="text" name='name' />
+				</span>
+			</p>
+			<p class="stdformbutton">
+				<button class="btn btn-primary">Guardar</button>
+		                <button type="reset" class="btn">Resetear</button>
+			</p>
+	</form>
+
+		
 		</div>
 	</div>
+
    </div>
 </div>

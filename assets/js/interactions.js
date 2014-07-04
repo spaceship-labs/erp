@@ -82,8 +82,16 @@ jQuery(function($){
 				taglist.append(template);
 			}
 			
-		});		
+		});
 	}
+	//TODO limpiar lo que no se usa
+	jQuery('form.commonForm').ajaxForm(function(data){
+		if(data){
+			jQuery('.alert p').text(data.text).parent().removeClass('unseen');
+			if(data.url)
+				window.location.href = data.url;
+		}
+	});
 });
 
 function updateChosen(select){
