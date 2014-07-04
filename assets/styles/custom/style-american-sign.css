@@ -1,4 +1,5 @@
 /*American Sign*/
+body{min-width: 290px}
 .header{background: #171617}
 strong{font-weight: bold;}
 .row .row{max-width: 100%;margin: 0}
@@ -17,6 +18,7 @@ body.loginpage{background: #282828;overflow: hidden;}
 .userloggedinfo img{border-radius: 50%}
 
 .nav-tabs.nav-stacked > li.active > a, .nav-tabs.nav-stacked > li.active > a:hover, .nav-tabs.nav-stacked > li.active > a:focus{background:#EA4723!important;}
+.leftpanel{left: 0;position: absolute;top: 140px;z-index: 0}
 .leftmenu .nav-header{color: #fff}
 .leftmenu .nav-tabs.nav-stacked > li.active > a{background-color: #EA4723;border-bottom-color: #EA4723;}
 
@@ -60,6 +62,8 @@ a, a:hover, a:link, a:active, a:focus{color: #EA4723}
 .buttons-box .button-orange + .button-orange{margin-left: 4px}
 .buttons-box .button-orange:hover{background: #EA4723;color: #fff}
 .btn-default:hover, .btn-default:focus, .btn-default:active, .btn-default.active, .open .dropdown-toggle.btn-default{background: #EA4723;border-color: #EA4723;color: #fff;}
+
+.profilethumb .submit-button{margin-top: 12px}
 
 /*Dropdowns*/
 .dropdown-menu>li>a:hover, .dropdown-menu>li>a:focus, .dropdown-menu>.active>a, .dropdown-menu>.active>a:hover, .dropdown-menu>.active>a:focus{background: #EA4723!important}
