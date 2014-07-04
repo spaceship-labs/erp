@@ -25,7 +25,7 @@ body.loginpage{background: #282828}
 .page-description{color: #CCCCCC}
 .widgettitle{background: #EA4723;text-transform: uppercase;}
 .widgettitle span{font-size: 16px}
-.widgettitle a{color: #fff!important;text-transform: none!important;}
+.widgettitle a{color: #fff!important;text-decoration: underline;text-transform: none!important;}
 .widgettitle a span{font-size: 16px;vertical-align: initial;}
 .widgetcontent{border: 2px solid #EA4723;}
 a, a:hover, a:link, a:active, a:focus{color: #EA4723}
@@ -69,7 +69,7 @@ a, a:hover, a:link, a:active, a:focus{color: #EA4723}
 .input-large, .fileupload .uneditable-input , .chzn-container , .chzn-container-single .chzn-drop, form textarea{max-width: 100%}
 
 @media only screen and  (max-width: 1280px){
-	.widgettitle a.pull-right{display: block;float: none!important;margin-top: 2px}
+	.widgettitle a.pull-right{display: block;float: none!important;padding-top: 2px}
 
 }
 
