@@ -191,7 +191,7 @@ module.exports = {
 								,height:wh[1]
 							}
 							im.crop(opts,function(err,stdout,stderr){
-								if(err) return cb && cb(err);
+								if(err) return res.json({text:'Ocurrio un error.'});
 								if(prefix==v){
 									fs.createReadStream(dirSave+v+fileName).pipe(fs.createWriteStream(dirPublic+v+fileName))
 									.on('finish',function(){
