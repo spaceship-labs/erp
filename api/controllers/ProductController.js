@@ -4,7 +4,8 @@
  * @description ::
  * @docs        :: http://sailsjs.org/#!documentation/controllers
  */
-
+var fs = require('fs')
+, im = require('imagemagick');
 module.exports = {
 	index: function(req,res){
 		Sales_type.find().exec(function(err,sales_type){
@@ -146,8 +147,69 @@ module.exports = {
 			delete form._;
 			Product.update({id:id},form).exec(function(err,product){
 				if(err) return res.json({text:'Ocurrio un error.'});
-				res.json({text:'Producto actualizado.'});			
+				res.json({text:'Producto actualizado.'});
 			});
+		}
+	}
+	,productGalleryJson: function(req,res){
+		var id = req.param('id');
+		Product.findOne({id:id}).exec(function(err,product){
+			if(err) return res.json(false);
+			res.json(product.gallery || []);
+		});
+	}
+	,addGallery: function(req,res){
+		var form = req.params.all()
+		, id
+		, dirSave = __dirname+'/../../assets/uploads/gallery/'
+		, dirPublic =  __dirname+'/../../.tmp/public/uploads/gallery/'
+		, measuresIcon = ["350x150"]//?
+		, prefix = "350x150";
+		if(id = form.productID){
+			Product.findOne({id:id}).exec(function(err,product){
+				if(err) return res.json({text:'Ocurrio un error.'});
+				var files = req.file && req.file('img')._files || []
+				,fileName = new Date().getTime();
+				if(files.length){
+					var ext = files[0].stream.filename.split('.');
+					if(ext.length){
+						ext = ext[ext.length-1];
+						fileName += '.'+ext;
+					}
+				}
+				req.file('img').upload(dirSave+fileName,function(err,files){
+					product.gallery = product.gallery || [];
+					product.gallery.push(fileName);
+					product.save(function(err){
+						if(err) return res.json({text:'Ocurrio un error.'});
+						measuresIcon.forEach(function(v){
+							var wh = v.split('x')
+							, opts = {
+								srcPath:dirSave+fileName
+								,dstPath:dirSave+v+fileName
+								,width:wh[0]
+								,height:wh[1]
+							}
+							im.crop(opts,function(err,stdout,stderr){
+								if(err) return cb && cb(err);
+								if(prefix==v){
+									fs.createReadStream(dirSave+v+fileName).pipe(fs.createWriteStream(dirPublic+v+fileName))
+									.on('finish',function(){
+										//return cb && cb(null,"/uploads/gallery/"+prefix+fileName);
+
+										res.json({img:"/uploads/gallery/"+prefix+fileName});
+									}).on('error',function(){
+										//return cb && cb(true);
+										res.json({text:'Ocurrio un error.'});
+									});
+									
+								}
+							});
+						});
+					});
+				});
+			});
+		
 		}
 	}
 	,editCategory: function(req,res){
@@ -189,6 +251,15 @@ module.exports = {
 		Custom_fields.destroy({id:fieldID}).exec(function(err){
 			if(err) return res.json({text:'Ocurrio un error.'});
 			res.json({text:'Campo eliminado.'});
+		});
+	}
+	, list: function(req,res){
+		var select_company = req.session.select_company || req.user.select_company;
+		Product.find({company:select_company,user:req.user.id}).populate("product_type").exec(function(err,products){
+			if(err) throw err;
+			Common.view(res.view,{
+				products:products
+			});
 		});
 	}
 };

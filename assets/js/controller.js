@@ -194,6 +194,26 @@ app.controller('productCTL',function($scope){
 
 });
 
+app.controller('galleryCTL',function($scope){
+	jQuery('form.gallery').ajaxForm(function(data){
+		if(data && data.img){
+			updateContent();
+		}else{
+			jQuery('.alert p').text(data.text).parent().removeClass('unseen');
+		}
+	});
+	
+	var updateContent = function(){
+		jQuery.get('/product/productGalleryJson',{id:jQuery('input[name="productID"]').val()},function(data){
+			if(data){
+				$scope.imgs = data;
+				$scope.$apply();
+			}
+		});
+	};
+	updateContent();
+});
+
 app.controller('salesCTL',function($scope){
     jQuery('form').ajaxForm(function(data){
         if(data){
