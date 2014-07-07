@@ -16,6 +16,20 @@
 				</span>
 				
 			</p>
+			<p>
+				<label for="description">Descripción</label>
+	     			<span class="field">
+					<input type="text" name="description" value="<%=product.description || ''%>" />
+				</span>
+				
+			</p>
+			<p>
+				<label for="price">Precio</label>
+	     			<span class="field">
+					<input type="text" name="price" value="<%=product.price || ''%>" />
+				</span>
+				
+			</p>
 			<%for(var i=0;i<fields.length;i++){ 
 				var field = fields[i];
 				var nowValue=product[field.name] || '';

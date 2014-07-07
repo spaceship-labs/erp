@@ -12,10 +12,10 @@ module.exports = {
 			if(err) throw err;
 			Common.view(res.view,{
 				page:{
-					description:'AQUI PODRAS VISUALIZAR Y ADMINISRAR TODOS TUS PRODUCTOS',
+					description:'AQUI PODRAS AGREGAR TUS CATEGORIAS',
 					icon:'fa fa-cubes',
-					name:'Productos'
-				},				
+					name:'Categorias'
+				},
 				sales_type:sales_type
 			});		
 		});
@@ -33,7 +33,7 @@ module.exports = {
 		Product_type.find({company:select_company,user:req.user.id}).exec(function(err,product_type){
 			Common.view(res.view,{
 				page:{
-					description:'AQUI PODRAS VISUALIZAR Y ADMINISRAR TODOS TUS PRODUCTOS',
+					description:'AQUI PODRAS AGREGAR TUS PRODUCTOS',
 					icon:'fa fa-cubes',
 					name:'Productos'
 				},	
@@ -76,10 +76,10 @@ module.exports = {
 			if(err) throw err;
 				Common.view(res.view,{
 					page:{
-						description:'AQUI PODRAS VISUALIZAR Y ADMINISRAR TODOS TUS PRODUCTOS'
+						description:'AQUI PODRAS VISUALIZAR Y ADMINISRAR TODAS TUS CATEGORIAS'
 						,icon:'fa fa-cubes'
-						,name:'Productos'
-					}			
+						,name:'CATEGORIAS'
+					}
 					, products:products	
 				});
 
@@ -258,7 +258,12 @@ module.exports = {
 		Product.find({company:select_company,user:req.user.id}).populate("product_type").exec(function(err,products){
 			if(err) throw err;
 			Common.view(res.view,{
-				products:products
+				page:{
+					description:'AQUI PODRAS VISUALIZAR Y ADMINISRAR TODOS TUS PRODUCTOS'
+					,icon:'fa fa-cubes'
+					,name:'PRODUCTOS'
+				}
+				, products:products
 			});
 		});
 	}
