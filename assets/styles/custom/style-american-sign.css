@@ -65,12 +65,15 @@ a, a:hover, a:link, a:active, a:focus{color: #EA4723}
 
 .profilethumb .submit-button{margin-top: 12px}
 
+.form-currencies button{margin: 10px 0}
+
+
 /*Dropdowns*/
 .dropdown-menu>li>a:hover, .dropdown-menu>li>a:focus, .dropdown-menu>.active>a, .dropdown-menu>.active>a:hover, .dropdown-menu>.active>a:focus{background: #EA4723!important}
 
 .peoplelist .peoplewrapper{height: auto;}
 
-.input-large, .fileupload .uneditable-input , .chzn-container , .chzn-container-single .chzn-drop, form textarea{max-width: 100%}
+.field input , .input-large, .fileupload .uneditable-input , .chzn-container , .chzn-container-single .chzn-drop, form textarea{max-width: 100%;width: 100%!important}
 
 @media only screen and  (max-width: 1280px){
 	.widgettitle a.pull-right{display: block;float: none!important;padding-top: 2px}

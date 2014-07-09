@@ -56,7 +56,7 @@
 			</li>
 
                 </ul>
-                <form id="addApps" action="/users/add_app" method="post" ng-submit="addApp(); $event.preventDefault()">
+                <form id="addApps" action="/users/add_app" method="post" ng-submit="addApp(); $event.preventDefault()" class="stdform">
                     <p>
                         <select name="app_input" class="chzn-select" ng-model="selectApp">
 				<option ng-repeat="ap in apps" value="{{ap.controller}}">{{ap.name}}</option>
