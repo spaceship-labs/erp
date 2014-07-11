@@ -7,122 +7,152 @@
 
 module.exports = {
 
-    /**
-     * `SaleController.index`
-     */
 
     index: function (req, res) {
-        Common.view(res.view,{
-            page:{
-                icon:'fa fa-cubes'
-                ,name:'Ventas'
-            }
-        },req);
+        var select_company = req.session.select_company || req.user.select_company;
+        Sale.find({ company : select_company }).exec(function (err,sales){
+            Common.view(res.view,{
+                page:{
+                    icon:'fa fa-exchange'
+                    ,name:'Ventas'
+                },
+                sales : sales
+            },req);
+        });
+
     },
 
     indexJson: function (req, res) {
-        Sale.find().exec(function(err,sales){
+        var select_company = req.session.select_company || req.user.select_company;
+        Sale.find({ company : select_company }).exec(function(err,sales){
             res.json(sales);
         });
     },
 
-  /**
-   * `SaleController.add`
-   */
-
   add : function (req,res){
-      Common.view(res.view,{
-          page:{
-              icon:'fa fa-cubes'
-              ,name:'Nueva Venta'
-          }
-      },req);
-  },
-
-  create: function (req, res) {
-      var form = req.params.all() || {}
-          , response = {
-              status:false
-              , msg:'ocurrio un error'
-          };
-      delete form.id;
-      form.active = 1;
-      form.req = req;
-      Sale.create(form).exec(function(err,client){
-          if(err) return res.json(response);
-          update.icon(req,{clientId:client.id},function(err,files){
-              if(err)  return res.json(response);
-              res.json({
-                  status:true
-                  , msg:'La venta se creo exitosamente'
-              });
-          });
-
-
-      });
-  },
-  /**
-   * `SaleController.edit`
-   */
-
-  edit : function (req,res){
-      Common.view(res.view,{
-          page:{
-              icon:'fa fa-cubes'
-              ,name:'Nueva Venta'
-          }
-      },req);
-  },
-  update: function (req, res) {
-      var id = req.params.id;
-      Sale.findOne({id:id}).exec(function(err,sale){
-          if(err) throw err;
-          var find = {}
-          find['sale.'+id] = {$exists:1};
-          User.find(find).exec(function(err,users){
-              Apps.find({controller:{$in:company.app}}).exec(function(err,apps){
-                  Apps.find({controller:{'!':company.app}}).exec(function(err,allApps){
-                      Common.view(res.view,{
-                          company:company || {}
-                          , users:users || []
-                          ,apps: apps||[]
-                          ,allApps:allApps || []
-                      },req);
-                  });
+      var select_company = req.session.select_company || req.user.select_company;
+      SaleClient.find({ company : select_company }).exec(function (err,clients){
+          Product.find({ company : select_company }).exec(function (err,products){
+              Common.view(res.view,{
+                  page:{
+                      icon:'fa fa-exchange'
+                      ,name:'Nueva Venta'
+                  },
+                  clients : clients || [],
+                  products : products || []
               });
           });
       });
+
   },
 
-  clients : function(req,res){
-      Common.view(res.view,{
-          page:{
-              icon:'fa fa-cubes'
-              ,name:'Clientes'
-          }
-      },req);
-  },
+    create : function(req,res){
+        console.log(req.params);
+        var form = Common.formValidate(req.params.all(),['client_id','products']);
+        if(form){
+            form.user = req.user.id;
+            form.company = req.session.select_company || req.user.select_company;
+            var createSale = req.params.fromSale;
+            Sale.create(form).exec(function(err,sale){
+                if(err) return res.json({text:'Ocurrio un error.'});
+                if (createSale) {
+                    res.json({text:'Venta creada.',url:'/sale/addnext/'+saleClient.id});
+                } else {
+                    res.json({text:'Venta creada.',url:'/clients/edit/'+saleClient.id});
+                }
 
-  addClient : function(req,res){
-      Common.view(res.view,{
-          page:{
-              icon:'fa fa-cubes'
-              ,name:'Cliente'
-          }
-      },req);
-  },
-
-    editClient : function(req,res){
-        Common.view(res.view,{
-            page:{
-                icon:'fa fa-cubes'
-                ,name:'Cliente'
-            }
-        },req);
+            });
+        }
     },
 
-    clientsJson : function(req,res){
-        Sale_Client.find().exec(function(err,sales){
+      edit : function (req,res){
+          var id = req.param('id');
+          if (id){
+              Sale.findOne({id:id}).exec(function(err,sale){
+                  Common.view(res.view,{
+                      page:{
+                          icon:'fa fa-cubes'
+                          ,name:'Nueva Venta'
+
+                      },
+                      sale : sale || []
+                  });
+              });
+          } else
+            res.notFound();
+      },
+
+      clients : function(req,res){
+          var select_company = req.session.select_company || req.user.select_company;
+          SaleClient.find({ company : select_company }).exec(function (err,clients){
+              Common.view(res.view,{
+                  page:{
+                      icon:'fa fa-users'
+                      ,name:'Clientes'
+                  },
+                  clients : clients || []
+              });
+          });
+
+      },
+
+      addClient : function(req,res){
+          Common.view(res.view,{
+              page:{
+                  icon:'fa fa-users'
+                  ,name:'Cliente'
+              }
+          },req);
+      },
+
+
+
+    editClient : function(req,res){
+        var id = req.param('id');
+        var company = req.session.select_company || req.user.select_company;
+        if (id){
+            SaleClient.findOne({id:id,company : company }).exec(function(err,saleClient){
+                Sale.find().exec(function (err,sales){
+                    Common.view(res.view,{
+                        page:{
+                            icon:'fa fa-users'
+                            ,name:'Editar Cliente'
+
+                        },
+                        client : saleClient || [],
+                        sales : sales || []
+                    });
+                });
+            });
+        } else
+            res.notFound();
+    },
+
+    updateClient: function(req,res){
+        var form = Common.formValidate(req.params.all(),['id','name','address','phone','rfc']);
+        if(form){
+            Sale.update({id:form.id},form).exec(function(err,saleClient){
+                if(err) return res.json({text:'Ocurrio un error.'});
+                res.json({text:'Cliente actualizado.'});
+            });
+        }
+    },
+
+    createClient : function(req,res){
+        var form = Common.formValidate(req.params.all(),['name','address','phone','rfc']);
+        if(form){
+            form.user = req.user.id;
+            form.company = req.session.select_company || req.user.select_company;
+            SaleClient.create(form).exec(function(err,saleClient){
+                if(err) return res.json({text:err});
+                res.json({text:'Cliente creado.',url:'/clients/edit/'+saleClient.id});
+            });
+        }
+    },
+
+    clientsJson: function (req, res) {
+        var select_company = req.session.select_company || req.user.select_company;
+        SaleClient.find({ company : select_company }).exec(function(err,sales){
             res.json(sales);
         });
     }

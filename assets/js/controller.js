@@ -221,99 +221,95 @@ app.controller('productCTL',function($scope){
 app.controller('salesCTL',function($scope){
     jQuery('form').ajaxForm(function(data){
         if(data){
-            updateContent();
             jQuery('.alert p').text(data.text).parent().removeClass('unseen');
-
+            if(data.url)
+                window.location.href = data.url;
         }
     });
-
-    var updateContent = function(){
-        jQuery.get('/sale/indexJson',function(data){
-            $scope.fields = data;
-            $scope.$apply();
-            //updateChosen();
-        });
-    };
-
-    updateContent();
 });
 
-app.controller('saleAddCTL',function($scope){
-    jQuery('form').ajaxForm(function(data){
-        if(data){
-            updateContent();
-            jQuery('.alert p').text(data.text).parent().removeClass('unseen');
+app.controller('saleAddCTL',function($scope) {
+    $scope.selectedProducts = {};
+    $scope.products = [{Id: "1",Name: "Soap", Price: "25",Quantity : 1},
+                      {Id:"2",Name: "Shaving cream", Price: "50",Quantity : 1},
+                      {Id:"3",Name: "Shampoo", Price: "100",Quantity : 1}];
+    $scope.clients = {};
 
-        }
-    });
+    $scope.update = function () {
+        //jQuery.get('/product/productsJson',{}, function (products) {//{selected: $scope.selectedProducts},
+            //$scope.products = products;
+            //$scope.$apply();
+        //});
 
-    var updateContent = function(){
-        jQuery.get('/client/indexJson',function(data){
-            $scope.fields = data;
+        jQuery.get('/sale/clientsJson',{}, function (clients) {//{selected: $scope.selectedProducts},
+            $scope.clients = clients;
             $scope.$apply();
         });
     };
 
-    updateContent();
+    $scope.update();
+
+    $scope.addProduct = function (product) {
+
+        $scope.selectedProducts.push(product);
+
+        var index = $scope.products.indexOf(product);
+        $scope.products.splice(index, 1);
+
+        $scope.$apply();
+    };
+
+    $scope.removeProduct = function (product) {
+
+        $scope.products.push(product);
+
+        var index = $scope.selectedProducts.indexOf(product);
+        $scope.selectedProducts.splice(index, 1);
+
+        $scope.$apply();
+    };
+
+    $scope.totalPrice = function (){
+        var total = 10;
+        for (var count = 0; count < $scope.selectedProducts.length; count++) {
+            total += $scope.selectedProducts[count].Price * $scope.selectedProducts[count].Quantity;
+        }
+        return total;
+    };
+
+    $scope.partialPrice = function (price,quantity) {
+        return price*quantity;
+    };
 });
 
 app.controller('saleEditCTL',function($scope){
-    alert(id);
-    var saleId = jQuery('#sale_id').val();
     jQuery('form').ajaxForm(function(data){
         if(data){
-            updateContent();
             jQuery('.alert p').text(data.text).parent().removeClass('unseen');
-
+            if(data.url)
+                window.location.href = data.url;
         }
     });
-
-    var updateContent = function(){
-        jQuery.get('/sale/edit/' + saleId,function(data){
-            $scope.fields = data;
-            $scope.$apply();
-        });
-    };
-
-    updateContent();
 });
 
 app.controller('clientAddCTL',function($scope){
     jQuery('form').ajaxForm(function(data){
         if(data){
-            updateContent();
             jQuery('.alert p').text(data.text).parent().removeClass('unseen');
-
+            if(data.url)
+                window.location.href = data.url;
         }
     });
-
-    var updateContent = function(){
-        jQuery.get('/clients/indexJson',function(data){
-            $scope.fields = data;
-            $scope.$apply();
-        });
-    };
-
-    updateContent();
 });
 
 app.controller('clientEditCTL',function($scope){
     jQuery('form').ajaxForm(function(data){
         if(data){
-            updateContent();
             jQuery('.alert p').text(data.text).parent().removeClass('unseen');
-
+            if(data.url)
+                window.location.href = data.url;
         }
     });
-
-    var updateContent = function(){
-        jQuery.get('/clients/indexJson',function(data){
-            $scope.fields = data;
-            $scope.$apply();
-        });
-    };
-
-    updateContent();
 });
 
 function updateNotices($scope,url,dt,cb){

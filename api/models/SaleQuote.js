@@ -9,32 +9,31 @@ module.exports = {
 
 	attributes: {
 
-		name	: { type: 'string' },
+        total_amount : { type : 'float' },
 
-        description : { type : 'string'},
+        status : { type : 'string',enum : ['approved','status1','status2'] },
 
-        amount  : { type:'float' },
+        fileName : { type: 'string' },//se genera el pdf ?
 
-        file    : { type: 'string' },
-
-        create_datetime : { type : 'datetime' },
-
-        user : {
-            model : 'User'
-        },
+        user : { type : 'string' },
 
         sale : {
             model : "Sale"
-        }
+        },
 
+        products : {
+            collection : "Product",
+            via : "quoteProducts",
+            through: 'salequoteproducts'
+        }
 
 	}
     ,afterCreate: function(val,cb){
-        Notifications.after(Sale_Invoice,val,'create');
+        Notifications.after(SaleQuote,val,'create');
         cb()
     }
     ,afterUpdate: function(val,cb){
-        Notifications.after(Sale_Invoice,val,'update');
+        Notifications.after(SaleQuote,val,'update');
         cb();
     }
     ,beforeUpdate:function(val,cb){

@@ -1,7 +1,20 @@
 <div ng-controller="saleCTL">
     <div class="row-fluid">
         <div class="col-md-12">
-            <!--<h4 class="widgettitle"><span class="iconfa-pencil"></span> Ventas</h4>-->
+            <div class="buttons-box">
+                <!-- Single button -->
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default button-orange dropdown-toggle" data-toggle="dropdown">
+                        <span class="table-icon fa fa-filter"></span> FILTROS <span class="fa fa-caret-down"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                    </ul>
+                </div>
+                <a href="/sale/add" class="btn btn-default button-orange"><span class="table-icon fa fa-plus"></span> AGREGAR VENTA</a>
+            </div>
             <div class="widgetcontent custom-table nopadding">
                 <table class="table table-striped">
                     <tr>

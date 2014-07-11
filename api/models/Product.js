@@ -10,7 +10,13 @@ module.exports = {
   attributes: {
 	product_type:{
 		model:'product_type'
-	}
+	},
+      saleQuotes : {
+          collection : "SaleQuote",
+          via : "products",
+          through: 'salequoteproducts'
+      }
+
   }
 };
 

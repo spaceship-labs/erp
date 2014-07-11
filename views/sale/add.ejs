@@ -3,45 +3,57 @@
         <div class="alert alert-block unseen">
             <button data-dismiss="alert" class="close" type="button">×</button>
             <h4>Mensaje</h4>
-            <p style="margin: 8px 0">El usuario se ha actualizado exitosamente</p>
+            <p style="margin: 8px 0">La venta se ha creado exitosamente</p>
         </div>
         <div class="widgetbox">
-            <h4 class="widgettitle">Escoger cliente existente</h4>
             <div class="widgetcontent nopadding">
-                <form action="/client/add" method="get" accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine">
+                <h4 class="widgettitle">Cliente</h4>
+                <form action="/sale/create" method="get" accept-charset="utf-8" class="stdform stdform2 ng-pristine">
                     <p>
-                        <label>Selecciona : </label>
-						<span class="field">
-                            <select name='name' class='chzn-selects form-control large' data-placeholder="Escoger" ng-model="nameModel">
-                                <option value='1'>Salvador Barron</option>
+                        <label for="client_id">Selecciona un cliente :</label>
+						<span class="field dualselect">
+                            <select name='client_id' id='client_id' class='chzn-select form-control large' data-placeholder="Selecciona ..." >
+                                <% for(var i=0;i>clients.length;i++) {%>
+                                    <option value="<%= clients[i].id %>"><%= clients[i].name %></option>
+                                <% } %>
                             </select>
+                            <a href="/clients/add"><button class="btn btn-default pull-right">Crear Nuevo</button></a>
                         </span>
                     </p>
-                    <p class="stdformbutton">
-                        <button class="btn btn-primary">Guardar</button>
-                    </p>
-                </form>
-            </div>
-
-            <h4 class="widgettitle">Agregar nuevo cliente</h4>
-            <div class="widgetcontent nopadding">
-                <form action="/client/add" method="get" accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine">
+                    <h4 class="widgettitle">Productos</h4>
                     <p>
-                        <label for="name">Nombre*</label>
-                        <span class="field"><input type="text" name="name" class="input-large"></span>
-                    </p>
+                        <label for="products">Selecciona los productos :</label>
+                        <span class="dualselect field">
+                            <select name='products' id='products' class='chzn-select form-control large' data-placeholder="Selecciona ..." >
+                                <option ng-repeat="product in products" value="{{product.Id}}">{{product.Name}}</option>
+                            </select>
+                            <button class="btn btn-default pull-right" ng-click="addProduct()">Agregar</button>
+                        </span>
                     <p>
-                        <label for="description">Direccion*</label>
-                        <span class="field"><input type="text" name="address" class="input-large"></span>
-                    </p>
                     <p>
-                        <label for="price">RFC*</label>
-                        <span class="field"><input type="text" name="RFC" class="input-large"></span>
-                    </p>
-                    <p>
-                        <label for="fields">Telefono</label>
-                        <span class="field"><input type="text" name="RFC" class="input-large"></span>
-					</span>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Producto</th>
+                                    <th>Cantidad</th>
+                                    <th>Precio Unitario</th>
+                                    <th>Precio</th>
+                                    <th>Eliminar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="sp in selectedProducts">
+                                    <td>{{sp.Name}}</td>
+                                    <td><input type="text" id="spinner{{sp.Id}}" name="product[].Quantity" class="input-small input-spinner" maxlength="3" value="{{sp.Quantity}}"></td>
+                                    <td>test is a test</td>
+                                    <td colspan="3">{{totalPrice(sp.Price,sp.Quantity)}}</td>
+                                    <td><input type="button" value="Remove" ng-click="removeItem($index)" /></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="amountdue">
+                            <h1><span>Total:</span> {{totalPrice()}}</h1> <br>
+                        </div>
                     </p>
                     <p class="stdformbutton">
                         <button class="btn btn-primary">Guardar</button>
