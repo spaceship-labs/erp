@@ -191,31 +191,27 @@ app.controller('addProductCTL',function($scope){
 });
 
 app.controller('productCTL',function($scope){
-	var modal = jQuery('#modalType');
-	modal.modal();
-	$scope.update = function(){
-		jQuery.get('/product/productsJson',{type:$scope.typeModel},function(products){
-			$scope.products = products;
-			$scope.$apply();
+
+});
+
+app.controller('galleryCTL',function($scope){
+	jQuery('form.gallery').ajaxForm(function(data){
+		if(data && data.img){
+			updateContent();
+		}else{
+			jQuery('.alert p').text(data.text).parent().removeClass('unseen');
+		}
+	});
+	
+	var updateContent = function(){
+		jQuery.get('/product/productGalleryJson',{id:jQuery('input[name="productID"]').val()},function(data){
+			if(data){
+				$scope.imgs = data;
+				$scope.$apply();
+			}
 		});
 	};
-	
-	$scope.update();
-	$scope.selectProduct = function(){
-		if($scope.nameModel){
-			jQuery.get('/product/productJson',{id:$scope.nameModel},function(product){
-				$scope.product = product;
-				$scope.$apply();
-				modal.modal('toggle');
-			});
-		}
-	};
-	$scope.cancel = function(){
-		window.location.href = "/";
-	};
-	jQuery('form#createProduct').ajaxForm(function(status){
-		jQuery('.alert').removeClass('unseen').find('p').text(status);
-	});
+	updateContent();
 });
 
 app.controller('salesCTL',function($scope){

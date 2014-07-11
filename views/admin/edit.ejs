@@ -19,8 +19,8 @@
             <div class="profilethumb">
                 <img src="/uploads/companies/177x171<%=company.icon%>">
                 <form action="/admin/editAjax" method="post" accept-charset="utf-8" enctype="multipart/form-data" class="hidden" id="change-icon">
-		    <input type="hidden" name='method' value='icon' />
-		    <input type="hidden" name='userId' value='<%=company.id%>' />
+	                <input type="hidden" name='method' value='icon' />
+                    <input type="hidden" name='userId' value='<%=company.id%>' />
                     <hr>
                     <span class="field">
                         <span class="fileupload fileupload-new" data-provides="fileupload">
@@ -38,7 +38,9 @@
                             </span>
                         </span>
                     </span>
-                    <button type="submit" class="btn btn-primary">Actualizar Icono</button>
+                    <p class="stdformbutton">
+                        <button type="submit" class="btn btn-primary">Actualizar Icono</button>                        
+                    </p>
                 </form>
             </div><!--profilethumb-->
         </div>
@@ -49,22 +51,22 @@
             <h4 class="widgettitle">Aplicaciones</h4>
             <div class="widgetcontent">
                 <ul class="taglist">
-			<%for(var i=0;i<apps.length;i++){%>
-				<li><a href="<%=apps[i].controller%>"><%=apps[i].name%><span class="close">×</span></a></li>
-			<% } %>
-		</ul>
-
+    			<%for(var i=0;i<apps.length;i++){%>
+    				<li><a href="<%=apps[i].controller%>"><%=apps[i].name%><span class="close">×</span></a></li>
+    			<% } %>
+    		    </ul>
+                <hr>
                 <form id="addApps" action="/admin/companies/add_app" method="post">
-                    <p>
-                        <select name="app_input">
-				<%for(var i=0;i<allApps.length;i++){ %>
-					<option value="<%=allApps[i].controller%>"><%=allApps[i].name%></option>
-				<% } %>
-			</select>
+                        <p>
+                        <span class="field"><select name="app_input" class="chzn-select">
+    				    <%for(var i=0;i<allApps.length;i++){ %>
+    					   <option value="<%=allApps[i].controller%>"><%=allApps[i].name%></option>
+    				    <% } %>
+			            </select></span>
                         <input type="hidden" name="company_id" value="39">
                         <button type="submit" class="btn btn-primary">Agregar Aplicaciones</button>
-			<input type="hidden" name="url" value="/admin/" />
-                    </p>
+    			        <input type="hidden" name="url" value="/admin/" />
+                        </p>
                 </form>
             </div>
     </div>
@@ -84,37 +86,35 @@
     </div>
         
 </div><!--span4-->
-<div class="span8">
-    <form action="/admin/editAjax" class="editprofileform ajaxForm" method="post">
-        
+<div class="span8">        
         <div class="widgetbox personal-information">
             <h4 class="widgettitle">Información de la Empresa</h4>
             <div class="widgetcontent">
-                <p><label for="name_input">Nombre:</label>
-                <span class="field"><input type="text" name="name" class="input-xlarge" value="<%=company.name%>"></span></p>              
+                <form action="/admin/editAjax" class="editprofileform stdform stdform2 ajaxForm" method="post">
 
-                <p><label for="address_input">Dirección</label>
-                <span class="field"><input type="text" name="address" class="input-xlarge" value="<%=company.address%>"></span></p>
-            
-                <p><label for="zipcode_input">Código Postal</label>
-                <span class="field"><input type="text" name="zipcode" class="input-xlarge" value="<%=company.zipcode%>"></span></p>
+                    <p><label for="name_input">Nombre:</label>
+                    <span class="field"><input type="text" name="name" class="input-xlarge" value="<%=company.name%>"></span></p>              
 
-                <p><label for="description_input">Descripción:</label>
-                <span class="field"><textarea name="description" class="span8" rows="3" cols="50"><%=company.description%></textarea></span></p>
-                <input type="hidden" value="<%=company.id%>" name="userId" />
-		<input type="hidden" value="info" name="method" />
+                    <p><label for="address_input">Dirección</label>
+                    <span class="field"><input type="text" name="address" class="input-xlarge" value="<%=company.address%>"></span></p>
+                
+                    <p><label for="zipcode_input">Código Postal</label>
+                    <span class="field"><input type="text" name="zipcode" class="input-xlarge" value="<%=company.zipcode%>"></span></p>
+
+                    <p><label for="description_input">Descripción:</label>
+                    <span class="field"><textarea name="description" rows="3" cols="50"><%=company.description%></textarea></span></p>
+                    <input type="hidden" value="<%=company.id%>" name="userId" />
+    	            <input type="hidden" value="info" name="method" />
+                    <p class="stdformbutton">
+                    <%var active = {
+                        1:[0,'Desactivar']
+                        , 0:[1,'Activar']
+                    } %>
+                        <button type="submit" class="btn btn-primary">Actualizar Empresa</button> &nbsp; <a class="confirmbutton"  data-url="/admin/" href="<%=active[company.active][0]%>"><%=active[company.active][1]%></a>
+                    </p>
+                    
+                </form>
 
             </div>
-        </div>
-        
-
-        <p>
-		<%var active = {
-			1:[0,'Desactivar']
-			, 0:[1,'Activar']
-		} %>
-        	<button type="submit" class="btn btn-primary">Actualizar Empresa</button> &nbsp; <a class="confirmbutton"  data-url="/admin/" href="<%=active[company.active][0]%>"><%=active[company.active][1]%></a>
-        </p>
-        
-    </form>
+        </div>        
 </div><!--span8-->

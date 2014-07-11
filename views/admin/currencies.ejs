@@ -15,7 +15,7 @@
 		El tipo de cambio es a
 		{{currency}}	
 	</p>
-		<form action="/admin/editAjax" method="post" accept-charset="utf-8" ng-repeat="current in currencies">
+		<form action="/admin/editAjax" method="post" accept-charset="utf-8" ng-repeat="current in currencies" class="form-currencies">
 			<p>
 			{{current.name}} 
 			<input type="text" name="rate" value="{{current.change}}">
@@ -39,7 +39,7 @@
 	 <div class="widgetbox tags">
 	<h4 class="widgettitle">Configuración de Moneda</h4>
 	<div class="widgetcontent">
-		<form method="post" action="/admin/editAjax" accept-charset="utf-8">
+		<form method="post" action="/admin/editAjax" accept-charset="utf-8" class="form-currencies">
 			<p>Moneda Base</p>
 			<p><select name="base_currency" >
 					<option value="{{currencyCode}}">{{currency}}</option>

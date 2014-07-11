@@ -16,7 +16,7 @@ module.exports = {
           via : "products",
           through: 'salequoteproducts'
       }
-
-  }
+	}
+	,gallery:'array'
 };
 

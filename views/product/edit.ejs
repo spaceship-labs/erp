@@ -1,0 +1,98 @@
+<div class="span5">
+	<div class="alert alert-block unseen">
+		<button data-dismiss="alert" class="close" type="button">×</button>
+		<h4>Mensaje</h4>
+			<p style="margin: 8px 0"></p>
+	</div>
+     <div class="widgetbox">
+     	<h4 class="widgettitle">Editar</h4>
+     	<div class="widgetcontent nopadding">                            
+     		<form action="/product/updateProduct" method="get" accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine commonForm" id="createProduct">
+			<input type="hidden" name='productID' value='<%=product.id%>' />
+			<p>
+				<label for="name">Nombre</label>
+	     			<span class="field">
+					<input type="text" name="name" value="<%=product.name%>" />
+				</span>
+				
+			</p>
+			<p>
+				<label for="description">Descripción</label>
+	     			<span class="field">
+					<input type="text" name="description" value="<%=product.description || ''%>" />
+				</span>
+				
+			</p>
+			<p>
+				<label for="price">Precio</label>
+	     			<span class="field">
+					<input type="text" name="price" value="<%=product.price || ''%>" />
+				</span>
+				
+			</p>
+			<%for(var i=0;i<fields.length;i++){ 
+				var field = fields[i];
+				var nowValue=product[field.name] || '';
+			%>
+	     			<p>
+	     				<label for="<%=field.name%>"><%=field.name%></label>
+	     				<span class="field">
+						<% if(field.type=='text'){%>
+		     					<input type="<%=field.type%>" name="<%=field.name%>" class="input-large" value="<%=nowValue%>" >
+						<% }else if(field.type=='textarea'){ %>
+		     					<textarea  name="<%=field.name%>" cols="30" rows="10" ><%=nowValue%></textarea>
+						<%}else if(field.type=='select'){%>
+		     					<select name='<%=field.name%>' class='chzn-select form-control large' data-placeholder="selecciona" >
+							<option value=""></option>
+							<%for(var v=0;v<field.values.length;v++){
+								var values = field.values[v];
+							%>
+	     							<option  value="<%=values%>" <%=nowValue==values?'selected':''%>><%=values%></option>
+							
+							<% }%>
+		     					</select>
+						<% }else if(field.type=='fecha'){ %>
+		     					<input type="date" name="<%=field.name%>" value="<%=nowValue%>">
+						<% } %>
+	     				</span>
+	     			</p>
+			<% } %>
+     			<p class="stdformbutton">
+     		                <button class="btn btn-primary">Guardar</button>
+     		                <button type="reset" class="btn">Resetear</button>
+     			</p>
+     		</form>
+     	</div>
+     </div>
+</div>
+<div class="span5" ng-controller="galleryCTL">
+     <div class="widgetbox">
+     	<h4 class="widgettitle">Galeria</h4>
+     	<div class="widgetcontent">
+		<form action="/product/addGallery" enctype="multipart/form-data" method="post" class="gallery">
+			<input type="hidden" name="productID" value="<%=product.id%>"/>
+                    <span class="field">
+                        <span class="fileupload fileupload-new" data-provides="fileupload">
+                            <span class="input-append">
+                                <span class="uneditable-input span2">
+                                    <i class="fa fa-file fileupload-exists"></i>
+                                    <span class="fileupload-preview"></span>
+                                </span>
+                                <span class="btn btn-file">
+                                    <span class="fileupload-new">Archivo</span>
+                                    <span class="fileupload-exists">Cambia</span>
+                                    <input type="file" name="img">
+                                </span>
+                                <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remover</a>
+                            </span>
+                        </span>
+                    </span>
+     		                <button class="btn btn-primary">Guardar</button>
+		</form>
+		<hr />
+		<a href="#" class="col-md-6" ng-repeat="img in imgs">
+			<img ng-src="/uploads/gallery/350x150{{img}}" alt="" class="img-thumbnail"/>
+		</a>	
+	</div>
+     </div>
+</div>

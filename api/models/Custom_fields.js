@@ -9,11 +9,9 @@ module.exports = {
 
 	attributes: {
 		name:'string'
-		,user:'string'
-		,company:'string'
 		,type:{
 			type:'string'
-			,enum:['text','textarea','select']
+			,enum:['text','textarea','select','fecha']
 		}
 		,values:'array'
 	  	,product:{

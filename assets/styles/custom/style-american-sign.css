@@ -1,11 +1,12 @@
 /*American Sign*/
+body{min-width: 290px}
 .header{background: #171617}
 strong{font-weight: bold;}
 .row .row{max-width: 100%;margin: 0}
 /*Global orange #EA4723*/
 
 /*Login page*/
-body.loginpage{background: #282828}
+body.loginpage{background: #282828;overflow: hidden;}
 .inputwrapper button{background: #EA4723;border:1px solid #EA4723;}
 .inputwrapper button:focus, .inputwrapper button:active, .inputwrapper button:hover{background: #de3a15;border:1px solid #de3a15;}
 /*---*/
@@ -17,6 +18,7 @@ body.loginpage{background: #282828}
 .userloggedinfo img{border-radius: 50%}
 
 .nav-tabs.nav-stacked > li.active > a, .nav-tabs.nav-stacked > li.active > a:hover, .nav-tabs.nav-stacked > li.active > a:focus{background:#EA4723!important;}
+.leftpanel{left: 0;position: absolute;top: 140px;z-index: 0}
 .leftmenu .nav-header{color: #fff}
 .leftmenu .nav-tabs.nav-stacked > li.active > a{background-color: #EA4723;border-bottom-color: #EA4723;}
 
@@ -25,7 +27,7 @@ body.loginpage{background: #282828}
 .page-description{color: #CCCCCC}
 .widgettitle{background: #EA4723;text-transform: uppercase;}
 .widgettitle span{font-size: 16px}
-.widgettitle a{color: #fff!important;text-transform: none!important;}
+.widgettitle a{color: #fff!important;text-decoration: underline;text-transform: none!important;}
 .widgettitle a span{font-size: 16px;vertical-align: initial;}
 .widgetcontent{border: 2px solid #EA4723;}
 a, a:hover, a:link, a:active, a:focus{color: #EA4723}
@@ -61,10 +63,22 @@ a, a:hover, a:link, a:active, a:focus{color: #EA4723}
 .buttons-box .button-orange:hover{background: #EA4723;color: #fff}
 .btn-default:hover, .btn-default:focus, .btn-default:active, .btn-default.active, .open .dropdown-toggle.btn-default{background: #EA4723;border-color: #EA4723;color: #fff;}
 
+.profilethumb .submit-button{margin-top: 12px}
+
+.form-currencies button{margin: 10px 0}
+
+
 /*Dropdowns*/
 .dropdown-menu>li>a:hover, .dropdown-menu>li>a:focus, .dropdown-menu>.active>a, .dropdown-menu>.active>a:hover, .dropdown-menu>.active>a:focus{background: #EA4723!important}
 
 .peoplelist .peoplewrapper{height: auto;}
+
+.field input , .input-large, .fileupload .uneditable-input , .chzn-container , .chzn-container-single .chzn-drop, form textarea{max-width: 100%;width: 100%!important}
+
+@media only screen and  (max-width: 1280px){
+	.widgettitle a.pull-right{display: block;float: none!important;padding-top: 2px}
+
+}
 
 @media only screen and (max-width: 650px) {
 	/* Force table to not be like tables anymore */
