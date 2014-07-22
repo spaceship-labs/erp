@@ -54,7 +54,10 @@ module.exports = {
 			User.create(user).exec(function(e,user){
 				if(e) return res.json(response);
 				apps.forEach(function(app){
-					User_app.create({company:company.id,user:user.id,app:app.id,access_list:{}});
+					User_app.create({company:company.id,user:user.id,app:app,access_list:{}},function(e,ua){
+						console.log(ua);
+
+					});
 				})
 				//user.save();
 				user.companies.add(company.id);

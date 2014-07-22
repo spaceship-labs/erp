@@ -12,9 +12,9 @@ module.exports = {
 	index: function(req,res){
 		var select_company = req.session.select_company || req.user.select_company;
 		App.find().exec(function(err,apps){
-			Company.find(select_company).populate('users').exec(function(e,company){
+			Company.findOne(select_company).populate('users').exec(function(e,company){
 				if(e) throw (e);
-				var users = company[0].users;
+				var users = company.users;
 				var alphabets_company = [];
 				for(var i=0;i<users.length;i++){
 					users[i].createdAtString = timeFormat(users[i].createdAt);
@@ -109,27 +109,16 @@ module.exports = {
 		var id
 		, select_company = req.session.select_company || req.user.select_company;
 		if(id = req.params.id){
-			User.findOne({id:id}).exec(function(err,user){
+			User.findOne(id).populate('apps').exec(function(err,user){
 				if(err) return null;
 				user.avatar = user.icon ? '/uploads/users/177x171/'+user.icon : 'http://placehold.it/177x171';
 				App.find().exec(function(err,apps){
 					if(err) return ;
-					user.apps = [];
-					if(user.companies[select_company]){
-						for(var i=0;i<apps.length;i++){
-							if(user.companies[select_company].indexOf(apps[i].controller)!=-1){
-								var tmp = {
-									  name:apps[i].name
-									, ctl:apps[i].controller
-								}
-								user.apps.push(tmp);
-							}
-						}
-					}
+					console.log(user.apps);
 					Common.view(res.view,{
 					 	  user:user
 						, select_company:select_company
-						, apps:apps?apps:[]
+						, apps:apps
 					},req);			
 				});
 			});
