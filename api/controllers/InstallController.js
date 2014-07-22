@@ -7,15 +7,12 @@
 
 module.exports = {
 	index: function(req,res){
-		App.find().exec(function(err,apps){
-			if(err) throw err;
-			Currency.find().exec(function(err,currencies){
-				res.view({
-					layout:null,
-					apps:apps || [],
-					currencies:currencies || [],
-				});				
-			});
+		Currency.find().exec(function(err,currencies){
+			res.view({
+				layout:null,
+				apps: sails.config.apps,
+				currencies:currencies || [],
+			});				
 		});
 	},
 	create: function(req,res){
@@ -26,7 +23,7 @@ module.exports = {
 		};
 		delete form.id;
 		form.active = true;
-		var apps = Array.isArray(form.apps) ? form.apps : [form.apps];
+		//var apps = Array.isArray(form.apps) ? form.apps : [form.apps];
 		var currencies = Array.isArray(form.currencies) ? form.currencies : [form.currencies];
 		var user = {
 			name : form.user_name,
@@ -35,7 +32,7 @@ module.exports = {
 			active : 1,
 		}
 		var password = form.password;
-		delete form.apps;
+		//delete form.apps;
 		delete form.currencies;
 		delete form.user_name;
 		delete form.last_name;
@@ -43,23 +40,19 @@ module.exports = {
 		delete form.password;
 		Company.create(form).exec(function(err,company){
 			if(err) return res.json(response);
-			apps.forEach(function(app){
-				company.apps.add(app);
-			});
+			
 			currencies.forEach(function(currency){
 				company.currencies.add(currency);
 			});
+			/*apps.forEach(function(app){
+				company.apps.add(app);
+			});	*/		
 			company.save();
+
 			user.default_company = company.id;
 			User.create(user).exec(function(e,user){
+				user.createAccessList(form.apps);
 				if(e) return res.json(response);
-				apps.forEach(function(app){
-					User_app.create({company:company.id,user:user.id,app:app,access_list:{}},function(e,ua){
-						console.log(ua);
-
-					});
-				})
-				//user.save();
 				user.companies.add(company.id);
 				user.setPassword(password);
 				res.json(true);

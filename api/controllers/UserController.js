@@ -109,17 +109,16 @@ module.exports = {
 		var id
 		, select_company = req.session.select_company || req.user.select_company;
 		if(id = req.params.id){
-			User.findOne(id).populate('apps').exec(function(err,user){
+			User.findOne(id).exec(function(err,user){
 				if(err) return null;
 				user.avatar = user.icon ? '/uploads/users/177x171/'+user.icon : 'http://placehold.it/177x171';
 				App.find().exec(function(err,apps){
-					if(err) return ;
-					console.log(user.apps);
+					if(err) return;
 					Common.view(res.view,{
 					 	  user:user
 						, select_company:select_company
 						, apps:apps
-					},req);			
+					},req);									
 				});
 			});
 		

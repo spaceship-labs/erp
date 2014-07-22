@@ -21,8 +21,8 @@
 <p><label for="apps">Aplicaciones</label>
 <span class="field">
 	<select name="apps" multiple="multiple" class="chzn-select" data-placeholder="Agregar Aplicaciones...">
-		<%for(var i=0;i<apps.length;i++){ %>
-			<option value="<%=apps[i].id%>"><%=apps[i].name%></option>
+		<%for(var handle in apps){ %>
+			<option value="<%=handle%>"><%=apps[handle].label%></option>
 		<% } %>
 	</select>	
 </span></p>

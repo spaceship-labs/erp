@@ -21,20 +21,51 @@ module.exports = {
 		,phone:'string'
 		,registration_date:'date'//createAt
 		,access_date:'date'
+		,accessList : 'json'
 		
 		,companies : {
 			collection: 'company',
 			via: 'users',
 			dominant: false
 		}
-		,apps : {
-			collection : 'user_app',
-			via : 'user',
-		}
 		,setPassword : function(val,cb){
 			var bcrypt = require('bcrypt');
 			this.password = bcrypt.hashSync(val,bcrypt.genSaltSync(10));
 			this.save(cb);
+		}
+		,createAccessList : function(apps,company,cb){
+			require('async');
+			var ac = {};
+			var user = this;
+			async.map(
+				apps,
+				function(app,callback){
+					var app_config = sails.config.apps[app];
+					var views = [];
+					for(var key in app_config.views){
+						views[key] = {
+							label : app_config.views[key].label,
+							route : key,
+							permissions : {
+								create : true,
+								update : true,
+								delete : true
+							}
+						}
+					}
+					var app_ac = {
+						permission : true,
+						label : app_config.label,
+						views : views,
+					};
+					ac[app] = app_ac;
+					callback(null,app_ac);
+				},
+				function(e,r){
+					user.accessList = ac;
+					user.save(cb);
+				}
+			);
 		}
 	}
 	,afterCreate: function(val,cb){

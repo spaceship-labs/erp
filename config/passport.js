@@ -27,10 +27,9 @@ passport.serializeUser(function(user,done){
 });
 
 passport.deserializeUser(function(id,done){	
-	User.findOne(id.id).populate('companies').populate('apps').exec(function (err, user){
+	User.findOne(id.id).populate('companies').exec(function (err, user){
 		user.select_company = user.default_company;	
-		
-		done(err, user);
+		done(err, user);	
 	});
 });	
 

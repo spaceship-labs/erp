@@ -30,11 +30,7 @@ module.exports = {
 			via: 'companies',
 			dominant: true
 		}
-		,apps : {
-			collection: 'app',
-			via: 'companies',
-			dominant: true,
-		}
+		,apps : 'json'
 
 	}
 	,afterCreate: function(val,cb){

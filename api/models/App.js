@@ -9,9 +9,10 @@ module.exports = {
 
 	attributes: {
 		name:'string'
-		,controller:'string'
-		,description:'string'
-		,icon:'string'
+		,handle:{
+			index : true,
+			type : 'string',
+		}
 		,companies : {
 			collection : 'company'
 			,via : 'apps'

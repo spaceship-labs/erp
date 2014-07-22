@@ -25,7 +25,8 @@ app.controller('userCTL',function($scope,$sails){
 	}*/
 	$scope.userFilter = function(u){		
 		if($scope.searchInputSelect && !$scope.searchInput){
-			return $scope.searchInputSelect == u.last_name[0];
+			//return true;
+			return $scope.searchInputSelect == u.last_name[0].toUpperCase();
 		}else{
 			var regex = new RegExp('^'+$scope.searchInput,'i');
 			var name = u.name+' '+u.last_name;
@@ -44,7 +45,11 @@ app.controller('userCTL',function($scope,$sails){
 });
 
 app.controller('userEditCTL',function($scope){
-	var appsList = []
+	$scope.user = user;
+	console.log($scope.user.apps);
+	jQuery('.accordion').accordion({heightStyle: "content"});
+
+	/*var appsList = []
 	, updateContent = function(){
 		jQuery.get('/users/editJson/'+jQuery('input[name="userId"]').val(),function(data){
 			for(var i in data){
@@ -55,6 +60,7 @@ app.controller('userEditCTL',function($scope){
 			updateChosen();
 		});
 	};
+
 	updateContent();
 	updateNotices($scope,'/home/noticeSuscribeSingle',{modify:jQuery('input[name="userId"]').val()});
 	$scope.addApp = function(){
@@ -91,7 +97,7 @@ app.controller('userEditCTL',function($scope){
 		for(var i=0;i<dataApps.length;i++){
 			appsList.push(dataApps[i].ctl);
 		}
-	};
+	};*/
 });
 
 app.controller('createCompanyCTL',function($scope){
