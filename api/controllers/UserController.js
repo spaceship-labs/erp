@@ -118,7 +118,7 @@ module.exports = {
 					 	  user:user
 						, select_company:select_company
 						, apps:apps
-					},req);									
+					},req);					
 				});
 			});
 		

@@ -23,7 +23,6 @@ module.exports = function(req, res, next) {
 		Company.find({},function(e,c){
 			if(c.length) res.redirect('/home/login');
 			else{
-				console.log('install');
 				res.redirect('/install')
 			};
 		});	

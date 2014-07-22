@@ -44,6 +44,7 @@
     "sass-bootstrap-glyphicons": "~1.0.0",
     "angular-sails": "~1.0.4",
     "jquery-form": "~3.46.0",
-    "jquery-modern": "jquery#2"
+    "jquery-modern": "jquery#2",
+    "angular-ui-bootstrap-bower": "~0.11.0"
   }
 }

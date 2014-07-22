@@ -41,7 +41,7 @@ module.exports = {
 				apps,
 				function(app,callback){
 					var app_config = sails.config.apps[app];
-					var views = [];
+					var views = {};
 					for(var key in app_config.views){
 						views[key] = {
 							label : app_config.views[key].label,

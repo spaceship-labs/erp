@@ -43,6 +43,7 @@ var jsFilesToInject = [
 	"/bower_components/slimScroll/slimScroll.min.js",
 	"/bower_components/angular/angular.min.js",
 	"/bower_components/angular-sails/dist/angular-sails.min.js",
+	"/bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls.min.js",
 	"/bower_components/jquery-form/jquery.form.js",
 
 	// All of the rest of your client-side js files

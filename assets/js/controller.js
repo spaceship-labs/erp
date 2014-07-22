@@ -1,4 +1,4 @@
-var app = angular.module('spaceerp',['ngSails']);
+var app = angular.module('spaceerp',['ngSails','ui.bootstrap']);
 
 app.config(['$sailsProvider', function ($sailsProvider) {
     $sailsProvider.url = 'http://localhost:1337';
@@ -46,8 +46,6 @@ app.controller('userCTL',function($scope,$sails){
 
 app.controller('userEditCTL',function($scope){
 	$scope.user = user;
-	console.log($scope.user.apps);
-	jQuery('.accordion').accordion({heightStyle: "content"});
 
 	/*var appsList = []
 	, updateContent = function(){
