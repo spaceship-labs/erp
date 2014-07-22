@@ -9,7 +9,7 @@ module.exports = {
 
 	attributes: {
 		default_company:{
-			model:'companies'
+			model:'company'
 		}
 		,email:'string'
 		,password:'string'
@@ -22,7 +22,20 @@ module.exports = {
 		,registration_date:'date'//createAt
 		,access_date:'date'
 		
-		,companies:'json'//idCompany:[app1,app2]
+		,companies : {
+			collection: 'company',
+			via: 'users',
+			dominant: false
+		}
+		,apps : {
+			collection : 'user_app',
+			via : 'user',
+		}
+		,setPassword : function(val,cb){
+			var bcrypt = require('bcrypt');
+			this.password = bcrypt.hashSync(val,bcrypt.genSaltSync(10));
+			this.save(cb);
+		}
 	}
 	,afterCreate: function(val,cb){
 		Notifications.after(User,val,'create');
@@ -36,8 +49,9 @@ module.exports = {
 		Notifications.before(val);
 		cb();
 	}
-	, beforeCreate: function(val,cb){
+	,beforeCreate: function(val,cb){
 		Notifications.before(val);
 		cb();
 	}
+
 };

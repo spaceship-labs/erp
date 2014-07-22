@@ -1,7 +1,7 @@
-<%
-	var alphabets= ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']; 
-%>
-
+<script type='text/javascript'>
+	window.users = <%- JSON.stringify(users) %>;
+	window.alphabet = <%- JSON.stringify(alphabet) %>;
+</script>
 <div ng-controller='userCTL' >
 	<p><button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Nuevo Usuario</button></p>
 	<br/>	
@@ -13,23 +13,22 @@
 	</ul>
 	<div class="peoplelist">
 		<div class="row-fluid">
-			<div class="span6" ng-repeat='user in users | filter:userFilter'>
-				<div class="peoplewrapper">
+			<div class="span6" ng-repeat='user in users | filter:userFilter' ng-cloak class="ng-cloak">
+				<div class="peoplewrapper" >
 					<div class="thumb">
-						<img ng-src="/uploads/users/{{user.icon}}" alt="" />
+						<img ng-src="{{user.avatar}}" alt="" />
 					</div>
 					<div class="peopleinfo">
 						<h4>
-							<a href="/users/edit/{{user.id}}">
-							{{user.name}}
+							<a href="/user/edit/{{user.id}}" >
+							{{user.name}} {{user.last_name}}
 							</a>
 						</h4>
 						<ul>
 							<li><span>Registro: </span>{{user.createdAtString}}</li>
-							<li><span>ultimo Acceso: </span></li>
+							<li><span>Ultimo acceso: </span>{{user.lastAccessString}}</li>
 							<li><span>Email: </span>{{user.email}}</li>
 							<li><span>Telefono: </span>{{user.phone}}</li>
-							<li><span>Aplicaciones: </span>{{user.apps}}</li>
 						</ul>
 					</div>
 				</div>
@@ -45,5 +44,4 @@
 		</div>
 	</div>
 	<%- partial('new_user_modal') -%>
-	<%- partial('../global/notices') -%> 
 </div>

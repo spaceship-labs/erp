@@ -20,7 +20,7 @@ module.exports = {
 		});
 	}
 	, indexJson:function(req,res){
-		Companies.find().exec(function(err,comp){
+		Company.find().exec(function(err,comp){
 			res.json(comp);
 		});
 	}
@@ -34,7 +34,7 @@ module.exports = {
 		delete form.id;
 		form.active = 1;
 		form.req = req;
-		Companies.create(form).exec(function(err,company){
+		Company.create(form).exec(function(err,company){
 			if(err) return res.json(response);
 			update.icon(req,{userId:company.id},function(err,files){				
 				if(err)  return res.json(response);
@@ -49,7 +49,7 @@ module.exports = {
 	}
 	, edit: function(req,res){
 		var id = req.params.id;
-		Companies.findOne({id:id}).exec(function(err,company){
+		Company.findOne({id:id}).exec(function(err,company){
 			if(err) throw err;
 			var find = {}
 			find['companies.'+id] = {$exists:1};
@@ -84,7 +84,7 @@ module.exports = {
 	, currenciesJson: function(req,res){
 		var mon = money
 		, select_company = req.session.select_company || req.user.select_company;
-		Companies.findOne({id:select_company}).exec(function(err,comp){
+		Company.findOne({id:select_company}).exec(function(err,comp){
 			if(err) return res.json(response);
 			Exchange_rates.find({
 				$query:{},orderby:{updatedAt:-1}
@@ -139,7 +139,7 @@ module.exports = {
 		var select_company = req.session.select_company || req.user.select_company
 		,response = false
 		,mo = money;
-		Companies.findOne({id:select_company}).exec(function(err,comp){
+		Company.findOne({id:select_company}).exec(function(err,comp){
 			if(err) return res.json(response);
 			var index
 			, data = {};
@@ -212,7 +212,7 @@ var update = {
 			form:form
 			,dirSave : __dirname+'/../../assets/uploads/companies/'
 			,dirPublic:  __dirname+'/../../.tmp/public/uploads/companies/'
-			,Model:Companies
+			,Model:Company
 			,prefix:'177x171'
 			,dirAssets:'/uploads/companies/'
 		},cb);
@@ -222,13 +222,13 @@ var update = {
 		Common.updateInfoProfile(req,{
 			form:form
 			,id:form.userId
-			,Model:Companies
+			,Model:Company
 			,validate:['name','address','zipcode','description','active']
 		},cb);
 	}
 	, apps:function(req,form,cb){
 		var apps = form.apps || [];
-		Companies.update({id:form.userId},{app:form.apps}).exec(function(err,company){
+		Company.update({id:form.userId},{app:form.apps}).exec(function(err,company){
 			if(err) return cb && cb(err);
 			company = company.length && company[0];
 			Apps.find({controller:{$in:company.app}}).exec(function(err,apps){
@@ -275,7 +275,7 @@ var update = {
 			if(validate.indexOf(i)==-1)
 				delete form[i];
 		}
-		Companies.update({id:select_company},form).exec(function(err,comp){
+		Company.update({id:select_company},form).exec(function(err,comp){
 			cb && cb(err,comp)	
 		});
 	}
@@ -287,7 +287,7 @@ var update = {
 	}
 	,editCurrency: function(req,form,method,cb){
 		var select_company = req.session.select_company || req.user.select_company;
-		Companies.findOne({id:select_company}).exec(function(err,comp){
+		Company.findOne({id:select_company}).exec(function(err,comp){
 			if(method=="splice"){
 				var index;
 				if((index=comp.currencies.indexOf(form.currency))!=-1)

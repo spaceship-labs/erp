@@ -6,7 +6,10 @@ app.config(['$sailsProvider', function ($sailsProvider) {
 
 app.controller('userCTL',function($scope,$sails){
 	$scope.alphabets = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']; 
-	var updateList = function(){
+	$scope.users = users;
+	$scope.alphabets_company = alphabet;
+	$scope.searchInputSelect = alphabet[0];
+	/*var updateList = function(){
 		jQuery.get('/users/all',function(data){
 			$scope.users = data;
 			$scope.$apply();
@@ -19,32 +22,25 @@ app.controller('userCTL',function($scope,$sails){
 			$scope.$apply();
 		});
 		
-	}
-	$scope.userFilter = function(u){
-		var prefix = '^';
+	}*/
+	$scope.userFilter = function(u){		
 		if($scope.searchInputSelect && !$scope.searchInput){
-			prefix += $scope.searchInputSelect;
+			return $scope.searchInputSelect == u.last_name[0];
 		}else{
-			prefix += $scope.searchInput;
+			var regex = new RegExp('^'+$scope.searchInput,'i');
+			var name = u.name+' '+u.last_name;
+			return name.match(reg);
 		}
-
-		var reg = new RegExp(prefix,'i');
-		return u && u.name.match(reg);
-
 	}
-	$scope.sup = function(){
-		console.log('sup')
-	};
-
+	
 	updateNotices($scope,'/home/noticeSuscribeApp',{app:'users'},function(){
-		updateList();	
+		//updateList();	
 	});
 
 	$scope.selectLetter = function(l){
 		if(l)
 			$scope.searchInputSelect = l;
 	}
-	updateList();
 });
 
 app.controller('userEditCTL',function($scope){

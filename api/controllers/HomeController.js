@@ -18,10 +18,10 @@ module.exports = {
 	}
 
 	, auth: passport.authenticate('local',{
-						    successRedirect: '/home/'
-		                                   ,failureRedirect: '/home/login'
-						   ,failureFlash: true
-					   })
+		    successRedirect: '/'
+	       ,failureRedirect: '/home/login'
+		   ,failureFlash: true
+	   })
 
 	, index: function(req,res){
 		Common.view(res.view,{

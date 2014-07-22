@@ -1,0 +1,28 @@
+<p>
+	<label for="base_currency">Moneda Principal</label>
+	<span class="field">
+		<select name="base_currency" class='chzn-select'>
+		<%for(var i=0;i<currencies.length;i++){ %>
+			<option value="<%=currencies[i].id%>"><%=currencies[i].name%> (<%=currencies[i].currency_code%>)</option>
+		<%}%>
+		</select>
+	</span>
+</p>
+
+<p><label for="currencies">Monedas</label>
+<span class="field">
+	<select name="currencies" multiple="multiple" class="chzn-select" data-placeholder="Agregar Monedas...">
+	<%for(var i=0;i<currencies.length;i++){ %>
+		<option value="<%=currencies[i].id%>"><%=currencies[i].name%> (<%=currencies[i].currency_code%>)</option>
+	<%}%>
+	</select>
+</span></p>
+
+<p><label for="apps">Aplicaciones</label>
+<span class="field">
+	<select name="apps" multiple="multiple" class="chzn-select" data-placeholder="Agregar Aplicaciones...">
+		<%for(var i=0;i<apps.length;i++){ %>
+			<option value="<%=apps[i].id%>"><%=apps[i].name%></option>
+		<% } %>
+	</select>	
+</span></p>

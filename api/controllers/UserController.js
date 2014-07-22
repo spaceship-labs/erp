@@ -1,5 +1,5 @@
 /**
- * UsersController.js 
+ * UserController.js 
  *
  * @description ::
  * @docs        :: http://sailsjs.org/#!documentation/controllers
@@ -10,15 +10,32 @@ var bcrypt = require('bcrypt')
 
 module.exports = {
 	index: function(req,res){
-		Apps.find().exec(function(err,apps){
-			Common.view(res.view,{
-				 apps:apps
-			},req);
+		var select_company = req.session.select_company || req.user.select_company;
+		App.find().exec(function(err,apps){
+			Company.find(select_company).populate('users').exec(function(e,company){
+				if(e) throw (e);
+				var users = company[0].users;
+				var alphabets_company = [];
+				for(var i=0;i<users.length;i++){
+					users[i].createdAtString = timeFormat(users[i].createdAt);
+					users[i].lastAccessString = users[i].lastAccess ? timeFormat(users[i].lastAccess) : 'nunca';
+					users[i].avatar = users[i].icon ? '/uploads/users/'+users[i].icon : 'http://placehold.it/50x50';
+					if(users[i].last_name){
+						index = users[i].last_name[0].toUpperCase();
+						alphabets_company.push(index);
+					}
+				}
+				Common.view(res.view,{
+					 apps:apps,
+					 users:users,
+					 alphabet : alphabets_company
+				},req);
+			});			
 		});
 	}
 
 	, indexJson: function(req,res){
-		var find = {}
+		/*var find = {}
 		, select_company = req.session.select_company || req.user.select_company;
 		find['companies.'+select_company] ={$exists:1};
 		User.find(find).exec(function(err,users){
@@ -26,19 +43,14 @@ module.exports = {
 			, index;
 
 			
-			for(var i=0;i<users.length;i++){
-				if(users[i].name){
-					index = users[i].name[0].toUpperCase();
-					alphabets_company.push(index);
-				}
-			}
+			
 						
 			Apps.find().exec(function(err,apps){
 				res.json(
 					alphabets_company
 				);
 			});
-		});
+		});*/
 	}
 
 	, all: function(req,res){
@@ -99,7 +111,8 @@ module.exports = {
 		if(id = req.params.id){
 			User.findOne({id:id}).exec(function(err,user){
 				if(err) return null;
-				Apps.find().exec(function(err,apps){
+				user.avatar = user.icon ? '/uploads/users/177x171/'+user.icon : 'http://placehold.it/177x171';
+				App.find().exec(function(err,apps){
 					if(err) return ;
 					user.apps = [];
 					if(user.companies[select_company]){

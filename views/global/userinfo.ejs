@@ -1,0 +1,13 @@
+<li class="right">
+    <div class="userloggedinfo">
+        <img src="/uploads/users/80x80<%=req.user.icon%>" alt="" />
+        <div class="userinfo">
+            <h5><%- req.user.name %><small>- <%-req.user.email%></small></h5>
+            <ul>
+                <li><a href="#">Editar perfil</a></li>
+                <li><a href="/users/edit/<%=req.user.id%>">Configuracion de cuenta</a></li>
+                <li><a href="/home/logout">Cerrar sesion</a></li>
+            </ul>
+        </div>
+    </div>
+</li>

@@ -21,6 +21,16 @@ module.exports.policies = {
       login:true
     , auth:true
   }
+  , install :{
+  	index:true,
+  	create:true,
+  },
+  company : {
+  	find : true,
+  },
+  user : {
+  	find : true
+  }
   , main:{
     select_company:true
   }

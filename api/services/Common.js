@@ -1,7 +1,12 @@
 module.exports.view = function(view,data,req){
 	data = data || {};
 	data.page = data.page || {};
-	Companies.find().exec(function(err,comp){
+	data.companies = req.user.companies;
+	data.selected_company = req.session.select_company || req.user.select_company;
+
+	view(data);
+	/*
+	Company.find().exec(function(err,comp){
 		data.companies = [];
 		for(var i=0;i<comp.length;i++){
 			var obj = {};
@@ -17,13 +22,27 @@ module.exports.view = function(view,data,req){
 		
 		if(req && req.user && !data.page){//iconfa...
 			data.page = {};
-			Apps.findOne({controller:req.options.controller}).exec(function(err,app){
+			App.findOne({controller:req.options.controller}).exec(function(err,app){
 				data.page = app || {};
 				view(data);	
 			});
 		}else
 			view(data);	
-	});	
+	});	*/
+};
+
+module.exports.renderMenu = function(){
+	var menu = "";
+	for(x in sails.config.apps){
+		var app = sails.config.apps[x];
+		menu += "<li class='dropdown'><a href=''><span class='fa "+app.icon+"'></span>"+app.label+"</a><ul>";
+		for(route in app.views){
+			var view = app.views[route];
+			menu += "<li><a href='"+route+"'><span class='fa "+view.icon+"'></span> "+view.label+"</a></li>";
+		}
+		menu += "</ul></li>";
+	};
+	return menu;
 };
 
 var fs = require('fs')
@@ -167,7 +186,7 @@ module.exports.noticeSuscribe = function(req,find,cb){
 				delete users[i].password;
 				us[users[i].id] = users[i];
 			}
-			Apps.find({controller:apps}).exec(function(err,apps){
+			App.find({controller:apps}).exec(function(err,apps){
 				if(err) return cb && cb(err);
 				var ap = {};
 				for(var i=0;i<apps.length;i++){

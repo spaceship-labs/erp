@@ -12,6 +12,10 @@ module.exports = {
 	,currency_code:'string'
 	,prefix:'string'
 	,suffix:'string'
+	,companies : {
+		collection : 'company',
+		via : 'currencies',
+	}
   }
 };
 

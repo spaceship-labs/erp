@@ -8,6 +8,6 @@
 module.exports = {
 	select_company: function(req,res){
 		req.session.select_company = req.params.id;
-		res.redirect(req.headers.referer || '/home/');
+		res.redirect(req.headers.referer || '/');
 	}
 };

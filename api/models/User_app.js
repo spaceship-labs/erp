@@ -1,5 +1,5 @@
 /**
-* Exchange_rates.js
+* User_app.js
 *
 * @description :: TODO: You might write a short summary of how this model works and what it represents here.
 * @docs        :: http://sailsjs.org/#!documentation/models
@@ -8,11 +8,15 @@
 module.exports = {
 
   attributes: {
-	//create
-	rates:'json'
-	,companyId:{
-		model:'company'
-	}//currency current form
+  	user : {
+  		model : 'user'
+  	},
+  	company : {
+  		model : 'company'
+  	},
+  	app : {
+  		model : 'app'
+  	}
   }
 };
 
