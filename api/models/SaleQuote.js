@@ -9,22 +9,28 @@ module.exports = {
 
 	attributes: {
 
-        total_amount : { type : 'float' },
+        status : {
+            type : 'string',
+            enum : ['approved','active','inactive'],
+            default : 'active'
+        },
 
-        status : { type : 'string',enum : ['approved','status1','status2'] },
+        fileName : {
+            type: 'string'
+        },
 
-        fileName : { type: 'string' },//se genera el pdf ?
-
-        user : { type : 'string' },
+        user : {
+            model : 'User'
+        },
 
         sale : {
             model : "Sale"
         },
 
         products : {
-            collection : "Product",
-            via : "quoteProducts",
-            through: 'salequoteproducts'
+            collection : "SaleProduct",
+            via : "saleQuote",
+            required : true
         }
 
 	}

@@ -47,7 +47,7 @@ module.exports = {
 		find.company = req.session.select_company || req.user.select_company;
 		if(form.type)
 			find.sales_type = form.type;
-		Products.find(find).exec(function(err,products){
+		Product.find(find).exec(function(err,products){
 			if(err) return res.json(false);
 			res.json(products);
 		});

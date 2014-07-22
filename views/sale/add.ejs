@@ -8,30 +8,33 @@
         <div class="widgetbox">
             <div class="widgetcontent nopadding">
                 <h4 class="widgettitle">Cliente</h4>
-                <form action="/sale/create" method="get" accept-charset="utf-8" class="stdform stdform2 ng-pristine">
+                <form action="/sale/create" method="post" accept-charset="utf-8" class="stdform stdform2 ng-pristine" name="sale">
                     <p>
                         <label for="client_id">Selecciona un cliente :</label>
-						<span class="field dualselect">
-                            <select name='client_id' id='client_id' class='chzn-select form-control large' data-placeholder="Selecciona ..." >
-                                <% for(var i=0;i>clients.length;i++) {%>
-                                    <option value="<%= clients[i].id %>"><%= clients[i].name %></option>
-                                <% } %>
-                            </select>
-                            <a href="/clients/add"><button class="btn btn-default pull-right">Crear Nuevo</button></a>
+						<span class="field">
+                            <span>
+                                <select name='client' id='client' class='chzn-select form-control large required' data-placeholder="Selecciona ..." >
+
+                                    <option ng-repeat="client in clients track by $index" value="{{client.id}}">{{client.name}}</option>
+                                </select>
+                            </span>
+                            <span>
+                                <a href="/clients/add"><button class="btn btn-default">Crear Nuevo</button></a>
+                            </span>
                         </span>
                     </p>
-                    <h4 class="widgettitle">Productos</h4>
+                    <h4 class="widgettitle">Cotizacion</h4>
                     <p>
                         <label for="products">Selecciona los productos :</label>
-                        <span class="dualselect field">
-                            <select name='products' id='products' class='chzn-select form-control large' data-placeholder="Selecciona ..." >
-                                <option ng-repeat="product in products" value="{{product.Id}}">{{product.Name}}</option>
+                        <span class="field">
+                            <select id='products' class='chzn-select form-control large' data-placeholder="Selecciona ..." >
+                                <option ng-repeat="product in products track by product.id" value="{{$index}}">{{product.name}}</option>
                             </select>
-                            <button class="btn btn-default pull-right" ng-click="addProduct()">Agregar</button>
+                            <span class="btn btn-default" ng-click="addProduct()">Agregar</span>
                         </span>
                     <p>
                     <p>
-                        <table>
+                        <table class="table responsive">
                             <thead>
                                 <tr>
                                     <th>Producto</th>
@@ -42,17 +45,17 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="sp in selectedProducts">
-                                    <td>{{sp.Name}}</td>
-                                    <td><input type="text" id="spinner{{sp.Id}}" name="product[].Quantity" class="input-small input-spinner" maxlength="3" value="{{sp.Quantity}}"></td>
-                                    <td>test is a test</td>
-                                    <td colspan="3">{{totalPrice(sp.Price,sp.Quantity)}}</td>
-                                    <td><input type="button" value="Remove" ng-click="removeItem($index)" /></td>
+                                <tr ng-repeat="sp in selectedProducts track by $index">
+                                    <td>{{sp.name}}</td>
+                                    <td><input type="number" class="input-small input-spinner" min="1" maxlength="2" ng-model="sp.Quantity" value="{{sp.Quantity}}"></td>
+                                    <td>{{sp.price}}</td>
+                                    <td>{{sp.price * sp.Quantity}}</td>
+                                    <td><input type="button" value="Eliminar" ng-click="removeProduct($index)" /></td>
                                 </tr>
                             </tbody>
                         </table>
                         <div class="amountdue">
-                            <h1><span>Total:</span> {{totalPrice()}}</h1> <br>
+                            <h1><span>Total:</span> {{totalPrice()}}</h1>
                         </div>
                     </p>
                     <p class="stdformbutton">

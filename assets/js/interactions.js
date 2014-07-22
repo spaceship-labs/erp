@@ -96,7 +96,5 @@ jQuery(function($){
 
 function updateChosen(select){
 	select = select || jQuery('.chzn-select');
-	select.attr({class:'chzn-select',id:'',style:''});
-	jQuery('.chzn-container').remove();
-	jQuery('.chzn-select').chosen();
+	select.trigger('liszt:updated');
 }

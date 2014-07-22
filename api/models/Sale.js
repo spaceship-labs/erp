@@ -12,17 +12,19 @@ module.exports = {
 		status	: {
             type: 'string',
             enum : ['status1','cancelled','status2'],
-            default : 'status2'
+            default : 'status1'
         },
-
-		total_amount	: { type: 'float' },
 
         company : { type : "string", required : true },
 
-        user : { type : "string", required : true },
+        user : {
+            model : "User",
+            required : true
+        },
 
         client : {
-            model : "SaleClient"
+            model : "SaleClient",
+            required : true
         },
 
         quotes : {
@@ -32,6 +34,11 @@ module.exports = {
 
         invoices : {
             collection : "SaleInvoice",
+            via : "sale"
+        },
+
+        workOrders : {
+            collection : "SaleWorkOrder",
             via : "sale"
         }
 

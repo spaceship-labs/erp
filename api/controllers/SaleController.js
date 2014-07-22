@@ -4,19 +4,20 @@
  * @description ::
  * @docs        :: http://sailsjs.org/#!documentation/controllers
  */
-
+var moment = require('moment');
 module.exports = {
 
 
     index: function (req, res) {
         var select_company = req.session.select_company || req.user.select_company;
-        Sale.find({ company : select_company }).exec(function (err,sales){
+        Sale.find({ company : select_company }).populate('user').populate('client').exec(function (err,sales){
             Common.view(res.view,{
                 page:{
-                    icon:'fa fa-exchange'
+                    icon:'fa fa-barcode'
                     ,name:'Ventas'
                 },
-                sales : sales
+                sales : sales,
+                moment : moment
             },req);
         });
 
@@ -35,7 +36,7 @@ module.exports = {
           Product.find({ company : select_company }).exec(function (err,products){
               Common.view(res.view,{
                   page:{
-                      icon:'fa fa-exchange'
+                      icon:'fa fa-barcode'
                       ,name:'Nueva Venta'
                   },
                   clients : clients || [],
@@ -47,36 +48,64 @@ module.exports = {
   },
 
     create : function(req,res){
-        console.log(req.params);
-        var form = Common.formValidate(req.params.all(),['client_id','products']);
+        var form = Common.formValidate(req.params.all(),['client']);
+
         if(form){
-            form.user = req.user.id;
             form.company = req.session.select_company || req.user.select_company;
-            var createSale = req.params.fromSale;
+            form.user = req.user;
             Sale.create(form).exec(function(err,sale){
                 if(err) return res.json({text:'Ocurrio un error.'});
-                if (createSale) {
-                    res.json({text:'Venta creada.',url:'/sale/addnext/'+saleClient.id});
-                } else {
-                    res.json({text:'Venta creada.',url:'/clients/edit/'+saleClient.id});
-                }
 
+                var products = [];
+                req.param('products').map(function(p){
+                    products.push({
+                        id : p.id,
+                        quantity : p.Quantity,
+                        price : p.price,
+                        name : p.name
+                    });
+                });
+
+                //creamos la cotizacion
+                var quote = {
+                    company : form.company,
+                    user : form.user,
+                    products : products,
+                    sale : sale.id
+                };
+
+                SaleQuote.create(quote).exec(function(err,saleQuote){
+                    var quotes = [];
+                    quotes.push(saleQuote.id);
+                    Sale.update({id : sale.id},{ quotes : quotes }).exec(function(err,sale){
+                        if (err) res.json({text : 'Ocurrio un error.'});
+                        res.json({text:'Venta creada.'/*,url:'/sale/edit/'+sale.id*/});
+                    });
+
+                });
             });
         }
     },
 
       edit : function (req,res){
           var id = req.param('id');
+          var company = req.session.select_company || req.user.select_company;
           if (id){
-              Sale.findOne({id:id}).exec(function(err,sale){
-                  Common.view(res.view,{
-                      page:{
-                          icon:'fa fa-cubes'
-                          ,name:'Nueva Venta'
-
-                      },
-                      sale : sale || []
-                  });
+              Sale.findOne({id:id,company : company})
+                  .populate('client')
+                  .populate('user')
+                  .populate('quotes')
+                  .populate('invoices')
+                  .populate('workOrders')
+                  .exec(function(err,sale){
+                    Common.view(res.view,{
+                        page:{
+                            icon:'fa fa-barcode'
+                            ,name:'Venta'
+                          },
+                          sale : sale || [],
+                          moment : moment
+                      });
               });
           } else
             res.notFound();

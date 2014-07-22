@@ -16,7 +16,7 @@ module.exports = function(req, res, next) {
 		if(company && (company.indexOf(req.options.controller)!=-1) || req.options.controller == 'home' || req.options.controller == 'product') {
 			return next();
 		}
-		return res.forbidden()
+		return res.forbidden();
 	}
 	res.redirect('/home/login');
 };

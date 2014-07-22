@@ -11,8 +11,6 @@ module.exports = {
 
         create_datetime : { type:'datetime' },
 
-        total_amount : { type : 'float' },
-
         status : { type : 'string'},
 
         concept : { type : 'string'},
@@ -22,7 +20,7 @@ module.exports = {
         },
 
         sale : {
-
+            model : 'Sale'
         }
 
 	}

@@ -21,18 +21,22 @@
                         <tr>
                             <th>Fecha</th>
                             <th>Vendedor</th>
+                            <th>Cliente</th>
                             <th>Status</th>
                             <th>Monto</th>
                             <th>Editar</th>
                         </tr>
                     </thead>
-                    <% for(var i = 0; i< 3; i++){ %>
+                    <% for(var i=0;i<sales.length;i++){
+                        var sale = sales[i];
+                    %>
                     <tr>
-                        <td data-title="Fecha">25-06-2014</td>
-                        <td data-title="Vendedor"><a href="/sale/edit/1">Salvador Barron</a></td>
-                        <td data-title="Status">En proceso</td>
-                        <td data-title="Monto">$2,500.00 MXN</td>
-                        <td data-title="Editar"><a href="/sale/edit/1"><span class="table-icon fa fa-file"></span></a></td>
+                        <td data-title="Fecha"><%= moment(sale.createdAt) %></td>
+                        <td data-title="Vendedor"><a href="/sale/edit/<%= sale.id %>"><%= sale.user.name %></a></td>
+                        <td data-title="Cliente"><%= sale.client.name %></td>
+                        <td data-title="Status"><%= sale.status || 'pendiente' %></td>
+                        <td data-title="Monto"><%= sale.totalAmount || 0 %></td>
+                        <td data-title="Editar"><a href="/sale/edit/<%= sale.id %>"><span class="table-icon fa fa-edit"></span></a></td>
                     </tr>
                     <% } %>
                 </table>
