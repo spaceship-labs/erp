@@ -57,6 +57,9 @@
             };
             var wizard = $("#some-wizard").wizard(options);
             wizard.show();
+	    wizard.on("submitSuccess",function(){
+	    	window.location = "/home/login";
+	    });
         });
     </script>
 </body>

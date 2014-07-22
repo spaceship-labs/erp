@@ -62,10 +62,7 @@ module.exports = {
 				//user.save();
 				user.companies.add(company.id);
 				user.setPassword(password);
-				res.json({
-					status:true
-					, msg:'Se isntalo el ERP'
-				});			
+				res.json(true);
 			});	
 			
 		});
