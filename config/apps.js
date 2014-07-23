@@ -25,15 +25,14 @@ module.exports.apps = {
 				label : 'ventas',
 				icon : 'fa-briefcase'
 			},
-			'/cotizaciones/' : {
-				label : 'Cotizaciones',
-				icon : 'fa-file'
+			'/clientes/' : {
+				label : 'Clientes',
+				icon : 'fa-users'
 			},
-
 			'/productos/' : {
 				label : 'Productos',
 				icon : 'fa-truck'
-			},
+			}
 		},
 	},
 };

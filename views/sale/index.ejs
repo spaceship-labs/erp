@@ -13,7 +13,7 @@
                         <li><a href="#">Something else here</a></li>
                     </ul>
                 </div>
-                <a href="/sale/add" class="btn btn-default button-orange"><span class="table-icon fa fa-plus"></span> AGREGAR VENTA</a>
+                <a href="/ventas/agregar" class="btn btn-default button-orange"><span class="table-icon fa fa-plus"></span> AGREGAR VENTA</a>
             </div>
             <div class="widgetcontent custom-table nopadding">
                 <table class="table table-striped">
@@ -32,20 +32,15 @@
                     %>
                     <tr>
                         <td data-title="Fecha"><%= moment(sale.createdAt) %></td>
-                        <td data-title="Vendedor"><a href="/sale/edit/<%= sale.id %>"><%= sale.user.name %></a></td>
+                        <td data-title="Vendedor"><a href="/ventas/editar/<%= sale.id %>"><%= sale.user.name %></a></td>
                         <td data-title="Cliente"><%= sale.client.name %></td>
                         <td data-title="Status"><%= sale.status || 'pendiente' %></td>
                         <td data-title="Monto"><%= sale.totalAmount || 0 %></td>
-                        <td data-title="Editar"><a href="/sale/edit/<%= sale.id %>"><span class="table-icon fa fa-edit"></span></a></td>
+                        <td data-title="Editar"><a href="/ventas/editar/<%= sale.id %>"><span class="table-icon fa fa-edit"></span></a></td>
                     </tr>
                     <% } %>
                 </table>
             </div>
         </div>
-
     </div>
-
-
-
-
 </div>

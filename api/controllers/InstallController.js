@@ -25,6 +25,8 @@ module.exports = {
 		form.active = true;
 		//var apps = Array.isArray(form.apps) ? form.apps : [form.apps];
 		var currencies = Array.isArray(form.currencies) ? form.currencies : [form.currencies];
+		if(currencies.indexOf(form.base_currency)==-1)
+			currencies.push(form.base_currency);
 		var user = {
 			name : form.user_name,
 			last_name : form.last_name,

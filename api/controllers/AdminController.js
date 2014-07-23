@@ -8,13 +8,13 @@ var money = require('money')
 , moment = require('moment');
 module.exports = {
 	index: function(req,res){
-		Apps.find().exec(function(err,apps){
+		App.find().exec(function(err,apps){
 			if(err) throw err;
 			Currency.find().exec(function(err,currencies){
 				Common.view(res.view,{
 					apps:apps || []
 					,currencies:currencies || []
-				});
+				},req);
 				
 			});
 		});
@@ -78,13 +78,17 @@ module.exports = {
 				name:'Monedas'
 				,icon:'fa fa-money'
 			}
-		});	
+		},req);
 	}
 
 	, currenciesJson: function(req,res){
 		var mon = money
-		, select_company = req.session.select_company || req.user.select_company;
-		Company.findOne({id:select_company}).exec(function(err,comp){
+		, select_company = req.session.select_company || req.user.select_company
+		, response = {
+			status:false
+			, msg:'ocurrio un error'
+		};
+		Company.findOne({id:select_company}).populate('currencies').populate('base_currency').exec(function(err,comp){
 			if(err) return res.json(response);
 			Exchange_rates.find({
 				$query:{},orderby:{updatedAt:-1}
@@ -96,17 +100,19 @@ module.exports = {
 						break;
 					}
 				}
-
 				Currency.find().exec(function(err,cs){
 					if(err) return res.json(response);
+					mon.base = "USD";
 					mon.rates = Ex.rates;
 					var data = {}
 					,noSelect = [];
 					for(var i=0;i<cs.length;i++){
 						var current = cs[i];
-						if(comp.currencies.indexOf(current.currency_code)!=-1 || comp.base_currency==current.currency_code){
-							if(current.currency_code!=comp.base_currency){	
-								var change = mon(1).from(comp.base_currency).to(current.currency_code).toFixed(6)
+						if(comp.currencies.map(function(c){
+							return c.id;
+						}).indexOf(current.id)!=-1 || comp.base_currency.id==current.id){
+							if(current.id!=comp.base_currency.id){	
+								var change = mon(1).from(comp.base_currency.currency_code).to(current.currency_code).toFixed(6)
 								, comission = comp.currency_comission && (change*(1+comp.currency_comission/100));
 								data[current.name] = {
 									change: change
@@ -115,10 +121,10 @@ module.exports = {
 									,comission:comp.currency_comission?true:false
 									,code:current.currency_code
 									,id:Ex.companyId || -1
-								}
+								};
 							}else{
 								var current_currency = current.name+" ("+current.currency_code +")"
-								, current_code = current.currency_code
+								, current_code = current.currency_code;
 							}
 						}else{
 							noSelect.push(cs[i]);
@@ -130,7 +136,7 @@ module.exports = {
 						,currencyCode:current_code||false
 						,comissionVal:comp.currency_comission
 						,allCurrencies:noSelect||[]
-					})
+					});
 				});
 			});	
 		});
@@ -139,17 +145,17 @@ module.exports = {
 		var select_company = req.session.select_company || req.user.select_company
 		,response = false
 		,mo = money;
-		Company.findOne({id:select_company}).exec(function(err,comp){
+		Company.findOne({id:select_company}).populate('currencies').populate('base_currency').exec(function(err,comp){
 			if(err) return res.json(response);
-			var index
-			, data = {};
-			if((index = comp.currencies.indexOf(comp.base_currency))!=-1)
-				comp.currencies.splice(index,1);
-
+			var data = {};
 			for(var i=0;i<comp.currencies.length;i++){
-				data[comp.currencies[i]] = [];
+				if(comp.currencies[i].id != comp.base_currency.id)
+					data[comp.currencies[i].currency_code] = [];
+					
 			}
 			var nowMonth = moment().startOf("month")._d;
+			
+
 			Exchange_rates.find({
 				$query:{
 					companyId:select_company,updatedAt:{
@@ -186,7 +192,7 @@ module.exports = {
 						for(var l in data){
 							mo.rates = days[i].rates;
 							mo.base = "USD";
-							data[l].push([days[i].updatedAt.getTime(),mo(1).from(comp.base_currency).to(l)]);
+							data[l].push([days[i].updatedAt.getTime(),mo(1).from(comp.base_currency.currency_code).to(l)]);
 						}
 					
 					}
@@ -195,7 +201,7 @@ module.exports = {
 						response.push({
 							label:i
 							,data:data[i]
-						})
+						});
 
 					}
 					res.json(response);
@@ -267,35 +273,34 @@ var update = {
 	}
 	, baseCurrency: function(req,form,cb){
 		var select_company = req.session.select_company || req.user.select_company
-		,validate = ['currency_comission'];
-		if(form.base_currency!="false"){
-			validate.push("base_currency");
-		}
-		for(var i in form){
-			if(validate.indexOf(i)==-1)
-				delete form[i];
-		}
-		Company.update({id:select_company},form).exec(function(err,comp){
-			cb && cb(err,comp)	
+		Currency.findOne({currency_code:form.base_currency}).exec(function(err,currency){
+			if(err) return res.json(false);
+			Company.update({id:select_company},{
+				base_currency:currency.id
+			}).exec(function(err,comp){
+				cb && cb(err,comp)	
+			});	
 		});
 	}
 	,addCurrency: function(req,form,cb){
-		update.editCurrency(req,form,'push',cb);
+		update.editCurrency(req,form,'add',cb);
 	}
 	,removeCurrency: function(req,form,cb){
-		update.editCurrency(req,form,'splice',cb);
+		update.editCurrency(req,form,'remove',cb);
 	}
 	,editCurrency: function(req,form,method,cb){
 		var select_company = req.session.select_company || req.user.select_company;
 		Company.findOne({id:select_company}).exec(function(err,comp){
-			if(method=="splice"){
-				var index;
-				if((index=comp.currencies.indexOf(form.currency))!=-1)
-					comp.currencies.splice(index,1)
-			}else
-				comp.currencies.push(form.currency);
-			comp.save(function(err){
-				cb && cb(err,comp);	
+			Currency.findOne({currency_code:form.currency}).exec(function(err,currency){
+				if(method=="remove"){
+					comp.currencies.remove(currency);
+				}else
+					comp.currencies.add(currency);
+				comp.save(function(err){
+					console.log(err);
+					cb && cb(err,comp);	
+				});	
+
 			});
 		});
 	}
