@@ -1,0 +1,29 @@
+<div class="widgetbox" ng-controller="galleryCTL">
+	<h4 class="widgettitle">Galeria</h4>
+	<div class="widgetcontent">
+		<form action="/product/addGallery" enctype="multipart/form-data" method="post" class="gallery">
+			<input type="hidden" name="productID" value="<%=product.id%>"/>
+			<span class="field">
+				<span class="fileupload fileupload-new" data-provides="fileupload">
+					<span class="input-append">
+						<span class="uneditable-input span2">
+							<i class="fa fa-file fileupload-exists"></i>
+							<span class="fileupload-preview"></span>
+						</span>
+						<span class="btn btn-file">
+							<span class="fileupload-new">Archivo</span>
+							<span class="fileupload-exists">Cambia</span>
+							<input type="file" name="img">
+						</span>
+						<a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remover</a>
+					</span>
+				</span>
+			</span>
+			<button class="btn btn-primary">Guardar</button>
+		</form>
+		<hr />
+		<a href="#" class="col-md-6" ng-repeat="img in imgs">
+			<img ng-src="/uploads/gallery/350x150{{img}}" alt="" class="img-thumbnail"/>
+		</a>	
+	</div>
+</div>

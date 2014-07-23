@@ -1,0 +1,27 @@
+			<%for(var i=0;i<fields.length;i++){ 
+				var field = fields[i];
+				var nowValue=product[field.name] || '';
+			%>
+	     			<p>
+	     				<label for="<%=field.name%>"><%=field.name%></label>
+	     				<span class="field">
+						<% if(field.type=='text'){%>
+		     					<input type="<%=field.type%>" name="<%=field.name%>" class="input-large" value="<%=nowValue%>" >
+						<% }else if(field.type=='textarea'){ %>
+		     					<textarea  name="<%=field.name%>" cols="30" rows="10" ><%=nowValue%></textarea>
+						<%}else if(field.type=='select'){%>
+		     					<select name='<%=field.name%>' class='chzn-select form-control large' data-placeholder="selecciona" >
+							<option value=""></option>
+							<%for(var v=0;v<field.values.length;v++){
+								var values = field.values[v];
+							%>
+	     							<option  value="<%=values%>" <%=nowValue==values?'selected':''%>><%=values%></option>
+							
+							<% }%>
+		     					</select>
+						<% }else if(field.type=='fecha'){ %>
+		     					<input type="date" name="<%=field.name%>" value="<%=nowValue%>">
+						<% } %>
+	     				</span>
+	     			</p>
+			<% } %>

@@ -21,19 +21,23 @@ module.exports.apps = {
 		label : 'Ventas',
 		icon : 'fa-briefcase',
 		views : {
-			'/ventas/' : {
+			'/sale/' : {
 				label : 'ventas',
 				icon : 'fa-briefcase'
 			},
-			'/cotizacioens/' : {
+			'/quote/' : {
 				label : 'Cotizaciones',
 				icon : 'fa-file'
 			},
 
-			'/productos/' : {
+			'/product/' : {
 				label : 'Productos',
-				icon : 'fa-truck'
+				icon : 'fa-cube'
 			},
+			'/product_type/' : {
+				label : 'Categorias',
+				icon : 'fa-archive'
+			}
 		},
 	},
 };

@@ -28,8 +28,12 @@ passport.serializeUser(function(user,done){
 
 passport.deserializeUser(function(id,done){	
 	User.findOne(id.id).populate('companies').exec(function (err, user){
-		user.select_company = user.default_company;	
-		done(err, user);	
+		user.select_company = user.default_company;
+		Company.findOne(user.select_company).populate('currencies').populate('base_currency').exec(function(e,company){
+			user.company = company;
+			done(err,user);
+		});
+		
 	});
 });	
 
