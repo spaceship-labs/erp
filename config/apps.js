@@ -21,15 +21,14 @@ module.exports.apps = {
 		label : 'Ventas',
 		icon : 'fa-briefcase',
 		views : {
-			'/sale/' : {
-				label : 'ventas',
+			'/ventas/' : {
+				label : 'Ventas',
 				icon : 'fa-briefcase'
 			},
-			'/quote/' : {
-				label : 'Cotizaciones',
-				icon : 'fa-file'
+			'/clientes/' : {
+				label : 'Clientes',
+				icon : 'fa-users'
 			},
-
 			'/product/' : {
 				label : 'Productos',
 				icon : 'fa-cube'

@@ -20,11 +20,13 @@ module.exports = {
         },
 
         user : {
-            model : 'User'
+            model : 'User',
+            required : true
         },
 
         sale : {
-            model : "Sale"
+            model : 'Sale'//,
+            //required : true
         },
 
         products : {

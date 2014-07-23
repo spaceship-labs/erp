@@ -4,6 +4,20 @@ app.config(['$sailsProvider', function ($sailsProvider) {
     $sailsProvider.url = 'http://localhost:1337';
 }]);
 
+app.directive('chosen',function(){
+   var linker = function(scope,element,attrs){
+        scope.$watch('clients',function(){
+            element.trigger('liszt:updated');
+        });
+        element.chosen();
+   };
+
+   return {
+       restrict : 'A',
+       link : linker
+   }
+});
+
 app.controller('userCTL',function($scope,$sails){
 	$scope.alphabets = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']; 
 	$scope.users = users;
@@ -236,10 +250,11 @@ app.controller('saleCTL',function($scope){
     });
 });
 
-app.controller('saleAddCTL',function($scope) {
+app.controller('saleAddCTL',function($scope,$http) {
     $scope.selectedProducts = [];
     $scope.products = [];
     $scope.clients = [];
+    $scope.client = { id : 0};
 
     function showResponse(data){
         console.log(data);
@@ -250,77 +265,79 @@ app.controller('saleAddCTL',function($scope) {
         }
     };
 
-    var options = {
-        success : showResponse,
-        data : { products : $scope.selectedProducts }
+//    var options = {
+//        success : showResponse,
+//        data : { products : $scope.selectedProducts,client : $scope.client.id }
+//    };
+//
+//    jQuery('form').ajaxForm(options);
+
+    $scope.initialize = function () {
+        $http.get('/product/productJsonOptional').then(function (response) {
+            $scope.products = response.data;
+        });
+
+        $http.get('/sale/clientsJson').then(function (response) {
+            $scope.clients = response.data;
+        });
+
     };
 
-    jQuery('form').ajaxForm(options);
+    $scope.initialize();
 
-    $scope.update = function () {
-        jQuery.get('/product/productsJson',{}, function (products) {//{selected: $scope.selectedProducts},
+    $scope.totalPrice = function (){
+        var total = 0;
+
+        for (var i = 0;i < $scope.selectedProducts.length;i++) {
+            total += $scope.selectedProducts[i].price * $scope.selectedProducts[i].quantity;
+        }
+        return total;
+    };
+
+    $scope.partialTotal = function(index){
+        return $scope.selectedProducts[index].quantity * $scope.selectedProducts[index].price;
+    };
+
+    $scope.processForm = function(){
+        console.log("--> Submitting form");
+        var dataObject = {
+            products : $scope.selectedProducts,
+            client : $scope.client.id
+        };
+        $http.post('/ventas/crear',dataObject, {}).success(showResponse);
+    };
+});
+
+app.controller('saleEditCTL',function($scope,$http){
+
+
+    jQuery('form').ajaxForm(function(data){
+        if(data){
+            jQuery('.alert p').text(data.text).parent().removeClass('unseen');
+            if(data.url)
+                window.location.href = data.url;
+        }
+    });
+
+    $scope.initialize = function () {
+        $http.get('/product/productJsonOptional').then(function (products) {//{selected: $scope.selectedProducts},
             $scope.products = products;
-            $scope.$apply();
             var select = jQuery("#products");
             updateChosen(select);
         });
 
-        jQuery.get('/sale/clientsJson',{}, function (clients) {//{selected: $scope.selectedProducts},
+        $http.get('/sale/clientsJson').then(function (clients) {//{selected: $scope.selectedProducts},
             $scope.clients = clients;
-            $scope.$apply();
             var select = jQuery("#client");
             updateChosen(select);
         });
 
     };
 
-    $scope.update();
-
-    $scope.addProduct = function () {
-
-        var index = jQuery("#products").val();
-
-        var product = $scope.products[index];
-        product.Quantity = 1;
-
-        if (!product.price) {
-            product.price = 10;
-        }
-
-        $scope.products.splice(index, 1);
-
-        $scope.selectedProducts.push(product);
-
-        window.setTimeout(updateChosen,100);
-    };
-
-    $scope.removeProduct = function (index) {
-
-        var product = $scope.selectedProducts[index];
-
-        $scope.selectedProducts.splice(index, 1);
-
-        $scope.products.push(product);
-
-        window.setTimeout(updateChosen,100);
-
-    };
-
-    $scope.totalPrice = function (){
-        var total = 0;
-
-        for (var i = 0;i < $scope.selectedProducts.length;i++) {
-            total += $scope.selectedProducts[i].price * $scope.selectedProducts[i].Quantity;
-        }
-        return total;
-    };
-
-    $scope.partialTotal = function(index){
-        return $scope.selectedProducts[index].Quantity * $scope.selectedProducts[index].price;
-    };
+    $scope.initialize();
 });
 
-app.controller('saleEditCTL',function($scope){
+app.controller('clientCTL',function($scope){
     jQuery('form').ajaxForm(function(data){
         if(data){
             jQuery('.alert p').text(data.text).parent().removeClass('unseen');

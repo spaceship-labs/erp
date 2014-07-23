@@ -13,7 +13,7 @@ module.exports = {
         Sale.find({ company : select_company }).populate('user').populate('client').exec(function (err,sales){
             Common.view(res.view,{
                 page:{
-                    icon:'fa fa-barcode'
+                    icon:'fa fa-briefcase'
                     ,name:'Ventas'
                 },
                 sales : sales,
@@ -32,16 +32,18 @@ module.exports = {
 
   add : function (req,res){
       var select_company = req.session.select_company || req.user.select_company;
+      var select_client = req.param('sc');
       SaleClient.find({ company : select_company }).exec(function (err,clients){
           Product.find({ company : select_company }).exec(function (err,products){
               Common.view(res.view,{
                   page:{
-                      icon:'fa fa-barcode'
+                      icon:'fa fa-briefcase'
                       ,name:'Nueva Venta'
                   },
                   clients : clients || [],
-                  products : products || []
-              });
+                  products : products || [],
+                  select_client : select_client
+              },req);
           });
       });
 
@@ -53,14 +55,18 @@ module.exports = {
         if(form){
             form.company = req.session.select_company || req.user.select_company;
             form.user = req.user;
-            Sale.create(form).exec(function(err,sale){
-                if(err) return res.json({text:'Ocurrio un error.'});
+            Sale.create(form).exec(function(err,newsale){
+                if(err) {
+                    console.log('error al crear la venta');
+                    return res.json({text:'Ocurrio un error.'});
+                }
 
                 var products = [];
-                req.param('products').map(function(p){
+                //var auxProducts = req.param('products');//falta la funcion map en angular , y no se por que no uso la de jquery
+                _.map(req.param('products'),function(p){
                     products.push({
                         id : p.id,
-                        quantity : p.Quantity,
+                        quantity : p.quantity,
                         price : p.price,
                         name : p.name
                     });
@@ -71,15 +77,20 @@ module.exports = {
                     company : form.company,
                     user : form.user,
                     products : products,
-                    sale : sale.id
+                    sale : newsale.id
                 };
 
                 SaleQuote.create(quote).exec(function(err,saleQuote){
+                    if (err) {
+                        return res.json({text : 'Ocurrio un error.',message : err.message});
+                    }
                     var quotes = [];
                     quotes.push(saleQuote.id);
-                    Sale.update({id : sale.id},{ quotes : quotes }).exec(function(err,sale){
-                        if (err) res.json({text : 'Ocurrio un error.'});
-                        res.json({text:'Venta creada.'/*,url:'/sale/edit/'+sale.id*/});
+                    Sale.update({id : newsale.id},{ quotes : quotes }).exec(function(err,sale){
+                        if (err) {
+                            return res.json({text : 'Ocurrio un error.'});
+                        }
+                        return res.json({text:'Venta creada.',url:'/ventas/editar/'+newsale.id});
                     });
 
                 });
@@ -100,12 +111,12 @@ module.exports = {
                   .exec(function(err,sale){
                     Common.view(res.view,{
                         page:{
-                            icon:'fa fa-barcode'
+                            icon:'fa fa-briefcase'
                             ,name:'Venta'
                           },
                           sale : sale || [],
                           moment : moment
-                      });
+                      },req);
               });
           } else
             res.notFound();
@@ -120,7 +131,7 @@ module.exports = {
                       ,name:'Clientes'
                   },
                   clients : clients || []
-              });
+              },req);
           });
 
       },
@@ -150,7 +161,7 @@ module.exports = {
                         },
                         client : saleClient || [],
                         sales : sales || []
-                    });
+                    },req);
                 });
             });
         } else
@@ -174,7 +185,7 @@ module.exports = {
             form.company = req.session.select_company || req.user.select_company;
             SaleClient.create(form).exec(function(err,saleClient){
                 if(err) return res.json({text:err});
-                res.json({text:'Cliente creado.',url:'/clients/edit/'+saleClient.id});
+                res.json({text:'Cliente creado.',url:'/clientes/editar/'+saleClient.id});
             });
         }
     },

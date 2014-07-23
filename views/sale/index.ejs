@@ -1,41 +1,5 @@
 <div ng-controller="saleCTL">
     <div class="row-fluid">
-	<div class="col-md-5">
-		<div class="headtitle">
-	        <div class="btn-group">
-	            <button data-toggle="dropdown" class="btn dropdown-toggle">Opciones <span class="caret"></span></button>
-	            <ul class="dropdown-menu">
-	              <li><a href="#" class="change-icon-button">Opcion 1</a></li>
-	              <li><a class="confirmbutton" href="#">Opcion 2</a></li> 
-	            </ul>
-	        </div> 		
-			<h4 class="widgettitle"><span class="fa fa-user"></span> Cliente </h4>
-		</div>
-		<div class="widgetcontent main-client">
-			<img src="#" class="pull-left" alt="avatar" width="80">
-			<div class="client-info">
-				<p><strong><a href="#">Salvador Barron</a></strong></p>
-				<p><strong>Compañia: </strong>Spaceshiplabs</p>
-				<p><strong>Direccion: </strong> Av. Bonampak, C. Cereza No.1 Sm 2A</p>
-				<p><strong>Telefono: </strong>+51 (998) 231 0456</p>				
-			</div>
-		</div>
-		<div class="current-cot">
-			<h4 class="widgettitle"><span class="fa fa-user"></span> Cotizacion vigente</h4>
-			<div class="widgetcontent item-list">
-				<p><strong><a href="#">Salvador Barron</a></strong> OFFLINE</p>
-				<% for(var i = 0; i< 3; i++){ %>
-					<div class="item">
-						<p><strong>ID: </strong>Spaceshiplabs</p>
-						<p><strong>Producto: </strong> Nombre del producto UNO</p>
-						<p><strong>Descripcion: </strong>Lorem ipsum dolor sit amen</p>				
-						<p><strong>Tipo: </strong>Rotulación</p>				
-					</div>
-				<% } %>
-			</div>				
-		</div>
-	</div>
-	<div class="clear"></div>
         <div class="col-md-12">
             <div class="buttons-box">
                 <!-- Single button -->
@@ -49,7 +13,7 @@
                         <li><a href="#">Something else here</a></li>
                     </ul>
                 </div>
-                <a href="/sale/add" class="btn btn-default button-orange"><span class="table-icon fa fa-plus"></span> AGREGAR VENTA</a>
+                <a href="/ventas/agregar" class="btn btn-default button-orange"><span class="table-icon fa fa-plus"></span> AGREGAR VENTA</a>
             </div>
             <div class="widgetcontent custom-table nopadding">
                 <table class="table table-striped">
@@ -68,20 +32,15 @@
                     %>
                     <tr>
                         <td data-title="Fecha"><%= moment(sale.createdAt) %></td>
-                        <td data-title="Vendedor"><a href="/sale/edit/<%= sale.id %>"><%= sale.user.name %></a></td>
+                        <td data-title="Vendedor"><a href="/ventas/editar/<%= sale.id %>"><%= sale.user.name %></a></td>
                         <td data-title="Cliente"><%= sale.client.name %></td>
                         <td data-title="Status"><%= sale.status || 'pendiente' %></td>
                         <td data-title="Monto"><%= sale.totalAmount || 0 %></td>
-                        <td data-title="Editar"><a href="/sale/edit/<%= sale.id %>"><span class="table-icon fa fa-edit"></span></a></td>
+                        <td data-title="Editar"><a href="/ventas/editar/<%= sale.id %>"><span class="table-icon fa fa-edit"></span></a></td>
                     </tr>
                     <% } %>
                 </table>
             </div>
         </div>
-
     </div>
-
-
-
-
 </div>

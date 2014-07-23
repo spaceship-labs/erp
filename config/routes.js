@@ -38,29 +38,49 @@ module.exports.routes = {
   // against Sails route blueprints.  See `config/blueprints.js` for configuration options
   // and examples.
 
-    '/clients' : {
+    '/clientes' : {
         controller : 'sale',
         action : 'clients'
     },
 
-    '/clients/add' : {
+    '/clientes/agregar' : {
         controller : 'sale',
         action : 'addClient'
     },
 
-    '/clients/create' : {
+    '/clientes/crear' : {
         controller : 'sale',
         action : 'createClient'
     },
 
-    '/clients/edit/:id' : {
+    '/clientes/editar/:id' : {
         controller : 'sale',
         action : 'editClient'
     },
 
-    '/clients/update' : {
+    '/clientes/actualizar' : {
       controller : 'sale',
       action : 'updateClient'
+    },
+
+    '/ventas' : {
+        controller : 'sale',
+        action : 'index'
+    },
+
+    '/ventas/agregar' : {
+        controller : 'sale',
+        action : 'add'
+    },
+
+    '/ventas/crear' : {
+        controller : 'sale',
+        action : 'create'
+    },
+
+    '/ventas/editar/:id' : {
+        controller : 'sale',
+        action : 'edit'
     }
 
 

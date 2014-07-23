@@ -1,7 +1,7 @@
 <div class="modal fade" id="selectClientModal">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form action='/sale/updateClient' method='post' accept-charset='utf-8' class='stdform stdform2' />
+            <form action='/ventas/updateClient' method='post' accept-charset='utf-8' class='stdform stdform2' />
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title">Seleccionar Cliente</h4>
@@ -9,10 +9,7 @@
             <div class="modal-body">
                 <p>
 				<span>
-					<select name='client_select' multiple='multiple' class='chzn-select form-control large' data-placeholder="Agregar Cliente..." style='width:285px'>
-                        <% for(var i=0;i<4;i++){ %>
-                        <option value='<%- i %>'>option <%- i %></option>
-                        <% } %>
+					<select name='client_select'  class='chzn-select form-control large' data-placeholder="Agregar Cliente..." style='width:285px'>
                     </select>
 				</span></p>
             </div>
