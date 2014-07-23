@@ -17,8 +17,14 @@
         </div>
         <div class="widgetcontent">
             <div class="profilethumb">
-                <img src="/uploads/companies/177x171<%=company.icon%>">
-                <form action="/admin/editAjax" method="post" accept-charset="utf-8" enctype="multipart/form-data" class="hidden" id="change-icon">
+	    	<%var icon;
+		if(company.icon){
+			icon ="/uploads/companies/177x171"+company.icon;
+		}else
+			icon = "http://placehold.it/177x171";
+		%>
+	        <img src="<%=icon%>">
+                <form action="/company/editAjax" method="post" accept-charset="utf-8" enctype="multipart/form-data" class="hidden commonForm" id="change-icon">
 	                <input type="hidden" name='method' value='icon' />
                     <input type="hidden" name='userId' value='<%=company.id%>' />
                     <hr>
@@ -86,11 +92,11 @@
     </div>
         
 </div><!--span4-->
-<div class="span8">        
+<div class="span6">        
         <div class="widgetbox personal-information">
             <h4 class="widgettitle">Información de la Empresa</h4>
             <div class="widgetcontent">
-                <form action="/admin/editAjax" class="editprofileform stdform stdform2 ajaxForm" method="post">
+                <form action="/company/editAjax" class="editprofileform stdform stdform2 ajaxForm commonForm" method="post">
 
                     <p><label for="name_input">Nombre:</label>
                     <span class="field"><input type="text" name="name" class="input-xlarge" value="<%=company.name%>"></span></p>              
@@ -107,10 +113,10 @@
     	            <input type="hidden" value="info" name="method" />
                     <p class="stdformbutton">
                     <%var active = {
-                        1:[0,'Desactivar']
-                        , 0:[1,'Activar']
+                        true:[0,'Desactivar']
+                        , false:[1,'Activar']
                     } %>
-                        <button type="submit" class="btn btn-primary">Actualizar Empresa</button> &nbsp; <a class="confirmbutton"  data-url="/admin/" href="<%=active[company.active][0]%>"><%=active[company.active][1]%></a>
+                        <button type="submit" class="btn btn-primary">Actualizar Empresa</button> &nbsp; <a class="confirmbutton"  data-url="/company/" href="<%=active[company.active][0]%>"><%=active[company.active][1]%></a>
                     </p>
                     
                 </form>

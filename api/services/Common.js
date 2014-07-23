@@ -123,11 +123,13 @@ module.exports.updateInfoProfile = function(req,opts,cb){
 		}
 	
 	}
+	var active = form.active;
+	form.active = form.active==0?false:true;
 	Model.update({id:id},form).exec(function(err,m){
 		if(m && form.active!=undefined){	
 			m = {
-				activeN:m[0].active?0:1
-				,active:m[0].active?'Desactivar':'Activar'
+				activeN:active==0?1:0
+				,active:active==1?'Desactivar':'Activar'
 			};
 		}
 		return cb && cb(err,m);
