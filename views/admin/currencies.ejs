@@ -46,10 +46,9 @@ window.preload = [];
 		<form method="post" action="/admin/editAjax" accept-charset="utf-8" class="form-currencies commonForm">
 			<p>Moneda Base</p>
 			<p><select name="base_currency" >
-					<option ng-value="{{currencyCode}}" ng-cloak>
-						{{currency}}
+					<option ng-value="{{currencyCode}}" ng-bind="currency">
 					</option>
-					<option ng-repeat="i in currencies" value="{{i.code}}" ng-cloak>{{i.name}}</option>
+					<option ng-repeat="i in currencies" value="{{i.code}}" ng-bind="i.name"></option>
 
 			</select></p>
 
