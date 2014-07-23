@@ -34,7 +34,7 @@ jQuery(function($){
 	$('.editprofileform').ajaxForm(function(data){
 		$('.alert').removeClass('unseen').find('p').text(data.msg)
 	});
-
+	*/
 	$('.editprofileform .confirmbutton').on('click',function(e){
 		e.preventDefault();
 
@@ -51,7 +51,7 @@ jQuery(function($){
 			self.text(d.data.active);
 		});
 	});
-	*/
+	
 
 	$('.fileupload').fileupload();
 
