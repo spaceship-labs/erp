@@ -7,7 +7,7 @@ module.exports.apps = {
 				label : 'Empresas',
 				icon : 'fa-building'
 			},
-			'/company/currencies/' : {
+			'/admin/currencies/' : {
 				label : 'Mondedas',
 				icon : 'fa-money'
 			},
