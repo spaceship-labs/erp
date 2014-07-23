@@ -114,7 +114,7 @@ app.controller('userEditCTL',function($scope){
 
 app.controller('createCompanyCTL',function($scope){
 	var update = function(){
-		jQuery.get('/admin/indexJson',function(data){
+		jQuery.get('/company/indexJson',function(data){
 			if(data){
 				$scope.companyDash = data;
 				$scope.$apply();
@@ -132,6 +132,12 @@ app.controller('createCompanyCTL',function($scope){
 });
 
 app.controller('currencyCTL',function($scope){
+	for(var i=0;i<preload.length;i++){
+		$scope[preload[i]] = window[preload[i]];
+	}
+	
+	charts_currencies($scope);
+
 	var $ = jQuery
 	, updateContent = function(){
 		$.get('/admin/currenciesJson',function(data){
@@ -162,7 +168,7 @@ app.controller('currencyCTL',function($scope){
 		, updateContent
 		);
 	});
-	updateContent();
+	//updateContent();
 });
 
 app.controller('noticeCTL',function($scope){

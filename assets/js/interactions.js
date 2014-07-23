@@ -6,7 +6,7 @@ jQuery(function($){
 		alt.text(data.msg).parent().show();
 		$(window).scrollTop(alt.parent().position().top-10);
 	});
-
+	
 	$('.change-icon-button').on('click',function(e){
 		e.preventDefault();
 		$('#change-icon').removeClass('hidden');
@@ -17,7 +17,7 @@ jQuery(function($){
 			$('.profilethumb img').attr('src',data.data);
 		}
 	});
-
+	/*
 	$('.Admin.profileEdit .taglist').on('click','.close',function(e){
 		e.preventDefault();
 		$(this).parent().parent().remove();
@@ -51,10 +51,11 @@ jQuery(function($){
 			self.text(d.data.active);
 		});
 	});
+	*/
 
 	$('.fileupload').fileupload();
 
-
+	/*
 	var updateApps = function(addApp,url){
 		var li = $('.profileEdit .taglist li'),
 		apps = [];
@@ -85,11 +86,14 @@ jQuery(function($){
 		});
 	}
 	//TODO limpiar lo que no se usa
+	*/
 	jQuery('form.commonForm').ajaxForm(function(data){
 		if(data){
 			jQuery('.alert p').text(data.text).parent().removeClass('unseen');
 			if(data.url)
 				window.location.href = data.url;
+			else
+				window.location.reload();
 		}
 	});
 });

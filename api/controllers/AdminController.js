@@ -7,81 +7,24 @@
 var money = require('money')
 , moment = require('moment');
 module.exports = {
-	index: function(req,res){
-		App.find().exec(function(err,apps){
-			if(err) throw err;
-			Currency.find().exec(function(err,currencies){
-				Common.view(res.view,{
-					apps:apps || []
-					,currencies:currencies || []
-				},req);
-				
-			});
-		});
-	}
-	, indexJson:function(req,res){
-		Company.find().exec(function(err,comp){
-			res.json(comp);
-		});
-	}
-
-	, create: function(req,res){
-		var form = req.params.all() || {}
-		, response = {
-			status:false
-			, msg:'ocurrio un error'
-		};
-		delete form.id;
-		form.active = 1;
-		form.req = req;
-		Company.create(form).exec(function(err,company){
-			if(err) return res.json(response);
-			update.icon(req,{userId:company.id},function(err,files){				
-				if(err)  return res.json(response);
-				res.json({
-					status:true
-					, msg:'La compania se creo exitosamente'
-				});
-			});
-
-
-		});
-	}
-	, edit: function(req,res){
-		var id = req.params.id;
-		Company.findOne({id:id}).exec(function(err,company){
-			if(err) throw err;
-			var find = {}
-			find['companies.'+id] = {$exists:1};
-			User.find(find).exec(function(err,users){	
-				Apps.find({controller:{$in:company.app}}).exec(function(err,apps){
-					Apps.find({controller:{'!':company.app}}).exec(function(err,allApps){
-						Common.view(res.view,{
-							company:company || {}
-							, users:users || []
-							,apps: apps||[]
-							,allApps:allApps || []
-						},req);
-					});
-				});
-			});
-		});
-	}
-
-	, editAjax: function(req,res){
+	 editAjax: function(req,res){
 		Common.editAjax(req,res,update);
 	}
 	
 	, currencies: function(req,res){
-		Common.view(res.view,{
-			page:{
-				name:'Monedas'
-				,icon:'fa fa-money'
-			}
-		},req);
+		sails.controllers.admin.currenciesJson(req,res,function(data){
+			data = {
+				page:{
+					name:'Monedas'
+					,icon:'fa fa-money'				
+				}
+				,preload:data
+			};
+			Common.view(res.view,data,req);		
+		});
 	}
 
-	, currenciesJson: function(req,res){
+	, currenciesJson: function(req,res,cb){
 		var mon = money
 		, select_company = req.session.select_company || req.user.select_company
 		, response = {
@@ -130,13 +73,16 @@ module.exports = {
 							noSelect.push(cs[i]);
 						}
 					}
-					res.json({
+					var tmp = {
 						currencies:data||{}
 						,currency:current_currency||"agrega moneda"
 						,currencyCode:current_code||false
 						,comissionVal:comp.currency_comission
 						,allCurrencies:noSelect||[]
-					});
+					
+					};
+					if(cb) return cb(tmp)
+					res.json(tmp);
 				});
 			});	
 		});
@@ -272,13 +218,17 @@ var update = {
 
 	}
 	, baseCurrency: function(req,form,cb){
-		var select_company = req.session.select_company || req.user.select_company
+		var select_company = req.session.select_company || req.user.select_company;
 		Currency.findOne({currency_code:form.base_currency}).exec(function(err,currency){
 			if(err) return res.json(false);
-			Company.update({id:select_company},{
+			var ob = {
 				base_currency:currency.id
-			}).exec(function(err,comp){
-				cb && cb(err,comp)	
+				,currency_comission:form.currency_comission
+			};
+			if(!form.currency_comission)
+				delete ob.currency_comission;
+			Company.update({id:select_company},ob).exec(function(err,comp){
+				cb && cb(err,comp);
 			});	
 		});
 	}
@@ -290,14 +240,13 @@ var update = {
 	}
 	,editCurrency: function(req,form,method,cb){
 		var select_company = req.session.select_company || req.user.select_company;
-		Company.findOne({id:select_company}).exec(function(err,comp){
+		Company.findOne({id:select_company}).populate("currencies").exec(function(err,comp){
 			Currency.findOne({currency_code:form.currency}).exec(function(err,currency){
 				if(method=="remove"){
 					comp.currencies.remove(currency);
 				}else
 					comp.currencies.add(currency);
 				comp.save(function(err){
-					console.log(err);
 					cb && cb(err,comp);	
 				});	
 
