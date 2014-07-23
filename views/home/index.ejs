@@ -1,7 +1,11 @@
 <div ng-controller="noticeCTL">
-	<%- partial('../global/notices') -%>
-	<div class="clear"></div>
-	<%- partial('../admin/currencies_charts') -%> 
+	<div class="row">
+		<%- partial('../global/notices') -%>
+		<div class="col-md-6">
+			<%- partial('../admin/currencies_charts') -%> 
+		</div>
+	
+	</div>
 	<!--
 	<div class="row">
 		<div class="col-md-12">
