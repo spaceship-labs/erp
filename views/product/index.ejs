@@ -1,48 +1,50 @@
-<div ng-controller="addProductCTL">
-   <div class="span8">
-   <div class="alert alert-block unseen">
-	<button data-dismiss="alert" class="close" type="button">×</button>
-	<h4>Mensaje</h4>
-		<p style="margin: 8px 0">El usuario se ha actualizado exitosamente</p>
-   </div>
-	<div class="widgetbox">
-		<h4 class="widgettitle">Nueva categoria</h4>
-		<div class="widgetcontent nopadding">                            
-			<form action="/product/createProductType" method="get" accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine">
-				<p>
-					<label for="name">Nombre*</label>
-					<span class="field"><input type="text" name="name" class="input-large"></span>
-				</p>
-				<p><label for="app">Tipo de venta</label>
-					<span class="field">
-						<select name='sales_type' multiple='multiple' class='chzn-select form-control large' data-placeholder="Agregar tipo">
-							<%for(var i=0;i<sales_type.length;i++){%>
-								<option value='<%=sales_type[i].type%>'><%=sales_type[i].name%></option>
-							<%}%>
-						</select>
-
-					</span>
-				</p>
-				<p>
-					<label for="description">Descripcion*</label>
-					<span class="field"><input type="text" name="description" class="input-large"></span>
-				</p>
-				<%/*
-				<p>
-					<label for="fields">Campos</label>
-					<span class="field">
-						<select name='fields' multiple='multiple' class='chzn-select form-control large' data-placeholder="Agregar campo">
-								<option ng-repeat="field in fields" value='{{field.name}}'>{{field.name}}</option>
-						</select>
-					</span>
-				</p>
-				*/%>
-				<p class="stdformbutton">
-			                <button class="btn btn-primary">Guardar</button>
-			                <button type="reset" class="btn">Resetear</button>
-				</p>
-			</form>
-		</div>
+<div class="col-md-12">
+	<div class="buttons-box">
+		<!-- <div class="btn-group">
+		  <button type="button" class="btn btn-default button-orange dropdown-toggle" data-toggle="dropdown">
+		    <span class="table-icon fa fa-filter"></span> FILTROS <span class="fa fa-caret-down"></span>
+		  </button>
+		  <ul class="dropdown-menu" role="menu">
+		    <li><a href="#">Action</a></li>
+		    <li><a href="#">Another action</a></li>
+		    <li><a href="#">Something else here</a></li>
+		  </ul>
+		</div>	 -->
+		<div class="btn-group">
+		  <button type="button" class="btn btn-default button-orange dropdown-toggle" data-toggle="dropdown">
+		    <span class="table-icon fa fa-bars"></span> CATEGORIAS <span class="fa fa-caret-down"></span>
+		  </button>
+		  <ul class="dropdown-menu" role="menu">
+		    <li><a href="#">Action</a></li>
+		    <li><a href="#">Another action</a></li>
+		    <li><a href="#">Something else here</a></li>
+		  </ul>
+		</div>	
+		<a href="/product/products" class="btn btn-default button-orange" data-toggle="modal" data-target="#myModal" ><span class="table-icon fa fa-plus"></span> Producto</a>		
 	</div>
-   </div>
-</div>
+	<div class="widgetcontent custom-table nopadding">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Nombre</th>
+					<th>Descripción</th>
+					<th>Tipo</th>
+					<th>Editar</th>
+				</tr>
+			</thead>
+			<% for(var i=0;i<products.length;i++){ 
+				var product = products[i];
+			%>
+				<tr>
+					<td data-title="ID"><%=product.id%></td>
+					<td data-title="Nombre"><a href="#"><%=product.name%></a></td>
+					<td data-title="Descripcion"><%=product.product_type.description || ''%></td>
+					<td data-title="Categoria"><%=product.product_type.name%></td>
+					<td data-title="Editar"><a href="/product/edit/<%=product.id%>"><span class="table-icon fa fa-edit"></span></a></td>
+				</tr>
+			<%}%>
+		</table>
+	</div>
+	<%- partial('new-modal') -%>	
+</div> 

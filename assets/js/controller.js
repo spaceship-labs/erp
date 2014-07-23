@@ -206,17 +206,24 @@ app.controller('addProductCTL',function($scope){
 });
 
 app.controller('productCTL',function($scope){
+	$scope.product = product;
+
+	$scope.product_types = {
+		stockable : 'Producto Inventariado',
+		consumable : 'Consumible',
+		service : 'Servicio',
+	}		
 
 });
 
 app.controller('galleryCTL',function($scope){
-	jQuery('form.gallery').ajaxForm(function(data){
+	/*jQuery('form.gallery').ajaxForm(function(data){
 		if(data && data.img){
 			updateContent();
 		}else{
 			jQuery('.alert p').text(data.text).parent().removeClass('unseen');
 		}
-	});
+	});*/
 	
 	var updateContent = function(){
 		jQuery.get('/product/productGalleryJson',{id:jQuery('input[name="productID"]').val()},function(data){
@@ -364,6 +371,7 @@ function updateNotices($scope,url,dt,cb){
 		}
 	});
 	io.socket.get(url,dt,function(data){
+		console.log(data);
 		if(data && data.noticesN){
 			for(var i in data){
 				$scope[i] = data[i];

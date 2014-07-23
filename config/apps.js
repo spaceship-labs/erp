@@ -7,7 +7,7 @@ module.exports.apps = {
 				label : 'Empresas',
 				icon : 'fa-building'
 			},
-			'/company/currencies/' : {
+			'/admin/currencies/' : {
 				label : 'Mondedas',
 				icon : 'fa-money'
 			},
@@ -29,9 +29,13 @@ module.exports.apps = {
 				label : 'Clientes',
 				icon : 'fa-users'
 			},
-			'/productos/' : {
+			'/product/' : {
 				label : 'Productos',
-				icon : 'fa-truck'
+				icon : 'fa-cube'
+			},
+			'/product_type/' : {
+				label : 'Categorias',
+				icon : 'fa-archive'
 			}
 		},
 	},

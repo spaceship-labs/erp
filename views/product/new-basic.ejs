@@ -1,0 +1,33 @@
+<p>
+	<label for="name">Nombre*</label>
+	<span class="field"><input type="text" name="name" class="form-control" ng-model='product.name'></span>
+</p>
+
+<p>
+	<label for="address">Tipo*</label>
+	<span class="field" ng-model='product.type'>
+		<select name="type" class="form-control" ng-options='k as l for (k,l) in product_types' ng-model='product.type' ></select>
+	</span>
+</p>
+
+<p>
+	<label for="price">Precio Unitario (<%- current_user.company.base_currency.currency_code %>)</label>
+	<span class="field">
+		<input type="text" name="price" class="form-control" ng-model='product.price' />
+	</span>
+</p>
+
+<p>
+	<label for="internalreference">Referencia Interna</label>
+	<span class="field"><input type="text" name="internalReference" class="form-control" ng-model='product.internalReference'></span>
+</p>
+
+<p>
+	<label for="name">Codigo de Barras</label>
+	<span class="field"><input type="text" name="barCode" class="form-control" ng-model='product.barCode'></span>
+</p>
+
+<p>
+	<label for="description">Descripción</label>
+	<span class="field"><textarea name="description" class="form-control" ng-model='product.description' ></textarea></span>
+</p>
