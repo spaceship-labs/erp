@@ -1,14 +1,31 @@
 <div ng-controller="saleEditCTL">
 
+    <input type="hidden" id="sale_id" value="1" name="sale_id" />
     <div class="col-md-5">
-        <h4 class="widgettitle"><span class="fa fa-user"></span> Cliente <a><strong>Cambiar</strong></a></h4>
+        <h4 class="widgettitle"><span class="fa fa-user"></span> Cliente <a href="#" class="pull-right" data-toggle="modal" data-target="#selectClientModal">Cambiar <span class="fa fa-retweet"></span></a></h4>
         <div class="widgetcontent main-client">
             <img src="#" class="pull-left" alt="avatar" width="80">
             <div class="client-info">
-                <p><strong><a href="#">Salvador Barron</a></strong></p>
-                <p><strong>Compañia: </strong>Spaceshiplabs</p>
-                <p><strong>Direccion: </strong> Av. Bonampak, C. Cereza No.1 Sm 2A</p>
-                <p><strong>Telefono: </strong>+51 (998) 231 0456</p>
+                <p><strong><a href="/clients/edit/<%- sale.client.id %>>"><%= sale.client.name %></a></strong></p>
+                <p><strong>Compañia: </strong><%= sale.client.company %></p>
+                <p><strong>Direccion: </strong><%= sale.client.address %></p>
+                <p><strong>Telefono: </strong><%= sale.client.phone %></p>
+            </div>
+        </div>
+        <div class="current-cot">
+            <h4 class="widgettitle"><span class="fa fa-user"></span> Cotizacion vigente</h4>
+            <div class="widgetcontent item-list">
+                <!-- falta filtrado de quotes por solo las vigentes -->
+                <% for(var i = 0; i< sale.quotes.length; i++){ %>
+                <% for(var j = 0; j< sale.quotes[i].products.length; j++){ %>
+                    <div class="item">
+                        <p><strong>ID: </strong><%- sale.quotes[i].products[j].id %></p>
+                        <p><strong>Producto: </strong><%- sale.quotes[i].products[j].name %></p>
+                        <p><strong>Descripcion: </strong><%- sale.quotes[i].products[j].description %></p>
+                        <p><strong>Tipo: </strong><%- sale.quotes[i].products[j].product_type %></p>
+                    </div>
+                <% } %>
+                <% } %>
             </div>
         </div>
     </div>
@@ -16,7 +33,7 @@
     <div class="clear"></div>
     <div class="row">
         <div class="col-md-12">
-            <h4 class="widgettitle"><span class="fa fa-pencil"></span> Ventas</h4>
+            <h4 class="widgettitle"><span class="fa fa-pencil"></span> Cotizaciones <a href="#" class="pull-right" data-toggle="modal" data-target="#addQuoteModal"><span class="fa fa-plus"></span> Agregar nueva cotizacion</a></h4>
             <div class="widgetcontent custom-table nopadding">
                 <table class="table table-striped">
                     <thead>
@@ -29,12 +46,17 @@
                         <th>Enviar por mail</th>
                     </tr>
                     </thead>
-                    <% for(var i = 0; i< 3; i++){ %>
+                    <% for(var i = 0; i< sale.quotes.length; i++){
+                        var quote = sale.quotes[i];
+                        var total = quote.products.reduce(function(prev,current){
+                                return prev + parseFloat(current.price);
+                        },0);
+                    %>
                     <tr>
-                        <td data-title="Fecha">25-06-2014</td>
-                        <td data-title="Vendedor"><a href="#">Salvador Barron</a></td>
-                        <td data-title="Status">En proceso</td>
-                        <td data-title="Monto">$2,500.00 MXN</td>
+                        <td data-title="Fecha"><%- moment(quote.createdAt) %></td>
+                        <td data-title="Vendedor"><a href="#"><%= quote.user %></a></td>
+                        <td data-title="Status"><%- quote.status %></td>
+                        <td data-title="Monto"><%- total %></td>
                         <td data-title="PDF"><a href="#"><span class="table-icon fa fa-file-pdf-o"></span></a></td>
                         <td data-title="Enviar por mail"><a href="#"><span class="table-icon fa fa-send"></span></a></td>
                     </tr>
@@ -47,7 +69,7 @@
     <div class="clear"></div>
     <div class="row">
         <div class="col-md-5">
-            <h4 class="widgettitle"><span class="fa fa-cog"></span> Ordenes de trabajo</h4>
+            <h4 class="widgettitle"><span class="fa fa-cog"></span> Ordenes de trabajo <a href="#" class="pull-right" data-toggle="modal" data-target="#addWorkOrderModal"><span class="fa fa-plus"></span> Agregar nueva orden</a></h4>
             <div class="widgetcontent custom-table nopadding">
                 <table class="table table-striped">
                     <thead>
@@ -58,7 +80,7 @@
                         <th>Concepto</th>
                     </tr>
                     </thead>
-                    <% for(var i = 0; i< 3; i++){ %>
+                    <% for(var i = 0; i< 2; i++){ %>
                     <tr>
                         <td data-title="Fecha">25-06-2014</td>
                         <td data-title="Asignado a"><a href="#">Salvador Barron</a></td>
@@ -70,7 +92,7 @@
             </div>
         </div>
         <div class="col-md-7">
-            <h4 class="widgettitle"><span class="fa fa-money"></span> Facturación</h4>
+            <h4 class="widgettitle"><span class="fa fa-money"></span> Facturación <a href="#" class="pull-right" data-toggle="modal" data-target="#addInvoiceModal"><span class="fa fa-plus"></span> Agregar nueva factura</a></h4>
             <div class="widgetcontent custom-table nopadding">
                 <table class="table table-striped">
                     <thead>
@@ -94,4 +116,8 @@
         </div>
 
     </div>
+    <%- partial('addClientModal') -%>
+    <%- partial('addQuoteModal') -%>
+    <%- partial('addInvoiceModal') -%>
+    <%- partial('addWorkOrderModal') -%>
 </div>

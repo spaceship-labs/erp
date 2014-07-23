@@ -9,10 +9,10 @@ module.exports = {
 
   attributes: {
 	product_type:{
-		model:'product_type'
-	}
-	,gallery:'array'
-
+		    model:'product_type'
+	    },
+    gallery:'array'
   }
+
 };
 

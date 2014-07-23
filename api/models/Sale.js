@@ -9,25 +9,36 @@ module.exports = {
 
 	attributes: {
 
-		client	: { type: 'int' },
+		status	: {
+            type: 'string',
+            enum : ['status1','cancelled','status2'],
+            default : 'status1'
+        },
 
-		status	: { type: 'string' },
+        company : { type : "string", required : true },
 
-		total_amount	: { type: 'float' },
-
-		create_datetime	: { type: 'datetime' },
+        user : {
+            model : "User",
+            required : true
+        },
 
         client : {
-            model : "Sale_Client"
+            model : "SaleClient",
+            required : true
         },
 
         quotes : {
-            collection : "Sale_Quote",
+            collection : "SaleQuote",
             via : "sale"
         },
 
         invoices : {
-            collection : "Sale_Invoice",
+            collection : "SaleInvoice",
+            via : "sale"
+        },
+
+        workOrders : {
+            collection : "SaleWorkOrder",
             via : "sale"
         }
 

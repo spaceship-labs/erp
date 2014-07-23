@@ -48,9 +48,19 @@ module.exports.routes = {
         action : 'addClient'
     },
 
-    '/clients/edit' : {
+    '/clients/create' : {
+        controller : 'sale',
+        action : 'createClient'
+    },
+
+    '/clients/edit/:id' : {
         controller : 'sale',
         action : 'editClient'
+    },
+
+    '/clients/update' : {
+      controller : 'sale',
+      action : 'updateClient'
     }
 
 

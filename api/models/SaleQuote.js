@@ -9,13 +9,15 @@ module.exports = {
 
 	attributes: {
 
-        create_datetime : { type:'datetime' },
+        status : {
+            type : 'string',
+            enum : ['approved','active','inactive'],
+            default : 'active'
+        },
 
-        total_amount : { type : 'float' },
-
-        status : { type : 'string'},
-
-        file    : { type: 'string' },
+        fileName : {
+            type: 'string'
+        },
 
         user : {
             model : 'User'
@@ -23,15 +25,21 @@ module.exports = {
 
         sale : {
             model : "Sale"
+        },
+
+        products : {
+            collection : "SaleProduct",
+            via : "saleQuote",
+            required : true
         }
 
 	}
     ,afterCreate: function(val,cb){
-        Notifications.after(Sale_Quote,val,'create');
+        Notifications.after(SaleQuote,val,'create');
         cb()
     }
     ,afterUpdate: function(val,cb){
-        Notifications.after(Sale_Quote,val,'update');
+        Notifications.after(SaleQuote,val,'update');
         cb();
     }
     ,beforeUpdate:function(val,cb){

@@ -1,5 +1,5 @@
 /**
- * Client.js
+ * SaleWorkOrder.js
  *
  * @description :: TODO: You might write a short summary of how this model works and what it represents here.
  * @docs		:: http://sailsjs.org/#!documentation/models
@@ -9,28 +9,27 @@ module.exports = {
 
 	attributes: {
 
-		name	: { type: 'string' },
+        create_datetime : { type:'datetime' },
 
-		phone	: { type: 'string' },
+        status : { type : 'string'},
 
-		company	: { type: 'string' },
+        concept : { type : 'string'},
 
-		address	: { type: 'string' },
+        assignedUser : {
+            model : 'User'
+        },
 
-        rfc     : { type : 'string' },
-
-        sales : {
-            collection : "Sale",
-            via : "client"
+        sale : {
+            model : 'Sale'
         }
 
 	}
     ,afterCreate: function(val,cb){
-        Notifications.after(Sale_Client,val,'create');
+        Notifications.after(SaleWorkOrder,val,'create');
         cb()
     }
     ,afterUpdate: function(val,cb){
-        Notifications.after(Sale_Client,val,'update');
+        Notifications.after(SaleWorkOrder,val,'update');
         cb();
     }
     ,beforeUpdate:function(val,cb){

@@ -30,11 +30,11 @@ module.exports = {
 
 	}
     ,afterCreate: function(val,cb){
-        Notifications.after(Sale_Invoice,val,'create');
+        Notifications.after(SaleInvoice,val,'create');
         cb()
     }
     ,afterUpdate: function(val,cb){
-        Notifications.after(Sale_Invoice,val,'update');
+        Notifications.after(SaleInvoice,val,'update');
         cb();
     }
     ,beforeUpdate:function(val,cb){

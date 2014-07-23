@@ -45,6 +45,7 @@
     "angular-sails": "~1.0.4",
     "jquery-form": "~3.46.0",
     "jquery-modern": "jquery#2",
-    "angular-ui-bootstrap-bower": "~0.11.0"
+    "angular-ui-bootstrap-bower": "~0.11.0",
+    "moment": "~2.7.0"
   }
 }

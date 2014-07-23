@@ -1,25 +1,34 @@
 <div ng-controller="clientCTL">
     <div class="row-fluid">
-        <div class="col-md-11">
-            <h4 class="widgettitle"><a class="fa fa-pencil" style="color:white;">+ Agregar</a></h4>
+        <div class="col-md-12">
+            <div class="buttons-box">
+                <!-- Single button -->
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default button-orange dropdown-toggle" data-toggle="dropdown">
+                        <span class="table-icon fa fa-filter"></span> FILTROS <span class="fa fa-caret-down"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                    </ul>
+                </div>
+                <a href="/clients/add" class="btn btn-default button-orange"><span class="table-icon fa fa-plus"></span> AGREGAR CLIENTE</a>
+            </div>
             <div class="widgetcontent custom-table nopadding">
                 <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nombre</th>
-                            <th>Direccion</th>
-                            <th>Telefono</th>
-                            <th>RFC</th>
-                        </tr>
-                    </thead>
-                    <% for(var i = 0; i< 4; i++){ %>
                     <tr>
-                        <td data-title="ID">1061<%- i %></td>
-                        <td data-title="Nombre"><a href="/client/edit/1">Salvador Barron</a></td>
-                        <td data-title="Direccion">SM 2 MZ 1 LT 10 calle noria</td>
-                        <td data-title="Telefono">9984 3519532</td>
-                        <td data-title="RFC">VECJ880326 XXX</td>
+                        <th>Nombre</th>
+                        <th>Direccion</th>
+                        <th>Telefono</th>
+                        <th>RFC</th>
+                    </tr>
+                    <% for(var i = 0; i< clients.length; i++){ %>
+                    <tr>
+                        <td data-title="Nombre"><a href="/clients/edit/<%= clients[i].id %>"><%= clients[i].name %></a></td>
+                        <td data-title="Direccion"><%= clients[i].address %></td>
+                        <td data-title="Telefono"><%= clients[i].phone %></td>
+                        <td data-title="RFC"><%= clients[i].rfc %></td>
                     </tr>
                     <% } %>
                 </table>

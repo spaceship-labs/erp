@@ -1,0 +1,26 @@
+<div class="modal fade" id="selectClientModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action='/sale/updateClient' method='post' accept-charset='utf-8' class='stdform stdform2' />
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Seleccionar Cliente</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+				<span>
+					<select name='client_select' multiple='multiple' class='chzn-select form-control large' data-placeholder="Agregar Cliente..." style='width:285px'>
+                        <% for(var i=0;i<4;i++){ %>
+                        <option value='<%- i %>'>option <%- i %></option>
+                        <% } %>
+                    </select>
+				</span></p>
+            </div>
+            <div class="modal-footer">
+                <a href="/clients/add"><button type="button" class="btn btn-default" data-dismiss="modal">Crear nuevo</button></a>
+                <input type="submit" class="btn btn-primary" value='Guardar'>
+            </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

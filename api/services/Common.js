@@ -203,3 +203,11 @@ module.exports.noticeSuscribe = function(req,find,cb){
 		});
 	});
 };
+
+module.exports.formValidate = function(form,validate){
+    for(var i in form){
+        if(validate.indexOf(i)==-1)
+            delete form[i];
+    }
+    return form;
+};

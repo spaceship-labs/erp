@@ -214,102 +214,128 @@ app.controller('galleryCTL',function($scope){
 	updateContent();
 });
 
-app.controller('salesCTL',function($scope){
+app.controller('saleCTL',function($scope){
     jQuery('form').ajaxForm(function(data){
         if(data){
-            updateContent();
             jQuery('.alert p').text(data.text).parent().removeClass('unseen');
-
+            if(data.url)
+                window.location.href = data.url;
         }
     });
-
-    var updateContent = function(){
-        jQuery.get('/sale/indexJson',function(data){
-            $scope.fields = data;
-            $scope.$apply();
-            //updateChosen();
-        });
-    };
-
-    updateContent();
 });
 
-app.controller('saleAddCTL',function($scope){
-    jQuery('form').ajaxForm(function(data){
+app.controller('saleAddCTL',function($scope) {
+    $scope.selectedProducts = [];
+    $scope.products = [];
+    $scope.clients = [];
+
+    function showResponse(data){
+        console.log(data);
         if(data){
-            updateContent();
             jQuery('.alert p').text(data.text).parent().removeClass('unseen');
-
+            if(data.url)
+                window.location.href = data.url;
         }
-    });
-
-    var updateContent = function(){
-        jQuery.get('/client/indexJson',function(data){
-            $scope.fields = data;
-            $scope.$apply();
-        });
     };
 
-    updateContent();
+    var options = {
+        success : showResponse,
+        data : { products : $scope.selectedProducts }
+    };
+
+    jQuery('form').ajaxForm(options);
+
+    $scope.update = function () {
+        jQuery.get('/product/productsJson',{}, function (products) {//{selected: $scope.selectedProducts},
+            $scope.products = products;
+            $scope.$apply();
+            var select = jQuery("#products");
+            updateChosen(select);
+        });
+
+        jQuery.get('/sale/clientsJson',{}, function (clients) {//{selected: $scope.selectedProducts},
+            $scope.clients = clients;
+            $scope.$apply();
+            var select = jQuery("#client");
+            updateChosen(select);
+        });
+
+    };
+
+    $scope.update();
+
+    $scope.addProduct = function () {
+
+        var index = jQuery("#products").val();
+
+        var product = $scope.products[index];
+        product.Quantity = 1;
+
+        if (!product.price) {
+            product.price = 10;
+        }
+
+        $scope.products.splice(index, 1);
+
+        $scope.selectedProducts.push(product);
+
+        window.setTimeout(updateChosen,100);
+    };
+
+    $scope.removeProduct = function (index) {
+
+        var product = $scope.selectedProducts[index];
+
+        $scope.selectedProducts.splice(index, 1);
+
+        $scope.products.push(product);
+
+        window.setTimeout(updateChosen,100);
+
+    };
+
+    $scope.totalPrice = function (){
+        var total = 0;
+
+        for (var i = 0;i < $scope.selectedProducts.length;i++) {
+            total += $scope.selectedProducts[i].price * $scope.selectedProducts[i].Quantity;
+        }
+        return total;
+    };
+
+    $scope.partialTotal = function(index){
+        return $scope.selectedProducts[index].Quantity * $scope.selectedProducts[index].price;
+    };
 });
 
 app.controller('saleEditCTL',function($scope){
-    alert(id);
-    var saleId = jQuery('#sale_id').val();
     jQuery('form').ajaxForm(function(data){
         if(data){
-            updateContent();
             jQuery('.alert p').text(data.text).parent().removeClass('unseen');
-
+            if(data.url)
+                window.location.href = data.url;
         }
     });
-
-    var updateContent = function(){
-        jQuery.get('/sale/edit/' + saleId,function(data){
-            $scope.fields = data;
-            $scope.$apply();
-        });
-    };
-
-    updateContent();
 });
 
 app.controller('clientAddCTL',function($scope){
     jQuery('form').ajaxForm(function(data){
         if(data){
-            updateContent();
             jQuery('.alert p').text(data.text).parent().removeClass('unseen');
-
+            if(data.url)
+                window.location.href = data.url;
         }
     });
-
-    var updateContent = function(){
-        jQuery.get('/clients/indexJson',function(data){
-            $scope.fields = data;
-            $scope.$apply();
-        });
-    };
-
-    updateContent();
 });
 
 app.controller('clientEditCTL',function($scope){
     jQuery('form').ajaxForm(function(data){
         if(data){
-            updateContent();
             jQuery('.alert p').text(data.text).parent().removeClass('unseen');
-
+            if(data.url)
+                window.location.href = data.url;
         }
     });
-
-    var updateContent = function(){
-        jQuery.get('/clients/indexJson',function(data){
-            $scope.fields = data;
-            $scope.$apply();
-        });
-    };
-
-    updateContent();
 });
 
 function updateNotices($scope,url,dt,cb){

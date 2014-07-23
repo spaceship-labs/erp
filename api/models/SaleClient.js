@@ -9,33 +9,30 @@ module.exports = {
 
 	attributes: {
 
-        create_datetime : { type:'datetime' },
+		name	: { type: 'string',required : true },
 
-        total_amount : { type : 'float' },
+		phone	: { type: 'string' },
 
-        status : { type : 'string'},
+		company	: { type: 'string' , required : true },
 
-        concept : { type : 'string'},
+		address	: { type: 'string' },
 
-        user : {
-            model : 'User'
-        },
+        rfc     : { type : 'string' , required : true },
 
-        assignedUser : {
-            model : 'User'
-        },
+        user : { type : 'string' , required : true },
 
-        sale : {
-            model : "Sale"
+        sales : {
+            collection : "Sale",
+            via : "client"
         }
 
 	}
     ,afterCreate: function(val,cb){
-        Notifications.after(Sale_Quote,val,'create');
-        cb()
+        Notifications.after(SaleClient,val,'create');
+        cb();
     }
     ,afterUpdate: function(val,cb){
-        Notifications.after(Sale_Quote,val,'update');
+        Notifications.after(SaleClient,val,'update');
         cb();
     }
     ,beforeUpdate:function(val,cb){
