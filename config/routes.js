@@ -38,7 +38,7 @@ module.exports.routes = {
   // against Sails route blueprints.  See `config/blueprints.js` for configuration options
   // and examples.
 
-    '/clients' : {
+    '/clientes' : {
         controller : 'sale',
         action : 'clients'
     },
@@ -61,6 +61,11 @@ module.exports.routes = {
     '/clients/update' : {
       controller : 'sale',
       action : 'updateClient'
+    },
+
+    '/ventas' : {
+        controller : 'sale',
+        action : 'index'
     }
 
 

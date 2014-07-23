@@ -25,7 +25,7 @@ module.exports.apps = {
 				label : 'ventas',
 				icon : 'fa-briefcase'
 			},
-			'/cotizacioens/' : {
+			'/cotizaciones/' : {
 				label : 'Cotizaciones',
 				icon : 'fa-file'
 			},

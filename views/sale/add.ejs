@@ -13,7 +13,7 @@
                         <label for="client_id">Selecciona un cliente :</label>
 						<span class="field">
                             <span>
-                                <select name='client' id='client' class='form-control large required' data-placeholder="Selecciona ..." chosen="clients" ng-model="client" ng-options="cclient.name for cclient in clients">
+                                <select name='client' id='client' class='form-control large required' data-placeholder="Selecciona ..." chosen="clients" ng-model="dsa" ng-options="client.name for client in clients">
                                 </select>
                             </span>
                             <span>
@@ -25,7 +25,7 @@
                     <p>
                         <label for="products">Selecciona los productos :</label>
                         <span class="field">
-                            <select id='products' class='form-control large' data-placeholder="Selecciona ..." chosen="products" ng-model="product" ng-options="pproduct.name for pproduct in products">
+                            <select id='products' class='form-control large' data-placeholder="Selecciona ..." chosen="products" ng-model="asd" ng-options="product.name for product in products">
                             </select>
                             <span class="btn btn-default" ng-click="addProduct()">Agregar</span>
                         </span>
