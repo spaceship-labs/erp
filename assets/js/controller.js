@@ -132,15 +132,9 @@ app.controller('currencyCTL',function($scope){
 				$(window).scrollTop(alt.parent().position().top-10);
 			});
 			
-
-
 		});
-		$.get('/admin/chartsData',function(data){
-			$scope.charts = data;
-			$scope.$apply();
-			if(data.length)
-				exchange_rates();
-		});
+		charts_currencies($scope);
+		
 	};
 
 	$('.removeCurrency').on("click","a",function(e){
@@ -159,6 +153,7 @@ app.controller('currencyCTL',function($scope){
 
 app.controller('noticeCTL',function($scope){
 	updateNotices($scope,'/home/noticeSuscribeAll');
+	charts_currencies($scope);
 });
 
 app.controller('addProductCTL',function($scope){
@@ -366,4 +361,13 @@ function updateNotices($scope,url,dt,cb){
 		,destroy:'elimino'
 	}
 
+}
+
+function charts_currencies($scope){
+	jQuery.get('/admin/chartsData',function(data){
+		$scope.charts = data;
+		$scope.$apply();
+		if(data.length)
+			exchange_rates();
+	});
 }
