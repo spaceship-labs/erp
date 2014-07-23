@@ -10,7 +10,7 @@ module.exports = {
 
 	index: function(req,res){
 		var select_company = req.session.select_company || req.user.select_company;
-		Product.find({company:select_company,user:req.user.id}).populate("product_type").exec(function(err,products){
+		Product.find({company:select_company}).populate("product_type").exec(function(err,products){
 			if(err) throw err;
 			Common.view(res.view,{
 				page:{
@@ -40,6 +40,8 @@ module.exports = {
 	},
 	create : function (req,res){
 		var product = req.params.all() || {};
+		product.company = req.session.select_company || req.user.select_company;
+		product.createUser = req.user.id;
 		Product.create(product).exec(function(e,product){
 			if(e) res.redirect('/product/');
 			else res.redirect('/product/edit/'+product.id);

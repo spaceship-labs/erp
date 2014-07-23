@@ -192,7 +192,7 @@ app.controller('addProductCTL',function($scope){
 });
 
 app.controller('productCTL',function($scope){
-	$scope.product = product;
+	$scope.product = typeof product != 'undefined' ? product : {};
 
 	$scope.product_types = {
 		stockable : 'Producto Inventariado',
@@ -200,6 +200,10 @@ app.controller('productCTL',function($scope){
 		service : 'Servicio',
 	}		
 
+});
+
+app.controller('productsCTL',function($scope){
+	$scope.products = products;
 });
 
 app.controller('galleryCTL',function($scope){
