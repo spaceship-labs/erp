@@ -16,9 +16,10 @@
                     <li class="nav-header">Cambiar empresa</li>
                     <% for(var i=0;i<companies.length;i++){ %>
                         <li><a href="<%= companies[i].url %>">
-                            <img src="/uploads/companies/50x50<%= companies[i].icon %>" alt="" />
+			<%var icon = companies[i].icon?"/uploads/companies/50x50"+companies[i].icon:"http://placehold.it/50x50"%>
+                            <img src="<%=icon%>" alt="" />
                             <strong><%= companies[i].name %></strong>
-                            <small><%= companies[i].desc %></small>
+                            <small><%= companies[i].description %></small>
                         </a></li>
                     <% } %>
 
