@@ -347,6 +347,7 @@ function updateNotices($scope,url,dt,cb){
 		}
 	});
 	io.socket.get(url,dt,function(data){
+		console.log(data);
 		if(data && data.noticesN){
 			for(var i in data){
 				$scope[i] = data[i];

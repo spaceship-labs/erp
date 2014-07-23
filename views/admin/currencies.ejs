@@ -1,7 +1,7 @@
 <script type='text/javascript'>
 window.preload = [];
 <%for(var i in preload){%>
-	window["<%=i%>"] = <%-JSON.stringify(preload[i])%>;
+	window["<%=i%>"] = <%-JSON.stringify(preload[i] || "")%>;
 	window.preload.push("<%=i%>");
 <%}%>
 
