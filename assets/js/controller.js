@@ -4,6 +4,20 @@ app.config(['$sailsProvider', function ($sailsProvider) {
     $sailsProvider.url = 'http://localhost:1337';
 }]);
 
+app.directive('chosen',function(){
+   var linker = function(scope,element,attrs){
+        scope.$watch('clients',function(){
+            element.trigger('liszt:updated');
+        });
+        element.chosen();
+   };
+
+   return {
+       restrict : 'A',
+       link : linker
+   }
+});
+
 app.controller('userCTL',function($scope,$sails){
 	$scope.alphabets = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']; 
 	var updateList = function(){
@@ -224,7 +238,7 @@ app.controller('saleCTL',function($scope){
     });
 });
 
-app.controller('saleAddCTL',function($scope) {
+app.controller('saleAddCTL',function($scope,$http) {
     $scope.selectedProducts = [];
     $scope.products = [];
     $scope.clients = [];
@@ -245,35 +259,25 @@ app.controller('saleAddCTL',function($scope) {
 
     jQuery('form').ajaxForm(options);
 
-    $scope.update = function () {
-        jQuery.get('/product/productsJson',{}, function (products) {//{selected: $scope.selectedProducts},
-            $scope.products = products;
-            $scope.$apply();
-            var select = jQuery("#products");
-            updateChosen(select);
+    $scope.initialize = function () {
+        $http.get('/product/productsJson').then(function (response) {
+            $scope.products = response.data;
         });
 
-        jQuery.get('/sale/clientsJson',{}, function (clients) {//{selected: $scope.selectedProducts},
-            $scope.clients = clients;
-            $scope.$apply();
-            var select = jQuery("#client");
-            updateChosen(select);
+        $http.get('/sale/clientsJson').then(function (response) {
+            $scope.clients = response.data;
         });
 
     };
 
-    $scope.update();
+    $scope.initialize();
 
     $scope.addProduct = function () {
 
         var index = jQuery("#products").val();
 
         var product = $scope.products[index];
-        product.Quantity = 1;
-
-        if (!product.price) {
-            product.price = 10;
-        }
+        product.Quantity = 1;//no deberia hacer esto aqui
 
         $scope.products.splice(index, 1);
 
@@ -308,7 +312,9 @@ app.controller('saleAddCTL',function($scope) {
     };
 });
 
-app.controller('saleEditCTL',function($scope){
+app.controller('saleEditCTL',function($scope,$http){
+
+
     jQuery('form').ajaxForm(function(data){
         if(data){
             jQuery('.alert p').text(data.text).parent().removeClass('unseen');
@@ -316,6 +322,23 @@ app.controller('saleEditCTL',function($scope){
                 window.location.href = data.url;
         }
     });
+
+    $scope.initialize = function () {
+        $http.get('/product/productsJson').then(function (products) {//{selected: $scope.selectedProducts},
+            $scope.products = products;
+            var select = jQuery("#products");
+            updateChosen(select);
+        });
+
+        $http.get('/sale/clientsJson').then(function (clients) {//{selected: $scope.selectedProducts},
+            $scope.clients = clients;
+            var select = jQuery("#client");
+            updateChosen(select);
+        });
+
+    };
+
+    $scope.initialize();
 });
 
 app.controller('clientAddCTL',function($scope){
