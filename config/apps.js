@@ -22,7 +22,7 @@ module.exports.apps = {
 		icon : 'fa-briefcase',
 		views : {
 			'/ventas/' : {
-				label : 'ventas',
+				label : 'Ventas',
 				icon : 'fa-briefcase'
 			},
 			'/clientes/' : {

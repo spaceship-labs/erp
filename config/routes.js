@@ -71,6 +71,16 @@ module.exports.routes = {
     '/ventas/agregar' : {
         controller : 'sale',
         action : 'add'
+    },
+
+    '/ventas/crear' : {
+        controller : 'sale',
+        action : 'create'
+    },
+
+    '/ventas/editar/:id' : {
+        controller : 'sale',
+        action : 'edit'
     }
 
 

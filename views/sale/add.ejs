@@ -8,12 +8,12 @@
         <div class="widgetbox">
             <div class="widgetcontent nopadding">
                 <h4 class="widgettitle">Cliente</h4>
-                <form action="/ventas/create" method="post" accept-charset="utf-8" class="stdform stdform2 ng-pristine" name="sale">
+                <form accept-charset="utf-8" class="stdform stdform2 ng-pristine" ng-submit="processForm()">
                     <p>
                         <label for="client_id">Selecciona un cliente :</label>
 						<span class="field">
                             <span>
-                                <select name='client' id='client' class='form-control large required' data-placeholder="Selecciona ..." chosen="clients" ng-model="dsa" ng-options="client.name for client in clients">
+                                <select class='form-control large required' data-placeholder="Selecciona ..." chosen="clients" ng-model="client" ng-options="client.name for client in clients">
                                 </select>
                             </span>
                             <span>
@@ -25,9 +25,8 @@
                     <p>
                         <label for="products">Selecciona los productos :</label>
                         <span class="field">
-                            <select id='products' class='form-control large' data-placeholder="Selecciona ..." chosen="products" ng-model="asd" ng-options="product.name for product in products">
+                            <select id='products' class='form-control large' data-placeholder="Selecciona ..." multiple chosen="products" ng-model="selectedProducts" ng-options="product.name for product in products">
                             </select>
-                            <span class="btn btn-default" ng-click="addProduct()">Agregar</span>
                         </span>
                     <p>
                     <p>
@@ -38,16 +37,14 @@
                                     <th>Cantidad</th>
                                     <th>Precio Unitario</th>
                                     <th>Precio</th>
-                                    <th>Eliminar</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr ng-repeat="sp in selectedProducts track by $index">
-                                    <td>{{sp.name}}</td>
-                                    <td><input type="number" class="input-small input-spinner" min="1" maxlength="2" ng-model="sp.Quantity" value="{{sp.Quantity}}"></td>
-                                    <td>{{sp.price}}</td>
-                                    <td>{{sp.price * sp.Quantity}}</td>
-                                    <td><input type="button" value="Eliminar" ng-click="removeProduct($index)" /></td>
+                                    <td data-title="Producto">{{sp.name}}</td>
+                                    <td data-title="Cantidad"><input type="number" class="input-small input-spinner" min="1" maxlength="2" ng-model="sp.quantity" value="{{sp.quantity}}"></td>
+                                    <td data-title="Precio Unitario">{{sp.price}}</td>
+                                    <td data-title="Precio">{{sp.price * sp.quantity}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -56,7 +53,7 @@
                         </div>
                     </p>
                     <p class="stdformbutton">
-                        <button class="btn btn-primary">Guardar</button>
+                        <input type="submit" class="btn btn-primary" value="Guardar"/>
                     </p>
                 </form>
             </div>

@@ -267,6 +267,13 @@ module.exports = {
 			});
 		});
 	}
+
+    , productJsonOptional: function(req,res){
+        var products = [{ id : 12,name : 'martillo' , price : 12.5,quantity : 1 },
+                        { id : 5,name : 'taladro' , price : 180,quantity : 1  },
+                        { id : 7,name : 'tornillos' , price :.75,quantity : 1  }];
+        res.json(products);
+    }
 };
 
 function formValidate(form,validate){

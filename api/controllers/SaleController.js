@@ -55,14 +55,18 @@ module.exports = {
         if(form){
             form.company = req.session.select_company || req.user.select_company;
             form.user = req.user;
-            Sale.create(form).exec(function(err,sale){
-                if(err) return res.json({text:'Ocurrio un error.'});
+            Sale.create(form).exec(function(err,newsale){
+                if(err) {
+                    console.log('error al crear la venta');
+                    return res.json({text:'Ocurrio un error.'});
+                }
 
                 var products = [];
-                Array.map(req.param('products'),function(p){
+                //var auxProducts = req.param('products');//falta la funcion map en angular , y no se por que no uso la de jquery
+                _.map(req.param('products'),function(p){
                     products.push({
                         id : p.id,
-                        quantity : p.Quantity,
+                        quantity : p.quantity,
                         price : p.price,
                         name : p.name
                     });
@@ -73,15 +77,20 @@ module.exports = {
                     company : form.company,
                     user : form.user,
                     products : products,
-                    sale : sale.id
+                    sale : newsale.id
                 };
 
                 SaleQuote.create(quote).exec(function(err,saleQuote){
+                    if (err) {
+                        return res.json({text : 'Ocurrio un error.',message : err.message});
+                    }
                     var quotes = [];
                     quotes.push(saleQuote.id);
-                    Sale.update({id : sale.id},{ quotes : quotes }).exec(function(err,sale){
-                        if (err) res.json({text : 'Ocurrio un error.'});
-                        res.json({text:'Venta creada.'/*,url:'/sale/edit/'+sale.id*/});
+                    Sale.update({id : newsale.id},{ quotes : quotes }).exec(function(err,sale){
+                        if (err) {
+                            return res.json({text : 'Ocurrio un error.'});
+                        }
+                        return res.json({text:'Venta creada.',url:'/ventas/editar/'+newsale.id});
                     });
 
                 });
