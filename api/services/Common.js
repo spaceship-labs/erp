@@ -3,6 +3,7 @@ module.exports.view = function(view,data,req){
 	data.page = data.page || {};
 	data.companies = req.user.companies;
 	data.selected_company = req.session.select_company || req.user.select_company;
+	data.current_user = req.user;
 	view(data);
 	/*
 	Company.find().exec(function(err,comp){
