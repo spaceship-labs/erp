@@ -201,4 +201,12 @@ var update = {
 			,validate:['name','last_name','phone','email','active']
 		},cb);
 	}
+	, accessList:function(req,form,cb){
+		console.log(form.accessList);
+		User.update({id:form.userId},{accessList:form.accessList}).exec(function(err,user){
+			if(err) return cb(err);
+			return cb && cb(err,user);
+		});
+
+	} 
 };

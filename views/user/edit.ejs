@@ -66,13 +66,13 @@
                                     <th>Borrar</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody ng-click="update()">
                                 <tr ng-repeat='view in app.views'>
                                     <td ng-bind='view.label'></td>
                                     <td>
                                          <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" ng-model='view.permissions.create'>
+                                                <input type="checkbox" ng-model='view.permissions.create' >
                                             </label>
                                         </div>
                                     </td>
@@ -94,6 +94,7 @@
                                 </tr>
                             </tbody>
                         </table>
+                        <a class="btn btn-primary" ng-click="updateAccestList()">Actualizar Usuario</a> 
                     </accordion-group>
                 </accordion>
             </accordion>
