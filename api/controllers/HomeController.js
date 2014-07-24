@@ -34,7 +34,6 @@ module.exports = {
 	}
 	//notices
 	, noticeSuscribeAll: function(req,res){
-		console.log(req.session.passport.user.id);
 		getCompanies(req.session.passport.user.id,function(err,comp){
 			Notifications.noticeSuscribe(req,{companyId:{$in:comp}},function(err,data){
 				if(err) return res.json(false);
