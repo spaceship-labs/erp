@@ -34,16 +34,11 @@ module.exports = {
 	}
 	//notices
 	, noticeSuscribeAll: function(req,res){
-		var comp = []
-		, apps = [];
-		for(var i in req.session.passport.user.companies){
-			comp.push(i);
-			apps = apps.concat(req.session.passport.user.companies[i])
-		}
-
-		Common.noticeSuscribe(req,{companyId:{$in:comp},app:{$in:apps}},function(err,data){
-			if(err) return res.json(false);
-			res.json(data);
+		getCompanies(req.session.passport.user.id,function(err,comp){
+			Notifications.noticeSuscribe(req,{companyId:{$in:comp}},function(err,data){
+				if(err) return res.json(false);
+				res.json(data);
+			});	
 		});
 
 	}
@@ -51,13 +46,12 @@ module.exports = {
 	, noticeSuscribeApp: function(req,res){
 		var params = req.params.all();
 		if(params.app){
-			var comp = [];
-			for(var i in req.session.passport.user.companies){
-				comp.push(i);
-			}
-			Common.noticeSuscribe(req,{companyId:{$in:comp},app:params.app},function(err,data){
-				if(err) return res.json(false);
-				res.json(data);
+			getCompanies(req.session.passport.user.id,function(err,comp){
+				if(err) throw err;
+				Notifications.noticeSuscribe(req,{companyId:{$in:comp},app:params.app},function(err,data){
+					if(err) return res.json(false);
+					res.json(data);
+				});		
 			});
 		}else
 			res.json(false);
@@ -66,7 +60,7 @@ module.exports = {
 	,noticeSuscribeSingle: function(req,res){
 		var params = req.params.all();
 		if(params.modify){
-			Common.noticeSuscribe(req,{modifyId:params.modify},function(err,data){
+			Notifications.noticeSuscribe(req,{modifyId:params.modify},function(err,data){
 				if(err) return res.json(false);
 				res.json(data);
 			});		
@@ -92,3 +86,15 @@ module.exports = {
 			res.json(false);
 	}
 };
+
+function getCompanies(id,cb){
+	User.findOne(id).populate('companies').exec(function (err, user){
+		var companies = [];
+		if(user && user.companies)
+			for(var i=0;i<user.companies.length;i++){
+				companies.push(user.companies[i].id);
+			}
+
+		return cb && cb(err,companies);
+	});
+}

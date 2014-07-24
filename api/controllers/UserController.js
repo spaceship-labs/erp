@@ -75,34 +75,28 @@ module.exports = {
 		}	
 		, form = req.params.all() || {};
 		form.id || delete form.id;
-		form.active = 1;
-		form.app_select = form.app_select || [];//null apps;
-		if(!form.app_select.pop){
-			form.app_select = [form.app_select];
-		}
-
-		var select_company = req.session.select_company || req.user.select_company;
+		form.active = true;
+		var select_company = req.session.select_company || req.user.select_company
+		, password = form.password;
 		form.default_company = select_company;
-		
-		form.app_select.push('home');
-		form.app_select.push('main');
-		var tmp = {}
-		tmp[select_company] = form.app_select.slice();
-		form.companies = tmp;
-		delete form.app_select;
-		form.password = bcrypt.hashSync(form.password,bcrypt.genSaltSync(10));
 		form.req = req;
-		User.create(form).exec(function(err,user){
+		form.name = form.user_name;
+		delete form.password;
+		delete form.user_name;
+		Company.findOne({id:select_company}).exec(function(err,company){
 			if(err) return res.json(response);
-			update.icon(req,{userId:user.id},function(err,file){
+			User.create(form).exec(function(err,user){
+				user.createAccessList(company.apps);
 				if(err) return res.json(response);
+				user.companies.add(company.id);
+				user.setPassword(password);
 				res.json({
 					status:true
 					, msg:'El usuario se creo exitosamente'
+					, url:'/user/edit/'+user.id
 				});
-				
-			});
-		});	
+			});	
+		});
 	}
 
 	, edit: function(req,res){
@@ -111,7 +105,8 @@ module.exports = {
 		if(id = req.params.id){
 			User.findOne(id).exec(function(err,user){
 				if(err) return null;
-				user.avatar = user.icon ? '/uploads/users/177x171/'+user.icon : 'http://placehold.it/177x171';
+				user.avatar = user.icon ? '/uploads/users/177x171'+user.icon : 'http://placehold.it/177x171';
+				user.active = user.active?true:false;
 				App.find().exec(function(err,apps){
 					if(err) return;
 					Common.view(res.view,{
@@ -206,4 +201,12 @@ var update = {
 			,validate:['name','last_name','phone','email','active']
 		},cb);
 	}
+	, accessList:function(req,form,cb){
+		console.log(form.accessList);
+		User.update({id:form.userId},{accessList:form.accessList}).exec(function(err,user){
+			if(err) return cb(err);
+			return cb && cb(err,user);
+		});
+
+	} 
 };
