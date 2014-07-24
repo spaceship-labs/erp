@@ -221,6 +221,7 @@ app.controller('saleAddCTL',function($scope,$http) {
     $scope.products = [];
     $scope.clients = [];
     $scope.client = { id : 0};
+    $scope.total = 0;
 
     function showResponse(data){
         console.log(data);
@@ -244,56 +245,30 @@ app.controller('saleAddCTL',function($scope,$http) {
 
     $scope.initialize();
 
-    $scope.totalPrice = function (){
-        var total = 0;
-
-        for (var i = 0;i < $scope.selectedProducts.length;i++) {
-            total += $scope.selectedProducts[i].price * $scope.selectedProducts[i].quantity;
-        }
-        return total;
-    };
-
-    $scope.partialTotal = function(index){
-        return $scope.selectedProducts[index].quantity * $scope.selectedProducts[index].price;
-    };
-
     $scope.processForm = function(){
-        console.log("--> Submitting form");
         var dataObject = {
             products : $scope.selectedProducts,
             client : $scope.client.id
         };
         $http.post('/ventas/crear',dataObject, {}).success(showResponse);
     };
+
+    $scope.totalPrice = function (){
+        $scope.total = 0;
+
+        for (var i = 0;i < $scope.selectedProducts.length;i++) {
+            $scope.total += $scope.selectedProducts[i].price * $scope.selectedProducts[i].quantity;
+        }
+        return $scope.total;
+    };
 });
 
 app.controller('saleEditCTL',function($scope,$http){
 
+});
 
-    jQuery('form').ajaxForm(function(data){
-        if(data){
-            jQuery('.alert p').text(data.text).parent().removeClass('unseen');
-            if(data.url)
-                window.location.href = data.url;
-        }
-    });
+app.controller('saleUpdateClientCTL',function($scope,$http){
 
-    $scope.initialize = function () {
-        $http.get('/product/productJsonOptional').then(function (products) {//{selected: $scope.selectedProducts},
-            $scope.products = products;
-            var select = jQuery("#products");
-            updateChosen(select);
-        });
-
-        $http.get('/sale/clientsJson').then(function (clients) {//{selected: $scope.selectedProducts},
-            $scope.clients = clients;
-            var select = jQuery("#client");
-            updateChosen(select);
-        });
-
-    };
-
-    $scope.initialize();
 });
 
 app.controller('clientCTL',function($scope){

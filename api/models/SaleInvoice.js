@@ -29,21 +29,5 @@ module.exports = {
 
 
 	}
-    ,afterCreate: function(val,cb){
-        Notifications.after(SaleInvoice,val,'create');
-        cb()
-    }
-    ,afterUpdate: function(val,cb){
-        Notifications.after(SaleInvoice,val,'update');
-        cb();
-    }
-    ,beforeUpdate:function(val,cb){
-        Notifications.before(val);
-        cb();
-    }
-    , beforeCreate: function(val,cb){
-        Notifications.before(val);
-        cb();
-    }
 
 };

@@ -48,14 +48,16 @@
                         <th>Enviar por mail</th>
                     </tr>
                     </thead>
-                    <% for(var i = 0; i< client.sales.length; i++){ %>
+                    <% for(var i=0;i<client.sales.length;i++){
+                        var sale = client.sales[i];
+                    %>
                     <tr>
-                        <td data-title="Fecha">25-06-2014</td>
-                        <td data-title="Vendedor"><a href="#">Salvador Barron</a></td>
-                        <td data-title="Status">En proceso</td>
-                        <td data-title="Monto">$2,500.00 MXN</td>
-                        <td data-title="PDF"><a href="#"><span class="table-icon fa fa-file-pdf-o"></span></a></td>
-                        <td data-title="Enviar por mail"><a href="#"><span class="table-icon fa fa-send"></span></a></td>
+                        <td data-title="Fecha"><%= moment(sale.createdAt) %></td>
+                        <td data-title="Vendedor"><a href="/ventas/editar/<%= sale.id %>"><%= sale.user.name %></a></td>
+                        <td data-title="Cliente"><%= sale.client.name %></td>
+                        <td data-title="Status"><%= sale.status || 'pendiente' %></td>
+                        <td data-title="Monto"><%= sale.totalAmount || 0 %></td>
+                        <td data-title="Editar"><a href="/ventas/editar/<%= sale.id %>"><span class="table-icon fa fa-edit"></span></a></td>
                     </tr>
                     <% } %>
                 </table>
