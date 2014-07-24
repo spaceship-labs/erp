@@ -132,7 +132,7 @@ app.controller('createCompanyCTL',function($scope){
 		jQuery(window).scrollTop(alt.parent().position().top-10);
 		update();
 	});
-	updateNotices($scope,'/home/noticeSuscribeApp',{app:'admin'});
+	updateNotices($scope,'/home/noticeSuscribeApp',{app:'company'});
 	$scope.companyDash = companyDash;
 });
 
