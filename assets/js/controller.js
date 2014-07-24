@@ -6,8 +6,10 @@ app.config(['$sailsProvider', function ($sailsProvider) {
 
 app.directive('chosen',function(){
    var linker = function(scope,element,attrs){
-        scope.$watch('clients',function(){
+       var list = attrs['chosen'];
+        scope.$watch(list,function(){
             element.trigger('liszt:updated');
+            element.trigger('chosen:updated');
         });
         element.chosen();
    };
@@ -113,6 +115,7 @@ app.controller('userEditCTL',function($scope){
 });
 
 app.controller('createCompanyCTL',function($scope){
+	/*
 	var update = function(){
 		jQuery.get('/company/indexJson',function(data){
 			if(data){
@@ -121,7 +124,8 @@ app.controller('createCompanyCTL',function($scope){
 			}
 		});
 	};
-	update();
+	//update();
+	*/
 	jQuery('.companyCreate').ajaxForm(function(data){
 		var alt = jQuery('.userAlert p');
 		alt.text(data.msg).parent().show();
@@ -129,6 +133,7 @@ app.controller('createCompanyCTL',function($scope){
 		update();
 	});
 	updateNotices($scope,'/home/noticeSuscribeApp',{app:'admin'});
+	$scope.companyDash = companyDash;
 });
 
 app.controller('currencyCTL',function($scope){
@@ -265,15 +270,8 @@ app.controller('saleAddCTL',function($scope,$http) {
         }
     };
 
-//    var options = {
-//        success : showResponse,
-//        data : { products : $scope.selectedProducts,client : $scope.client.id }
-//    };
-//
-//    jQuery('form').ajaxForm(options);
-
     $scope.initialize = function () {
-        $http.get('/product/productJsonOptional').then(function (response) {
+        $http.get('/product/productsJson').then(function (response) {
             $scope.products = response.data;
         });
 

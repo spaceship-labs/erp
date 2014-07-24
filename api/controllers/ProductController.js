@@ -89,8 +89,8 @@ module.exports = {
 		});
 	}
 
-	
-	,productsJson: function(req,res){
+	*/
+	productsJson: function(req,res){
 		var find = {}
 		, form = req.params.all();
 		find.company = req.session.select_company || req.user.select_company;
@@ -98,9 +98,12 @@ module.exports = {
 			find.sales_type = form.type;
 		Product.find(find).exec(function(err,products){
 			if(err) return res.json(false);
-			res.json(products);
+            _.map(products,function(p){
+               p.quantity = 1;//no se otra opcion , tal vez en la vista si no existe el elemento crearlo
+            });
+            res.json(products);
 		});
-	}*/
+	},
 
 	productJson: function(req,res){
 		var id = req.param('id');
@@ -254,13 +257,6 @@ module.exports = {
 			});
 		});
 	}
-
-    , productJsonOptional: function(req,res){
-        var products = [{ id : 12,name : 'martillo' , price : 12.5,quantity : 1 },
-                        { id : 5,name : 'taladro' , price : 180,quantity : 1  },
-                        { id : 7,name : 'tornillos' , price :.75,quantity : 1  }];
-        res.json(products);
-    }
 };
 
 function formValidate(form,validate){
