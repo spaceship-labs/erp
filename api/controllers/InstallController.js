@@ -31,7 +31,7 @@ module.exports = {
 			name : form.user_name,
 			last_name : form.last_name,
 			email : form.email,
-			active : 1,
+			active : true,
 		}
 		var password = form.password;
 		//delete form.apps;

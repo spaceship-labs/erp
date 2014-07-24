@@ -17,8 +17,11 @@ module.exports = {
 		,name:'string'
 		,last_name:'string'
 		,icon:'string'
-		,active:'integer'
-		,phone:'string'
+		,active: 'boolean'
+		,phone:{
+			type:'string'
+			,defaultsTo:''
+		}
 		,registration_date:'date'//createAt
 		,access_date:'date'
 		,accessList : 'json'

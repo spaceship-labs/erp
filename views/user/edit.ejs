@@ -128,7 +128,7 @@
                     } %>
                     
                         <button type="submit" class="btn btn-primary">Actualizar Usuario</button> &nbsp; 
-                        <a class="confirmbutton"  data-url="/user/" href=""><%=active[user.active][1]%></a>
+                        <a class="confirmbutton"  data-url="/user/" href="<%=active[user.active][0]%>"><%=active[user.active][1]%></a>
                     </p>
                     <input type="hidden" name="method" value="info" />
                     <input type="hidden" name="userId" value="<%= user.id %>" />
