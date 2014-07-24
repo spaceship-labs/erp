@@ -1,22 +1,32 @@
-<div class="modal fade" id="selectClientModal">
+<div class="modal fade" id="addClientModal">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form action='/sale/updateClient' method='post' accept-charset='utf-8' class='stdform stdform2' />
+            <form action='/clientes/crear' method='post' accept-charset='utf-8' class='stdform stdform2' />
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title">Seleccionar Cliente</h4>
             </div>
             <div class="modal-body">
                 <p>
-				<span>
-					<select name='client'  class='form-control large' data-placeholder="Agregar Cliente..." style='width:285px' chosen>
-
-                        <option value=""></option>
-                    </select>
-				</span></p>
+                    <label for="name">Nombre*</label>
+                    <span class="field"><input type="text" name="name" id="name" class="input-large"></span>
+                </p>
+                <p>
+                    <label for="address">Direccion*</label>
+                    <span class="field"><input type="text" name="address" id="address" class="input-large"></span>
+                </p>
+                <p>
+                    <label for="rfc">RFC*</label>
+                    <span class="field"><input type="text" name="rfc" id="rfc" class="input-large"></span>
+                </p>
+                <p>
+                    <label for="phone">Telefono</label>
+                    <span class="field"><input type="text" name="phone" id="phone" class="input-large"></span>
+                    </span>
+                </p>
             </div>
             <div class="modal-footer">
-                <a href="/clients/add"><button type="button" class="btn btn-default" data-dismiss="modal">Crear nuevo</button></a>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Crear nuevo</button>
                 <input type="submit" class="btn btn-primary" value='Guardar'>
             </div>
             </form>
