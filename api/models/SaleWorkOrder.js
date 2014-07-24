@@ -24,21 +24,5 @@ module.exports = {
         }
 
 	}
-    ,afterCreate: function(val,cb){
-        Notifications.after(SaleWorkOrder,val,'create');
-        cb()
-    }
-    ,afterUpdate: function(val,cb){
-        Notifications.after(SaleWorkOrder,val,'update');
-        cb();
-    }
-    ,beforeUpdate:function(val,cb){
-        Notifications.before(val);
-        cb();
-    }
-    , beforeCreate: function(val,cb){
-        Notifications.before(val);
-        cb();
-    }
 
 };

@@ -65,7 +65,7 @@ module.exports = {
                 //var auxProducts = req.param('products');//falta la funcion map en angular , y no se por que no uso la de jquery
                 _.map(req.param('products'),function(p){
                     products.push({
-                        id : p.id,
+                        product : p.id,
                         quantity : p.quantity,
                         price : p.price,
                         name : p.name
@@ -79,6 +79,12 @@ module.exports = {
                     products : products,
                     sale : newsale.id
                 };
+
+//                SaleClient.find({id : form.client}).populate('sales').exec(function(err,client){
+//                    console.log(client.sales);
+//                    client.sales.push(newsale);
+//                    client.save();
+//                });
 
                 SaleQuote.create(quote).exec(function(err,saleQuote){
                     if (err) {
@@ -109,6 +115,8 @@ module.exports = {
                   .populate('invoices')
                   .populate('workOrders')
                   .exec(function(err,sale){
+                      //performance killa
+
                     Common.view(res.view,{
                         page:{
                             icon:'fa fa-briefcase'
