@@ -115,6 +115,7 @@ app.controller('userEditCTL',function($scope){
 });
 
 app.controller('createCompanyCTL',function($scope){
+	/*
 	var update = function(){
 		jQuery.get('/company/indexJson',function(data){
 			if(data){
@@ -123,7 +124,8 @@ app.controller('createCompanyCTL',function($scope){
 			}
 		});
 	};
-	update();
+	//update();
+	*/
 	jQuery('.companyCreate').ajaxForm(function(data){
 		var alt = jQuery('.userAlert p');
 		alt.text(data.msg).parent().show();
@@ -131,6 +133,7 @@ app.controller('createCompanyCTL',function($scope){
 		update();
 	});
 	updateNotices($scope,'/home/noticeSuscribeApp',{app:'admin'});
+	$scope.companyDash = companyDash;
 });
 
 app.controller('currencyCTL',function($scope){

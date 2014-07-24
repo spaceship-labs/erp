@@ -10,16 +10,20 @@ module.exports = {
 		App.find().exec(function(err,apps){
 			if(err) throw err;
 			Currency.find().exec(function(err,currencies){
-				Common.view(res.view,{
-					apps:apps || []
-					,currencies:currencies || []
-				},req);
+				sails.controllers.company.indexJson(req,res,function(comp){
+					Common.view(res.view,{
+						apps:apps || []
+						,currencies:currencies || []
+						,comp:comp
+					},req);				
+				});
 				
 			});
 		});
 	}
-	, indexJson:function(req,res){
+	, indexJson:function(req,res,cb){
 		Company.find().exec(function(err,comp){
+			if(cb) return cb(comp);
 			res.json(comp);
 		});
 	}
@@ -50,19 +54,23 @@ module.exports = {
 			, msg:'ocurrio un error'
 		};
 		delete form.id;
-		form.active = 1;
+		form.active = true;
 		form.req = req;
+		var currencies = form.currencies.pop?form.currencies:[form.currencies];
+		delete form.currencies;
 		Company.create(form).exec(function(err,company){
 			if(err) return res.json(response);
-			update.icon(req,{userId:company.id},function(err,files){				
-				if(err)  return res.json(response);
+			currencies.forEach(function(currency){
+				company.currencies.add(currency);
+			});
+			company.save(function(err){
+				if(err) return res.json(response);
 				res.json({
 					status:true
 					, msg:'La compania se creo exitosamente'
+					, url: '/company/edit/'+company.id
 				});
 			});
-
-
 		});
 	}
 	, editAjax: function(req,res){
