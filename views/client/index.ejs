@@ -13,7 +13,7 @@
                         <li><a href="#">Something else here</a></li>
                     </ul>
                 </div>
-                <a href="/clientes/agregar" class="btn btn-default button-orange"><span class="table-icon fa fa-plus"></span> AGREGAR CLIENTE</a>
+                <a class="btn btn-default button-orange" data-toggle="modal" data-target="#addClientModal"><span class="table-icon fa fa-plus"></span> AGREGAR CLIENTE</a>
             </div>
             <div class="widgetcontent custom-table nopadding">
                 <table class="table table-striped">
@@ -36,5 +36,5 @@
         </div>
 
     </div>
-
+    <%- partial('addModal') -%>
 </div>
