@@ -67,7 +67,21 @@ module.exports = {
 			res.notFound();
 	
 	},
-
+	update: function(req,res){
+		var form = req.params.all()
+		, id;
+		console.log(form);
+		if(id = form.pid){
+			delete form.pid;
+			Product.update({id:id},form).exec(function(err,product){				
+				/*if(err) return res.json({text:'Ocurrio un error.'});
+				res.json({text:'Producto actualizado.'});*/
+				res.redirect('/product/edit/'+id);
+			});
+		}else{
+			res.json('error');
+		}
+	},
 	/*,indexJson: function(req,res){
 		var select_company = req.session.select_company || req.user.select_company;
 		Custom_fields.find({company:select_company}).exec(function(err,fields){
@@ -157,19 +171,7 @@ module.exports = {
 			});	
 		}
 	}
-	,updateProduct: function(req,res){
-		var form = req.params.all()
-		, id;
-		if(id = form.productID){
-			delete form.productID;
-			delete form.id;
-			delete form._;
-			Product.update({id:id},form).exec(function(err,product){
-				if(err) return res.json({text:'Ocurrio un error.'});
-				res.json({text:'Producto actualizado.'});
-			});
-		}
-	}
+	
 	,productGalleryJson: function(req,res){
 		/*var id = req.param('id');
 		Product.findOne({id:id}).exec(function(err,product){

@@ -12,7 +12,8 @@
 	     <div class="widgetbox">
 	     	<h4 class="widgettitle">Informacion Basica</h4>
 	     	<div class="widgetcontent nopadding">                            
-	     		<form action="/product/update" method="post" accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine commonForm" >
+	     		<form action="/product/update" method="post" accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine" >
+					<input type='hidden' ng-value='product.id' name='pid' />
 					<%- partial('new-basic') %>
 	     			<p class="stdformbutton">
 		                <button class="btn btn-primary">Guardar</button>
@@ -24,9 +25,9 @@
 	<div class="span5" >
 		<%- partial('product-gallery') %>
 		<div class="widgetbox">
-			<h4 class="widgettitle">Informacion Basica</h4>
+			<h4 class="widgettitle">Opciones</h4>
 			<div class="widgetcontent nopadding">                            
-				<form action="/product/updateOptions" method="post" accept-charset="utf-8" class="stdform stdform2 ng-pristine commonForm" >
+				<form action="/product/updateOptions" method="post" accept-charset="utf-8" class="stdform stdform2 ng-pristine" >
 					
 					<p class="stdformbutton">
 						<button class="btn btn-primary">Guardar</button>
