@@ -6,8 +6,10 @@ app.config(['$sailsProvider', function ($sailsProvider) {
 
 app.directive('chosen',function(){
    var linker = function(scope,element,attrs){
-        scope.$watch('clients',function(){
+       var list = attrs['chosen'];
+        scope.$watch(list,function(){
             element.trigger('liszt:updated');
+            element.trigger('chosen:updated');
         });
         element.chosen();
    };
@@ -265,15 +267,8 @@ app.controller('saleAddCTL',function($scope,$http) {
         }
     };
 
-//    var options = {
-//        success : showResponse,
-//        data : { products : $scope.selectedProducts,client : $scope.client.id }
-//    };
-//
-//    jQuery('form').ajaxForm(options);
-
     $scope.initialize = function () {
-        $http.get('/product/productJsonOptional').then(function (response) {
+        $http.get('/product/productsJson').then(function (response) {
             $scope.products = response.data;
         });
 
