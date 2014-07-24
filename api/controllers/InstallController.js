@@ -52,6 +52,7 @@ module.exports = {
 			company.save();
 
 			user.default_company = company.id;
+			user.active = true;
 			User.create(user).exec(function(e,user){
 				user.createAccessList(form.apps);
 				if(e) return res.json(response);
