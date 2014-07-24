@@ -39,28 +39,28 @@ module.exports.routes = {
   // and examples.
 
     '/clientes' : {
-        controller : 'sale',
-        action : 'clients'
+        controller : 'client',
+        action : 'index'
     },
 
     '/clientes/agregar' : {
-        controller : 'sale',
-        action : 'addClient'
+        controller : 'client',
+        action : 'add'
     },
 
     '/clientes/crear' : {
-        controller : 'sale',
-        action : 'createClient'
+        controller : 'client',
+        action : 'create'
     },
 
     '/clientes/editar/:id' : {
-        controller : 'sale',
-        action : 'editClient'
+        controller : 'client',
+        action : 'edit'
     },
 
     '/clientes/actualizar' : {
-      controller : 'sale',
-      action : 'updateClient'
+      controller : 'client',
+      action : 'update'
     },
 
     '/ventas' : {

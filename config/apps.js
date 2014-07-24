@@ -25,10 +25,6 @@ module.exports.apps = {
 				label : 'Ventas',
 				icon : 'fa-briefcase'
 			},
-			'/clientes/' : {
-				label : 'Clientes',
-				icon : 'fa-users'
-			},
 			'/product/' : {
 				label : 'Productos',
 				icon : 'fa-cube'
@@ -39,4 +35,14 @@ module.exports.apps = {
 			}
 		},
 	},
+    clients : {
+        label : 'Clientes',
+        icon : 'fa-users',
+        views : {
+            '/clientes/' : {
+                label : 'Buscar',
+                icon : 'fa-user'
+            }
+        },
+    },
 };

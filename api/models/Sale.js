@@ -23,7 +23,7 @@ module.exports = {
         },
 
         client : {
-            model : "SaleClient",
+            model : "Client_",
             required : true
         },
 
