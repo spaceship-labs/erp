@@ -62,56 +62,17 @@ app.controller('userCTL',function($scope,$sails){
 
 app.controller('userEditCTL',function($scope){
 	$scope.user = user;
-
-	/*var appsList = []
-	, updateContent = function(){
-		jQuery.get('/users/editJson/'+jQuery('input[name="userId"]').val(),function(data){
-			for(var i in data){
-				$scope[i] = data[i];
-			}
-			$scope.$apply();
-			nameApps(data.user.apps);
-			updateChosen();
+	var id = user.id;
+	$scope.updateAccestList = function(){
+		io.socket.get('/user/editAjax/',{
+			method:'accessList'
+			,userId:id
+			,accessList:$scope.user.accessList
+		},function(data){
+			var alt = jQuery('.alert p');
+			alt.text(data.msg).parent().show();
 		});
-	};
-
-	updateContent();
-	updateNotices($scope,'/home/noticeSuscribeSingle',{modify:jQuery('input[name="userId"]').val()});
-	$scope.addApp = function(){
-		if($scope.selectApp){
-			var apps = appsList;
-			apps.push($scope.selectApp);
-			var data = {
-				method:'apps'
-				,apps:apps
-				,userId:jQuery('input[name="userId"]').val()
-			};
-			
-			jQuery.post(jQuery('.profileEdit #addApps input[name="url"]').val()+'editAjax',data,function(d){
-				updateContent();
-			});
-			
-		}
-	};
-
-	$scope.removeApp = function(remove){
-		appsList.splice(appsList.indexOf(remove),1);
-		var data = {
-			method:'apps'
-			,apps:appsList
-			,userId:jQuery('input[name="userId"]').val()
-		};
-		jQuery.post(jQuery('.profileEdit #addApps input[name="url"]').val()+'editAjax',data,function(d){
-			updateContent();
-		});
-	};
-
-	var nameApps = function(dataApps){
-		appsList = [];
-		for(var i=0;i<dataApps.length;i++){
-			appsList.push(dataApps[i].ctl);
-		}
-	};*/
+	}
 });
 
 app.controller('createCompanyCTL',function($scope){

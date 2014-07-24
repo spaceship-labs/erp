@@ -13,7 +13,6 @@ module.exports = {
 		,description:'string'
 		,address:'string'
 		,zipcode:'string'
-		,active:'integer'
 		,app:'array'
 		,base_currency:{
 			model : 'currency',

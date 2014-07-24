@@ -31,10 +31,10 @@ module.exports.view = function(view,data,req){
 	});	*/
 };
 
-module.exports.renderMenu = function(){
+module.exports.renderMenu = function(req){
 	var menu = "";
-	for(x in sails.config.apps){
-		var app = sails.config.apps[x];
+	for(x in req.user.accessList){
+		var app = req.user.accessList[x];
 		menu += "<li class='dropdown'><a href=''><span class='fa "+app.icon+"'></span>"+app.label+"</a><ul>";
 		for(route in app.views){
 			var view = app.views[route];
