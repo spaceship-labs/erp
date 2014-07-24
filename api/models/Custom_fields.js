@@ -11,7 +11,7 @@ module.exports = {
 		name:'string'
 		,type:{
 			type:'string'
-			,enum:['text','textarea','select','fecha']
+			,enum:['numero','text','textarea','select','fecha']
 		}
 		,values:'array'
 	  	,product:{

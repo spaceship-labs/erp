@@ -42,6 +42,8 @@ module.exports = {
 		var product = req.params.all() || {};
 		product.company = req.session.select_company || req.user.select_company;
 		product.createUser = req.user.id;
+		product.fields = {};
+		product.req = req;
 		Product.create(product).exec(function(e,product){
 			if(e) res.redirect('/product/');
 			else res.redirect('/product/edit/'+product.id);
@@ -59,7 +61,8 @@ module.exports = {
 						description: product.desctiption || '',
 						icon : 'fa fa-cube',
 						name : product.name,
-					}
+					},
+					types: Custom_fields.attributes.type.enum,
 				},req);
 			});
 		
@@ -67,12 +70,33 @@ module.exports = {
 			res.notFound();
 	
 	},
+
+	createField: function(req,res){
+		var form = req.params.all();
+		form = formValidate(form,['name','type','handle','values','product']);
+		if(form.values){
+			form.values = form.values.split(',');
+		}
+		var pid = form.product;
+		delete form.product;
+		Product.findOne(pid).exec(function(e,p){
+			if(e) throw(e);
+			p.fields[form.handle] = form;
+			p.save(function(e,p){
+				/*if(e) return res.json({text:'Ocurrio un error.'});
+				res.json({text:'Campo agregado.'});	*/
+				res.redirect('/product/edit/'+pid);
+			})
+		});
+	},
+
 	update: function(req,res){
 		var form = req.params.all()
 		, id;
 		console.log(form);
 		if(id = form.pid){
 			delete form.pid;
+			form.req = req;
 			Product.update({id:id},form).exec(function(err,product){				
 				/*if(err) return res.json({text:'Ocurrio un error.'});
 				res.json({text:'Producto actualizado.'});*/
@@ -138,17 +162,7 @@ module.exports = {
 		});
 	}
 
-	,createField: function(req,res){
-		var form = req.params.all();
-		form = formValidate(form,['name','type','values','product']);
-		if(form.values){
-			form.values = form.values.split(',');
-		}
-		Custom_fields.create(form).exec(function(err,field){
-			if(err) return res.json({text:'Ocurrio un error.'});
-			res.json({text:'Campo agregado.'});
-		});
-	}
+	
 	,createProductType: function(req,res){
 		var form = req.params.all()
 		, sales_type = (form.sales_type && form.sales_type.pop)?form.sales_type:[form.sales_type];

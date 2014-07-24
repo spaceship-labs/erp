@@ -9,10 +9,28 @@ module.exports = {
 
   attributes: {
 	product_type:{
-		    model:'product_type'
+	    model:'product_type'
 	},
-    gallery:'array'
+    gallery:'array',
+    fields : 'json',
   }
+
+	,afterCreate: function(val,cb){
+		Notifications.after(Product,val,'create');
+		cb()
+	}
+	,afterUpdate: function(val,cb){
+		Notifications.after(Product,val,'update');
+		cb();
+	}
+	,beforeUpdate:function(val,cb){
+		Notifications.before(val);
+		cb();
+	}
+	,beforeCreate: function(val,cb){
+		Notifications.before(val);
+		cb();
+	}
 
 };
 

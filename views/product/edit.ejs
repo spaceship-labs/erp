@@ -27,12 +27,32 @@
 		<div class="widgetbox">
 			<h4 class="widgettitle">Opciones</h4>
 			<div class="widgetcontent nopadding">                            
-				<form action="/product/updateOptions" method="post" accept-charset="utf-8" class="stdform stdform2 ng-pristine" >
-					
-					<p class="stdformbutton">
-						<button class="btn btn-primary">Guardar</button>
-					</p>
-				</form>
+				<table>
+					<thead>
+						<tr>
+							<th>Nombre</th>
+							<th>Handle</th>
+							<th>Tipo</th>
+							<th>Valores</th>
+							<th>Eliminar</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat='(handle,field) in product.fields'>
+							<td ng-bind='field.name'></td>
+							<td ng-bind='field.handle'></td>
+							<td ng-bind='field.type'></td>
+							<td ng-bind='field.values'></td>
+							<td><a ng-href='/product/removeField' class='fa fa-trash-o'></a></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="widgetbox">
+			<h4 class="widgettitle">Nueva Opcion</h4>
+			<div class="widgetcontent nopadding">                            
+				<%- partial('custom-fields') %>
 			</div>
 		</div>
 	</div>
