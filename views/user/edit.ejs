@@ -22,7 +22,7 @@
         <div class="widgetcontent">
             <div class="profilethumb" style="background:none">
                 <img src="<%= user.avatar %>" alt="<%= user.name %>">
-                <form action="/users/editAjax" method="post" accept-charset="utf-8" enctype="multipart/form-data" class="hidden" id="change-icon">
+                <form action="/user/editAjax" method="post" accept-charset="utf-8" enctype="multipart/form-data" class="hidden commonForm" id="change-icon">
 		    <input type="hidden" name="userId" value="<%= user.id %>" />
 		    <input type="hidden" name="method" value="icon" />
                     <hr>
@@ -108,7 +108,7 @@
     <div class="widgetbox personal-information">
         <h4 class="widgettitle">Información Basica</h4>
         <div class="widgetcontent">
-            <form action="/users/editAjax" class="editprofileform stdform stdform2" method="post">
+            <form action="/user/editAjax" class="editprofileform stdform stdform2 commonForm" method="post">
 
                     <p><label for="name">Nombre:</label>
                     <span class="field"><input type="text" name="name" class="input-xlarge" value="<%= user.name %>"></span></p> 
@@ -123,12 +123,12 @@
                     <span class="field"><input type="text" name="phone" class="input-xlarge" value="<%= user.phone %>"></span></p>
                     <p class="stdformbutton">
                     <%var active = {
-                        1:[0,'Desactivar']
-                        , 0:[1,'Activar']
+                        true:[0,'Desactivar']
+                        , false:[1,'Activar']
                     } %>
                     
                         <button type="submit" class="btn btn-primary">Actualizar Usuario</button> &nbsp; 
-                        <a class="confirmbutton"  data-url="/users/" href=""><%=active[user.active][1]%></a>
+                        <a class="confirmbutton"  data-url="/user/" href=""><%=active[user.active][1]%></a>
                     </p>
                     <input type="hidden" name="method" value="info" />
                     <input type="hidden" name="userId" value="<%= user.id %>" />

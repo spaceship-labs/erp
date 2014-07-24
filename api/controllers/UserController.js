@@ -111,7 +111,7 @@ module.exports = {
 		if(id = req.params.id){
 			User.findOne(id).exec(function(err,user){
 				if(err) return null;
-				user.avatar = user.icon ? '/uploads/users/177x171/'+user.icon : 'http://placehold.it/177x171';
+				user.avatar = user.icon ? '/uploads/users/177x171'+user.icon : 'http://placehold.it/177x171';
 				App.find().exec(function(err,apps){
 					if(err) return;
 					Common.view(res.view,{

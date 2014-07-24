@@ -3,8 +3,8 @@
 	<div class="widgetcontent nopadding">
 		<ul class="commentlist">
 			<li ng-repeat="notice in noticesN">
-				<img ng-src="/uploads/users/80x80{{usersN[notice.userId].icon}}" alt="" class="pull-left">
-				<div class="comment-info">
+				<img ng-src="{{usersN[notice.userId].icon?'/uploads/users/80x80'+usersN[notice.userId].icon:'http://placehold.it/80x80'}}" alt="" class="pull-left">
+				<div class="comment-info" ng-cloak>
 					<h4></h4>
 					<h5><a href="/{{notice.app}}"> {{usersN[notice.userId].name}}</a></h5>
 					<p>{{usersN[notice.userId].name}} {{usersN[notice.userId].last_name}} {{translate[notice.operation]}} {{appsN[notice.app].prefix}} {{appsN[notice.app].single.toLowerCase()}} <a href="/{{notice.app}}/edit/{{notice.modifyId}}">{{ models[notice.model][notice.modifyId].name}} </a>    <span class="muted">{{notice.date}}</span></p>               
