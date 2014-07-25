@@ -23,11 +23,10 @@ module.exports = {
 
     , index: function(req,res){
    	SaleQuote.find().populateAll().exec(function(err,quotes){
-		console.log(quotes);
-			Common.view(res.view,{
-				quotes:quotes
-				,moment:moment
-			},req);	
+		Common.view(res.view,{
+			quotes:quotes
+			,moment:moment
+		},req);	
 	}); 
     }
     , add: function(req,res){
