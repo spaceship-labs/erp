@@ -8,37 +8,43 @@ var moment = require('moment');
 module.exports = {
     edit: function(req,res){
     	var id = req.param('id');
-    	SaleQuote.findOne({id:id}).populate('products').populate('sale').exec(function(err,quote){
-		var product = quote.products.map(function(product){return product.product});
-		Client_.findOne({id:quote.sale.client}).exec(function(err,client){
+    	SaleQuote.findOne({id:id}).populateAll().exec(function(err,quote){
+		var product = quote.products.map(function(product){return product.product})
 			Product.find({id:product}).exec(function(err,products){
 		    		Common.view(res.view,{
 					products:products
 					,moment:moment
-					,client:client
+					,quote:quote
 				},req);	
 			});
 		
-		});
 	});
     }
 
     , index: function(req,res){
-   	SaleQuote.find().populate('sale').exec(function(err,quotes){
-		var clients = quotes.map(function(c){ return c.sale.client });
-		Client_.find({id:clients}).exec(function(err,clients){
-			var clientsId = {};
-			for(var i=0;i<clients.length;i++){
-				clientsId[clients[i].id] = clients[i];
-			}
-			console.log(quotes);
+   	SaleQuote.find().populateAll().exec(function(err,quotes){
+		console.log(quotes);
 			Common.view(res.view,{
 				quotes:quotes
-				,clients:clientsId
 				,moment:moment
 			},req);	
-		})
 	}); 
     }
-	
+    , add: function(req,res){
+    	var form = req.params.all();
+	SaleQuote.create({
+		user:req.user.id
+		,client:form.clientID
+	}).exec(function(err,quote){
+		if(err) return res.json({
+				msg:'ocurrio un error'
+			})
+		res.json({
+			url:'/SalesQuote/edit/'+quote.id
+		})
+
+	});
+    
+    }
+
 };

@@ -77,7 +77,8 @@ module.exports = {
                     company : form.company,
                     user : form.user,
                     products : products,
-                    sale : newsale.id
+                    sale : newsale.id,
+		    client:form.client
                 };
 
                 SaleQuote.create(quote).exec(function(err,saleQuote){

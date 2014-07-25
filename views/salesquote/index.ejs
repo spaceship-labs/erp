@@ -14,6 +14,7 @@
                     </ul>
                 </div>
                 <!---->
+                <a class="btn btn-default button-orange" data-toggle="modal" data-target="#addModal"><span class="table-icon fa fa-plus"></span> AGREGAR COTIZACIÓN</a>
             </div>
             <div class="widgetcontent custom-table nopadding">
                 <table class="table table-striped">
@@ -26,11 +27,10 @@
                     </thead>
                     <% for(var i=0;i<quotes.length;i++){
                         var quote = quotes[i]
-			, client = clients[quote.sale.client];
                     %>
                     <tr>
                         <td data-title="Fecha"><%= moment(quote.createdAt) %></td>
-                        <td data-title="Nombre"><%= client.name %></td>
+                        <td data-title="Nombre"><%= quote.client.name %></td>
                         <td data-title="Editar"><a href="/salesQuote/edit/<%= quote.id %>"><span class="table-icon fa fa-edit"></span></a></td>
                     </tr>
                     <% } %>
@@ -38,4 +38,5 @@
             </div>
         </div>
     </div>
+    <%- partial('addModal') -%>
 </div>
