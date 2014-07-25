@@ -4,23 +4,23 @@
 <div ng-controller="saleCTL">
     <div class="row-fluid">
         <%- partial('../product/selector') %>
-        <div class="col-md-12">
+    	<div class="col-md-4">
+	        <h4 class="widgettitle"><span class="fa fa-user"></span> Cliente </h4>
+	        <div class="widgetcontent main-client">
+	            <img src="http://placehold.it/80x80" class="pull-left" alt="avatar" width="80">
+	            <div class="client-info">
+	                <p><strong><a href="/clients/edit/<%- quote.client.id %>>"><%= quote.client.name %></a></strong></p>
+	                <p><strong>Compañia: </strong><%= quote.client.company %></p>
+	                <p><strong>Direccion: </strong><%= quote.client.address %></p>
+	                <p><strong>Telefono: </strong><%= quote.client.phone %></p>
+	            </div>
+	        </div>
+	</div>
+        <div class="col-md-8">
             <div class="buttons-box">
-                <!-- Single button -->
-                <div class="btn-group">
-                    <button type="button" class="btn btn-default button-orange dropdown-toggle" data-toggle="dropdown">
-                        <span class="table-icon fa fa-filter"></span> FILTROS <span class="fa fa-caret-down"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">Action</a></li>
-                        <li><a href="#">Another action</a></li>
-                        <li><a href="#">Something else here</a></li>
-                    </ul>
-                </div>
-                <!---->
                 <a class="btn btn-default button-orange" data-toggle="modal" data-target="#productModal"><span class="table-icon fa fa-plus"></span> AGREGAR PRODUCTO</a>
-                <a class="btn btn-default button-orange" href="/clientes/editar/<%=quote.client.id%>"><span class="table-icon "></span> Cliente: <%=quote.client.name%></a>
             </div>
+
             <div class="widgetcontent custom-table nopadding">
                 <table class="table table-striped">
                     <thead>
