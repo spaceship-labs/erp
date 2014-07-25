@@ -1,4 +1,4 @@
-/**
+    /**
  * Client.js
  *
  * @description :: TODO: You might write a short summary of how this model works and what it represents here.
@@ -25,14 +25,16 @@ module.exports = {
         },
 
         sale : {
-            model : 'Sale'//,
-            //required : true
+            model : 'Sale'
         },
 
         products : {
             collection : "SaleProduct",
             via : "saleQuote",
-            required : true
+        },
+        client : {
+            model : 'Client_',
+
         }
 
 	}

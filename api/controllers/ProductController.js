@@ -93,7 +93,6 @@ module.exports = {
 	update: function(req,res){
 		var form = req.params.all()
 		, id;
-		console.log(form);
 		if(id = form.pid){
 			delete form.pid;
 			form.req = req;
