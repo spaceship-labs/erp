@@ -1,0 +1,28 @@
+<div class="modal fade" id="addModal">
+    <div class="modal-dialog">
+    <div class="modal-content" ng-controller="saleAddCTL">
+            <form accept-charset="utf-8" class="stdform stdform2 ng-pristine ng-valid commonForm" action="/salesQuote/add">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Nueva Venta</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        <label for="client_id">Selecciona un cliente :</label>
+						<span class="field">
+                            <span>
+                                <select class='form-control large required' data-placeholder="Selecciona ..." chosen="clients" ng-model="client" ng-options="client.name for client in clients">
+                                </select>
+				<input class="hidden" type="text" name="clientID" ng-value="client.id"/>
+                            </span>
+                        </span>
+                    </p>
+                   </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    <input type="submit" class="btn btn-primary" value='Guardar'>
+                </div>
+                </form>
+    </div>
+    </div>
+</div>

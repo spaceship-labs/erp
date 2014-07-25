@@ -207,6 +207,8 @@ app.controller('galleryCTL',function($scope){
 });
 
 app.controller('saleCTL',function($scope){
+    $scope.products = products;
+
     jQuery('form').ajaxForm(function(data){
         if(data){
             jQuery('.alert p').text(data.text).parent().removeClass('unseen');

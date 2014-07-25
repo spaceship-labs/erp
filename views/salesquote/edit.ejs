@@ -1,5 +1,9 @@
+<script type='text/javascript'>
+    window.products = <%- JSON.stringify(products) %>;
+</script>
 <div ng-controller="saleCTL">
     <div class="row-fluid">
+        <%- partial('../product/selector') %>
         <div class="col-md-12">
             <div class="buttons-box">
                 <!-- Single button -->
@@ -14,8 +18,8 @@
                     </ul>
                 </div>
                 <!---->
-                <a class="btn btn-default button-orange" data-toggle="modal" data-target="#addModal"><span class="table-icon fa fa-plus"></span> AGREGAR PRODUCTO</a>
-                <a class="btn btn-default button-orange" href="/clientes/editar/<%=client.id%>"><span class="table-icon "></span> Cliente: <%=client.name%></a>
+                <a class="btn btn-default button-orange" data-toggle="modal" data-target="#productModal"><span class="table-icon fa fa-plus"></span> AGREGAR PRODUCTO</a>
+                <a class="btn btn-default button-orange" href="/clientes/editar/<%=quote.client.id%>"><span class="table-icon "></span> Cliente: <%=quote.client.name%></a>
             </div>
             <div class="widgetcontent custom-table nopadding">
                 <table class="table table-striped">
