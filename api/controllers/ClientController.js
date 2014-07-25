@@ -78,24 +78,5 @@ module.exports = {
         Client_.find({ company : select_company }).exec(function(err,sales){
             res.json(sales);
         });
-    },
-
-    quote: function(req,res){
-    	var id = req.param('id');
-    	SaleQuote.findOne({id:id}).populate('products').populate('sale').exec(function(err,quote){
-		console.log(quote.sale.client);
-		var product = quote.products.map(function(product){return product.product});
-		Client_.findOne({id:quote.sale.client}).exec(function(err,client){
-			Product.find({id:product}).exec(function(err,products){
-		    		Common.view(res.view,{
-					products:products
-					,moment:moment
-					,client:client
-				},req);	
-			});
-		
-		});
-	});
     }
-
 };

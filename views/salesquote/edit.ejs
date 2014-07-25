@@ -1,0 +1,44 @@
+<div ng-controller="saleCTL">
+    <div class="row-fluid">
+        <div class="col-md-12">
+            <div class="buttons-box">
+                <!-- Single button -->
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default button-orange dropdown-toggle" data-toggle="dropdown">
+                        <span class="table-icon fa fa-filter"></span> FILTROS <span class="fa fa-caret-down"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                    </ul>
+                </div>
+                <!---->
+                <a class="btn btn-default button-orange" data-toggle="modal" data-target="#addModal"><span class="table-icon fa fa-plus"></span> AGREGAR PRODUCTO</a>
+                <a class="btn btn-default button-orange" href="/clientes/editar/<%=client.id%>"><span class="table-icon "></span> Cliente: <%=client.name%></a>
+            </div>
+            <div class="widgetcontent custom-table nopadding">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Nombre</th>
+                            <th>Monto</th>
+                            <th>Editar</th>
+                        </tr>
+                    </thead>
+                    <% for(var i=0;i<products.length;i++){
+                        var product = products[i];
+                    %>
+                    <tr>
+                        <td data-title="Fecha"><%= moment(product.createdAt) %></td>
+                        <td data-title="Nombre"><%= product.name %></td>
+                        <td data-title="Monto"><%= product.price || 0 %></td>
+                        <td data-title="Editar"><a href="/product/edit/<%= product.id %>"><span class="table-icon fa fa-edit"></span></a></td>
+                    </tr>
+                    <% } %>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

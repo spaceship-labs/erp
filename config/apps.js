@@ -32,6 +32,11 @@ module.exports.apps = {
 			'/product_type/' : {
 				label : 'Categorias',
 				icon : 'fa-archive'
+			},
+			'/salesQuote/':{
+				label:'Cotizaciones',
+				icon:'fa-database'
+
 			}
 		},
 	},
