@@ -237,7 +237,7 @@ app.controller('saleAddCTL',function($scope,$http) {
             $scope.products = response.data;
         });
 
-        $http.get('/sale/clientsJson').then(function (response) {
+        $http.get('/client/clientsJson').then(function (response) {
             $scope.clients = response.data;
         });
 
