@@ -14,32 +14,28 @@
                     </ul>
                 </div>
                 <!---->
-                <a class="btn btn-default button-orange" data-toggle="modal" data-target="#addModal"><span class="table-icon fa fa-plus"></span> AGREGAR PRODUCTO</a>
-                <a class="btn btn-default button-orange" href="/clientes/editar/<%=client.id%>"><span class="table-icon "></span> Cliente: <%=client.name%></a>
             </div>
             <div class="widgetcontent custom-table nopadding">
                 <table class="table table-striped">
                     <thead>
                         <tr>
                             <th>Fecha</th>
-                            <th>Nombre</th>
-                            <th>Monto</th>
+                            <th>Cliente</th>
                             <th>Editar</th>
                         </tr>
                     </thead>
-                    <% for(var i=0;i<products.length;i++){
-                        var product = products[i];
+                    <% for(var i=0;i<quotes.length;i++){
+                        var quote = quotes[i]
+			, client = clients[i];
                     %>
                     <tr>
-                        <td data-title="Fecha"><%= moment(product.createdAt) %></td>
-                        <td data-title="Nombre"><%= product.name %></td>
-                        <td data-title="Monto"><%= product.price || 0 %></td>
-                        <td data-title="Editar"><a href="/product/edit/<%= product.id %>"><span class="table-icon fa fa-edit"></span></a></td>
+                        <td data-title="Fecha"><%= moment(quote.createdAt) %></td>
+                        <td data-title="Nombre"><%= client.name %></td>
+                        <td data-title="Editar"><a href="/salesQuote/edit/<%= quote.id %>"><span class="table-icon fa fa-edit"></span></a></td>
                     </tr>
                     <% } %>
                 </table>
             </div>
         </div>
     </div>
-    <%- partial('addModal') -%>
 </div>
