@@ -21,6 +21,22 @@
 	     		</form>
 	     	</div>
 	     </div>
+
+	      <div class="widgetbox">
+	     	<h4 class="widgettitle">Formula</h4>
+	     	<div class="widgetcontent nopadding">                            
+	     		<form action="/product/update" method="post" accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine" >
+					<input type='hidden' ng-value='product.id' name='pid' />
+					<p>
+						<label for="formula">Formula</label>
+						<span class="field"><textarea name="formula" ng-model='product.formula' class="form-control" ></textarea></span>
+					</p>
+					<p class="stdformbutton">
+		                <button class="btn btn-primary">Guardar</button>
+	     			</p>
+	     		</form>
+	     	</div>
+	     </div>
 	</div>
 	<div class="span5" >
 		<%- partial('product-gallery') %>
