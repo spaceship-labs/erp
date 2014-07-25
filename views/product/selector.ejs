@@ -6,8 +6,34 @@
                 <h4 class="modal-title">Productos</h4>
             </div>
             <div class="modal-body">
-                <%- partial('table') %>
+                <%- partial('add-table') %>
+            <hr>
+                 <form method='post' action='/salesQuote/addProduct'>
+                    <h3 ng-bind='currentProduct.name'></h3>
+                    <p>
+                        <label for="name">Cantidad*</label>
+                        <span class="field">
+                            <input type="text" name="quantity" class="form-control" />
+                        </span>
+                    </p>
+                    <p>
+                        <label for="name">Descuento*</label>
+                        <span class="field">
+                            <input type="text" name="quantity" class="form-control" />
+                        </span>
+                    </p>
+
+
+                    <p ng-repeat='(handle,field) in currentProduct.fields '>
+                        <label for="handle" ng-bind='field.name'></label>
+                        <span class="field">
+                            <input type="text" name="handle" class="form-control" />
+                        </span>
+                    </p>
+                    
+                </form>
             </div>
+
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Terminar</button>
                 <input type="submit" class="btn btn-primary" value='Guardar'>

@@ -9,27 +9,27 @@ module.exports = {
     edit: function(req,res){
     	var id = req.param('id');
     	SaleQuote.findOne({id:id}).populateAll().exec(function(err,quote){
-		var product = quote.products.map(function(product){return product.product})
-			Product.find({id:product}).exec(function(err,products){
-		    		Common.view(res.view,{
+	    	Product.find().exec(function(e,products){
+	    		Common.view(res.view,{
 					products:products
 					,moment:moment
 					,quote:quote
 				},req);	
-			});
-		
-	});
+	    	});
+	    });
+		/*var product = quote.products.map(function(product){return product.product})
+		Product.find({id:product}).exec(function(err,products){
+	    		
+		});*/	
+	
     }
 
     , index: function(req,res){
 	   	SaleQuote.find().populateAll().exec(function(err,quotes){
-	   		Product.find(function(e,products){
-				Common.view(res.view,{
-					quotes:quotes
-					,moment:moment
-					,products:products
-				},req);	
-			}); 
+			Common.view(res.view,{
+				quotes:quotes
+				,moment:moment			
+			},req);				
 	   	});
     }
     , add: function(req,res){
