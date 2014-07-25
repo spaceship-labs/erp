@@ -27,9 +27,14 @@ module.exports = {
    	SaleQuote.find().populate('sale').exec(function(err,quotes){
 		var clients = quotes.map(function(c){ return c.sale.client });
 		Client_.find({id:clients}).exec(function(err,clients){
+			var clientsId = {};
+			for(var i=0;i<clients.length;i++){
+				clientsId[clients[i].id] = clients[i];
+			}
+			console.log(quotes);
 			Common.view(res.view,{
 				quotes:quotes
-				,clients:clients
+				,clients:clientsId
 				,moment:moment
 			},req);	
 		})

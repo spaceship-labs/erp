@@ -26,7 +26,7 @@
                     </thead>
                     <% for(var i=0;i<quotes.length;i++){
                         var quote = quotes[i]
-			, client = clients[i];
+			, client = clients[quote.sale.client];
                     %>
                     <tr>
                         <td data-title="Fecha"><%= moment(quote.createdAt) %></td>
