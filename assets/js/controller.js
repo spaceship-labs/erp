@@ -206,8 +206,7 @@ app.controller('galleryCTL',function($scope){
 	updateContent();
 });
 
-app.controller('saleCTL',function($scope){
-    $scope.products = products;
+app.controller('saleCTL',function(){
 
     jQuery('form').ajaxForm(function(data){
         if(data){
