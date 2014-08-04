@@ -50,51 +50,35 @@ module.exports = {
   },
 
     create : function(req,res){
-        var form = Common.formValidate(req.params.all(),['client']);
-
-        if(form){
+        var form = req.params.all();
+        if (form.client == 0) {//super hack
+            var clientForm = Common.formValidate(req.params.all(),['name','rfc','address','phone']);
+            clientForm.company = req.session.select_company || req.user.select_company;
+            clientForm.user = req.user.id;
+            Client_.create(clientForm).exec(function(err,_client){
+                if(err) {
+                    return res.json({text:'Ocurrio un error.'});
+                }
+                var form = {};
+                form.client = _client.id;
+                form.company = _client.company;
+                form.user = _client.user;
+                Sale.create(form).exec(function(err,newsale){
+                    if(err) {
+                        return res.json({text:'Ocurrio un error.'});
+                    }
+                    return res.json({text:'Venta creada.',url:'/ventas/editar/'+newsale.id});
+                });
+            });
+        } else {
+            form = Common.formValidate(req.params.all(),['client']);
             form.company = req.session.select_company || req.user.select_company;
             form.user = req.user;
             Sale.create(form).exec(function(err,newsale){
                 if(err) {
-                    console.log('error al crear la venta');
                     return res.json({text:'Ocurrio un error.'});
                 }
-
-                var products = [];
-                //var auxProducts = req.param('products');//falta la funcion map en angular , y no se por que no uso la de jquery
-                _.map(req.param('products'),function(p){
-                    products.push({
-                        product : p.id,
-                        quantity : p.quantity,
-                        price : p.price,
-                        name : p.name
-                    });
-                });
-
-                //creamos la cotizacion
-                var quote = {
-                    company : form.company,
-                    user : form.user,
-                    products : products,
-                    sale : newsale.id,
-		    client:form.client
-                };
-
-                SaleQuote.create(quote).exec(function(err,saleQuote){
-                    if (err) {
-                        return res.json({text : 'Ocurrio un error.',message : err.message});
-                    }
-                    var quotes = [];
-                    quotes.push(saleQuote.id);
-                    Sale.update({id : newsale.id},{ quotes : quotes }).exec(function(err,sale){
-                        if (err) {
-                            return res.json({text : 'Ocurrio un error.'});
-                        }
-                        return res.json({text:'Venta creada.',url:'/ventas/editar/'+newsale.id});
-                    });
-
-                });
+                return res.json({text:'Venta creada.',url:'/ventas/editar/'+newsale.id});
             });
         }
     },
@@ -122,5 +106,43 @@ module.exports = {
           } else
             res.notFound();
       }
+
+    /*
+     var products = [];
+     //var auxProducts = req.param('products');//falta la funcion map en angular , y no se por que no uso la de jquery
+     _.map(req.param('products'),function(p){
+     products.push({
+     product : p.id,
+     quantity : p.quantity,
+     price : p.price,
+     name : p.name
+     });
+     });
+
+     //creamos la cotizacion
+     var quote = {
+     company : form.company,
+     user : form.user,
+     products : products,
+     sale : newsale.id,
+     client:form.client
+     };
+
+     SaleQuote.create(quote).exec(function(err,saleQuote){
+     if (err) {
+     return res.json({text : 'Ocurrio un error.',message : err.message});
+     }
+     var quotes = [];
+     quotes.push(saleQuote.id);
+     Sale.update({id : newsale.id},{ quotes : quotes }).exec(function(err,sale){
+     if (err) {
+     return res.json({text : 'Ocurrio un error.'});
+     }
+     return res.json({text:'Venta creada.',url:'/ventas/editar/'+newsale.id});
+     });
+
+     });
+
+    * */
 
 };

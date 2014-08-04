@@ -206,12 +206,7 @@ app.controller('galleryCTL',function($scope){
 	updateContent();
 });
 
-app.controller('saleCTL',function($scope){
-    $scope.products = products;
-    $scope.currentProduct = {};
-    $scope.addProduct = function(product){
-    	$scope.currentProduct = product;
-    }
+app.controller('saleCTL',function(){
     jQuery('form').ajaxForm(function(data){
         if(data){
             jQuery('.alert p').text(data.text).parent().removeClass('unseen');

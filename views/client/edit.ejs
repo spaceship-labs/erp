@@ -9,8 +9,8 @@
             </div>
             <div class="widgetbox">
                 <div class="widgetcontent nopadding">
-                    <form action="/clients/update" method="post" accept-charset="utf-8" class="stdform stdform2 ng-pristine">
-                        <input type="hidden" name="catID" value="<%=client.id%>" />
+                    <form action="/clientes/actualizar" method="post" accept-charset="utf-8" class="stdform stdform2 ng-pristine">
+                        <input type="hidden" name="id" value="<%=client.id%>" />
                         <p>
                             <label for="name">Nombre*</label>
                             <span class="field"><input type="text" name="name" id="name" class="input-large" value="<%=client.name%>"></span>

@@ -1,51 +1,52 @@
 <div class="modal fade" id="addModal">
     <div class="modal-dialog">
     <div class="modal-content" ng-controller="saleAddCTL">
-            <form accept-charset="utf-8" class="stdform stdform2 ng-pristine ng-valid" ng-submit="processForm()">
+            <form action="/ventas/crear" method="post" accept-charset="utf-8" class="stdform stdform2 ng-pristine ng-valid">
+                <input name="client" value="{{client.id}}" type="hidden" />
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title">Nueva Venta</h4>
                 </div>
                 <div class="modal-body">
-                    <p>
-                        <label for="client_id">Selecciona un cliente :</label>
-						<span class="field">
-                            <span>
-                                <select class='form-control large required' data-placeholder="Selecciona ..." chosen="clients" ng-model="client" ng-options="client.name for client in clients">
-                                </select>
-                            </span>
-                        </span>
-                    </p>
-                    <p>
-                        <label for="products">Selecciona los productos :</label>
-                        <span class="field">
-                            <select id='products' class='form-control large' data-placeholder="Selecciona ..." multiple chosen="products" ng-model="selectedProducts" ng-options="product.name for product in products">
-                            </select>
-                        </span>
-                    </p>
-                    <p>
-                        <table class="table responsive">
-                            <thead>
-                                <tr>
-                                    <th>Producto</th>
-                                    <th>Cantidad</th>
-                                    <th>Precio Unitario</th>
-                                    <th>Precio</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat="sp in selectedProducts track by $index">
-                                    <td data-title="Producto">{{sp.name}}</td>
-                                    <td data-title="Cantidad"><input type="number" class="input-small input-spinner" min="1" maxlength="2" ng-model="sp.quantity" value="{{sp.quantity}}"></td>
-                                    <td data-title="Precio Unitario">{{sp.price}}</td>
-                                    <td data-title="Precio">{{sp.price * sp.quantity}}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <div class="amountdue">
-                            <h1><span>Total:</span> {{totalPrice()}}</h1>
+                    <div class="tabs-left">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a data-toggle="tab" href="#tab-1">Selecciona un cliente</a></li>
+                            <li ><a data-toggle="tab" href="#tab-2">Crear cliente</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div id="tab-1" class="tab-pane active">
+                                <p>
+                                    <label for="client_id">cliente :</label>
+                                    <span class="field">
+                                        <span>
+                                            <select class='form-control large required' data-placeholder="Selecciona ..." chosen="clients" ng-model="client" ng-options="client.name for client in clients">
+                                            </select>
+                                        </span>
+                                    </span>
+                                </p>
+                            </div>
+                            <div id="tab-2" class="tab-pane">
+                                <p>
+                                    <label for="name">Nombre*</label>
+                                    <span class="field"><input type="text" name="name" id="name" class="input-large"></span>
+                                </p>
+                                <p>
+                                    <label for="caddress">Direccion*</label>
+                                    <span class="field"><input type="text" name="address" id="address" class="input-large"></span>
+                                </p>
+                                <p>
+                                    <label for="rfc">RFC*</label>
+                                    <span class="field"><input type="text" name="rfc" id="rfc" class="input-large"></span>
+                                </p>
+                                <p>
+                                    <label for="phone">Telefono</label>
+                                    <span class="field"><input type="text" name="phone" id="phone" class="input-large"></span>
+                                    </span>
+                                </p>
+                            </div>
                         </div>
-                    </p>
+                    </div>
+
                     </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>

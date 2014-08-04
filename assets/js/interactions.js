@@ -87,7 +87,7 @@ jQuery(function($){
 	}
 	//TODO limpiar lo que no se usa
 	*/
-	jQuery('form.commonForm').ajaxForm(function(data){
+	jQuery('form.commonForm,.commonForm form').ajaxForm(function(data){
 		if(data){
 			jQuery('.alert p').text(data.text).parent().removeClass('unseen');
 			if(data.url)
