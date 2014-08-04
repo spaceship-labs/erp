@@ -29,13 +29,10 @@ module.exports = {
 
     , index: function(req,res){
 	   	SaleQuote.find().populateAll().exec(function(err,quotes){
-	   		Product.find(function(e,products){
-				Common.view(res.view,{
-					quotes:quotes
-					,moment:moment
-					,products:products
-				},req);	
-			}); 
+			Common.view(res.view,{
+				quotes:quotes
+				,moment:moment			
+			},req);				
 	   	});
     }
     , add: function(req,res){

@@ -30,7 +30,6 @@ module.exports = {
 
         products : {
             collection : "SaleProduct",
-
             via : "saleQuote",
         },
         client : {

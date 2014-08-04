@@ -35,6 +35,7 @@
                     </thead>
                     <% for(var i=0;i<quote.products.length;i++){
                         var product = quote.products[i];
+
                     %>
                     <tr>
                         <td data-title="Fecha"><%= moment(product.createdAt) %></td>
@@ -46,6 +47,8 @@
                     <% } %>
                 </table>
             </div>
+
+           
         </div>
     </div>
 </div>
