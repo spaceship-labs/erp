@@ -7,6 +7,8 @@
 			<th>Referencia</th>
 			<th>Precio</th>
 			<th>Editar</th>
+			<th>Agregar</th>
+			<th>Cantidad</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -17,6 +19,10 @@
 			<td ng-bind='product.internalReference' data-title="Referencia"></td>
 			<td ng-bind='product.price' data-title="Precio "></td>
 			<td data-title="Editar"><a ng-href='/product/edit/{{product.id}}' ><span class="table-icon fa fa-edit"></span></a></td>
+			<td><input type="checkbox" data-title="Agregar"
+            ng-model="product.select" ng-change="selectCount(product)"/></td>
+			<td><input type="number" data-title="Cantidad" class="number"
+            ng-model="product.count" /></td>
 		</tr>
 	</tbody>
 </table>

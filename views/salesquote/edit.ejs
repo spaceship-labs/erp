@@ -1,9 +1,10 @@
 <script type='text/javascript'>
-    window.products = <%- JSON.stringify(products) %>;
+	window.products = <%- JSON.stringify(products) %>;
+	window.productsId = <%- JSON.stringify(productsId) %>;
 </script>
 <div ng-controller="saleCTL">
     <div class="row-fluid">
-        <%- partial('../product/selector') %>
+        <%- partial('../product/selectorAdd') %>
     	<div class="col-md-4">
 	        <h4 class="widgettitle"><span class="fa fa-user"></span> Cliente </h4>
 	        <div class="widgetcontent main-client">
@@ -28,16 +29,18 @@
                             <th>Fecha</th>
                             <th>Nombre</th>
                             <th>Monto</th>
+			    <th>Cantidad</th>
                             <th>Editar</th>
                         </tr>
                     </thead>
-                    <% for(var i=0;i<products.length;i++){
-                        var product = products[i];
+                    <% for(var i=0;i<quote.products.length;i++){
+                        var product = quote.products[i];
                     %>
                     <tr>
                         <td data-title="Fecha"><%= moment(product.createdAt) %></td>
                         <td data-title="Nombre"><%= product.name %></td>
                         <td data-title="Monto"><%= product.price || 0 %></td>
+			<td data-title="Cantidad"><%= product.quantity%></td>
                         <td data-title="Editar"><a href="/product/edit/<%= product.id %>"><span class="table-icon fa fa-edit"></span></a></td>
                     </tr>
                     <% } %>

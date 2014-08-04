@@ -302,6 +302,38 @@ app.controller('clientEditCTL',function($scope){
     });
 });
 
+app.controller('productAddCTL',function($scope,$http){
+	for(var i=0;i<products.length;i++){
+		console.log(products[i].id);
+		console.log(productsId[products[i].id]);
+		var count;
+		if((count = productsId[products[i].id])){
+			products[i].select = true;
+		}else{
+			products[i].select = false;
+		}
+		products[i].count = count?count:0;
+	}
+	$scope.products = window.products;
+
+	$scope.selected = function(quoteID){
+		$http.post('/salesQuote/addProduct',{
+			quote:quoteID
+			,products:$scope.products
+		}).then(function(r){
+			if(r)
+				location.reload();
+		});
+	};
+
+	$scope.selectCount = function(product){
+		if(product.select)
+			product.count = 1;
+		else 
+			product.count = 0;
+	};
+});
+
 function updateNotices($scope,url,dt,cb){
 	io.socket.on('update',function(data){
 		if(data){
@@ -310,7 +342,6 @@ function updateNotices($scope,url,dt,cb){
 		}
 	});
 	io.socket.get(url,dt,function(data){
-		console.log(data);
 		if(data && data.noticesN){
 			for(var i in data){
 				$scope[i] = data[i];

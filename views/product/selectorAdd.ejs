@@ -1,4 +1,4 @@
-<div class="modal fade" id='productModal'>
+<div class="modal fade" id='productModal' ng-controller="productAddCTL">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -6,11 +6,12 @@
                 <h4 class="modal-title">Productos</h4>
             </div>
             <div class="modal-body">
-                <%- partial('table') %>
+                <%- partial('tableAdd') %>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Terminar</button>
-                <input type="submit" class="btn btn-primary" value='Guardar'>
+                <input type="submit" class="btn btn-primary" value='Guardar' ng-click="selected('<%=quote.id%>')">
+
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
