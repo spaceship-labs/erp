@@ -10,16 +10,20 @@ module.exports = {
 
 	index: function(req,res){
 		var select_company = req.session.select_company || req.user.select_company;
-		Product.find({company:select_company}).populate("product_type").exec(function(err,products){
+		Product_type.find({company:select_company}).exec(function(err,product_types){
 			if(err) throw err;
-			Common.view(res.view,{
-				page:{
-					description:'AQUI PODRAS VISUALIZAR Y ADMINISRAR TODOS TUS PRODUCTOS'
-					,icon:'fa fa-cubes'
-					,name:'PRODUCTOS'
-				}
-				, products:products
-			},req);
+			Product.find({company:select_company}).populate("product_type").exec(function(err,products){
+				if(err) throw err;
+				Common.view(res.view,{
+					page:{
+						description:'AQUI PODRAS VISUALIZAR Y ADMINISRAR TODOS TUS PRODUCTOS'
+						,icon:'fa fa-cubes'
+						,name:'PRODUCTOS'
+					}
+					, products:products
+					, product_types:product_types
+				},req);
+			});		
 		});
 	},
 
@@ -27,7 +31,6 @@ module.exports = {
 		var select_company = req.session.select_company || req.user.select_company;
 		Product_type.find({company:select_company,user:req.user.id}).exec(function(err,product_type){
 			if(err) throw(err);
-			console.log(product_type);
 			Common.view(res.view,{
 				page:{
 					description:'',
@@ -42,12 +45,15 @@ module.exports = {
 		var product = req.params.all() || {};
 		product.company = req.session.select_company || req.user.select_company;
 		product.createUser = req.user.id;
-		product.fields = {};
 		product.req = req;
-		Product.create(product).exec(function(e,product){
-			if(e) res.redirect('/product/');
-			else res.redirect('/product/edit/'+product.id);
+		Product_type.findOne({id:product.product_type}).exec(function(err,product_type){
+			product.fields = product_type.fields; 
+			Product.create(product).exec(function(e,product){
+				if(e) res.redirect('/product/');
+				else res.redirect('/product/edit/'+product.id);
+			});
 		});
+		return 0;
 	},
 	edit: function(req,res){
 		var id = req.param('id');
@@ -55,15 +61,19 @@ module.exports = {
 			Product.findOne(id).exec(function(err,product){
 				//Custom_fields.find({product:product.product_type}).exec(function(err,fields){
 				//});
-				Common.view(res.view,{
-					product:product,
-					page:{
-						description: product.desctiption || '',
-						icon : 'fa fa-cube',
-						name : product.name,
-					},
-					types: Custom_fields.attributes.type.enum,
-				},req);
+				var select_company = req.session.select_company || req.user.select_company;
+				Product_type.find({company:select_company}).exec(function(err,product_types){
+					Common.view(res.view,{
+						product:product,
+						product_types:product_types,
+						page:{
+							description: product.description || '',
+							icon : 'fa fa-cube',
+							name : product.name,
+						},
+						types: Custom_fields.attributes.type.enum,
+					},req);			
+				});
 			});
 		
 		}else

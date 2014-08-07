@@ -142,43 +142,36 @@ app.controller('noticeCTL',function($scope){
 	charts_currencies($scope);
 });
 
-app.controller('addProductCTL',function($scope){
-	jQuery('form').ajaxForm(function(data){
-		if(data){
-			updateContent();
-			jQuery('.alert p').text(data.text).parent().removeClass('unseen');
-			if(data.url)
-				window.location.href = data.url;
-		}
-	});
+app.controller('addProductCTL',function($scope,$http){
 
-	var updateContent = function(){
-		jQuery.get('/product/editCategoryJson',{catID:jQuery('input[name="catID"]').val()},function(data){
-			$scope.fields = data;
-			$scope.$apply();
-		});
-	};
+	$scope.product = product;
+});
 
-	$scope.removeField = function(e,id){
+app.controller('fieldCTL',function($scope,$http){
+	$scope.product = product;
+	$scope.removeField = function(e,name){
 		e.preventDefault();
-		if(id){
-			jQuery.get('/product/removeField',{fieldID:id},function(data){
-				updateContent();
+		var data = {name:name,product_type:e.currentTarget.dataset.product};
+		if(product.product_type){
+			data.productSingle = 1;
+		}
+		if(name){
+			$http.post('/product_type/removeField',data).then(function(res){
+				$scope.product.fields = res.data.fields;
+				console.log(res.data.fields);
 			});			
 		}
 		return false;
 	};
-	updateContent();
 });
 
 app.controller('productCTL',function($scope){
 	$scope.product = typeof product != 'undefined' ? product : {};
-
-	$scope.product_types = {
-		stockable : 'Producto Inventariado',
-		consumable : 'Consumible',
-		service : 'Servicio',
-	}		
+	var tmp = {};
+	for(var i=0;i<product_types.length;i++){
+		tmp[product_types[i].id] = product_types[i].name;
+	}
+	$scope.product_types = tmp;
 
 });
 

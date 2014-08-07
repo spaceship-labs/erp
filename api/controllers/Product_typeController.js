@@ -29,7 +29,7 @@ module.exports = {
 						product:product
 						,types:Custom_fields.attributes.type.enum
 						,sales_type:sales_type
-					});
+					},req);
 				});
 			});
 				
@@ -52,6 +52,48 @@ module.exports = {
 		Custom_fields.find({product:id}).exec(function(err,fields){
 			res.json(fields);
 		});	
+	}
+	,createField: function(req,res){
+		var form = req.params.all()
+		, Model = Product_type;
+		form = Common.formValidate(form,['name','type','handle','values','product','productSingle']);
+		if(form.values){
+			form.values = form.values.split(',');
+		}
+		if(form.productSingle == 1)
+			Model = Product;
+		var pid = form.product
+		, tmp = form.productSingle;
+		delete form.productSingle;
+		delete form.product;
+
+		Model.findOne(pid).exec(function(e,p){
+			if(e) throw(e);
+			p.fields = p.fields || [];
+			p.fields.push(form);
+			p.save(function(e,p){
+				/*if(e) return res.json({text:'Ocurrio un error.'});
+				res.json({text:'Campo agregado.'});	*/
+				res.redirect((tmp?'/product/edit/':'/product_type/edit/')+pid);
+			})
+		});
+	}
+	, removeField: function(req,res){
+		var form = req.params.all()
+		, Model = Product_type;
+		if(form.productSingle == 1)
+			Model = Product;
+		Model.findOne({id:form.product_type}).exec(function(err,product_type){
+			var index = product_type.fields.map(function(p){ return p.name}).indexOf(form.name);
+			if(index!=-1)
+				product_type.fields.splice(index,1);
+			product_type.save(function(err){
+				if(err) return res.json({text:'Ocurrio un error.'});
+				res.json({text:'Campo eliminado.',fields:product_type.fields});
+
+			});
+
+		});
 	}
 	
 	
