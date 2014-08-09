@@ -6,7 +6,7 @@
 			<th>Tipo</th>
 			<th>Referencia</th>
 			<th>Precio</th>
-			<th>Editar</th>
+			<th>Agregar</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -16,7 +16,7 @@
 			<td ng-bind='product.type' data-title="Tipo"></td>
 			<td ng-bind='product.internalReference' data-title="Referencia"></td>
 			<td ng-bind='product.price' data-title="Precio "></td>
-			<td data-title="Editar"><a ng-href='/product/edit/{{product.id}}' ><span class="table-icon fa fa-edit"></span></a></td>
+			<td data-title="Agregar"><a href='#' ><span class="table-icon fa fa-plus" ng-click='addProduct(product)'></span></a></td>
 		</tr>
 	</tbody>
 </table>

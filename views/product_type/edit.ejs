@@ -1,4 +1,7 @@
 <div ng-controller="addProductCTL">
+<script type='text/javascript'>
+	window.product = <%- JSON.stringify(product) %>;
+</script>
    <div class="span6">
    <div class="alert alert-block unseen">
 	<button data-dismiss="alert" class="close" type="button">×</button>
@@ -35,7 +38,7 @@
 				        <label for="fields">Campos</label>
 				        <span class="field">
 				                <select name='fields' multiple='multiple' class='chzn-select form-control large'>
-		                	                <option ng-repeat="field in fields" value='{{field.name}}'>{{field.name}}</option>
+		                	                <option ng-repeat="field in product.fields" value='{{field.name}}'>{{field.name}}</option>
 				                </select>
 				        </span>
 				</p>
@@ -49,47 +52,6 @@
 	</div>
    </div>
    <div class="span6">
-	<div class="widgetbox">
-		<h4 class="widgettitle">Nuevo campo</h4>
-		<div class="widgetcontent nopadding">
-			<form action="/product/createField" method="post" accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine">
-				<input type="hidden" name="product" value="<%=product.id%>" />
-				<p>
-					<label for="name">Nombre*</label>
-					<span class="field"><input type="text" name="name" class="input-large"></span>
-				</p>
-				<p>
-					<label for="fields">Tipo*</label>
-					<span class="field">
-			                        <select name="type" ng-model="typeSelect">
-							<%for(var i=0;i<types.length;i++){ %>
-								<option value="<%=types[i]%>"><%=types[i]%></option>
-							<%}%>
-						</select>
-					</span>
-				</p>
-				<p ng-if=typeSelect=='select'>
-					<label for="name">valores</label>
-					<span class="field">
-						<input type="text" name="values" class="input-large">
-					</span>
-				</p>
-				<p class="stdformbutton">
-					<button class="btn btn-primary">Guardar</button>
-					<button type="reset" class="btn">Resetear</button>
-				</p>
-			</form>
-		</div>
-	</div>
+   	<%-partial('new_field') %>
    </div>
-<div class="widgetbox tags span4 profile-left">
-            <h4 class="widgettitle">Campos en <%=product.name%></h4>
-            <div class="widgetcontent">
-                <ul class="taglist">
-			<li ng-repeat="field in fields">
-				<a href="{{field.id}}" ng-click="removeField($event,field.id)">{{field.name}}<span class="close">×</span></a>
-			</li>
-                </ul>
-            </div>
-    </div>
-</div>
+

@@ -12,7 +12,7 @@ module.exports = {
 	    model:'product_type'
 	},
     gallery:'array',
-    fields : 'json',
+    fields : 'array',
   }
 
 	,afterCreate: function(val,cb){

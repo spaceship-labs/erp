@@ -29,6 +29,10 @@ module.exports = {
         saleQuote : {
             model : 'SaleQuote'
         }
+	
+	,name:{
+		type:'string'
+	}
 
     }
 

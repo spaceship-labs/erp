@@ -1,5 +1,7 @@
 <script type='text/javascript'>
 	window.product = <%- JSON.stringify(product) %>;
+	window.fields = <%- JSON.stringify(product.fields) %>;
+	window.product_types = <%- JSON.stringify(product_types) %>;
 </script>
 <div ng-controller='productCTL'>
 	<div class="span5">
@@ -40,6 +42,7 @@
 	</div>
 	<div class="span5" >
 		<%- partial('product-gallery') %>
+		<!--
 		<div class="widgetbox">
 			<h4 class="widgettitle">Opciones</h4>
 			<div class="widgetcontent nopadding">                            
@@ -65,11 +68,7 @@
 				</table>
 			</div>
 		</div>
-		<div class="widgetbox">
-			<h4 class="widgettitle">Nueva Opcion</h4>
-			<div class="widgetcontent nopadding">                            
-				<%- partial('custom-fields') %>
-			</div>
-		</div>
+		-->
+		<%- partial('../product_type/new_field') %>
 	</div>
 </div>

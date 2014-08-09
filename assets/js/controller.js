@@ -142,45 +142,36 @@ app.controller('noticeCTL',function($scope){
 	charts_currencies($scope);
 });
 
-app.controller('addProductCTL',function($scope){
-	jQuery('form').ajaxForm(function(data){
-		if(data){
-			updateContent();
-			jQuery('.alert p').text(data.text).parent().removeClass('unseen');
-			if(data.url)
-				window.location.href = data.url;
-		}
-	});
+app.controller('addProductCTL',function($scope,$http){
 
-	var updateContent = function(){
-		jQuery.get('/product/editCategoryJson',{catID:jQuery('input[name="catID"]').val()},function(data){
-			$scope.fields = data;
-			$scope.$apply();
-		});
-	};
+	$scope.product = product;
+});
 
-	$scope.removeField = function(e,id){
+app.controller('fieldCTL',function($scope,$http){
+	$scope.product = product;
+	$scope.removeField = function(e,name){
 		e.preventDefault();
-		if(id){
-			jQuery.get('/product/removeField',{fieldID:id},function(data){
-				updateContent();
+		var data = {name:name,product_type:e.currentTarget.dataset.product};
+		if(product.product_type){
+			data.productSingle = 1;
+		}
+		if(name){
+			$http.post('/product_type/removeField',data).then(function(res){
+				$scope.product.fields = res.data.fields;
+				console.log(res.data.fields);
 			});			
 		}
 		return false;
 	};
-	updateContent();
 });
 
 app.controller('productCTL',function($scope){
 	$scope.product = typeof product != 'undefined' ? product : {};
-
-	$scope.product_types = {
-		stockable : 'Producto Inventariado',
-		consumable : 'Consumible',
-		service : 'Servicio',
-        impression_material : 'Material para impresion',
-        impression : 'Impresion'
-	}		
+	var tmp = {};
+	for(var i=0;i<product_types.length;i++){
+		tmp[product_types[i].id] = product_types[i].name;
+	}
+	$scope.product_types = tmp;
 
 });
 
@@ -209,7 +200,6 @@ app.controller('galleryCTL',function($scope){
 });
 
 app.controller('saleCTL',function(){
-
     jQuery('form').ajaxForm(function(data){
         if(data){
             jQuery('.alert p').text(data.text).parent().removeClass('unseen');
@@ -377,6 +367,38 @@ app.controller('editMachineCTL',function($scope,$http){
     };
 });
 
+app.controller('productAddCTL',function($scope,$http){
+	for(var i=0;i<products.length;i++){
+		console.log(products[i].id);
+		console.log(productsId[products[i].id]);
+		var count;
+		if((count = productsId[products[i].id])){
+			products[i].select = true;
+		}else{
+			products[i].select = false;
+		}
+		products[i].count = count?count:0;
+	}
+	$scope.products = window.products;
+
+	$scope.selected = function(quoteID){
+		$http.post('/salesQuote/addProduct',{
+			quote:quoteID
+			,products:$scope.products
+		}).then(function(r){
+			if(r)
+				location.reload();
+		});
+	};
+
+	$scope.selectCount = function(product){
+		if(product.select)
+			product.count = 1;
+		else 
+			product.count = 0;
+	};
+});
+
 function updateNotices($scope,url,dt,cb){
 	io.socket.on('update',function(data){
 		if(data){
@@ -385,7 +407,6 @@ function updateNotices($scope,url,dt,cb){
 		}
 	});
 	io.socket.get(url,dt,function(data){
-		console.log(data);
 		if(data && data.noticesN){
 			for(var i in data){
 				$scope[i] = data[i];
