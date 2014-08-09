@@ -1,0 +1,63 @@
+<script type='text/javascript'>
+	window.machine = <%- JSON.stringify(machine) %>;
+    window.machine_modes = <%- JSON.stringify(machine.modes) %>;
+</script>
+<div ng-controller='editMachineCTL'>
+	<div class="span5">
+		<div class="alert alert-block unseen">
+			<button data-dismiss="alert" class="close" type="button">×</button>
+			<h4>Mensaje</h4>
+				<p style="margin: 8px 0"></p>
+		</div>
+	    
+	     <div class="widgetbox">
+	     	<h4 class="widgettitle">Informacion Basica</h4>
+	     	<div class="widgetcontent nopadding">                            
+	     		<form accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine" ng-submit="processMachineForm()">
+					<input type='hidden' ng-value='product.id' name='pid' />
+					<%- partial('edit-basic') %>
+	     			<p class="stdformbutton">
+		                <button class="btn btn-primary">Guardar</button>
+	     			</p>
+	     		</form>
+	     	</div>
+	     </div>
+	</div>
+	<div class="span6" >
+		<div class="widgetbox">
+			<h4 class="widgettitle">Modos</h4>
+			<div class="widgetcontent nopadding">
+                <table class="table responsive">
+                    <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Vel : m2/hr</th>
+                        <th>Costo hora</th>
+                        <th></th>
+                    </tr>
+
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="machine_mode in machine_modes">
+                        <td data-title="Nombre"><input type="text" ng-model="machine_mode.name" class="span2" value="{{machine_mode.name}}"/></td>
+                        <td data-title="Vel : m2/hr"><input type="text" ng-model="machine_mode.velocity" class="span1" value="{{machine_mode.velocity}}" /></td>
+                        <td data-title="Costo hora"><input type="text" ng-model="machine_mode.costPerHour" class="span1" value="{{machine_mode.costPerHour}}" /></td>
+                        <td><a><span ng-click="deleteMachineMode($index)" class="table-icon fa fa-eraser" style="cursor : pointer;" tooltip="borrar"></span></a></td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            <a href="#" class="btn btn-default button-orange" ng-click="addMachineMode()"><span class="table-icon fa fa-plus"></span> Modo de impresion</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <form accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine"  ng-submit="processMachineModeForm()" >
+                    <p class="stdformbutton">
+                        <button class="btn btn-primary">Guardar</button>
+                    </p>
+                </form>
+			</div>
+		</div>
+	</div>
+</div>

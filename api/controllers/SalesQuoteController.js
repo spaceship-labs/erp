@@ -9,7 +9,7 @@ module.exports = {
     edit: function(req,res){
     	var id = req.param('id');
     	SaleQuote.findOne({id:id}).populateAll().exec(function(err,quote){
-		var product = quote.products.map(function(product){return product.product})
+		var product = quote.products.map(function(product){return product.product});
 			Product.find({id:product}).exec(function(err,products){
 		    		Common.view(res.view,{
 					products:products

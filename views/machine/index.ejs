@@ -1,0 +1,23 @@
+<script type='text/javascript'>
+    window.machine = {};
+    window.machines = <%- JSON.stringify(machines) %>;
+</script>
+<div class="col-md-12" ng-controller='machineCTL'>
+	<div class="buttons-box">
+		<div class="btn-group">
+		  <button type="button" class="btn btn-default button-orange dropdown-toggle" data-toggle="dropdown">
+		    <span class="table-icon fa fa-bars"></span> Filtros <span class="fa fa-caret-down"></span>
+		  </button>
+		  <ul class="dropdown-menu" role="menu">
+		    <li><a href="#">Action</a></li>
+		    <li><a href="#">Another action</a></li>
+		    <li><a href="#">Something else here</a></li>
+		  </ul>
+		</div>	
+		<a class="btn btn-default button-orange" data-toggle="modal" data-target="#myModal" ><span class="table-icon fa fa-plus"></span> Maquina</a>
+	</div>
+	<div class="widgetcontent custom-table nopadding">
+		<%- partial('table') %>
+	</div>
+	<%- partial('new-modal') -%>	
+</div> 

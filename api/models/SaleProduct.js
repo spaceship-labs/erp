@@ -16,18 +16,18 @@ module.exports = {
         },
 
         quantity: {
-            type : "integer",
+            type : 'int',
             min : 1,
             integer : true
         },
 
         price : {
-            type : "float",
+            type : 'float',
             required : true
         },
 
         saleQuote : {
-            model : "SaleQuote"
+            model : 'SaleQuote'
         }
 
     }

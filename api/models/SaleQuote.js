@@ -30,12 +30,11 @@ module.exports = {
 
         products : {
             collection : "SaleProduct",
-
-            via : "saleQuote",
+            via : "saleQuote"
         },
         client : {
             model : 'Client_',
-            required : true,
+            required : true
         }
 
 	}

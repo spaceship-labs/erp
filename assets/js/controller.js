@@ -178,6 +178,8 @@ app.controller('productCTL',function($scope){
 		stockable : 'Producto Inventariado',
 		consumable : 'Consumible',
 		service : 'Servicio',
+        impression_material : 'Material para impresion',
+        impression : 'Impresion'
 	}		
 
 });
@@ -300,6 +302,79 @@ app.controller('clientEditCTL',function($scope){
                 window.location.href = data.url;
         }
     });
+});
+
+app.controller('machineCTL',function($scope,$http){
+    $scope.machine = machine;
+    $scope.machines = machines;
+    $scope.machine_modes = [];
+    $scope.selectedIndex = null;
+
+    function showResponse(data){
+        console.log(data);
+        if(data){
+            jQuery('.alert p').text(data.text).parent().removeClass('unseen');
+            if(data.url)
+                window.location.href = data.url;
+        }
+    };
+
+    $scope.addMachineMode = function () {
+        $scope.machine_modes.push({
+            id : 0,
+            name : '',
+            velocity : '',
+            costPerHour : ''
+        });
+    };
+
+    $scope.deleteMachineMode = function(index){
+        $scope.machine_modes.splice(index,1);
+    };
+
+    $scope.processForm = function(){
+        var dataObject = {
+            machine : $scope.machine,
+            modes : $scope.machine_modes
+        };
+        $http.post('/machine/create',dataObject, {}).success(showResponse);
+    };
+});
+
+app.controller('editMachineCTL',function($scope,$http){
+    $scope.machine = machine;
+    $scope.machine_modes = machine_modes;
+    $scope.selectedIndex = null;
+
+    function showResponse(data){
+        console.log(data);
+        if(data){
+            jQuery('.alert p').text(data.text).parent().removeClass('unseen');
+            if(data.url)
+                window.location.href = data.url;
+        }
+    };
+
+    $scope.addMachineMode = function () {
+        $scope.machine_modes.push({
+            id : 0,
+            name : '',
+            velocity : '',
+            costPerHour : ''
+        });
+    };
+
+    $scope.deleteMachineMode = function(index){
+        $scope.machine_modes.splice(index,1);//post ?
+    };
+
+    $scope.processMachineForm = function(){
+        $http.post('/machine/update',{ machine : $scope.machine }, {}).success(showResponse);
+    };
+
+    $scope.processMachineModeForm = function(){
+        $http.post('/machine/update_modes',{ machine : $scope.machine.id,modes : $scope.machine_modes}, {}).success(showResponse);
+    };
 });
 
 function updateNotices($scope,url,dt,cb){

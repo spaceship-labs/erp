@@ -25,6 +25,11 @@ module.exports.apps = {
 				label : 'Ventas',
 				icon : 'fa-briefcase'
 			},
+            '/salesQuote/':{
+                label:'Cotizaciones',
+                icon:'fa-database'
+
+            },
 			'/product/' : {
 				label : 'Productos',
 				icon : 'fa-cube'
@@ -33,11 +38,11 @@ module.exports.apps = {
 				label : 'Categorias',
 				icon : 'fa-archive'
 			},
-			'/salesQuote/':{
-				label:'Cotizaciones',
-				icon:'fa-database'
+            '/machine/':{
+                label:'Maquinas',
+                icon:'fa-gears'
 
-			}
+            }
 		},
 	},
     clients : {

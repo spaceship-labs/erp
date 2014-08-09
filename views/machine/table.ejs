@@ -1,0 +1,18 @@
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>Nombre</th>
+			<th>Descripcion</th>
+			<th>Referencia Interna</th>
+			<th>Editar</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat='machine in machines'>
+			<td ng-bind='machine.name' data-title="Nombre"></td>
+			<td ng-bind='machine.description' data-title="Descripcion"></td>
+			<td ng-bind='machine.internalReference' data-title="Referencia Interna"></td>
+			<td data-title="Editar"><a ng-href='/machine/edit/{{machine.id}}' ><span class="table-icon fa fa-edit"></span></a></td>
+		</tr>
+	</tbody>
+</table>
