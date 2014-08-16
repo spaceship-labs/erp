@@ -15,13 +15,13 @@ module.exports = {
 		,zipcode:'string'
 		,app:'array'
 		,base_currency:{
-			model : 'currency',
+			model : 'currency'
 		}
 		,currency_comission:'float'
 		,currencies:{
 			collection : 'currency',
 			via : 'companies',
-			dominant : true,
+			dominant : true
 		}
 		,active: 'boolean'
 		,users : {
