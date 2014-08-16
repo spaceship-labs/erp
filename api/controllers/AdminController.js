@@ -94,11 +94,13 @@ module.exports = {
 		Company.findOne({id:select_company}).populate('currencies').populate('base_currency').exec(function(err,comp){
 			if(err) return res.json(response);
 			var data = {};
-			for(var i=0;i<comp.currencies.length;i++){
-				if(comp.currencies[i].id != comp.base_currency.id)
-					data[comp.currencies[i].currency_code] = [];
-					
-			}
+            if (comp.currencies) {
+                for (var i = 0; i < comp.currencies.length; i++) {
+                    if (comp.currencies[i].id != comp.base_currency.id)
+                        data[comp.currencies[i].currency_code] = [];
+
+                }
+            }
 			var nowMonth = moment().startOf("month")._d;
 			
 
