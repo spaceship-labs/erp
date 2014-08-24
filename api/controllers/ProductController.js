@@ -146,8 +146,8 @@ module.exports = {
 			.exec(function(err,fields){
 				if(err) return res.json(false);
 				product.fields = fields;
-				Sales_type.find({type:{$in:product.sale_type}}).exec(function(err,sale_type){
-					product.sale_type = sale_type;
+				Sales_type.find({type:{$in:product.sales_type}}).exec(function(err,sales_type){
+					product.sales_type = sales_type;
 					res.json(product);
 				});
 			});
