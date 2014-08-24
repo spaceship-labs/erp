@@ -105,7 +105,8 @@ module.exports = {
 
 			Exchange_rates.find({
 				$query:{
-					companyId:select_company,updatedAt:{
+					companyId:select_company,
+                    updatedAt:{
 						$gte:nowMonth
 					}
 				}

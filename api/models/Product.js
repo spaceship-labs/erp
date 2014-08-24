@@ -13,11 +13,14 @@ module.exports = {
 	},
     gallery:'array',
     fields : 'array',
+    marca:'string',
+    subtype : 'string',
+    internalReference : 'string'
   }
 
 	,afterCreate: function(val,cb){
 		Notifications.after(Product,val,'create');
-		cb()
+		cb();
 	}
 	,afterUpdate: function(val,cb){
 		Notifications.after(Product,val,'update');

@@ -81,6 +81,11 @@ module.exports.routes = {
     '/ventas/editar/:id' : {
         controller : 'sale',
         action : 'edit'
+    },
+
+    'product_type/update' : {
+        controller : 'product_type',
+        action : 'update'
     }
 
 

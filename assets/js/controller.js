@@ -142,11 +142,6 @@ app.controller('noticeCTL',function($scope){
 	charts_currencies($scope);
 });
 
-app.controller('addProductCTL',function($scope,$http){
-
-	$scope.product = product;
-});
-
 app.controller('fieldCTL',function($scope,$http){
 	$scope.product = product;
 	$scope.removeField = function(e,name){
@@ -397,6 +392,46 @@ app.controller('productAddCTL',function($scope,$http){
 		else 
 			product.count = 0;
 	};
+});
+
+app.controller('productTypeCTL',function($scope,$http){
+    $scope.product_types = window.product_types;
+    $scope.product_type = {};
+
+    function showResponse(data){
+        console.log(data);
+        if(data){
+            jQuery('.alert p').text(data.text).parent().removeClass('unseen');
+            //if(data.url)
+            //    window.location.href = data.url;
+            $scope.product_types.push($scope.product_type);
+            $scope.product_type = {};
+        }
+    };
+
+    $scope.processForm = function(){
+        $http.post('/product_type/create',$scope.product_type, {}).success(showResponse);
+    };
+
+});
+
+app.controller('editProductTypeCTL',function($scope,$http){
+    $scope.product_types = window.product_types;
+    $scope.product_type =  window.product;
+
+    function showResponse(data){
+        console.log(data);
+        if(data){
+            jQuery('.alert p').text(data.text).parent().removeClass('unseen');
+            if(data.url)
+                window.location.href = data.url;
+        }
+    };
+
+    $scope.processForm = function(){
+        $http.post('/product_type/update',$scope.product_type, {}).success(showResponse);
+    };
+
 });
 
 function updateNotices($scope,url,dt,cb){

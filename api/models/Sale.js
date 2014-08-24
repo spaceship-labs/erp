@@ -43,5 +43,21 @@ module.exports = {
         }
 
 	}
+    ,afterCreate: function(val,cb){
+        Notifications.after(Sale,val,'create');
+        cb();
+    }
+    ,afterUpdate: function(val,cb){
+        Notifications.after(Sale,val,'update');
+        cb();
+    }
+    ,beforeUpdate:function(val,cb){
+        Notifications.before(val);
+        cb();
+    }
+    ,beforeCreate: function(val,cb){
+        Notifications.before(val);
+        cb();
+    }
 
 };

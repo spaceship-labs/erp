@@ -7,17 +7,19 @@
 
 module.exports = {
 	index: function(req,res){
-		Sales_type.find().exec(function(err,sales_type){
+		Product_type.find().exec(function(err,product_types){
 			if(err) throw err;
-			Common.view(res.view,{
-				page:{
-					description: '',
-					icon:'fa fa-cubes',
-					name:'Categorias'
-				},
-				sales_type:sales_type
-			},req);		
-		});
+                Sales_type.find().exec(function(err,sales_type){
+                    Common.view(res.view,{
+                        page:{
+                            icon:'fa fa-cubes',
+                            name:'Categorias'
+                        },
+                        product_types: product_types,
+                        sales_type : sales_type
+                    },req);
+                });
+        });
 	},
 	edit: function(req,res){
 		var id = req.param('id');
@@ -26,7 +28,12 @@ module.exports = {
 				if(err) throw err;
 				Product_type.findOne({id:id}).exec(function(err,product){
 					Common.view(res.view,{
-						product:product
+                        page:{
+                            icon:'fa fa-cubes',
+                            name:'Editar Categoria'
+                        },
+                        product_type:product
+                        ,product : product //hack para la vista new_field
 						,types:Custom_fields.attributes.type.enum
 						,sales_type:sales_type
 					},req);
@@ -38,14 +45,18 @@ module.exports = {
 	}
 	, update: function(req,res){
 		var form = req.params.all();
-		if(form.catID){
-			var id = form.catID;
-			form = formValidate(form,['name','sales_type','description']);
-			Product_type.update({id:id},form).exec(function(err,sale){
+        //console.log(form);
+		if(form.id){
+			var id = form.id;
+			form = Common.formValidate(form,['name','sales_type','description']);
+			Product_type.update({id:id},form).exec(function(err,product_type){
 				if(err) return res.json({text:'Ocurrio un error.'});
 				res.json({text:'Categoria actualizada.'});
 			});	
-		}
+		} else {
+            console.log("nain");
+        }
+
 	}
 	, editJson: function(req,res){
 		var id = req.param('catID');	

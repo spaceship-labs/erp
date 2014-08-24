@@ -13,13 +13,14 @@ module.exports = {
 
 	attributes: {
 		name:'string'
-		,sales_type:'array'
+		,sales_type:{
+            model : 'Sales_type'
+        }
 		,fields:'array'
-		,rent:defaultFalse
-		,sale:defaultFalse
-		,service:defaultFalse
 		,company:'string'
-		,user:'string'
+		,user:{
+            model : 'User'
+        }
 		,description:'string'
 		,product:{
 			collection:'product'

@@ -1,27 +1,28 @@
-<div ng-controller="addProductCTL">
+<div ng-controller="editProductTypeCTL">
 <script type='text/javascript'>
-	window.product = <%- JSON.stringify(product) %>;
+	window.product_type = <%- JSON.stringify(product_type) %>;
+    window.product = <%- JSON.stringify(product_type) %>;
 </script>
    <div class="span6">
    <div class="alert alert-block unseen">
 	<button data-dismiss="alert" class="close" type="button">×</button>
 	<h4>Mensaje</h4>
-		<p style="margin: 8px 0">El usuario se ha actualizado exitosamente</p>
+		<p style="margin: 8px 0">Tipo de producto actualizado exitosamente</p>
    </div>
 	<div class="widgetbox">
-		<h4 class="widgettitle"><%=product.name%></h4>
+		<h4 class="widgettitle"><%=product_type.name%></h4>
 		<div class="widgetcontent nopadding">                            
-			<form action="/product/updateCategory" method="get" accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine">
-				<input type="hidden" name="catID" value="<%=product.id%>" />
+			<form accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine" ng-submit="processForm()">
+				<input type="hidden" name="product_type_id" ng-model="product_type.id" />
 				<p>
 					<label for="name">Nombre*</label>
-					<span class="field"><input type="text" name="name" class="input-large" value="<%=product.name%>"></span>
+					<span class="field"><input type="text" name="name" class="input-large" ng-model="product_type.name"></span>
 				</p>
 				<p><label for="app">Tipo de venta*</label>
 					<span class="field">
-						<select name='sales_type' multiple='multiple' class='chzn-select form-control large' data-placeholder="Agregar tipo">
+						<select name='sales_type' class='chzn-select form-control large' data-placeholder="Escoger tipo" ng-model="product_type.sales_type">
 							<%for(var i=0;i<sales_type.length;i++){
-								var selected = product.sales_type.indexOf(sales_type[i].type)!=-1?'selected':'';
+								var selected = product_type.sales_type = (sales_type[i].type)!=-1?'selected':'';
 							%>
 								<option value='<%=sales_type[i].type%>' <%=selected%>><%=sales_type[i].name%></option>
 							<%}%>
@@ -31,7 +32,7 @@
 				</p>
 				<p>
 					<label for="description">Descripcion*</label>
-					<span class="field"><input type="text" name="description" class="input-large" value="<%=product.description || ''%>"></span>
+					<span class="field"><input type="text" name="description" class="input-large" ng-model="product_type.description"></span>
 				</p>
 				<!--
 				<p>

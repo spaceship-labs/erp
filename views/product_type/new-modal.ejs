@@ -1,0 +1,44 @@
+<div class="modal fade" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content" ng-controller='productTypeCTL'>
+        <div class="alert alert-block unseen">
+            <button data-dismiss="alert" class="close" type="button">×</button>
+            <h4>Mensaje</h4>
+            <p style="margin: 8px 0">tipo de producto creado exitosamente</p>
+        </div>
+        <form accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine" ng-submit="processForm()">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	        <h4 class="modal-title">Nueva Cotizacion</h4>
+	      </div>
+	      <div class="modal-body">
+              <div class="widgetbox">
+                  <div class="widgetcontent nopadding">
+                          <p>
+                              <label for="name">Nombre*</label>
+                              <span class="field"><input type="text" name="name" class="input-large" ng-model='product_type.name'></span>
+                          </p>
+                          <p><label for="app">Tipo de venta*</label>
+                            <span class="field">
+                                <select name='sales_type' class='chzn-select form-control large' data-placeholder="Escoger tipo" ng-model='product_type.sale_type'>
+                                    <%for(var i=0;i<sales_type.length;i++){%>
+                                    <option value='<%=sales_type[i].type%>'><%=sales_type[i].name%></option>
+                                    <%}%>
+                                </select>
+                            </span>
+                          </p>
+                          <p>
+                              <label for="description">Descripcion</label>
+                              <span class="field"><input type="text" name="description" class="input-large" ng-model='product_type.description'></span>
+                          </p>
+                  </div>
+              </div>
+          </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+	        <input type="submit" class="btn btn-primary" value='Guardar'>
+	      </div>
+	</form>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

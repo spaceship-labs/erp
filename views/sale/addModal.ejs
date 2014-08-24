@@ -8,46 +8,49 @@
                     <h4 class="modal-title">Nueva Venta</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="tabs-left">
-                        <ul class="nav nav-tabs">
-                            <li class="active"><a data-toggle="tab" href="#tab-1">Selecciona un cliente</a></li>
-                            <li ><a data-toggle="tab" href="#tab-2">Crear cliente</a></li>
-                        </ul>
-                        <div class="tab-content">
-                            <div id="tab-1" class="tab-pane active">
-                                <p>
-                                    <label for="client_id">cliente :</label>
-                                    <span class="field">
-                                        <span>
-                                            <select class='form-control large required' data-placeholder="Selecciona ..." chosen="clients" ng-model="client" ng-options="client.name for client in clients">
-                                            </select>
-                                        </span>
-                                    </span>
-                                </p>
-                            </div>
-                            <div id="tab-2" class="tab-pane">
-                                <p>
-                                    <label for="name">Nombre*</label>
-                                    <span class="field"><input type="text" name="name" id="name" class="input-large"></span>
-                                </p>
-                                <p>
-                                    <label for="caddress">Direccion*</label>
-                                    <span class="field"><input type="text" name="address" id="address" class="input-large"></span>
-                                </p>
-                                <p>
-                                    <label for="rfc">RFC*</label>
-                                    <span class="field"><input type="text" name="rfc" id="rfc" class="input-large"></span>
-                                </p>
-                                <p>
-                                    <label for="phone">Telefono</label>
-                                    <span class="field"><input type="text" name="phone" id="phone" class="input-large"></span>
-                                    </span>
-                                </p>
+                    <div class="widgetbox">
+                        <div class="widgetcontent nopadding">
+                            <div class="tabs-left">
+                                <ul class="nav nav-tabs">
+                                    <li class="active"><a data-toggle="tab" href="#tab-1">Selecciona un cliente</a></li>
+                                    <li ><a data-toggle="tab" href="#tab-2">Crear cliente</a></li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div id="tab-1" class="tab-pane active">
+                                        <p>
+                                            <label for="client_id">cliente :</label>
+                                            <span class="field">
+                                                <span>
+                                                    <select class='form-control large required' data-placeholder="Selecciona ..." chosen="clients" ng-model="client" ng-options="client.name for client in clients">
+                                                    </select>
+                                                </span>
+                                            </span>
+                                        </p>
+                                    </div>
+                                    <div id="tab-2" class="tab-pane">
+                                        <p>
+                                            <label for="name">Nombre*</label>
+                                            <span class="field"><input type="text" name="name" id="name" class="input-large"></span>
+                                        </p>
+                                        <p>
+                                            <label for="caddress">Direccion*</label>
+                                            <span class="field"><input type="text" name="address" id="address" class="input-large"></span>
+                                        </p>
+                                        <p>
+                                            <label for="rfc">RFC*</label>
+                                            <span class="field"><input type="text" name="rfc" id="rfc" class="input-large"></span>
+                                        </p>
+                                        <p>
+                                            <label for="phone">Telefono</label>
+                                            <span class="field"><input type="text" name="phone" id="phone" class="input-large"></span>
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-
-                    </div>
+                </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                     <input type="submit" class="btn btn-primary" value='Guardar'>
