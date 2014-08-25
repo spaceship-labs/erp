@@ -6,16 +6,16 @@
 <p>
 	<label for="address">Tipo*</label>
 	<span class="field" ng-model='product.type'>
-		<select name="product_type" class="form-control" ng-options='k as l for (k,l) in product_types' ng-model='product.product_type' ></select>
+		<select name="product_type" class="chzn-select form-control" ng-options='k as l for (k,l) in product_types' ng-model='product.product_type' ></select>
 	</span>
 </p>
 
-<p>
-	<label for="price">Precio Unitario (<%- current_user.company.base_currency.currency_code %>)</label>
-	<span class="field">
-		<input type="text" name="price" class="form-control" ng-model='product.price' />
-	</span>
-</p>
+<!--<p>-->
+	<!--<label for="price">Precio Unitario (<%- current_user.company.base_currency.currency_code %>)</label>-->
+	<!--<span class="field">-->
+		<!--<input type="text" name="price" class="form-control" ng-model='product.price' />-->
+	<!--</span>-->
+<!--</p>-->
 
 <p>
 	<label for="internalreference">Referencia Interna</label>

@@ -171,7 +171,8 @@ app.controller('productCTL',function($scope){
 });
 
 app.controller('productsCTL',function($scope){
-	$scope.products = products;
+    $scope.products = typeof products != 'undefined' ? products : {};
+
 });
 
 app.controller('galleryCTL',function($scope){
@@ -404,7 +405,7 @@ app.controller('productTypeCTL',function($scope,$http){
             jQuery('.alert p').text(data.text).parent().removeClass('unseen');
             //if(data.url)
             //    window.location.href = data.url;
-            $scope.product_types.push($scope.product_type);
+            $scope.product_types.push(data);
             $scope.product_type = {};
         }
     };

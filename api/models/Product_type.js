@@ -5,10 +5,6 @@
 * @docs        :: http://sailsjs.org/#!documentation/models
 */
 
-var defaultFalse = {
-	type:'boolean'
-	,defaultsTo:false
-};
 module.exports = {
 
 	attributes: {

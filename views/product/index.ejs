@@ -1,22 +1,12 @@
 <script type='text/javascript'>
 	window.products = <%- JSON.stringify(products) %>;
-	window.product_types = <%- JSON.stringify(product_types) %>;
+    console.log(window.products);
 </script>
 <div class="col-md-12" ng-controller='productsCTL'>
 	<div class="buttons-box">
-		<!-- <div class="btn-group">
-		  <button type="button" class="btn btn-default button-orange dropdown-toggle" data-toggle="dropdown">
-		    <span class="table-icon fa fa-filter"></span> FILTROS <span class="fa fa-caret-down"></span>
-		  </button>
-		  <ul class="dropdown-menu" role="menu">
-		    <li><a href="#">Action</a></li>
-		    <li><a href="#">Another action</a></li>
-		    <li><a href="#">Something else here</a></li>
-		  </ul>
-		</div>	 -->
 		<div class="btn-group">
 		  <button type="button" class="btn btn-default button-orange dropdown-toggle" data-toggle="dropdown">
-		    <span class="table-icon fa fa-bars"></span> Producto <span class="fa fa-caret-down"></span>
+		    <span class="table-icon fa fa-bars"></span> Filtros <span class="fa fa-caret-down"></span>
 		  </button>
 		  <ul class="dropdown-menu" role="menu">
 		    <li><a href="#">Action</a></li>
@@ -24,7 +14,7 @@
 		    <li><a href="#">Something else here</a></li>
 		  </ul>
 		</div>	
-		<a href="/product/products" class="btn btn-default button-orange" data-toggle="modal" data-target="#myModal" ><span class="table-icon fa fa-plus"></span> Producto</a>		
+		<a class="btn btn-default button-orange" data-toggle="modal" data-target="#myModal" ><span class="table-icon fa fa-plus"></span> Producto</a>
 	</div>
 	<div class="widgetcontent custom-table nopadding">
 		<%- partial('table') %>

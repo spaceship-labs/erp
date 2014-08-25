@@ -10,7 +10,7 @@ module.exports = {
 
 	index: function(req,res){
 		var select_company = req.session.select_company || req.user.select_company;
-		Product_type.find({company:select_company}).exec(function(err,product_types){
+		Product_type.find().exec(function(err,product_types){
 			if(err) throw err;
 			Product.find({company:select_company}).populate("product_type").exec(function(err,products){
 				if(err) throw err;
@@ -28,8 +28,7 @@ module.exports = {
 	},
 
 	new: function(req,res){
-		var select_company = req.session.select_company || req.user.select_company;
-		Product_type.find({company:select_company,user:req.user.id}).exec(function(err,product_type){
+		Product_type.find().exec(function(err,product_type){
 			if(err) throw(err);
 			Common.view(res.view,{
 				page:{
@@ -61,8 +60,7 @@ module.exports = {
 			Product.findOne(id).exec(function(err,product){
 				//Custom_fields.find({product:product.product_type}).exec(function(err,fields){
 				//});
-				var select_company = req.session.select_company || req.user.select_company;
-				Product_type.find({company:select_company}).exec(function(err,product_types){
+				Product_type.find().exec(function(err,product_types){
 					Common.view(res.view,{
 						product:product,
 						product_types:product_types,
@@ -71,14 +69,14 @@ module.exports = {
 							icon : 'fa fa-cube',
 							name : product.name,
 						},
-						types: Custom_fields.attributes.type.enum,
+						types: Custom_fields.attributes.type.enum
 					},req);			
 				});
 			});
 		
 		}else
 			res.notFound();
-	
+
 	},
 
 	createField: function(req,res){
@@ -132,7 +130,7 @@ module.exports = {
 		Product.find(find).exec(function(err,products){
 			if(err) return res.json(false);
             _.map(products,function(p){
-               p.quantity = 1;//no se otra opcion , tal vez en la vista si no existe el elemento crearlo
+               p.quantity = 1;//meter este campo nuevo en el find
             });
             res.json(products);
 		});
@@ -152,38 +150,6 @@ module.exports = {
 				});
 			});
 			
-		});
-	}
-
-	,filters: function(req,res){
-		var select_company = req.session.select_company || req.user.select_company
-		Product_type.find({user:req.user.id,company:select_company}).exec(function(err,products){
-			if(err) throw err;
-				Common.view(res.view,{
-					page:{
-						description:'AQUI PODRAS VISUALIZAR Y ADMINISRAR TODAS TUS CATEGORIAS'
-						,icon:'fa fa-cubes'
-						,name:'CATEGORIAS'
-					}
-					, products:products	
-				});
-
-		});
-	}
-
-	
-	,createProductType: function(req,res){
-		var form = req.params.all()
-		, sales_type = (form.sales_type && form.sales_type.pop)?form.sales_type:[form.sales_type];
-		form = formValidate(form,['name','sales_type','fields','description']);
-		for(var i=0;i<sales_type.length;i++){
-			form[sales_type[i]] = true;
-		}
-		form.company = req.session.select_company || req.user.select_company;
-		form.user = req.user.id;
-		Product_type.create(form).exec(function(err,product){
-			if(err) return res.json({text:'Ocurrio un error.'});
-			res.json({text:'Producto agregado.',url:'product/editCategory/'+product.id});
 		});
 	}
 	,createProduct: function(req,res){
