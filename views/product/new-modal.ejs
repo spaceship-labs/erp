@@ -1,7 +1,11 @@
 <div class="modal fade" id="myModal">
   <div class="modal-dialog">
     <script>
-        window.product = <%- typeof product != 'undefined' ? JSON.stringify(product) : {} %>;
+        <% if (typeof product != 'undefined') { %>
+            window.product = JSON.stringify(product);
+        <% } else {  %>
+            window.product = {};
+        <% } %>
         window.product_types = <%- JSON.stringify(product_types) %>;
     </script>
     <div class="modal-content" ng-controller='productCTL'>
