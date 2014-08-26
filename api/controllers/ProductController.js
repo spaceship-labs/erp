@@ -33,7 +33,7 @@ module.exports = {
 			Common.view(res.view,{
 				page:{
 					description:'',
-					icon:'fa fa-cubes',
+					icon:'fa fa-cube',
 					name:'Productos'
 				},	
 				product_type:product_type
@@ -56,8 +56,9 @@ module.exports = {
 	},
 	edit: function(req,res){
 		var id = req.param('id');
+        var company = req.session.select_company || req.user.select_company;
 		if(id){
-			Product.findOne(id).exec(function(err,product){
+			Product.findOne({id : id,company : company }).populate("product_type").exec(function(err,product){
 				//Custom_fields.find({product:product.product_type}).exec(function(err,fields){
 				//});
 				Product_type.find().exec(function(err,product_types){
@@ -202,7 +203,7 @@ module.exports = {
 								,dstPath:dirSave+v+fileName
 								,width:wh[0]
 								,height:wh[1]
-							}
+							};
 							im.crop(opts,function(err,stdout,stderr){
 								if(err) return res.json({text:'Ocurrio un error.'});
 								if(prefix==v){
