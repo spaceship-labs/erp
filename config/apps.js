@@ -32,7 +32,7 @@ module.exports.apps = {
             },
 			'/product/' : {
 				label : 'Productos',
-				icon : 'fa-cube'
+				icon : 'fa-cubes'
 			},
 			'/product_type/' : {
 				label : 'Categorias',
