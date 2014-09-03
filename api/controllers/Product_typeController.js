@@ -10,14 +10,17 @@ module.exports = {
 		Product_type.find().exec(function(err,product_types){
 			if(err) throw err;
                 Sales_type.find().exec(function(err,sales_type){
-                    Common.view(res.view,{
-                        page:{
-                            icon:'fa fa-cubes',
-                            name:'Categorias'
-                        },
-                        product_types: product_types,
-                        sales_type : sales_type
-                    },req);
+                    Inventory_type.find().exec(function (err,inventory_type){
+                        Common.view(res.view,{
+                            page:{
+                                icon:'fa fa-cubes',
+                                name:'Categorias'
+                            },
+                            product_types: product_types,
+                            sales_type : sales_type,
+                            inventory_type : inventory_type
+                        },req);
+                    });
                 });
         });
 	},
@@ -27,16 +30,19 @@ module.exports = {
 			Sales_type.find().exec(function(err,sales_type){
 				if(err) throw err;
 				Product_type.findOne({id:id}).exec(function(err,product){
-					Common.view(res.view,{
-                        page:{
-                            icon:'fa fa-cubes',
-                            name:'Editar Categoria'
-                        },
-                        product_type:product
-                        ,product : product //hack para la vista new_field
-						,types:Custom_fields.attributes.type.enum
-						,sales_type:sales_type
-					},req);
+                    Inventory_type.find().exec(function (err,inventory_type){
+                        Common.view(res.view,{
+                            page:{
+                                icon:'fa fa-cubes',
+                                name:'Editar Categoria'
+                            },
+                            product_type:product
+                            ,product : product //hack para la vista new_field
+                            ,types:Custom_fields.attributes.type.enum
+                            ,sales_type:sales_type
+                            ,inventory_type : inventory_type
+                        },req);
+                    });
 				});
 			});
 				
@@ -48,7 +54,7 @@ module.exports = {
         //console.log(form);
 		if(form.id){
 			var id = form.id;
-			form = Common.formValidate(form,['name','sales_type','description']);
+			form = Common.formValidate(form,['name','sales_type','description','inventory_use','inventory_type']);
 			Product_type.update({id:id},form).exec(function(err,product_type){
 				if(err) return res.json({text:'Ocurrio un error.'});
 				res.json({text:'Categoria actualizada.'});

@@ -2,6 +2,8 @@
 <script type='text/javascript'>
 	window.product_type = <%- JSON.stringify(product_type) %>;
     window.product = <%- JSON.stringify(product_type) %>;
+    window.sales_type = <%- JSON.stringify(sales_type) %>;
+    window.inventory_type = <%- JSON.stringify(inventory_type) %>;
 </script>
    <div class="span6">
    <div class="alert alert-block unseen">
@@ -20,30 +22,26 @@
 				</p>
 				<p><label for="app">Tipo de venta*</label>
 					<span class="field">
-						<select name='sales_type' class='chzn-select form-control large' data-placeholder="Escoger tipo" ng-model="product_type.sales_type">
-							<%for(var i=0;i<sales_type.length;i++){
-								var selected = product_type.sales_type = (sales_type[i].type)!=-1?'selected':'';
-							%>
-								<option value='<%=sales_type[i].type%>' <%=selected%>><%=sales_type[i].name%></option>
-							<%}%>
+						<select name='sales_type' class='form-control large' data-placeholder="Escoger tipo" ng-options='k as l for (k,l) in sales_type' ng-model="product_type.sales_type" chosen>
 						</select>
-
 					</span>
 				</p>
 				<p>
 					<label for="description">Descripcion*</label>
 					<span class="field"><input type="text" name="description" class="input-large" ng-model="product_type.description"></span>
 				</p>
-				<!--
-				<p>
-				        <label for="fields">Campos</label>
-				        <span class="field">
-				                <select name='fields' multiple='multiple' class='chzn-select form-control large'>
-		                	                <option ng-repeat="field in product.fields" value='{{field.name}}'>{{field.name}}</option>
-				                </select>
-				        </span>
-				</p>
-				-->
+                <p>
+                  <label for="inventory_use">Inventariado ?</label>
+                  <span class="field">
+                      <input type="checkbox" name="inventory_use" id="inventory_use" class="input-large" ng-model='product_type.inventory_use'>
+                  </span>
+                </p>
+                <p ng-show="product_type.inventory_use == true" class="ng-hide">
+                    <label for="inventory_type">Unidad de inventario</label>
+                                  <span class="field">
+                                      <select type="text" data-placeholder="Escoger unidad" name="inventory_type" class="input-large" ng-options='k as l for (k,l) in  inventory_types' ng-model='product_type.inventory_type' chosen></select>
+                                  </span>
+                </p>
 				<p class="stdformbutton">
 			                <button class="btn btn-primary">Guardar</button>
 			                <button type="reset" class="btn">Resetear</button>

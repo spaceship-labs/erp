@@ -11,11 +11,11 @@ module.exports = {
 		name:'string'
 		,type:{
 			type:'string'
-			,enum:['numero','text','textarea','select','fecha']
+			,enum:['numero','text','textarea','select','fecha','reference']
 		}
 		,values:'array'
 	  	,product:{
-	  		model : 'product_type',
+	  		model : 'product_type'
 	  	}
 	}
 };

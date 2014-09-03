@@ -46,7 +46,7 @@ module.exports = {
 		product.createUser = req.user.id;
 		product.req = req;
 		Product_type.findOne({id:product.product_type}).exec(function(err,product_type){
-			product.fields = product_type.fields; 
+			//product.fields = product_type.fields;
 			Product.create(product).exec(function(e,product){
 				if(e) res.redirect('/product/');
 				else res.redirect('/product/edit/'+product.id);
@@ -58,9 +58,7 @@ module.exports = {
 		var id = req.param('id');
         var company = req.session.select_company || req.user.select_company;
 		if(id){
-			Product.findOne({id : id,company : company }).populate("product_type").exec(function(err,product){
-				//Custom_fields.find({product:product.product_type}).exec(function(err,fields){
-				//});
+			Product.findOne({id : id,company : company }).exec(function(err,product){
 				Product_type.find().exec(function(err,product_types){
 					Common.view(res.view,{
 						product:product,
@@ -68,7 +66,7 @@ module.exports = {
 						page:{
 							description: product.description || '',
 							icon : 'fa fa-cube',
-							name : product.name,
+							name : product.name
 						},
 						types: Custom_fields.attributes.type.enum
 					},req);			
@@ -114,6 +112,10 @@ module.exports = {
 			res.json('error');
 		}
 	},
+    updateInventory : function(req,res) {
+        var form = req.params.all();
+        Product.findOne(form.prod_id).populate('fields')
+    },
 	/*,indexJson: function(req,res){
 		var select_company = req.session.select_company || req.user.select_company;
 		Custom_fields.find({company:select_company}).exec(function(err,fields){

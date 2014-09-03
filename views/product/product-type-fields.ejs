@@ -1,0 +1,15 @@
+<h4 class="widgettitle">Datos adicionales</h4>
+<div class="widgetcontent nopadding">
+    <form method="post" accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine" >
+        <input type='hidden' ng-value='product.id' name='pid' />
+        <p ng-repeat="field in product_type.fields">
+            <label for="">{{field.name}}</label>
+            <span class="field">
+                <input type="text" class="form-control">
+            </span>
+        </p>
+        <p class="stdformbutton">
+            <button class="btn btn-primary">Guardar</button>
+        </p>
+    </form>
+</div>

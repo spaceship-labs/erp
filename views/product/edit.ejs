@@ -1,7 +1,6 @@
 <script type='text/javascript'>
 	window.product = <%- JSON.stringify(product) %>;
-	window.fields = <%- JSON.stringify(product.fields) %>;
-	window.product_types = <%- JSON.stringify(product_types) %>;
+    window.product_types = <%- JSON.stringify(product_types) %>;
 </script>
 <div ng-controller='productCTL'>
 	<div class="span5">
@@ -17,58 +16,34 @@
 	     		<form action="/product/update" method="post" accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine" >
 					<input type='hidden' ng-value='product.id' name='pid' />
 					<%- partial('new-basic') %>
+
+
+
 	     			<p class="stdformbutton">
 		                <button class="btn btn-primary">Guardar</button>
 	     			</p>
 	     		</form>
 	     	</div>
 	     </div>
-
-	      <div class="widgetbox">
-	     	<h4 class="widgettitle">Formula</h4>
-	     	<div class="widgetcontent nopadding">                            
-	     		<form action="/product/update" method="post" accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine" >
-					<input type='hidden' ng-value='product.id' name='pid' />
-					<p>
-						<label for="formula">Formula</label>
-						<span class="field"><textarea name="formula" ng-model='product.formula' class="form-control" ></textarea></span>
-					</p>
-					<p class="stdformbutton">
-		                <button class="btn btn-primary">Guardar</button>
-	     			</p>
-	     		</form>
-	     	</div>
-	     </div>
 	</div>
+    <div class="span5" >
+        <div class="widgetbox">
+            <%- partial('product-type-fields') %>
+        </div>
+    </div>
 	<div class="span5" >
-		<%- partial('product-gallery') %>
-		<!--
-		<div class="widgetbox">
-			<h4 class="widgettitle">Opciones</h4>
-			<div class="widgetcontent nopadding">                            
-				<table class="table responsive">
-					<thead>
-						<tr>
-							<th>Nombre</th>
-							<th>Handle</th>
-							<th>Tipo</th>
-							<th>Valores</th>
-							<th>Eliminar</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr ng-repeat='(handle,field) in product.fields'>
-							<td ng-bind='field.name'></td>
-							<td ng-bind='field.handle'></td>
-							<td ng-bind='field.type'></td>
-							<td ng-bind='field.values'></td>
-							<td><a ng-href='/product/removeField' class='fa fa-trash-o'></a></td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</div>
-		-->
-		<%- partial('../product_type/new_field') %>
+        <div class="widgetbox">
+		    <%- partial('product-gallery') %>
+        </div>
 	</div>
+    <!--<div class="span5">-->
+        <!--<div class="widgetbox">-->
+            <!--<%- partial('inventory') %>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div class="span5">-->
+        <!--<div class="widgetbox">-->
+            <!--<%- partial('quote') %>-->
+        <!--</div>-->
+    <!--</div>-->
 </div>

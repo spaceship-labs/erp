@@ -21,7 +21,13 @@ module.exports = {
 		,product:{
 			collection:'product'
 			,via:'product_type'
-		}
+		},
+        inventory_use : {
+            type : 'boolean'
+        },
+        inventory_type : {
+            type : 'string'
+        }
 
 	}
 };

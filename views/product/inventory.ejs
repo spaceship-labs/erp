@@ -1,0 +1,24 @@
+<h4 class="widgettitle">Inventario</h4>
+<div class="widgetcontent nopadding">
+    <form method="post" accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine" ng-submit="addInventory();">
+        <input type='hidden' ng-value='product.id' name='pid' />
+        <% if (true/*product.product_type.sales_type == 'sale'*/) {%>
+        <p>
+            <span>
+                <input type="number" name="inventory" id="inventory" ng-model='product.addInventory' class="number form-control" />
+            </span>
+            <span class="field">
+
+            </span>
+        </p>
+        <p>
+            <span>
+                Total : {{product.inventory}}
+            </span>
+        </p>
+        <% } %>
+        <p class="stdformbutton">
+            <button class="btn btn-primary">Guardar</button>
+        </p>
+    </form>
+</div>
