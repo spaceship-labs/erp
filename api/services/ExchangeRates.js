@@ -1,6 +1,7 @@
 var oxr = require('open-exchange-rates');
 
 module.exports.getCurrencies = function(cb){
+	console.log(sails.config.exchangeRates);
 	if(sails.config.exchangeRates){
 		oxr.set(sails.config.exchangeRates);
 		oxr.latest(function(err){

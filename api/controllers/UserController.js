@@ -202,7 +202,7 @@ var update = {
 		},cb);
 	}
 	, accessList:function(req,form,cb){
-		console.log(form.accessList);
+		//console.log(form.accessList);
 		User.update({id:form.userId},{accessList:form.accessList}).exec(function(err,user){
 			if(err) return cb(err);
 			return cb && cb(err,user);
