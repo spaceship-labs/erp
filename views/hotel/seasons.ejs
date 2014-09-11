@@ -1,0 +1,14 @@
+<table class='table responsive'>
+	<thead>
+	<tr>
+		<th ng-repeat='field in _content.season' ng-bind='field.label'></th>
+		<th>Editar</th>
+		<th>Eliminar</th>
+	</tr>
+	</thead>
+	<tr ng-repeat='season in hotel.seasons'>
+		<td ng-repeat='field in _content.season' ng-bind='season[field.handle]'></td>
+		<td><a ng-href='/season/edit/{{season.id}}' href=''><span class='fa fa-file'></span></a></td>
+		<td><a ng-href='/season/delete/{{season.id}}' href=''><span class='fa fa-close'></span></a></td>
+	</tr>
+</table>

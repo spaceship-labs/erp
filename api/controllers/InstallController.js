@@ -23,7 +23,6 @@ module.exports = {
 		};
 		delete form.id;
 		form.active = true;
-		//var apps = Array.isArray(form.apps) ? form.apps : [form.apps];
 		var currencies = Array.isArray(form.currencies) ? form.currencies : [form.currencies];
 		if(currencies.indexOf(form.base_currency)==-1)
 			currencies.push(form.base_currency);
@@ -46,9 +45,6 @@ module.exports = {
 			currencies.forEach(function(currency){
 				company.currencies.add(currency);
 			});
-			/*apps.forEach(function(app){
-				company.apps.add(app);
-			});	*/		
 			company.save();
 
 			user.default_company = company.id;

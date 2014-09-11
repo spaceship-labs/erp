@@ -11,27 +11,25 @@ var bcrypt = require('bcrypt')
 module.exports = {
 	index: function(req,res){
 		var select_company = req.session.select_company || req.user.select_company;
-		App.find().exec(function(err,apps){
-			Company.findOne(select_company).populate('users').exec(function(e,company){
-				if(e) throw (e);
-				var users = company.users;
-				var alphabets_company = [];
-				for(var i=0;i<users.length;i++){
-					users[i].createdAtString = timeFormat(users[i].createdAt);
-					users[i].lastAccessString = users[i].lastAccess ? timeFormat(users[i].lastAccess) : 'nunca';
-					users[i].avatar = users[i].icon ? '/uploads/users/'+users[i].icon : 'http://placehold.it/50x50';
-					if(users[i].last_name){
-						index = users[i].last_name[0].toUpperCase();
-						alphabets_company.push(index);
-					}
+		Company.findOne(select_company).populate('users').exec(function(e,company){
+			if(e) throw (e);
+			var users = company.users;
+			var alphabets_company = [];
+			for(var i=0;i<users.length;i++){
+				users[i].createdAtString = timeFormat(users[i].createdAt);
+				users[i].lastAccessString = users[i].lastAccess ? timeFormat(users[i].lastAccess) : 'nunca';
+				users[i].avatar = users[i].icon ? '/uploads/users/'+users[i].icon : 'http://placehold.it/50x50';
+				if(users[i].last_name){
+					index = users[i].last_name[0].toUpperCase();
+					alphabets_company.push(index);
 				}
-				Common.view(res.view,{
-					 apps:apps,
-					 users:users,
-					 alphabet : alphabets_company
-				},req);
-			});			
-		});
+			}
+			Common.view(res.view,{
+				 apps: sails.config.apps,
+				 users:users,
+				 alphabet : alphabets_company
+			},req);
+		});			
 	}
 
 	, indexJson: function(req,res){

@@ -11,8 +11,8 @@ jQuery(function($){
 		e.preventDefault();
 		$('#change-icon').removeClass('hidden');
 	});
-
 	$('#change-icon').ajaxForm(function(data){
+		console.log(data);
 		if(data.status){	
 			$('.profilethumb img').attr('src',data.data);
 		}

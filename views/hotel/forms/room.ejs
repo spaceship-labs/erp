@@ -1,0 +1,15 @@
+<form class="widgetcontent nopadding form stdform stdform2" action='' method='post' ng-show='showRoomForm'>
+	<p ng-repeat='field  in _content.room'>
+        <label ng-bind='field.label'></label>
+        <span class="field">
+            <textarea ng-if='field.type == "textarea"' name='{{field.handle}}' class='form-control' ng-model='newRoom[field.handle]'></textarea>
+            <input type='text' ng-if='field.type == "text"' name='{{field.handle}}' class='form-control' ng-model='newRoom[field.handle]' />
+            <input type='checkbox' ng-if='field.type == "checkbox"' name='{{field.handle}}' class='form-control' ng-model='newRoom[field.handle]' />
+        </span>
+
+    </p> 
+    <p class="stdformbutton">
+        <button ng-click='addRoom()' class="btn btn-primary">Agregar Habitacion</button>
+        <button type="reset" class="btn">Resetear</button>
+	</p>
+</form>

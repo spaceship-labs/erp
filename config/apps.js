@@ -55,4 +55,18 @@ module.exports.apps = {
             }
         },
     },
+    hotels : {
+    	label : 'Hoteles',
+        icon : 'fa-building',
+        views : {
+            '/hotel/' : {
+                label : 'Hoteles',
+                icon : 'fa-building-o'
+            },
+            '/amenidades/' : {
+                label : 'Amenidades',
+                icon : 'fa-cab'
+            },
+        },
+    },
 };

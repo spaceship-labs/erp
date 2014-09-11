@@ -1,0 +1,53 @@
+<script type='text/javascript'>
+    window.room = <%- JSON.stringify(room) %>;
+    window.seasons = <%- JSON.stringify(seasons) %>;
+    window._content = <%- JSON.stringify(_content)    %>;
+    window.userID = <%- JSON.stringify(req.user.id) %>;
+</script>
+<div ng-controller='roomEditCTL'>
+    <div class='row-fluid'>
+        <div class="span4 profile-left profileEdit">
+        	<div class="alert alert-block unseen">
+        		<button data-dismiss="alert" class="close" type="button">×</button>
+        		<h4>Mensaje</h4>
+        			<p style="margin: 8px 0">El cuarto se ha actualizado exitosamente</p>
+        	</div>
+            <div class="widgetbox profile-photo">
+                <div class="headtitle">
+                    <div class="btn-group">
+                        <button data-toggle="dropdown" class="btn dropdown-toggle">Opciones <span class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                          <li><a href="#" ng-file-select="updateIcon($files)" >Cambiar</a></li>
+                          <li><a class="confirmbutton" href="/room/destroy_icon/12">Eliminar</a></li> 
+                        </ul>
+                    </div>            
+                    <h4 class="widgettitle">Imagen Primaria</h4>
+                </div>
+                <div class="widgetcontent">
+                    <div class="profilethumb" style="background:none">
+                        <img ng-src="{{room.avatar2}}" ng-alt="room.name">
+                    </div><!--profilethumb-->
+                </div>
+            </div>   
+            <div class="widgetbox" ng-show='room.seasonal'>
+                <div class="headtitle">          
+                    <h4 class="widgettitle">Tarifas<span ng-click='save()'  class='fa icon' ng-class='saveClass'></span></h4>
+                </div>
+                <div class="widgetcontent">
+                    <%-partial('forms/fees')%>
+                </div>
+            </div>      
+        </div>
+        <div class="span8">        
+            <div class="widgetbox personal-information">
+                <h4 class="widgettitle">Información Basica <span ng-click='save()'  class='fa icon' ng-class='saveClass'></span></h4>
+                <form class="widgetcontent nopadding form stdform stdform2" action='' method='post' >
+                    <%-partial('forms/content')%>     
+                </form>           
+            </div>
+                
+            <div>
+            </div>
+        </div>
+    </div>
+</div>

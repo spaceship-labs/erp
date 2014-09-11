@@ -29,9 +29,36 @@ module.exports = {
 			via: 'companies',
 			dominant: true
 		}
-		,apps : 'json'
+		,apps : 'array'
+		,addApps : function(apps,cb){		
+			if(Array.isArray(apps)){
+				if(this.apps){
+					cApps = this.apps;		
+					apps.forEach(function(app){
+						if(cApps.indexOf(app) < 0) 
+							cApps.push(app);
+					});
+				}
+				this.apps = cApps;
+				this.save(cb);
+			}else{
+				cb({message:'no apps'},this);
+			}
+		}
+		,removeApp : function(app,cb){
+			if(this.apps){
+				cApps = this.apps;
+				for(key in this.apps){
+					if(this.apps[key] == app) this.apps.splice(key,1);
+				}
+				this.save(cb);
+			}else{
+				cb(null,this);
+			}
+		}
 
 	}
+	
 	,afterCreate: function(val,cb){
 		Notifications.after(Company,val,'create');
 		cb()
@@ -44,7 +71,7 @@ module.exports = {
 		Notifications.before(val);
 		cb();
 	}
-	, beforeCreate: function(val,cb){
+	,beforeCreate: function(val,cb){
 		Notifications.before(val);
 		cb();
 	}

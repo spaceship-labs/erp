@@ -92,7 +92,8 @@ module.exports.updateIcon = function(req,opts,cb){
 						if(prefix==v){
 							fs.createReadStream(dirSave+v+fileName).pipe(fs.createWriteStream(dirPublic+v+fileName))
 							.on('finish',function(){
-								return cb && cb(null,dirAssets+prefix+fileName);
+								//return cb && cb(null,dirAssets+prefix+fileName);
+								return cb && cb(null,user);
 							}).on('error',function(){
 								return cb && cb(true);
 							});
@@ -100,7 +101,7 @@ module.exports.updateIcon = function(req,opts,cb){
 						}
 					});
 					if(!prefix){
-						return cb && cb(null,fileName);
+						return cb && cb(null,user);
 					}
 				});	
 			});

@@ -1,5 +1,5 @@
 /**
- * CompanyController.js 
+ * appsompanyController.js 
  *
  * @description ::
  * @docs        :: http://sailsjs.org/#!documentation/controllers
@@ -31,19 +31,14 @@ module.exports = {
 		var id = req.params.id;
 		Company.findOne({id:id}).exec(function(err,company){
 			if(err) throw err;
-			var find = {}
+			var find = {};
 			find['companies.'+id] = {$exists:1};
 			User.find(find).exec(function(err,users){	
-				App.find({controller:{$in:company.app}}).exec(function(err,apps){
-					App.find({controller:{'!':company.app}}).exec(function(err,allApps){
-						Common.view(res.view,{
-							company:company || {}
-							, users:users || []
-							,apps: apps||[]
-							,allApps:allApps || []
-						},req);
-					});
-				});
+				Common.view(res.view,{
+					company:company || {}
+					,users:users || []
+					,apps: sails.config.apps
+				},req);
 			});
 		});
 	}
@@ -75,6 +70,24 @@ module.exports = {
 	}
 	, editAjax: function(req,res){
 		Common.editAjax(req,res,update);
+	}
+	, addApp : function(req,res){
+		Company.findOne({id:req.param('company')}).exec(function(e,c){
+			if(e) throw(e);
+			c.addApps([req.param('app')],function(e,c){
+				if(e) throw e;
+				res.json(c);
+			});
+		});
+	}
+	,removeApp : function(req,res){
+		Company.findOne({id:req.param('company')}).exec(function(e,c){
+			if(e) throw(e);
+			c.removeApp([req.param('app')],function(e,c){
+				if(e) throw e;
+				res.json(c);
+			});
+		});
 	}
 };
 

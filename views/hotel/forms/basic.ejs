@@ -1,0 +1,18 @@
+<form action="" class="editprofileform stdform stdform2" method="post">
+    <p><label for="name">Nombre</label>
+    <span class="field"><input type="text" name="name" class="input-xlarge" ng-model="hotel.name"></span></p> 
+
+    
+    <p><label for="address">Direccion</label>
+    <span class="field"><input type="text" name="address" class="input-xlarge" ng-model="hotel.address"></span></p>
+    
+    <p><label for="location">Poblacion</label>
+    <span class="field">
+        <select name="location" class="input-xlarge" ng-model="hotel.location" ng-options='l.name for l in locations track by l.id'></select>
+    </span></p>
+
+    <p><label for="phones">Telefonos</label>
+    <span class="field">
+        <tags-input ng-model="phones" placeholder='Editar Telefonos' ></tags-input>
+    </span></p>
+</form>

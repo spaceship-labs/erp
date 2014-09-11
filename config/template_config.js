@@ -5,5 +5,9 @@ module.exports.template_config = {
 	
 	//American sign
 	cssFile : 'style-american-sign.css',
-	logo : 'as_logo.png'
+	logo : 'as_logo.png',
+
+	//Caribe Maya
+	cssFile : 'style-caribe-maya.css',
+	logo : 'caribe-maya.png',
 }

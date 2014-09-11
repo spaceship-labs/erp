@@ -1,0 +1,45 @@
+<script type='text/javascript'>
+	window.hotels = <%- JSON.stringify(hotels) %>;
+	window.locations = <%- JSON.stringify(locations) %>;
+</script>
+<div ng-controller='hotelCTL' >
+	<p><button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Nuevo Hotel</button></p>
+	<br/>	
+	<ul class="alphabets">
+		<li ng-repeat="a in alphabet">
+			<span ng-if="alphabetIndex.indexOf(a)!=-1" ng-click="selectLetter(a)" ng-bind='a' ></span>
+			<p ng-if="alphabetIndex.indexOf(a)==-1" ng-bind='a'></p>
+		</li>
+	</ul>
+	<div class="peoplelist">
+		<div class="row-fluid">
+			<div class="span6" ng-repeat='hotel in hotels | filter:hotelFilter' ng-cloak class="ng-cloak">
+				<div class="peoplewrapper" >
+					<div class="thumb">
+						<img ng-src="{{hotel.avatar}}" alt="" />
+					</div>
+					<div class="peopleinfo">
+						<h4>
+							<a href="/hotel/edit/{{hotel.id}}" ng-bind='hotel.name'></a>
+						</h4>
+						<ul>
+							<li><span>Poblacion: </span> {{hotel.location.name}}</li>
+							<li><span>Direccion: </span>{{hotel.address}}</li>
+							<li><span>Telefonos: </span> <span ng-bind='hotel.phones.join(", ")'></span></li>
+							<li><span>Creado: </span>{{hotel.createdAtString}}</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="clearfix"></div>
+	<div class="span6">
+		<div class="alert alert-block unseen userAlert">
+			<button data-dismiss="alert" class="close" type="button">×</button>
+			<h4>Mensaje</h4>
+			<p>El hotel se creo exitosamente</p>
+		</div>
+	</div>
+	<%- partial('new-hotel-modal') -%>
+</div>

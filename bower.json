@@ -46,6 +46,9 @@
     "jquery-form": "~3.46.0",
     "jquery-modern": "jquery#2",
     "angular-ui-bootstrap-bower": "~0.11.0",
-    "moment": "~2.7.0"
+    "moment": "~2.7.0",
+    "bower-sails.io": "~0.0.1",
+    "ng-tags-input": "2.1.1",
+    "ng-file-upload": "~1.6.5"
   }
 }

@@ -1,0 +1,86 @@
+<script type='text/javascript'>
+    window.hotel = <%- JSON.stringify(hotel) %>;
+    window.locations = <%- JSON.stringify(locations) %>;
+    window._content = <%- JSON.stringify(_content)    %>;
+    window.userID = <%- JSON.stringify(req.user.id) %>;
+</script>
+<div ng-controller='hotelEditCTL'>
+    <div class='row-fluid'>
+        <div class="span4 profile-left profileEdit">
+        	<div class="alert alert-block unseen">
+        		<button data-dismiss="alert" class="close" type="button">×</button>
+        		<h4>Mensaje</h4>
+        			<p style="margin: 8px 0">El usuario se ha actualizado exitosamente</p>
+        		</div>
+                <div class="widgetbox profile-photo">
+                <div class="headtitle">
+                    <div class="btn-group">
+                        <button data-toggle="dropdown" class="btn dropdown-toggle">Opciones <span class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                          <li><a href="#" ng-file-select="updateIcon($files)" >Cambiar</a></li>
+                          <li><a class="confirmbutton" href="/hotel/destroy_icon/12">Eliminar</a></li> 
+                        </ul>
+                    </div>            
+                    <h4 class="widgettitle">Imagen Primaria</h4>
+                </div>
+                <div class="widgetcontent">
+                    <div class="profilethumb" style="background:none">
+                        <img ng-src="{{hotel.avatar2}}" ng-alt="hotel.name">
+                    </div><!--profilethumb-->
+                </div>
+            </div>      
+        </div>
+        <div class="span8">        
+            <div class="widgetbox personal-information">
+                <h4 class="widgettitle">Información Basica <span ng-click='save()'  class='fa icon' ng-class='saveClass'></span></h4>
+                <div class="widgetcontent nopadding">
+                    <%-partial('forms/basic')%>                
+                </div>
+            </div>
+                
+            <div>
+            </div>
+        </div>
+    </div>
+    <div class='row-fluid'>
+        <div class='span12'>
+            <div class="widgetbox">
+                <h4 class="widgettitle">Contenido <span ng-click='save()'  class='fa icon' ng-class='saveClass'></span></h4>
+                <div class="widgetcontent nopadding">
+                    <%-partial('forms/content')%>
+                </div>
+            </div> 
+        </div>
+    </div>
+    <div class='row-fluid'>
+        <div class='span12'>
+            <div class="widgetbox">
+                <h4 class="widgettitle">Habitaciones <span ng-click='toggleRoomForm()'  class='fa icon' ng-class='newRoomClass'></span>  </h4>
+                <div ng-show='showRoomForm'>
+                    <form class="widgetcontent nopadding form stdform stdform2" action='' method='post' >
+                        <%-partial('../room/forms/content')%>
+                        <p class="stdformbutton">
+                            <button ng-click='addRoom()' class="btn btn-primary">Agregar Habitacion</button>
+                            <button type="reset" class="btn">Resetear</button>
+                        </p>
+                    </form>
+                </div>
+                <div ng-show='hotel.rooms.length'>
+                    <%-partial('../room/rooms')%>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class='row-fluid'>
+        <div class='span12'>
+            <div class="widgetbox">
+                <h4 class="widgettitle">Temporadas <span ng-click='toggleSeasonForm()'  class='fa icon' ng-class='newSeasonClass'></span>  </h4>
+                <%-partial('forms/season')%>
+                <div ng-show='hotel.seasons.length'>
+                    <%-partial('seasons')%>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

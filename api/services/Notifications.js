@@ -19,9 +19,9 @@ module.exports = {
 		if(val.req && val.req.userId){
 			notification(action,Model.tableName,val);
 			val.req = {};
-			Model.update({id:val.id},val).exec(function(err,model){
+			/*Model.update({id:val.id},val).exec(function(err,model){
 				if(err) throw err;
-			});
+			});*/
 		}
 	}
 	,before:function(val){

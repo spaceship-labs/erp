@@ -1,0 +1,6 @@
+<p ng-repeat='season in seasons'>
+    <label ng-bind='season.name'></label>
+    <span class="field">
+        <input type='text' name='{{season.name}}' class='form-control' ng-model='room.fees[season.id]' />
+    </span>
+</p> 

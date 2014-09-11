@@ -1,0 +1,24 @@
+<p>
+	<label for='name'>Nombre*</label>
+	<span class='field'>
+		<input type='text' name='name' class='form-control required' ng-model='newHotel.name'  />
+	</span>
+</p>	
+<p>
+	<label for='address'>Direccion</label>
+	<span class='field'>
+		<input type='text' name='address' ng-model='newHotel.address' class='form-control required'  />
+	</span>
+</p>			
+<p>
+	<label for='phones'>Telefonos</label>
+	<span class='field'>
+		<input type='text' ng-model='newHotel.phones'  name='phones' class='form-control required'  />
+	</span>
+</p>	
+<p>
+	<label for='location'>Localidad</label>
+	<span class='field'>
+		<select type='text' name='location' class='form-control required' ng-model='newHotel.location' ng-options='l.name for l in locations track by l.id'></select>
+	</span>
+</p>	

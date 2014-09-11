@@ -1,9 +1,7 @@
-var app = angular.module('spaceerp',['ngSails','ui.bootstrap']);
-
-app.config(['$sailsProvider', function ($sailsProvider) {
-    $sailsProvider.url = 'http://localhost:1337';
-}]);
-
+var app = angular.module('spaceerp',['ui.bootstrap','ngTagsInput','angularFileUpload']);
+/*app.factory('socket',['$sailsSocket', function($sailsSocket){
+    return $sailsSocket()
+}])*/
 app.directive('chosen',function(){
    var linker = function(scope,element,attrs){
        var list = attrs['chosen'];
@@ -20,25 +18,29 @@ app.directive('chosen',function(){
    }
 });
 
-app.controller('userCTL',function($scope,$sails){
+app.controller('companyEditCTL',function($scope){
+    $scope.company = company;
+    $scope.apps = apps;
+    $scope.removeApp = function(app){
+        io.socket.post('/company/removeApp',{company:company.id,app:app},function(company){
+            $scope.company = company;
+            $scope.$apply();
+        });
+    };
+    $scope.addApp = function(app){
+        io.socket.post('/company/addApp',{company:company.id,app:app},function(company){
+            $scope.company = company;
+            $scope.$apply();
+        });
+    };
+
+});
+
+app.controller('userCTL',function($scope){
 	$scope.alphabets = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']; 
 	$scope.users = users;
 	$scope.alphabets_company = alphabet;
 	$scope.searchInputSelect = alphabet[0];
-	/*var updateList = function(){
-		jQuery.get('/users/all',function(data){
-			$scope.users = data;
-			$scope.$apply();
-			if(data)
-				$scope.searchInputSelect = 'a';
-				//$scope.searchInputSelect = data[0].name[0];
-		});
-		jQuery.get('/users/indexJson',function(data){
-			$scope.alphabets_company = data;
-			$scope.$apply();
-		});
-		
-	}*/
 	$scope.userFilter = function(u){		
 		if($scope.searchInputSelect && !$scope.searchInput){
 			//return true;

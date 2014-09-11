@@ -20,6 +20,8 @@ var cssFilesToInject = [
 	'/bower_components/lato/css/lato.css',
 	'/bower_components/sass-bootstrap-glyphicons/css/bootstrap-glyphicons.css',
 	'/bower_components/chosen/chosen/chosen.css',
+	"/bower_components/ng-tags-input/ng-tags-input.min.css",
+
 	'styles/*.css'
 ];
 
@@ -32,23 +34,22 @@ var jsFilesToInject = [
 	// are brought in here
 	'js/dependencies/**/*.js',
 	'/bower_components/jquery/dist/jquery.min.js',
+	"/bower_components/bootstrap/dist/js/bootstrap.min.js",
+	//"/bower_components/ng-file-upload/angular-file-upload-shim.js",
+	"/bower_components/angular/angular.min.js",
+	"/bower_components/ng-file-upload/angular-file-upload.min.js",
+	"/bower_components/chosen/chosen/chosen.jquery.min.js",
+	"/bower_components/modernizr/modernizr.js",
+	"/bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls.min.js",
 	"/bower_components/jquery-migrate/jquery-migrate.min.js",
 	"/bower_components/jquery-ui/ui/minified/jquery-ui.min.js",
-	"/bower_components/chosen/chosen/chosen.jquery.min.js",
-	"/bower_components/bootstrap/dist/js/bootstrap.min.js",
-	"/bower_components/modernizr/modernizr.js",
+	"/bower_components/jquery-form/jquery.form.js",
 	"/bower_components/jquery-cookie/jquery.cookie.js",
 	"/bower_components/flot/jquery.flot.js",
 	"/bower_components/flot/jquery.flot.resize.js",
+	"/bower_components/ng-tags-input/ng-tags-input.min.js",
 	"/bower_components/slimScroll/slimScroll.min.js",
-	"/bower_components/angular/angular.min.js",
-	"/bower_components/angular-sails/dist/angular-sails.min.js",
-	"/bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls.min.js",
-	"/bower_components/jquery-form/jquery.form.js",
 
-	// All of the rest of your client-side js files
-	// will be injected here in no particular order.
-	//'js/**/*.js',
 	"js/themejs/*.js",
 	"/js/*.js",
 ];

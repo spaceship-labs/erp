@@ -1,0 +1,122 @@
+/*American Sign*/
+body{min-width: 290px}
+strong{font-weight: bold;}
+.row .row{max-width: 100%;margin: 0}
+/*Global orange #EA4723*/
+
+/*Login page*/
+body.loginpage{overflow: hidden;}
+/*---*/
+.headmenu > li > a{padding: 25px 20px 11px 20px}
+.headmenu > li > a .menu-icon{font-size: 48px}
+.userloggedinfo .userinfo h5{font-weight: bold;}
+.userloggedinfo img{border-radius: 50%}
+.header .logo{padding-top:16px;}
+
+.leftpanel{left: 0;position: absolute;top: 140px;z-index: 0}
+.leftmenu .nav-header{color: #fff}
+.leftmenu .nav-tabs.nav-stacked > li.active > a{background-color: #EA4723;border-bottom-color: #EA4723;}
+
+.pagetitle h1{text-transform: uppercase;}
+.widgettitle span{font-size: 16px}
+.widgettitle a{text-decoration: underline;text-transform: none!important;}
+.widgettitle a span{font-size: 16px;vertical-align: initial;}
+
+.main-client{margin-bottom: 6px;padding: 8px 12px}
+.main-client .client-info{margin-left: 95px}
+.main-client .client-info p{line-height: 16px}
+
+.item-list{height: 186px;overflow: auto;padding-top: 5px}
+.item-list .item{line-height: 16px}
+.item-list .item + .item{border-top: 1px solid gray}
+
+.commentlist {height: 330px;overflow: auto}
+.commentlist li{min-height: 68px;padding: 8px 15px}
+.commentlist li img{width: 50px}
+.commentlist li p{margin: 0}
+
+.custom-table table{margin-bottom: 0!important;width: 100%}
+.custom-table table th{position: relative;}
+.custom-table table th:last-child:after{content: "";height: 100%;position: absolute;right: -1px;top: 0;width: 1px}
+.custom-table table th,.custom-table table td{font-size: 12px;padding: 6px;}
+.custom-table table th{font-size: 13px;}
+.custom-table table .table-icon{font-size: 15px}
+.custom-table table td:nth-child(2){text-decoration: underline;}
+
+.buttons-box{margin-bottom: 14px}
+.buttons-box .button-orange{font-size: 15px}
+.buttons-box .button-orange + .button-orange{margin-left: 4px}
+
+.profilethumb .submit-button{margin-top: 12px}
+
+.form-currencies button{margin: 10px 0}
+
+
+/*Dropdowns*/
+
+.peoplelist .peoplewrapper{height: auto;}
+
+.field input , .input-large, .fileupload .uneditable-input , .chzn-container , .chzn-container-single .chzn-drop, form textarea{max-width: 100%;width: 100%!important}
+
+@media only screen and  (max-width: 1280px){
+	.widgettitle a.pull-right{display: block;float: none!important;padding-top: 2px}
+
+}
+
+@media only screen and (max-width: 650px) {
+	/* Force table to not be like tables anymore */
+	.custom-table table,
+	.custom-table thead,
+	.custom-table tbody,
+	.custom-table th,
+	.custom-table td,
+	.custom-table tr {
+	display: block;
+	}
+	 
+	/* Hide table headers (but not display: none;, for accessibility) */
+	.custom-table thead tr {
+	position: absolute;
+	top: -9999px;
+	left: -9999px;
+	}
+	 
+	.custom-table tr { border: 1px solid #ccc; }
+	 
+	.custom-table td {
+	/* Behave like a "row" */
+	border: none;
+	border-bottom: 1px solid #eee;
+	position: relative;
+	padding-left: 50%!important;
+	white-space: normal;
+	text-align:left;
+	}
+	 
+	.custom-table td:before {
+	/* Now like a table header */
+	position: absolute;
+	/* Top/left values mimic padding */
+	top: 6px;
+	left: 6px;
+	width: 45%;
+	padding-right: 10px;
+	white-space: nowrap;
+	text-align:left;
+	font-weight: bold;
+	}
+	 
+	/*
+	Label the data
+	*/
+	.custom-table td:before { content: attr(data-title); }
+}
+
+@media screen and (max-width: 480px){
+	.headmenu .dropdown-menu{border: 2px solid #EA4723}
+	.userloggedinfo .userinfo{border: 2px solid #EA4723}
+}
+
+@media screen and (max-width: 360px){
+	.headmenu > li > a .menu-icon{font-size: 32px}
+}

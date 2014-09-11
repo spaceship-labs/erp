@@ -1,126 +1,132 @@
-<div class="span4 profile-left profileEdit Admin">
-	<div class="alert alert-block unseen">
-		<button data-dismiss="alert" class="close" type="button">×</button>
-		<h4>Mensaje</h4>
-			<p style="margin: 8px 0">El usuario se ha actualizado exitosamente</p>
-		</div>
-        <div class="widgetbox profile-photo">
-        <div class="headtitle">
-            <div class="btn-group">
-                <button data-toggle="dropdown" class="btn dropdown-toggle">Propiedades <span class="caret"></span></button>
-                <ul class="dropdown-menu">
-                  <li><a href="#" class="change-icon-button">Cambiar Icono</a></li>
-                  <li><a class="confirmbutton" href="/erp-admin/companies/destroy_icon/39">Quitar Icono</a></li> 
-                </ul>
-            </div>            
-            <h4 class="widgettitle">Icono</h4>
-        </div>
-        <div class="widgetcontent">
-            <div class="profilethumb">
-	    	<%var icon;
-		if(company.icon){
-			icon ="/uploads/companies/177x171"+company.icon;
-		}else
-			icon = "http://placehold.it/177x171";
-		%>
-	        <img src="<%=icon%>">
-                <form action="/company/editAjax" method="post" accept-charset="utf-8" enctype="multipart/form-data" class="hidden commonForm" id="change-icon">
-	                <input type="hidden" name='method' value='icon' />
-                    <input type="hidden" name='userId' value='<%=company.id%>' />
-                    <hr>
-                    <span class="field">
-                        <span class="fileupload fileupload-new" data-provides="fileupload">
-                            <span class="input-append">
-                                <span class="uneditable-input span2">
-                                    <i class="fa fa-file fileupload-exists"></i>
-                                    <span class="fileupload-preview"></span>
+<script type='text/javascript'>
+    window.company = <%- JSON.stringify(company) %>;
+    window.apps = <%- JSON.stringify(apps) %>;
+</script>
+<div ng-controller='companyEditCTL'>
+    <div class="span4 profile-left profileEdit Admin">
+    	<div class="alert alert-block unseen">
+    		<button data-dismiss="alert" class="close" type="button">×</button>
+    		<h4>Mensaje</h4>
+    			<p style="margin: 8px 0">La empresa se ha actualizado exitosamente</p>
+    		</div>
+            <div class="widgetbox profile-photo">
+            <div class="headtitle">
+                <div class="btn-group">
+                    <button data-toggle="dropdown" class="btn dropdown-toggle">Propiedades <span class="caret"></span></button>
+                    <ul class="dropdown-menu">
+                      <li><a href="#" class="change-icon-button">Cambiar Icono</a></li>
+                      <li><a class="confirmbutton" href="/erp-admin/companies/destroy_icon/39">Quitar Icono</a></li> 
+                    </ul>
+                </div>            
+                <h4 class="widgettitle">Icono</h4>
+            </div>
+            <div class="widgetcontent">
+                <div class="profilethumb">
+    	    	<%var icon;
+    		if(company.icon){
+    			icon ="/uploads/companies/177x171"+company.icon;
+    		}else
+    			icon = "http://placehold.it/177x171";
+    		%>
+    	        <img src="<%=icon%>">
+                    <form action="/company/editAjax" method="post" accept-charset="utf-8" enctype="multipart/form-data" class="hidden commonForm" id="change-icon">
+    	                <input type="hidden" name='method' value='icon' />
+                        <input type="hidden" name='userId' value='<%=company.id%>' />
+                        <hr>
+                        <span class="field">
+                            <span class="fileupload fileupload-new" data-provides="fileupload">
+                                <span class="input-append">
+                                    <span class="uneditable-input span2">
+                                        <i class="fa fa-file fileupload-exists"></i>
+                                        <span class="fileupload-preview"></span>
+                                    </span>
+                                    <span class="btn btn-file">
+                                        <span class="fileupload-new">Archivo</span>
+                                        <span class="fileupload-exists">Cambia</span>
+                                        <input type="file" name="icon_input">
+                                    </span>
+                                    <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remove</a>
                                 </span>
-                                <span class="btn btn-file">
-                                    <span class="fileupload-new">Archivo</span>
-                                    <span class="fileupload-exists">Cambia</span>
-                                    <input type="file" name="icon_input">
-                                </span>
-                                <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remove</a>
                             </span>
                         </span>
-                    </span>
-                    <p class="stdformbutton">
-                        <button type="submit" class="btn btn-primary">Actualizar Icono</button>                        
-                    </p>
-                </form>
-            </div><!--profilethumb-->
-        </div>
-    </div>
-        
-        
-    <div class="widgetbox tags">
-            <h4 class="widgettitle">Aplicaciones</h4>
-            <div class="widgetcontent">
-                <ul class="taglist">
-    			<%for(var i=0;i<apps.length;i++){%>
-    				<li><a href="<%=apps[i].controller%>"><%=apps[i].name%><span class="close">×</span></a></li>
-    			<% } %>
-    		    </ul>
-                <hr>
-                <form id="addApps" action="/admin/companies/add_app" method="post">
-                        <p>
-                        <span class="field"><select name="app_input" class="chzn-select">
-    				    <%for(var i=0;i<allApps.length;i++){ %>
-    					   <option value="<%=allApps[i].controller%>"><%=allApps[i].name%></option>
-    				    <% } %>
-			            </select></span>
-                        <input type="hidden" name="company_id" value="39">
-                        <button type="submit" class="btn btn-primary">Agregar Aplicaciones</button>
-    			        <input type="hidden" name="url" value="/admin/" />
+                        <p class="stdformbutton">
+                            <button type="submit" class="btn btn-primary">Actualizar Icono</button>                        
                         </p>
-                </form>
+                    </form>
+                </div><!--profilethumb-->
             </div>
-    </div>
-        
-        
-    <div class="widgetbox tags">
-            <h4 class="widgettitle">Usuarios</h4>
-            <div class="widgetcontent">
-                <ul class="taglist">
-			<% for(var i=0;i<users.length;i++){ %>
-				<li><a href="/users/edit/<%=users[i].id %>"><%=users[i].name%><span class="close fa fa-edit"></span></a></li>
-			<% } %>
+        </div>
+            
+            
+        <div class="widgetbox tags">
+                <h4 class="widgettitle">Aplicaciones</h4>
+                <div class="widgetcontent">
+                    <ul class="taglist" ng-repeat='app in company.apps'>
+        				<li><a>
+                            <i ng-bind='apps[app].label'></i>
+                            <span class="close" ng-click='removeApp(app)'>×</span>
+                        </a></li>
+        		    </ul>
+                    <hr>
+                    <form method="post" ng-submit='addApp(selectedApp)'>
+                        <p>
+                            <span class="field"><select ng-model='selectedApp' name="app" >
+        				    <%for(var app in apps){ %>
+        					   <option value="<%=app%>"><%=apps[app].label%></option>
+        				    <% } %>
+        		            </select></span>
+                            <input type='hidden' value='<%-company.id%>' name='company' />
+                            <button type='submit' class="btn btn-primary">Agregar App</a>
+                        </p>
+                    </form>
+                </div>
+        </div>
+            
+            
+        <div class="widgetbox tags">
+                <h4 class="widgettitle">Usuarios</h4>
+                <div class="widgetcontent">
+                    <ul class="taglist">
+    			<% for(var i=0;i<users.length;i++){ %>
+    				<li><a href="/users/edit/<%=users[i].id %>"><%=users[i].name%><span class="close fa fa-edit"></span></a></li>
+    			<% } %>
 
-		</ul>
-                <a href="/erp-admin/users/new_user/" style="display:block;margin-top:10px">+ Agregar Usuarios</a>
-            </div>
-    </div>
-        
-</div><!--span4-->
-<div class="span6">        
-        <div class="widgetbox personal-information">
-            <h4 class="widgettitle">Información de la Empresa</h4>
-            <div class="widgetcontent">
-                <form action="/company/editAjax" class="editprofileform stdform stdform2 ajaxForm commonForm" method="post">
+    		</ul>
+                    <a href="/erp-admin/users/new_user/" style="display:block;margin-top:10px">+ Agregar Usuarios</a>
+                </div>
+        </div>
+            
+    </div><!--span4-->
+    <div class="span6">        
+            <div class="widgetbox personal-information">
+                <h4 class="widgettitle">Información de la Empresa</h4>
+                <div class="widgetcontent">
+                    <form action="/company/editAjax" class="editprofileform stdform stdform2 ajaxForm commonForm" method="post">
 
-                    <p><label for="name_input">Nombre:</label>
-                    <span class="field"><input type="text" name="name" class="input-xlarge" value="<%=company.name%>"></span></p>              
+                        <p><label for="name_input">Nombre:</label>
+                        <span class="field"><input type="text" name="name" class="input-xlarge" value="<%=company.name%>"></span></p>              
 
-                    <p><label for="address_input">Dirección</label>
-                    <span class="field"><input type="text" name="address" class="input-xlarge" value="<%=company.address%>"></span></p>
-                
-                    <p><label for="zipcode_input">Código Postal</label>
-                    <span class="field"><input type="text" name="zipcode" class="input-xlarge" value="<%=company.zipcode%>"></span></p>
-
-                    <p><label for="description_input">Descripción:</label>
-                    <span class="field"><textarea name="description" rows="3" cols="50"><%=company.description%></textarea></span></p>
-                    <input type="hidden" value="<%=company.id%>" name="userId" />
-    	            <input type="hidden" value="info" name="method" />
-                    <p class="stdformbutton">
-                    <%var active = {
-                        true:[0,'Desactivar']
-                        , false:[1,'Activar']
-                    } %>
-                        <button type="submit" class="btn btn-primary">Actualizar Empresa</button> &nbsp; <a class="confirmbutton"  data-url="/company/" href="<%=active[company.active][0]%>"><%=active[company.active][1]%></a>
-                    </p>
+                        <p><label for="address_input">Dirección</label>
+                        <span class="field"><input type="text" name="address" class="input-xlarge" value="<%=company.address%>"></span></p>
                     
-                </form>
+                        <p><label for="zipcode_input">Código Postal</label>
+                        <span class="field"><input type="text" name="zipcode" class="input-xlarge" value="<%=company.zipcode%>"></span></p>
 
-            </div>
-        </div>        
-</div><!--span8-->
+                        <p><label for="description_input">Descripción:</label>
+                        <span class="field"><textarea name="description" rows="3" cols="50"><%=company.description%></textarea></span></p>
+                        <input type="hidden" value="<%=company.id%>" name="userId" />
+        	            <input type="hidden" value="info" name="method" />
+                        <p class="stdformbutton">
+                        <%var active = {
+                            true:[0,'Desactivar']
+                            , false:[1,'Activar']
+                        } %>
+                            <button type="submit" class="btn btn-primary">Actualizar Empresa</button> &nbsp; <a class="confirmbutton"  data-url="/company/" href="<%=active[company.active][0]%>"><%=active[company.active][1]%></a>
+                        </p>
+                        
+                    </form>
+
+                </div>
+            </div>        
+    </div><!--span8-->
+</div>

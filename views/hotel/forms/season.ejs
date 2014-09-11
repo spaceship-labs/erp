@@ -1,0 +1,16 @@
+<form class="widgetcontent nopadding form stdform stdform2" action='' method='post' ng-show='showSeasonForm'>
+    <p ng-repeat='field  in _content.season'>
+        <label ng-bind='field.label'></label>
+        <span class="field">
+            <textarea ng-if='field.type == "textarea"' name='{{field.handle}}' class='form-control' ng-model='newSeason[field.handle]'></textarea>
+            <input type='text' ng-if='field.type == "text"' name='{{field.handle}}' class='form-control' ng-model='newSeason[field.handle]' />
+            <input type='checkbox' ng-if='field.type == "checkbox"' name='{{field.handle}}' class='form-control' ng-model='newSeason[field.handle]' />
+            <datepicker ng-if='field.type == "date"' datepicker-options="dateOptions" name='{{field.handle}}'  ng-model='newSeason[field.handle]'></datepicker>
+        </span>
+
+    </p> 
+    <p class="stdformbutton">
+        <button ng-click='addSeason()' class="btn btn-primary">Agregar Temporada</button>
+        <button type="reset" class="btn">Resetear</button>
+	</p>
+</form>
