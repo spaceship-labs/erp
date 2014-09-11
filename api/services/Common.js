@@ -56,7 +56,7 @@ module.exports.updateIcon = function(req,opts,cb){
 	, dirAssets = opts.dirAssets
 	, files = req.file && req.file('icon_input')._files || []
 	, fileName = new Date().getTime()
-	, measuresIcon = ['80x80','50x50','184x73','177x171','196x140','593x331'];
+	, measuresIcon = ['593x331','80x80','50x50','184x73','177x171','196x140'];
 	if(files.length){
 		var ext = files[0].stream.filename.split('.');
 		if(ext.length){
