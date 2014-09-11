@@ -137,6 +137,7 @@ module.exports = {
 	}
 };
 
+
 function formatHotels(hotels){
 //	var hotels_new = [];
 	for(var i=0;i<hotels.length;i++) hotels[i] = formatHotel(hotels[i]);
