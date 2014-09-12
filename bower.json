@@ -46,7 +46,7 @@
     "moment": "~2.7.0",
     "bower-sails.io": "~0.0.1",
     "ng-tags-input": "2.1.1",
-    "ng-file-upload": "~1.6.5",
+    "ng-file-upload": "~1.6.5"
 
   }
 }
