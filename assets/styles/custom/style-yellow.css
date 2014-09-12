@@ -1,0 +1,43 @@
+/*var yellowBG = '#F3BE00';
+var blackBG = '#000000';
+var labelBG = blackBG;*/
+
+/*General styles for yellow*/
+body.loginpage{background:#F3BE00;}
+.widgettitle,.header{background: #000000;}
+.header .logo{padding-top: 13px;}
+.btn-primary,
+.inputwrapper button{background: black;color: #F3BE00;border: 0 none;}
+.btn-primary:hover{background: #535353;color: white;}
+.mainwrapper{background: #F3BE00;}
+.rightpanel{background: white;}
+.widgettitle{color:#F3BE00;position: relative;}
+.widgetcontent{border: 2px solid black;}
+.row-fluid [class*="span"]{position: relative;}
+.pagetitle h1{color: black;}
+.pageicon{color:black;border-color:black;}
+.pull-left{margin-right: 10px;}
+a,a:link,a:focus,a:active,a:hover{color:black;}
+
+/*Header*/
+.headmenu > li > a{text-align: center;}
+.headmenu > li > a .menu-icon{font-size: 48px;}
+.userloggedinfo img{border-radius: 50%;border: 3px solid #F3BE00;padding: 0;}
+.userloggedinfo ul li a{background:#F3BE00;color: black;}
+.userloggedinfo ul li a:hover{color: white;}
+.userloggedinfo .userinfo small{color:#F3BE00;}
+
+/*Boxes*/
+.buttons-box{position: relative;margin-bottom: 10px;}
+.maincontentinner .span6 .buttons-box{position: absolute;right: 0;margin: 0;}
+.maincontentinner .buttons-box .btn{padding: 11px;border: 0 none;border-left: 1px solid white;background: black;color: #F3BE00;}
+.widgettitle .pull-right{position: absolute;right: 0;padding: 11px;top: 0;border-left: 1px solid white;color: #F3BE00;}
+.widgettitle .pull-right .fa{top: 3px;position: relative;}
+.table-striped > tbody > tr > th{background-color: #2E2E2E;border-top: 1px solid #2E2E2E;}
+.table-striped > tbody > tr:nth-child(odd) > td, .table-striped > tbody > tr:nth-child(odd) > th{background: #BFC0C2;}
+
+/*Lateral*/
+.leftmenu .nav-tabs.nav-stacked a{color: black;}
+.leftmenu .nav-tabs.nav-stacked > li > a:hover, .leftmenu .nav-tabs.nav-stacked > li > a:focus{background-color: black;}
+.leftmenu .nav-tabs.nav-stacked .dropdown ul li a{background: #2E2E2E;color: white;}
+.leftmenu .nav-tabs.nav-stacked .dropdown ul li a:hover{background:#BFC0C2;color: black;}
