@@ -1,0 +1,186 @@
+/*American Sign*/
+body{min-width: 290px}
+.header{background: #171617}
+strong{font-weight: bold;}
+.row .row{max-width: 100%;margin: 0}
+/*Global orange @primary*/
+
+/*Login page*/
+body.loginpage{background: @login-background;overflow: hidden;}
+.inputwrapper button{background: @primary;border:1px solid @primary;}
+.inputwrapper button:focus, .inputwrapper button:active, .inputwrapper button:hover{background: #de3a15;border:1px solid #de3a15;}
+/*---*/
+.headmenu > li > a{padding: 25px 20px 11px 20px}
+.headmenu > li > a:hover{background: @primary}
+.headmenu > li > a:hover .menu-icon{color: #fff}
+.headmenu > li > a .menu-icon{color: #8B8A8B;font-size: 48px}
+.userloggedinfo .userinfo h5{font-weight: bold;}
+.userloggedinfo img{border-radius: 50%}
+
+.nav-tabs.nav-stacked > li.active > a, .nav-tabs.nav-stacked > li.active > a:hover, .nav-tabs.nav-stacked > li.active > a:focus{background:@primary!important;}
+.leftpanel{left: 0;position: absolute;top: 140px;z-index: 0}
+.leftmenu .nav-header{color: #fff}
+.leftmenu .nav-tabs.nav-stacked > li.active > a{background-color: @primary;border-bottom-color: @primary;}
+
+.pageicon{border: 3px solid @primary;color: @primary}
+.pagetitle h1{color: @primary;text-transform: uppercase;}
+.page-description{color: #CCCCCC}
+.widgettitle{background: @primary;text-transform: uppercase;}
+.widgettitle span{font-size: 16px}
+.widgettitle a{color: #fff!important;text-decoration: underline;text-transform: none!important;}
+.widgettitle a span{font-size: 16px;vertical-align: initial;}
+.widgetcontent{border: 2px solid @primary;}
+a, a:hover, a:link, a:active, a:focus{color: @primary}
+.btn-primary , .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary{background: @primary;border-color: @primary}
+.alphabets li span{color: @primary}
+
+.main-client{margin-bottom: 6px;padding: 8px 12px}
+.main-client .client-info{margin-left: 95px}
+.main-client .client-info p{line-height: 16px}
+
+.item-list{height: 186px;overflow: auto;padding-top: 5px}
+.item-list .item{line-height: 16px}
+.item-list .item + .item{border-top: 1px solid gray}
+
+.commentlist {height: 330px;overflow: auto}
+.commentlist li{min-height: 68px;padding: 8px 15px}
+.commentlist li img{width: 50px}
+.commentlist li p{margin: 0}
+
+.custom-table table{margin-bottom: 0!important;width: 100%}
+.custom-table table th{position: relative;}
+.custom-table table th:last-child:after{content: "";background: @primary;height: 100%;position: absolute;right: -1px;top: 0;width: 1px}
+.custom-table table th,.custom-table table td{font-size: 12px;padding: 6px;}
+.custom-table table th{background: @login-background!important;border: none!important;color: #fff;font-size: 13px;}
+.custom-table table .table-icon{color: @login-background;font-size: 15px}
+.custom-table table td a{color: #333333;}
+.custom-table table td:nth-child(2){text-decoration: underline;}
+.custom-table table.table-striped > tbody > tr:nth-child(odd) > td{background: #D9D8D8}
+
+.buttons-box{margin-bottom: 14px}
+.buttons-box .button-orange{border: 1px solid @primary;color: @primary;font-size: 15px}
+.buttons-box .button-orange + .button-orange{margin-left: 4px}
+.buttons-box .button-orange:hover{background: @primary;color: #fff}
+.btn-default:hover, .btn-default:focus, .btn-default:active, .btn-default.active, .open .dropdown-toggle.btn-default{background: @primary;border-color: @primary;color: #fff;}
+
+.profilethumb .submit-button{margin-top: 12px}
+
+.form-currencies button{margin: 10px 0}
+
+
+/*Dropdowns*/
+.dropdown-menu>li>a:hover, .dropdown-menu>li>a:focus, .dropdown-menu>.active>a, .dropdown-menu>.active>a:hover, .dropdown-menu>.active>a:focus{background: @primary!important}
+
+.peoplelist .peoplewrapper{height: auto;}
+
+.field input , .input-large, .fileupload .uneditable-input , .chzn-container , .chzn-container-single .chzn-drop, form textarea{max-width: 100%;width: 100%!important}
+
+
+
+
+.head-contracts{background:url('/images/icon-archive.png');}
+.alphabets{
+	li span{color:blue;cursor:pointer}
+}
+.peoplelist { margin: 25px 0;
+	.peoplewrapper { border: 1px solid #ccc; padding: 15px; background: #fff; height: 115px; margin-bottom: 20px; }
+	.thumb { float: left; 
+		img { display: block; width: 80px; }
+	}
+	.peopleinfo { margin-left: 95px; 
+		h4 { font-size: 15px; }
+		h4 span {font-family: sans-serif; font-size: 10px; text-transform: uppercase; margin-left: 5px; }
+		h4 span.on { color: green; }
+		h4 span.off { color: #999; }
+		ul { list-style: none; font-size: 11px; color: #666; }
+		ul li { line-height: 18px; }
+		ul li span { line-height: 18px; }
+	}
+}
+
+.unseen{
+	display:none;
+}
+
+input[type="number"].number{display:block;width:58px;}
+
+.row-fluid [class*="span"]:nth-child(odd) {
+ margin-left:0;
+}
+.editprofileform p {
+ margin: 0; 
+}
+
+.widgettitle .icon{font-size:14px;float:right;cursor:pointer;}
+.table th {
+font-weight: normal;
+text-transform: uppercase;
+font-size: 12px;
+border-top: 0;
+background: #333;
+color: #fff;
+}
+
+
+@media only screen and  (max-width: 1280px){
+	.widgettitle a.pull-right{display: block;float: none!important;padding-top: 2px}
+
+}
+
+@media only screen and (max-width: 650px) {
+	/* Force table to not be like tables anymore */
+	.custom-table table,
+	.custom-table thead,
+	.custom-table tbody,
+	.custom-table th,
+	.custom-table td,
+	.custom-table tr {
+	display: block;
+	}
+	 
+	/* Hide table headers (but not display: none;, for accessibility) */
+	.custom-table thead tr {
+	position: absolute;
+	top: -9999px;
+	left: -9999px;
+	}
+	 
+	.custom-table tr { border: 1px solid #ccc; }
+	 
+	.custom-table td {
+	/* Behave like a "row" */
+	border: none;
+	border-bottom: 1px solid #eee;
+	position: relative;
+	padding-left: 50%!important;
+	white-space: normal;
+	text-align:left;
+	}
+	 
+	.custom-table td:before {
+	/* Now like a table header */
+	position: absolute;
+	/* Top/left values mimic padding */
+	top: 6px;
+	left: 6px;
+	width: 45%;
+	padding-right: 10px;
+	white-space: nowrap;
+	text-align:left;
+	font-weight: bold;
+	}
+	 
+	/*
+	Label the data
+	*/
+	.custom-table td:before { content: attr(data-title); }
+}
+
+@media screen and (max-width: 480px){
+	.headmenu .dropdown-menu{border: 2px solid @primary}
+	.userloggedinfo .userinfo{border: 2px solid @primary}
+}
+
+@media screen and (max-width: 360px){
+	.headmenu > li > a .menu-icon{font-size: 32px}
+}
