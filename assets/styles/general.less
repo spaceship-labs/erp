@@ -9,11 +9,15 @@ strong{font-weight: bold;}
 body.loginpage{background: @login-background;overflow: hidden;}
 .inputwrapper button{background: @login-button;border:1px solid @login-button;}
 .inputwrapper button:focus, .inputwrapper button:active, .inputwrapper button:hover{background: @login-hover;border:1px solid @login-hover;}
+
 /*---*/
-.headmenu > li > a{padding: 25px 20px 11px 20px}
-.headmenu > li > a:hover{background: @primary}
-.headmenu > li > a:hover .menu-icon{color: #fff}
-.headmenu > li > a .menu-icon{color: #8B8A8B;font-size: 48px}
+.header .logo a{background-image:url(@header-logo);display:block;}
+.headmenu > li{}
+.headmenu > li > a{padding: 25px 20px 11px 20px;background-color:@header-button;}
+.headmenu > li > a:hover{background: @header-hover}
+.headmenu > li > a:hover .menu-icon{color:@header-icon-hover}
+.headmenu > li > a .menu-icon{color: @header-icon;font-size: 48px}
+
 .userloggedinfo .userinfo h5{font-weight: bold;}
 .userloggedinfo img{border-radius: 50%}
 
