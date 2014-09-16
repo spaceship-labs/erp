@@ -33,7 +33,7 @@ module.exports.cors = {
 	// Which domains which are allowed CORS access?
 	// This can be a comma-delimited list of hosts (beginning with http:// or https://)
 	// or "*" to allow all domains CORS access.
-	origin: 'http://caribeadmin.spaceshiplabs.com/',
+	origin: 'http://caribeadmin.spaceshiplabs.com/,http://caribemaya.spaceshiplabs.com',
 
 	// Allow cookies to be shared for CORS requests?
 	credentials: true,
@@ -44,6 +44,6 @@ module.exports.cors = {
 
 	// Which headers should be allowed for CORS requests?  This is only used
 	// in response to preflight requests.
-	headers: 'content-type'
+	headers: 'content-type,Access-Control-Allow-Origin'
 
 };
