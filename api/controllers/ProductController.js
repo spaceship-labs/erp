@@ -17,7 +17,7 @@ module.exports = {
 				Common.view(res.view,{
 					page:{
 						description:'AQUI PODRAS VISUALIZAR Y ADMINISRAR TODOS TUS PRODUCTOS'
-						,icon:'fa fa-cubes'
+						,icon:'fa fa-cube'
 						,name:'PRODUCTOS'
 					}
 					, products:products
@@ -58,17 +58,24 @@ module.exports = {
 		var id = req.param('id');
         var company = req.session.select_company || req.user.select_company;
 		if(id){
-			Product.findOne({id : id,company : company }).exec(function(err,product){
-				Product_type.find().exec(function(err,product_types){
+			Product.findOne({id : id,company : company }).populate('fields').populate('prices').populate('price').exec(function(err,product){
+                if (err) throw(err);
+				Product_type.find().populate('fields').populate('machines').exec(function(err,product_types){
+                    var product_type = {};
+                    _.each(product_types,function(item){
+                       if (item.id == product.product_type) {
+                           product_type = item;
+                       }
+                    });
 					Common.view(res.view,{
 						product:product,
 						product_types:product_types,
+                        product_type : product_type,
 						page:{
 							description: product.description || '',
 							icon : 'fa fa-cube',
 							name : product.name
-						},
-						types: Custom_fields.attributes.type.enum
+						}
 					},req);			
 				});
 			});
@@ -76,25 +83,6 @@ module.exports = {
 		}else
 			res.notFound();
 
-	},
-
-	createField: function(req,res){
-		var form = req.params.all();
-		form = formValidate(form,['name','type','handle','values','product']);
-		if(form.values){
-			form.values = form.values.split(',');
-		}
-		var pid = form.product;
-		delete form.product;
-		Product.findOne(pid).exec(function(e,p){
-			if(e) throw(e);
-			p.fields[form.handle] = form;
-			p.save(function(e,p){
-				/*if(e) return res.json({text:'Ocurrio un error.'});
-				res.json({text:'Campo agregado.'});	*/
-				res.redirect('/product/edit/'+pid);
-			})
-		});
 	},
 
 	update: function(req,res){
@@ -112,18 +100,6 @@ module.exports = {
 			res.json('error');
 		}
 	},
-    updateInventory : function(req,res) {
-        var form = req.params.all();
-        Product.findOne(form.prod_id).populate('fields')
-    },
-	/*,indexJson: function(req,res){
-		var select_company = req.session.select_company || req.user.select_company;
-		Custom_fields.find({company:select_company}).exec(function(err,fields){
-			res.json(fields);	
-		});
-	}
-
-	*/
 	productsJson: function(req,res){
 		var find = {}
 		, form = req.params.all();
@@ -173,6 +149,7 @@ module.exports = {
 			if(err) return res.json(false);
 			res.json(product.gallery || []);
 		});*/
+        res.json([]);
 	}
 	,addGallery: function(req,res){
 		var form = req.params.all()
@@ -228,13 +205,6 @@ module.exports = {
 		
 		}
 	}
-	, removeField: function(req,res){
-		var fieldID = req.param('fieldID');
-		Custom_fields.destroy({id:fieldID}).exec(function(err){
-			if(err) return res.json({text:'Ocurrio un error.'});
-			res.json({text:'Campo eliminado.'});
-		});
-	}
 	, list: function(req,res){
 		var select_company = req.session.select_company || req.user.select_company;
 		Product.find({company:select_company,user:req.user.id}).populate("product_type").exec(function(err,products){
@@ -242,13 +212,76 @@ module.exports = {
 			Common.view(res.view,{
 				page:{
 					description:'AQUI PODRAS VISUALIZAR Y ADMINISRAR TODOS TUS PRODUCTOS'
-					,icon:'fa fa-cubes'
+					,icon:'fa fa-cube'
 					,name:'PRODUCTOS'
 				}
 				, products:products
 			});
 		});
-	}
+	},
+
+    updateFields : function(req,res) {
+        var form = req.param('fields');
+        var product = req.param('product');
+
+        var savedFields = [];
+        async.each(form,function(field,callback){
+            if (field.id) {
+                Custom_fields_value.update({id : field.id},{ value : field.value }).exec(function(err,fieldAux){
+                    savedFields.push(field.id);
+                    callback();
+                });
+            } else {
+                Custom_fields_value.create({ field : field.field,product : product,value : field.value }).exec(function(err,fieldAux){
+                    savedFields.push(fieldAux.id);
+                    callback();
+                });
+            }
+        },function(err) {
+            if (err) return res.json({text: 'Ocurrio un error.'});
+            Product.update({id: product},{fields : savedFields}).exec(function (err, product) {
+                if (err) return res.json({text: 'Ocurrio un error.'});
+                res.json({text: 'Producto actualizado.'});
+            });
+        });
+    },
+
+    updatePrices : function(req,res) {
+        var price = req.param('price');
+        var product = req.param('product');
+
+        if (price.id) {
+            Product_price.update({id : price.id , product : product},{ cost : price.cost,margin : price.margin }).exec(function(err,pprice){
+                if (err) return res.json({text: 'Ocurrio un error.'});
+                res.json({text: 'Precio actualizado.'});
+            });
+        } else {
+            price.product = product;
+            Product_price.create(price).exec(function(err,pprice){
+                Product.update({id : product},{price : pprice.id}).exec(function(err,pproduct){
+                    if (err) return res.json({text: 'Ocurrio un error.'});
+                    res.json({text: 'Precio actualizado.'});
+                });
+            });
+        }
+    },
+
+    updateInventory : function(req,res){
+        var inventory = req.param('inventory');
+        var product = req.param('product');
+
+        Product.findOne({id : product}).exec(function(err,pproduct) {
+            if (err) return res.json({text: 'Ocurrio un error.'});
+            if (!pproduct.quantity) {
+               pproduct.quantity = 0;
+            }
+            pproduct.quantity = parseInt(pproduct.quantity) + parseInt(inventory);
+            Product.update({id : product},{quantity : 0}).exec(function(err,aux_product){
+               if (err) return res.json({text: 'Ocurrio un error.'});
+               res.json({text: 'Inventario actualizado.'});
+            });
+        });
+    }
 };
 
 function formValidate(form,validate){

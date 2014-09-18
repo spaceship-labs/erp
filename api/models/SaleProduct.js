@@ -15,10 +15,13 @@ module.exports = {
             model: 'Product'
         },
 
+//        machine : {
+//            model : 'Machine'
+//        },
+
         quantity: {
-            type : 'int',
-            min : 1,
-            integer : true
+            type : 'integer',
+            min : 1
         },
 
         price : {
@@ -26,13 +29,17 @@ module.exports = {
             required : true
         },
 
+        priceTotal : {
+            type : 'float'
+        },
+
         saleQuote : {
             model : 'SaleQuote'
+        },
+
+        name:{
+            type:'string'
         }
-	
-	,name:{
-		type:'string'
-	}
 
     }
 

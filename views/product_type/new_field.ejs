@@ -1,4 +1,8 @@
-<div  ng-controller="fieldCTL"><div class="widgetbox">
+<script type="text/javascript">
+    window.types = <%- JSON.stringify(types) %>;
+</script>
+<div  ng-controller="fieldCTL">
+    <div class="widgetbox">
 		<h4 class="widgettitle">Propiedades</h4>
 		<div class="widgetcontent nopadding">                            
 			<table class="table responsive">
@@ -17,50 +21,43 @@
 						<td ng-bind='field.handle'></td>
 						<td ng-bind='field.type'></td>
 						<td ng-bind='field.values'></td>
-						<td><a ng-href='/product/removeField' data-product="{{product.id}}" ng-click="removeField($event,field.name)" class='fa fa-trash-o'></a></td>
+						<td><a data-product="{{product.id}}" ng-click="removeField($index)" class='fa fa-trash-o'></a></td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
+    </div>
+    <div class="widgetbox">
+        <h4 class="widgettitle">Nueva propiedad</h4>
+        <div class="widgetcontent nopadding">
+            <form accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine" ng-submit="processForm()">
+                <input type="hidden" ng-model="new_field.product_type" value="<%=product_type.id%>" />
+                <p>
+                    <label for="name">Nombre*</label>
+                    <span class="field"><input type="text" id="field_name" name="field_name" ng-model="new_field.name" class="input-large"></span>
+                </p>
+                <p>
+                    <label for="handle">Handle*</label>
+                    <span class="field"><input type="text" id="field_handle" name="field_handle"  ng-model="new_field.handle" class="input-large"></span>
+                </p>
+                <p>
+                    <label for="fields">Tipo*</label>
+                    <span class="field">
+                        <select ng-init="new_field.type = new_field.type || field_types[0]" ng-options="t for t in field_types" ng-model="new_field.type" chosen>
+                        </select>
+                    </span>
+                </p>
+                <p ng-if="new_field.type=='select'">
+                    <label for="name">valores</label>
+                    <span class="field">
+                        <input type="text" ng-model="new_field.values" class="input-large">
+                    </span>
+                </p>
+                <p class="stdformbutton">
+                    <button class="btn btn-primary">Guardar</button>
+                    <button type="reset" class="btn">Resetear</button>
+                </p>
+            </form>
+        </div>
+    </div>
 </div>
-
-
-<div class="widgetbox">
-	<h4 class="widgettitle">Nueva propiedad</h4>
-	<div class="widgetcontent nopadding">
-		<form action="/product_type/createField" method="post" accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine">
-			<input type="hidden" name="product" value="<%=product.id%>" />
-			<%if(req.options.controller=='product'){%>
-				<input type="hidden" name="productSingle" value="1" />
-			<%}%>
-			<p>
-				<label for="name">Nombre*</label>
-				<span class="field"><input type="text" name="name" class="input-large"></span>
-			</p>
-			<p>
-				<label for="handle">Handle*</label>
-				<span class="field"><input type="text" name="handle" class="input-large"></span>
-			</p>
-			<p>
-				<label for="fields">Tipo*</label>
-				<span class="field">
-		            <select name="type" ng-model="typeSelect">
-						<%for(var i=0;i<types.length;i++){ %>
-							<option value="<%=types[i]%>"><%=types[i]%></option>
-						<%}%>
-					</select>
-				</span>
-			</p>
-			<p ng-if=typeSelect=='select'>
-				<label for="name">valores</label>
-				<span class="field">
-					<input type="text" name="values" class="input-large">
-				</span>
-			</p>
-			<p class="stdformbutton">
-				<button class="btn btn-primary">Guardar</button>
-				<button type="reset" class="btn">Resetear</button>
-			</p>
-		</form>
-	</div>
-</div></div>	

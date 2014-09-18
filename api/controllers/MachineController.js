@@ -79,16 +79,24 @@ module.exports = {
         var company = req.session.select_company || req.user.select_company;
         if (id){
             Machine.findOne({id:id,company : company})
-                .populate('modes')
+                .populateAll()
                 .exec(function(err,machine){
-                    Common.view(res.view,{
-                        page:{
-                            icon:'fa fa-gear'
-                            ,name:'Maquinaria'
-                        },
-                        machine : machine || {},
-                        moment : moment
-                    },req);
+                    if (err) throw err;
+                    var machine_product_types = machine.product_types.map(function(type){
+                        return type.id;
+                    });
+                    machine.product_types = machine_product_types;
+                    Product_type.find().exec(function(err,product_types) {
+                        Common.view(res.view,{
+                            page:{
+                                icon:'fa fa-gear'
+                                ,name:'Maquinaria'
+                            },
+                            machine : machine || {},
+                            product_types : product_types,
+                            moment : moment
+                        },req);
+                    });
                 });
         } else
             res.notFound();
@@ -97,10 +105,10 @@ module.exports = {
     update : function (req,res){
         var form = req.param('machine');
         if(form){
-            Machine.update({id:form.id},{ name : form.name , description : form.description , internalReference : form.internalReference  }).exec(function(err,machine){
-                if(err) return res.json({text:'Ocurrio un error.'});
-                res.json({text:'Maquinaria actualizada.'});
-            });
+            Machine.update({id:form.id},{ name : form.name , description : form.description , internalReference : form.internalReference , product_types : form.product_types, ink_cost : form.ink_cost,ink_utility : form.ink_utility }).exec(function(err,machine){
+                    if(err) return res.json({text:'Ocurrio un error.'});
+                    res.json({text:'Maquinaria actualizada.'});
+                });
         }
     },
 

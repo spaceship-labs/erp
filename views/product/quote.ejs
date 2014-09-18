@@ -1,22 +1,30 @@
 <h4 class="widgettitle">Cotizador</h4>
 <div class="widgetcontent nopadding">
-    <form method="post" accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine" >
+    <form method="post" accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine" ng-submit="processPricing()">
         <input type='hidden' ng-value='product.id' name='pid' />
-        <% if (product.product_type.sales_type == 'sale') {%>
+        <% if (product_type.sales_type == 'sale') {%>
+
         <p>
-            <label for="price">Precio Unitario</label>
-            <span class="field"><textarea name="price" id="price" ng-model='product.price' class="form-control" ></textarea></span>
+            <label>Costo</label>
+            <span class="field"><input type="text" ng-model='product.price.cost' class="form-control" /></span>
         </p>
-        <% } else if (product.product_type.sales_type == 'rent') { %>
+
+        <p>
+            <label>Margen de ganancia %</label>
+            <span class="field"><input type="text" ng-model='product.price.margin' class="form-control" /></span>
+        </p>
+
+        <p>
+            <label>Precio publico</label>
+            <span class="field" class="form-control">{{calculatePrice()}}</span>
+        </p>
+
+        <% } else if (product_type.sales_type == 'rent') { %>
         <p>
             <label for="price_per_time">Precio por {{product.price_time}}</label>
             <span class="field"><textarea name="price_per_hour" id="price" ng-model='product.price_per_time' class="form-control" ></textarea></span>
         </p>
-        <p>
-            <label for="price_per_time">Precio por {{product.price_time}}</label>
-            <span class="field"><textarea name="price_per_hour" id="price" ng-model='product.price_per_time' class="form-control" ></textarea></span>
-        </p>
-        <% } else if (product.product_type.sales_type == 'service') { %>
+        <% } else if (product_type.sales_type == 'service') { %>
         <p>
             not implemented
         </p>

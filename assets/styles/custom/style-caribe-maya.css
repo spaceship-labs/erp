@@ -11,7 +11,7 @@ body.loginpage{overflow: hidden;}
 .headmenu > li > a .menu-icon{font-size: 48px}
 .userloggedinfo .userinfo h5{font-weight: bold;}
 .userloggedinfo img{border-radius: 50%}
-.header .logo{padding-top:16px;}
+
 
 .leftpanel{left: 0;position: absolute;top: 140px;z-index: 0}
 .leftmenu .nav-header{color: #fff}

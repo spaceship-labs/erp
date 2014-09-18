@@ -1,0 +1,64 @@
+<div class="modal fade" id='installationModal' ng-controller="installationAddCTL">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form class="stdform stdform2 ng-pristine" ng-submit="processSelectedProduct('<%- quote.id %>')">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Productos</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="widgetbox">
+                        <div class="widgetcontent nopadding">
+                            <p>
+                                <label>Buscar :</label>
+                                <span class="field">
+                                    <select class='form-control large' data-placeholder="Selecciona ..." ng-model="product" ng-options="p.name group by p.product_type.name for p in products" chosen="product">
+                                    </select>
+                                    <a ng-if="product.id" href="/product/edit/{{product.id}}">Editar</a>
+                                </span>
+                            </p>
+                            <p ng-if="product.id">
+                                <label>Descripcion: </label>
+                                <span class="field">{{product.description}}</span>
+                            </p>
+                            <p ng-if="product.id">
+                                <label>Categoria: </label>
+                                <span class="field">{{product.product_type.name}}</span>
+                            </p>
+                            <p ng-if="product.id">
+                                <label>Referencia Interna: </label>
+                                <span class="field">{{product.internalReference}}</span>
+                            </p>
+                            <p ng-if="product.id && checkMachines()">
+                                <label>test: </label>
+                                <span class="field">
+                                    <select class='form-control large' data-placeholder="Selecciona ..." ng-model="machine" ng-options="m.id as m.name for m in product.machines" chosen>
+                                    </select>
+                                </span>
+                            </p>
+                            <p ng-if="product.id">
+                                <label>Price: </label>
+                                <span class="field">{{calculateProductPrice()}}</span>
+                            </p>
+                            <p ng-if="product.id">
+                                <label>Cantidad: </label>
+                                <span class="field"><input type="number" data-title="Cantidad" class="form-control large number input-spinner" ng-model="product.quantity" min="1"/></span>
+                            </p>
+                            <p ng-if="product.id">
+                                <label>Total: </label>
+                                <span class="field">{{calculateProductPriceTotal()}}</span>
+                            </p>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <input type="submit" class="btn btn-primary" value='Agregar'>
+
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

@@ -145,61 +145,112 @@ app.controller('noticeCTL',function($scope){
 });
 
 app.controller('fieldCTL',function($scope,$http){
-	$scope.product = product;
-	$scope.removeField = function(e,name){
-		e.preventDefault();
-		var data = {name:name,product_type:e.currentTarget.dataset.product};
-		if(product.product_type){
-			data.productSingle = 1;
-		}
-		if(name){
-			$http.post('/product_type/removeField',data).then(function(res){
-				$scope.product.fields = res.data.fields;
-				console.log(res.data.fields);
-			});			
-		}
-		return false;
+	$scope.product = product;//TODO reemplazar por product_type , tambien hay que actualizar la view
+    $scope.new_field = { product_type : $scope.product.id };
+    $scope.field_types = types;
+
+	$scope.removeField = function(index){
+        var data = $scope.product.fields[index];
+        $http.post('/product_type/removeField',data,{}).success(function(res){
+            $scope.product.fields.splice(index,1);
+            if (data) {
+                jQuery('.alert p').text(data.text).parent().removeClass('unseen');
+            }
+        });
 	};
+
+    $scope.processForm = function() {
+        $http.post('/product_type/createField',$scope.new_field,{}).success(function(data) {
+            if (data) {
+                jQuery('.alert p').text(data.text).parent().removeClass('unseen');
+                $scope.product.fields.push(data.field);
+                $scope.new_field.handle = "";
+                $scope.new_field.name = "";
+            } else {
+                jQuery('.alert p').text('error').parent().removeClass('unseen');
+            }
+        });
+    }
 });
 
-app.controller('productCTL',function($scope){
+app.controller('productCTL',function($scope,$http){
 
     var initialize = function() {
         $scope.product = typeof window.product != 'undefined' ? window.product : {};
+        $scope.product_type = typeof window.product_type != 'undefined' ? window.product_type : {};
         var tmp = {};
         for(var i=0;i<window.product_types.length;i++){
             tmp[window.product_types[i].id] = window.product_types[i].name;
-            if (window.product_types[i].id == $scope.product.product_type) {
-                $scope.product_type = window.product_types[i];
-                console.log($scope.product_type);
-            }
         }
         $scope.product_types = tmp;
 
+        if ($scope.product_type.fields) {
+            $scope.aux_fields = [];
+            for (var i = 0; i < $scope.product_type.fields.length; i++) {
+                var foundOne = false;
+                for (var j = 0; j < $scope.product.fields.length; j++) {
+                    if ($scope.product.fields[j].field == $scope.product_type.fields[i].id) {
+                        var field = $scope.product.fields[j];
+                        field.name = $scope.product_type.fields[i].name;
+                        field.type = $scope.product_type.fields[i].type;
+                        field.values = $scope.product_type.fields[i].values;
+                        $scope.aux_fields.push(field);
+                        foundOne = true;
+                    }
+                }
+                if (!foundOne) {
+                    var field = { id : 0,field: $scope.product_type.fields[i].id, product: $scope.product.id, value: "", type: $scope.product_type.fields[i].type, name: $scope.product_type.fields[i].name, values: $scope.product_type.fields[i].values };
+                    $scope.aux_fields.push(field);
+                }
+            }
+        }
 
-//
-//        if ($scope.product.length > 0) {
-//            console.log("producto con algo");
-//            $scope.product.product_type_obj = $scope.product.product_type;
-//            $scope.product.product_type = $scope.product.product_type_obj.id;
-//        } else {
-//            $scope.product.product_type_obj = {};
-//            $scope.product.product_type_obj.fields = [];
-//            $scope.product.product_type = {};
-//        }
+        if (!$scope.product.price) {
+            $scope.product.price = { cost : 0,margin : 0,id : 0 };
+        }
 
+        if (!$scope.product.quantity) {
+            $scope.product.quantity = 0;
+        }
+
+        $scope.product.addInventory = 0;
     };
 
-    $scope.addInventory = function() {
-
+    $scope.processInventory = function() {
+        $http.post('/product/updateInventory',{inventory : $scope.product.addInventory,product : $scope.product.id },{}).success(function(data){
+            if (data) {
+                jQuery('.alert p').text(data.text).parent().removeClass('unseen');
+                $scope.product.quantity = parseInt($scope.product.quantity) + parseInt($scope.product.addInventory);
+                $scope.product.addInventory = 0;
+            }
+        });
     };
 
-    $scope.addPricing = function() {
-
+    $scope.processPricing = function() {
+        $http.post('/product/updatePrices',{price : $scope.product.price,product : $scope.product.id },{}).success(function(data){
+            if (data) {
+                jQuery('.alert p').text(data.text).parent().removeClass('unseen');
+            }
+        });
     };
 
-    $scope.updateSpecialFields = function() {
+    $scope.processProductTypeFields = function() {
+        $http.post('/product/updateFields',{fields : $scope.aux_fields,product : $scope.product.id },{}).success(function(data){
+            if (data) {
+                jQuery('.alert p').text(data.text).parent().removeClass('unseen');
+            }
+        });
+    };
 
+    $scope.calculatePrice = function(){
+        if ($scope.product.price.cost) {
+            return $scope.product.price.cost * (1 + ($scope.product.price.margin/100));
+        }
+        return 0;
+    };
+
+    $scope.calculateTotalInventory = function(){
+        return parseInt($scope.product.quantity) + parseInt($scope.product.addInventory);
     };
 
     initialize();
@@ -210,14 +261,6 @@ app.controller('productsCTL',function($scope){
 });
 
 app.controller('galleryCTL',function($scope){
-	/*jQuery('form.gallery').ajaxForm(function(data){
-		if(data && data.img){
-			updateContent();
-		}else{
-			jQuery('.alert p').text(data.text).parent().removeClass('unseen');
-		}
-	});*/
-	
 	var updateContent = function(){
 		jQuery.get('/product/productGalleryJson',{id:jQuery('input[name="productID"]').val()},function(data){
 			if(data){
@@ -229,14 +272,20 @@ app.controller('galleryCTL',function($scope){
 	updateContent();
 });
 
-app.controller('saleCTL',function(){
-    jQuery('form').ajaxForm(function(data){
+app.controller('saleCTL',function($scope,$http){
+    function showResponse(data) {
         if(data){
-            jQuery('.alert p').text(data.text).parent().removeClass('unseen');
-            if(data.url)
-                window.location.href = data.url;
+            location.reload();
         }
-    });
+    };
+
+    $scope.deleteProduct = function(product,quote){
+        var data = {
+            product : product,
+            quote : quote
+        };
+        $http.post('/salesQuote/removeProduct',data,{}).success(showResponse);
+    }
 });
 
 app.controller('saleAddCTL',function($scope,$http) {
@@ -328,7 +377,6 @@ app.controller('machineCTL',function($scope,$http){
     $scope.machine = machine;
     $scope.machines = machines;
     $scope.machine_modes = [];
-    $scope.selectedIndex = null;
 
     function showResponse(data){
         console.log(data);
@@ -364,7 +412,10 @@ app.controller('machineCTL',function($scope,$http){
 app.controller('editMachineCTL',function($scope,$http){
     $scope.machine = machine;
     $scope.machine_modes = machine_modes;
-    $scope.selectedIndex = null;
+    $scope.product_types = product_types;
+    $scope.machine.product_types = machine_product_types;//TODO WTF con esto , cuando se serializa machine no trae el arreglo y tengo que serializarlo aparte
+
+    console.log(machine);
 
     function showResponse(data){
         console.log(data);
@@ -398,35 +449,53 @@ app.controller('editMachineCTL',function($scope,$http){
 });
 
 app.controller('productAddCTL',function($scope,$http){
-	for(var i=0;i<products.length;i++){
-		console.log(products[i].id);
-		console.log(productsId[products[i].id]);
-		var count;
-		if((count = productsId[products[i].id])){
-			products[i].select = true;
-		}else{
-			products[i].select = false;
-		}
-		products[i].count = count?count:0;
-	}
 	$scope.products = window.products;
+    $scope.product_types = window.product_types;
 
-	$scope.selected = function(quoteID){
-		$http.post('/salesQuote/addProduct',{
-			quote:quoteID
-			,products:$scope.products
-		}).then(function(r){
+    $scope.product = {};
+    $scope.machine = {};
+
+	$scope.processSelectedProduct = function(quoteID){
+        var product = {
+            price : $scope.calculateProductPrice() ,
+            priceTotal :  $scope.calculateProductPriceTotal(),
+            product : $scope.product.id,
+            quantity : $scope.product.quantity,
+            saleQuote : quoteID,
+            name : $scope.product.name
+        };
+
+        if ($scope.machine) {
+            product.machine = $scope.machine;
+        }
+
+		$http.post('/salesQuote/addProduct',{product : product}).then(function(r){
 			if(r)
 				location.reload();
 		});
 	};
 
-	$scope.selectCount = function(product){
-		if(product.select)
-			product.count = 1;
-		else 
-			product.count = 0;
-	};
+    $scope.checkMachines = function(){
+        for (var i=0;i<$scope.product_types.length;i++) {
+            if ($scope.product_types[i].id == $scope.product.product_type.id) {
+                $scope.product.machines = $scope.product_types[i].machines;
+                return true;
+            }
+        }
+        return false;
+    };
+
+    $scope.calculateProductPrice = function(){
+        if ($scope.product.machines && $scope.machine.id) {
+            return ($scope.product.price.cost * (1 + ($scope.product.price.margin/100))) + ($scope.machine.ink_cost * (1 + ($scope.machine.ink_utility/100)));
+        } else {
+            return $scope.product.price.cost * (1 + ($scope.product.price.margin/100));
+        }
+    };
+
+    $scope.calculateProductPriceTotal = function(){
+        return $scope.calculateProductPrice() * $scope.product.quantity;
+    };
 });
 
 app.controller('productTypeCTL',function($scope,$http){
@@ -449,13 +518,10 @@ app.controller('productTypeCTL',function($scope,$http){
         console.log(data);
         if(data){
             jQuery('.alert p').text(data.text).parent().removeClass('unseen');
-            //if(data.url)
-            //    window.location.href = data.url;
+            if(data.url)
+                window.location.href = data.url;
             $scope.product_types.push(data);
-            $scope.product_type = {};
-            $scope.product_type.sales_type = 0;
             $scope.product_type.inventory_use = false;
-            $scope.product_type.inventory_type = 0;
             console.log($scope.product_type);
         }
     };
@@ -469,6 +535,7 @@ app.controller('productTypeCTL',function($scope,$http){
 app.controller('editProductTypeCTL',function($scope,$http){
     $scope.product_types = window.product_types;
     $scope.product_type =  window.product;
+    console.log($scope.product_type);
 
     var tmp = {};
     for(var i=0;i<window.sales_type.length;i++){
@@ -494,6 +561,11 @@ app.controller('editProductTypeCTL',function($scope,$http){
     $scope.processForm = function(){
         $http.post('/product_type/update',$scope.product_type, {}).success(showResponse);
     };
+
+});
+
+app.controller('installationAddCTL',function($scope){
+    $scope.products = window.products;
 
 });
 

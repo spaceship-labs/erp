@@ -1,11 +1,18 @@
 <h4 class="widgettitle">Datos adicionales</h4>
 <div class="widgetcontent nopadding">
-    <form method="post" accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine" >
+    <form method="post" accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine" ng-submit="processProductTypeFields()">
         <input type='hidden' ng-value='product.id' name='pid' />
-        <p ng-repeat="field in product_type.fields">
+        <p ng-repeat="field in aux_fields">
             <label for="">{{field.name}}</label>
-            <span class="field">
-                <input type="text" class="form-control">
+            <span class="field" ng-if="['text','textarea','date','number'].indexOf(field.type) >= 0" >
+                <input type="text" class="form-control" ng-model="field.value"/>
+            </span>
+            <span class="field" ng-if="'select'== field.type" >
+                <select ng-options="t for t in field.values" ng-model="field.value" chosen>
+                </select>
+            </span>
+            <span class="field" ng-if="'reference'== field.type" >
+                <input type="text" class="form-control" ng-model="field.value"/>
             </span>
         </p>
         <p class="stdformbutton">

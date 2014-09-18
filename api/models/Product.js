@@ -12,10 +12,22 @@ module.exports = {
 	    model:'product_type'
 	},
     gallery:'array',
-    fields : 'array',
-    marca:'string',
-    subtype : 'string',
-    internalReference : 'string'
+    fields : {
+        collection : 'Custom_fields_value',
+        via : 'product'
+    },
+    prices : {
+        collection : 'Product_price',
+        via : 'product'
+    },
+    price : {
+        model : 'Product_price'
+    },
+    internalReference : 'string',
+    name : 'string',
+    description : 'string',
+    barcode : 'string',
+    quantity : 'integer'//TODO separar
   }
 
 	,afterCreate: function(val,cb){
@@ -34,6 +46,9 @@ module.exports = {
 		Notifications.before(val);
 		cb();
 	}
+    ,calculatedPrice : function(val,callback){
+        return price.cost * (1 + price.margin/100);
+    }
 
 };
 

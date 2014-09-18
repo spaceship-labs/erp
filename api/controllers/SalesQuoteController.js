@@ -8,23 +8,27 @@ var moment = require('moment');
 module.exports = {
     edit: function(req,res){
     	var id = req.param('id');
+        var company = req.session.select_company || req.user.select_company;
     	SaleQuote.findOne({id:id}).populateAll().exec(function(err,quote){
-		Product.find().exec(function(err,products){
-			if(err) throw err;
-			var productsId = {}
-			if(quote.products){
-				for(var i=0;i<quote.products.length;i++){
-					productsId[quote.products[i].product] = quote.products[i].quantity;
-				}
-			}
-	    		Common.view(res.view,{
-				moment:moment
-				,quote:quote
-				,products:products
-				,productsId:productsId
-			},req);	
-		});
-	});
+            if(err) throw err;
+            Product.find({company : company}).populateAll().exec(function(err,products){
+                if(err) throw err;
+                if(products){
+                    for(var i=0;i<products.length;i++){
+                        products[i].quantity = 1;
+                    }
+                }
+                Product_type.find().populateAll().exec(function(err,product_types){
+                    if(err) throw err;
+                    Common.view(res.view,{
+                        moment:moment
+                        ,quote:quote
+                        ,products:products
+                        ,product_types:product_types
+                    },req);
+                });
+            });
+	    });
     }
 
     , index: function(req,res){
@@ -37,13 +41,15 @@ module.exports = {
     }
     , add: function(req,res){
         var form = req.params.all();
+        var company = req.session.select_company || req.user.select_company;
         SaleQuote.create({
             user:req.user.id
             ,client:form.clientID
+            ,company : company
         }).exec(function(err,quote){
             if(err) return res.json({
                 msg:'ocurrio un error'
-            })
+            });
             res.json({
                 url:'/SalesQuote/edit/'+quote.id
             });
@@ -52,34 +58,17 @@ module.exports = {
     
     , addProduct: function(req,res){
         var form = req.params.all();
-        SaleQuote.findOne({id:form.quote}).populate('products').exec(function(err,saleQuote){
+        SaleProduct.create(form.product).exec(function(err,saleProduct){
             if(err) return res.json(false);
-            if(form.products && form.products.push){
-                var productsInQuote = saleQuote.products && saleQuote.products.map(function(quote){return quote.product}) || []
-                , productsInQuoteID = saleQuote.products && saleQuote.products.map(function(quote){return quote.id}) || []
-                , addProducts = [];
-                for(var i=0;i<form.products.length;i++){
-                   if(form.products[i].select){
-                        var temp;
-                       if((temp = productsInQuote.indexOf(form.products[i].id))!=-1)
-                            saleQuote.products.remove(productsInQuoteID[temp]);
+            res.json(true);
+        });
+    }
 
-                       addProducts.push({
-                            product:form.products[i].id
-                            ,quantity:form.products[i].count
-                            ,price:form.products[i].price
-                            ,name:form.products[i].name
-                       });
-                   }
-                }
-                addProducts.concat(saleQuote.products).forEach(function(d,i){
-                    saleQuote.products.add(d);
-                });
-                saleQuote.save(function(err){
-                    res.json(true);
-                });
-                
-            }
+    ,removeProduct : function(req,res) {
+        var form = req.params.all();
+        SaleProduct.destroy({id : form.product}).exec(function(err){
+            if (err) return res.json(false);
+            res.json(true);
         });
     }
 };

@@ -1,0 +1,86 @@
+<script type='text/javascript'>
+    window.product_types = <%- JSON.stringify(product_types) %>;
+</script>
+<div ng-controller='editMachineCTL'>
+	<div class="span5">
+		<div class="alert alert-block unseen">
+			<button data-dismiss="alert" class="close" type="button">×</button>
+			<h4>Mensaje</h4>
+				<p style="margin: 8px 0"></p>
+		</div>
+	    
+	     <div class="widgetbox">
+	     	<h4 class="widgettitle">Informacion Basica</h4>
+	     	<div class="widgetcontent nopadding">                            
+	     		<form accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine" ng-submit="processMachineForm()">
+					<input type='hidden' ng-value='product.id' name='pid' />
+					<%- partial('edit-basic') %>
+                    <p>
+                        <label for="ctinta">Costo tinta por m2 :</label>
+                        <span class="field">
+                            <input type="text" id="ctinta" name="ctinta" class="form-control" ng-model='machine.ink_cost'>
+                        </span>
+                    </p>
+                    <p>
+                        <label for="utinta">Utilidad tinta %:</label>
+                        <span class="field">
+                            <input type="text" id="utinta" name="utinta" class="form-control" ng-model='machine.ink_utility'>
+                        </span>
+                    </p>
+                    <p>
+                        <label for="utinta">m2 tinta con utilidad:</label>
+                        <span class="field">
+                            {{machine.ink_cost * (1 + (machine.ink_utility/100))}}
+                        </span>
+                    </p>
+                    <p>
+                        <label for="product_types">Categorias de producto que utiliza:</label>
+                        <span class="field">
+                            <select type="text" id="product_types" name="product_types" class="form-control" ng-options="p.id as p.name for p in product_types" ng-model='machine.product_types' chosen multiple></select>
+                        </span>
+                    </p>
+	     			<p class="stdformbutton">
+		                <button class="btn btn-primary">Guardar</button>
+	     			</p>
+	     		</form>
+	     	</div>
+	     </div>
+	</div>
+	<div class="span5" >
+		<div class="widgetbox">
+			<h4 class="widgettitle">Modos</h4>
+			<div class="widgetcontent nopadding">
+                <table class="table responsive">
+                    <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Vel : m2/hr</th>
+                        <th>Costo hora</th>
+                        <th>Eliminar</th>
+                    </tr>
+
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="machine_mode in machine_modes">
+                        <td data-title="Nombre"><input type="text" ng-model="machine_mode.name" value="{{machine_mode.name}}"/></td>
+                        <td data-title="Vel : m2/hr"><input type="text" class="span1" ng-model="machine_mode.velocity" value="{{machine_mode.velocity}}" /></td>
+                        <td data-title="Costo hora"><input type="text" class="span1" ng-model="machine_mode.costPerHour" value="{{machine_mode.costPerHour}}" /></td>
+                        <td data-title="Eliminar"><a><span ng-click="deleteMachineMode($index)" class="table-icon fa fa-eraser" style="cursor : pointer;" tooltip="borrar"></span></a></td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            <a href="#" class="btn btn-default button-orange" ng-click="addMachineMode()"><span class="table-icon fa fa-plus"></span> Modo de impresion</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <form accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine"  ng-submit="processMachineModeForm()" >
+                    <p class="stdformbutton">
+                        <button class="btn btn-primary">Guardar</button>
+                    </p>
+                </form>
+			</div>
+		</div>
+	</div>
+</div>

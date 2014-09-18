@@ -32,16 +32,19 @@ module.exports.apps = {
             },
 			'/product/' : {
 				label : 'Productos',
-				icon : 'fa-cubes'
+				icon : 'fa-cube'
 			},
 			'/product_type/' : {
 				label : 'Categorias',
-				icon : 'fa-archive'
+				icon : 'fa-cubes'
 			},
             '/machine/':{
                 label:'Maquinas',
                 icon:'fa-gears'
-
+            },
+            '/installation/':{
+                label:'Instalaciones',
+                icon:'fa-wrench'
             }
 		},
 	},
