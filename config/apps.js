@@ -63,10 +63,10 @@ module.exports.apps = {
                 label : 'Hoteles',
                 icon : 'fa-building-o'
             },
-            '/amenidades/' : {
+            /*'/amenidades/' : {
                 label : 'Amenidades',
                 icon : 'fa-cab'
-            },
+            },*/
         },
     },
 };
