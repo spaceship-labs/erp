@@ -50,9 +50,9 @@ var jsFilesToInject = [
 	"/bower_components/flot/jquery.flot.resize.js",
 	"/bower_components/ng-tags-input/ng-tags-input.min.js",
 	"/bower_components/slimScroll/slimScroll.min.js",
-
 	"js/themejs/*.js",
 	"/js/*.js",
+	'/js/directives/*.js',
 ];
 
 

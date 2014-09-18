@@ -93,23 +93,25 @@ module.exports = {
 
     },
     updateIcon: function(req,res){
-		var form = req.params.all();
-		form.req = req;
-		Common.updateIcon(req,{
-			form:form
-			,dirSave : __dirname+'/../../assets/uploads/hotels/'
-			,dirPublic:  __dirname+'/../../.tmp/public/uploads/hotels/'
-			,Model:Hotel
+    	form = req.params.all();
+    	Hotel.findOne({id:form.id}).exec(function(e,hotel){
+    		if(e) throw(e);
+    		hotel.updateAvatar(req,{
+    			dir : 'hotels',
+    			profile: 'avatar'
+    		},function(e,hotel){
+    			res.json(formatHotel(hotel));
+    		});
+    	});
+	/*	Images.updateIcon(req,{
+			Model:Hotel
+			,dir : 'hotels'
 			,prefix:'177x171'
-			,dirAssets:'/uploads/hotels/'
+			,profile:'avatar'
 		},function(e,hotel){
 			if(e) throw(e);
-			Hotel.findOne(form.userId).populate('location').populate('rooms').populate('seasons').exec(function(e,hotel){
-				if(e) throw(e);
-				hotel = formatHotel(hotel);
-				res.json(hotel)
-			});
-		});
+			res.json(formatHotel(hotel[0]));
+		});*/
 	},
 	addRoom : function(req,res){
 		var form = req.params.all();

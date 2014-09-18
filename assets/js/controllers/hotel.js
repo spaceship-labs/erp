@@ -84,7 +84,7 @@ app.controller('hotelEditCTL',function($scope,$upload,$http){
     }
 
 
-    $scope.updateIcon = function($files) {
+    /*$scope.updateIcon = function($files) {
         for (var i = 0; i < $files.length; i++) {
             var file = $files[i];
             $scope.upload = $upload.upload({
@@ -99,7 +99,7 @@ app.controller('hotelEditCTL',function($scope,$upload,$http){
                 $scope.hotel.avatar2 = data.avatar2;
             });
         }
-    };
+    };*/
     $scope.save = function(){
         $scope.saveClass = 'fa-upload';
         if($scope.phones.length>0){

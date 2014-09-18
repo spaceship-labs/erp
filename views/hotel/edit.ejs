@@ -13,21 +13,7 @@
         			<p style="margin: 8px 0">El usuario se ha actualizado exitosamente</p>
         		</div>
                 <div class="widgetbox profile-photo">
-                <div class="headtitle">
-                    <div class="btn-group">
-                        <button data-toggle="dropdown" class="btn dropdown-toggle">Opciones <span class="caret"></span></button>
-                        <ul class="dropdown-menu">
-                          <li><a href="#" ng-file-select="updateIcon($files)" >Cambiar</a></li>
-                          <li><a class="confirmbutton" href="/hotel/destroy_icon/12">Eliminar</a></li> 
-                        </ul>
-                    </div>            
-                    <h4 class="widgettitle">Imagen Primaria</h4>
-                </div>
-                <div class="widgetcontent">
-                    <div class="profilethumb" style="background:none">
-                        <img ng-src="{{hotel.avatar2}}" ng-alt="hotel.name">
-                    </div><!--profilethumb-->
-                </div>
+                <div profile-image object='hotel' update-method='/hotel/updateIcon' delete-method='/hotel/destroyIcon' image-attr='avatar2' ></div>
             </div>      
         </div>
         <div class="span8">        
