@@ -11,12 +11,11 @@ module.exports = {
         status : {
             type : 'string',
             enum : ['active','inactive'],
-            default : 'active'
+            default : 'inactive'
         },
         modes : {
             collection : 'MachineMode',
-            via : 'machine',
-            dominant : true
+            via : 'machine'
         },
         internalReference : {
             type : 'string'
@@ -24,7 +23,15 @@ module.exports = {
         company : {
             type : 'string',
             required : true
-        }
+        },
+        ink_cost : 'float',
+        ink_utility : 'float',
+        product_types : {
+            collection : 'Product_type',
+            via : 'machines',
+            dominant : true
+        },
+        name : 'string'
 
 
 	}

@@ -1,5 +1,5 @@
 /**
- * MachineController.js 
+ * InstallationController.js
  *
  * @description ::
  * @docs        :: http://sailsjs.org/#!documentation/controllers
@@ -13,13 +13,13 @@ module.exports = {
 
     index: function (req, res) {
         var select_company = req.session.select_company || req.user.select_company;
-        Machine.find({ company : select_company }).exec(function (err,machines){
+        Installation.find({ company : select_company }).exec(function (err,installations){
             Common.view(res.view,{
                 page:{
-                    icon:'fa fa-gears'
-                    ,name:'Maquinas'
+                    icon:'fa fa-wrench'
+                    ,name:'Instalaciones'
                 },
-                machines : machines
+                installations : installations
             },req);
         });
 
@@ -58,7 +58,7 @@ module.exports = {
                         return res.json({text:'Ocurrio un error.'});
                     }
                     var createdModes = modesRes.map(function(mode){
-                       return mode.id;
+                        return mode.id;
                     });
                     Machine.update({id : machine.id},{ modes : createdModes }).exec(function(err,updatedMachine){
                         if(err) {
@@ -106,9 +106,9 @@ module.exports = {
         var form = req.param('machine');
         if(form){
             Machine.update({id:form.id},{ name : form.name , description : form.description , internalReference : form.internalReference , product_types : form.product_types, ink_cost : form.ink_cost,ink_utility : form.ink_utility }).exec(function(err,machine){
-                    if(err) return res.json({text:'Ocurrio un error.'});
-                    res.json({text:'Maquinaria actualizada.'});
-                });
+                if(err) return res.json({text:'Ocurrio un error.'});
+                res.json({text:'Maquinaria actualizada.'});
+            });
         }
     },
 

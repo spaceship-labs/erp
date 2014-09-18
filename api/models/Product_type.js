@@ -12,7 +12,10 @@ module.exports = {
 		,sales_type:{
             model : 'Sales_type'
         }
-		,fields:'array'
+		,fields: {
+            collection : 'custom_fields',
+            via : 'product_type'
+        }
 		,company:'string'
 		,user:{
             model : 'User'
@@ -27,6 +30,10 @@ module.exports = {
         },
         inventory_type : {
             type : 'string'
+        },
+        machines : {
+            collection : 'Machine',
+            via : 'product_types'
         }
 
 	}

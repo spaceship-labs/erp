@@ -1,6 +1,7 @@
 <script type='text/javascript'>
 	window.product = <%- JSON.stringify(product) %>;
     window.product_types = <%- JSON.stringify(product_types) %>;
+    window.product_type = <%- JSON.stringify(product_type) %>;
 </script>
 <div ng-controller='productCTL'>
 	<div class="span5">
@@ -16,9 +17,6 @@
 	     		<form action="/product/update" method="post" accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine" >
 					<input type='hidden' ng-value='product.id' name='pid' />
 					<%- partial('new-basic') %>
-
-
-
 	     			<p class="stdformbutton">
 		                <button class="btn btn-primary">Guardar</button>
 	     			</p>
@@ -26,24 +24,24 @@
 	     	</div>
 	     </div>
 	</div>
-    <div class="span5" >
-        <div class="widgetbox">
-            <%- partial('product-type-fields') %>
-        </div>
-    </div>
 	<div class="span5" >
         <div class="widgetbox">
 		    <%- partial('product-gallery') %>
         </div>
 	</div>
-    <!--<div class="span5">-->
-        <!--<div class="widgetbox">-->
-            <!--<%- partial('inventory') %>-->
-        <!--</div>-->
-    <!--</div>-->
-    <!--<div class="span5">-->
-        <!--<div class="widgetbox">-->
-            <!--<%- partial('quote') %>-->
-        <!--</div>-->
-    <!--</div>-->
+    <div class="span5" >
+        <div class="widgetbox">
+            <%- partial('product-type-fields') %>
+        </div>
+    </div>
+    <div class="span5">
+        <div class="widgetbox">
+            <%- partial('inventory') %>
+        </div>
+    </div>
+    <div class="span5">
+        <div class="widgetbox">
+            <%- partial('quote') %>
+        </div>
+    </div>
 </div>
