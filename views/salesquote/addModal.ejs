@@ -7,18 +7,21 @@
                     <h4 class="modal-title">Nueva Venta</h4>
                 </div>
                 <div class="modal-body">
-
-                    <p>
-                        <label for="client_id">Selecciona un cliente :</label>
-						<span class="field">
-                            <span>
-                                <select class='form-control large required' data-placeholder="Selecciona ..." chosen="clients" ng-model="client" ng-options="client.name for client in clients">
-                                </select>
-				<input class="hidden" type="text" name="clientID" ng-value="client.id"/>
-                            </span>
-                        </span>
-                    </p>
-                   </div>
+                    <div class="widgetbox">
+                        <div class="widgetcontent nopadding">
+                            <p>
+                                <label for="client_id">Selecciona un cliente :</label>
+                                <span class="field">
+                                    <span>
+                                        <select class='form-control large required' data-placeholder="Selecciona ..." chosen="clients" ng-model="client" ng-options="client.name for client in clients">
+                                        </select>
+                                        <input class="hidden" type="text" name="clientID" ng-value="client.id"/>
+                                    </span>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
                 <div class="modal-footer">
 		    <a class="btn btn-default button-orange" data-toggle="modal" data-target="#addClientModal"><span class="table-icon fa fa-plus"></span> Nuevo cliente</a>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>

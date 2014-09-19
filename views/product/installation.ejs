@@ -1,11 +1,11 @@
-<div class="modal fade" id='productModal' ng-controller="productAddCTL">
+<div class="modal fade" id='installationModal' ng-controller="installationAddCTL">
     <div class="modal-dialog">
         <div class="modal-content">
             <form class="stdform stdform2 ng-pristine" ng-submit="processSelectedProduct('<%- quote.id %>')">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Productos</h4>
-            </div>
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Productos</h4>
+                </div>
                 <div class="modal-body">
                     <div class="widgetbox">
                         <div class="widgetcontent nopadding">
@@ -32,13 +32,13 @@
                             <p ng-if="product.id && checkMachines()">
                                 <label>test: </label>
                                 <span class="field">
-                                    <select class='form-control large' data-placeholder="Selecciona ..." ng-model="machine" ng-options="m.id as m.name for m in product.machines" chosen="machine">
+                                    <select class='form-control large' data-placeholder="Selecciona ..." ng-model="machine" ng-options="m.id as m.name for m in product.machines" chosen>
                                     </select>
                                 </span>
                             </p>
                             <p ng-if="product.id">
                                 <label>Price: </label>
-                                <span class="field">{{calculateProductPrice(product)}}</span>
+                                <span class="field">{{calculateProductPrice()}}</span>
                             </p>
                             <p ng-if="product.id">
                                 <label>Cantidad: </label>
@@ -46,7 +46,7 @@
                             </p>
                             <p ng-if="product.id">
                                 <label>Total: </label>
-                                <span class="field">{{calculateProductPriceTotal(product)}}</span>
+                                <span class="field">{{calculateProductPriceTotal()}}</span>
                             </p>
 
                         </div>

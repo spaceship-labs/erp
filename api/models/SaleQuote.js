@@ -35,7 +35,8 @@ module.exports = {
         client : {
             model : 'Client_',
             required : true
-        }
+        },
+        company : 'string'
 
 	}
 

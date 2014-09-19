@@ -1,6 +1,6 @@
 <script type='text/javascript'>
 	window.products = <%- JSON.stringify(products) %>;
-	window.productsId = <%- JSON.stringify(productsId) %>;
+    window.product_types = <%- JSON.stringify(product_types) %>;
 </script>
 <div ng-controller="saleCTL">
     <div class="row-fluid">
@@ -20,33 +20,42 @@
         <div class="col-md-8">
             <div class="buttons-box">
                 <a class="btn btn-default button-orange" data-toggle="modal" data-target="#productModal"><span class="table-icon fa fa-plus"></span> AGREGAR PRODUCTO</a>
-                <a class="btn btn-default button-orange" data-toggle="modal" data-target="#instalationModal"><span class="table-icon fa fa-plus"></span> AGREGAR INSTALACION</a>
+                <a class="btn btn-default button-orange" data-toggle="modal" data-target="#installationModal"><span class="table-icon fa fa-plus"></span> AGREGAR INSTALACION</a>
             </div>
 
             <div class="widgetcontent custom-table nopadding">
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th>Fecha</th>
                             <th>Nombre</th>
                             <th>Monto</th>
 			                <th>Cantidad</th>
-                            <th>Editar</th>
+                            <th>Monto total</th>
+                            <th>Fecha</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
-                    <% for(var i=0;i<quote.products.length;i++){
+                    <%
+                    var totalQuote = 0;
+                    for(var i=0;i<quote.products.length;i++){
                         var product = quote.products[i];
-
+                        var total = product.price * product.quantity;
+                        totalQuote += total;
                     %>
                     <tr>
-                        <td data-title="Fecha"><%= moment(product.createdAt) %></td>
                         <td data-title="Nombre"><%= product.name %></td>
-                        <td data-title="Monto"><%= product.price || 0 %></td>
-			<td data-title="Cantidad"><%= product.quantity%></td>
-                        <td data-title="Editar"><a href="/product/edit/<%= product.id %>"><span class="table-icon fa fa-edit"></span></a></td>
+                        <td data-title="Monto">$<%= product.price || 0 %></td>
+			            <td data-title="Cantidad"><%= product.quantity%></td>
+                        <td data-title="Monto total">$<%= total %></td>
+                        <td data-title="Fecha"><%= moment(product.createdAt) %></td>
+                        <td data-title="Action"><span ng-click="deleteProduct('<%- product.id %>','<%- quote.id %>')" class="table-icon fa fa-eraser" style="cursor : pointer;" tooltip="borrar"></span></td>
                     </tr>
                     <% } %>
+                    <tr>
+                        <td colspan="6"><span>Total : $<%= totalQuote %></span></td>
+                    </tr>
                 </table>
+
             </div>
 
            

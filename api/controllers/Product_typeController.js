@@ -29,7 +29,8 @@ module.exports = {
 		if(id){
 			Sales_type.find().exec(function(err,sales_type){
 				if(err) throw err;
-				Product_type.findOne({id:id}).exec(function(err,product){
+				Product_type.findOne({id:id}).populate('fields').populate('machines').exec(function(err,product){
+                    if (err) throw err;
                     Inventory_type.find().exec(function (err,inventory_type){
                         Common.view(res.view,{
                             page:{
@@ -71,46 +72,26 @@ module.exports = {
 		});	
 	}
 	,createField: function(req,res){
-		var form = req.params.all()
-		, Model = Product_type;
-		form = Common.formValidate(form,['name','type','handle','values','product','productSingle']);
+		var form = req.params.all();
+		form = Common.formValidate(form,['name','type','handle','values','product_type']);
 		if(form.values){
 			form.values = form.values.split(',');
 		}
-		if(form.productSingle == 1)
-			Model = Product;
-		var pid = form.product
-		, tmp = form.productSingle;
-		delete form.productSingle;
-		delete form.product;
+		var pid = form.product_type;
 
-		Model.findOne(pid).exec(function(e,p){
-			if(e) throw(e);
-			p.fields = p.fields || [];
-			p.fields.push(form);
-			p.save(function(e,p){
-				/*if(e) return res.json({text:'Ocurrio un error.'});
-				res.json({text:'Campo agregado.'});	*/
-				res.redirect((tmp?'/product/edit/':'/product_type/edit/')+pid);
-			})
-		});
+        Custom_fields.create(form).exec(function(err,field){
+            Product_type.findOne({id : pid}).exec(function(e,p){
+                if(e) throw(e);
+                res.json({text:'Campo agregado.',field : field});
+            });
+        });
 	}
 	, removeField: function(req,res){
-		var form = req.params.all()
-		, Model = Product_type;
-		if(form.productSingle == 1)
-			Model = Product;
-		Model.findOne({id:form.product_type}).exec(function(err,product_type){
-			var index = product_type.fields.map(function(p){ return p.name}).indexOf(form.name);
-			if(index!=-1)
-				product_type.fields.splice(index,1);
-			product_type.save(function(err){
-				if(err) return res.json({text:'Ocurrio un error.'});
-				res.json({text:'Campo eliminado.',fields:product_type.fields});
-
-			});
-
-		});
+		var form = req.params.all();
+        Custom_fields.destroy({id : form.id , product_type : form.product_type}).exec(function(err,cf){
+           if (err) return res.json({text:'Ocurrio un error.'});
+           res.json({text:'Campo eliminado.'});
+        });
 	}
 	
 	
