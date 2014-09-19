@@ -1,15 +1,17 @@
-<div class="headtitle">
-    <div class="btn-group">
-        <button data-toggle="dropdown" class="btn dropdown-toggle">Opciones <span class="caret"></span></button>
-        <ul class="dropdown-menu">
-            <li><a href="#" ng-file-select="updateIcon($files)" >Cambiar</a></li>
-            <li><a class="confirmbutton" ng-href="{{deleteMethod}}/{{object.id}}">Eliminar</a></li> 
-        </ul>
-    </div>            
-    <h4 class="widgettitle">Imagen Primaria</h4>
-</div>
-<div class="widgetcontent">
-    <div class="profilethumb" style="background:none">
-        <img ng-src="{{object[imageAttr]}}" ng-alt="object.name">
+<div class="widgetbox profile-photo">
+    <div class="headtitle">
+        <div class="btn-group">
+            <button data-toggle="dropdown" class="btn dropdown-toggle">Opciones <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+                <li><a href="#" ng-file-select="updateIcon($files)" >Cambiar</a></li>
+                <li><a class="confirmbutton" ng-href="{{deleteMethod}}/{{object.id}}">Eliminar</a></li> 
+            </ul>
+        </div>            
+        <h4 class="widgettitle">Imagen Primaria</h4>
+    </div>
+    <div class="widgetcontent">
+        <div class="profilethumb" style="background:none">
+            <img ng-src="{{object[imageAttr]}}" ng-alt="object.name">
+        </div>
     </div>
 </div>

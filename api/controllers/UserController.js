@@ -103,7 +103,7 @@ module.exports = {
 		if(id = req.params.id){
 			User.findOne(id).exec(function(err,user){
 				if(err) return null;
-				user.avatar = user.icon ? '/uploads/users/177x171'+user.icon : 'http://placehold.it/177x171';
+				user.avatar2 = user.icon ? '/uploads/users/177x171'+user.icon : 'http://placehold.it/177x171';
 				user.active = user.active?true:false;
 				App.find().exec(function(err,apps){
 					if(err) return;
@@ -156,8 +156,25 @@ module.exports = {
 	, editAjax: function(req,res){
 		Common.editAjax(req,res,update);
 	}
+	, updateIcon: function(req,res){
+    	form = req.params.all();
+    	User.findOne({id:form.id}).exec(function(e,user){
+    		if(e) throw(e);
+    		user.updateAvatar(req,{
+    			dir : 'users',
+    			profile: 'avatar'
+    		},function(e,user){
+    			res.json(formatUser(user));
+    		});
+    	});
+	}
 };
-
+function formatUser(user){
+	user.avatar = user.icon ? '/uploads/users/50x50'+user.icon : 'http://placehold.it/50x50';
+	user.avatar2 = user.icon ? '/uploads/users/177x171'+user.icon : 'http://placehold.it/177x171';
+	user.active = user.active?true:false;
+	return user;
+}
 function timeFormat(date){
 	date = moment(date);
 	var now = moment();

@@ -86,7 +86,6 @@ module.exports = {
     		Hotel.findOne(hotel[0].id).populate('location').populate('rooms').populate('seasons').exec(function(e,hotel){
     			if(e) throw(e);    			
     			hotel = formatHotel(hotel);	
-    			console.log(hotel);
     			res.json(hotel);
     		});
     	});
@@ -103,15 +102,6 @@ module.exports = {
     			res.json(formatHotel(hotel));
     		});
     	});
-	/*	Images.updateIcon(req,{
-			Model:Hotel
-			,dir : 'hotels'
-			,prefix:'177x171'
-			,profile:'avatar'
-		},function(e,hotel){
-			if(e) throw(e);
-			res.json(formatHotel(hotel[0]));
-		});*/
 	},
 	addRoom : function(req,res){
 		var form = req.params.all();

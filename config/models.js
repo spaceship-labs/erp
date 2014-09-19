@@ -17,8 +17,14 @@ module.exports.models = {
   attributes : {
   	updateAvatar : function(req,opts,cb){
   		opts.lastIcon = this.icon;
+  		object = this;
   		Images.saveFile(req,opts,function(e,filename){
-  			console.log(filename);
+  			opts.fileName = filename;
+  			Images.makeCrops(req,opts,function(e){
+  				if(e) throw(e);
+  				object.icon = opts.fileName;
+  				object.save(cb);
+  			});
   		});
   	}
   }
