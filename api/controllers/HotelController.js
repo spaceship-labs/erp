@@ -78,6 +78,7 @@ module.exports = {
     	delete form.user;
     	delete form.rooms;
     	delete form.seasons;
+    	delete form.files;
     	form.location = location.id;
     	//console.log(form);
     	form.req = req;
@@ -99,6 +100,19 @@ module.exports = {
     			dir : 'hotels',
     			profile: 'avatar'
     		},function(e,hotel){
+    			res.json(formatHotel(hotel));
+    		});
+    	});
+	},
+	addFile : function(req,res){
+		form = req.params.all();
+    	Hotel.findOne({id:form.id}).exec(function(e,hotel){
+    		if(e) throw(e);
+    		hotel.addFile(req,{
+    			dir : 'hotels/gallery',
+    			profile: 'gallery'
+    		},function(e,hotel){
+    			if(e) throw(e);
     			res.json(formatHotel(hotel));
     		});
     	});
