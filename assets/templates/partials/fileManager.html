@@ -8,9 +8,8 @@
 			<span ng-click='selectAll()' class='fa' ng-class='selected ? "fa-check-square-o" : "fa-square-o"'></span>    		
 			<span class='text'>Seleccionar Todo</span>
 
-			<span ng-file-select="uploadFiles($files)" multiple accept="image/*" class='fa fa-file' add-method='/hotel/addFile' ></span>
-			<span ng-click='' class='fa fa-folder-open'></span>
-			<span ng-click='' class='fa fa-trash-o'></span>
+			<span ng-file-select="uploadFiles($files)" multiple accept="image/*" add-method='/hotel/addFile' class='fa fa-folder-open'></span>
+			<span ng-click='removeSelected()' class='fa fa-trash-o'></span>
 
     	</span>
     	<span class='pull-right'>
@@ -25,13 +24,14 @@
         	<a href='' ng-class='format=="video"?"underline":""' ng-click='format = "video"'>Videos</a>
         	<a href='' ng-class='format=="audio"?"underline":""' ng-click='format = "audio"'>Audios</a>
         	<a href='' ng-class='format=="documents"?"underline":""' ng-click='format = "documents"'>Documentos</a>
-        	<span class='pull-right'>Mostrando <span ng-bind='page*pageLength+1'></span>-<span ng-bind='(page+1)*pageLength'></span> de <span ng-bind='object.files.length'></span></span>
+        	<span class='pull-right'>Mostrando <span ng-bind='page*pageLength+1'></span>-<span ng-bind='page*pageLength+filterFiles.length'></span> de <span ng-bind='object.files.length'></span></span>
         </p>
-        <div class='files'>
+        <div class='files' >
+        <!--  -->
         	<div 
                 class='file' 
                 ng-repeat='file in filterFiles = (object.files | filter:fileFilter())'
-                ng-class='file.selected ? "selected" : "" ' 
+                ng-class='fileClass(file)'
                 ng-click='file.selected = !file.selected'
             >
         		<img ng-src='/uploads/{{dir}}/110x105{{file.filename}}' ng-alt='{{file.name}}' />
@@ -42,5 +42,6 @@
         	</div>
         	<div class='clearfix'></div>
         </div>
+        <div class='clearfix'></div>
     </div>
 </div> 

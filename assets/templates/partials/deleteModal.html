@@ -1,0 +1,10 @@
+<div class="modal-body">
+    <p>¿Estas seguro que quieres eliminar los siguientes archivos?</p>
+    <ul>
+        <li ng-repeat='file in files' ng-bind='file.name'></li>
+    </ul>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="ok()">OK</button>
+    <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+</div>

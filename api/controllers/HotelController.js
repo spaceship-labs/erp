@@ -117,6 +117,19 @@ module.exports = {
     		});
     	});
 	},
+	removeFiles : function(req,res){
+		form = req.params.all();
+		Hotel.findOne({id:form.id}).exec(function(e,hotel){
+			hotel.removeFiles(req,{
+				dir : 'hotels/gallery',
+				profile : 'gallery',
+				files : form.removeFiles,
+			},function(e,hotel){
+				if(e) throw(e);
+				res.json(formatHotel(hotel));
+			})
+		});
+	},
 	addRoom : function(req,res){
 		var form = req.params.all();
 		var hotel = form.hotel;
@@ -145,7 +158,6 @@ module.exports = {
 
 
 function formatHotels(hotels){
-//	var hotels_new = [];
 	for(var i=0;i<hotels.length;i++) hotels[i] = formatHotel(hotels[i]);
 	return hotels;
 }
@@ -168,16 +180,3 @@ function timeFormat(date){
 	}
 	return date.lang('es').format('LLLL');
 }
-
-var update = {
-	icon: function(req,form,cb){
-		Common.updateIcon(req,{
-			form:form
-			,dirSave : __dirname+'/../../assets/uploads/hotels/'
-			,dirPublic:  __dirname+'/../../.tmp/public/uploads/hotels/'
-			,Model:Hotel
-			,prefix:'177x171'
-			,dirAssets:'/uploads/hotels/'
-		},cb);
-	}
-};

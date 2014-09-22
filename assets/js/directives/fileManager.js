@@ -1,11 +1,12 @@
 (function () {
-	var controller = function($scope,$upload,$http){
+	var controller = function($scope,$upload,$http,$modal){
 		$scope.show = true;
 		$scope.selected = false;
 		$scope.format = 'all';
 		$scope.loading = [];
 		$scope.page = 0;
 		$scope.pageLength = 16;
+		$scope.object.files = $scope.object.files ? $scope.object.files : [];
 		$scope.uploadFiles = function($files){
 			$scope.page = Math.ceil($scope.object.files.length/$scope.pageLength) -1;
  			for (var i = 0; i < $files.length; i++) {
@@ -25,11 +26,15 @@
 		}
 		$scope.fileFilter = function () {
 			return function(file){
-				var start = $scope.page * $scope.pageLength;
-				var end = start + $scope.pageLength;
-				var index = $scope.object.files.indexOf(file);
-				return index >= start && index < end;
-				//return true;
+				if($scope.format == 'all'){
+					var start = $scope.page * $scope.pageLength;
+					var end = start + $scope.pageLength;
+					var index = $scope.object.files.indexOf(file);
+					return index >= start && index < end;
+				}else{
+					$scope.page = 0;
+					return $scope.format == file.type.split('/')[0];
+				}
 			};
 		}
 		$scope.changePage = function(val){
@@ -45,8 +50,55 @@
 				file.selected = $scope.selected;
 			});
 		}
-	}
+		$scope.fileClass = function(file){
+			var c = '';
+			if(file.selected) c += "selected ";
+			if(file.deleting) c += "deleting ";
+			return c;
+		}
+		$scope.removeSelected = function(file){
+			var files = [];
+			$scope.object.files.forEach(function(file){
+				if(file.selected){
+					file.deleting = true;
+					files.push(file);
+				}
+			});
+			var modalInstance = $modal.open({
+				templateUrl: '/template/find/deleteModal.html',
+				size: 'sm',
+				controller : modalController,
+				resolve: {
+					files: function () {
+						return files;
+					}
+				}
+			});
+			modalInstance.result.then(function() {
+				jQuery('#myModal').modal('hide');
+				$scope.object.removeFiles = files;
+				$http({method: 'POST', url: '/hotel/removeFiles',params:$scope.object}).success(function (object){
+					$scope.object.files = object.files;
+				});
+			},function(){
+				$scope.object.files.forEach(function(file){	
+					if(file.selected) file.deleting = false;
+				});
 
+			});
+			
+		}
+		
+	}
+	var modalController = function($scope,$modalInstance,files){
+		$scope.files = files;
+		$scope.ok = function(){			
+			$modalInstance.close();
+		}
+		$scope.cancel = function(){
+			$modalInstance.dismiss('cancel');
+		}	
+	}
     var directive = function () {
         return {
         	controller : controller,
@@ -55,7 +107,7 @@
         		addMethod : '@',
         		dir : '@',
         	},
-        	templateUrl : '/template/find/fileManager.html'
+        	templateUrl : '/template/find/fileManager.html',
         };
     };
     app.directive('fileManager', directive);

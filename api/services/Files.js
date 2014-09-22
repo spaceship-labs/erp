@@ -13,9 +13,15 @@ module.exports.saveFile = function(req,opts,cb){
 			fileName += '.'+ext;
 		}
 		req.file('file').upload(dirSave+fileName,function(err,files){
+
 			if(err) return cb && cb(err);
 			if(opts.lastIcon) fs.unlink(dirSave+opts.lastIcon,function(){});
-			cb(null,{filename:fileName,originalFilename:original});
+			cb(null,{
+				filename:fileName,
+				originalFilename:original,
+				size : files[0].size,
+				type : files[0].type,
+			});
 		});
 	}else{
 		return cb(true,false);
@@ -48,4 +54,15 @@ module.exports.makeCrops = function(req,opts,cb){
 			});
 		});
 	});	
+}
+//Deletes a File and Crops if profile is specified;
+module.exports.removeFile = function(opts){
+	var dirSave = __dirname+'/../../assets/uploads/'+opts.dir+'/';
+	var sizes = opts.profile ? sails.config.images[opts.profile] : [];
+	var filename = opts.file.filename;
+	fs.unlink(dirSave+filename,function(){});
+	sizes.forEach(function(v){
+		fs.unlink(dirSave+v+filename,function(){});
+	});
+	return true;	
 }

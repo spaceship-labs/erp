@@ -82,24 +82,6 @@ app.controller('hotelEditCTL',function($scope,$upload,$http){
             $scope.newSeasonClass = 'fa-plus';
         });
     }
-
-
-    /*$scope.updateIcon = function($files) {
-        for (var i = 0; i < $files.length; i++) {
-            var file = $files[i];
-            $scope.upload = $upload.upload({
-                url: '/hotel/updateIcon',
-                data: {userId: $scope.hotel.id,method:"icon"},
-                file: file, 
-                fileFormDataName: 'icon_input', 
-                
-            }).progress(function(evt) {
-                console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
-            }).success(function(data, status, headers, config) {
-                $scope.hotel.avatar2 = data.avatar2;
-            });
-        }
-    };*/
     $scope.save = function(){
         $scope.saveClass = 'fa-upload';
         if($scope.phones.length>0){

@@ -36,7 +36,9 @@ module.exports.models = {
   			files.push({
   				filename : filename.filename,
   				ext : ext[ext.length-1],
-  				name : filename.originalFilename
+  				name : filename.originalFilename,
+          size : filename.size,
+          type : filename.type,
   			});
   			object.files = files;
   			// Todo, Condicional que esto se ejecute solo en imagenes;
@@ -45,6 +47,23 @@ module.exports.models = {
           object.save(cb);
   			});
   		});
-  	}
+  	},
+    removeFiles : function(req,opts,cb){
+      object = this;      
+      files = opts.files ? opts.files : [];
+      files = Array.isArray(files) ? files : [files];
+      files.forEach(function(file){
+        opts.file = JSON.parse(file);
+        Files.removeFile(opts);
+        for(var i = 0;i<object.files.length;i++){
+          if(object.files[i].filename == opts.file.filename){
+            object.files.splice(i,1);
+            //break;
+          }
+        }
+        object.save(cb);
+      });
+
+    },
   }
 };

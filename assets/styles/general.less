@@ -36,14 +36,18 @@ body.loginpage{background: @login-background;overflow: hidden;}
 .fileManager .widgettitle .fa:hover{opacity:.4}
 .fileManager .widgettitle .controls .text{margin-right:20px;}
 .fileManager .widgettitle .fa.fa-arrow-circle-right{margin-right:20px;}
+.fileManager .widgettitle .controls .fa.fa-check-square-o{margin-right:5px;}
+.fileManager .widgettitle .controls .fa.fa-trash-o{float:right;}
 .fileManager .nav{background-color:#EDEDED;color:@primary;display:block;width:100%;padding:10px 20px;}
 .fileManager .nav a{margin:0 5px;font-size:11px;}
 .fileManager .nav .underline{text-decoration: underline}
-.fileManager .files{margin:20px 0 20px 20px;}
+.fileManager .files{margin:20px 0 20px 20px;float:left;display:block;overflow:hidden;}
 .fileManager .files .file{width:110px;height:105px;background-color:@primary;float:left;margin:22px 22px 0 0;}
 .fileManager .files .loader{width:110px;height:105px;border:1px solid @primary;text-align:center;font-size:10px;float:left;margin:22px 22px 0 0;}
 .fileManager .files .loader img{margin:10px auto 0px;}
 .fileManager .files .file.selected img{opacity:.35;}
+.fileManager .files .file.deleting{background-color:#EE4444;}
+.modal-body ul{margin-left:29px;}
 
 .widgettitle{background: @primary;text-transform: uppercase;}
 .widgettitle span{font-size: 16px}
