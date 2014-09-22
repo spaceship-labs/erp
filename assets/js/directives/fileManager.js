@@ -90,6 +90,7 @@
 		}
 		
 	}
+	controller.$inject = ['$scope','$upload','$http','$modal'];
 	var modalController = function($scope,$modalInstance,files){
 		$scope.files = files;
 		$scope.ok = function(){			
@@ -99,6 +100,7 @@
 			$modalInstance.dismiss('cancel');
 		}	
 	}
+	modalController.$inject = ['$scope','$modalInstance','files'];
     var directive = function () {
         return {
         	controller : controller,

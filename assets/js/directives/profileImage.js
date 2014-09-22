@@ -14,8 +14,8 @@
 	            });
 		    }
 		};
-	}
-
+	};
+	controller.$inject = ['$scope', '$upload','$http'];
     var directive = function () {
         return {
         	controller : controller,
