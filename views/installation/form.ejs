@@ -1,0 +1,108 @@
+<p>
+    <label>Fecha :</label>
+    <span class="field">
+        <input type="date" class="date form-control" ui-date ng-model="installation.date" />
+    </span>
+</p>
+<p>
+    <label>Tipo de trabajo :</label>
+    <span class="field">
+        <select ng-model="installation.work_type" ng-options="p.name for p in work_types" chosen="installation.work_type"></select>
+    </span>
+</p>
+<p>
+    <label>Staff :</label>
+    <span class="field">
+        <input type="number" ng-model='installation.staff' class="number form-control" min="1" value="1"/>
+    </span>
+</p>
+<p>
+    <label>Zona :</label>
+    <span class="field">
+        <select ng-model="installation.zone" ng-options="p.name for p in zones" chosen="installation.zone"></select>
+    </span>
+</p>
+<p>
+    <label>Herramientas :</label>
+    <span class="field">
+        <select ng-model="installation.tools" ng-options="p.product.name for p in tools" chosen="installation.tools" multiple></select>
+    </span>
+
+</p>
+
+<p ng-show="installation.tools.length > 0" ng-repeat="tool in installation.tools">
+    <label>{{tool.product.name}}</label>
+    <span class="field">
+        <input type="number" ng-model='tool.quantity' class="number form-control span1" min="1" value="1"/>={{calculateProductPrice(tool)}}
+    </span>
+</p>
+
+<p>
+    <label>Materiales :</label>
+    <span class="field">
+        <select ng-model="installation.materials" ng-options="p.product.name for p in materials" chosen="installation.materials" multiple></select>
+    </span>
+</p>
+<p ng-show="installation.materials.length > 0" ng-repeat="material in installation.materials">
+    <label>{{material.product.name}}</label>
+    <span class="field">
+        <input type="number" ng-model='material.quantity' class="number form-control" min="1" value="1"/>={{calculateProductPrice(material)}}
+    </span>
+</p>
+
+<p>
+    <label>Gruas y plataformas :</label>
+    <span class="field">
+        <select ng-model="installation.crane" ng-options="p.name for p in cranes" chosen="installation.crane"></select>
+    </span>
+</p>
+<p ng-show="installation.crane && installation.crane.id">
+    <label>dias </label>
+    <span class="field">
+        <input type="number" ng-model='installation.crane.quantity' class="number form-control span1" min="1" value="1"/>={{calculateItemPrice(installation.crane)}}
+    </span>
+</p>
+
+
+<table ng-show="installation.extras.length > 0">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th colspan="2" >Precio</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="extra in installation.extras">
+            <td><input type="text" ng-model="extra.name" /></td>
+            <td><input type="text" ng-model="extra.price" /></td>
+            <td><span ng-click="deleteExtra($index)" class="table-icon fa fa-eraser" style="cursor : pointer;" tooltip="borrar"></span></td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td>Total:{{calculateItemPrices(installation.extras)}}</td>
+        </tr>
+    </tfoot>
+</table>
+
+<p>
+    <label>Viaticos :</label>
+    <span class="field">
+        <a ng-click="addExtra()" class="btn btn-default button-orange"><span class="table-icon fa fa-plus"></span></a>
+    </span>
+</p>
+<p>
+    <label>Descripcion :</label>
+    <span class="field">
+        <textarea ng-bind="installation.description"></textarea>
+    </span>
+</p>
+<p>
+    <label>Indicaciones :</label>
+    <span class="field">
+        <textarea ng-bind="installation.indications"></textarea>
+    </span>
+</p>
+<p>
+    Total : {{calculateInstallationTotal()}}
+</p>

@@ -1,0 +1,32 @@
+<div class="widgetbox">
+    <h4 class="widgettitle">Herramientas</h4>
+    <div class="widgetcontent nopadding">
+        <form accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine" ng-submit="processTools()">
+            <table class="table responsive">
+                <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th colspan="2">Precio</th>
+                </tr>
+
+                </thead>
+                <tbody>
+                <tr ng-repeat="tool in tools track by $index">
+                    <td data-title="Nombre"><input type="hidden" value="{{tool.id}}" />{{tool.product.name}}</td>
+                    <td data-title="Precio">{{tool.product.price.cost * (1 + (tool.product.price.margin/100))}}</td>
+                    <td><span ng-click="deleteTool($index)" class="icon fa fa-eraser"></span></td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <select ng-model="selected_tool" ng-options="p.name group by p.product_type.name for p in products" chosen="selected_tool"></select>
+                        <a class="btn btn-default button-orange" ng-click="addTool()"><span class="table-icon fa fa-plus"></span> Herramienta</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <p class="stdformbutton">
+                <button class="btn btn-primary">Guardar</button>
+            </p>
+        </form>
+    </div>
+</div>

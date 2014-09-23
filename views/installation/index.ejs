@@ -1,21 +1,45 @@
-<script type='text/javascript'>
-    window.installations = <%- JSON.stringify(installations) %>;
-</script>
-<div class="col-md-12" ng-controller='installationCTL'>
-	<div class="buttons-box">
-		<div class="btn-group">
-		  <button type="button" class="btn btn-default button-orange dropdown-toggle" data-toggle="dropdown">
-		    <span class="table-icon fa fa-bars"></span> Filtros <span class="fa fa-caret-down"></span>
-		  </button>
-		  <ul class="dropdown-menu" role="menu">
-		    <li><a href="#">Action</a></li>
-		    <li><a href="#">Another action</a></li>
-		    <li><a href="#">Something else here</a></li>
-		  </ul>
-		</div>
-	</div>
-	<div class="widgetcontent custom-table nopadding">
-		<%- partial('table') %>
-	</div>
-	<%- partial('new-modal') -%>	
+<div class="col-md-12">
+    <div class="buttons-box">
+        <div class="btn-group">
+            <button type="button" class="btn btn-default button-orange dropdown-toggle" data-toggle="dropdown">
+                <span class="table-icon fa fa-bars"></span> Filtros <span class="fa fa-caret-down"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+            </ul>
+        </div>
+        <a class="btn btn-default button-orange right"  href="/installation/configure">Configuracion</a>
+    </div>
+    <div class="widgetcontent custom-table nopadding">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Cotizacion</th>
+                <th>Fecha</th>
+                <th>Creada por</th>
+                <th>Zona</th>
+                <th>Horas</th>
+                <th>Editar</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <% for(var i=0;i<installations.length;i++){
+                var installation = installations[i]
+            %>
+            <tr>
+                <td data-title="Cotizacion"><a href="/saleQuote/edit/<%= installation.quote.id %>"><%= installation.quote.id %></td>
+                <td data-title="Fecha"><%= moment(installation.createdAt) %></td>
+                <td data-title="Creada por"><%= installation.user.name %></td>
+                <td data-title="Zona"><%= installation.zone.name %></td>
+                <td data-title="Horas"><%= /*installation.hours*/ "test" %></td>
+                <td data-title="Editar"><a href="/installation/edit/<%= installation.id %>"><span class="table-icon fa fa-edit"></span></a></td>
+            </tr>
+            <% } %>
+
+            </tbody>
+        </table>
+    </div>
 </div> 

@@ -1,0 +1,24 @@
+<div class="modal fade" id='installationModal' ng-controller="installationAddCTL">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form class="stdform stdform2 ng-pristine" ng-submit="processInstallation('<%- quote.id %>')">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">New Installation</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="widgetbox">
+                        <div class="widgetcontent nopadding">
+                            <%- partial('form') %>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <input type="submit" class="btn btn-primary" value='Agregar'>
+
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

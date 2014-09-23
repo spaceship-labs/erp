@@ -12,7 +12,7 @@
                             <p>
                                 <label>Buscar :</label>
                                 <span class="field">
-                                    <select class='form-control large' data-placeholder="Selecciona ..." ng-model="product" ng-options="p.name group by p.product_type.name for p in products" chosen="product">
+                                    <select class='form-control large' data-placeholder="Selecciona ..." ng-model="product" ng-options="p.name group by p.product_type.name for p in products" chosen="product" ng-change="loadMachines()">
                                     </select>
                                     <a ng-if="product.id" href="/product/edit/{{product.id}}">Editar</a>
                                 </span>
@@ -29,10 +29,11 @@
                                 <label>Referencia Interna: </label>
                                 <span class="field">{{product.internalReference}}</span>
                             </p>
-                            <p ng-if="product.id && checkMachines()">
-                                <label>test: </label>
+                            <p ng-show="product.id && checkMachines()">
+                                <label>Impresion : </label>
                                 <span class="field">
-                                    <select class='form-control large' data-placeholder="Selecciona ..." ng-model="machine" ng-options="m.id as m.name for m in product.machines" chosen="machine">
+                                    <select class='form-control large' data-placeholder="Selecciona ..." ng-model="selected_machine" ng-options="m.name for m in product.machines" chosen="product.machines">
+                                        <option value="">ninguna</option>
                                     </select>
                                 </span>
                             </p>

@@ -24,21 +24,29 @@
 	     	</div>
 	     </div>
 	</div>
-	<div class="span5" >
+
+    <div class="span5" >
         <div class="widgetbox">
 		    <%- partial('product-gallery') %>
         </div>
 	</div>
+
+    <% if (product_type.fields.length > 0) {%>
     <div class="span5" >
         <div class="widgetbox">
             <%- partial('product-type-fields') %>
         </div>
     </div>
+    <% } %>
+
+    <% if (product_type.inventory_use) {%>
     <div class="span5">
         <div class="widgetbox">
             <%- partial('inventory') %>
         </div>
     </div>
+    <% } %>
+
     <div class="span5">
         <div class="widgetbox">
             <%- partial('quote') %>

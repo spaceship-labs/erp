@@ -11,13 +11,17 @@ module.exports = {
 
     attributes: {
 
-        product: {
+        product : {
             model: 'Product'
         },
 
-//        machine : {
-//            model : 'Machine'
-//        },
+        installation : {
+            model : 'Installation'
+        },
+
+        machine : {
+            model : 'Machine'
+        },
 
         quantity: {
             type : 'integer',
@@ -39,6 +43,10 @@ module.exports = {
 
         name:{
             type:'string'
+        },
+
+        files : {
+            type : 'array'
         }
 
     }

@@ -7,9 +7,10 @@ module.exports = {
         company : 'string',
         installations : {
             collection : 'Installation',
-            via : 'work_type'
+            via : 'hours'
         },
-        name : 'string'
+        quantity : 'integer',
+        price : 'float'
     }
 
 };
