@@ -1,34 +1,54 @@
-/*American Sign*/
 body{min-width: 290px}
 .header{background:@header-background;}
 strong{font-weight: bold;}
 .row .row{max-width: 100%;margin: 0}
-/*Global orange @primary*/
 
 /*Login page*/
+.loginpanelinner .logo{padding:0;display:block;background-repeat:no-repeat;background-image:url(@login-logo);width:100%;height:120px;background-position:center center;}
 body.loginpage{background: @login-background;overflow: hidden;}
 .inputwrapper button{background: @login-button;border:1px solid @login-button;}
 .inputwrapper button:focus, .inputwrapper button:active, .inputwrapper button:hover{background: @login-hover;border:1px solid @login-hover;}
 
-/*---*/
+/*Header*/
 .header .logo a{background-image:url(@header-logo);display:block;}
 .headmenu > li{}
 .headmenu > li > a{padding: 25px 20px 11px 20px;background-color:@header-button;}
 .headmenu > li > a:hover{background: @header-hover}
 .headmenu > li > a:hover .menu-icon{color:@header-icon-hover}
 .headmenu > li > a .menu-icon{color: @header-icon;font-size: 48px}
-
 .userloggedinfo .userinfo h5{font-weight: bold;}
 .userloggedinfo img{border-radius: 50%}
 
+/*Menu*/
 .nav-tabs.nav-stacked > li.active > a, .nav-tabs.nav-stacked > li.active > a:hover, .nav-tabs.nav-stacked > li.active > a:focus{background:@primary!important;}
 .leftpanel{left: 0;position: absolute;top: 140px;z-index: 0}
 .leftmenu .nav-header{color: #fff}
 .leftmenu .nav-tabs.nav-stacked > li.active > a{background-color: @primary;border-bottom-color: @primary;}
-
 .pageicon{border: 3px solid @primary;color: @primary}
 .pagetitle h1{color: @primary;text-transform: uppercase;}
 .page-description{color: #CCCCCC}
+
+/*File Manager*/
+.fileManager .widgettitle .text{font-size:11px;text-transform: none;margin-right:0;margin-left:-2px;font-weight:bold;cursor:pointer;}
+.fileManager .widgettitle .title{width:40%;font-size:14px;}
+.fileManager .widgettitle .controls{width:40%;}
+.fileManager .widgettitle .fa{font-size:20px;cursor:pointer;}
+.fileManager .widgettitle .fa:hover{opacity:.4}
+.fileManager .widgettitle .controls .text{margin-right:20px;}
+.fileManager .widgettitle .fa.fa-arrow-circle-right{margin-right:20px;}
+.fileManager .widgettitle .controls .fa.fa-check-square-o{margin-right:5px;}
+.fileManager .widgettitle .controls .fa.fa-trash-o{float:right;}
+.fileManager .nav{background-color:#EDEDED;color:@primary;display:block;width:100%;padding:10px 20px;}
+.fileManager .nav a{margin:0 5px;font-size:11px;}
+.fileManager .nav .underline{text-decoration: underline}
+.fileManager .files{margin:20px 0 20px 20px;float:left;display:block;overflow:hidden;}
+.fileManager .files .file{width:110px;height:105px;background-color:@primary;float:left;margin:22px 22px 0 0;}
+.fileManager .files .loader{width:110px;height:105px;border:1px solid @primary;text-align:center;font-size:10px;float:left;margin:22px 22px 0 0;}
+.fileManager .files .loader img{margin:10px auto 0px;}
+.fileManager .files .file.selected img{opacity:.35;}
+.fileManager .files .file.deleting{background-color:#EE4444;}
+.modal-body ul{margin-left:29px;}
+
 .widgettitle{background: @primary;text-transform: uppercase;}
 .widgettitle span{font-size: 16px}
 .widgettitle a{color: #fff!important;text-decoration: underline;text-transform: none!important;}
@@ -70,6 +90,7 @@ a, a:hover, a:link, a:active, a:focus{color: @primary}
 .profilethumb .submit-button{margin-top: 12px}
 
 .form-currencies button{margin: 10px 0}
+
 
 
 /*Dropdowns*/

@@ -1,4 +1,3 @@
-var app = angular.module('spaceerp',['ui.bootstrap','ngTagsInput','angularFileUpload']);
 /*app.factory('socket',['$sailsSocket', function($sailsSocket){
     return $sailsSocket()
 }])*/
