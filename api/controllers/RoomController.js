@@ -66,6 +66,17 @@ module.exports = {
     	});
 
     },
+    updateIcon: function(req,res){
+    	var form = req.params.all();
+		Room.updateAvatar(req,{
+			dir : 'rooms',
+			profile: 'avatar',
+			id : form.id,
+		},function(e,room){
+			if(e) console.log(e);
+			res.json(room);
+		});
+	}
 };
 function formatRoom(room){
 	if(room){

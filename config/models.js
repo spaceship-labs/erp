@@ -14,18 +14,29 @@ module.exports.models = {
   // (defaults to localDiskDb)
   connection: 'mongodb',
   migrate: 'safe',
+  updateAvatar : function(req,opts,cb){
+    this.findOne({id:opts.id}).exec(function(e,obj){
+      if(e) return cb && cb(e,obj);
+      obj.updateAvatar(req,opts,cb);
+    });
+  },
   attributes : {
   	updateAvatar : function(req,opts,cb){
+      var async = require('async');
   		object = this;
-  		Files.saveFiles(req,opts,function(e,files){
-        file = files[0];
-  			opts.filename = file.filename;
-  			Files.makeCrops(req,opts,function(e,crops){
-  				if(e) throw(e);
-  				object.icon = file;
-  				object.save(cb);
-  			});
-  		});
+      opts.file = object.icon;
+      async.waterfall([
+        function(callback){Files.saveFiles(req,opts,callback)},
+        function(files,callback){
+          object.icon = files[0];
+          opts.filename = object.icon.filename;
+          Files.makeCrops(req,opts,callback)
+        },
+        function(crops,callback){Files.removeFile(opts,callback)},
+      ],function(e,results){
+        if(e) console.log(e);
+        object.save(cb);
+      });
   	},
   	addFiles : function(req,opts,cb){
   		var async = require('async');

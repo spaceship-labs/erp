@@ -1,0 +1,11 @@
+<form class="widgetcontent nopadding form stdform stdform2" action='' method='post' >
+	hi
+    <p ng-repeat='field  in fields'>
+        <label ng-bind='field.label'></label>
+        <span class="field">
+            <textarea ng-if='field.type == "textarea"' name='{{field.handle}}' class='form-control' ng-model='room[field.handle]'></textarea>
+            <input type='text' ng-if='field.type == "text"' name='{{field.handle}}' class='form-control' ng-model='room[field.handle]' />
+            <input type='checkbox' ng-if='field.type == "checkbox"' name='{{field.handle}}' class='' ng-checked='room[field.handle]' ng-model='room[field.handle]' />
+        </span>
+    </p>
+</form>   

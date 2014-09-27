@@ -94,15 +94,13 @@ module.exports = {
     },
     updateIcon: function(req,res){
     	form = req.params.all();
-    	Hotel.findOne({id:form.id}).exec(function(e,hotel){
-    		if(e) throw(e);
-    		hotel.updateAvatar(req,{
-    			dir : 'hotels',
-    			profile: 'avatar'
-    		},function(e,hotel){
-    			res.json(formatHotel(hotel));
-    		});
-    	});
+		Hotel.updateAvatar(req,{
+			dir : 'hotels',
+			profile: 'avatar',
+			id : form.id,
+		},function(e,hotel){
+			res.json(formatHotel(hotel));
+		});
 	},
 	addFiles : function(req,res){
 		form = req.params.all();
