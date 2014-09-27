@@ -13,15 +13,8 @@
 					<img ng-if='!object.icon.filename' src="http://placehold.it/80x80" alt="{{object.name}}" />
 				</div>
 				<div class="peopleinfo" ng-cloak>
-					<h4>
-						<a href="{{editUrl}}{{object.id}}" ng-bind='object.name'></a>
-					</h4>
-					<ul>
-						<li><span>Poblacion: </span> {{object.location.name}}</li>
-						<li><span>Direccion: </span>{{object.address}}</li>
-						<li><span>Telefonos: </span> <span ng-bind='object.phones.join(", ")'></span></li>
-						<li><span>Creado: </span>{{object.createdAtString}}</li>
-					</ul>
+					<h4><a href="{{editUrl}}{{object.id}}" ng-bind='object.name'></a></h4>
+					<ul><li ng-repeat='(key,val) in info(object)'><span>{{key}}: </span> {{val}}</li></ul>
 				</div>
 			</div>
 		</div>

@@ -21,7 +21,7 @@ var cssFilesToInject = [
 	'/bower_components/sass-bootstrap-glyphicons/css/bootstrap-glyphicons.css',
 	'/bower_components/chosen/chosen/chosen.css',
 	"/bower_components/ng-tags-input/ng-tags-input.min.css",
-
+	'/bower_components/angular-loading-bar/build/loading-bar.min.css',
 	'/styles/bootstrap-responsive.min.css',
 	'/styles/default.css',
 
@@ -70,7 +70,7 @@ var jsFilesToInject = [
 	"/bower_components/flot/jquery.flot.resize.js",
 	"/bower_components/ng-tags-input/ng-tags-input.js",
 	"/bower_components/slimScroll/slimScroll.js",
-	"/bower_components/angular-ui-sortable/sortable.js",
+	"/bower_components/angular-loading-bar/build/loading-bar.min.js",
 	"/js/themejs/*.js",
 	"/js/*.js",
 	'/js/directives/*.js',

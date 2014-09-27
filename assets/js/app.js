@@ -1,1 +1,1 @@
-var app = angular.module('spaceerp',['ui.bootstrap','ngTagsInput','angularFileUpload','ui.sortable']);
+var app = angular.module('spaceerp',['ui.bootstrap','ngTagsInput','angularFileUpload','angular-loading-bar']);

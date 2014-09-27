@@ -1,6 +1,5 @@
 (function () {
 	var controller = function($scope){
-		console.log('hi');
         $scope.alphabet = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']; 
         $scope.alphabetIndex = [];
         $scope.objects.forEach(function(object){
@@ -24,7 +23,10 @@
             $scope.objects.forEach(function(object){
                 $scope.alphabetIndex.push(object.name[0].toUpperCase());
             });
-        })
+        });
+        $scope.info = function(object){
+            return $scope.getInfo()(object);
+        }
 	};
 	controller.$inject = ['$scope'];
     var directive = function () {
@@ -35,6 +37,7 @@
                 searchInput : '=',
                 dir : '@',
                 editUrl : '@',
+                getInfo : '&',
         	},
         	templateUrl : '/template/find/directoryListing.html'
         };

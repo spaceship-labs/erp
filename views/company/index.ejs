@@ -1,40 +1,15 @@
 <script type='text/javascript'>
-	window.companyDash = <%-JSON.stringify(comp || "")%>;
+	window.companies = <%-JSON.stringify(comp) %>;
 </script>
 
 <div class="wrap_createCompany row-fluid" ng-controller="createCompanyCTL">
+	<p><button class="btn btn-primary" data-toggle="modal" data-target="#companyCreate"><span class="table-icon fa fa-plus"> Empresa</span></button></p>
+	<br/>	
 
-	<div class="span6">
-		<div class="buttons-box">
-				<a class="btn btn-default button-orange" href="" data-toggle="modal" data-target="#companyCreate">
-					<span class="table-icon fa fa-plus">Empresa</span>
-				</a>	
-		</div>
-		<h4 class="widgettitle">Empresas
-		</h4>
-		<table id="dyntable" class="table table-bordered">
-		<tbody>
-			<tr>
-				<th>Nombre</th>
-				<th>Descripción</th>
-				<th>Editar</th>
-			</tr>
-			<tr class="" ng-repeat="company in companyDash">
-				<td>
-					<span ng-bind="company.name"></span>
-				</td>
-				<td>
-					<span ng-bind="company.description"></span>
-				</td>
-				<td>
-					<a href="/company/edit/{{company.id}}">
-						<span class="fa fa-edit"></span>
-					</a>
-				</td>
-			</tr>
-		</tbody>
-		</table>
-	</div>
+	<div directory-listing objects='companies' searchInput='searchInput' dir='companies' edit-url='/company/edit/' get-info='getInfo' ></div>
+
+	<div class="clearfix"></div>
+	
 
 	<%- partial('../global/notices') -%> 
 	<div class="fade modal" id="companyCreate">

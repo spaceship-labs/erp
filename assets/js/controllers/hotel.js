@@ -9,6 +9,16 @@ app.controller('hotelCTL',function($scope,$http){
         });
     
     };
+    $scope.getInfo = function(hotel){
+        var phones = hotel.phones ? hotel.phones.join(", ") : "";
+        return {
+            "Poblacion" : hotel.location.name,
+            "Direccion" : hotel.address,
+            "Telefonos" : phones,
+            "Creado" : hotel.createdAtString,
+        }
+
+    }
 });
 app.controller('hotelEditCTL',function($scope,$upload,$http){
     $scope.hotel = hotel;

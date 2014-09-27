@@ -27,28 +27,13 @@ module.exports = {
 			Common.view(res.view,{
 				 apps: sails.config.apps,
 				 users:users,
-				 alphabet : alphabets_company
+				 page:{
+					name:'Usuarios'
+					,icon:'fa fa-users'		
+					,controller : 'user.js'		
+				},
 			},req);
 		});			
-	}
-
-	, indexJson: function(req,res){
-		/*var find = {}
-		, select_company = req.session.select_company || req.user.select_company;
-		find['companies.'+select_company] ={$exists:1};
-		User.find(find).exec(function(err,users){
-			var alphabets_company = []
-			, index;
-
-			
-			
-						
-			Apps.find().exec(function(err,apps){
-				res.json(
-					alphabets_company
-				);
-			});
-		});*/
 	}
 
 	, all: function(req,res){
@@ -111,6 +96,11 @@ module.exports = {
 					 	  user:user
 						, select_company:select_company
 						, apps:apps
+						, page:{
+							name:'Usuarios'
+							,icon:'fa fa-users'		
+							,controller : 'user.js'		
+						}
 					},req);					
 				});
 			});
@@ -184,17 +174,7 @@ function timeFormat(date){
 }
 
 var update = {
-	icon: function(req,form,cb){
-		Common.updateIcon(req,{
-			form:form
-			,dirSave : __dirname+'/../../assets/uploads/users/'
-			,dirPublic:  __dirname+'/../../.tmp/public/uploads/users/'
-			,Model:User
-			,prefix:'177x171'
-			,dirAssets:'/uploads/users/'
-		},cb);
-	}
-	, apps:function(req,form,cb){
+	apps:function(req,form,cb){
 		var select_company = req.session.select_company || req.user.select_company
 		, update = {};
 		update[select_company] = form.apps || [];
