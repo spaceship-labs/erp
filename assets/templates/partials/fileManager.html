@@ -38,7 +38,7 @@
         	</div>
         	<div ng-repeat='file in loading' class='loader' >
         		<img src='/images/loaders/images-cm.gif' />
-        		<p>Cargando</p>
+        		<p>Cargando <span ng-bind='file'></span>%</p>
         	</div>
         	<div class='clearfix'></div>
         </div>

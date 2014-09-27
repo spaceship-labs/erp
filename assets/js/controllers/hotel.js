@@ -1,35 +1,14 @@
 app.controller('hotelCTL',function($scope,$http){
-    $scope.alphabet = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']; 
     $scope.hotels = hotels;
     $scope.locations = locations;
-    $scope.alphabetIndex = [];
-    $scope.hotels.forEach(function(hotel){
-        $scope.alphabetIndex.push(hotel.name[0].toUpperCase());
-    });
-    $scope.searchInputSelect = $scope.alphabetIndex[0];
     $scope.createHotel = function(){
         $http({method: 'GET', url: '/hotel/create',params:$scope.newHotel}).success(function (hotels){
             $scope.hotels = hotels;
-            $scope.hotels.forEach(function(hotel){
-                $scope.alphabetIndex.push(hotel.name[0].toUpperCase());
-            });
-            $scope.searchInputSelect = $scope.newHotel.name[0].toUpperCase();
+           // $scope.searchInputSelect = $scope.newHotel.name[0].toUpperCase();
             jQuery('#myModal').modal('hide');
         });
     
     };
-    $scope.hotelFilter = function(h){        
-        if($scope.searchInputSelect && !$scope.searchInput){
-            return $scope.searchInputSelect == h.name[0].toUpperCase();
-        }else{
-            var regex = new RegExp('^'+$scope.searchInput,'i');
-            var name = h.name;
-            return name.match(regex);
-        }
-    }
-    $scope.selectLetter = function(l){
-        if(l) $scope.searchInputSelect = l;
-    }
 });
 app.controller('hotelEditCTL',function($scope,$upload,$http){
     $scope.hotel = hotel;

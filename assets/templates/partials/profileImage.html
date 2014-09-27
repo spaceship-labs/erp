@@ -3,7 +3,7 @@
         <div class="btn-group">
             <button data-toggle="dropdown" class="btn dropdown-toggle">Opciones <span class="caret"></span></button>
             <ul class="dropdown-menu">
-                <li><a href="#" ng-file-select="updateIcon($files)" >Cambiar</a></li>
+                <li><a href="#" ng-file-select="updateIcon($files)" accept="image/*" >Cambiar</a></li>
                 <li><a class="confirmbutton" ng-href="{{deleteMethod}}/{{object.id}}">Eliminar</a></li> 
             </ul>
         </div>            
@@ -11,7 +11,12 @@
     </div>
     <div class="widgetcontent">
         <div class="profilethumb" style="background:none">
-            <img ng-src="{{object[imageAttr]}}" ng-alt="object.name">
+            <img ng-if='!loading && object[imageAttr].filename' ng-src="/uploads/{{dir}}/177x171{{object[imageAttr].filename}}" ng-alt="object.name">
+            <img ng-if='!loading && !object[imageAttr].filename' src='http://placehold.it/177x171' />  
+            <div ng-if='loading'>
+                <img src='/images/loaders/images-cm.gif' />
+                <p>Cargando <span ng-bind='loadingProgress'></span>%</p>
+            </div>
         </div>
     </div>
 </div>

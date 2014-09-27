@@ -104,11 +104,11 @@ module.exports = {
     		});
     	});
 	},
-	addFile : function(req,res){
+	addFiles : function(req,res){
 		form = req.params.all();
     	Hotel.findOne({id:form.id}).exec(function(e,hotel){
     		if(e) throw(e);
-    		hotel.addFile(req,{
+    		hotel.addFiles(req,{
     			dir : 'hotels/gallery',
     			profile: 'gallery'
     		},function(e,hotel){

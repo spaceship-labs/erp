@@ -16,54 +16,54 @@ module.exports.models = {
   migrate: 'safe',
   attributes : {
   	updateAvatar : function(req,opts,cb){
-  		opts.lastIcon = this.icon;
   		object = this;
-  		Files.saveFile(req,opts,function(e,filename){
-  			opts.fileName = filename.filename;
-  			Files.makeCrops(req,opts,function(e){
+  		Files.saveFiles(req,opts,function(e,files){
+        file = files[0];
+  			opts.filename = file.filename;
+  			Files.makeCrops(req,opts,function(e,crops){
   				if(e) throw(e);
-  				object.icon = opts.fileName;
+  				object.icon = file;
   				object.save(cb);
   			});
   		});
   	},
-  	addFile : function(req,opts,cb){
-  		object = this;
-  		files = object.files ? object.files : [];
-  		Files.saveFile(req,opts,function(e,filename){
-  			opts.fileName = filename.filename;
-  			var ext = filename.filename.split('.');
-  			files.push({
-  				filename : filename.filename,
-  				ext : ext[ext.length-1],
-  				name : filename.originalFilename,
-          size : filename.size,
-          type : filename.type,
-  			});
-  			object.files = files;
-  			// Todo, Condicional que esto se ejecute solo en imagenes;
-  			Files.makeCrops(req,opts,function(e){
-  				if(e) throw(e);
+  	addFiles : function(req,opts,cb){
+  		var async = require('async');
+      object = this;
+  		objectFiles = object.files ? object.files : [];
+  		Files.saveFiles(req,opts,function(e,files){
+  			if(e) return cb(e,files);
+        object.files = objectFiles;
+        async.mapSeries(files,function(file,callback){
+          objectFiles.push(file);
+          opts.filename = file.filename;
+          if(file.typebase == 'image')
+            Files.makeCrops(req,opts,callback);
+          else
+            callback(null,file);
+        },function(e,crops){
+          if(e) return cb(e,crops);
+          object.files = objectFiles;
           object.save(cb);
-  			});
+        });  			
   		});
   	},
     removeFiles : function(req,opts,cb){
-      object = this;      
-      files = opts.files ? opts.files : [];
+      var async = require('async');
+      var object = this;      
+      var files = opts.files ? opts.files : [];
       files = Array.isArray(files) ? files : [files];
-      files.forEach(function(file){
+      async.map(files,function(file,callback){
         opts.file = JSON.parse(file);
-        Files.removeFile(opts);
         for(var i = 0;i<object.files.length;i++){
           if(object.files[i].filename == opts.file.filename){
             object.files.splice(i,1);
-            //break;
           }
         }
+        Files.removeFile(opts,callback);
+      },function(e,files){
         object.save(cb);
       });
-
     },
   }
 };

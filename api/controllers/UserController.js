@@ -164,14 +164,13 @@ module.exports = {
     			dir : 'users',
     			profile: 'avatar'
     		},function(e,user){
+    			if(e) console.log(e);
     			res.json(formatUser(user));
     		});
     	});
 	}
 };
 function formatUser(user){
-	user.avatar = user.icon ? '/uploads/users/50x50'+user.icon : 'http://placehold.it/50x50';
-	user.avatar2 = user.icon ? '/uploads/users/177x171'+user.icon : 'http://placehold.it/177x171';
 	user.active = user.active?true:false;
 	return user;
 }
