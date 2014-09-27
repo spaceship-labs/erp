@@ -46,7 +46,6 @@ module.exports = {
 		product.createUser = req.user.id;
 		product.req = req;
 		Product_type.findOne({id:product.product_type}).exec(function(err,product_type){
-			//product.fields = product_type.fields;
 			Product.create(product).exec(function(e,product){
 				if(e) res.redirect('/product/');
 				else res.redirect('/product/edit/'+product.id);
@@ -207,7 +206,7 @@ module.exports = {
 	}
 	, list: function(req,res){
 		var select_company = req.session.select_company || req.user.select_company;
-		Product.find({company:select_company,user:req.user.id}).populate("product_type").exec(function(err,products){
+		Product.find({company:select_company}).populate("product_type").exec(function(err,products){
 			if(err) throw err;
 			Common.view(res.view,{
 				page:{

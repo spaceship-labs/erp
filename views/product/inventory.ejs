@@ -2,7 +2,6 @@
 <div class="widgetcontent nopadding">
     <form method="post" accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine" ng-submit="processInventory();">
         <input type='hidden' ng-value='product.id' name='pid' />
-        <% if (product_type.inventory_use) {%>
         <p>
             <label>Modificar</label>
             <span class="field">
@@ -13,7 +12,6 @@
             <label>Total </label>
             <span class="field" class="form-control">{{calculateTotalInventory()}}</span>
         </p>
-        <% } %>
         <p class="stdformbutton">
             <button class="btn btn-primary">Guardar</button>
         </p>

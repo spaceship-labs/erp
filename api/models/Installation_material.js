@@ -7,9 +7,11 @@ module.exports = {
         company : 'string',
         installations : {
             collection : 'Installation',
-            via : 'work_type'
+            via : 'materials'
         },
-        name : 'string'
+        product : {
+            model : 'Product'
+        }
     }
 
 };

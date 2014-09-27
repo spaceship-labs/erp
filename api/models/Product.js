@@ -8,6 +8,7 @@
 module.exports = {
 
   attributes: {
+    company : 'string',
 	product_type:{
 	    model:'product_type'
 	},

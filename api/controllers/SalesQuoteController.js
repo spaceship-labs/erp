@@ -19,21 +19,49 @@ module.exports = {
                     }
                 }
                 Product_type.find().populateAll().exec(function(err,product_types){
-                    if(err) throw err;
-                    Common.view(res.view,{
-                        moment:moment
-                        ,quote:quote
-                        ,products:products
-                        ,product_types:product_types
-                    },req);
+                    var select_company = req.session.select_company || req.user.select_company;
+                    Installation_crane.find({ company : select_company }).exec(function (err,cranes){
+                        Installation_material.find({ company : select_company }).populate('product').exec(function (err,materials){
+                                Installation_tool.find({ company : select_company }).populate('product').exec(function (err,tools){
+                                    Installation_work_type.find({ company : select_company }).exec(function (err,work_types){
+                                        Installation_zone.find({ company : select_company }).exec(function (err,zones){
+                                            if(err) throw err;
+                                            Common.view(res.view,{
+                                                page:{
+                                                    description:'editar'
+                                                    ,icon:'fa fa-database'
+                                                    ,name:('Cotizacion ' + quote.id)
+                                                },
+                                                moment:moment
+                                                ,quote:quote
+                                                ,products:products
+                                                ,product_types:product_types
+                                                ,cranes : cranes || []
+                                                ,materials : materials || []
+                                                ,tools : tools || []
+                                                ,work_types : work_types || []
+                                                ,zones : zones || {}
+                                            },req);
+                                        });
+                                    });
+                                });
+                        });
+                    });
                 });
+
             });
 	    });
     }
 
     , index: function(req,res){
 	   	SaleQuote.find().populateAll().exec(function(err,quotes){
+            if(err) throw err;
 			Common.view(res.view,{
+                page:{
+                    description:'listado de cotizaciones'
+                    ,icon:'fa fa-database'
+                    ,name:'Cotizaciones'
+                },
 				quotes:quotes
 				,moment:moment			
 			},req);				

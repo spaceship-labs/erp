@@ -22,9 +22,9 @@
                               <label for="name">Nombre*</label>
                               <span class="field"><input type="text" name="name" class="input-large" ng-model='product_type.name'></span>
                           </p>
-                          <p><label for="app">Tipo de venta*</label>
+                          <p><label>Tipo de venta*</label>
                             <span class="field">
-                                <select name='sales_type' class=' form-control large' data-placeholder="Escoger tipo" ng-model='product_type.sales_type' ng-options='k as l for (k,l) in  sales_type' chosen>
+                                <select class='form-control' data-placeholder="Escoger tipo" ng-model='product_type.sales_type' ng-options='k as l for (k,l) in  sales_type' chosen>
                                 </select>
                             </span>
                           </p>

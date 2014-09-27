@@ -1,10 +1,16 @@
 <script type='text/javascript'>
 	window.products = <%- JSON.stringify(products) %>;
     window.product_types = <%- JSON.stringify(product_types) %>;
+    window.cranes = <%- JSON.stringify(cranes) %>;
+    window.materials = <%- JSON.stringify(materials) %>;
+    window.tools = <%- JSON.stringify(tools) %>;
+    window.work_types = <%- JSON.stringify(work_types) %>;
+    window.zones = <%- JSON.stringify(zones) %>;
 </script>
 <div ng-controller="saleCTL">
     <div class="row-fluid">
         <%- partial('../product/selectorAdd') %>
+        <%- partial('../installation/add-modal') %>
     	<div class="col-md-4">
 	        <h4 class="widgettitle"><span class="fa fa-user"></span> Cliente </h4>
 	        <div class="widgetcontent main-client">
