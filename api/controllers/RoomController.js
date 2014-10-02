@@ -12,7 +12,6 @@ module.exports = {
 	    		if(e) throw(e);
     			Season.find({hotel:room.hotel.id}).exec(function(e,seasons){
     				if(e) throw(e);
-		    		room = formatRoom(room);
 					Common.view(res.view,{
 						room:room,
 						seasons:seasons,
@@ -50,17 +49,10 @@ module.exports = {
     	var form = req.params.all();
     	var id = form.id;
     	form.req = req;
-    	delete form.id;
-    	delete form.hotel;
-    	delete form.createdAt;
-    	delete form.updatedAt;
-    	delete form.avatar;
-    	delete form.avatar2;
     	Room.update({id:id},form,function(e,room){
     		if(e) throw(e);
     		Room.findOne(room[0].id).populate('hotel').exec(function(e,room){
     			if(e) throw(e);
-    			room = formatRoom(room);	
     			res.json(room);
     		});
     	});
@@ -77,12 +69,5 @@ module.exports = {
 			res.json(room);
 		});
 	}
+
 };
-function formatRoom(room){
-	if(room){
-		room.avatar = room.icon ? '/uploads/rooms/'+room.icon : 'http://placehold.it/50x50';
-		room.avatar2 = room.icon ? '/uploads/rooms/177x171'+room.icon : 'http://placehold.it/177x171';
-		return room;
-	}else
-		return false;
-}

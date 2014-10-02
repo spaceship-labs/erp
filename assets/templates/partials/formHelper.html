@@ -1,0 +1,19 @@
+<div class="widgetbox personal-information">
+	<h4 class="widgettitle">{{formTitle}} <span ng-click='save()'  class='fa icon' ng-class='saveClass'></span></h4>
+	<form class="widgetcontent nopadding form stdform stdform2" action='' name='form' method='post' >
+		<p ng-repeat='field  in fields'>
+	        <label ng-bind='field.label'></label>
+	        <span class="field">
+	            <textarea 
+	            	ng-if='field.type == "textarea"' 
+	            	name='{{field.handle}}' 
+	            	class='form-control' 
+	            	ng-model='object[field.handle]'
+	            	ng-required='field.required'>
+	            </textarea>
+	            <input type='text' ng-if='field.type == "text"' name='{{field.handle}}' class='form-control' ng-model='object[field.handle]' />
+	            <input type='checkbox' ng-if='field.type == "checkbox"' name='{{field.handle}}' class='' ng-checked='object[field.handle]' ng-model='object[field.handle]' />
+	        </span>
+	    </p>
+	</form>
+</div>

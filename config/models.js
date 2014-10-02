@@ -32,7 +32,10 @@ module.exports.models = {
           opts.filename = object.icon.filename;
           Files.makeCrops(req,opts,callback)
         },
-        function(crops,callback){Files.removeFile(opts,callback)},
+        function(crops,callback){
+          if(opts.file) Files.removeFile(opts,callback);
+          else callback(null,crops);
+        },
       ],function(e,results){
         if(e) console.log(e);
         object.save(cb);

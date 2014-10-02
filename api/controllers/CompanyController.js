@@ -91,16 +91,14 @@ module.exports = {
 	}
 	,updateIcon: function(req,res){
     	form = req.params.all();
-    	Company.findOne({id:form.id}).exec(function(e,company){
-    		if(e) throw(e);
-    		company.updateAvatar(req,{
-    			dir : 'companies',
-    			profile: 'avatar'
-    		},function(e,company){
-    			if(e) console.log(e);
-    			res.json(company);
-    		});
-    	});
+		Company.updateAvatar(req,{
+			dir : 'companies',
+			profile: 'avatar',
+			id : form.id,
+		},function(e,company){
+			if(e) console.log(e);
+			res.json(company);
+		});
 	}
 };
 

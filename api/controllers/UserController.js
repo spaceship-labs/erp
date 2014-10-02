@@ -148,16 +148,14 @@ module.exports = {
 	}
 	, updateIcon: function(req,res){
     	form = req.params.all();
-    	User.findOne({id:form.id}).exec(function(e,user){
-    		if(e) throw(e);
-    		user.updateAvatar(req,{
-    			dir : 'users',
-    			profile: 'avatar'
-    		},function(e,user){
-    			if(e) console.log(e);
-    			res.json(formatUser(user));
-    		});
-    	});
+		User.updateAvatar(req,{
+			dir : 'users',
+			profile: 'avatar',
+			id : form.id,
+		},function(e,user){
+			if(e) console.log(e);
+			res.json(formatUser(user));
+		});
 	}
 };
 function formatUser(user){

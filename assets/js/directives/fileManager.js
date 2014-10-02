@@ -18,6 +18,7 @@
             	$scope.loading[0] = parseInt(100.0 * evt.loaded / evt.total);
             }).success(function(data, status, headers, config) {
                 $scope.object.files = data.files;
+            	$scope.page = Math.ceil($scope.object.files.length/$scope.pageLength) -1;
                 $scope.loading.splice(0, 1);
             });
 		}

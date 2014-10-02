@@ -36,6 +36,7 @@ module.exports.content = {
 			label : 'Nombre Español',
 			type : 'text',
 			handle : 'name_es',
+			required : true,
 		},
 		{
 			label : 'Nombre Ingles',
