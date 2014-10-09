@@ -1,0 +1,8 @@
+<ul class="breadcrumbs">
+	<li><a href="/"><i class="fa fa-home"></i></a> <span class="separator"></span></li>	
+	<li ng-repeat='crumb in breadcrumb'>
+		<a ng-if='crumb.url' ng-href='{{crumb.url}}' ng-bind='crumb.label'></a>
+		<span ng-if='!crumb.url' ng-bind='crumb.label'></span>
+		<span ng-if='crumb.url' class='separator'></span>
+	</li>
+</ul>

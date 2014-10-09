@@ -16,8 +16,12 @@ module.exports = {
 					page:{
 						name:'Hoteles'
 						,icon:'fa fa-building'		
-						,controller : 'hotel.js'		
-					}
+						,controller : 'hotel.js'
+							
+					},
+					breadcrumb : [
+						{label : 'Hoteles'}
+					]
 				},req);
 			});
 		});
@@ -36,8 +40,12 @@ module.exports = {
 						page:{
 							name : hotel.name,
 							icon : 'fa fa-building',		
-							controller : 'hotel.js',		
-						}
+							controller : 'hotel.js',			
+						},
+						breadcrumb : [
+							{label : 'Hoteles', url : '/hotel/'},
+							{label : hotel.name}
+						]
 					},req);
 				});
 		   	});
