@@ -1,5 +1,5 @@
 <div class="widgetbox personal-information">
-	<h4 class="widgettitle">{{formTitle}} <span ng-click='save()'  class='fa icon' ng-class='saveClass'></span></h4>
+	<h4 ng-if='formTitle' class="widgettitle">{{formTitle}} <span ng-click='save()'  class='fa icon' ng-class='saveClass'></span></h4>
 	<form class="widgetcontent nopadding form stdform stdform2" action='' name='form' method='post' >
 		<p ng-repeat='field  in fields'>
 	        <label ng-bind='field.label'></label>
@@ -15,5 +15,9 @@
 	            <input type='checkbox' ng-if='field.type == "checkbox"' name='{{field.handle}}' class='' ng-checked='object[field.handle]' ng-model='object[field.handle]' />
 	        </span>
 	    </p>
+	    <p ng-if='formFooter' class="stdformbutton">
+            <button ng-click='save()' class="btn btn-primary">{{formFooter}}</button>
+            <button type="reset" class="btn">Resetear</button>
+        </p>
 	</form>
 </div>

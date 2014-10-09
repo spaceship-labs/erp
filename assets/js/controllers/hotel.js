@@ -31,11 +31,10 @@ app.controller('hotelEditCTL',function($scope,$upload,$http){
     $scope.saveClass = 'fa-save';
     $scope.showRoomForm = false;
     $scope.newRoomClass = 'fa-plus';
-    $scope.room = {};
     $scope.showSeasonForm = false;
     $scope.newSeasonClass = 'fa-plus';
     $scope.newSeason = {};
-
+    $scope.room = {};
     $scope.dateOptions = {
         formatYear: 'yy',
         startingDay: 1
@@ -49,13 +48,12 @@ app.controller('hotelEditCTL',function($scope,$upload,$http){
         $scope.showSeasonForm = !$scope.showSeasonForm;
         $scope.newSeasonClass = $scope.showSeasonForm ? 'fa-minus' : 'fa-plus';
     }
-    $scope.addRoom = function(){
-        $scope.room.hotel = $scope.hotel.id;
+    $scope.addRoom = function(room){
+        room.hotel = $scope.hotel.id;
         $scope.newRoomClass = 'fa-upload';
         $scope.showRoomForm = false;
-        $http({method: 'POST', url: '/hotel/addRoom',params:$scope.room}).success(function(hotel){
-            $scope.hotel = hotel;
-            $scope.phones = JSON.parse(JSON.stringify(hotel.phones));
+        $http({method: 'POST', url: '/hotel/addRoom',params:room}).success(function(hotel){
+            $scope.hotel.rooms = hotel.rooms;
             $scope.newRoomClass = 'fa-plus';
         });
     }

@@ -45,13 +45,13 @@
             <div class="widgetbox">
                 <h4 class="widgettitle">Habitaciones <span ng-click='toggleRoomForm()'  class='fa icon' ng-class='newRoomClass'></span>  </h4>
                 <div ng-show='showRoomForm'>
-                    <form class="widgetcontent nopadding form stdform stdform2" action='' method='post' >
-                        <%-partial('../room/forms/content')%>
-                        <p class="stdformbutton">
-                            <button ng-click='addRoom()' class="btn btn-primary">Agregar Habitacion</button>
-                            <button type="reset" class="btn">Resetear</button>
-                        </p>
-                    </form>
+                    <div form-helper 
+                        fields='_content.room' 
+                        form-footer='Agregar Habitacion'
+                        form-save = 'addRoom'
+                        object = 'room'
+                        >
+                    </div>
                 </div>
                 <div ng-show='hotel.rooms.length'>
                     <%-partial('../room/rooms')%>
