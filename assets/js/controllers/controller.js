@@ -8,6 +8,10 @@ app.directive('chosen',function(){
             element.trigger('liszt:updated');
             element.trigger('chosen:updated');
         });
+       scope.$watch(attrs['ngModel'],function(){
+           element.trigger('liszt:updated');
+           element.trigger('chosen:updated');
+       });
         element.chosen();
    };
 
@@ -19,19 +23,40 @@ app.directive('chosen',function(){
 
 app.controller('companyEditCTL',function($scope){
     $scope.company = company;
-    $scope.apps = apps;
+    $scope.allApps = apps;
+    $scope.apps = [];
+
+    var updateApps = function(){
+        angular.forEach($scope.allApps,function(app){
+            if ($scope.company.apps.indexOf(app.name) == -1) {
+                $scope.apps.push(app);
+            }
+        });
+        console.log($scope.apps);
+    };
+
     $scope.removeApp = function(app){
         io.socket.post('/company/removeApp',{company:company.id,app:app},function(company){
             $scope.company = company;
+            updateApps();
             $scope.$apply();
         });
     };
     $scope.addApp = function(app){
         io.socket.post('/company/addApp',{company:company.id,app:app},function(company){
             $scope.company = company;
+            updateApps();
             $scope.$apply();
         });
     };
+
+    $scope.alreadyOnList = function(item) {
+        //if ($scope.company.apps.contains(item))
+        //    return true;
+        return true;
+    };
+
+    updateApps();
 
 });
 
@@ -61,38 +86,70 @@ app.controller('userCTL',function($scope){
 	}
 });
 
-app.controller('userEditCTL',function($scope){
+app.controller('userEditCTL',function($scope,$http){
 	$scope.user = user;
+    $scope.apps = apps;
+    $scope.submited_pass_form = false;
 	var id = user.id;
 	$scope.updateAccestList = function(){
 		io.socket.get('/user/editAjax/',{
 			method:'accessList'
 			,userId:id
 			,accessList:$scope.user.accessList
+            ,admin:$scope.user.isAdmin
 		},function(data){
 			var alt = jQuery('.alert p');
 			alt.text(data.msg).parent().show();
 		});
-	}
+	};
+
+    $scope.updateInfo = function(){
+        $http.post('/user/updateInfo/',{
+            userId:id
+            ,name:$scope.user.name
+            ,last_name:$scope.user.last_name
+            ,phone:$scope.user.phone
+            ,email:$scope.user.email
+            ,active:$scope.user.active
+        },{}).success(function(data){
+            var alt = jQuery('.alert p');
+            alt.text(data.text).parent().show();
+        });
+    };
+
+    $scope.updatePassword = function(){
+        console.log("entre");
+        if ($scope.old_password && $scope.new_password && $scope.new_password == $scope.new_password_v && $scope.new_password != $scope.old_password) {
+            $http.post('/user/updatePassword/',{
+                userId:id
+                ,old_password:$scope.old_password
+                ,new_password:$scope.new_password
+            },{}).success(function(data){
+                var alt = jQuery('.alert p');
+                alt.text(data.text).parent().show();
+            });
+        } else {
+            console.log("damn");
+            console.log($scope.old_password);
+            console.log($scope.new_password.$valid);
+            console.log($scope.new_password_v);
+        }
+    };
+
+    $scope.filterPermissionsApp = function(app){
+        if (app.permissions) return true;
+        return false;
+    }
+
 });
 
 app.controller('createCompanyCTL',function($scope){
-	/*
-	var update = function(){
-		jQuery.get('/company/indexJson',function(data){
-			if(data){
-				$scope.companyDash = data;
-				$scope.$apply();
-			}
-		});
-	};
-	//update();
-	*/
 	jQuery('.companyCreate').ajaxForm(function(data){
-		var alt = jQuery('.userAlert p');
-		alt.text(data.msg).parent().show();
-		jQuery(window).scrollTop(alt.parent().position().top-10);
-		update();
+        if(data){
+            jQuery('.alert p').text(data.text).parent().removeClass('unseen');
+            if(data.url)
+                window.location.href = data.url;
+        }
 	});
 	updateNotices($scope,'/home/noticeSuscribeApp',{app:'company'});
 	$scope.companyDash = companyDash;
@@ -144,7 +201,7 @@ app.controller('noticeCTL',function($scope){
 });
 
 app.controller('fieldCTL',function($scope,$http){
-	$scope.product = product;//TODO reemplazar por product_type , tambien hay que actualizar la view
+	$scope.product = product;//TODO reemplazar nombre por product_type , tambien hay que actualizar la view
     $scope.new_field = { product_type : $scope.product.id };
     $scope.field_types = types;
 
@@ -321,7 +378,7 @@ app.controller('saleAddCTL',function($scope,$http) {
             products : $scope.selectedProducts,
             client : $scope.client.id
         };
-        $http.post('/ventas/crear',dataObject, {}).success(showResponse);
+        $http.post('/SalesQuote/add',dataObject, {}).success(showResponse);
     };
 
     $scope.totalPrice = function (){
@@ -527,9 +584,6 @@ app.controller('productTypeCTL',function($scope,$http){
             jQuery('.alert p').text(data.text).parent().removeClass('unseen');
             if(data.url)
                 window.location.href = data.url;
-            $scope.product_types.push(data);
-            $scope.product_type.inventory_use = false;
-            console.log($scope.product_type);
         }
     };
 
@@ -578,6 +632,7 @@ app.controller('installationConfigCTL',function($scope,$http){
     $scope.work_types = window.work_types;
     $scope.zones = window.zones;
     $scope.products = window.products;
+    $scope.hours = window.hours;
 
     for (var i=0;i<$scope.products.length;i++) {
         for (var ti=0;ti<$scope.tools.length;ti++) {
@@ -634,6 +689,7 @@ app.controller('installationConfigCTL',function($scope,$http){
         }
     };
     $scope.deleteMaterial = function(index) {
+        $scope.products.push($scope.materials[index].product);
         $scope.materials.splice(index,1);
     };
 
@@ -643,7 +699,7 @@ app.controller('installationConfigCTL',function($scope,$http){
     };
     $scope.addTool = function() {
         if ($scope.selected_tool && $scope.selected_tool.id) {
-            $scope.tools.push({ product : $scope.selected_tool });
+            $scope.tools.push({product :$scope.selected_tool });
             var index = $scope.products.indexOf($scope.selected_tool);
             $scope.products.splice(index,1);
             $scope.selected_tool = {};
@@ -653,6 +709,7 @@ app.controller('installationConfigCTL',function($scope,$http){
 
     };
     $scope.deleteTool = function(index) {
+        $scope.products.push($scope.tools[index].product);
         $scope.tools.splice(index,1);
     };
 
@@ -661,13 +718,27 @@ app.controller('installationConfigCTL',function($scope,$http){
         $http.post('/installation/update_work_types',{ work_types : $scope.work_types}, {}).success(showResponse);
     };
     $scope.addWorkType = function() {
-        $scope.work_types.push({
+        $scope.hours.push({
             name : '',
             price : 0.0
         });
     };
     $scope.deleteWorkType = function(index) {
         $scope.work_types.splice(index,1);
+    };
+
+    //hours
+    $scope.processHours = function(){
+        $http.post('/installation/update_hours',{ hours : $scope.hours}, {}).success(showResponse);
+    };
+    $scope.addHour = function() {
+        $scope.hours.push({
+            name : '',
+            price : 0.0
+        });
+    };
+    $scope.deleteHour = function(index) {
+        $scope.hours.splice(index,1);
     };
 
     //zones
@@ -698,7 +769,7 @@ app.controller('installationAddCTL',function($scope,$http) {
     $scope.installation.materials = [];
     $scope.installation.tools = [];
     $scope.installation.extras = [];
-
+    $scope.step = 1;
 
 
     for (var i=0;i<$scope.products.length;i++) {
@@ -786,6 +857,23 @@ app.controller('installationAddCTL',function($scope,$http) {
         $scope.installation.extras.splice(index,1);
     };
 
+    $scope.setStep = function(step) {
+        $scope.step = step;
+    };
+
+    //calendar stuff
+    $scope.openedCalendar = false;
+    $scope.minDate = new Date();
+    $scope.formatDate = "dd-MM-yyyy";//['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'
+    $scope.openCalendar = function($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope.openedCalendar = true;
+    };
+
+    $scope.dateOptions = {
+        showWeeks : false
+    };
 });
 
 function updateNotices($scope,url,dt,cb){

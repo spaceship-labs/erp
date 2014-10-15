@@ -9,13 +9,14 @@ module.exports = {
 
     index : function(req,res){
         var select_company = req.session.select_company || req.user.select_company;
-        Client_.find({ company : select_company }).exec(function (err,clients){
+        Client_.find({ company : select_company }).populateAll().exec(function (err,clients){
             Common.view(res.view,{
                 page:{
                     icon:'fa fa-users'
                     ,name:'Clientes'
                 },
-                clients : clients || []
+                clients : clients || [],
+                client : { name:'',address : '',rfc : '',phone : '' }
             },req);
         });
 
@@ -36,7 +37,7 @@ module.exports = {
         var id = req.param('id');
         var company = req.session.select_company || req.user.select_company;
         if (id){
-            Client_.findOne({id:id,company : company }).populate('sales').exec(function(err,client_){
+            Client_.findOne({id:id,company : company }).populateAll().exec(function(err,client_){
                 Common.view(res.view,{
                     page:{
                         icon:'fa fa-users'

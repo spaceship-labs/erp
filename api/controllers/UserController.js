@@ -84,7 +84,7 @@ module.exports = {
 		Company.findOne({id:select_company}).exec(function(err,company){
 			if(err) return res.json(response);
 			User.create(form).exec(function(err,user){
-				user.createAccessList(company.apps);
+				//user.createAccessList(company.apps);
 				if(err) return res.json(response);
 				user.companies.add(company.id);
 				user.setPassword(password);
@@ -96,7 +96,6 @@ module.exports = {
 			});	
 		});
 	}
-
 	, edit: function(req,res){
 		var id
 		, select_company = req.session.select_company || req.user.select_company;
@@ -105,16 +104,13 @@ module.exports = {
 				if(err) return null;
 				user.avatar2 = user.icon ? '/uploads/users/177x171'+user.icon : 'http://placehold.it/177x171';
 				user.active = user.active?true:false;
-				App.find().exec(function(err,apps){
-					if(err) return;
-					Common.view(res.view,{
-					 	  user:user
-						, select_company:select_company
-						, apps:apps
-					},req);					
-				});
+                Common.view(res.view,{
+                      user:user
+                    , select_company:select_company
+                    , apps:sails.config.apps
+                    , req : req
+                },req);
 			});
-		
 		}
 	}
 	, editJson: function(req,res){
@@ -133,7 +129,7 @@ module.exports = {
 								var tmp = {
 									  name:apps[i].name
 									, ctl:apps[i].controller
-								}
+								};
 								user.apps.push(tmp);
 								notApp.push(tmp.ctl)
 							}
@@ -149,15 +145,25 @@ module.exports = {
 					});
 				});
 			});
-		
 		}
 	}
-
 	, editAjax: function(req,res){
 		Common.editAjax(req,res,update);
 	}
-	, updateIcon: function(req,res){
-    	form = req.params.all();
+    ,updateInfo : function(req,res){
+        var userId = req.param('userId');
+        var form = {name : req.param('name'),last_name : req.param('last_name'),phone : req.param('phone'),email : req.param('email'),active : req.param('active')};
+        if (userId && form) {
+            User.update({ id : userId},form).exec(function(err,user){
+               if (err) res.json({ text : err.message });
+               res.json({text : 'perfil actualizado con exito'});
+            });
+        } else {
+            res.forbidden();
+        }
+    }
+	,updateIcon: function(req,res){
+    	var form = req.params.all();
     	User.findOne({id:form.id}).exec(function(e,user){
     		if(e) throw(e);
     		user.updateAvatar(req,{
@@ -168,6 +174,30 @@ module.exports = {
     		});
     	});
 	}
+    ,updatePassword : function(req,res){
+        var userId = req.param('userId');
+        var new_password = req.param('new_password');
+        var old_password = req.param('old_password');
+
+        if (userId) {
+            User.findOne({ id : userId}).exec(function(err,user){
+                if (err) res.json({ text : err.message });
+                bcrypt.compare(old_password,user.password, function(err, resCompare) {
+                    if (err || !resCompare) {
+                        res.json({text : 'error contraseña invalida',resCompare : resCompare,err : err});
+                        return;
+                    }
+                    user.setPassword(new_password);
+                    User.update({id : userId},{ password : user.password }).exec(function(err,userAux){
+                        if (err) res.json({text : 'error contraseña invalida',err : err});
+                        res.json({text : 'perfil actualizado con exito!'});
+                    });
+                });
+            });
+        } else {
+            res.forbidden();
+        }
+    }
 };
 function formatUser(user){
 	user.avatar = user.icon ? '/uploads/users/50x50'+user.icon : 'http://placehold.it/50x50';

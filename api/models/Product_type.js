@@ -8,15 +8,21 @@
 module.exports = {
 
 	attributes: {
-		name:'string'
+		name:{
+            type : 'string',
+            required : true
+        }
 		,sales_type:{
-            model : 'Sales_type'
+            model : 'Sales_type',
+            required : true
         }
 		,fields: {
             collection : 'custom_fields',
             via : 'product_type'
         }
-		,company:'string'
+		,company:{
+            model : 'Company'
+        }
 		,user:{
             model : 'User'
         }

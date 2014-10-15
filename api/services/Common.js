@@ -33,15 +33,16 @@ module.exports.view = function(view,data,req){
 
 module.exports.renderMenu = function(req){
 	var menu = "";
-	for(x in req.user.accessList){
-		var app = sails.config.apps[x];
-		menu += "<li class='dropdown'><a href=''><span class='fa "+app.icon+"'></span>"+app.label+"</a><ul>";
-		for(route in app.views){
-			var view = app.views[route];
-			menu += "<li><a href='"+route+"'><span class='fa "+view.icon+"'></span> "+view.label+"</a></li>";
-		}
-		menu += "</ul></li>";
-	};
+    _.each(sails.config.apps,function(app){
+        menu += "<li class='dropdown'><a href=''><span class='fa "+app.icon+"'></span>"+app.label+"</a><ul>";
+        for(route in app.views){
+            var view = app.views[route];
+            if (req.user.hasPermission(view.permission)) {
+                menu += "<li><a href='"+route+"'><span class='fa "+view.icon+"'></span> "+view.label+"</a></li>";
+            }
+        }
+        menu += "</ul></li>";
+    });
 	return menu;
 };
 
@@ -143,6 +144,7 @@ module.exports.editAjax = function(req,res,update){
 	var form = req.params.all();
 	form.req = req;
 	if(form.userId){
+        console.log(update);
 		if(form.method in update)
 			update[form.method](req,form,function(err,data){
 				var data = {

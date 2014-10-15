@@ -12,9 +12,9 @@ module.exports = {
 			Currency.find().exec(function(err,currencies){
 				sails.controllers.company.indexJson(req,res,function(comp){
 					Common.view(res.view,{
-						apps:apps || []
-						,currencies:currencies || []
-						,comp:comp
+                         apps: sails.config.apps,
+						 currencies:currencies || [],
+						 comp:comp
 					},req);				
 				});
 				

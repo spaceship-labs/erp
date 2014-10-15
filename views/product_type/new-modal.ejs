@@ -20,11 +20,11 @@
                   <div class="widgetcontent nopadding">
                           <p>
                               <label for="name">Nombre*</label>
-                              <span class="field"><input type="text" name="name" class="input-large" ng-model='product_type.name'></span>
+                              <span class="field"><input type="text" name="name" class="input-large" required ng-model='product_type.name'></span>
                           </p>
                           <p><label>Tipo de venta*</label>
                             <span class="field">
-                                <select class='form-control' data-placeholder="Escoger tipo" ng-model='product_type.sales_type' ng-options='k as l for (k,l) in  sales_type' chosen>
+                                <select class='form-control' data-placeholder="Escoger tipo" ng-model='product_type.sales_type' required ng-options='k as l for (k,l) in  sales_type' chosen>
                                 </select>
                             </span>
                           </p>
@@ -33,16 +33,16 @@
                               <span class="field"><input type="text" name="description" class="input-large" ng-model='product_type.description'></span>
                           </p>
                           <p>
-                              <label for="inventory_use">Inventariado ?</label>
+                              <label for="inventory_use" style="cursor:pointer;">Inventariado ?</label>
                               <span class="field">
                                   <input type="checkbox" name="inventory_use" id="inventory_use" class="input-large" ng-model='product_type.inventory_use'>
                               </span>
                           </p>
                           <p ng-show="product_type.inventory_use == true" class="ng-hide">
                               <label for="inventory_type">Unidad de inventario</label>
-                                      <span class="field">
-                                          <select type="text" data-placeholder="Escoger unidad" name="inventory_type" class="input-large" ng-options='k as l for (k,l) in  inventory_types' ng-model='product_type.inventory_type' chosen></select>
-                                      </span>
+                                  <span class="field">
+                                      <select type="text" data-placeholder="Escoger unidad" name="inventory_type" class="input-large" ng-options='k as l for (k,l) in  inventory_types' ng-model='product_type.inventory_type' chosen></select>
+                                  </span>
                           </p>
                   </div>
               </div>

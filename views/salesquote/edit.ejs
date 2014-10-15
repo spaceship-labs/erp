@@ -6,6 +6,7 @@
     window.tools = <%- JSON.stringify(tools) %>;
     window.work_types = <%- JSON.stringify(work_types) %>;
     window.zones = <%- JSON.stringify(zones) %>;
+    window.hours = <%- JSON.stringify(hours) %>;
 </script>
 <div ng-controller="saleCTL">
     <div class="row-fluid">
@@ -16,8 +17,7 @@
 	        <div class="widgetcontent main-client">
 	            <img src="http://placehold.it/80x80" class="pull-left" alt="avatar" width="80">
 	            <div class="client-info">
-	                <p><strong><a href="/clients/edit/<%- quote.client.id %>>"><%= quote.client.name %></a></strong></p>
-	                <p><strong>Compañia: </strong><%= quote.client.company %></p>
+	                <p><strong><a href="/clients/edit/<%- quote.client.id %>"><%= quote.client.name %></a></strong></p>
 	                <p><strong>Direccion: </strong><%= quote.client.address %></p>
 	                <p><strong>Telefono: </strong><%= quote.client.phone %></p>
 	            </div>

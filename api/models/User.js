@@ -5,6 +5,9 @@
 * @docs        :: http://sailsjs.org/#!documentation/models
 */
 
+var bcrypt = require('bcrypt');
+var async = require('async');
+
 module.exports = {
 
 	attributes: {
@@ -31,45 +34,42 @@ module.exports = {
 			via: 'users',
 			dominant: false
 		}
+        ,isAdmin : 'boolean'
+        ,permissions : 'array'
+        ,lastLogin : 'datetime'
 		,setPassword : function(val,cb){
-			var bcrypt = require('bcrypt');
 			this.password = bcrypt.hashSync(val,bcrypt.genSaltSync(10));
 			this.save(cb);
 		}
-		,createAccessList : function(apps,company,cb){
-			require('async');
-			var ac = {};
+		,createAccessList : function(apps,cb){
+			var permissions = [];
 			var user = this;
 			async.map(
 				apps,
 				function(app,callback){
 					var app_config = sails.config.apps[app];
-					var views = {};
-					for(var key in app_config.views){
-						views[key] = {
-							label : app_config.views[key].label,
-							route : key,
-							permissions : {
-								create : true,
-								update : true,
-								delete : true
-							}
-						}
+					for(var key in app_config.permissions){
+						permissions.push(key.handle);
 					}
-					var app_ac = {
-						permission : true,
-						label : app_config.label,
-						views : views,
-					};
-					ac[app] = app_ac;
-					callback(null,app_ac);
+					callback();
 				},
-				function(e,r){
-					user.accessList = ac;
+				function(){
+					user.accessList = permissions;
 					user.save(cb);
 				}
 			);
-		}
+		},
+        hasPermission : function(permission) {
+            if (this.isAdmin) return true;
+            if (this.permissions) {
+                this.permissions.forEach(function(p){
+                    if (p == permission) {
+                        return true;
+                    }
+                });
+            }
+            return false;
+        }
 	}
 	,afterCreate: function(val,cb){
 		Notifications.after(User,val,'create');

@@ -17,7 +17,7 @@ module.exports = {
   	app : {
   		model : 'app'
   	},
-    access_list : 'json',
+    access_list : 'json'
   }
 };
 
