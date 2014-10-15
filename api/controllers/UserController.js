@@ -27,28 +27,13 @@ module.exports = {
 			Common.view(res.view,{
 				 apps: sails.config.apps,
 				 users:users,
-				 alphabet : alphabets_company
+				 page:{
+					name:'Usuarios'
+					,icon:'fa fa-users'		
+					,controller : 'user.js'		
+				},
 			},req);
 		});			
-	}
-
-	, indexJson: function(req,res){
-		/*var find = {}
-		, select_company = req.session.select_company || req.user.select_company;
-		find['companies.'+select_company] ={$exists:1};
-		User.find(find).exec(function(err,users){
-			var alphabets_company = []
-			, index;
-
-			
-			
-						
-			Apps.find().exec(function(err,apps){
-				res.json(
-					alphabets_company
-				);
-			});
-		});*/
 	}
 
 	, all: function(req,res){
@@ -104,12 +89,19 @@ module.exports = {
 				if(err) return null;
 				user.avatar2 = user.icon ? '/uploads/users/177x171'+user.icon : 'http://placehold.it/177x171';
 				user.active = user.active?true:false;
-                Common.view(res.view,{
-                      user:user
-                    , select_company:select_company
-                    , apps:sails.config.apps
-                    , req : req
-                },req);
+				App.find().exec(function(err,apps){
+					if(err) return;
+					Common.view(res.view,{
+					 	  user:user
+						, select_company:select_company
+						, apps:apps
+						, page:{
+							name:'Usuarios'
+							,icon:'fa fa-users'		
+							,controller : 'user.js'		
+						}
+					},req);					
+				});
 			});
 		}
 	}
@@ -162,17 +154,16 @@ module.exports = {
             res.forbidden();
         }
     }
-	,updateIcon: function(req,res){
-    	var form = req.params.all();
-    	User.findOne({id:form.id}).exec(function(e,user){
-    		if(e) throw(e);
-    		user.updateAvatar(req,{
-    			dir : 'users',
-    			profile: 'avatar'
-    		},function(e,user){
-    			res.json(formatUser(user));
-    		});
-    	});
+	, updateIcon: function(req,res){
+    	form = req.params.all();
+		User.updateAvatar(req,{
+			dir : 'users',
+			profile: 'avatar',
+			id : form.id,
+		},function(e,user){
+			if(e) console.log(e);
+			res.json(formatUser(user));
+		});
 	}
     ,updatePassword : function(req,res){
         var userId = req.param('userId');
@@ -200,8 +191,6 @@ module.exports = {
     }
 };
 function formatUser(user){
-	user.avatar = user.icon ? '/uploads/users/50x50'+user.icon : 'http://placehold.it/50x50';
-	user.avatar2 = user.icon ? '/uploads/users/177x171'+user.icon : 'http://placehold.it/177x171';
 	user.active = user.active?true:false;
 	return user;
 }
@@ -215,17 +204,7 @@ function timeFormat(date){
 }
 
 var update = {
-	icon: function(req,form,cb){
-		Common.updateIcon(req,{
-			form:form
-			,dirSave : __dirname+'/../../assets/uploads/users/'
-			,dirPublic:  __dirname+'/../../.tmp/public/uploads/users/'
-			,Model:User
-			,prefix:'177x171'
-			,dirAssets:'/uploads/users/'
-		},cb);
-	}
-	, apps:function(req,form,cb){
+	apps:function(req,form,cb){
 		var select_company = req.session.select_company || req.user.select_company
 		, update = {};
 		update[select_company] = form.apps || [];

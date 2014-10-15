@@ -1,6 +1,7 @@
 module.exports.view = function(view,data,req){
 	data = data || {};
 	data.page = data.page || {};
+	data.breadcrumb = data.breadcrumb || [{label:'Tablero'}];
 	data.companies = req.user.companies;
 	data.selected_company = req.session.select_company || req.user.select_company;
 	data.current_user = req.user;

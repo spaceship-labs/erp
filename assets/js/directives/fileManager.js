@@ -9,20 +9,18 @@
 		$scope.object.files = $scope.object.files ? $scope.object.files : [];
 		$scope.uploadFiles = function($files){
 			$scope.page = Math.ceil($scope.object.files.length/$scope.pageLength) -1;
- 			for (var i = 0; i < $files.length; i++) {
- 				$scope.loading.push(1);
-	            var file = $files[i];
-	            $scope.upload = $upload.upload({
-	                url: $scope.addMethod,
-	                data: {id: $scope.object.id},
-	                file: file, 	                
-	            }).progress(function(evt){
-	                console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
-	            }).success(function(data, status, headers, config) {
-	                $scope.object.files = data.files;
-	                $scope.loading.splice(0, 1);
-	            });
-		    }
+			$scope.loading[0] = 0;
+			$scope.upload = $upload.upload({
+                url: $scope.addMethod,
+                data: {id: $scope.object.id},
+                file: $files, 	                
+            }).progress(function(evt){
+            	$scope.loading[0] = parseInt(100.0 * evt.loaded / evt.total);
+            }).success(function(data, status, headers, config) {
+                $scope.object.files = data.files;
+            	$scope.page = Math.ceil($scope.object.files.length/$scope.pageLength) -1;
+                $scope.loading.splice(0, 1);
+            });
 		}
 		$scope.fileFilter = function () {
 			return function(file){

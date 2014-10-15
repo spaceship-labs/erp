@@ -2,7 +2,6 @@ app.controller('roomEditCTL',function($scope,$upload,$http){
     $scope.room = room;
     $scope.seasons = seasons;
     $scope._content = _content;
-    $scope.saveClass = 'fa-save';
     if($scope.room.fees) $scope.room.fees = JSON.parse($scope.room.fees);
 
     $scope.updateIcon = function($files) {
@@ -21,13 +20,6 @@ app.controller('roomEditCTL',function($scope,$upload,$http){
             });
         }
     };
-    $scope.save = function(){
-        $scope.saveClass = 'fa-upload';
-        $http({method: 'POST', url: '/room/update',params:$scope.room}).success(function (room){
-            $scope.room = room;
-            if($scope.room.fees) $scope.room.fees = JSON.parse($scope.room.fees);
-            $scope.saveClass = 'fa-save';
-        });
-    }
+   
     
 });

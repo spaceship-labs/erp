@@ -19,7 +19,7 @@ module.exports = {
 		,role:'integer'
 		,name:'string'
 		,last_name:'string'
-		,icon:'string'
+		,icon:'json'
 		,active: 'boolean'
 		,phone:{
 			type:'string'

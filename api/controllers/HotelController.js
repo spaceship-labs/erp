@@ -16,8 +16,12 @@ module.exports = {
 					page:{
 						name:'Hoteles'
 						,icon:'fa fa-building'		
-						,controller : 'hotel.js'		
-					}
+						,controller : 'hotel.js'
+							
+					},
+					breadcrumb : [
+						{label : 'Hoteles'}
+					]
 				},req);
 			});
 		});
@@ -36,8 +40,12 @@ module.exports = {
 						page:{
 							name : hotel.name,
 							icon : 'fa fa-building',		
-							controller : 'hotel.js',		
-						}
+							controller : 'hotel.js',			
+						},
+						breadcrumb : [
+							{label : 'Hoteles', url : '/hotel/'},
+							{label : hotel.name}
+						]
 					},req);
 				});
 		   	});
@@ -94,21 +102,19 @@ module.exports = {
     },
     updateIcon: function(req,res){
     	form = req.params.all();
-    	Hotel.findOne({id:form.id}).exec(function(e,hotel){
-    		if(e) throw(e);
-    		hotel.updateAvatar(req,{
-    			dir : 'hotels',
-    			profile: 'avatar'
-    		},function(e,hotel){
-    			res.json(formatHotel(hotel));
-    		});
-    	});
+		Hotel.updateAvatar(req,{
+			dir : 'hotels',
+			profile: 'avatar',
+			id : form.id,
+		},function(e,hotel){
+			res.json(formatHotel(hotel));
+		});
 	},
-	addFile : function(req,res){
+	addFiles : function(req,res){
 		form = req.params.all();
     	Hotel.findOne({id:form.id}).exec(function(e,hotel){
     		if(e) throw(e);
-    		hotel.addFile(req,{
+    		hotel.addFiles(req,{
     			dir : 'hotels/gallery',
     			profile: 'gallery'
     		},function(e,hotel){

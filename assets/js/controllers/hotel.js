@@ -1,30 +1,21 @@
 app.controller('hotelCTL',function($scope,$http){
-    $scope.alphabet = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']; 
     $scope.hotels = hotels;
     $scope.locations = locations;
-    $scope.alphabetIndex = [];
-    $scope.hotels.forEach(function(hotel){
-        $scope.alphabetIndex.push(hotel.name[0].toUpperCase());
-    });
-    $scope.searchInputSelect = $scope.alphabetIndex[0];
     $scope.createHotel = function(){
         $http({method: 'GET', url: '/hotel/create',params:$scope.newHotel}).success(function (hotels){
             $scope.hotels = hotels;
-            $scope.hotels.forEach(function(hotel){
-                $scope.alphabetIndex.push(hotel.name[0].toUpperCase());
-            });
-            $scope.searchInputSelect = $scope.newHotel.name[0].toUpperCase();
+           // $scope.searchInputSelect = $scope.newHotel.name[0].toUpperCase();
             jQuery('#myModal').modal('hide');
         });
     
     };
-    $scope.hotelFilter = function(h){        
-        if($scope.searchInputSelect && !$scope.searchInput){
-            return $scope.searchInputSelect == h.name[0].toUpperCase();
-        }else{
-            var regex = new RegExp('^'+$scope.searchInput,'i');
-            var name = h.name;
-            return name.match(regex);
+    $scope.getInfo = function(hotel){
+        var phones = hotel.phones ? hotel.phones.join(", ") : "";
+        return {
+            "Poblacion" : hotel.location.name,
+            "Direccion" : hotel.address,
+            "Telefonos" : phones,
+            "Creado" : hotel.createdAtString,
         }
     };
     $scope.selectLetter = function(l){
@@ -42,11 +33,10 @@ app.controller('hotelEditCTL',function($scope,$upload,$http){
     $scope.saveClass = 'fa-save';
     $scope.showRoomForm = false;
     $scope.newRoomClass = 'fa-plus';
-    $scope.room = {};
     $scope.showSeasonForm = false;
     $scope.newSeasonClass = 'fa-plus';
     $scope.newSeason = {};
-
+    $scope.room = {};
     $scope.dateOptions = {
         formatYear: 'yy',
         startingDay: 1
@@ -60,13 +50,13 @@ app.controller('hotelEditCTL',function($scope,$upload,$http){
         $scope.showSeasonForm = !$scope.showSeasonForm;
         $scope.newSeasonClass = $scope.showSeasonForm ? 'fa-minus' : 'fa-plus';
     };
+
     $scope.addRoom = function(){
         $scope.room.hotel = $scope.hotel.id;
         $scope.newRoomClass = 'fa-upload';
         $scope.showRoomForm = false;
-        $http({method: 'POST', url: '/hotel/addRoom',params:$scope.room}).success(function(hotel){
-            $scope.hotel = hotel;
-            $scope.phones = JSON.parse(JSON.stringify(hotel.phones));
+        $http({method: 'POST', url: '/hotel/addRoom',params:room}).success(function(hotel){
+            $scope.hotel.rooms = hotel.rooms;
             $scope.newRoomClass = 'fa-plus';
         });
     };
