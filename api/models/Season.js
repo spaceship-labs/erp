@@ -8,9 +8,10 @@
 module.exports = {
 
 	attributes: {
-		hotel : {
-			model : 'hotel',
+		squeme : {
+			model : 'seasonScheme',
 		},
+
 	}
   	,migrate : "safe"
   	,afterCreate: function(val,cb){

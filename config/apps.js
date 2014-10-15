@@ -66,10 +66,10 @@ module.exports.apps = {
                 label : 'Hoteles',
                 icon : 'fa-building-o'
             },
-            /*'/amenidades/' : {
-                label : 'Amenidades',
-                icon : 'fa-cab'
-            },*/
+            '/season/' : {
+                label : 'Temporadas',
+                icon : 'fa-sun-o'
+            },
         },
     },
 };

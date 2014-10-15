@@ -18,10 +18,6 @@ module.exports = {
 			collection : 'room',
 			via: 'hotel',
 		},
-		seasons : {
-			collection : 'season',
-			via: 'hotel',
-		},
 	}
   	,afterCreate: function(val,cb){
 		Notifications.after(Hotel,val,'create');

@@ -29,7 +29,7 @@ module.exports = {
 	},	
     edit : function(req,res){
     	if(req.params.id){
-	    	Hotel.findOne(req.params.id).populate('location').populate('rooms').populate('seasons').exec(function(e,hotel){
+	    	Hotel.findOne(req.params.id).populate('location').populate('rooms').exec(function(e,hotel){
 	    		if(e) throw(e);
 	    		hotel = formatHotel(hotel);
 	    		Location.find().sort('name').exec(function(e,locations){
@@ -92,7 +92,7 @@ module.exports = {
     	form.req = req;
     	Hotel.update({id:id},form,function(e,hotel){
     		if(e) throw(e);
-    		Hotel.findOne(hotel[0].id).populate('location').populate('rooms').populate('seasons').exec(function(e,hotel){
+    		Hotel.findOne(hotel[0].id).populate('location').populate('rooms').exec(function(e,hotel){
     			if(e) throw(e);    			
     			hotel = formatHotel(hotel);	
     			res.json(hotel);
@@ -141,7 +141,7 @@ module.exports = {
 		var hotel = form.hotel;
 		Room.create(form).exec(function(e,r){
 			if(e) throw(e);
-			Hotel.findOne(hotel).populate('location').populate('rooms').populate('seasons').exec(function(e,hotel){
+			Hotel.findOne(hotel).populate('location').populate('rooms').exec(function(e,hotel){
 				if(e) throw(e);
 				hotel = formatHotel(hotel);
 				res.json(hotel)
@@ -153,7 +153,7 @@ module.exports = {
 		var hotel = form.hotel;
 		Season.create(form).exec(function(e,r){
 			if(e) throw(e);
-			Hotel.findOne(hotel).populate('location').populate('rooms').populate('seasons').exec(function(e,hotel){
+			Hotel.findOne(hotel).populate('location').populate('rooms').exec(function(e,hotel){
 				if(e) throw(e);
 				hotel = formatHotel(hotel);
 				res.json(hotel)
