@@ -17,7 +17,7 @@ module.exports = {
 			var alphabets_company = [];
 			for(var i=0;i<users.length;i++){
 				users[i].createdAtString = timeFormat(users[i].createdAt);
-				users[i].lastAccessString = users[i].lastAccess ? timeFormat(users[i].lastAccess) : 'nunca';
+				users[i].lastAccessString = users[i].lastLogin ? timeFormat(users[i].lastLogin) : 'nunca';
 				users[i].avatar = users[i].icon ? '/uploads/users/'+users[i].icon : 'http://placehold.it/50x50';
 				if(users[i].last_name){
 					index = users[i].last_name[0].toUpperCase();
@@ -31,7 +31,7 @@ module.exports = {
 					name:'Usuarios'
 					,icon:'fa fa-users'		
 					,controller : 'user.js'		
-				},
+				 }
 			},req);
 		});			
 	}
@@ -51,12 +51,8 @@ module.exports = {
 		})
 	}
 
-	, create: function(req,res){	
-		var response = {
-			status:false
-			, msg:'ocurrio un error'
-		}	
-		, form = req.params.all() || {};
+	, create: function(req,res){
+		var form = req.params.all() || {};
 		form.id || delete form.id;
 		form.active = true;
 		var select_company = req.session.select_company || req.user.select_company
@@ -67,17 +63,12 @@ module.exports = {
 		delete form.password;
 		delete form.user_name;
 		Company.findOne({id:select_company}).exec(function(err,company){
-			if(err) return res.json(response);
+			if(err) return res.forbidden();
 			User.create(form).exec(function(err,user){
-				//user.createAccessList(company.apps);
-				if(err) return res.json(response);
+				if(err) return res.forbidden();
 				user.companies.add(company.id);
 				user.setPassword(password);
-				res.json({
-					status:true
-					, msg:'El usuario se creo exitosamente'
-					, url:'/user/edit/'+user.id
-				});
+                return res.redirect('/user/edit/'+user.id);
 			});	
 		});
 	}
@@ -89,19 +80,17 @@ module.exports = {
 				if(err) return null;
 				user.avatar2 = user.icon ? '/uploads/users/177x171'+user.icon : 'http://placehold.it/177x171';
 				user.active = user.active?true:false;
-				App.find().exec(function(err,apps){
 					if(err) return;
 					Common.view(res.view,{
 					 	  user:user
 						, select_company:select_company
-						, apps:apps
+						, apps:sails.config.apps
 						, page:{
 							name:'Usuarios'
 							,icon:'fa fa-users'		
 							,controller : 'user.js'		
 						}
-					},req);					
-				});
+					},req);
 			});
 		}
 	}
@@ -144,7 +133,14 @@ module.exports = {
 	}
     ,updateInfo : function(req,res){
         var userId = req.param('userId');
-        var form = {name : req.param('name'),last_name : req.param('last_name'),phone : req.param('phone'),email : req.param('email'),active : req.param('active')};
+        var form = {
+            name : req.param('name'),
+            last_name : req.param('last_name'),
+            phone : req.param('phone'),
+            email : req.param('email'),
+            active : req.param('active')
+        };
+
         if (userId && form) {
             User.update({ id : userId},form).exec(function(err,user){
                if (err) res.json({ text : err.message });

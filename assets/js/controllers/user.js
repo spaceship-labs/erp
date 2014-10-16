@@ -9,7 +9,7 @@ $scope.users = users;
 			var name = u.name+' '+u.last_name;
 			return name.match(reg);
 		}
-	}
+	};
 	
 	updateNotices($scope,'/home/noticeSuscribeApp',{app:'users'},function(){
 		//updateList();	
@@ -21,7 +21,21 @@ $scope.users = users;
 			"Email":user.email,
 			"Telefono":user.phone,
 		}
-	}
+	};
+
+    $scope.createUser = function(){
+
+        $http.post('/user/create',createUserForm,{}).success(function(data) {
+            if (data) {
+                jQuery('.alert p').text(data.text).parent().removeClass('unseen');
+                $scope.product.fields.push(data.field);
+                $scope.new_field.handle = "";
+                $scope.new_field.name = "";
+            } else {
+                jQuery('.alert p').text('error').parent().removeClass('unseen');
+            }
+        });
+    }
 });
 
 app.controller('userEditCTL',function($scope,$http){
@@ -56,7 +70,6 @@ app.controller('userEditCTL',function($scope,$http){
     };
 
     $scope.updatePassword = function(){
-        console.log("entre");
         if ($scope.old_password && $scope.new_password && $scope.new_password == $scope.new_password_v && $scope.new_password != $scope.old_password) {
             $http.post('/user/updatePassword/',{
                 userId:id
@@ -75,6 +88,7 @@ app.controller('userEditCTL',function($scope,$http){
     };
 
     $scope.filterPermissionsApp = function(app){
+        //console.log(app);
         if (app.permissions) return true;
         return false;
     }

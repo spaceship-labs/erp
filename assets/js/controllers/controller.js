@@ -175,6 +175,16 @@ app.controller('productCTL',function($scope,$http){
         return parseInt($scope.product.quantity) + parseInt($scope.product.addInventory);
     };
 
+    $scope.createProduct = function(){
+        $http.post('/product/create',$scope.product,{}).success(function(data){
+            if (data) {
+                jQuery('.alert p').text(data.text).parent().removeClass('unseen');
+                $scope.product.quantity = parseInt($scope.product.quantity) + parseInt($scope.product.addInventory);
+                $scope.product.addInventory = 0;
+            }
+        });
+    };
+
     initialize();
 });
 
@@ -584,7 +594,7 @@ app.controller('installationConfigCTL',function($scope,$http){
         $http.post('/installation/update_work_types',{ work_types : $scope.work_types}, {}).success(showResponse);
     };
     $scope.addWorkType = function() {
-        $scope.hours.push({
+        $scope.work_types.push({
             name : '',
             price : 0.0
         });

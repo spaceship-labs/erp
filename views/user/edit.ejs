@@ -81,11 +81,9 @@
             </div>
         </div>
     </div>
-    <%
-    console.log(req);
-    if (req.user.isAdmin || req.user.id == user) {%>
-    <div class="span6">
-        <%- partial('change-password') -%>
-    </div>
+    <% if (req.user.isAdmin) {%>
+        <div class="span6">
+            <%- partial('change-password') -%>
+        </div>
     <% } %>
 </div>
