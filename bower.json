@@ -23,6 +23,7 @@
     "chosen": "https://github.com/harvesthq/chosen/releases/download/v1.1.0/chosen_v1.1.0.zip",
     "isotope": "1.5.25",
     "bootstrap-timepicker": "0.1.1",
+    "angular-ui-date": "latest",
     "detectizr": "1.4.5",
     "html5shiv": "3.6.2",
     "jquery-cookie": "1.2.0",

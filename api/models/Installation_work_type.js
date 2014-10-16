@@ -4,12 +4,13 @@
 module.exports = {
 
     attributes: {
-        company : 'string',
+        company : { model : 'Company' },
         installations : {
             collection : 'Installation',
             via : 'work_type'
         },
-        name : 'string'
+        name : 'string',
+        price : 'float'
     }
 
 };

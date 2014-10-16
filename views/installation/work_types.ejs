@@ -14,7 +14,7 @@
                 <tr ng-repeat="work_type in work_types track by $index">
                     <td data-title="Nombre"><input type="text" ng-model="work_type.name" class="span2" value="{{work_type.name}}"/><input type="hidden" value="{{work_type.id}}" /></td>
                     <td data-title="Precio"><input type="text" ng-model="work_type.price" class="span2" value="{{work_type.price}}" /></td>
-                    <td><span ng-click="deleteWorkType($index)" class="icon fa fa-eraser"></span></td>
+                    <td><span ng-click="deleteWorkType($index)" class="icon fa fa-eraser" style="cursor: pointer;"></span></td>
                 </tr>
                 <tr>
                     <td colspan="3">

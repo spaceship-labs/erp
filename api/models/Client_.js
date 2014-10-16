@@ -13,7 +13,7 @@ module.exports = {
 
 		phone	: { type: 'string' },
 
-		company	: { type: 'string' , required : true },
+		company	: { model : 'Company'  },
 
 		address	: { type: 'string' },
 
@@ -23,6 +23,16 @@ module.exports = {
 
         sales : {
             collection : "Sale",
+            via : "client"
+        },
+
+        quotes : {
+            collection : "SaleQuote",
+            via : "client"
+        },
+
+        contacts : {
+            collection : "Client_contact",
             via : "client"
         }
 

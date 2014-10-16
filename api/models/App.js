@@ -11,7 +11,7 @@ module.exports = {
 		name:'string'
 		,handle:{
 			index : true,
-			type : 'string',
+			type : 'string'
 		}
 		,companies : {
 			collection : 'company'

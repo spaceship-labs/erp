@@ -20,10 +20,7 @@ module.exports = {
         internalReference : {
             type : 'string'
         },
-        company : {
-            type : 'string',
-            required : true
-        },
+        company : { model : 'Company' },
         ink_cost : 'float',
         ink_utility : 'float',
         product_types : {

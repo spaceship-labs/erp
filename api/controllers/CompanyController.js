@@ -18,7 +18,7 @@ module.exports = {
 						,icon:'fa fa-building'		
 						,controller : 'company.js'		
 					}
-				},req);				
+				},req);
 			});
 		});
 	}

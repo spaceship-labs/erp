@@ -14,11 +14,11 @@
                 <tr ng-repeat="tool in tools track by $index">
                     <td data-title="Nombre"><input type="hidden" value="{{tool.id}}" />{{tool.product.name}}</td>
                     <td data-title="Precio">{{tool.product.price.cost * (1 + (tool.product.price.margin/100))}}</td>
-                    <td><span ng-click="deleteTool($index)" class="icon fa fa-eraser"></span></td>
+                    <td><span ng-click="deleteTool($index)" class="icon fa fa-eraser" style="cursor: pointer;"></span></td>
                 </tr>
                 <tr>
                     <td colspan="3">
-                        <select ng-model="selected_tool" ng-options="p.name group by p.product_type.name for p in products" chosen="selected_tool"></select>
+                        <select ng-model="selected_tool" ng-options="p.name group by p.product_type.name for p in products" chosen="tools"></select>
                         <a class="btn btn-default button-orange" ng-click="addTool()"><span class="table-icon fa fa-plus"></span> Herramienta</a>
                     </td>
                 </tr>

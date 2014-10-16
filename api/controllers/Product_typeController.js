@@ -7,7 +7,8 @@
 
 module.exports = {
 	index: function(req,res){
-		Product_type.find().exec(function(err,product_types){
+        var company = req.session.select_company || req.user.select_company;
+		Product_type.find({ company : company }).exec(function(err,product_types){
 			if(err) throw err;
                 Sales_type.find().exec(function(err,sales_type){
                     Inventory_type.find().exec(function (err,inventory_type){
@@ -24,6 +25,19 @@ module.exports = {
                 });
         });
 	},
+    create : function(req,res) {
+        var form = Common.formValidate(req.params.all(),['description','inventory_type','inventory_use','name','sales_type']);
+        if (form) {
+            form.user = req.user.id;
+            form.company = req.session.select_company || req.user.select_company;
+            console.log(form);
+            Product_type.create(form).exec(function(err,product_type){
+                if(err) return res.json({text:err});
+                console.log(product_type);
+                res.json({text:'Categoria de producto creada.',url:'/product_type/edit/'+product_type.id});
+            });
+        }
+    },
 	edit: function(req,res){
 		var id = req.param('id');
 		if(id){

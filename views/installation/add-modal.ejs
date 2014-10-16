@@ -14,9 +14,9 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                    <input type="submit" class="btn btn-primary" value='Agregar'>
-
+                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="setStep(1)">Cancelar</button>
+                    <input ng-if="step == 4" type="submit" class="btn btn-primary" value='Agregar'>
+                    <input ng-if="step != 4" ng-click="setStep(step+1)" type="button" class="btn btn-primary" value='Siguiente'>
                 </div>
             </form>
         </div><!-- /.modal-content -->

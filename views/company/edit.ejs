@@ -18,20 +18,19 @@
                 <div class="widgetcontent">
                     <ul class="taglist" ng-repeat='app in company.apps'>
         				<li><a>
-                            <i ng-bind='apps[app].label'></i>
+                            <i ng-bind='allApps[app].label'></i>
                             <span class="close" ng-click='removeApp(app)'>×</span>
                         </a></li>
         		    </ul>
                     <hr>
-                    <form method="post" ng-submit='addApp(selectedApp)'>
+                    <form method="post" ng-submit='addApp(selectedApp)' ng-if="apps.length > 0">
                         <p>
-                            <span class="field"><select ng-model='selectedApp' name="app" >
-        				    <%for(var app in apps){ %>
-        					   <option value="<%=app%>"><%=apps[app].label%></option>
-        				    <% } %>
-        		            </select></span>
+                            <span class="field">
+                                <select ng-model="selectedApp" name="app" ng-options="app.label for app in apps">
+                                </select>
+                            </span>
                             <input type='hidden' value='<%-company.id%>' name='company' />
-                            <button type='submit' class="btn btn-primary">Agregar App</a>
+                            <button type='submit' class="btn btn-primary" ng-if="selectedApp">Agregar App</button>
                         </p>
                     </form>
                 </div>
@@ -47,7 +46,7 @@
     			<% } %>
 
     		</ul>
-                    <a href="/erp-admin/users/new_user/" style="display:block;margin-top:10px">+ Agregar Usuarios</a>
+                    <a href="/users/new_user/" style="display:block;margin-top:10px">+ Agregar Usuarios</a>
                 </div>
         </div>
             

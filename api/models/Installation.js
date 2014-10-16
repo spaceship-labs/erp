@@ -39,7 +39,7 @@ module.exports = {
         },
         description : 'string',
         indications : 'string',
-        company : 'string',
+        company : { model : 'Company' },
         date : 'date'
     }
 

@@ -31,7 +31,7 @@ module.exports = {
 			last_name : form.last_name,
 			email : form.email,
 			active : true,
-		}
+		};
 		var password = form.password;
 		//delete form.apps;
 		delete form.currencies;
@@ -49,8 +49,8 @@ module.exports = {
 
 			user.default_company = company.id;
 			user.active = true;
+            user.isAdmin = true;
 			User.create(user).exec(function(e,user){
-				user.createAccessList(form.apps);
 				if(e) return res.json(response);
 				user.companies.add(company.id);
 				user.setPassword(password);

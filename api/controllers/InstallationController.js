@@ -32,19 +32,22 @@ module.exports = {
                     Installation_tool.find({ company : select_company }).populate('product').exec(function (err,tools){
                         Installation_work_type.find({ company : select_company }).exec(function (err,work_types){
                             Installation_zone.find({ company : select_company }).exec(function (err,zones){
-                                Product.find({company : select_company}).populateAll().exec(function(err,products) {
-                                    Common.view(res.view,{
-                                        page:{
-                                            icon:'fa fa-wrench'
-                                            ,name:'Configuracion de Instalaciones'
-                                        },
-                                        cranes : cranes || [],
-                                        materials : materials || [],
-                                        tools : tools || [],
-                                        work_types : work_types || [],
-                                        zones : zones || {},
-                                        products : products
-                                    },req);
+                                Installation_hour.find({company : select_company}).exec(function(err,hours) {
+                                    Product.find({company : select_company}).populateAll().exec(function(err,products) {
+                                        Common.view(res.view,{
+                                            page:{
+                                                icon:'fa fa-wrench'
+                                                ,name:'Configuracion de Instalaciones'
+                                            },
+                                            cranes : cranes || [],
+                                            materials : materials || [],
+                                            tools : tools || [],
+                                            work_types : work_types || [],
+                                            zones : zones || {},
+                                            hours : hours || {},
+                                            products : products
+                                        },req);
+                                    });
                                 });
                             });
                         });
@@ -204,6 +207,32 @@ module.exports = {
             },function(err) {
                 if (err) return res.json({text: 'Ocurrio un error.'});
                 res.json({text: 'Gruas actualizadas.',cranes : savedCranes});
+            });
+        }
+    },
+
+    update_hours : function (req,res){
+        var form = req.param('hours');
+        var select_company = req.session.select_company || req.user.select_company;
+        var savedHours = [];
+
+        if(form){
+            async.each(form,function(hour,callback){
+                if (hour.id) {
+                    Installation_hour.update({id : hour.id},hour).exec(function(err,fhour){
+                        savedHours.push(hour);
+                        callback();
+                    });
+                } else {
+                    hour.company = select_company;
+                    Installation_hour.create(hour).exec(function(err,fhour){
+                        savedHours.push(fhour);
+                        callback();
+                    });
+                }
+            },function(err) {
+                if (err) return res.json({text: 'Ocurrio un error.'});
+                res.json({text: 'Categorias de horarios actualizadas.',hours : savedHours});
             });
         }
     }

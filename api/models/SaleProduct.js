@@ -11,6 +11,11 @@ module.exports = {
 
     attributes: {
 
+        type : {
+            type : 'string',
+            enum : ['product','installation']
+        },
+
         product : {
             model: 'Product'
         },
@@ -43,6 +48,10 @@ module.exports = {
 
         name:{
             type:'string'
+        },
+
+        description : {
+            type : 'string'
         },
 
         files : {

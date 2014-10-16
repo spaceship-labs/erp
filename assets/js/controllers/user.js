@@ -24,17 +24,59 @@ $scope.users = users;
 	}
 });
 
-app.controller('userEditCTL',function($scope){
-	$scope.user = user;
-	var id = user.id;
-	$scope.updateAccestList = function(){
-		io.socket.get('/user/editAjax/',{
-			method:'accessList'
-			,userId:id
-			,accessList:$scope.user.accessList
-		},function(data){
-			var alt = jQuery('.alert p');
-			alt.text(data.msg).parent().show();
-		});
-	}
+app.controller('userEditCTL',function($scope,$http){
+    $scope.user = user;
+    $scope.apps = apps;
+    $scope.submited_pass_form = false;
+    var id = user.id;
+    $scope.updateAccestList = function(){
+        io.socket.get('/user/editAjax/',{
+            method:'accessList'
+            ,userId:id
+            ,accessList:$scope.user.accessList
+            ,admin:$scope.user.isAdmin
+        },function(data){
+            var alt = jQuery('.alert p');
+            alt.text(data.msg).parent().show();
+        });
+    };
+
+    $scope.updateInfo = function(){
+        $http.post('/user/updateInfo/',{
+            userId:id
+            ,name:$scope.user.name
+            ,last_name:$scope.user.last_name
+            ,phone:$scope.user.phone
+            ,email:$scope.user.email
+            ,active:$scope.user.active
+        },{}).success(function(data){
+            var alt = jQuery('.alert p');
+            alt.text(data.text).parent().show();
+        });
+    };
+
+    $scope.updatePassword = function(){
+        console.log("entre");
+        if ($scope.old_password && $scope.new_password && $scope.new_password == $scope.new_password_v && $scope.new_password != $scope.old_password) {
+            $http.post('/user/updatePassword/',{
+                userId:id
+                ,old_password:$scope.old_password
+                ,new_password:$scope.new_password
+            },{}).success(function(data){
+                var alt = jQuery('.alert p');
+                alt.text(data.text).parent().show();
+            });
+        } else {
+            console.log("damn");
+            console.log($scope.old_password);
+            console.log($scope.new_password.$valid);
+            console.log($scope.new_password_v);
+        }
+    };
+
+    $scope.filterPermissionsApp = function(app){
+        if (app.permissions) return true;
+        return false;
+    }
+
 });
