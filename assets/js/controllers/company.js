@@ -9,7 +9,6 @@ app.controller('companyEditCTL',function($scope){
                 $scope.apps.push(app);
             }
         });
-        console.log($scope.apps);
     };
 
     $scope.removeApp = function(app){
@@ -28,6 +27,7 @@ app.controller('companyEditCTL',function($scope){
     };
 
     $scope.alreadyOnList = function(item) {
+        //console.log(item);
         //if ($scope.company.apps.contains(item))
         //    return true;
         return true;
