@@ -85,4 +85,11 @@ module.exports.content = {
 			handle : 'end',
 		},
 	],
+	seasonScheme : [
+		{
+			label : 'Nombre',
+			type : 'text',
+			handle : 'name',
+		},	
+	],
 };

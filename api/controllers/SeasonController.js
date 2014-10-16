@@ -7,18 +7,17 @@
 
 module.exports = {
 	index : function(req,res){
-		SeasonScheme.find().exec(function(e,scheme){
+		SeasonScheme.find().exec(function(e,schemes){
 			if(e) throw(e);
 			Common.view(res.view,{
-				locations:scheme,
+				schemes:schemes,
 				page:{
-					name:'Hoteles'
-					,icon:'fa fa-building'		
-					,controller : 'hotel.js'
-						
+					name:'Esquemas de Temporadas'
+					,icon:'fa fa-sun-o'		
+					,controller : 'season.js'						
 				},
 				breadcrumb : [
-					{label : 'Hoteles'}
+					{label : 'Temporadas'}
 				]
 			},req);
 		})

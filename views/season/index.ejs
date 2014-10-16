@@ -1,4 +1,12 @@
 <script type='text/javascript'>
-    window.season_sets = <%- JSON.stringify(season_sets) %>;
-    window._content = <%- JSON.stringify(_content)    %>;
+    window.schemes = <%- JSON.stringify(schemes) %>;
+    window._content = <%- JSON.stringify(_content) %>;
 </script>
+<div ng-controller='seasonsCTL' >
+	<p><button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Nuevo esquema</button></p>
+	<br/>	
+
+	<div table-helper objects='schemes' columns='content.seasonScheme' route='season'></div>
+
+	
+</div>
