@@ -88,16 +88,17 @@ module.exports.apps = {
             {label : 'editar clientes',handle : 'editClients'},
             {label : 'editar contactos de clientes',handle : 'editClientContact'}
         ]
-    },
-    hotels : {
-        name : 'hotels',
-    	label : 'Hoteles',
-        icon : 'fa-building',
-        views : {
-            '/hotel/' : {
-                label : 'Hoteles',
-                icon : 'fa-building-o'
-            }
-        }
     }
+    //sorry erick
+//    ,hotels : {
+//        name : 'hotels',
+//    	label : 'Hoteles',
+//        icon : 'fa-building',
+//        views : {
+//            '/hotel/' : {
+//                label : 'Hoteles',
+//                icon : 'fa-building-o'
+//            }
+//        }
+//    }
 };
