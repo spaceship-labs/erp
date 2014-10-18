@@ -7,7 +7,7 @@
         </div>
         <div class="widgetbox">
             <div class="widgetcontent nopadding">
-                <form action="/clientes/crear" method="get" accept-charset="utf-8" class="stdform stdform2 ng-pristine">
+                <form action="/clientes/crear" method="get" accept-charset="utf-8" class="stdform stdform2 ng-pristine" ng-submit="createClient()">
                     <%- partial("partial/form") %>
                     <p class="stdformbutton">
                         <button class="btn btn-primary">Guardar</button>

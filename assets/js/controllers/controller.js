@@ -7,8 +7,9 @@ app.directive('chosen',function(){
         scope.$watch(list,function(){
             element.trigger('liszt:updated');
             element.trigger('chosen:updated');
+
         });
-       scope.$watch(attrs['ngModel'],function(){
+       scope.$watch(attrs['ngModel'],function(newvalue,oldvalue){
            element.trigger('liszt:updated');
            element.trigger('chosen:updated');
        });
@@ -179,8 +180,9 @@ app.controller('productCTL',function($scope,$http){
         $http.post('/product/create',$scope.product,{}).success(function(data){
             if (data) {
                 jQuery('.alert p').text(data.text).parent().removeClass('unseen');
-                $scope.product.quantity = parseInt($scope.product.quantity) + parseInt($scope.product.addInventory);
-                $scope.product.addInventory = 0;
+                if (data.url) {
+                    window.location.href = data.url;
+                }
             }
         });
     };
@@ -438,7 +440,7 @@ app.controller('productAddCTL',function($scope,$http){
     };
 });
 
-app.controller('productTypeCTL',function($scope,$http){
+app.controller('productTypeCTL',function($scope,$http,$parse){
     $scope.product_types = window.product_types;
     $scope.product_type = {};
 
@@ -454,17 +456,17 @@ app.controller('productTypeCTL',function($scope,$http){
     }
     $scope.inventory_types = tmp;
 
-    function showResponse(data){
-        console.log(data);
+    function showResponseCreateProductType(data){
         if(data){
-            jQuery('.alert p').text(data.text).parent().removeClass('unseen');
+            if (data.text)
+                jQuery('.alert p').text(data.text).parent().removeClass('unseen');
             if(data.url)
                 window.location.href = data.url;
         }
     };
 
     $scope.processForm = function(){
-        $http.post('/product_type/create',$scope.product_type, {}).success(showResponse);
+        $http.post('/product_type/create',$scope.product_type, {}).success(showResponseCreateProductType);
     };
 
 });

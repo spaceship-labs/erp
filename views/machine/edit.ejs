@@ -19,19 +19,19 @@
 					<input type='hidden' ng-value='product.id' name='pid' />
 					<%- partial('edit-basic') %>
                     <p>
-                        <label for="ctinta">Costo tinta por m2 :</label>
+                        <label for="ctinta">Costo tinta m2 :</label>
                         <span class="field">
                             <input type="text" id="ctinta" name="ctinta" class="form-control" ng-model='machine.ink_cost'>
                         </span>
                     </p>
                     <p>
-                        <label for="utinta">Utilidad tinta %:</label>
+                        <label for="utinta">Utilidad %:</label>
                         <span class="field">
                             <input type="text" id="utinta" name="utinta" class="form-control" ng-model='machine.ink_utility'>
                         </span>
                     </p>
                     <p>
-                        <label for="utinta">m2 tinta con utilidad:</label>
+                        <label for="utinta">Precio tinta m2:</label>
                         <span class="field">
                             {{machine.ink_cost * (1 + (machine.ink_utility/100))}}
                         </span>

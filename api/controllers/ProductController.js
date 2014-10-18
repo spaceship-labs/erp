@@ -7,7 +7,6 @@
 var fs = require('fs')
 , im = require('imagemagick');
 module.exports = {
-
 	index: function(req,res){
 		var select_company = req.session.select_company || req.user.select_company;
 		Product_type.find().exec(function(err,product_types){
@@ -47,11 +46,10 @@ module.exports = {
 		product.req = req;
 		Product_type.findOne({id:product.product_type}).exec(function(err,product_type){
 			Product.create(product).exec(function(e,product){
-				if(e) res.redirect('/product/');
-				else res.redirect('/product/edit/'+product.id);
+				if(e) return res.json({text : 'error',message : e});
+				else return res.json({text : 'Producto creado exitosamente',url: '/product/edit/'+product.id});
 			});
 		});
-		return 0;
 	},
 	edit: function(req,res){
 		var id = req.param('id');

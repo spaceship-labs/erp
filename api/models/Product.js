@@ -8,9 +8,13 @@
 module.exports = {
 
   attributes: {
-    company : { model : 'Company' },
+    company : {
+        model : 'Company',
+        required : true
+    },
 	product_type:{
-	    model:'product_type'
+	    model:'product_type',
+        required : true
 	},
     gallery:'array',
     fields : {
@@ -28,7 +32,18 @@ module.exports = {
     name : 'string',
     description : 'string',
     barcode : 'string',
-    quantity : 'integer'//TODO separar
+    quantity : 'float',
+
+    //respectivo a tipo de inventario metro cuadrado
+    width : 'float',
+    height : 'float',
+    cut_price : 'float',
+    addQuantity : function(quantity,callback) {
+
+    },
+    removeQuantity : function(quantity,callback) {
+
+    }
   }
 
 	,afterCreate: function(val,cb){

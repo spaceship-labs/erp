@@ -1,0 +1,14 @@
+<% if (product_type.inventory_use && product_type.inventory_type == 'metro2') {%>
+<p>
+    <label for="width">Ancho*</label>
+    <span class="field"><input type="text" name="width" class="form-control" ng-model='product.width' required></span>
+</p>
+<p>
+    <label for="height">Alto*</label>
+    <span class="field"><input type="text" name="height" class="form-control" ng-model='product.height' required></span>
+</p>
+<p>
+    <label for="height">Precio corte*</label>
+    <span class="field"><input type="text" name="cut_price" class="form-control" ng-model='product.cut_price' required></span>
+</p>
+<% } %>
