@@ -48,11 +48,9 @@
 <div id="mainwrapper" class="mainwrapper">
     <%- partial('global/header') -%> 
     <%- partial('global/menu') -%> 
-
+    <%- partial('global/jsVariables') -%> 
     <div class="rightpanel">
-        <script type='text/javascript'>window.breadcrumb = <%- JSON.stringify(breadcrumb) %>;</script>
-        <div breadcrumb></div>        
-        
+        <div breadcrumb></div>                
         <div class="pageheader">
             <form action="results.html" method="post" class="searchbar">
                 <input type="text" name="keyword" placeholder="Escribe para realizar una busqueda" ng-model='searchInput' onfocus="this.placeholder = ''" onblur="this.placeholder = 'Escribe para realizar una busqueda'"/>

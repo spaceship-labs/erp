@@ -14,7 +14,7 @@ module.exports = {
 				page:{
 					name:'Esquemas de Temporadas'
 					,icon:'fa fa-sun-o'		
-					,controller : 'season.js'						
+					,controller : 'season.js'					
 				},
 				breadcrumb : [
 					{label : 'Temporadas'}

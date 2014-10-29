@@ -51,7 +51,7 @@ app.controller('hotelEditCTL',function($scope,$upload,$http){
         $scope.newSeasonClass = $scope.showSeasonForm ? 'fa-minus' : 'fa-plus';
     };
 
-    $scope.addRoom = function(){
+    $scope.addRoom = function(room){
         $scope.room.hotel = $scope.hotel.id;
         $scope.newRoomClass = 'fa-upload';
         $scope.showRoomForm = false;

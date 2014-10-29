@@ -92,4 +92,28 @@ module.exports.content = {
 			handle : 'name',
 		},	
 	],
+	tour : [
+		{
+			label : 'Nombre',
+			type : 'text',
+			handle : 'name',
+		},
+		{
+			label : 'Tarifa base',
+			type : 'money',
+			handle : 'fee',
+		},
+		{
+			label : 'Horario General',
+			type : 'text',
+			handle : 'schedule',
+		},
+		{
+			label : 'Ubicacion',
+			type : 'select',
+			handle : 'location',
+			object : 'locations'
+		},
+
+	]
 };

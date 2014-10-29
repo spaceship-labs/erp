@@ -63,7 +63,7 @@ module.exports.apps = {
     },
     hotels : {
         name : 'hotels',
-    	label : 'Hoteles',
+        label : 'Hoteles',
         icon : 'fa-building',
         views : {
             '/hotel/' : {
@@ -73,6 +73,21 @@ module.exports.apps = {
             '/season/' : {
                 label : 'Temporadas',
                 icon : 'fa-sun-o'
+            },
+        },
+    },
+    services : {
+        name : 'services',
+        label : 'Servicios',
+        icon : 'fa-clipboard',
+        views : {
+            '/tour/' : {
+                label : 'tours',
+                icon : 'fa-compass'
+            },
+            '/transfer/' : {
+                label : 'Translados',
+                icon : 'fa-cab'
             },
         },
     },

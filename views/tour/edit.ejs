@@ -1,0 +1,41 @@
+<script type='text/javascript'>
+    window.funcionario = <%- JSON.stringify(funcionario) %>;
+    window.content = <%- JSON.stringify(_content) %>;
+</script>
+<div ng-controller='funcionarioEditCTL'>
+    <div class="span4 profile-left profileEdit">
+        <div class="alert alert-block unseen">
+            <button data-dismiss="alert" class="close" type="button">×</button>
+            <h4>Mensaje</h4>
+            <p style="margin: 8px 0">El usuario se ha actualizado exitosamente</p>
+        </div>
+
+        <div profile-image 
+            object='funcionario' 
+            update-method='/funcionario/updateIcon' 
+            delete-method='/funcionario/destroyIcon' 
+            image-attr='icon' 
+            dir='funcionarios'>
+        </div>
+
+        
+   
+    </div>
+    <div class="span6">
+        <div form-helper 
+            fields='content.funcionario' 
+            object='funcionario' 
+            action='/funcionario/save' 
+            form-title='INFORMACIÓN BASICA'>
+        </div> 
+
+        <div form-helper 
+            fields='content.funcionarioPuesto' 
+            object='funcionario' 
+            action='/funcionario/save' 
+            form-title='Información de puesto'
+        >
+        </div> 
+
+    </div>
+</div>
