@@ -37,19 +37,22 @@ module.exports = {
 	edit : function(req,res){
 		Tour.findOne(req.params.id).exec(function(e,tour){
 			if(e) return res.redirect("/tour/");
-			Common.view(res.view,{
-				tour:tour,
-				page:{
-					name:tour.name,
-					icon:'fa fa-child',
-					controller : 'tour.js'
-				},
-				breadcrumb : [
-					{label : 'Tours', url: '/tour/'},
-					{label : tour.name},
-				]
-			},req);	
-		})
+			Location.find({}).sort('name').exec(function(e,locations){
+				Common.view(res.view,{
+					tour:tour,
+					locations:locations,
+					page:{
+						name:tour.name,
+						icon:'fa fa-compass',
+						controller : 'tour.js'
+					},
+					breadcrumb : [
+						{label : 'Tours', url: '/tour/'},
+						{label : tour.name},
+					]
+				},req);	
+			});
+		});
 	},
 	updateIcon: function(req,res){
     	form = req.params.all();
@@ -73,5 +76,32 @@ module.exports = {
     		});
     	});
     },
+
+	addFiles : function(req,res){
+		form = req.params.all();
+    	Tour.findOne({id:form.id}).exec(function(e,tour){
+    		if(e) throw(e);
+    		tour.addFiles(req,{
+    			dir : 'tours/gallery',
+    			profile: 'gallery'
+    		},function(e,tour){
+    			if(e) throw(e);
+    			res.json(tour);
+    		});
+    	});
+	},
+	removeFiles : function(req,res){
+		form = req.params.all();
+		Tour.findOne({id:form.id}).exec(function(e,tour){
+			tour.removeFiles(req,{
+				dir : 'tours/gallery',
+				profile : 'gallery',
+				files : form.removeFiles,
+			},function(e,tour){
+				if(e) throw(e);
+				res.json(tour);
+			})
+		});
+	},
 };
 

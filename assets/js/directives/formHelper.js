@@ -35,7 +35,8 @@
                 formFooter : '@',
                 modal : '@',
                 formSave : '&',
-                objects : '='
+                objects : '=',
+                currency : '='
         	},
         	templateUrl : '/template/find/formHelper.html'
         };

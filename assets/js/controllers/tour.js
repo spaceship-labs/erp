@@ -2,9 +2,7 @@ app.controller('tourCTL',function($scope,$http){
     $scope.tours = tours;
     $scope.content = content;
     $scope.objects = {locations:locations};
-    $scope.user = user;
     $scope.company = company;
-    console.log($scope.company,$scope.user);
 	$scope.getInfo = function(tour){
 		return {
 			"Nombre":tour.name,
@@ -25,4 +23,6 @@ app.controller('tourCTL',function($scope,$http){
 app.controller('tourEditCTL',function($scope,$http){
     $scope.tour = tour;
 	$scope.content = content;
+    $scope.objects = {locations:locations};
+    $scope.company = company;
 });

@@ -55,7 +55,7 @@ module.exports.content = {
 		},
 		{
 			label : 'Tarifa base',
-			type : 'text',
+			type : 'money',
 			handle : 'fee',
 		},
 		{
@@ -114,6 +114,37 @@ module.exports.content = {
 			handle : 'location',
 			object : 'locations'
 		},
-
+	],
+	tourLenguajes : [
+		{
+			label : 'Nombre Español',
+			type : 'text',
+			handle : 'name_es',
+		},
+		{
+			label : 'Nombre Inglés',
+			type : 'text',
+			handle : 'name_en',
+		},
+		{
+			label : 'Nombre Rúso',
+			type : 'text',
+			handle : 'name_ru',
+		},
+		{
+			label : 'Descripción Español',
+			type : 'textarea',
+			handle : 'name_es',
+		},
+		{
+			label : 'Descripción Inglés',
+			type : 'textarea',
+			handle : 'name_en',
+		},
+		{
+			label : 'Descripción Rúso',
+			type : 'textarea',
+			handle : 'name_ru',
+		},
 	]
 };
