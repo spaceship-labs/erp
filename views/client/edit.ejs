@@ -5,7 +5,7 @@
             <div class="alert alert-block unseen">
                 <button data-dismiss="alert" class="close" type="button">×</button>
                 <h4>Mensaje</h4>
-                <p style="margin: 8px 0">El usuario se ha actualizado exitosamente</p>
+                <p style="margin: 8px 0">El cliente se ha actualizado exitosamente</p>
             </div>
             <div class="widgetbox">
                 <div class="widgetcontent nopadding">
@@ -21,7 +21,7 @@
             </div>
         </div>
         <div class="col-md-11">
-            <h4 class="widgettitle"><span class="fa fa-briefcase"></span> Cotizaciones <a href="/cotizaciones/agregar?sc=<%= client.id %>" class="pull-right"><span class="fa fa-plus"></span> Agregar nueva venta</a></h4>
+            <h4 class="widgettitle"><span class="fa fa-briefcase"></span> Cotizaciones <a href="/cotizaciones/agregar?sc=<%= client.id %>" class="pull-right"><span class="fa fa-plus"></span> Agregar</a></h4>
             <div class="widgetcontent custom-table nopadding">
                 <table class="table table-striped">
                     <thead>
@@ -38,7 +38,7 @@
                         var quote = client.quotes[i];
                     %>
                     <tr>
-                        <td data-title="Fecha"><%= moment(quote.createdAt) %></td>
+                        <td data-title="Fecha"><%= moment(quote.createdAt).format('Do [de] MMMM YYYY, h:mm:ss a') %></td>
                         <td data-title="Vendedor"><a href="/ventas/editar/<%= quote.id %>"><%= quote.user.name %></a></td>
                         <td data-title="Cliente"><%= quote.client.name %></td>
                         <td data-title="Status"><%= quote.status || 'pendiente' %></td>
@@ -50,7 +50,7 @@
             </div>
         </div>
         <div class="col-md-11">
-            <h4 class="widgettitle"><span class="fa fa-briefcase"></span> Ventas <a href="/ventas/agregar?sc=<%= client.id %>" class="pull-right"><span class="fa fa-plus"></span> Agregar nueva venta</a></h4>
+            <h4 class="widgettitle"><span class="fa fa-briefcase"></span> Ventas <a href="/ventas/agregar?sc=<%= client.id %>" class="pull-right"><span class="fa fa-plus"></span> Agregar</a></h4>
             <div class="widgetcontent custom-table nopadding">
                 <table class="table table-striped">
                     <thead>
@@ -67,7 +67,7 @@
                         var sale = client.sales[i];
                     %>
                     <tr>
-                        <td data-title="Fecha"><%= moment(sale.createdAt) %></td>
+                        <td data-title="Fecha"><%= moment(sale.createdAt).format('Do [de] MMMM YYYY, h:mm:ss a') %></td>
                         <td data-title="Vendedor"><a href="/ventas/editar/<%= sale.id %>"><%= sale.user.name %></a></td>
                         <td data-title="Cliente"><%= sale.client.name %></td>
                         <td data-title="Status"><%= sale.status || 'pendiente' %></td>

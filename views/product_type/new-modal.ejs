@@ -8,7 +8,7 @@
         <div class="alert alert-block unseen">
             <button data-dismiss="alert" class="close" type="button">×</button>
             <h4>Mensaje</h4>
-            <p style="margin: 8px 0">tipo de producto creado exitosamente</p>
+            <p style="margin: 8px 0">Creado exitosamente</p>
         </div>
         <form accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine" ng-submit="processForm()" name="outerForm">
 	      <div class="modal-header">
@@ -22,7 +22,7 @@
                               <label for="name">Nombre*</label>
                               <span class="field"><input type="text" name="name" class="input-large" required ng-model='product_type.name'></span>
                           </p>
-                          <p><label>Tipo de venta*</label>
+                          <p><label>Tipo*</label>
                             <span class="field">
                                 <select class='form-control' data-placeholder="Escoger tipo" ng-model='product_type.sales_type' required ng-options='k as l for (k,l) in  sales_type' chosen>
                                 </select>

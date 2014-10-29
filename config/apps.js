@@ -53,7 +53,7 @@ module.exports.apps = {
                 permission : 'viewProductType'
 			},
             '/machine/':{
-                label:'Maquinas',
+                label:'Impresoras',
                 icon:'fa-gears',
                 permission : 'viewMachine'
             },
@@ -68,7 +68,7 @@ module.exports.apps = {
             {label : 'vet cotizaciones',handle : 'viewSaleQuotes'},
             {label : 'ver productos',handle : 'viewProduct'},
             {label : 'ver categorias de producto',handle : 'viewProductType'},
-            {label : 'ver maquinarias',handle : 'viewMachine'},
+            {label : 'ver impresoras',handle : 'viewMachine'},
             {label : 'ver instalaciones',handle : 'viewInstallation'}
         ]
 	},

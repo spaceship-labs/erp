@@ -647,6 +647,7 @@ app.controller('installationAddCTL',function($scope,$http) {
     $scope.installation.materials = [];
     $scope.installation.tools = [];
     $scope.installation.extras = [];
+    $scope.installation.work_type = [];
     $scope.step = 1;
 
 
@@ -690,6 +691,7 @@ app.controller('installationAddCTL',function($scope,$http) {
     $scope.calculateInstallationTotal = function(){
         if ($scope.installation) {
             return ($scope.installation.zone ? $scope.installation.zone.price : 0)
+                + ($scope.installation.work_type ? $scope.installation.work_type.price : 0)
                 + ($scope.installation.staff ? $scope.installation.staff * 100 : 0)
                 + ($scope.installation.materials.length > 0 ? $scope.calculateProductPrices($scope.installation.materials) : 0)
                 + ($scope.installation.tools.length > 0 ? $scope.calculateProductPrices($scope.installation.tools) : 0)
