@@ -51,7 +51,7 @@ app.controller('hotelEditCTL',function($scope,$upload,$http){
         $scope.room.hotel = $scope.hotel.id;
         $scope.newRoomClass = 'fa-upload';
         $scope.showRoomForm = false;
-        $http({method: 'POST', url: '/hotel/addRoom',params:room}).success(function(hotel){
+        $http({method: 'POST', url: '/hotel/addRoom',params:$scope.room}).success(function(hotel){
             $scope.hotel.rooms = hotel.rooms;
             $scope.newRoomClass = 'fa-plus';
         });
