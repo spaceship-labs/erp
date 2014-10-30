@@ -8,7 +8,7 @@
 module.exports = {
 
 	attributes: {
-		squeme : {
+		scheme : {
 			model : 'seasonScheme',
 		},
 

@@ -11,6 +11,7 @@ module.exports = {
 		hotel : {
 			model : 'hotel',
 		},
+		fees : 'json',
 
 	}
   	,migrate : "safe"

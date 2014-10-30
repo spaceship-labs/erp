@@ -1,6 +1,36 @@
 module.exports.content = {
 	hotel : [
 		{
+			label : 'Nombre',
+			type : 'text',
+			handle : 'name',
+		},
+		{
+			label : 'Dirección',
+			type : 'text',
+			handle : 'address',
+			object : 'locations'
+		},
+		{
+			label : 'Población',
+			type : 'select',
+			handle : 'location',
+			object : 'locations',
+		},
+		{
+			label : 'Teléfonos',
+			type : 'text',
+			handle : 'phones',
+		},
+		{
+			label : 'Esquema de Temporadas',
+			type : 'select',
+			handle : 'seasonScheme',
+			object : 'schemes',
+		},
+	],
+	hotelLangs : [
+		{
 			label : 'Descripcion Español',
 			type : 'textarea',
 			handle : 'description_es',
@@ -68,7 +98,7 @@ module.exports.content = {
 		{
 			label : 'Nombre',
 			type : 'text',
-			handle : 'name',
+			handle : 'title',
 		},
 		{
 			label : 'Inicio',
@@ -97,6 +127,11 @@ module.exports.content = {
 			label : 'Nombre',
 			type : 'text',
 			handle : 'name',
+		},
+		{
+			label : 'PAX',
+			type : 'text',
+			handle : 'pax',
 		},
 		{
 			label : 'Tarifa base',
@@ -134,17 +169,17 @@ module.exports.content = {
 		{
 			label : 'Descripción Español',
 			type : 'textarea',
-			handle : 'name_es',
+			handle : 'description_es',
 		},
 		{
 			label : 'Descripción Inglés',
 			type : 'textarea',
-			handle : 'name_en',
+			handle : 'description_en',
 		},
 		{
 			label : 'Descripción Rúso',
 			type : 'textarea',
-			handle : 'name_ru',
+			handle : 'description_ru',
 		},
 	]
 };

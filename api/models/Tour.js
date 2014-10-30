@@ -11,6 +11,7 @@ module.exports = {
 	location : {
 		model : 'location',
 	},  	
+	days : 'array',
   }
 };
 

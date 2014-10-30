@@ -25,4 +25,13 @@ app.controller('tourEditCTL',function($scope,$http){
 	$scope.content = content;
     $scope.objects = {locations:locations};
     $scope.company = company;
+    $scope.saveClass = 'fa-save';
+    $scope.save = function(){
+        $scope.saveClass = 'fa-upload';
+        var form = {id:$scope.tour.id,days:$scope.tour.days};
+        $http({method: 'POST',url:'/tour/save',params:form}).success(function(tour){
+            $scope.tour.days = tour.days;
+            $scope.saveClass = 'fa-save';
+        });
+    }
 });

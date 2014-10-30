@@ -27,6 +27,7 @@
 					<span ng-if='currency.suffix' class="input-group-addon"  ng-bind='currency.suffix'></span>
 				</span>
 				
+				<datepicker ng-if='field.type == "date"' ng-model="object[field.handle]" show-weeks="true" class="well well-sm"></datepicker>
 
 	        </span>
 	    </p>

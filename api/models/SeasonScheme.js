@@ -10,7 +10,11 @@ module.exports = {
 	attributes: {
 		seasons : {
 			collection : 'season',
-			via : 'squeme',
+			via : 'scheme',
+		},
+		hotels : {
+			collection : 'hotel',
+			via : 'seasonScheme',
 		}
 	}
 };

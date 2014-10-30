@@ -92,7 +92,8 @@ a, a:hover, a:link, a:active, a:focus{color: @primary}
 
 .form-currencies button{margin: 10px 0}
 
-
+/*El seletor de dias de la semana de tours*/
+.ng-selector > .btn:not(.active):hover, .ng-selector > .btn:not(.active):focus, .ng-selector > .btn:not(.active):active{color:@primary;background:white;box-shadow: none;border-color:#ccc;}
 
 /*Dropdowns*/
 .dropdown-menu>li>a:hover, .dropdown-menu>li>a:focus, .dropdown-menu>.active>a, .dropdown-menu>.active>a:hover, .dropdown-menu>.active>a:focus{background: @primary!important}
@@ -181,7 +182,7 @@ color: #fff;
 	 
 	.custom-table tr { border: 1px solid #ccc; }
 	 
-	.custom-table td {
+	.custom-table.btn-group > .btn:hover, .btn-group-vertical > .btn:hover, .btn-group > .btn:focus, .btn-group-vertical > .btn:focus, .btn-group > .btn:active, .btn-group-vertical > .btn:active, .btn-group > .btn.active, .btn-group-vertical > .btn.active td {
 	/* Behave like a "row" */
 	border: none;
 	border-bottom: 1px solid #eee;
@@ -218,3 +219,5 @@ color: #fff;
 @media screen and (max-width: 360px){
 	.headmenu > li > a .menu-icon{font-size: 32px}
 }
+
+

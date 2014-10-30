@@ -11,7 +11,24 @@
             delete-method='/tour/destroyIcon' 
             image-attr='icon' 
             dir='tours'>
-        </div>  
+        </div> 
+        <div class="widgetbox">
+            <div class="headtitle">          
+                <h4 class="widgettitle">Dias de Operación <span ng-click='save()'  class='fa icon' ng-class='saveClass'></span></h4>
+            </div>
+            <div class="widgetcontent">
+                <div class="btn-group ng-selector">
+                    <button class="btn btn-default" ng-class='{"active":tour.days[0]}' ng-click='tour.days[0] = !tour.days[0]' >L</button>
+                    <button class="btn btn-default" ng-class='{"active":tour.days[1]}' ng-click='tour.days[1] = !tour.days[1]' >M</button>
+                    <button class="btn btn-default" ng-class='{"active":tour.days[2]}' ng-click='tour.days[2] = !tour.days[2]' >M</button>
+                    <button class="btn btn-default" ng-class='{"active":tour.days[3]}' ng-click='tour.days[3] = !tour.days[3]' >J</button>
+                    <button class="btn btn-default" ng-class='{"active":tour.days[4]}' ng-click='tour.days[4] = !tour.days[4]' >V</button>
+                    <button class="btn btn-default" ng-class='{"active":tour.days[5]}' ng-click='tour.days[5] = !tour.days[5]' >S</button>
+                    <button class="btn btn-default" ng-class='{"active":tour.days[6]}' ng-click='tour.days[6] = !tour.days[6]' >D</button>
+                </div>
+            </div>
+        </div>
+
     </div>
     <div class="span6">
         <div form-helper 
@@ -26,7 +43,7 @@
     </div>  
 
     <div class='row-fluid'>
-        <div file-manager object='tour' add-method='/tour/addFiles' dir='tours/gallery' ></div>
+        <div file-manager object='tour' add-method='/tour/addFiles' remove-method='/tour/removeFiles' dir='tours/gallery' ></div>
     </div>
 
     <div class='row-fluid'>
