@@ -18,7 +18,7 @@ module.exports.apps = {
 			}
 		},
 	},
-	products : {
+	/*products : {
         name : 'products',
 		label : 'Ventas',
 		icon : 'fa-briefcase',
@@ -49,7 +49,7 @@ module.exports.apps = {
                 icon:'fa-wrench',
             }
 		},
-	},
+	},*/
     clients : {
         name : 'clients',
         label : 'Clientes',
