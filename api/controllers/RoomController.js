@@ -14,7 +14,7 @@ module.exports = {
 			function(room,hotel,cb){SeasonScheme.findOne(hotel.seasonScheme.id).populate('seasons').exec(function(e,scheme){cb(e,room,hotel,scheme)})},
 		]
 		async.waterfall(reads,function(e,room,hotel,scheme){
-			if(e) throw(e);
+			//if(e) throw(e);
 			Common.view(res.view,{
 				room:room,
 				hotel : hotel,
