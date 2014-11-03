@@ -11,13 +11,22 @@ module.exports = {
 
     attributes: {
 
-        product: {
+        type : {
+            type : 'string',
+            enum : ['product','installation']
+        },
+
+        product : {
             model: 'Product'
         },
 
-//        machine : {
-//            model : 'Machine'
-//        },
+        installation : {
+            model : 'Installation'
+        },
+
+        machine : {
+            model : 'Machine'
+        },
 
         quantity: {
             type : 'integer',
@@ -39,6 +48,14 @@ module.exports = {
 
         name:{
             type:'string'
+        },
+
+        description : {
+            type : 'string'
+        },
+
+        files : {
+            type : 'array'
         }
 
     }

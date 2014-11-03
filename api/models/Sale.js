@@ -15,7 +15,7 @@ module.exports = {
             default : 'status1'
         },
 
-        company : { type : "string", required : true },
+        company : { model : 'Company' },
 
         user : {
             model : "User",

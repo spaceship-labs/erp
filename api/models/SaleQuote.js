@@ -11,8 +11,8 @@ module.exports = {
 
         status : {
             type : 'string',
-            enum : ['approved','active','inactive'],
-            default : 'active'
+            enum : ['approved','on_hold','open','close','expired','delivered'],
+            default : 'on_hold'
         },
 
         fileName : {
@@ -36,7 +36,10 @@ module.exports = {
             model : 'Client_',
             required : true
         },
-        company : 'string'
+        company : {
+            model : 'Company',
+            required : true
+        }
 
 	}
 

@@ -1,0 +1,31 @@
+<div class="widgetbox">
+    <h4 class="widgettitle">Categorias de horarios</h4>
+    <div class="widgetcontent nopadding">
+        <form accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine" ng-submit="processHours()">
+            <table class="table responsive">
+                <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th colspan="2">Precio x hora</th>
+                </tr>
+
+                </thead>
+                <tbody>
+                <tr ng-repeat="hour in hours track by $index">
+                    <td data-title="Nombre"><input type="text" ng-model="hour.name" class="span2" value="{{hour.name}}"/><input type="hidden" value="{{hour.id}}" /></td>
+                    <td data-title="Precio"><input type="text" ng-model="hour.price" class="span2" value="{{hour.price}}" /></td>
+                    <td><span ng-click="deleteHour($index)" class="icon fa fa-eraser" style="cursor: pointer;"></span></td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <a class="btn btn-default button-orange" ng-click="addHour()"><span class="table-icon fa fa-plus"></span> Horario</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <p class="stdformbutton">
+                <button class="btn btn-primary">Guardar</button>
+            </p>
+        </form>
+    </div>
+</div>

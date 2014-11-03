@@ -19,23 +19,55 @@ module.exports = {
                     }
                 }
                 Product_type.find().populateAll().exec(function(err,product_types){
-                    if(err) throw err;
-                    Common.view(res.view,{
-                        moment:moment
-                        ,quote:quote
-                        ,products:products
-                        ,product_types:product_types
-                    },req);
+                    var select_company = req.session.select_company || req.user.select_company;
+                    Installation_crane.find({ company : select_company }).exec(function (err,installation_cranes){
+                        Installation_material.find({ company : select_company }).populate('product').exec(function (err,installation_materials){
+                                Installation_tool.find({ company : select_company }).populate('product').exec(function (err,installation_tools){
+                                    Installation_work_type.find({ company : select_company }).exec(function (err,installation_work_types){
+                                        Installation_zone.find({ company : select_company }).exec(function (err,installation_zones){
+                                            Installation_hour.find({company : select_company}).exec(function(err,installation_hours){
+                                                if(err) throw err;
+                                                Common.view(res.view,{
+                                                    page:{
+                                                        description:'editar'
+                                                        ,icon:'fa fa-database'
+                                                        ,name:'Cotizacion '
+                                                    },
+                                                    moment:moment
+                                                    ,quote:quote
+                                                    ,products:products
+                                                    ,product_types:product_types
+                                                    ,cranes : installation_cranes || []
+                                                    ,materials : installation_materials || []
+                                                    ,tools : installation_tools || []
+                                                    ,work_types : installation_work_types || []
+                                                    ,zones : installation_zones || {}
+                                                    ,hours : installation_hours || {}
+                                                },req);
+                                            });
+                                        });
+                                    });
+                                });
+                        });
+                    });
                 });
+
             });
 	    });
     }
 
     , index: function(req,res){
 	   	SaleQuote.find().populateAll().exec(function(err,quotes){
+            if(err) throw err;
 			Common.view(res.view,{
+                page:{
+                    description:'listado de cotizaciones'
+                    ,icon:'fa fa-database'
+                    ,name:'Cotizaciones'
+                },
 				quotes:quotes
-				,moment:moment			
+				,moment:moment
+                ,client : {}
 			},req);				
 	   	});
     }
@@ -43,8 +75,8 @@ module.exports = {
         var form = req.params.all();
         var company = req.session.select_company || req.user.select_company;
         SaleQuote.create({
-            user:req.user.id
-            ,client:form.clientID
+            user:   req.user.id
+            ,client:    form.client
             ,company : company
         }).exec(function(err,quote){
             if(err) return res.json({

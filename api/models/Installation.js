@@ -11,7 +11,7 @@ module.exports = {
         user : {
             model : 'User'
         },
-        zones : {
+        zone : {
             model : 'Installation_zone'
         },
         quote : {
@@ -19,24 +19,28 @@ module.exports = {
         },
         staff : 'integer',
         hours : {
-            collection : 'Installation_hours'
+            collection : 'Installation_hour',
+            via : 'installations'
         },
         tools : {
-            collection : 'Product'
+            collection : 'Installation_tool',
+            via : 'installations'
         },
-        material : {
-            collection : 'Product'
+        materials : {
+            collection : 'Installation_material',
+            via : 'installations'
         },
         extras : {
             collection : 'Installation_extra_service',
             via : 'installation'
         },
-        cranes : {
-            collection : 'Installation_cranes',
-            via : 'installation'
+        crane : {
+            model : 'Installation_crane'
         },
         description : 'string',
-        indications : 'string'
+        indications : 'string',
+        company : { model : 'Company' },
+        date : 'date'
     }
 
 };

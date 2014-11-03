@@ -10,6 +10,7 @@ module.exports = {
 	attributes: {
 		name : 'string',
 		phones : 'array',
+		//files : 'json',
 		location : {
 			model : 'location',
 		},

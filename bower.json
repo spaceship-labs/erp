@@ -20,9 +20,10 @@
     "bootstrap": "3.0.0",
     "colorbox": "1.4.3",
     "fullcalendar": "1.6.0",
-    "chosen": "0.9.11",
+    "chosen": "https://github.com/harvesthq/chosen/releases/download/v1.1.0/chosen_v1.1.0.zip",
     "isotope": "1.5.25",
     "bootstrap-timepicker": "0.1.1",
+    "angular-ui-date": "latest",
     "detectizr": "1.4.5",
     "html5shiv": "3.6.2",
     "jquery-cookie": "1.2.0",
@@ -34,7 +35,6 @@
     "modernizr": "2.6.2",
     "respond-minmax": "1.1.0",
     "jquery-ui": "1.10.3",
-    "jQueryAlerts": "~1.0.0",
     "flot": "0.7.0",
     "roboto-fontface": "~0.1.4",
     "lato": "~0.2.0",
@@ -46,7 +46,8 @@
     "moment": "~2.7.0",
     "bower-sails.io": "~0.0.1",
     "ng-tags-input": "2.1.1",
-    "ng-file-upload": "~1.6.5"
-
+    "ng-file-upload": "~1.6.5",
+    "angular-ui-sortable": "~0.12.11",
+    "angular-loading-bar": "~0.6.0"
   }
 }

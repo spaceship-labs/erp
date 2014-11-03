@@ -1,0 +1,34 @@
+<script type='text/javascript'>
+    window.cranes = <%- JSON.stringify(cranes) %>;
+    window.materials = <%- JSON.stringify(materials) %>;
+    window.tools = <%- JSON.stringify(tools) %>;
+    window.work_types = <%- JSON.stringify(work_types) %>;
+    window.zones = <%- JSON.stringify(zones) %>;
+    window.products = <%- JSON.stringify(products) %>;
+    window.hours = <%- JSON.stringify(hours) %>;
+</script>
+<div class="col-md-12" ng-controller='installationConfigCTL'>
+    <div class="alert alert-block unseen">
+        <button data-dismiss="alert" class="close" type="button">×</button>
+        <h4>Mensaje</h4>
+        <p style="margin: 8px 0"></p>
+    </div>
+    <div class="span5">
+        <%- partial('hours') -%>
+    </div>
+    <div class="span5">
+        <%- partial('zones') -%>
+    </div>
+    <div class="span5">
+        <%- partial('cranes') -%>
+    </div>
+    <div class="span5">
+        <%- partial('work_types') -%>
+    </div>
+    <div class="span5">
+        <%- partial('materials') -%>
+    </div>
+    <div class="span5">
+        <%- partial('tools') -%>
+    </div>
+</div> 

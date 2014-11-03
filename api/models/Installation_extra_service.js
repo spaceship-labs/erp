@@ -6,7 +6,9 @@ module.exports = {
     attributes: {
         installation : {
             model : 'Installation'
-        }
+        },
+        name : 'string',
+        price : 'float'
     }
 
 };

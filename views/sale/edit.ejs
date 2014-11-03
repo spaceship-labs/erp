@@ -53,7 +53,7 @@
                         },0);
                     %>
                     <tr>
-                        <td data-title="Fecha"><%- moment(quote.createdAt) %></td>
+                        <td data-title="Fecha"><%- moment(quote.createdAt).format('Do [de] MMMM YYYY, h:mm:ss a') %></td>
                         <td data-title="Vendedor"><a href="#"><%= quote.user %></a></td>
                         <td data-title="Status"><%- quote.status %></td>
                         <td data-title="Monto"><%- total %></td>

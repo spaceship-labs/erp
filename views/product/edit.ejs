@@ -17,6 +17,7 @@
 	     		<form action="/product/update" method="post" accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine" >
 					<input type='hidden' ng-value='product.id' name='pid' />
 					<%- partial('new-basic') %>
+                    <%- partial('inventory-type-fields') %>
 	     			<p class="stdformbutton">
 		                <button class="btn btn-primary">Guardar</button>
 	     			</p>
@@ -24,21 +25,29 @@
 	     	</div>
 	     </div>
 	</div>
-	<div class="span5" >
+
+    <div class="span5" >
         <div class="widgetbox">
 		    <%- partial('product-gallery') %>
         </div>
 	</div>
+
+    <% if (product_type.fields.length > 0) {%>
     <div class="span5" >
         <div class="widgetbox">
             <%- partial('product-type-fields') %>
         </div>
     </div>
+    <% } %>
+
+    <% if (product_type.inventory_use) {%>
     <div class="span5">
         <div class="widgetbox">
             <%- partial('inventory') %>
         </div>
     </div>
+    <% } %>
+
     <div class="span5">
         <div class="widgetbox">
             <%- partial('quote') %>

@@ -9,7 +9,7 @@
    <div class="alert alert-block unseen">
 	<button data-dismiss="alert" class="close" type="button">×</button>
 	<h4>Mensaje</h4>
-		<p style="margin: 8px 0">Tipo de producto actualizado exitosamente</p>
+		<p style="margin: 8px 0">Actualizado exitosamente</p>
    </div>
 	<div class="widgetbox">
 		<h4 class="widgettitle"><%=product_type.name%></h4>
@@ -20,7 +20,7 @@
 					<label for="name">Nombre*</label>
 					<span class="field"><input type="text" name="name" class="input-large" ng-model="product_type.name"></span>
 				</p>
-				<p><label for="app">Tipo de venta*</label>
+				<p><label for="app">Tipo*</label>
 					<span class="field">
 						<select name='sales_type' class='form-control large' data-placeholder="Escoger tipo" ng-options='k as l for (k,l) in sales_type' ng-model="product_type.sales_type" chosen>
 						</select>
@@ -31,7 +31,7 @@
 					<span class="field"><input type="text" name="description" class="input-large" ng-model="product_type.description"></span>
 				</p>
                 <p>
-                  <label for="inventory_use">Inventariado ?</label>
+                  <label for="inventory_use" style="cursor:pointer;">Inventariado ?</label>
                   <span class="field">
                       <input type="checkbox" name="inventory_use" id="inventory_use" class="input-large" ng-model='product_type.inventory_use'>
                   </span>

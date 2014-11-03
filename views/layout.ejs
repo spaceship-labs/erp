@@ -12,15 +12,32 @@
     <!-- Viewport mobile tag for sensible mobile support -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
+    <!-- <link rel="stylesheet" href="/styles/css/font-awesome.min.css">  -->
     <!--STYLES-->
     <link rel="stylesheet" href="/bower_components/roboto-fontface/roboto-fontface.css">
     <link rel="stylesheet" href="/bower_components/lato/css/lato.css">
     <link rel="stylesheet" href="/bower_components/sass-bootstrap-glyphicons/css/bootstrap-glyphicons.css">
-    <link rel="stylesheet" href="/bower_components/chosen/chosen/chosen.css">
+    <link rel="stylesheet" href="/bower_components/chosen/chosen.min.css">
     <link rel="stylesheet" href="/bower_components/ng-tags-input/ng-tags-input.min.css">
-    <link rel="stylesheet" href="/styles/bootstrap-fileupload.min.css">
-    <link rel="stylesheet" href="/styles/bootstrap-resposive.min.css">
+    <link rel="stylesheet" href="/bower_components/angular-loading-bar/build/loading-bar.min.css">
+    <link rel="stylesheet" href="/styles/bootstrap-responsive.min.css">
     <link rel="stylesheet" href="/styles/default.css">
+    <link rel="stylesheet" href="/styles/css/jquery.ui.css">
+    <link rel="stylesheet" href="/styles/css/animate.min.css">
+    <link rel="stylesheet" href="/styles/css/animate.delay.css">
+    <link rel="stylesheet" href="/styles/css/isotope.css">
+    <link rel="stylesheet" href="/styles/css/colorbox.css">
+    <link rel="stylesheet" href="/styles/css/uniform.tp.css">
+    <link rel="stylesheet" href="/styles/css/colorpicker.css">
+    <link rel="stylesheet" href="/styles/css/jquery.jgrowl.css">
+    <link rel="stylesheet" href="/styles/css/jquery.alerts.css">
+    <link rel="stylesheet" href="/styles/css/jquery.tagsinput.css">
+    <link rel="stylesheet" href="/styles/css/ui.spinner.css">
+    <link rel="stylesheet" href="/styles/css/jquery.chosen.css">
+    <link rel="stylesheet" href="/styles/css/fullcalendar.css">
+    <link rel="stylesheet" href="/styles/css/bootstrap.css">
+    <link rel="stylesheet" href="/styles/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/styles/css/font-awesome.min.css">
     <link rel="stylesheet" href="/styles/general.css">
     <link rel="stylesheet" href="/styles/importer.css">
     <!--STYLES END-->
@@ -34,10 +51,8 @@
     <%- partial('global/menu') -%> 
 
     <div class="rightpanel">
-        <ul class="breadcrumbs">
-            <li><a href="/home/"><i class="fa fa-home"></i></a> <span class="separator"></span></li>
-            <li>Tablero</li>
-        </ul>
+        <script type='text/javascript'>window.breadcrumb = <%- JSON.stringify(breadcrumb) %>;</script>
+        <div breadcrumb></div>        
         
         <div class="pageheader">
             <form action="results.html" method="post" class="searchbar">
@@ -75,45 +90,39 @@
 </div><!--mainwrapper-->
 
     <!--TEMPLATES-->
-    
+    <script type="text/javascript" src="/jst.js"></script>
     <!--TEMPLATES END-->
 
     <!--SCRIPTS-->
     <script src="/js/dependencies/sails.io.js"></script>
     <script src="/bower_components/jquery/jquery.min.js"></script>
-    <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="/bower_components/angular/angular.min.js"></script>
-    <script src="/bower_components/ng-file-upload/angular-file-upload.min.js"></script>
-    <script src="/bower_components/chosen/chosen/chosen.jquery.min.js"></script>
     <script src="/bower_components/modernizr/modernizr.js"></script>
-    <script src="/bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls.min.js"></script>
-    <script src="/bower_components/jquery-migrate/jquery-migrate.min.js"></script>
+    <script src="/bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="/bower_components/angular/angular.js"></script>
+    <script src="/bower_components/ng-file-upload/angular-file-upload.js"></script>
+    <script src="/bower_components/chosen/chosen.jquery.min.js"></script>
+    <script src="/bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls.js"></script>
     <script src="/bower_components/jquery-ui/ui/minified/jquery-ui.min.js"></script>
     <script src="/bower_components/jquery-form/jquery.form.js"></script>
     <script src="/bower_components/jquery-cookie/jquery.cookie.js"></script>
     <script src="/bower_components/flot/jquery.flot.js"></script>
     <script src="/bower_components/flot/jquery.flot.resize.js"></script>
-    <script src="/bower_components/ng-tags-input/ng-tags-input.min.js"></script>
-    <script src="/bower_components/slimScroll/slimScroll.min.js"></script>
-    <script src="/js/themejs/bootstrap-fileupload.min.js"></script>
-    <script src="/js/themejs/bootstrap-wizard.min.js"></script>
-    <script src="/js/themejs/chat.js"></script>
-    <script src="/js/themejs/colorpicker.js"></script>
-    <script src="/js/themejs/excanvas.min.js"></script>
+    <script src="/bower_components/ng-tags-input/ng-tags-input.js"></script>
+    <script src="/bower_components/slimScroll/slimScroll.js"></script>
+    <script src="/bower_components/angular-ui-sortable/sortable.js"></script>
+    <script src="/bower_components/angular-ui-date/src/date.js"></script>
+    <script src="/bower_components/angular-loading-bar/build/loading-bar.min.js"></script>
     <script src="/js/themejs/exchange-rates.js"></script>
-    <script src="/js/themejs/jquery.autogrow-textarea.js"></script>
-    <script src="/js/themejs/jquery.bxSlider.min.js"></script>
-    <script src="/js/themejs/jquery.dataTables.min.js"></script>
-    <script src="/js/themejs/jquery.smartWizard.min.js"></script>
-    <script src="/js/themejs/jquery.tagsinput.min.js"></script>
-    <script src="/js/themejs/jquery.uniform.min.js"></script>
     <script src="/js/themejs/responsive-tables.js"></script>
-    <script src="/js/themejs/ui.spinner.min.js"></script>
-    <script src="/js/controller.js"></script>
+    <script src="/js/app.js"></script>
     <script src="/js/custom.js"></script>
-    <script src="/js/interactions.js"></script>
+    <script src="/js/directives/breadcrumb.js"></script>
+    <script src="/js/directives/directoryListing.js"></script>
+    <script src="/js/directives/fileManager.js"></script>
+    <script src="/js/directives/formHelper.js"></script>
+    <script src="/js/directives/profileImage.js"></script>
     <!--SCRIPTS END-->
-   
+    <script src="/js/controllers/controller.js"></script>
    <% if(page.controller){%>
         <script src="/js/controllers/<%- page.controller -%>"></script>
    <% } %>

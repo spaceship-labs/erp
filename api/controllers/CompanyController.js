@@ -7,24 +7,19 @@
 
 module.exports = {
 	index: function(req,res){
-		App.find().exec(function(err,apps){
-			if(err) throw err;
-			Currency.find().exec(function(err,currencies){
-				sails.controllers.company.indexJson(req,res,function(comp){
-					Common.view(res.view,{
-						apps:apps || []
-						,currencies:currencies || []
-						,comp:comp
-					},req);				
-				});
-				
+		Currency.find().exec(function(err,currencies){
+			Company.find().populate('base_currency').exec(function(err,companies){
+				Common.view(res.view,{
+					apps : sails.config.apps
+					,currencies:currencies || []
+					,comp:companies
+					,page:{
+						name:'Empresas'
+						,icon:'fa fa-building'		
+						,controller : 'company.js'		
+					}
+				},req);
 			});
-		});
-	}
-	, indexJson:function(req,res,cb){
-		Company.find().exec(function(err,comp){
-			if(cb) return cb(comp);
-			res.json(comp);
 		});
 	}
 	, edit: function(req,res){
@@ -38,6 +33,11 @@ module.exports = {
 					company:company || {}
 					,users:users || []
 					,apps: sails.config.apps
+					,page:{
+						name:'Empresas'
+						,icon:'fa fa-building'		
+						,controller : 'company.js'		
+					}
 				},req);
 			});
 		});
@@ -87,6 +87,17 @@ module.exports = {
 				if(e) throw e;
 				res.json(c);
 			});
+		});
+	}
+	,updateIcon: function(req,res){
+    	form = req.params.all();
+		Company.updateAvatar(req,{
+			dir : 'companies',
+			profile: 'avatar',
+			id : form.id,
+		},function(e,company){
+			if(e) console.log(e);
+			res.json(company);
 		});
 	}
 };

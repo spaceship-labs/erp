@@ -3,32 +3,7 @@
 </script>
 <div  ng-controller="fieldCTL">
     <div class="widgetbox">
-		<h4 class="widgettitle">Propiedades</h4>
-		<div class="widgetcontent nopadding">                            
-			<table class="table responsive">
-				<thead>
-					<tr>
-						<th>Nombre</th>
-						<th>Handle</th>
-						<th>Tipo</th>
-						<th>Valores</th>
-						<th>Eliminar</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr ng-repeat='(handle,field) in product.fields'>
-						<td ng-bind='field.name'></td>
-						<td ng-bind='field.handle'></td>
-						<td ng-bind='field.type'></td>
-						<td ng-bind='field.values'></td>
-						<td><a data-product="{{product.id}}" ng-click="removeField($index)" class='fa fa-trash-o'></a></td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-    </div>
-    <div class="widgetbox">
-        <h4 class="widgettitle">Nueva propiedad</h4>
+        <h4 class="widgettitle">Propiedades</h4>
         <div class="widgetcontent nopadding">
             <form accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine" ng-submit="processForm()">
                 <input type="hidden" ng-model="new_field.product_type" value="<%=product_type.id%>" />
@@ -58,6 +33,26 @@
                     <button type="reset" class="btn">Resetear</button>
                 </p>
             </form>
+            <table class="table responsive padding5" ng-show="product.fields.length > 0">
+                <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Handle</th>
+                    <th>Tipo</th>
+                    <th>Valores</th>
+                    <th>Eliminar</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat='(handle,field) in product.fields'>
+                    <td data-title="Nombre" ng-bind='field.name'></td>
+                    <td data-title="Handle" ng-bind='field.handle'></td>
+                    <td data-title="Tipo" ng-bind='field.type'></td>
+                    <td data-title="Valores" ng-bind='field.values'></td>
+                    <td data-title="Eliminar"><a style="cursor:pointer" data-product="{{product.id}}" ng-click="removeField($index)" class='fa fa-trash-o'></a></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

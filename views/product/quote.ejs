@@ -2,10 +2,12 @@
 <div class="widgetcontent nopadding">
     <form method="post" accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine" ng-submit="processPricing()">
         <input type='hidden' ng-value='product.id' name='pid' />
-        <% if (product_type.sales_type == 'sale') {%>
+        <% if (product_type.sales_type == 'sale') {
+            var postfix = product_type.inventory_type == 'metro2' ? "m2" : product_type.inventory_type == 'metro2' ? "m" : "";
+        %>
 
         <p>
-            <label>Costo</label>
+            <label>Costo <%- postfix %></label>
             <span class="field"><input type="text" ng-model='product.price.cost' class="form-control" /></span>
         </p>
 
@@ -21,7 +23,7 @@
 
         <% } else if (product_type.sales_type == 'rent') { %>
         <p>
-            <label for="price_per_time">Precio por {{product.price_time}}</label>
+            <label for="price_per_time">Precio por hora</label>
             <span class="field"><textarea name="price_per_hour" id="price" ng-model='product.price_per_time' class="form-control" ></textarea></span>
         </p>
         <% } else if (product_type.sales_type == 'service') { %>

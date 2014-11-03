@@ -8,9 +8,9 @@
         <div class="alert alert-block unseen">
             <button data-dismiss="alert" class="close" type="button">×</button>
             <h4>Mensaje</h4>
-            <p style="margin: 8px 0">tipo de producto creado exitosamente</p>
+            <p style="margin: 8px 0">Creado exitosamente</p>
         </div>
-        <form accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine" ng-submit="processForm()">
+        <form accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine" ng-submit="processForm()" name="outerForm">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 	        <h4 class="modal-title">Nueva Categoria</h4>
@@ -20,12 +20,13 @@
                   <div class="widgetcontent nopadding">
                           <p>
                               <label for="name">Nombre*</label>
-                              <span class="field"><input type="text" name="name" class="input-large" ng-model='product_type.name'></span>
+                              <span class="field"><input type="text" name="name" class="input-large" required ng-model='product_type.name'></span>
                           </p>
-                          <p><label for="app">Tipo de venta*</label>
+                          <p><label>Tipo*</label>
                             <span class="field">
-                                <select name='sales_type' class=' form-control large' data-placeholder="Escoger tipo" ng-model='product_type.sales_type' ng-options='k as l for (k,l) in  sales_type' chosen>
+                                <select class='form-control' data-placeholder="Escoger tipo" ng-model='product_type.sales_type' required ng-options='k as l for (k,l) in  sales_type' chosen>
                                 </select>
+                                <span class="error" ng-show="product_type.sales_type.$error.required">*</span>
                             </span>
                           </p>
                           <p>
@@ -33,23 +34,24 @@
                               <span class="field"><input type="text" name="description" class="input-large" ng-model='product_type.description'></span>
                           </p>
                           <p>
-                              <label for="inventory_use">Inventariado ?</label>
+                              <label for="inventory_use" style="cursor:pointer;">Inventariado ?</label>
                               <span class="field">
                                   <input type="checkbox" name="inventory_use" id="inventory_use" class="input-large" ng-model='product_type.inventory_use'>
                               </span>
                           </p>
                           <p ng-show="product_type.inventory_use == true" class="ng-hide">
                               <label for="inventory_type">Unidad de inventario</label>
-                                      <span class="field">
-                                          <select type="text" data-placeholder="Escoger unidad" name="inventory_type" class="input-large" ng-options='k as l for (k,l) in  inventory_types' ng-model='product_type.inventory_type' chosen></select>
-                                      </span>
+                                  <span class="field">
+                                      <select type="text" data-placeholder="Escoger unidad" name="inventory_type" class="input-large" ng-options='k as l for (k,l) in  inventory_types' ng-model='product_type.inventory_type' chosen ng-required="product_type.inventory_use == true" ></select>
+                                      <span class="error" ng-show="product_type.inventory_type.$error.required">*</span>
+                                  </span>
                           </p>
                   </div>
               </div>
           </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-	        <input type="submit" class="btn btn-primary" value='Guardar'>
+	        <input type="submit" class="btn btn-primary" value='Guardar' ng-disabled="outerForm.$invalid">
 	      </div>
 	</form>
     </div><!-- /.modal-content -->

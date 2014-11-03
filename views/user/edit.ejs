@@ -1,144 +1,88 @@
 <script type='text/javascript'>
     window.user = <%- JSON.stringify(user) %>;
-
+    window.apps = <%- JSON.stringify(apps) %>;
 </script>
-<div class="span4 profile-left profileEdit"  ng-controller='userEditCTL'>
-	<div class="alert alert-block unseen">
-		<button data-dismiss="alert" class="close" type="button">×</button>
-		<h4>Mensaje</h4>
-			<p style="margin: 8px 0">El usuario se ha actualizado exitosamente</p>
-		</div>
-        <div class="widgetbox profile-photo">
-        <div class="headtitle">
-            <div class="btn-group">
-                <button data-toggle="dropdown" class="btn dropdown-toggle">Opciones <span class="caret"></span></button>
-                <ul class="dropdown-menu">
-                  <li><a href="#" class="change-icon-button">Cambiar</a></li>
-                  <li><a class="confirmbutton" href="/users/users/destroy_icon/12">Eliminar</a></li> 
-                </ul>
-            </div>            
-            <h4 class="widgettitle">Avatar</h4>
-        </div>
-        <div class="widgetcontent">
-            <div class="profilethumb" style="background:none">
-                <img src="<%= user.avatar %>" alt="<%= user.name %>">
-                <form action="/user/editAjax" method="post" accept-charset="utf-8" enctype="multipart/form-data" class="hidden commonForm" id="change-icon">
-		    <input type="hidden" name="userId" value="<%= user.id %>" />
-		    <input type="hidden" name="method" value="icon" />
-                    <hr>
-                    <span class="field">
-                        <span class="fileupload fileupload-new" data-provides="fileupload">
-                            <span class="input-append">
-                                <span class="uneditable-input span2">
-                                    <i class="fa fa-file fileupload-exists"></i>
-                                    <span class="fileupload-preview"></span>
-                                </span>
-                                <span class="btn btn-file">
-                                    <span class="fileupload-new">Archivo</span>
-                                    <span class="fileupload-exists">Cambiar</span>
-                                    <input type="file" name="icon_input">
-                                </span>
-                                <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Eliminar</a>
-                            </span>
-                        </span>
-                    </span>
-                    <p class="submit-button">
-                        <button type="submit" class="btn btn-primary">Actualizar</button>                        
-                    </p>
-                </form>
-            </div><!--profilethumb-->
-        </div>
-    </div>
-        
-        
-    <div class="widgetbox tags">
-        <h4 class="widgettitle">Aplicaciones y Permisos</h4>
-        <div class="widgetcontent">
-            <accordion close-others='false'>
-                <accordion>
-                    <accordion-group heading="{{app.label}}" ng-repeat="(handle, app) in user.accessList">
+<div ng-controller='userEditCTL'>
+    <div class="span4 profile-left profileEdit">
+        <div class="alert alert-block unseen">
+            <button data-dismiss="alert" class="close" type="button">×</button>
+            <h4>Mensaje</h4>
+                <p style="margin: 8px 0">El usuario se ha actualizado exitosamente</p>
+            </div>
+            <div profile-image object='user' update-method='/user/updateIcon' delete-method='/user/destroyIcon' image-attr='icon' dir='users'></div>
+        <div class="widgetbox tags">
+            <h4 class="widgettitle">Aplicaciones y Permisos</h4>
+            <div class="widgetcontent">
+                <p>
+                    <label for="adminInput">Administrador</label>
+                    <input type="checkbox" id="adminInput" ng-model="user.isAdmin" />
+                </p>
+                <accordion close-others='false' ng-if="!user.isAdmin">
+                    <accordion-group heading="{{app.label}}" ng-repeat="app in apps" ng-show="filterPermissionsApp(app)" style="cursor: pointer;">
                         <table class="table responsive">
                             <thead>
                                 <tr>
-                                    <th>Modulo</th>
-                                    <th>Crear</th>
-                                    <th>Actualizar</th>
-                                    <th>Borrar</th>
+                                    <th>Permiso</th>
+                                    <th>Escoger</th>
                                 </tr>
                             </thead>
                             <tbody ng-click="update()">
-                                <tr ng-repeat='view in app.views'>
-                                    <td ng-bind='view.label'></td>
+                                <tr ng-repeat='permission in app.permissions track by $index'>
+                                    <td><label ng-bind='permission.label' for="{{permission.handle + '_' + $index}}"></label></td>
                                     <td>
                                          <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" ng-model='view.permissions.create' >
+                                                <input type="checkbox" id="{{permission.handle + '_' + $index}}" ng-model='view.permissions.create' >
                                             </label>
                                         </div>
                                     </td>
-                                    <td>
-                                         <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox" ng-model='view.permissions.update'>
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                         <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox" ng-model='view.permissions.delete'>
-                                            </label>
-                                        </div>
-                                    </td>
-                                    
                                 </tr>
                             </tbody>
                         </table>
-                        <a class="btn btn-primary" ng-click="updateAccestList()">Actualizar Usuario</a> 
+                        <a class="btn btn-primary" ng-click="updateAccestList()">Actualizar Usuario</a>
                     </accordion-group>
                 </accordion>
-            </accordion>
+            </div>
         </div>
     </div>
-        
-        
-  
-        
-</div>
-<div class="span6">        
-    <div class="widgetbox personal-information">
-        <h4 class="widgettitle">Información Basica</h4>
-        <div class="widgetcontent">
-            <form action="/user/editAjax" class="editprofileform stdform stdform2 commonForm" method="post">
-
-                    <p><label for="name">Nombre:</label>
-                    <span class="field"><input type="text" name="name" class="input-xlarge" value="<%= user.name %>"></span></p> 
-
-                    <p><label for="last_name">Apellido</label>
-                    <span class="field"><input type="text" name="last_name" class="input-xlarge" value="<%= user.last_name %>"></span></p>
-                
-                    <p><label for="email">Email</label>
-                    <span class="field"><input type="text" name="email" class="input-xlarge" value="<%=user.email %>"></span></p>
-                    
-                    <p><label for="phone">Telefono</label>
-                    <span class="field"><input type="text" name="phone" class="input-xlarge" value="<%= user.phone %>"></span></p>
-                    <p class="stdformbutton">
-                    <%var active = {
-                        true:[0,'Desactivar']
-                        , false:[1,'Activar']
-                    } %>
-                    
-                        <button type="submit" class="btn btn-primary">Actualizar Usuario</button> &nbsp; 
-                        <a class="confirmbutton"  data-url="/user/" href="<%=active[user.active][0]%>"><%=active[user.active][1]%></a>
-                    </p>
-                    <input type="hidden" name="method" value="info" />
-                    <input type="hidden" name="userId" value="<%= user.id %>" />
-                </form>                
+    <div class="span6">
+        <div class="widgetbox personal-information">
+            <h4 class="widgettitle">Información Basica</h4>
+            <div class="widgetcontent">
+                <form ng-submit="updateInfo()" class="editprofileform stdform stdform2 commonForm">
+                        <p>
+                            <label for="name">Nombre:</label>
+                            <span class="field"><input type="text" name="name" class="input-xlarge" ng-model="user.name"></span>
+                        </p>
+                        <p>
+                            <label for="last_name">Apellido</label>
+                            <span class="field"><input type="text" name="last_name" class="input-xlarge" ng-model="user.last_name"></span>
+                        </p>
+                        <p>
+                            <label for="email">Email</label>
+                            <span class="field"><input type="text" name="email" class="input-xlarge" ng-model="user.email"></span>
+                        </p>
+                        <p>
+                            <label for="phone">Telefono</label>
+                            <span class="field"><input type="text" name="phone" class="input-xlarge" ng-model="user.phone"></span>
+                        </p>
+                        <%
+                        var active = {
+                            true:[0,'Desactivar']
+                            , false:[1,'Activar']
+                        }
+                        %>
+                        <p class="stdformbutton">
+                            <button type="submit" class="btn btn-primary">Actualizar Usuario</button> &nbsp;
+                            <a class="confirmbutton"  data-url="/user/" href="<%=active[user.active][0]%>"><%=active[user.active][1]%></a>
+                        </p>
+                    </form>
+            </div>
         </div>
     </div>
-        
-    <div>
-    
-	    <%// partial('../global/notices') -%> 
-    </div>
+    <% if (req.user.isAdmin) {%>
+        <div class="span6">
+            <%- partial('change-password') -%>
+        </div>
+    <% } %>
 </div>

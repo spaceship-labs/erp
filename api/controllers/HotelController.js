@@ -16,8 +16,12 @@ module.exports = {
 					page:{
 						name:'Hoteles'
 						,icon:'fa fa-building'		
-						,controller : 'hotel.js'		
-					}
+						,controller : 'hotel.js'
+							
+					},
+					breadcrumb : [
+						{label : 'Hoteles'}
+					]
 				},req);
 			});
 		});
@@ -36,8 +40,12 @@ module.exports = {
 						page:{
 							name : hotel.name,
 							icon : 'fa fa-building',		
-							controller : 'hotel.js',		
-						}
+							controller : 'hotel.js',			
+						},
+						breadcrumb : [
+							{label : 'Hoteles', url : '/hotel/'},
+							{label : hotel.name}
+						]
 					},req);
 				});
 		   	});
@@ -78,6 +86,7 @@ module.exports = {
     	delete form.user;
     	delete form.rooms;
     	delete form.seasons;
+    	delete form.files;
     	form.location = location.id;
     	//console.log(form);
     	form.req = req;
@@ -86,29 +95,45 @@ module.exports = {
     		Hotel.findOne(hotel[0].id).populate('location').populate('rooms').populate('seasons').exec(function(e,hotel){
     			if(e) throw(e);    			
     			hotel = formatHotel(hotel);	
-    			console.log(hotel);
     			res.json(hotel);
     		});
     	});
 
     },
     updateIcon: function(req,res){
-		var form = req.params.all();
-		form.req = req;
-		Common.updateIcon(req,{
-			form:form
-			,dirSave : __dirname+'/../../assets/uploads/hotels/'
-			,dirPublic:  __dirname+'/../../.tmp/public/uploads/hotels/'
-			,Model:Hotel
-			,prefix:'177x171'
-			,dirAssets:'/uploads/hotels/'
+    	form = req.params.all();
+		Hotel.updateAvatar(req,{
+			dir : 'hotels',
+			profile: 'avatar',
+			id : form.id,
 		},function(e,hotel){
-			if(e) throw(e);
-			Hotel.findOne(form.userId).populate('location').populate('rooms').populate('seasons').exec(function(e,hotel){
+			res.json(formatHotel(hotel));
+		});
+	},
+	addFiles : function(req,res){
+		form = req.params.all();
+    	Hotel.findOne({id:form.id}).exec(function(e,hotel){
+    		if(e) throw(e);
+    		hotel.addFiles(req,{
+    			dir : 'hotels/gallery',
+    			profile: 'gallery'
+    		},function(e,hotel){
+    			if(e) throw(e);
+    			res.json(formatHotel(hotel));
+    		});
+    	});
+	},
+	removeFiles : function(req,res){
+		form = req.params.all();
+		Hotel.findOne({id:form.id}).exec(function(e,hotel){
+			hotel.removeFiles(req,{
+				dir : 'hotels/gallery',
+				profile : 'gallery',
+				files : form.removeFiles,
+			},function(e,hotel){
 				if(e) throw(e);
-				hotel = formatHotel(hotel);
-				res.json(hotel)
-			});
+				res.json(formatHotel(hotel));
+			})
 		});
 	},
 	addRoom : function(req,res){
@@ -139,7 +164,6 @@ module.exports = {
 
 
 function formatHotels(hotels){
-//	var hotels_new = [];
 	for(var i=0;i<hotels.length;i++) hotels[i] = formatHotel(hotels[i]);
 	return hotels;
 }
@@ -162,16 +186,3 @@ function timeFormat(date){
 	}
 	return date.lang('es').format('LLLL');
 }
-
-var update = {
-	icon: function(req,form,cb){
-		Common.updateIcon(req,{
-			form:form
-			,dirSave : __dirname+'/../../assets/uploads/hotels/'
-			,dirPublic:  __dirname+'/../../.tmp/public/uploads/hotels/'
-			,Model:Hotel
-			,prefix:'177x171'
-			,dirAssets:'/uploads/hotels/'
-		},cb);
-	}
-};

@@ -9,7 +9,7 @@ module.exports = {
 
 	attributes: {
 		name:'string'
-		,icon:'string'
+		,icon:'json'
 		,description:'string'
 		,address:'string'
 		,zipcode:'string'
