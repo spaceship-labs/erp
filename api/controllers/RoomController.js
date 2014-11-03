@@ -5,26 +5,28 @@
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
 
+async = require('async');
 module.exports = {
 	edit : function(req,res){
-		if(req.params.id){
-	    	Room.findOne(req.params.id).populate('hotel').exec(function(e,room){
-	    		if(e) throw(e);
-    			Season.find({hotel:room.hotel.id}).exec(function(e,seasons){
-    				if(e) throw(e);
-					Common.view(res.view,{
-						room:room,
-						seasons:seasons,
-						_content:sails.config.content,
-						page:{
-							name : room.name_es,
-							icon : 'fa fa-home',
-							controller : 'room.js',
-						}
-					},req);
-				});
-		   	});
-    	}
+		var reads = [
+			function(cb){Room.findOne(req.params.id).populate('hotel').exec(cb)},
+			function(room,cb){Hotel.findOne(room.hotel.id).populate('seasonScheme').exec(function(e,hotel){cb(e,room,hotel)})},
+			function(room,hotel,cb){SeasonScheme.findOne(hotel.seasonScheme.id).populate('seasons').exec(function(e,scheme){cb(e,room,hotel,scheme)})},
+		]
+		async.waterfall(reads,function(e,room,hotel,scheme){
+			//if(e) throw(e);
+			Common.view(res.view,{
+				room:room,
+				hotel : hotel,
+				scheme:scheme,
+				_content:sails.config.content,
+				page:{
+					name : room.name_es,
+					icon : 'fa fa-home',
+					controller : 'room.js',
+				}
+			},req);
+		});
 	},
 	updateIcon: function(req,res){
 		var form = req.params.all();
