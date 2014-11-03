@@ -17,7 +17,7 @@ module.exports = {
             Common.view(res.view,{
                 page:{
                     icon:'fa fa-gears'
-                    ,name:'Maquinas'
+                    ,name:'Impresoras'
                 },
                 machines : machines
             },req);
@@ -45,7 +45,7 @@ module.exports = {
                 }
 
                 if (!modes) {
-                    return res.json({text:'Maquina creada.',url:'/machine/edit/'+machine.id});
+                    return res.json({text:'Impresora creada.',url:'/machine/edit/'+machine.id});
                 }
 
                 var modesComplete = modes.map(function(mode){
@@ -65,7 +65,7 @@ module.exports = {
                             console.log(err);
                             return res.json({text:'Ocurrio un error.'});
                         }
-                        return res.json({text:'Maquina creada.',url:'/machine/edit/'+machine.id});
+                        return res.json({text:'Impresora creada.',url:'/machine/edit/'+machine.id});
                     });
 
                 });
@@ -90,7 +90,7 @@ module.exports = {
                         Common.view(res.view,{
                             page:{
                                 icon:'fa fa-gear'
-                                ,name:'Maquinaria'
+                                ,name:'Impresora'
                             },
                             machine : machine || {},
                             product_types : product_types,
@@ -107,7 +107,7 @@ module.exports = {
         if(form){
             Machine.update({id:form.id},{ name : form.name , description : form.description , internalReference : form.internalReference , product_types : form.product_types, ink_cost : form.ink_cost,ink_utility : form.ink_utility }).exec(function(err,machine){
                     if(err) return res.json({text:'Ocurrio un error.'});
-                    res.json({text:'Maquinaria actualizada.'});
+                    res.json({text:'Impresora actualizada.'});
                 });
         }
     },
@@ -135,7 +135,7 @@ module.exports = {
                 if (err) return res.json({text: 'Ocurrio un error.'});
                 Machine.update({id: machine},{modes : savedModes}).exec(function (err, fmachine) {
                     if (err) return res.json({text: 'Ocurrio un error.'});
-                    res.json({text: 'Maquinaria actualizada.'});
+                    res.json({text: 'Impresora actualizada.'});
                 });
             });
         }

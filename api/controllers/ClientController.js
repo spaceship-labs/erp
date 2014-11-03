@@ -68,6 +68,7 @@ module.exports = {
             form.user = req.user.id;
             form.company = req.session.select_company || req.user.select_company;
             Client_.create(form).exec(function(err,client_){
+                console.log(req);
                 if(err) return res.json({text:err});
                 res.json({text:'Cliente creado.',url:'/clientes/editar/'+client_.id});
             });

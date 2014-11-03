@@ -16,29 +16,30 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>Cotizacion</th>
-                <th>Fecha</th>
+                <th>Fecha de instalacion</th>
+                <th>Creada</th>
                 <th>Creada por</th>
                 <th>Zona</th>
-                <th>Horas</th>
+                <th>Tipo de trabajo</th>
                 <th>Editar</th>
+                <th>Cotizacion</th>
             </tr>
             </thead>
             <tbody>
 
             <% for(var i=0;i<installations.length;i++){
-                var installation = installations[i]
+                var installation = installations[i];
             %>
-            <tr>
-                <td data-title="Cotizacion"><a href="/saleQuote/edit/<%= installation.quote.id %>"><%= installation.quote.id %></td>
-                <td data-title="Fecha"><%= moment(installation.createdAt) %></td>
-                <td data-title="Creada por"><%= installation.user.name %></td>
-                <td data-title="Zona"><%= installation.zone.name %></td>
-                <td data-title="Horas"><%= /*installation.hours*/ "test" %></td>
-                <td data-title="Editar"><a href="/installation/edit/<%= installation.id %>"><span class="table-icon fa fa-edit"></span></a></td>
-            </tr>
+                <tr>
+                    <td data-title="Fecha de instalacion"><%= moment(installation.date).format('Do [de] MMMM YYYY') %></td>
+                    <td data-title="Creada"><%= moment(installation.createdAt).format('Do [de] MMMM YYYY, h:mm:ss a') %></td>
+                    <td data-title="Creada por"><%= installation.user.name %></td>
+                    <td data-title="Zona"><%= installation.zone.name %></td>
+                    <td data-title="Tipo de trabajo"><%= installation.work_type.name %></td>
+                    <td data-title="Editar"><a href="/installation/edit/<%= installation.id %>"><span class="table-icon fa fa-edit fa-align-center"></span></a></td>
+                    <td data-title="Cotizacion"><a href="/salesQuote/edit/<%= installation.quote.id %>"><span class="table-icon fa fa-file fa-align-center"></span></a></td>
+                </tr>
             <% } %>
-
             </tbody>
         </table>
     </div>

@@ -68,7 +68,18 @@ module.exports = {
     },
 
     edit : function(req,res) {
-
+        var select_company = req.session.select_company || req.user.select_company;
+        var id = req.param('id');
+        Installation.findOne({ company : select_company,id : id }).populateAll().exec(function(err,installation){
+            Common.view(res.view,{
+                page:{
+                    icon:'fa fa-wrench'
+                    ,name:'Instalacion'
+                },
+                installation : installation || [],
+                moment : moment
+            },req);
+        });
     },
 
     update : function (req,res){
@@ -76,7 +87,7 @@ module.exports = {
         if(form){
             Machine.update({id:form.id},{ name : form.name , description : form.description , internalReference : form.internalReference , product_types : form.product_types, ink_cost : form.ink_cost,ink_utility : form.ink_utility }).exec(function(err,machine){
                 if(err) return res.json({text:'Ocurrio un error.'});
-                res.json({text:'Maquinaria actualizada.'});
+                res.json({text:'Impresora actualizada.'});
             });
         }
     },

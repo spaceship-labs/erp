@@ -1,12 +1,13 @@
 <p>
 	<label for="name">Nombre*</label>
-	<span class="field"><input type="text" name="name" class="form-control" ng-model='product.name'></span>
+	<span class="field"><input type="text" name="name" class="form-control" ng-model='product.name' required></span>
 </p>
 
 <p>
-	<label for="address">Tipo*</label>
-	<span class="field" ng-model='product.type'>
-		<select name="product_type" class="form-control" ng-options='k as l for (k,l) in product_types' ng-model='product.product_type' chosen></select>
+	<label for="address">Categoria*</label>
+	<span class="field">
+		<select name="product_type" class="form-control" ng-options='k as l for (k,l) in product_types' ng-model='product.product_type' required chosen></select>
+        <span class="error" ng-show="product.product_type.$error.required">*</span>
 	</span>
 </p>
 

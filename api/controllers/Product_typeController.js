@@ -28,12 +28,11 @@ module.exports = {
     create : function(req,res) {
         var form = Common.formValidate(req.params.all(),['description','inventory_type','inventory_use','name','sales_type']);
         if (form) {
+            console.log(form);
             form.user = req.user.id;
             form.company = req.session.select_company || req.user.select_company;
-            console.log(form);
             Product_type.create(form).exec(function(err,product_type){
-                if(err) return res.json({text:err});
-                console.log(product_type);
+                if(err) return res.json({text:'error',invalidAttributes : err.invalidAttributes});
                 res.json({text:'Categoria de producto creada.',url:'/product_type/edit/'+product_type.id});
             });
         }
@@ -43,16 +42,16 @@ module.exports = {
 		if(id){
 			Sales_type.find().exec(function(err,sales_type){
 				if(err) throw err;
-				Product_type.findOne({id:id}).populate('fields').populate('machines').exec(function(err,product){
+				Product_type.findOne({id:id}).populate('fields').populate('machines').exec(function(err,product_type){
                     if (err) throw err;
                     Inventory_type.find().exec(function (err,inventory_type){
                         Common.view(res.view,{
                             page:{
                                 icon:'fa fa-cubes',
-                                name:'Editar Categoria'
+                                name:'Editar Categoria : ' + product_type.name
                             },
-                            product_type:product
-                            ,product : product //hack para la vista new_field
+                            product_type:product_type
+                            ,product : product_type //hack para la vista new_field
                             ,types:Custom_fields.attributes.type.enum
                             ,sales_type:sales_type
                             ,inventory_type : inventory_type

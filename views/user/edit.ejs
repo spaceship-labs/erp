@@ -18,31 +18,30 @@
                     <input type="checkbox" id="adminInput" ng-model="user.isAdmin" />
                 </p>
                 <accordion close-others='false' ng-if="!user.isAdmin">
-                    <accordion>
-                        <accordion-group heading="{{app.label}}" ng-repeat="app in apps" ng-show="filterPermissionsApp(app)" style="cursor: pointer;">
-                            <table class="table responsive">
-                                <thead>
-                                    <tr>
-                                        <th>Permiso</th>
-                                        <th>Escoger</th>
-                                    </tr>
-                                </thead>
-                                <tbody ng-click="update()">
-                                    <tr ng-repeat='permission in app.permissions track by $index'>
-                                        <td><label ng-bind='permission.label' for="{{permission.handle + '_' + $index}}"></label></td>
-                                        <td>
-                                             <div class="checkbox">
-                                                <label>
-                                                    <input type="checkbox" id="{{permission.handle + '_' + $index}}" ng-model='view.permissions.create' >
-                                                </label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <a class="btn btn-primary" ng-click="updateAccestList()">Actualizar Usuario</a>
-                        </accordion-group>
-                    </accordion>
+                    <accordion-group heading="{{app.label}}" ng-repeat="app in apps" ng-show="filterPermissionsApp(app)" style="cursor: pointer;">
+                        <table class="table responsive">
+                            <thead>
+                                <tr>
+                                    <th>Permiso</th>
+                                    <th>Escoger</th>
+                                </tr>
+                            </thead>
+                            <tbody ng-click="update()">
+                                <tr ng-repeat='permission in app.permissions track by $index'>
+                                    <td><label ng-bind='permission.label' for="{{permission.handle + '_' + $index}}"></label></td>
+                                    <td>
+                                         <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" id="{{permission.handle + '_' + $index}}" ng-model='view.permissions.create' >
+                                            </label>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <a class="btn btn-primary" ng-click="updateAccestList()">Actualizar Usuario</a>
+                    </accordion-group>
+                </accordion>
             </div>
         </div>
     </div>

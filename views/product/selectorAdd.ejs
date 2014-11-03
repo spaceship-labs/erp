@@ -17,7 +17,7 @@
                                     <a ng-if="product.id" href="/product/edit/{{product.id}}">Editar</a>
                                 </span>
                             </p>
-                            <p ng-if="product.id">
+                            <p ng-if="product.id && product.description">
                                 <label>Descripcion: </label>
                                 <span class="field">{{product.description}}</span>
                             </p>
@@ -25,7 +25,7 @@
                                 <label>Categoria: </label>
                                 <span class="field">{{product.product_type.name}}</span>
                             </p>
-                            <p ng-if="product.id">
+                            <p ng-if="product.id  && product.internalReference">
                                 <label>Referencia Interna: </label>
                                 <span class="field">{{product.internalReference}}</span>
                             </p>

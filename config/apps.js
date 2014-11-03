@@ -41,7 +41,7 @@ module.exports.apps = {
 				icon : 'fa-cubes',
 			},
             '/machine/':{
-                label:'Maquinas',
+                label:'Impresoras',
                 icon:'fa-gears',
             },
             '/installation/':{
@@ -49,6 +49,14 @@ module.exports.apps = {
                 icon:'fa-wrench',
             }
 		},
+        permissions : [
+            {label : 'ver ventas',handle : 'viewSales'},
+            {label : 'vet cotizaciones',handle : 'viewSaleQuotes'},
+            {label : 'ver productos',handle : 'viewProduct'},
+            {label : 'ver categorias de producto',handle : 'viewProductType'},
+            {label : 'ver impresoras',handle : 'viewMachine'},
+            {label : 'ver instalaciones',handle : 'viewInstallation'}
+        ]
 	},*/
     clients : {
         name : 'clients',
@@ -60,6 +68,11 @@ module.exports.apps = {
                 icon : 'fa-user',
             }
         },
+        permissions : [
+            {label : 'ver clientes',handle : 'viewClients'},
+            {label : 'editar clientes',handle : 'editClients'},
+            {label : 'editar contactos de clientes',handle : 'editClientContact'}
+        ]
     },
     hotels : {
         name : 'hotels',
@@ -91,4 +104,15 @@ module.exports.apps = {
             },
         },
     },
+    hotels : {
+        name : 'hotels',
+    	label : 'Hoteles',
+        icon : 'fa-building',
+        views : {
+            '/hotel/' : {
+                label : 'Hoteles',
+                icon : 'fa-building-o'
+            }
+        }
+    }
 };

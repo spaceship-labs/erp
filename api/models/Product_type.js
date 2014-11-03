@@ -21,12 +21,15 @@ module.exports = {
             via : 'product_type'
         }
 		,company:{
-            model : 'Company'
+            model : 'Company',
+            required : true
         }
 		,user:{
             model : 'User'
         }
-		,description:'string'
+		,description: {
+            type : 'string'
+        }
 		,product:{
 			collection:'product'
 			,via:'product_type'
