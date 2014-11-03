@@ -10,7 +10,6 @@
         		object : '=',
                 app : '=',
                 apps : '=',
-
         	},
         	templateUrl : '/template/find/notices.html'
         };
