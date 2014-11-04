@@ -18,8 +18,7 @@ module.exports.apps = {
 			}
 		}
 	},
-
-	products : {
+	/*products : {
         name : 'products',
 		label : 'Ventas',
 		icon : 'fa-briefcase',
@@ -58,7 +57,7 @@ module.exports.apps = {
             {label : 'ver impresoras',handle : 'viewMachine'},
             {label : 'ver instalaciones',handle : 'viewInstallation'}
         ]
-	},
+	},*/
     clients : {
         name : 'clients',
         label : 'Clientes',
@@ -74,7 +73,7 @@ module.exports.apps = {
             {label : 'editar clientes',handle : 'editClients'},
             {label : 'editar contactos de clientes',handle : 'editClientContact'}
         ]
-    }/*,
+    },
     hotels : {
         name : 'hotels',
         label : 'Hoteles',
@@ -126,5 +125,5 @@ module.exports.apps = {
                 icon : 'fa-building-o'
             }
         }
-    }*/
+    }
 };

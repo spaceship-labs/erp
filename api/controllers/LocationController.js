@@ -44,10 +44,8 @@ module.exports = {
     	var id = form.id;
     	Location.update({id:id},form,function(e,location_o){
     		if(e) throw(e);
-    		console.log(location_o);
     		Location.findOne(location_o[0].id).exec(function(e,location_o){
     			if(e) throw(e);
-    			console.log(location_o);
     			res.json(location_o);
     		});
     	});
