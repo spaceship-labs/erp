@@ -1,0 +1,41 @@
+<script type='text/javascript'>
+	window.locations = <%- JSON.stringify(locations) %>;
+	window.content = <%- JSON.stringify(_content) %>;
+</script>
+<div ng-controller='locationCTL' >
+	<p><button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Nueva Ciudad</button></p>
+	<br/>
+	<div 
+		directory-listing 
+		objects='locations' 
+		searchInput='searchInput' 
+		dir='locations' 
+		edit-url='/location/edit/' 
+		get-info='getInfo'
+		name-var='name' ></div>
+
+	<div class="clearfix"></div>
+	<div class="span6">
+		<div class="alert alert-block unseen userAlert">
+			<button data-dismiss="alert" class="close" type="button">×</button>
+			<h4>Mensaje</h4>
+			<p>La ciudad se creo exitosamente</p>
+		</div>
+	</div>
+	<div class="modal fade" id="myModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div 
+					form-helper 
+			        fields='content.location' 
+			        form-footer='Agregar'
+			        form-save = 'createLocation'
+			        object = 'location'
+			        form-title='Agregar Ciudad'
+			       	modal='true'
+			        >
+			    </div>	
+			</div>
+		</div>
+	</div>
+</div>

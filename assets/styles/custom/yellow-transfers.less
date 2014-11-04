@@ -10,7 +10,25 @@
 @header-icon-hover:#FFF;
 @header-background:#000000;
 
-@header-logo: '/images/logos/yellow_logo.png';
+@header-logo: '/images/logos/yellow_logo2.png';
 @login-logo: '/images/logos/yellow_logo.png';
 
-.header .logo a{width:260px;height:50px;}
+/*General*/
+@left-bar : '../images/leftpanelbg-yellow.jpg';
+@left-color : #000;
+@title-color : @login-background;
+@button-bg : #000;
+@button-color : @login-background;
+.button-gral() {
+	background: @button-bg;
+	color:@button-color;
+	span{
+		color:white;
+	}
+};
+.table-th(){
+	background : #2E2E2E!important;
+};
+
+#mainwrapper .leftpanel{top:110px;}
+.header .logo a{width:260px;height:70px;}

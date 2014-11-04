@@ -89,6 +89,17 @@ module.exports.apps = {
             },
         },
     },
+    ciudades : {
+        name    : 'locations',
+        label   : 'Ciudades',
+        icon    : 'fa-flag',
+        views   : {
+            '/location/' : {
+                label   : 'Ciudades',
+                icon    : 'fa-flag'
+            }
+        }
+    },
     services : {
         name : 'services',
         label : 'Servicios',
