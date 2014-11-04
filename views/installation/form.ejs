@@ -3,16 +3,17 @@
         <p>
             <label>Fecha :</label>
             <span class="field input-group">
-                <input type="text" class="form-control" datepicker-popup="{{formatDate}}" ng-model="installation.date" is-open="openedCalendar" min-date="minDate" datepicker-options="dateOptions" ng-required="true" show-button-bar="false"/>
+                <input type="text" class="form-control" datepicker-popup="{{formatDate}}" ng-model="installation.date" is-open="opened" min-date="minDate" datepicker-options="dateOptions" ng-required="true" show-button-bar="false" close-text="close"/>
                 <span class="input-group-btn">
-                    <button type="button" class="btn btn-default" ng-click="openCalendar($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                    <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
                 </span>
             </span>
         </p>
         <p>
             <label>Tipo de trabajo :</label>
             <span class="field">
-                <select ng-model="installation.work_type" ng-options="p.name for p in work_types" chosen="installation.work_type"></select>
+                <select ng-model="installation.work_type" ng-options="p.name for p in work_types" chosen="installation.work_type" required></select>
+                <label ng-show="installation.work_type.$invalid && installation.work_type.$dirty">test is a test is a test</label>
             </span>
         </p>
         <p>
@@ -27,77 +28,91 @@
                 <select ng-model="installation.zone" ng-options="p.name for p in zones" chosen="installation.zone"></select>
             </span>
         </p>
-    </div>
-    <div ng-switch-when="2">
-        <p>
+        <div class="par">
             <label>Herramientas :</label>
             <span class="field">
                 <select ng-model="installation.tools" ng-options="p.product.name for p in tools" chosen="installation.tools" multiple></select>
+                <table class="table table-striped" ng-show="installation.tools.length > 0">
+                    <thead>
+                    <tr>
+                        <th>Material</th>
+                        <th>Cantidad</th>
+                        <th>Precio total</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="tool in installation.tools">
+                        <td>{{tool.product.name}}</td>
+                        <td><input type="number" ng-model='tool.quantity' class="number form-control span1" min="1" value="1" ng-init="tool.quantity=1"/></td>
+                        <td>{{calculateProductPrice(tool) | currency}}</td>
+                    </tr>
+                    </tbody>
+                </table>
             </span>
-        </p>
-
-        <p ng-show="installation.tools.length > 0" ng-repeat="tool in installation.tools">
-            <label>{{tool.product.name}}</label>
-            <span class="field">
-                <input type="number" ng-model='tool.quantity' class="number form-control span1" min="1" value="1"/>={{calculateProductPrice(tool) | currency}}
-            </span>
-        </p>
-
-        <p>
+        </div>
+        <div class="par">
             <label>Materiales :</label>
             <span class="field">
                 <select ng-model="installation.materials" ng-options="p.product.name for p in materials" chosen="installation.materials" multiple></select>
+                <table class="table table-striped" ng-show="installation.materials.length > 0">
+                    <thead>
+                    <tr>
+                        <th>Material</th>
+                        <th>Cantidad</th>
+                        <th>Precio total</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="material in installation.materials">
+                        <td>{{material.product.name}}</td>
+                        <td><input type="number" ng-model='material.quantity' class="number form-control span1" min="1" value="1" ng-init="material.quantity=1"/></td>
+                        <td>{{calculateProductPrice(material) | currency}}</td>
+                    </tr>
+                    </tbody>
+                </table>
             </span>
-        </p>
-        <p ng-show="installation.materials.length > 0" ng-repeat="material in installation.materials">
-            <label>{{material.product.name}}</label>
-            <span class="field">
-                <input type="number" ng-model='material.quantity' class="number form-control" min="1" value="1"/>={{calculateProductPrice(material) | currency}}
-            </span>
-        </p>
+        </div>
     </div>
-    <div ng-switch-when="3">
+    <div ng-switch-when="2">
         <p>
             <label>Gruas y plataformas :</label>
             <span class="field">
                 <select ng-model="installation.crane" ng-options="p.name for p in cranes" chosen="installation.crane"></select>
             </span>
         </p>
-        <p ng-show="installation.crane && installation.crane.id">
-            <label>dias </label>
+        <div class="par" ng-show="installation.crane && installation.crane.id">
+            <label>Dias :</label>
             <span class="field">
-                <input type="number" ng-model='installation.crane.quantity' class="number form-control span1" min="1" value="1"/>={{calculateItemPrice(installation.crane)  | currency}}
+                <input type="number" ng-model='installation.crane.quantity' class="number span2" min="1" ng-init="installation.crane.quantity=1"/>
+                <label>{{calculateItemPrice(installation.crane)  | currency}}</label>
             </span>
-        </p>
-    </div>
-    <div ng-switch-when="4">
-        <table ng-show="installation.extras.length > 0">
-            <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th colspan="2" >Precio</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="extra in installation.extras">
-                    <td><input type="text" ng-model="extra.name" /></td>
-                    <td><input type="text" ng-model="extra.price" /></td>
-                    <td><span ng-click="deleteExtra($index)" class="table-icon fa fa-eraser" style="cursor : pointer;" tooltip="borrar"></span></td>
-                </tr>
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td>Total:{{calculateItemPrices(installation.extras )  | currency}}</td>
-                </tr>
-            </tfoot>
-        </table>
-
-        <p>
+        </div>
+        <div class="par">
             <label>Viaticos :</label>
             <span class="field">
                 <a ng-click="addExtra()" class="btn btn-default button-orange"><span class="table-icon fa fa-plus"></span></a>
+                <table class="table table-striped" ng-show="installation.extras.length > 0">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th colspan="2" >Precio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="extra in installation.extras">
+                            <td><input type="text" ng-model="extra.name" /></td>
+                            <td><input type="text" ng-model="extra.price" /></td>
+                            <td><span ng-click="deleteExtra($index)" class="table-icon fa fa-eraser" style="cursor : pointer;" tooltip="borrar"></span></td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td>Total:{{calculateItemPrices(installation.extras )  | currency}}</td>
+                        </tr>
+                    </tfoot>
+                </table>
             </span>
-        </p>
+        </div>
         <p>
             <label>Descripcion :</label>
             <span class="field">
@@ -111,7 +126,4 @@
             </span>
         </p>
     </div>
-    <p>
-        Total : {{calculateInstallationTotal() | currency}}
-    </p>
 </div>

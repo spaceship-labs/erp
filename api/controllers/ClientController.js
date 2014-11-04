@@ -45,7 +45,7 @@ module.exports = {
 
                     },
                     client : client_ || []
-		    ,moment:moment
+		            ,moment:moment
                 },req);
             });
         } else
@@ -68,9 +68,26 @@ module.exports = {
             form.user = req.user.id;
             form.company = req.session.select_company || req.user.select_company;
             Client_.create(form).exec(function(err,client_){
-                console.log(req);
                 if(err) return res.json({text:err});
                 res.json({text:'Cliente creado.',url:'/clientes/editar/'+client_.id});
+            });
+        }
+    },
+
+    create_quote : function(req,res){
+        var form = Common.formValidate(req.params.all(),['name','address','phone','rfc']);
+        if(form){
+            form.user = req.user.id;
+            form.company = req.session.select_company || req.user.select_company;
+            Client_.create(form).exec(function(err,client_){
+                SaleQuote.create({
+                    user:   form.user
+                    ,client:    client_.id
+                    ,company : form.company
+                }).exec(function(err,quote){
+                    if(err) return res.json({msg:'ocurrio un error'});
+                    res.json({url:'/SalesQuote/edit/'+quote.id});
+                });
             });
         }
     },

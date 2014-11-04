@@ -8,12 +8,11 @@
                     <th>Nombre</th>
                     <th colspan="2">Precio por dia</th>
                 </tr>
-
                 </thead>
                 <tbody>
                 <tr ng-repeat="crane in cranes track by $index">
                     <td data-title="Nombre"><input type="text" ng-model="crane.name" class="span2" value="{{crane.name}}"/><input type="hidden" value="{{crane.id}}" /></td>
-                    <td data-title="Precio por dia"><input type="text" ng-model="crane.price" class="span2" value="{{crane.price}}" /></td>
+                    <td data-title="Precio por dia"><input type="text" ng-model="crane.price" class="span1" value="{{crane.price}}" /></td>
                     <td><span ng-click="deleteCrane($index)" class="icon fa fa-eraser" style="cursor: pointer;"></span></td>
                 </tr>
                 <tr>
