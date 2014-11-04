@@ -16,37 +16,38 @@ module.exports.apps = {
 				label : 'Usuarios',
 				icon : 'fa-users',
 			}
-		},
+		}
 	},
-	/*products : {
+
+	products : {
         name : 'products',
 		label : 'Ventas',
 		icon : 'fa-briefcase',
 		views : {
 			'/ventas/' : {
 				label : 'Ventas',
-				icon : 'fa-briefcase',
+				icon : 'fa-briefcase'
 			},
             '/salesQuote/':{
                 label:'Cotizaciones',
-                icon:'fa-database',
+                icon:'fa-database'
 
             },
 			'/product/' : {
 				label : 'Productos',
-				icon : 'fa-cube',
+				icon : 'fa-cube'
 			},
 			'/product_type/' : {
 				label : 'Categorias',
-				icon : 'fa-cubes',
+				icon : 'fa-cubes'
 			},
             '/machine/':{
                 label:'Impresoras',
-                icon:'fa-gears',
+                icon:'fa-gears'
             },
             '/installation/':{
                 label:'Instalaciones',
-                icon:'fa-wrench',
+                icon:'fa-wrench'
             }
 		},
         permissions : [
@@ -57,7 +58,7 @@ module.exports.apps = {
             {label : 'ver impresoras',handle : 'viewMachine'},
             {label : 'ver instalaciones',handle : 'viewInstallation'}
         ]
-	},*/
+	},
     clients : {
         name : 'clients',
         label : 'Clientes',
@@ -65,7 +66,7 @@ module.exports.apps = {
         views : {
             '/clientes/' : {
                 label : 'Buscar',
-                icon : 'fa-user',
+                icon : 'fa-user'
             }
         },
         permissions : [
@@ -73,7 +74,7 @@ module.exports.apps = {
             {label : 'editar clientes',handle : 'editClients'},
             {label : 'editar contactos de clientes',handle : 'editClientContact'}
         ]
-    },
+    }/*,
     hotels : {
         name : 'hotels',
         label : 'Hoteles',
@@ -125,5 +126,5 @@ module.exports.apps = {
                 icon : 'fa-building-o'
             }
         }
-    }
+    }*/
 };

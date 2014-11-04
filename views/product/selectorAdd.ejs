@@ -29,6 +29,10 @@
                                 <label>Referencia Interna: </label>
                                 <span class="field">{{product.internalReference}}</span>
                             </p>
+                            <p ng-if="product.id  && product.cut_price">
+                                <label for="corte">Agregar corte : </label>
+                                <span class="field"><input type="checkbox" ng-model="product.cut" id="corte"/></span>
+                            </p>
                             <p ng-show="product.id && checkMachines()">
                                 <label>Impresion : </label>
                                 <span class="field">
@@ -57,7 +61,6 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                     <input type="submit" class="btn btn-primary" value='Agregar'>
-
                 </div>
             </form>
         </div><!-- /.modal-content -->
