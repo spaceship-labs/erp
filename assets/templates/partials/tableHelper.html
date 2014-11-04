@@ -1,0 +1,16 @@
+<table class="table table-striped responsive">
+    <thead>
+        <tr>
+            <th ng-repeat='column in columns' ng-bind='column.label'></th>
+            <th>Editar</th>
+            <th>Eliminar</th>
+        </tr>
+    </thead>
+    <tbody>
+		<tr ng-repeat='object in objects'>
+			<td ng-repeat='column in columns' ng-bind='object[column.handle]'></td>
+			<td><a ng-href='/{{route}}/edit/{{object.id}}' class='fa fa-edit'></a></td>
+			<td><a ng-href='/{{route}}/destroy/{{object.id}}' class='fa fa-trash-o'></a></td>
+		</tr>    	
+    </tbody>
+</table>

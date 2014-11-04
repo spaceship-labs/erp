@@ -17,9 +17,9 @@
     <link rel="stylesheet" href="/bower_components/roboto-fontface/roboto-fontface.css">
     <link rel="stylesheet" href="/bower_components/lato/css/lato.css">
     <link rel="stylesheet" href="/bower_components/sass-bootstrap-glyphicons/css/bootstrap-glyphicons.css">
-    <link rel="stylesheet" href="/bower_components/chosen/chosen.min.css">
     <link rel="stylesheet" href="/bower_components/ng-tags-input/ng-tags-input.min.css">
     <link rel="stylesheet" href="/bower_components/angular-loading-bar/build/loading-bar.min.css">
+    <link rel="stylesheet" href="/bower_components/fullcalendar/fullcalendar.css">
     <link rel="stylesheet" href="/styles/bootstrap-responsive.min.css">
     <link rel="stylesheet" href="/styles/default.css">
     <link rel="stylesheet" href="/styles/css/jquery.ui.css">
@@ -34,7 +34,6 @@
     <link rel="stylesheet" href="/styles/css/jquery.tagsinput.css">
     <link rel="stylesheet" href="/styles/css/ui.spinner.css">
     <link rel="stylesheet" href="/styles/css/jquery.chosen.css">
-    <link rel="stylesheet" href="/styles/css/fullcalendar.css">
     <link rel="stylesheet" href="/styles/css/bootstrap.css">
     <link rel="stylesheet" href="/styles/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="/styles/css/font-awesome.min.css">
@@ -49,11 +48,9 @@
 <div id="mainwrapper" class="mainwrapper">
     <%- partial('global/header') -%> 
     <%- partial('global/menu') -%> 
-
+    <%- partial('global/jsVariables') -%> 
     <div class="rightpanel">
-        <script type='text/javascript'>window.breadcrumb = <%- JSON.stringify(breadcrumb) %>;</script>
-        <div breadcrumb></div>        
-        
+        <div breadcrumb></div>                
         <div class="pageheader">
             <form action="results.html" method="post" class="searchbar">
                 <input type="text" name="keyword" placeholder="Escribe para realizar una busqueda" ng-model='searchInput' onfocus="this.placeholder = ''" onblur="this.placeholder = 'Escribe para realizar una busqueda'"/>
@@ -95,13 +92,11 @@
 
     <!--SCRIPTS-->
     <script src="/js/dependencies/sails.io.js"></script>
-    <script src="/bower_components/jquery/jquery.min.js"></script>
+    <script src="/bower_components/jquery/dist/jquery.js"></script>
     <script src="/bower_components/modernizr/modernizr.js"></script>
-    <script src="/bower_components/jquery-browser-detection/src/browser-detection.js"></script>
     <script src="/bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script src="/bower_components/angular/angular.js"></script>
     <script src="/bower_components/ng-file-upload/angular-file-upload.js"></script>
-    <script src="/bower_components/chosen/chosen.jquery.min.js"></script>
     <script src="/bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls.js"></script>
     <script src="/bower_components/jquery-ui/ui/minified/jquery-ui.min.js"></script>
     <script src="/bower_components/jquery-form/jquery.form.js"></script>
@@ -113,6 +108,9 @@
     <script src="/bower_components/angular-ui-sortable/sortable.js"></script>
     <script src="/bower_components/angular-ui-date/src/date.js"></script>
     <script src="/bower_components/angular-loading-bar/build/loading-bar.min.js"></script>
+    <script src="/bower_components/angular-ui-calendar/src/calendar.js"></script>
+    <script src="/bower_components/fullcalendar/fullcalendar.js"></script>
+    <script src="/bower_components/fullcalendar/gcal.js"></script>
     <script src="/js/themejs/exchange-rates.js"></script>
     <script src="/js/themejs/responsive-tables.js"></script>
     <script src="/js/app.js"></script>
@@ -122,6 +120,7 @@
     <script src="/js/directives/fileManager.js"></script>
     <script src="/js/directives/formHelper.js"></script>
     <script src="/js/directives/profileImage.js"></script>
+    <script src="/js/directives/tableHelper.js"></script>
     <!--SCRIPTS END-->
     <script src="/js/controllers/controller.js"></script>
    <% if(page.controller){%>

@@ -5,31 +5,11 @@ module.exports.view = function(view,data,req){
 	data.companies = req.user.companies;
 	data.selected_company = req.session.select_company || req.user.select_company;
 	data.current_user = req.user;
-	view(data);
-	/*
-	Company.find().exec(function(err,comp){
-		data.companies = [];
-		for(var i=0;i<comp.length;i++){
-			var obj = {};
-			obj.name = comp[i].name;
-			obj.desc = comp[i].description;
-			obj.url = '/main/select_company/'+comp[i].id;
-			obj.icon = comp[i].icon;
-			obj.id = comp[i].id;
-			data.companies.push(obj);
-		}
-		
-		data.active = data.active || req && req.options.controller;
-		
-		if(req && req.user && !data.page){//iconfa...
-			data.page = {};
-			App.findOne({controller:req.options.controller}).exec(function(err,app){
-				data.page = app || {};
-				view(data);	
-			});
-		}else
-			view(data);	
-	});	*/
+	data._content = sails.config.content;
+	Company.findOne(data.selected_company).populate('base_currency').exec(function(e,company){
+		data.selected_company = company;
+		view(data);
+	});
 };
 
 module.exports.renderMenu = function(req){
@@ -38,9 +18,7 @@ module.exports.renderMenu = function(req){
         menu += "<li class='dropdown'><a href=''><span class='fa "+app.icon+"'></span>"+app.label+"</a><ul>";
         for(route in app.views){
             var view = app.views[route];
-            if (req.user.hasPermission(view.permission)) {
-                menu += "<li><a href='"+route+"'><span class='fa "+view.icon+"'></span> "+view.label+"</a></li>";
-            }
+            menu += "<li><a href='"+route+"'><span class='fa "+view.icon+"'></span> "+view.label+"</a></li>";
         }
         menu += "</ul></li>";
     });

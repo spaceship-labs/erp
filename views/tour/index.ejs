@@ -1,0 +1,37 @@
+<script type='text/javascript'>
+	window.tours = <%- JSON.stringify(tours) %>;
+	window.locations = <%- JSON.stringify(locations) %>;
+</script>
+<div ng-controller='tourCTL' >
+	<p><button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Nuevo Tour</button></p>
+	<br/>	
+
+	<div directory-listing 
+		objects='tours' 
+		keywords='searchInput' 
+		dir='tours' 
+		edit-url='/tour/edit/' 
+		get-info='getInfo'
+		name-var='nombre_completo'
+	>
+	</div>
+	<div class="clearfix"></div>
+	<div class="modal fade" id="myModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div 
+					form-helper 
+			        fields='content.tour' 
+			        form-footer='Agregar'
+			        form-save = 'createTour'
+			        object = 'tour'
+			        form-title='Agregar Tour'
+			       	modal='true'
+			       	objects='objects'
+			       	currency='company.base_currency'
+			        >
+			    </div>	
+			</div>
+		</div>
+	</div>
+</div>

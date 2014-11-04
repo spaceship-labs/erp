@@ -1,12 +1,12 @@
 <script type='text/javascript'>
     window.room = <%- JSON.stringify(room) %>;
-    window.seasons = <%- JSON.stringify(seasons) %>;
-    window._content = <%- JSON.stringify(_content)    %>;
+    window.hotel = <%- JSON.stringify(hotel) %>;
+    window.scheme = <%- JSON.stringify(scheme) %>;
     window.userID = <%- JSON.stringify(req.user.id) %>;
 </script>
 <div ng-controller='roomEditCTL'>
     <div class='row-fluid'>
-        <div class="span4 profile-left profileEdit">
+        <div class="span5 profile-left profileEdit">
         	<div class="alert alert-block unseen">
         		<button data-dismiss="alert" class="close" type="button">×</button>
         		<h4>Mensaje</h4>
@@ -20,22 +20,24 @@
                 image-attr='icon' 
                 dir='rooms'>
             </div>
-
-            <div class="widgetbox" ng-show='room.seasonal'>
-                <div class="headtitle">          
-                    <h4 class="widgettitle">Tarifas<span ng-click='save()'  class='fa icon' ng-class='saveClass'></span></h4>
-                </div>
-                <div class="widgetcontent">
-                    <%-partial('fees')%>
-                </div>
-            </div>      
-        </div>
-        <div class="span8">        
             <div form-helper 
-                fields='_content.room' 
+                fields='seasonFields' 
+                object='room.fees' 
+                form-save='saveFees' 
+                form-title='Tarifas'
+                currency='company.base_currency'
+                >
+            </div>
+                  
+        </div>
+        <div class="span7">        
+            <div form-helper 
+                fields='content.room' 
                 object='room' 
                 action='/room/save' 
-                form-title='INFORMACIÓN BASICA'>
+                form-title='INFORMACIÓN BASICA'
+                currency='company.base_currency'
+                >
             </div>        
         </div>
     </div>

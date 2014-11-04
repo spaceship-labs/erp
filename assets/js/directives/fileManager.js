@@ -75,7 +75,7 @@
 			modalInstance.result.then(function() {
 				jQuery('#myModal').modal('hide');
 				$scope.object.removeFiles = files;
-				$http({method: 'POST', url: '/hotel/removeFiles',params:$scope.object}).success(function (object){
+				$http({method: 'POST', url: $scope.removeMethod,params:$scope.object}).success(function (object){
 					$scope.object.files = object.files;
 				});
 			},function(){
@@ -105,6 +105,7 @@
         	scope : {
         		object : '=',
         		addMethod : '@',
+        		removeMethod : '@',
         		dir : '@',
         	},
         	templateUrl : '/template/find/fileManager.html',

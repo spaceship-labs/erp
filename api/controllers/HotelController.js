@@ -29,24 +29,27 @@ module.exports = {
 	},	
     edit : function(req,res){
     	if(req.params.id){
-	    	Hotel.findOne(req.params.id).populate('location').populate('rooms').populate('seasons').exec(function(e,hotel){
+	    	Hotel.findOne(req.params.id).populate('rooms').exec(function(e,hotel){
 	    		if(e) throw(e);
 	    		hotel = formatHotel(hotel);
 	    		Location.find().sort('name').exec(function(e,locations){
-					Common.view(res.view,{
-						hotel:hotel,
-						locations:locations,
-						_content:sails.config.content,
-						page:{
-							name : hotel.name,
-							icon : 'fa fa-building',		
-							controller : 'hotel.js',			
-						},
-						breadcrumb : [
-							{label : 'Hoteles', url : '/hotel/'},
-							{label : hotel.name}
-						]
-					},req);
+	    			SeasonScheme.find().sort('name').exec(function(e,schemes){
+						Common.view(res.view,{
+							hotel:hotel,
+							locations:locations,
+							schemes:schemes,
+							_content:sails.config.content,
+							page:{
+								name : hotel.name,
+								icon : 'fa fa-building',		
+								controller : 'hotel.js',			
+							},
+							breadcrumb : [
+								{label : 'Hoteles', url : '/hotel/'},
+								{label : hotel.name}
+							]
+						},req);
+					});
 				});
 		   	});
     	}
@@ -72,27 +75,10 @@ module.exports = {
     },
     update : function(req,res){
     	var form = req.params.all();
-    	var location = JSON.parse(form.location);
-    	var id = form.id;
-    	delete form.id;
-    	delete form.avatar;
-    	delete form.avatar2;
-    	delete form.company;
-    	delete form.createdAt;
-    	delete form.createdAtString;
-    	delete form.updatedAt;
-    	delete form.updatedAtString;
-    	delete form.icon;
-    	delete form.user;
-    	delete form.rooms;
-    	delete form.seasons;
-    	delete form.files;
-    	form.location = location.id;
-    	//console.log(form);
     	form.req = req;
-    	Hotel.update({id:id},form,function(e,hotel){
+    	Hotel.update({id:form.id},form,function(e,hotel){
     		if(e) throw(e);
-    		Hotel.findOne(hotel[0].id).populate('location').populate('rooms').populate('seasons').exec(function(e,hotel){
+    		Hotel.findOne(hotel[0].id).populate('rooms').exec(function(e,hotel){
     			if(e) throw(e);    			
     			hotel = formatHotel(hotel);	
     			res.json(hotel);
@@ -141,7 +127,7 @@ module.exports = {
 		var hotel = form.hotel;
 		Room.create(form).exec(function(e,r){
 			if(e) throw(e);
-			Hotel.findOne(hotel).populate('location').populate('rooms').populate('seasons').exec(function(e,hotel){
+			Hotel.findOne(hotel).populate('location').populate('rooms').exec(function(e,hotel){
 				if(e) throw(e);
 				hotel = formatHotel(hotel);
 				res.json(hotel)
@@ -153,7 +139,7 @@ module.exports = {
 		var hotel = form.hotel;
 		Season.create(form).exec(function(e,r){
 			if(e) throw(e);
-			Hotel.findOne(hotel).populate('location').populate('rooms').populate('seasons').exec(function(e,hotel){
+			Hotel.findOne(hotel).populate('location').populate('rooms').exec(function(e,hotel){
 				if(e) throw(e);
 				hotel = formatHotel(hotel);
 				res.json(hotel)

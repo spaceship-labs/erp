@@ -2,6 +2,7 @@
 	var controller = function($scope,$http){
 		$scope.saveClass = 'fa-save';
         $scope.object = $scope.object || {};
+        $scope.formClass = $scope.modal ? '' : 'widgetcontent nopadding';
         $scope.save = function(){
             var submitObject =  $scope.object ? {id:$scope.object.id} : {};
             $scope.fields.forEach(function(field){
@@ -10,7 +11,9 @@
             $scope.saveClass = 'fa-upload';
             var saveMethod = $scope.formSave();
             if(saveMethod){
-                $scope.formSave()(submitObject);
+                $scope.formSave()(submitObject,function(){
+                    $scope.saveClass = 'fa-save';
+                });
             }else{
                 $http({method:'POST',url:$scope.action,params:submitObject}).success(function (object){
                     $scope.object = object;
@@ -30,7 +33,10 @@
                 action : '@',
                 formTitle : '@',
                 formFooter : '@',
+                modal : '@',
                 formSave : '&',
+                objects : '=',
+                currency : '='
         	},
         	templateUrl : '/template/find/formHelper.html'
         };

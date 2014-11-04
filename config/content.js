@@ -1,6 +1,36 @@
 module.exports.content = {
 	hotel : [
 		{
+			label : 'Nombre',
+			type : 'text',
+			handle : 'name',
+		},
+		{
+			label : 'Dirección',
+			type : 'text',
+			handle : 'address',
+			object : 'locations'
+		},
+		{
+			label : 'Población',
+			type : 'select',
+			handle : 'location',
+			object : 'locations',
+		},
+		{
+			label : 'Teléfonos',
+			type : 'text',
+			handle : 'phones',
+		},
+		{
+			label : 'Esquema de Temporadas',
+			type : 'select',
+			handle : 'seasonScheme',
+			object : 'schemes',
+		},
+	],
+	hotelLangs : [
+		{
 			label : 'Descripcion Español',
 			type : 'textarea',
 			handle : 'description_es',
@@ -55,7 +85,7 @@ module.exports.content = {
 		},
 		{
 			label : 'Tarifa base',
-			type : 'text',
+			type : 'money',
 			handle : 'fee',
 		},
 		{
@@ -68,7 +98,7 @@ module.exports.content = {
 		{
 			label : 'Nombre',
 			type : 'text',
-			handle : 'name',
+			handle : 'title',
 		},
 		{
 			label : 'Inicio',
@@ -85,4 +115,71 @@ module.exports.content = {
 			handle : 'end',
 		},
 	],
+	seasonScheme : [
+		{
+			label : 'Nombre',
+			type : 'text',
+			handle : 'name',
+		},	
+	],
+	tour : [
+		{
+			label : 'Nombre',
+			type : 'text',
+			handle : 'name',
+		},
+		{
+			label : 'PAX',
+			type : 'text',
+			handle : 'pax',
+		},
+		{
+			label : 'Tarifa base',
+			type : 'money',
+			handle : 'fee',
+		},
+		{
+			label : 'Horario General',
+			type : 'text',
+			handle : 'schedule',
+		},
+		{
+			label : 'Ubicacion',
+			type : 'select',
+			handle : 'location',
+			object : 'locations'
+		},
+	],
+	tourLenguajes : [
+		{
+			label : 'Nombre Español',
+			type : 'text',
+			handle : 'name_es',
+		},
+		{
+			label : 'Nombre Inglés',
+			type : 'text',
+			handle : 'name_en',
+		},
+		{
+			label : 'Nombre Rúso',
+			type : 'text',
+			handle : 'name_ru',
+		},
+		{
+			label : 'Descripción Español',
+			type : 'textarea',
+			handle : 'description_es',
+		},
+		{
+			label : 'Descripción Inglés',
+			type : 'textarea',
+			handle : 'description_en',
+		},
+		{
+			label : 'Descripción Rúso',
+			type : 'textarea',
+			handle : 'description_ru',
+		},
+	]
 };

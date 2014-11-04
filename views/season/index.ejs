@@ -1,0 +1,25 @@
+<script type='text/javascript'>
+    window.schemes = <%- JSON.stringify(schemes) %>;
+</script>
+<div ng-controller='seasonsCTL' >
+	<p><button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Nuevo esquema</button></p>
+	<br/>	
+
+	<div table-helper objects='schemes' columns='content.seasonScheme' route='season'></div>
+	<div class="modal fade" id="myModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div 
+					form-helper 
+			        fields='content.seasonScheme' 
+			        form-footer='Agregar Esquema'
+			        form-save = 'addScheme'
+			        object = 'scheme'
+			        form-title='INFORMACIÓN BASICA'
+			       	modal='true'
+			        >
+			    </div>	
+			</div>
+		</div>
+	</div>
+</div>
