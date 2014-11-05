@@ -103,16 +103,5 @@ module.exports.apps = {
                 icon : 'fa-cab'
             },
         },
-    },
-    hotels : {
-        name : 'hotels',
-    	label : 'Hoteles',
-        icon : 'fa-building',
-        views : {
-            '/hotel/' : {
-                label : 'Hoteles',
-                icon : 'fa-building-o'
-            }
-        }
     }
 };
