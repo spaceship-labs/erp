@@ -284,7 +284,8 @@ app.controller('saleUpdateClientCTL',function($scope,$http){
 
 });
 
-app.controller('clientCTL',function($scope){
+app.controller('clientCTL',function($scope,$http){
+    //$scope.client = client;
     jQuery('form').ajaxForm(function(data){
         if(data){
             jQuery('.alert p').text(data.text).parent().removeClass('unseen');
