@@ -9,8 +9,14 @@ module.exports = {
             collection : 'Installation',
             via : 'crane'
         },
-        name : 'string',
-        price : 'float'
+        name : {
+            type : 'string',
+            required : true
+        },
+        price : {
+            type : 'float',
+            required : true
+        }
     }
 
 };

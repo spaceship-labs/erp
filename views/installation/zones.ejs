@@ -13,7 +13,7 @@
                 <tbody>
                 <tr ng-repeat="zone in zones track by $index">
                     <td data-title="Nombre"><input type="text" ng-model="zone.name" class="span2" value="{{zone.name}}"/><input type="hidden" value="{{zone.id}}" /></td>
-                    <td data-title="Precio"><input type="text" ng-model="zone.price" class="span2" value="{{zone.price}}" /></td>
+                    <td data-title="Precio"><input type="text" ng-model="zone.price" class="span1" value="{{zone.price}}" /></td>
                     <td><span ng-click="deleteZone($index)" class="icon fa fa-eraser" style="cursor: pointer;"></span></td>
                 </tr>
                 <tr>

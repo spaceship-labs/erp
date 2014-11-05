@@ -1,16 +1,16 @@
-body{min-width: 290px}
+body{min-width: 290px;background:url(@left-bar) repeat-y 0 0;}
 .header{background:@header-background;}
 strong{font-weight: bold;}
 .row .row{max-width: 100%;margin: 0}
 
 /*Login page*/
-.loginpanelinner .logo{padding:0;display:block;background-repeat:no-repeat;background-image:url(@login-logo);width:100%;height:120px;background-position:center center;}
+.loginpanelinner .logo{padding:0;display:block;background-repeat:no-repeat;background-image:url(@login-logo);width:100%;height:120px;background-position:center center;background-size: contain;}
 body.loginpage{background: @login-background;overflow: hidden;}
 .inputwrapper button{background: @login-button;border:1px solid @login-button;}
 .inputwrapper button:focus, .inputwrapper button:active, .inputwrapper button:hover{background: @login-hover;border:1px solid @login-hover;}
 
 /*Header*/
-.header .logo a{background-image:url(@header-logo);display:block;}
+.header .logo a{background:transparent url(@header-logo) no-repeat center;display:block;}
 .headmenu > li{}
 .headmenu > li > a{padding: 25px 20px 11px 20px;background-color:@header-button;}
 .headmenu > li > a:hover{background: @header-hover}
@@ -27,6 +27,10 @@ body.loginpage{background: @login-background;overflow: hidden;}
 .pageicon{border: 3px solid @primary;color: @primary}
 .pagetitle h1{color: @primary;text-transform: uppercase;}
 .page-description{color: #CCCCCC}
+/*Lateral Menu*/
+#mainwrapper .leftmenu .nav-tabs.nav-stacked > li > a{color:@left-color;}
+#mainwrapper .leftmenu .nav-tabs.nav-stacked > li.active > a,
+#mainwrapper .leftmenu .nav-tabs.nav-stacked > li > a:hover{color:@left-color-hover;}
 
 /*File Manager*/
 .fileManager .widgettitle .text{font-size:11px;text-transform: none;margin-right:0;margin-left:-2px;font-weight:bold;cursor:pointer;}
@@ -49,7 +53,7 @@ body.loginpage{background: @login-background;overflow: hidden;}
 .fileManager .files .file.deleting{background-color:#EE4444;}
 .modal-body ul{margin-left:29px;}
 
-.widgettitle{background: @primary;text-transform: uppercase;}
+.widgettitle{background: @primary;text-transform: uppercase;color: @title-color;}
 .widgettitle span{font-size: 16px}
 .widgettitle a{color: #fff!important;text-decoration: underline;text-transform: none!important;}
 .widgettitle a span{font-size: 16px;vertical-align: initial;}
@@ -219,5 +223,3 @@ color: #fff;
 @media screen and (max-width: 360px){
 	.headmenu > li > a .menu-icon{font-size: 32px}
 }
-
-

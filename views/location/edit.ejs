@@ -1,0 +1,29 @@
+<script type='text/javascript'>
+    window.location_o = <%- JSON.stringify(location_o) %>;
+    console.log(location_o);
+</script>
+<div ng-controller='locationEditCTL'>
+    <div class='row-fluid'>
+        <div class="span12">        
+            <div form-helper 
+                fields='content.location' 
+                object='location_o' 
+                action='/location/update' 
+                form-title='INFORMACIÓN BÁSICA'
+                >
+            </div> 
+        </div>
+    </div>
+    <div class='row-fluid'>
+        <div class='span12'>
+           <div form-helper 
+                fields='content.locationTexts' 
+                object='location_o' 
+                action='/location/update' 
+                form-title='Textos'
+                >
+            </div> 
+        </div>
+    </div>
+    <br/>
+</div>

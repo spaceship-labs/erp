@@ -214,12 +214,19 @@ app.controller('saleCTL',function($scope,$http){
     };
 
     $scope.deleteProduct = function(product,quote){
-        var data = {
-            product : product,
-            quote : quote
-        };
-        $http.post('/salesQuote/removeProduct',data,{}).success(showResponse);
-    }
+        var answer = confirm("Estas seguro que quieres borrar este elemento ?");
+        if (answer) {
+            var data = {
+                product : product,
+                quote : quote
+            };
+            $http.post('/salesQuote/removeProduct',data,{}).success(showResponse);
+        }
+    };
+
+    $scope.editProduct = function(product){
+
+    };
 });
 
 app.controller('saleAddCTL',function($scope,$http) {
@@ -285,6 +292,21 @@ app.controller('clientCTL',function($scope){
                 window.location.href = data.url;
         }
     });
+
+    function showResponse(data){
+        if(data){
+            if (data.text)
+                jQuery('.alert p').text(data.text).parent().removeClass('unseen');
+            if(data.url)
+                window.location.href = data.url;
+        }
+    };
+
+    $scope.createClient = function () {
+        //console.log($scope.client_form);
+        var client_form = { name : $scope.client_name,address : $scope.client_address,rfc : $scope.client_rfc , phone : $scope.client_phone };
+        $http.post('/clientes/crear',client_form,{}).success(showResponse);
+    };
 });
 
 app.controller('clientAddCTL',function($scope){
@@ -426,13 +448,15 @@ app.controller('productAddCTL',function($scope,$http){
     };
 
     $scope.calculateProductPrice = function(){
-        console.log($scope.selected_machine);
+        var price = 0;
         if ($scope.product.machines && $scope.product.machines.length > 0 && $scope.selected_machine) {
-            console.log("check it dude");
-            return ($scope.product.price.cost * (1 + ($scope.product.price.margin/100))) + ($scope.selected_machine.ink_cost * (1 + ($scope.selected_machine.ink_utility/100)));
-        } else {
-            return $scope.product.price.cost * (1 + ($scope.product.price.margin/100));
+            price = $scope.selected_machine.ink_cost * (1 + ($scope.selected_machine.ink_utility/100));
         }
+        if ($scope.product.cut_price && $scope.product.cut){
+            price += $scope.product.cut_price
+        }
+        price += $scope.product.price.cost * (1 + ($scope.product.price.margin/100));
+        return price;
     };
 
     $scope.calculateProductPriceTotal = function(){
@@ -635,7 +659,7 @@ app.controller('installationConfigCTL',function($scope,$http){
 
 });
 
-app.controller('installationAddCTL',function($scope,$http) {
+app.controller('installationCTL',function($scope,$http) {
     $scope.cranes = window.cranes;
     $scope.materials = window.materials;
     $scope.tools = window.tools;
@@ -666,7 +690,7 @@ app.controller('installationAddCTL',function($scope,$http) {
         }
     }
 
-    $scope.processInstallation = function(quoteID) {
+    $scope.createInstallation = function(quoteID) {
         $scope.installation.quote = quoteID;
 
         $http.post('/installation/create',{installation : $scope.installation},{}).success(function(response) {
@@ -688,11 +712,16 @@ app.controller('installationAddCTL',function($scope,$http) {
         });
     };
 
+    $scope.editInstallation = function(id){
+
+    };
+
     $scope.calculateInstallationTotal = function(){
         if ($scope.installation) {
-            return ($scope.installation.zone ? $scope.installation.zone.price : 0)
-                + ($scope.installation.work_type ? $scope.installation.work_type.price : 0)
+            return 0
+                + ($scope.installation.zone ? $scope.installation.zone.price : 0)
                 + ($scope.installation.staff ? $scope.installation.staff * 100 : 0)
+                + ($scope.installation.work_type && $scope.installation.materials.length > 0 ? $scope.installation.work_type.price : 0)
                 + ($scope.installation.materials.length > 0 ? $scope.calculateProductPrices($scope.installation.materials) : 0)
                 + ($scope.installation.tools.length > 0 ? $scope.calculateProductPrices($scope.installation.tools) : 0)
                 + ($scope.installation.crane ? $scope.calculateItemPrice($scope.installation.crane) : 0)
@@ -742,19 +771,38 @@ app.controller('installationAddCTL',function($scope,$http) {
     };
 
     //calendar stuff
-    $scope.openedCalendar = false;
     $scope.minDate = new Date();
     $scope.formatDate = "dd-MM-yyyy";//['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'
-    $scope.openCalendar = function($event) {
+    $scope.showWeeks = false;
+    $scope.open = function($event) {
         $event.preventDefault();
         $event.stopPropagation();
-        $scope.openedCalendar = true;
+        $scope.opened = true;
     };
 
     $scope.dateOptions = {
-        showWeeks : false
+        showWeeks : false,
+        'year-format': "'yy'",
+        'starting-day': 1
     };
 });
+
+app.controller('saleAddClientCTL',function($scope,$http){
+    $scope.createClient = function () {
+        var client_form = { name : $scope.client_name,address : $scope.client_address,rfc : $scope.client_rfc , phone : $scope.client_phone };
+        $http.post('/client/create_quote',client_form,{}).success(showResponse);
+    };
+});
+
+function showResponse(data){
+    console.log(data);
+    if(data){
+        if (data.text)
+            jQuery('.alert p').text(data.text).parent().removeClass('unseen');
+        if(data.url)
+            window.location.href = data.url;
+    }
+};
 
 function updateNotices($scope,url,dt,cb){
 	io.socket.on('update',function(data){

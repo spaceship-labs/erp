@@ -57,7 +57,6 @@
                     <tr>
                         <th>Fecha</th>
                         <th>Vendedor</th>
-                        <th>Cliente</th>
                         <th>Status</th>
                         <th>Monto</th>
                         <th>Editar</th>
@@ -69,7 +68,6 @@
                     <tr>
                         <td data-title="Fecha"><%= moment(sale.createdAt).format('Do [de] MMMM YYYY, h:mm:ss a') %></td>
                         <td data-title="Vendedor"><a href="/ventas/editar/<%= sale.id %>"><%= sale.user.name %></a></td>
-                        <td data-title="Cliente"><%= sale.client.name %></td>
                         <td data-title="Status"><%= sale.status || 'pendiente' %></td>
                         <td data-title="Monto"><%= sale.totalAmount || 0 %></td>
                         <td data-title="Editar"><a href="/ventas/editar/<%= sale.id %>"><span class="table-icon fa fa-edit"></span></a></td>

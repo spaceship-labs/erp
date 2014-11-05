@@ -181,5 +181,29 @@ module.exports.content = {
 			type : 'textarea',
 			handle : 'description_ru',
 		},
+	],
+	location : [
+		{
+			label : 'Nombre',
+			type : 'text',
+			handle : 'name',
+		},
+		{
+			label : 'Tiítulo URL',
+			type : 'text',
+			handle : 'url_title'
+		}
+	],
+	locationTexts : [
+		{
+			label : 'Descripción Español',
+			type : 'text',
+			handle : 'description_es',
+		},
+		{
+			label : 'Descripción Inglés',
+			type : 'text',
+			handle : 'description_en',
+		}
 	]
 };
