@@ -205,5 +205,33 @@ module.exports.content = {
 			type : 'text',
 			handle : 'description_en',
 		}
+	],
+	company : [		
+		{
+			label : 'Nombre',
+			handle : 'name',
+			type : 'text',
+		},
+		{
+			label : 'Direccion',
+			handle : 'address',
+			type : 'text',
+		},
+		{
+			label : 'Código Postal',
+			handle : 'zipcode',
+			type : 'text',
+		},
+		{
+			label : 'Moneda Base',
+			type : 'select',
+			handle : 'base_currency',
+			object : 'currencies',
+		},
+		{
+			label : 'Description',
+			handle : 'description',
+			type : 'textarea',
+		},
 	]
 };

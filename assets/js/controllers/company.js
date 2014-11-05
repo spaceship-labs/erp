@@ -1,5 +1,28 @@
+app.controller('companyCTL',function($scope,$http){
+    $scope.companies = companies;
+    $scope.content = content;
+    $scope.currencies = currencies;
+
+    $scope.getInfo = function(company){
+        return {
+            "Direccion" : company.address,
+            "Apps" : company.apps.join(', '),
+            "Moneda base" : company.base_currency.currency_code
+        };
+    }
+
+    $scope.createCompany = function(newcompany){
+        $http({method: 'POST', url: '/company/create',params:newcompany}).success(function (company){
+            $scope.companies.push(company);
+            jQuery('#companyCreate').modal('hide');
+        });    
+    };
+});
+
+
 app.controller('companyEditCTL',function($scope){
     $scope.company = company;
+    $scope.content = content;
     $scope.allApps = apps;
     $scope.apps = [];
 
@@ -39,21 +62,3 @@ app.controller('companyEditCTL',function($scope){
 
 
 
-app.controller('createCompanyCTL',function($scope){
-
-	jQuery('.companyCreate').ajaxForm(function(data){
-		var alt = jQuery('.userAlert p');
-		alt.text(data.msg).parent().show();
-		jQuery(window).scrollTop(alt.parent().position().top-10);
-		update();
-	});
-	updateNotices($scope,'/home/noticeSuscribeApp',{app:'company'});
-	$scope.companies = companies;
-	$scope.getInfo = function(company){
-		return {
-			"Direccion" : company.address,
-			"Apps" : company.apps.join(', '),
-			"Moneda base" : company.base_currency.currency_code
-		};
-	}
-});

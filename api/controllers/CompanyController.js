@@ -42,32 +42,6 @@ module.exports = {
 			});
 		});
 	}
-	, create: function(req,res){
-		var form = req.params.all() || {}
-		, response = {
-			status:false
-			, msg:'ocurrio un error'
-		};
-		delete form.id;
-		form.active = true;
-		form.req = req;
-		var currencies = form.currencies.pop?form.currencies:[form.currencies];
-		delete form.currencies;
-		Company.create(form).exec(function(err,company){
-			if(err) return res.json(response);
-			currencies.forEach(function(currency){
-				company.currencies.add(currency);
-			});
-			company.save(function(err){
-				if(err) return res.json(response);
-				res.json({
-					status:true
-					, msg:'La compania se creo exitosamente'
-					, url: '/company/edit/'+company.id
-				});
-			});
-		});
-	}
 	, editAjax: function(req,res){
 		Common.editAjax(req,res,update);
 	}
