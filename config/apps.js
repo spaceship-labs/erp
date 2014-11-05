@@ -8,10 +8,10 @@ module.exports.apps = {
 				label : 'Empresas',
 				icon : 'fa-building',
 			},
-			'/admin/currencies/' : {
+			/*'/admin/currencies/' : {
 				label : 'Mondedas',
 				icon : 'fa-money',
-			},
+			},*/
 			'/user/' : {
 				label : 'Usuarios',
 				icon : 'fa-users',
@@ -109,21 +109,10 @@ module.exports.apps = {
                 label : 'tours',
                 icon : 'fa-compass'
             },
-            '/transfer/' : {
+            /*'/transfer/' : {
                 label : 'Translados',
                 icon : 'fa-cab'
-            },
+            },*/
         },
-    },
-    hotels : {
-        name : 'hotels',
-    	label : 'Hoteles',
-        icon : 'fa-building',
-        views : {
-            '/hotel/' : {
-                label : 'Hoteles',
-                icon : 'fa-building-o'
-            }
-        }
     }
 };
