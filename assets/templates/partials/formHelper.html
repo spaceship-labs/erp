@@ -33,7 +33,7 @@
 				<select
 					chosen
 					multiple
-					ng-options='obj in objects[field.object]'
+					ng-options='obj as obj for obj in objects[field.object]'
 					ng-model='object[field.handle]'
 					ng-if='field.type == "multi-select"' ></select>
 
