@@ -5,8 +5,17 @@
         $scope.formClass = $scope.modal ? '' : 'widgetcontent nopadding';
         $scope.save = function(){
             var submitObject =  $scope.object ? {id:$scope.object.id} : {};
+            var restrictArray = $scope.restrict.split(',');
             $scope.fields.forEach(function(field){
-                submitObject[field.handle] = $scope.object[field.handle];
+                var isRestricted = false;
+                for (var i in restrictArray) {
+                    if (field.handle == restrictArray[i]) {
+                        isRestricted = true;
+                    }
+                }
+                if (!isRestricted) {
+                    submitObject[field.handle] = $scope.object[field.handle];
+                }
             });
             $scope.saveClass = 'fa-upload';
             var saveMethod = $scope.formSave();
@@ -22,6 +31,18 @@
             }
             
         }
+
+        $scope.formFilter = function(item){
+            if ($scope.restrict) {
+                var restrictArray = $scope.restrict.split(',');
+                for (var i in restrictArray) {
+                    if (item.handle == restrictArray[i]) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
 	};
 	controller.$inject = ['$scope','$http'];
     var directive = function () {
@@ -36,7 +57,8 @@
                 modal : '@',
                 formSave : '&',
                 objects : '=',
-                currency : '='
+                currency : '=',
+                restrict : '@'
         	},
         	templateUrl : '/template/find/formHelper.html'
         };
