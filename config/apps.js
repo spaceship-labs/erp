@@ -89,7 +89,7 @@ module.exports.apps = {
             },
         },
     },
-    ciudades : {
+    locations : {
         name    : 'locations',
         label   : 'Ciudades',
         icon    : 'fa-flag',

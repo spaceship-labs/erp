@@ -229,6 +229,12 @@ module.exports.content = {
 			object : 'currencies',
 		},
 		{
+			label : 'Aplicaciones',
+			type : 'multi-select',
+			handle : 'apps',
+			object : 'apps',
+		},
+		{
 			label : 'Description',
 			handle : 'description',
 			type : 'textarea',

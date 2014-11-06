@@ -18,6 +18,7 @@
 	            <input type='checkbox' ng-if='field.type == "checkbox"' name='{{field.handle}}' class='' ng-checked='object[field.handle]' ng-model='object[field.handle]' />
 	            <input type='text' ng-if='field.type == "text"' name='{{field.handle}}' class='form-control' ng-model='object[field.handle]' />
 	            <input type='password' ng-if='field.type == "password"' name='{{field.handle}}' class='form-control' ng-model='object[field.handle]' />
+	            
 	            <select ng-if='field.type == "select"' ng-model='object[field.handle]' ng-options="obj.id as obj.name for obj in objects[field.object]" class='form-control'></select>
 
 
@@ -28,6 +29,13 @@
 				</span>
 				
 				<datepicker ng-if='field.type == "date"' ng-model="object[field.handle]" show-weeks="true" class="well well-sm"></datepicker>
+
+				<select
+					chosen
+					multiple
+					ng-options='obj in objects[field.object]'
+					ng-model='object[field.handle]'
+					ng-if='field.type == "multi-select"' ></select>
 
 	        </span>
 	    </p>

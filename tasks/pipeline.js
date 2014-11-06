@@ -75,6 +75,7 @@ var jsFilesToInject = [
 	'/bower_components/angular-ui-calendar/src/calendar.js',
 	'/bower_components/fullcalendar/fullcalendar.js',
 	'/bower_components/fullcalendar/gcal.js',
+	'/bower_components/angular-chosen-localytics/chosen.js',
 	"/js/themejs/*.js",
 	"/js/*.js",
 	'/js/directives/*.js',
