@@ -7,6 +7,7 @@ module.exports.view = function(view,data,req){
 	data.current_user = req.user;
 	data._content = sails.config.content;
 	Company.findOne(data.selected_company).populate('base_currency').exec(function(e,company){
+        if (e) console.log(e);
 		data.selected_company = company;
 		view(data);
 	});
@@ -14,13 +15,17 @@ module.exports.view = function(view,data,req){
 
 module.exports.renderMenu = function(req){
 	var menu = "";
+    var selected_company = req.res.locals.selected_company;
     _.each(sails.config.apps,function(app){
-        menu += "<li class='dropdown'><a href=''><span class='fa "+app.icon+"'></span>"+app.label+"</a><ul>";
-        for(route in app.views){
-            var view = app.views[route];
-            menu += "<li><a href='"+route+"'><span class='fa "+view.icon+"'></span> "+view.label+"</a></li>";
+        if (_.contains(selected_company.apps,app.name)) {
+            //console.l
+            menu += "<li class='dropdown'><a href=''><span class='fa "+app.icon+"'></span>"+app.label+"</a><ul>";
+            _.each(app.actions,function(view){
+                if (req.user.hasPermission(selected_company.id,view.handle) && view.showInMenu)
+                    menu += "<li><a href='"+view.url+"'><span class='fa "+view.icon+"'></span> "+view.label+"</a></li>";
+            });
+            menu += "</ul></li>";
         }
-        menu += "</ul></li>";
     });
 	return menu;
 };
@@ -148,3 +153,29 @@ module.exports.formValidate = function(form,validate){
     }
     return form;
 };
+
+//module.exports.hasPermission = function(user,company,permission){
+//    if (user.isAdmin) return true;
+//    if (user.accessList) {
+//        var useAcl = user.hasCompanyAccess(company);
+//        if (useAcl){
+//            Company.findOne({ id : useAcl.company }).exec(function(err,company_obj){
+//                if (err) {
+//                    console.log(err);
+//                    return false;
+//                }
+//                //console.log(company_obj);
+//                if (permission) {
+//                    for (var index in useAcl.permissions){
+//                        if (useAcl.permissions[index][0] == permission) {
+//                            console.log(useAcl.permissions[index][0] + ' : ' + useAcl.permissions[index][1]);
+//                            return useAcl.permissions[index][1];
+//                        }
+//                    }
+//                } else
+//                    return true;
+//            });
+//        }
+//    }
+//    return false;
+//}

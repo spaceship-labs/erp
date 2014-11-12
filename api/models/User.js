@@ -27,46 +27,73 @@ module.exports = {
 		}
 		,registration_date:'date'//createAt
 		,access_date:'date'
-		,accessList : 'json'
-		
+		,accessList : {
+            collection : 'userAcl',
+            via : 'user'
+        }
 		,companies : {
 			collection: 'company',
 			via: 'users',
 			dominant: false
 		}
-        ,isAdmin : 'boolean'
+        ,isAdmin : {
+            type : 'boolean',
+            defaultsTo : false
+        }
         ,permissions : 'array'
         ,lastLogin : 'datetime'
 		,setPassword : function(val,cb){
 			this.password = bcrypt.hashSync(val,bcrypt.genSaltSync(10));
 			this.save(cb);
 		}
-		,createAccessList : function(apps,cb){
-			var permissions = [];
-			var user = this;
-			async.map(
-				apps,
-				function(app,callback){
-					var app_config = sails.config.apps[app];
-					for(var key in app_config.permissions){
-						permissions.push(key.handle);
-					}
-					callback();
-				},
-				function(){
-					user.accessList = permissions;
-					user.save(cb);
-				}
-			);
-		},
-        hasPermission : function(permission) {
-            if (this.isAdmin) return true;
-            if (this.permissions) {
-                this.permissions.forEach(function(p){
-                    if (p == permission) {
-                        return true;
+		,createAccessList : function(company,permissions,isAdmin,cb) {
+            var user = this;
+            var acl = user.hasCompanyAccess(company);
+            if (user.accessList && acl) {
+                acl.isAdmin = isAdmin;
+                acl.permissions = permissions;
+                user.save(cb);
+            } else {
+                var a = {
+                    company : company,
+                    user : user.id,
+                    permissions : permissions,
+                    isAdmin : isAdmin
+                };
+                UserACL.create(a).exec(function(err,userACL){
+                    if (err) {
+                        console.log(err);
+                        throw err;
                     }
+                    cb();
                 });
+            }
+        },
+        hasCompanyAccess : function(company,cb) {
+            if (this.accessList) {
+                for (var index in this.accessList){
+                    var acl = this.accessList[index];
+                    if (acl.company == company) {
+                        return acl;
+                    }
+                }
+            }
+            return false;
+        },
+        hasPermission : function(company,permission) {
+            if (this.isAdmin) return true;
+            if (this.accessList) {
+                var useAcl = this.hasCompanyAccess(company);
+                if (useAcl.company){
+                    if (permission) {
+                        for (var index in useAcl.permissions){
+                            if (useAcl.permissions[index][0] == permission) {
+                                return useAcl.permissions[index][1];
+                            }
+                        }
+                    } else
+                        return true;
+                }
             }
             return false;
         }
@@ -87,5 +114,9 @@ module.exports = {
 		Notifications.before(val);
 		cb();
 	}
-
+    ,toJSON: function() {
+        var obj = this.toObject();
+        delete obj.password;
+        return obj;
+    }
 };

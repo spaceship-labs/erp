@@ -129,7 +129,7 @@ module.exports = {
 		});
 	}
 	,createProduct: function(req,res){
-		var form = formValidate(req.params.all(),['name','product_type']);
+		var form = Common.formValidate(req.params.all(),['name','product_type']);
 		if(form){
 			form.user = req.user.id;
 			form.company = req.session.select_company || req.user.select_company;
@@ -280,11 +280,3 @@ module.exports = {
         });
     }
 };
-
-function formValidate(form,validate){
-	for(var i in form){
-		if(validate.indexOf(i)==-1)
-			delete form[i];
-	}
-	return form;
-}
