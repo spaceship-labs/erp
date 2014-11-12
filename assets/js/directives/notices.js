@@ -1,17 +1,31 @@
 (function () {
 	var controller = function($scope,$http){
-        console.log($scope.app)
-        $http.get('/notice/find',{}).then(function(data){
-            if(!data.data)
+    	var options = {
+    		'sort':'updatedAt desc',
+    		'limit':10
+    	}
+        io.socket.get('/notice/find',options,function(data){
+            if(!data)
                 return;
-            
-            $scope.noticesN = data.data 
-        	$scope.noticeTranslate = {
+
+            console.log(data)
+            $scope.noticesN = data;
+			$scope.$apply();
+            $scope.noticeTranslate = {
                 update:'actualizo'
                 ,create:'creo'
                 ,destroy:'elimino'
             };
         });
+        io.socket.on('notice',function(data){
+            if(data && data.id)
+                $http.get('/notice/'+data.id).then(function(notice){
+                    console.log(notice);
+                    if(notice && notice.data)
+                        $scope.noticesN.unshift(notice.data)
+                });
+        });
+        
 	};
 	controller.$inject = ['$scope','$http'];
     var directive = function () {
