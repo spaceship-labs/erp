@@ -64,7 +64,7 @@ module.exports = {
 		});
 	}
 	,updateIcon: function(req,res){
-    	form = req.params.all();
+    	var form = req.params.all();
 		Company.updateAvatar(req,{
 			dir : 'companies',
 			profile: 'avatar',
@@ -74,6 +74,17 @@ module.exports = {
 			res.json(company);
 		});
 	}
+    ,update : function(req,res) {
+        var form = Common.formValidate(req.params.all(),['id','name','address','zipcode','description']);
+        Company.update({id : form.id},form).exec(function(err,company){
+           if (err) {
+               console.log(err);
+               return res.serverError(err);
+           }
+           return res.json(company[0]);
+        });
+    }
+
 };
 
 var update = {

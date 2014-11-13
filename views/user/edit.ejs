@@ -1,6 +1,7 @@
 <script type='text/javascript'>
     window.user = <%- JSON.stringify(user) %>;
     window.apps = <%- JSON.stringify(apps) %>;
+    window.company = <%- JSON.stringify(selected_company) %>;
 </script>
 <div ng-controller='userEditCTL'>
     <div class="span4 profile-left profileEdit">
@@ -15,10 +16,10 @@
             <div class="widgetcontent">
                 <p>
                     <label for="adminInput">Administrador</label>
-                    <input type="checkbox" id="adminInput" ng-model="user.isAdmin" />
+                    <input type="checkbox" id="adminInput" ng-model="isAdmin" />
                 </p>
-                <accordion close-others='false' ng-if="!user.isAdmin">
-                    <accordion-group heading="{{app.label}}" ng-repeat="app in apps" ng-show="filterPermissionsApp(app)" style="cursor: pointer;">
+                <accordion close-others='false' ng-if="!isAdmin">
+                    <accordion-group heading="{{app.label}}" ng-repeat="app in apps" ng-if="filterApp(app)" style="cursor: pointer;">
                         <table class="table responsive">
                             <thead>
                                 <tr>
@@ -26,13 +27,15 @@
                                     <th>Escoger</th>
                                 </tr>
                             </thead>
-                            <tbody ng-click="update()">
-                                <tr ng-repeat='permission in app.permissions track by $index'>
-                                    <td><label ng-bind='permission.label' for="{{permission.handle + '_' + $index}}"></label></td>
+                            <tbody>
+                                <tr ng-repeat='action in app.actions track by action.handle' ng-init="permissions[action.handle] = getPermission(action.handle)">
+                                    <td>
+                                        <label ng-bind='action.label' for="{{action.handle}}"></label>
+                                    </td>
                                     <td>
                                          <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" id="{{permission.handle + '_' + $index}}" ng-model='view.permissions.create' >
+                                                <input type="checkbox" id="{{action.handle}}" ng-model="permissions[action.handle]" />
                                             </label>
                                         </div>
                                     </td>
