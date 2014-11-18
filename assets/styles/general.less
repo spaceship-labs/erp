@@ -118,7 +118,7 @@ a, a:hover, a:link, a:active, a:focus{color: @primary}
 	.thumb { float: left; 
 		img { display: block; width: 80px; }
 	}
-	.peopleinfo { margin-left: 95px; 
+	.peopleinfo {  /* se cambia margen de 95px a 25px*/
 		h4 { font-size: 15px; }
 		h4 span {font-family: sans-serif; font-size: 10px; text-transform: uppercase; margin-left: 5px; }
 		h4 span.on { color: green; }
@@ -224,6 +224,14 @@ color: #fff;
 	.headmenu > li > a .menu-icon{font-size: 32px}
 }
 
-
 /* ng-directory-listing */
-.ng-directory-listing{}
+.ng-directory-listing .peopleinfo{ margin-left: 10px; }
+.ng-directory-listing .peoplelist .thumb img{ border-radius: 50% }
+.ng-directory-listing .peoplelist .headtitle li{ display: inline; } 
+.ng-directory-listing .peoplelist .headtitle a{ display: inline-block; float: right; padding-right: 7px;}
+.ng-directory-listing { font-weight: bold;}
+.ng-directory-listing .widgetcontent { font-style: italic;}
+
+
+
+
