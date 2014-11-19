@@ -18,27 +18,9 @@
 			<div class="span6 widgetbox" ng-repeat='object in objects | filter:objectFilter' ng-cloak class="ng-cloak">
 				<div class="headtitle">         
 					<h4 class="widgettitle">Imagen Primaria 
-						<li><a href = "#"><span class = "fa fa-bolt"></span></a></li><li><a href = "#">Editar</a></li>
+						<li><a href = "#">Editar</a></li><li><a href = "#"><span class = "fa fa-pencil"></span></a></li>
 					</h4>
 				</div>
-				<div class="widgetcontent" >
-					<div class="thumb pull-right">
-						<img ng-if='object.icon.filename' ng-src="/uploads/{{dir}}/80x80{{object.icon.filename}}" alt="{{object.name}}"/>
-						<img ng-if='!object.icon.filename' src="http://placehold.it/80x80" alt="{{object.name}}" />
-					</div>
-					<div class="peopleinfo" ng-cloak>
-						<h4><a href="{{editUrl}}{{object.id}}" ng-bind='object.name'></a></h4>
-						<ul><li ng-repeat='(key,val) in info(object)'><span>{{key}}: </span> {{val}}</li></ul>
-					</div>
-				</div>
-			</div>
-
-			<div class="span6 widgetbox" ng-repeat='object in objects | filter:objectFilter' ng-cloak class="ng-cloak">
-				<div class="headtitle">         
-					<h4 class="widgettitle">Imagen Primaria 
-						<a href = "#"><span class = "fa fa-bolt"></span></a><li><a href = "#">Editar</a></li>
-					</h4>
-				</div>	
 				<div class="widgetcontent" >
 					<div class="thumb pull-right">
 						<img ng-if='object.icon.filename' ng-src="/uploads/{{dir}}/80x80{{object.icon.filename}}" alt="{{object.name}}"/>
