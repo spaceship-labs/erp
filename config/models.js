@@ -80,28 +80,28 @@ module.exports.models = {
       });
     },
   },
-	afterCreate: function(val,cb){
+    afterCreate: function(val,cb){
         if(this.tableName != 'notice'){
-    		Notifications.after(this,val,'create');
+            Notifications.after(this,val,'create');
         }
-		cb();
-	},
-	afterUpdate: function(val,cb){
+        cb();
+    },
+    afterUpdate: function(val,cb){
         if(this.tableName != 'notice'){
-    		Notifications.after(this,val,'update');
+            Notifications.after(this,val,'update');
         }
-		cb();
-	},
-	beforeUpdate:function(val,cb){
+        cb();
+    },
+    beforeUpdate:function(val,cb){
         if(this.tableName != 'notice'){
-    		Notifications.before(val);
+            Notifications.before(val);
         }
-		cb();
-	},
-	beforeCreate: function(val,cb){
+        cb();
+    },
+    beforeCreate: function(val,cb){
         if(this.tableName != 'notice'){
-    		Notifications.before(val);
+            Notifications.before(val);
         }
-		cb();
-	}
+        cb();
+    }
 };
