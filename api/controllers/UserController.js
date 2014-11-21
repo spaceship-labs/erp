@@ -138,7 +138,8 @@ module.exports = {
             last_name : req.param('last_name'),
             phone : req.param('phone'),
             email : req.param('email'),
-            active : req.param('active')
+            active : req.param('active'),
+            req : req
         };
 
         if (userId && form) {

@@ -3,7 +3,9 @@
 	window.locations = <%- JSON.stringify(locations) %>;
 </script>
 <div ng-controller='hotelCTL' >
-	<p><button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Nuevo Hotel</button></p>
+	<div class="directory-positioning">
+		<p><button class="btn btn-primary" data-toggle="modal" data-target="#myModal"> <span class = "fa fa-plus"></span> AGREGAR NUEVO HOTEL</button></p>
+	</div>
 	<br/>	
 
 	<div directory-listing objects='hotels' searchInput='searchInput' dir='hotels' edit-url='/hotel/edit/' get-info='getInfo' ></div>
