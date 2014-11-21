@@ -14,6 +14,8 @@ module.exports = function(req, res, next) {
 		var select_company = req.session.select_company || req.user.select_company
 		, company = select_company;
 
+        //console.log(req.user);
+
 //		if(company && (company.indexOf(req.options.controller)!=-1) || req.options.controller == 'home' || req.options.controller == 'product') {
 //            return res.forbidden();
 //		}

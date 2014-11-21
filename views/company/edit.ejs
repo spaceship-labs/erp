@@ -1,6 +1,7 @@
 <script type='text/javascript'>
     window.company = <%- JSON.stringify(company) %>;
     window.apps = <%- JSON.stringify(apps) %>;
+    window.users = <%- JSON.stringify(users) %>;
 </script>
 <div ng-controller='companyEditCTL'>
     <div class="span4 profile-left profileEdit Admin">
@@ -16,37 +17,35 @@
         <div class="widgetbox tags">
                 <h4 class="widgettitle">Aplicaciones</h4>
                 <div class="widgetcontent">
-                    <ul class="taglist" ng-repeat='app in company.apps'>
+                    <ul class="taglist" ng-repeat='app in usingApps'>
         				<li><a>
-                            <i ng-bind='allApps[app].label'></i>
+                            <i ng-bind='app.label'></i>
                             <span class="close" ng-click='removeApp(app)'>×</span>
                         </a></li>
         		    </ul>
                     <hr>
-                    <form method="post" ng-submit='addApp(selectedApp)' ng-if="apps.length > 0">
+                    <form method="post" ng-submit='addApp(selectedApp)' ng-if="missingApps.length > 0">
+                        <input type='hidden' value='<%-company.id%>' name='company' />
                         <p>
-                            <span class="field">
-                                <select ng-model="selectedApp" name="app" ng-options="app.label for app in apps">
-                                </select>
-                            </span>
-                            <input type='hidden' value='<%-company.id%>' name='company' />
+                            <select ng-model="selectedApp" name="app" ng-options="app.label for app in missingApps">
+                            </select>
                             <button type='submit' class="btn btn-primary" ng-if="selectedApp">Agregar App</button>
                         </p>
                     </form>
                 </div>
         </div>
-            
-            
+
+
         <div class="widgetbox tags">
                 <h4 class="widgettitle">Usuarios</h4>
                 <div class="widgetcontent">
-                    <ul class="taglist">
-    			<% for(var i=0;i<users.length;i++){ %>
-    				<li><a href="/users/edit/<%=users[i].id %>"><%=users[i].name%><span class="close fa fa-edit"></span></a></li>
-    			<% } %>
-
-    		</ul>
-                    <a href="/users/new_user/" style="display:block;margin-top:10px">+ Agregar Usuarios</a>
+                    <form ng-submit='addUser(selectedUser)' ng-if="missingUsers.length > 0">
+                        <input type='hidden' value='<%-company.id%>' name='company' />
+                        <p>
+                            <select ng-options="user.name for user in users" ng-model="selectedUser" name="" chosen></select>
+                            <button ng-if="selectedUser" class="btn btn-primary ng-scope">Agregar Usuario</button>
+                        </p>
+                    </form>
                 </div>
         </div>
     </div><!--span4-->

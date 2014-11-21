@@ -129,5 +129,13 @@
    <% if(page.controller){%>
         <script src="/js/controllers/<%- page.controller -%>"></script>
    <% } %>
+  <% if(page.controllers){
+        var controllers = page.controllers.split(',');
+        console.log(controllers);
+        for (var i in controllers) {
+  %>
+        <script src="/js/controllers/<%- controllers[i] -%>"></script>
+  <% }
+  } %>
   <!--</body>-->
 </html>

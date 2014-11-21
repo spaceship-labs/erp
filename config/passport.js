@@ -17,6 +17,7 @@ passport.use(new LocalStrategy(function(username, password, done){
 			bcrypt.compare(password, user.password, function(err, res) {
 				if (!res) return done(null, false, { message: 'Invalid Password'});
                 User.update({id : user.id},{ lastLogin : new Date() }).exec(function(err,ruser){
+                    delete user.password;
                     return done(null, user, { message: 'Logged In Successfully'} );
                 });
 			});

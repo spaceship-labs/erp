@@ -23,6 +23,7 @@ module.exports = {
 					index = users[i].last_name[0].toUpperCase();
 					alphabets_company.push(index);
 				}
+                delete users[i].password;
 			}
 			Common.view(res.view,{
 				 apps: sails.config.apps,
@@ -45,6 +46,7 @@ module.exports = {
 				for(var i=0;i<users.length;i++){
 					users[i].createdAtString = timeFormat(users[i].createdAt);
 					users[i].apps = users[i].companies[select_company]?users[i].companies[select_company].toString():[];
+                    delete users[i].password;
 				}
 				res.json(users);
 			}
@@ -79,6 +81,7 @@ module.exports = {
                 if(err) return null;
                 user.avatar2 = user.icon ? '/uploads/users/177x171'+user.icon : 'http://placehold.it/177x171';
                 user.active = user.active?true:false;
+                delete user.password;
                 Common.view(res.view,{
                     user:user
                     , apps:sails.config.apps
@@ -141,7 +144,8 @@ module.exports = {
         if (userId && form) {
             User.update({ id : userId},form).exec(function(err,user){
                if (err) res.json({ text : err.message });
-               res.json({text : 'perfil actualizado con exito'});
+               delete user[0].password;
+               res.json(formatUser(user[0]));
             });
         } else {
             res.forbidden();

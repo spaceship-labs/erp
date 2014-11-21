@@ -4,6 +4,7 @@
     window.company = <%- JSON.stringify(selected_company) %>;
 </script>
 <div ng-controller='userEditCTL'>
+    <% if (!user.isAdmin) {%>
     <div class="span4 profile-left profileEdit">
         <div class="alert alert-block unseen">
             <button data-dismiss="alert" class="close" type="button">×</button>
@@ -18,6 +19,7 @@
                     <label for="adminInput">Administrador</label>
                     <input type="checkbox" id="adminInput" ng-model="isAdmin" />
                 </p>
+
                 <accordion close-others='false' ng-if="!isAdmin">
                     <accordion-group heading="{{app.label}}" ng-repeat="app in apps" ng-if="filterApp(app)" style="cursor: pointer;">
                         <table class="table responsive">
@@ -48,42 +50,20 @@
             </div>
         </div>
     </div>
+    <% } %>
     <div class="span6">
-        <div class="widgetbox personal-information">
-            <h4 class="widgettitle">Información Basica</h4>
-            <div class="widgetcontent">
-                <form ng-submit="updateInfo()" class="editprofileform stdform stdform2 commonForm">
-                        <p>
-                            <label for="name">Nombre:</label>
-                            <span class="field"><input type="text" name="name" class="input-xlarge" ng-model="user.name"></span>
-                        </p>
-                        <p>
-                            <label for="last_name">Apellido</label>
-                            <span class="field"><input type="text" name="last_name" class="input-xlarge" ng-model="user.last_name"></span>
-                        </p>
-                        <p>
-                            <label for="email">Email</label>
-                            <span class="field"><input type="text" name="email" class="input-xlarge" ng-model="user.email"></span>
-                        </p>
-                        <p>
-                            <label for="phone">Telefono</label>
-                            <span class="field"><input type="text" name="phone" class="input-xlarge" ng-model="user.phone"></span>
-                        </p>
-                        <%
-                        var active = {
-                            true:[0,'Desactivar']
-                            , false:[1,'Activar']
-                        }
-                        %>
-                        <p class="stdformbutton">
-                            <button type="submit" class="btn btn-primary">Actualizar Usuario</button> &nbsp;
-                            <a class="confirmbutton"  data-url="/user/" href="<%=active[user.active][0]%>"><%=active[user.active][1]%></a>
-                        </p>
-                    </form>
-            </div>
+        <div form-helper
+             fields='content.user'
+             object='user'
+             action='/user/updateInfo'
+             form-title='Información Basica'
+             hidden-fields='hiddenFields'
+             >
         </div>
+
+
     </div>
-    <% if (req.user.isAdmin) {%>
+    <% if (req.user.isAdmin || req.user.id == user.id) {%>
         <div class="span6">
             <%- partial('change-password') -%>
         </div>

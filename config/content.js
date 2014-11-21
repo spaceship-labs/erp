@@ -239,5 +239,32 @@ module.exports.content = {
 			handle : 'description',
 			type : 'textarea',
 		},
-	]
+	],
+    user : [
+        {
+            label : 'Nombre',
+            handle : 'name',
+            type : 'text'
+        },
+        {
+            label : 'Apellido',
+            handle : 'last_name',
+            type : 'text'
+        },
+        {
+            label : 'E-mail',
+            handle : 'email',
+            type : 'text'
+        },
+        {
+            label : 'Telefono',
+            handle : 'phone',
+            type : 'text'
+        },
+        {
+            label : 'Activo',
+            handle : 'active',
+            type : 'checkbox'
+        }
+    ]
 };

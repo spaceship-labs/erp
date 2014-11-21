@@ -18,7 +18,7 @@
         $scope.selectLetter = function(l){
             if(l) $scope.currentLetter = l;
         }
-        $scope.$watch('objects',function(){
+        $scope.$watch('objects',function(){//no entra
             $scope.alphabetIndex = [];
             $scope.objects.forEach(function(object){
                 $scope.alphabetIndex.push(object.name[0].toUpperCase());

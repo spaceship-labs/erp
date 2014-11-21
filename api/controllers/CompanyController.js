@@ -12,7 +12,6 @@ module.exports = {
 				Common.view(res.view,{
 					apps : sails.config.apps
 					,currencies:currencies || []
-					,comp:companies
 					,page:{
 						name:'Empresas'
 						,icon:'fa fa-building'		
@@ -24,11 +23,10 @@ module.exports = {
 	}
 	, edit: function(req,res){
 		var id = req.params.id;
-		Company.findOne({id:id}).exec(function(err,company){
+		Company.findOne({id:id}).populate('users').exec(function(err,company){
 			if(err) throw err;
 			var find = {};
-			find['companies.'+id] = {$exists:1};
-			User.find(find).exec(function(err,users){	
+			User.find().exec(function(err,users){
 				Common.view(res.view,{
 					company:company || {}
 					,users:users || []
@@ -84,7 +82,15 @@ module.exports = {
            return res.json(company[0]);
         });
     }
-
+    ,change : function(req,res) {
+        var company = req.param('id');
+        Company.findOne(company).populate('currencies').populate('base_currency').exec(function(e,scompany){
+            req.user.select_company = scompany.id;
+            req.user.company = scompany;
+            req.session.select_company = scompany.id;
+            res.redirect('/home');
+        });
+    }
 };
 
 var update = {

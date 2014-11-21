@@ -33,7 +33,7 @@ module.exports = {
 		,addApps : function(apps,cb){		
 			if(Array.isArray(apps)){
 				if(this.apps){
-					cApps = this.apps;		
+					var cApps = this.apps;
 					apps.forEach(function(app){
 						if(cApps.indexOf(app) < 0) 
 							cApps.push(app);

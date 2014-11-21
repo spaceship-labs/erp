@@ -1,6 +1,7 @@
 <script type='text/javascript'>
-	window.companies = <%-JSON.stringify(comp) %>;
+	window.companies = <%-JSON.stringify(companies) %>;
 	window.currencies = <%-JSON.stringify(currencies) %>;
+    window.user = <%- JSON.stringify(current_user) %>;
 </script>
 
 <div class="wrap_createCompany row-fluid" ng-controller="companyCTL">
@@ -19,7 +20,7 @@
 			        fields='content.company' 
 			        form-footer='Agregar'
 			        form-save = 'createCompany'
-			        object = 'hotel'
+			        object = 'newcompany'
 			        form-title='Agregar Empresa'
 			       	modal='true'
 			       	objects='{currencies:currencies,apps:company.apps}'
