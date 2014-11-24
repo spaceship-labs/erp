@@ -1,6 +1,5 @@
 <script type='text/javascript'>
     window.location_o = <%- JSON.stringify(location_o) %>;
-    console.log(location_o);
 </script>
 <div ng-controller='locationEditCTL'>
     <div class='row-fluid'>
@@ -23,6 +22,27 @@
                 form-title='Textos'
                 >
             </div> 
+        </div>
+    </div>
+    <div class='row-fluid'>
+        <div class='span12'>
+            <div class="widgetbox">
+                <h4 class="widgettitle">
+                    Zonas 
+                    <span ng-click='toggleZoneForm()' class='fa icon' ng-class='newZoneClass'></span>  
+                </h4>
+                <div ng-show='showZoneForm'>
+                    <div form-helper 
+                        fields='content.zoneBasic' 
+                        form-footer='Agregar Zona'
+                        form-save = 'addZone'
+                        object = 'zone' >
+                    </div>
+                </div>
+                <div ng-show='location_o.zones.length'>
+                    <div table-helper objects='location_o.zones' columns='content.zoneBasic' route='zone'></div>
+                </div>
+            </div>
         </div>
     </div>
     <br/>

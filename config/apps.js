@@ -15,7 +15,11 @@ module.exports.apps = {
 			'/user/' : {
 				label : 'Usuarios',
 				icon : 'fa-users',
-			}
+			},
+            '/price/' : {
+                label : 'Precios',
+                icon : 'fa-money',
+            }
 		}
 	},
 	/*products : {
@@ -76,12 +80,16 @@ module.exports.apps = {
     },
     hotels : {
         name : 'hotels',
-        label : 'Hoteles',
+        label : 'Hoteles/Aeropuertos',
         icon : 'fa-building',
         views : {
             '/hotel/' : {
                 label : 'Hoteles',
                 icon : 'fa-building-o'
+            },
+            '/airport/' : {
+                label : 'Aeropuertos',
+                icon : 'fa-plane'
             },
             '/season/' : {
                 label : 'Temporadas',
@@ -108,6 +116,10 @@ module.exports.apps = {
             '/tour/' : {
                 label : 'tours',
                 icon : 'fa-compass'
+            },
+            '/service/' : {
+                label : 'Servicios',
+                icon : 'fa-car'
             },
             /*'/transfer/' : {
                 label : 'Translados',

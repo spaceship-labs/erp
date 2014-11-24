@@ -7,10 +7,6 @@
 
 module.exports = {
   attributes: {
-  	name : 'string',
-  	zones : {
-  		collection 	: 'zone',
-  		via 		: 'location'
-  	}
+  	name : 'string'
   }
 };
