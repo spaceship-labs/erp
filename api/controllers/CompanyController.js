@@ -12,7 +12,6 @@ module.exports = {
 				Common.view(res.view,{
 					apps : sails.config.apps
 					,currencies:currencies || []
-					,comp:companies
 					,page:{
 						name:'Empresas'
 						,icon:'fa fa-building'		
@@ -24,11 +23,10 @@ module.exports = {
 	}
 	, edit: function(req,res){
 		var id = req.params.id;
-		Company.findOne({id:id}).exec(function(err,company){
+		Company.findOne({id:id}).populate('users').exec(function(err,company){
 			if(err) throw err;
 			var find = {};
-			find['companies.'+id] = {$exists:1};
-			User.find(find).exec(function(err,users){	
+			User.find().exec(function(err,users){
 				Common.view(res.view,{
 					company:company || {}
 					,users:users || []
@@ -39,32 +37,6 @@ module.exports = {
 						,controller : 'company.js'		
 					}
 				},req);
-			});
-		});
-	}
-	, create: function(req,res){
-		var form = req.params.all() || {}
-		, response = {
-			status:false
-			, msg:'ocurrio un error'
-		};
-		delete form.id;
-		form.active = true;
-		form.req = req;
-		var currencies = form.currencies.pop?form.currencies:[form.currencies];
-		delete form.currencies;
-		Company.create(form).exec(function(err,company){
-			if(err) return res.json(response);
-			currencies.forEach(function(currency){
-				company.currencies.add(currency);
-			});
-			company.save(function(err){
-				if(err) return res.json(response);
-				res.json({
-					status:true
-					, msg:'La compania se creo exitosamente'
-					, url: '/company/edit/'+company.id
-				});
 			});
 		});
 	}
@@ -90,7 +62,7 @@ module.exports = {
 		});
 	}
 	,updateIcon: function(req,res){
-    	form = req.params.all();
+    	var form = req.params.all();
 		Company.updateAvatar(req,{
 			dir : 'companies',
 			profile: 'avatar',
@@ -100,6 +72,25 @@ module.exports = {
 			res.json(company);
 		});
 	}
+    ,update : function(req,res) {
+        var form = Common.formValidate(req.params.all(),['id','name','address','zipcode','description']);
+        Company.update({id : form.id},form).exec(function(err,company){
+           if (err) {
+               console.log(err);
+               return res.serverError(err);
+           }
+           return res.json(company[0]);
+        });
+    }
+    ,change : function(req,res) {
+        var company = req.param('id');
+        Company.findOne(company).populate('currencies').populate('base_currency').exec(function(e,scompany){
+            req.user.select_company = scompany.id;
+            req.user.company = scompany;
+            req.session.select_company = scompany.id;
+            res.redirect('/home');
+        });
+    }
 };
 
 var update = {

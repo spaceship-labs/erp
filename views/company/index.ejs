@@ -1,27 +1,32 @@
 <script type='text/javascript'>
-	window.companies = <%-JSON.stringify(comp) %>;
+	window.companies = <%-JSON.stringify(companies) %>;
+	window.currencies = <%-JSON.stringify(currencies) %>;
+    window.user = <%- JSON.stringify(current_user) %>;
 </script>
 
-<div class="wrap_createCompany row-fluid" ng-controller="createCompanyCTL">
-	<p><button class="btn btn-primary" data-toggle="modal" data-target="#companyCreate"><span class="table-icon fa fa-plus"> Empresa</span></button></p>
+<div class="wrap_createCompany row-fluid" ng-controller="companyCTL">
+	<p><button class="btn btn-primary" data-toggle="modal" data-target="#companyCreate"><span class="table-icon fa fa-plus"></span> Empresa</button></p>
+
 	<br/>	
 
 	<div directory-listing objects='companies' searchInput='searchInput' dir='companies' edit-url='/company/edit/' get-info='getInfo' ></div>
 
-	<div class="clearfix"></div>
-	
 
-	<%- partial('../global/notices') -%> 
-	<div class="fade modal" id="companyCreate">
+	<div class="modal fade" id="companyCreate">
 		<div class="modal-dialog">
 			<div class="modal-content">
-			      <div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				        <h4 class="modal-title">Nueva empresa</h4>
-			      </div>
-				<%- partial('../company/new') -%> 
+				<div 
+					form-helper 
+			        fields='content.company' 
+			        form-footer='Agregar'
+			        form-save = 'createCompany'
+			        object = 'newcompany'
+			        form-title='Agregar Empresa'
+			       	modal='true'
+			       	objects='{currencies:currencies,apps:company.apps}'
+			        >
+			    </div>	
 			</div>
 		</div>
 	</div>
-
 </div>

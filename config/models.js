@@ -79,5 +79,29 @@ module.exports.models = {
         object.save(cb);
       });
     },
-  }
+  },
+    afterCreate: function(val,cb){
+        if(this.tableName != 'notice'){
+            Notifications.after(this,val,'create');
+        }
+        cb();
+    },
+    afterUpdate: function(val,cb){
+        if(this.tableName != 'notice'){
+            Notifications.after(this,val,'update');
+        }
+        cb();
+    },
+    beforeUpdate:function(val,cb){
+        if(this.tableName != 'notice'){
+            Notifications.before(val);
+        }
+        cb();
+    },
+    beforeCreate: function(val,cb){
+        if(this.tableName != 'notice'){
+            Notifications.before(val);
+        }
+        cb();
+    }
 };

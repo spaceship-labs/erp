@@ -8,11 +8,15 @@
 module.exports = {
 	attributes: {
 		companyId:'string'
-		,userId:'string'
+		,userId:{
+			model:'user',
+		}
 		,app:'string'
 		,model:'string'
 		,operation:'string'
 		,modifyId:'string'
+		,modelObjName:'string'
+		,modifications:'array'
 	}
 };
 

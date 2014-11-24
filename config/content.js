@@ -330,5 +330,66 @@ module.exports.content = {
 			type 	: 'checkbox',
 			handle 	: 'active'
 		}
-	]
+	],
+	company : [		
+		{
+			label : 'Nombre',
+			handle : 'name',
+			type : 'text',
+		},
+		{
+			label : 'Direccion',
+			handle : 'address',
+			type : 'text',
+		},
+		{
+			label : 'Código Postal',
+			handle : 'zipcode',
+			type : 'text',
+		},
+		{
+			label : 'Moneda Base',
+			type : 'select',
+			handle : 'base_currency',
+			object : 'currencies',
+		},
+		{
+			label : 'Aplicaciones',
+			type : 'multi-select',
+			handle : 'apps',
+			object : 'apps',
+		},
+		{
+			label : 'Description',
+			handle : 'description',
+			type : 'textarea',
+		},
+	],
+    user : [
+        {
+            label : 'Nombre',
+            handle : 'name',
+            type : 'text'
+        },
+        {
+            label : 'Apellido',
+            handle : 'last_name',
+            type : 'text'
+        },
+        {
+            label : 'E-mail',
+            handle : 'email',
+            type : 'text'
+        },
+        {
+            label : 'Telefono',
+            handle : 'phone',
+            type : 'text'
+        },
+        {
+            label : 'Activo',
+            handle : 'active',
+            type : 'checkbox'
+        }
+    ]
 };

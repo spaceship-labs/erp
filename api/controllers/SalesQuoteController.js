@@ -32,6 +32,7 @@ module.exports = {
                                                         description:'editar'
                                                         ,icon:'fa fa-database'
                                                         ,name:'Cotizacion '
+                                                        ,controllers : 'product.js,installation.js'
                                                     },
                                                     moment:moment
                                                     ,quote:quote

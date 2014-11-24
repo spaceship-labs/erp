@@ -23,6 +23,7 @@ module.exports = {
 					index = users[i].last_name[0].toUpperCase();
 					alphabets_company.push(index);
 				}
+                delete users[i].password;
 			}
 			Common.view(res.view,{
 				 apps: sails.config.apps,
@@ -45,6 +46,7 @@ module.exports = {
 				for(var i=0;i<users.length;i++){
 					users[i].createdAtString = timeFormat(users[i].createdAt);
 					users[i].apps = users[i].companies[select_company]?users[i].companies[select_company].toString():[];
+                    delete users[i].password;
 				}
 				res.json(users);
 			}
@@ -73,25 +75,23 @@ module.exports = {
 		});
 	}
 	, edit: function(req,res){
-		var id
-		, select_company = req.session.select_company || req.user.select_company;
-		if(id = req.params.id){
-			User.findOne(id).exec(function(err,user){
-				if(err) return null;
-				user.avatar2 = user.icon ? '/uploads/users/177x171'+user.icon : 'http://placehold.it/177x171';
-				user.active = user.active?true:false;
-					if(err) return;
-					Common.view(res.view,{
-					 	  user:user
-						, select_company:select_company
-						, apps:sails.config.apps
-						, page:{
-							name:'Usuarios'
-							,icon:'fa fa-users'		
-							,controller : 'user.js'		
-						}
-					},req);
-			});
+		var id = req.params.id;
+		if(id){
+			User.findOne(id).populate('accessList').exec(function(err,user){
+                if(err) return null;
+                user.avatar2 = user.icon ? '/uploads/users/177x171'+user.icon : 'http://placehold.it/177x171';
+                user.active = user.active?true:false;
+                delete user.password;
+                Common.view(res.view,{
+                    user:user
+                    , apps:sails.config.apps
+                    , page:{
+                        name:'Usuarios'
+                        ,icon:'fa fa-users'
+                        ,controller : 'user.js'
+                    }
+                },req);
+            });
 		}
 	}
 	, editJson: function(req,res){
@@ -138,13 +138,15 @@ module.exports = {
             last_name : req.param('last_name'),
             phone : req.param('phone'),
             email : req.param('email'),
-            active : req.param('active')
+            active : req.param('active'),
+            req : req
         };
 
         if (userId && form) {
             User.update({ id : userId},form).exec(function(err,user){
                if (err) res.json({ text : err.message });
-               res.json({text : 'perfil actualizado con exito'});
+               delete user[0].password;
+               res.json(formatUser(user[0]));
             });
         } else {
             res.forbidden();
@@ -185,6 +187,23 @@ module.exports = {
             res.forbidden();
         }
     }
+    ,updateAccessList : function(req,res) {//ajax only
+        var company = req.param('company');
+        var user_id = req.param('user');
+        var permissionsk = req.param('permissionsk');
+        var permissionsv = req.param('permissionsv');
+        var permissions = _.zip(permissionsk,permissionsv);
+        var isAdmin = req.param('admin') || false;
+        User.findOne({id : user_id}).populateAll().exec(function(err,user){
+            if (err) {
+                console.log(err);
+                res.serverError();
+            }
+            user.createAccessList(company,permissions,isAdmin,function(){
+                res.json({success:true,text:'permisos actualizados'});
+            });
+        });
+    }
 };
 function formatUser(user){
 	user.active = user.active?true:false;
@@ -221,12 +240,4 @@ var update = {
 			,validate:['name','last_name','phone','email','active']
 		},cb);
 	}
-	, accessList:function(req,form,cb){
-		//console.log(form.accessList);
-		User.update({id:form.userId},{accessList:form.accessList}).exec(function(err,user){
-			if(err) return cb(err);
-			return cb && cb(err,user);
-		});
-
-	} 
 };

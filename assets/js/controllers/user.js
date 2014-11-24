@@ -42,14 +42,40 @@ app.controller('userEditCTL',function($scope,$http){
     $scope.user = user;
     $scope.apps = apps;
     $scope.submited_pass_form = false;
-    var id = user.id;
+    $scope.company = company;
+    $scope.permissions = [];
+    $scope.content = content;
+    $scope.hiddenFields = [
+        { key : 'userId',value : $scope.user.id }
+    ];
+
+    for(var index in $scope.user.accessList){
+        var acl = $scope.user.accessList[index];
+        if (acl.company == $scope.company.id) {
+            $scope.user.permissions = [];
+            for (var index1 in acl.permissions) {
+                $scope.user.permissions[acl.permissions[index1][0]] = acl.permissions[index1][1];
+            }
+            $scope.isAdmin = acl.isAdmin;
+        }
+    }
+    var id = $scope.user.id;
     $scope.updateAccestList = function(){
-        io.socket.get('/user/editAjax/',{
-            method:'accessList'
-            ,userId:id
-            ,accessList:$scope.user.accessList
-            ,admin:$scope.user.isAdmin
-        },function(data){
+        console.log($scope.permissions);
+        var permisosk = [];
+        var permisosv = [];
+        for (var key in $scope.permissions) {
+            permisosk.push(key);
+            permisosv.push($scope.permissions[key]);
+        }
+        $http.post('/user/updateAccessList/', {
+            user:id
+            ,permissionsk:permisosk
+            ,permissionsv:permisosv
+            ,admin:$scope.isAdmin
+            ,company : $scope.company.id
+        },{}).success(function(data){
+            //console.log(data);
             var alt = jQuery('.alert p');
             alt.text(data.msg).parent().show();
         });
@@ -64,6 +90,7 @@ app.controller('userEditCTL',function($scope,$http){
             ,email:$scope.user.email
             ,active:$scope.user.active
         },{}).success(function(data){
+            console.log(data);
             var alt = jQuery('.alert p');
             alt.text(data.text).parent().show();
         });
@@ -80,17 +107,17 @@ app.controller('userEditCTL',function($scope,$http){
                 alt.text(data.text).parent().show();
             });
         } else {
-            console.log("damn");
             console.log($scope.old_password);
             console.log($scope.new_password.$valid);
             console.log($scope.new_password_v);
         }
     };
 
-    $scope.filterPermissionsApp = function(app){
-        //console.log(app);
-        if (app.permissions) return true;
-        return false;
-    }
+    $scope.filterApp = function(app){
+        return ($scope.company.apps.indexOf(app.name) != -1);
+    };
 
+    $scope.getPermission = function(key){
+        return $scope.user.permissions ? $scope.user.permissions[key] : false;
+    };
 });

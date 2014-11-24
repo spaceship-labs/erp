@@ -1,130 +1,168 @@
-module.exports.apps = {
-	system : {
+module.exports.apps = [
+	/* system */
+    {
         name : 'system',
 		label : 'Sistema',
 		icon : 'fa-gear',
-		views : {
-			'/company/' : {
+		actions : [
+			{
 				label : 'Empresas',
 				icon : 'fa-building',
+                url : '/company/',
+                handle : 'empresas',
+                showInMenu : true
 			},
 			/*'/admin/currencies/' : {
 				label : 'Mondedas',
 				icon : 'fa-money',
 			},*/
-			'/user/' : {
+			{
 				label : 'Usuarios',
 				icon : 'fa-users',
+                url : '/user/',
+                handle : 'usuarios',
+                showInMenu : true
 			},
-            '/price/' : {
+            {
                 label : 'Precios',
                 icon : 'fa-money',
+                url : '/price/',
+                showInMenu : true
             }
-		}
+		]
 	},
-	/*products : {
+	/* products */
+    {
         name : 'products',
 		label : 'Ventas',
 		icon : 'fa-briefcase',
-		views : {
-			'/ventas/' : {
+        actions : [
+			{
 				label : 'Ventas',
-				icon : 'fa-briefcase'
+				icon : 'fa-briefcase',
+                url : '/ventas/',
+                handle : 'ventas',
+                showInMenu : true
 			},
-            '/salesQuote/':{
+            {
                 label:'Cotizaciones',
-                icon:'fa-database'
-
+                icon:'fa-database',
+                url : '/salesQuote/',
+                handle : 'cotizaciones',
+                showInMenu : true
             },
-			'/product/' : {
+			{
 				label : 'Productos',
-				icon : 'fa-cube'
+				icon : 'fa-cube',
+                url : '/product/',
+                handle : 'productos',
+                showInMenu : true
 			},
-			'/product_type/' : {
+			{
 				label : 'Categorias',
-				icon : 'fa-cubes'
+				icon : 'fa-cubes',
+                url : '/product_type/',
+                handle : 'categorias',
+                showInMenu : true
 			},
-            '/machine/':{
+            {
                 label:'Impresoras',
-                icon:'fa-gears'
+                icon:'fa-gears',
+                url : '/machine/',
+                handle : 'impresoras',
+                showInMenu : true
             },
-            '/installation/':{
+            {
                 label:'Instalaciones',
-                icon:'fa-wrench'
+                icon:'fa-wrench',
+                url : '/installation/',
+                handle : 'instalaciones',
+                showInMenu : true
             }
-		},
-        permissions : [
-            {label : 'ver ventas',handle : 'viewSales'},
-            {label : 'vet cotizaciones',handle : 'viewSaleQuotes'},
-            {label : 'ver productos',handle : 'viewProduct'},
-            {label : 'ver categorias de producto',handle : 'viewProductType'},
-            {label : 'ver impresoras',handle : 'viewMachine'},
-            {label : 'ver instalaciones',handle : 'viewInstallation'}
-        ]
-	},*/
-    clients : {
+		]
+	},
+    /* clients */
+    {
         name : 'clients',
         label : 'Clientes',
         icon : 'fa-users',
-        views : {
-            '/clientes/' : {
-                label : 'Buscar',
-                icon : 'fa-user'
+        actions : [
+            {
+                label: 'Buscar',
+                icon: 'fa-user',
+                url: '/clientes/',
+                handle: 'clientes',
+                showInMenu: true
             }
-        },
-        permissions : [
-            {label : 'ver clientes',handle : 'viewClients'},
-            {label : 'editar clientes',handle : 'editClients'},
-            {label : 'editar contactos de clientes',handle : 'editClientContact'}
         ]
     },
-    hotels : {
+    /* hotels */
+    {
         name : 'hotels',
         label : 'Hoteles/Aeropuertos',
         icon : 'fa-building',
-        views : {
-            '/hotel/' : {
+        actions : [
+            {
                 label : 'Hoteles',
-                icon : 'fa-building-o'
+                icon : 'fa-building-o',
+                url : '/hotel/',
+                handle : 'hoteles',
+                showInMenu : true
             },
-            '/airport/' : {
+            {
                 label : 'Aeropuertos',
-                icon : 'fa-plane'
+                icon : 'fa-plane',
+                url : '/airport/',
+                handle : 'airports',
+                showInMenu : true
             },
-            '/season/' : {
+            {
                 label : 'Temporadas',
-                icon : 'fa-sun-o'
+                icon : 'fa-sun-o',
+                url : '/season/',
+                handle : 'temporadas',
+                showInMenu : true
             },
-        },
+        ],
     },
-    ciudades : {
+    /* locations */
+    {
         name    : 'locations',
         label   : 'Ciudades',
         icon    : 'fa-flag',
-        views   : {
-            '/location/' : {
+        actions   : [
+            {
                 label   : 'Ciudades',
-                icon    : 'fa-flag'
+                icon    : 'fa-flag',
+                url : '/location/',
+                handle : 'ciudades',
+                showInMenu : true
             }
-        }
+        ]
     },
-    services : {
+    /* services */
+    {
         name : 'services',
         label : 'Servicios',
         icon : 'fa-clipboard',
-        views : {
-            '/tour/' : {
+        actions : [
+            {
                 label : 'tours',
-                icon : 'fa-compass'
+                icon : 'fa-compass',
+                url : '/tour/',
+                handle : 'tours',
+                showInMenu : true
             },
-            '/service/' : {
+            {
                 label : 'Servicios',
-                icon : 'fa-car'
+                icon : 'fa-car',
+                url : '/service/',
+                showInMenu : true
             },
             /*'/transfer/' : {
                 label : 'Translados',
                 icon : 'fa-cab'
             },*/
-        },
+        ]
     }
-};
+];

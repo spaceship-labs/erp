@@ -24,8 +24,6 @@
     <link rel="stylesheet" href="/styles/bootstrap-responsive.min.css">
     <link rel="stylesheet" href="/styles/default.css">
     <link rel="stylesheet" href="/styles/css/jquery.ui.css">
-    <link rel="stylesheet" href="/styles/css/animate.min.css">
-    <link rel="stylesheet" href="/styles/css/animate.delay.css">
     <link rel="stylesheet" href="/styles/css/isotope.css">
     <link rel="stylesheet" href="/styles/css/colorbox.css">
     <link rel="stylesheet" href="/styles/css/uniform.tp.css">
@@ -113,6 +111,7 @@
     <script src="/bower_components/angular-ui-calendar/src/calendar.js"></script>
     <script src="/bower_components/fullcalendar/fullcalendar.js"></script>
     <script src="/bower_components/fullcalendar/gcal.js"></script>
+    <script src="/bower_components/angular-chosen-localytics/chosen.js"></script>
     <script src="/js/themejs/exchange-rates.js"></script>
     <script src="/js/themejs/responsive-tables.js"></script>
     <script src="/js/app.js"></script>
@@ -129,5 +128,13 @@
    <% if(page.controller){%>
         <script src="/js/controllers/<%- page.controller -%>"></script>
    <% } %>
+  <% if(page.controllers){
+        var controllers = page.controllers.split(',');
+        console.log(controllers);
+        for (var i in controllers) {
+  %>
+        <script src="/js/controllers/<%- controllers[i] -%>"></script>
+  <% }
+  } %>
   <!--</body>-->
 </html>
