@@ -69,7 +69,7 @@ module.exports = {
                 });
             }
         },
-        hasCompanyAccess : function(company,cb) {
+        hasCompanyAccess : function(company,app) {
             if (this.accessList) {
                 for (var index in this.accessList){
                     var acl = this.accessList[index];
@@ -93,6 +93,24 @@ module.exports = {
                         }
                     } else
                         return true;
+                }
+            }
+            return false;
+        },
+        hasAppPermission : function(company,app){
+            if (this.isAdmin) return true;
+            if (this.accessList) {
+                var useAcl = this.hasCompanyAccess(company);
+                if (useAcl.company){
+                    for (var appI in app.actions) {
+                        var actionPermission = app.actions[appI];
+                        console.log(actionPermission);
+                        for (var permissionIndex in useAcl.permissions) {
+                            if (useAcl.permissions[permissionIndex][0] == actionPermission.handle && useAcl.permissions[permissionIndex][1]) {
+                                return true;
+                            }
+                        }
+                    }
                 }
             }
             return false;

@@ -17,7 +17,7 @@ module.exports.renderMenu = function(req){
 	var menu = "";
     var selected_company = req.res.locals.selected_company;
     _.each(sails.config.apps,function(app){
-        if (_.contains(selected_company.apps,app.name)) {
+        if (_.contains(selected_company.apps,app.name) && req.user.hasAppPermission(selected_company.id,app)) {
             //console.l
             menu += "<li class='dropdown'><a href=''><span class='fa "+app.icon+"'></span>"+app.label+"</a><ul>";
             _.each(app.actions,function(view){
