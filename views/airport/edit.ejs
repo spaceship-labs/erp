@@ -1,0 +1,20 @@
+<script type='text/javascript'>
+    window.airport = <%- JSON.stringify(airport) %>;
+    window.locations = <%- JSON.stringify(locations) %>;
+    console.log(airport);
+</script>
+<div ng-controller='airportEditCTL'>
+    <div class='row-fluid'>
+        <div class="span12">        
+            <div form-helper 
+                fields='content.airport' 
+                object='airport' 
+                objects = '{locations:locations}'
+                action='/airport/update' 
+                form-title='INFORMACIÓN BÁSICA'
+                >
+            </div>
+        </div>
+    </div>
+    <br/>
+</div>

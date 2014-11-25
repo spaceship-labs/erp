@@ -144,7 +144,7 @@ module.exports.content = {
 			handle : 'schedule',
 		},
 		{
-			label : 'Ubicacion',
+			label : 'Ubicación',
 			type : 'select',
 			handle : 'location',
 			object : 'locations'
@@ -197,13 +197,138 @@ module.exports.content = {
 	locationTexts : [
 		{
 			label : 'Descripción Español',
-			type : 'text',
+			type : 'textarea',
 			handle : 'description_es',
 		},
 		{
 			label : 'Descripción Inglés',
-			type : 'text',
+			type : 'textarea',
 			handle : 'description_en',
+		}
+	],
+	zoneBasic : [
+		{
+			label : 'Nombre Español',
+			type : 'text',
+			handle : 'name',
+		},{
+			label : 'Nombre Inglés',
+			type : 'text',
+			handle : 'name_en',
+		},{
+			label : 'Código',
+			type : 'text',
+			handle : 'code',
+		},{
+			label : 'Pickup hrs',
+			type : 'text',
+			handle : 'pickup_hrs',
+		},
+	],
+	zoneComplement : [
+		{
+			label : 'Título Url',
+			type : 'text',
+			handle : 'url_title',
+		},{
+			label : 'Descripción Español',
+			type : 'textarea',
+			handle : 'description_es',
+		},{
+			label : 'Descripción Inglés',
+			type : 'textarea',
+			handle : 'description_en',
+		}
+	],
+	service : [
+		{
+			label 	: 'Nombre Español',
+			type 	: 'text',
+			handle 	: 'name'
+		},
+		{
+			label 	: 'Nombre Inglés',
+			type 	: 'text',
+			handle 	: 'name_en'
+		},
+		{
+			label 	: 'Url ',
+			type 	: 'text',
+			handle 	: 'url_title'
+		},
+		{
+			label 	: 'Pax por servicio',
+			type 	: 'text',
+			handle 	: 'max_pax'
+		},
+		{
+			label 	: 'Descripción Español',
+			type 	: 'textarea',
+			handle 	: 'description_es'
+		},
+		{
+			label 	: 'Descripción Inglés',
+			type 	: 'textarea',
+			handle 	: 'description_en'
+		}
+	],
+	airport : [
+		{
+			label 	: 'Nombre',
+			type 	: 'text',
+			handle 	: 'name'
+		},{
+			label 	: 'Nombre Inglés',
+			type 	: 'text',
+			handle 	: 'name_es'
+		},{
+			label 	: 'Ubicación',
+			type 	: 'select',
+			handle 	: 'location',
+			object 	: 'locations'
+		},{
+			label 	: 'Texto del Voucher Español',
+			type 	: 'textarea',
+			handle 	: 'voucher_text_es'
+		},{
+			label 	: 'Texto del Voucher Inglés',
+			type 	: 'textarea',
+			handle 	: 'voucher_text_en'
+		},
+	],
+	price : [
+		{
+			label 	: 'Región',
+			type 	: 'select',
+			handle 	: 'zone',
+			object 	: 'zones'
+		},{
+			label 	: 'Servicio',
+			type 	: 'select',
+			handle 	: 'service',
+			object 	: 'services'
+		},{
+			label 	: 'Aeropuerto',
+			type 	: 'select',
+			handle 	: 'airport',
+			object 	: 'airports'
+		},{
+			label 	: 'Agencia',
+			type 	: 'select',
+			handle 	: 'company',
+			object 	: 'companies'
+		},{
+			label 	: 'Sencillo',
+			type 	: 'text',
+			handle 	: 'one_way_fee'
+		},{
+			label 	: 'Redondo',
+			type 	: 'text',
+			handle 	: 'round_trip_fee'
+		},{
+			label 	: 'Activo',
+			type 	: 'checkbox',
+			handle 	: 'active'
 		}
 	],
 	company : [		

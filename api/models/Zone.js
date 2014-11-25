@@ -6,11 +6,11 @@
 */
 
 module.exports = {
+
   attributes: {
   	name : 'string',
-  	zones : {
-  		collection 	: 'zone',
-  		via 		: 'location'
+  	location : {
+  		model : 'location'
   	}
   }
 };

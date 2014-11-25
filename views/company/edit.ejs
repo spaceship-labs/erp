@@ -3,7 +3,7 @@
     window.apps = <%- JSON.stringify(apps) %>;
     window.users = <%- JSON.stringify(users) %>;
 </script>
-<div ng-controller='companyEditCTL'>
+<div class='row-fluid' ng-controller='companyEditCTL'>
     <div class="span4 profile-left profileEdit Admin">
     	<div class="alert alert-block unseen">
     		<button data-dismiss="alert" class="close" type="button">×</button>
@@ -51,12 +51,13 @@
                         <p>
                             <select ng-options="user.name for user in users | filter:filterUsers" ng-model="selectedUser" name="" chosen></select>
                             <button ng-if="selectedUser" class="btn btn-primary ng-scope">Agregar Usuario</button>
-                        </p>
-                    </form>
+            </form
+                    <a href="/users/new_user/" style="display:block;margin-top:10px">+ Agregar Usuarios</a>
                 </div>
         </div>
+            
     </div><!--span4-->
-    <div class="span6">
+    <div class="span8">
         <div form-helper
              fields='content.company'
              object='company'

@@ -22,7 +22,13 @@ module.exports.apps = [
                 url : '/user/',
                 handle : 'usuarios',
                 showInMenu : true
-			}
+			},
+            {
+                label : 'Precios',
+                icon : 'fa-money',
+                url : '/price/',
+                showInMenu : true
+            }
 		]
 	},
 	/* products */
@@ -93,7 +99,7 @@ module.exports.apps = [
     /* hotels */
     {
         name : 'hotels',
-        label : 'Hoteles',
+        label : 'Hoteles/Aeropuertos',
         icon : 'fa-building',
         actions : [
             {
@@ -101,6 +107,13 @@ module.exports.apps = [
                 icon : 'fa-building-o',
                 url : '/hotel/',
                 handle : 'hoteles',
+                showInMenu : true
+            },
+            {
+                label : 'Aeropuertos',
+                icon : 'fa-plane',
+                url : '/airport/',
+                handle : 'airports',
                 showInMenu : true
             },
             {
@@ -132,7 +145,7 @@ module.exports.apps = [
         name : 'services',
         label : 'Servicios',
         icon : 'fa-clipboard',
-        views : [
+        actions : [
             {
                 label : 'tours',
                 icon : 'fa-compass',
@@ -140,10 +153,16 @@ module.exports.apps = [
                 handle : 'tours',
                 showInMenu : true
             },
+            {
+                label : 'Servicios',
+                icon : 'fa-car',
+                url : '/service/',
+                showInMenu : true
+            },
             /*'/transfer/' : {
                 label : 'Translados',
                 icon : 'fa-cab'
             },*/
-        ],
+        ]
     }
 ];

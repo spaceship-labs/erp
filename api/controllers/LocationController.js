@@ -7,14 +7,13 @@
 
 module.exports = {
 	index : function(req,res){
-		Location.find().sort('name').exec(function(e,locations){
+		Location.find().sort('name').populate('zones').exec(function(e,locations){
 			Common.view(res.view,{
 				locations:locations,
 				page:{
 					name:'Locations'
 					,icon:'fa fa-flag'		
 					,controller : 'location.js'
-						
 				},
 				breadcrumb : [
 					{label : 'Ciudades'}
@@ -23,7 +22,7 @@ module.exports = {
 		});
 	},
 	edit : function(req,res){
-		Location.findOne(req.params.id).exec(function(e,location){
+		Location.findOne(req.params.id).populate('zones').exec(function(e,location){
 			if(e) return res.redirect("/location/");
 			Common.view(res.view,{
 				location_o:location,
@@ -49,6 +48,18 @@ module.exports = {
     			res.json(location_o);
     		});
     	});
-    }
+    },
+    addZone : function(req,res){
+		var form = req.params.all();
+		var location_o = form.location_o;
+		Zone.create(form).exec(function(e,r){
+			if(e) throw(e);
+			Location.findOne(location_o).populate('zones').exec(function(e,location_o){
+				if(e) throw(e);
+				location_o = location_o;
+				res.json(location_o)
+			});
+		});
+	},
 };
 
