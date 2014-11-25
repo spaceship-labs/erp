@@ -7,11 +7,11 @@ var notification = function(type,collection,val){
 			,model:collection
 			,operation:type
 			,modifyId:val.id
-            ,modelObjName:val.req.modelObjName || collection
+			,modelObjName:val.req.modelObjName || collection
 		}).exec(function(err,notice){
 			if(err) throw err;
 			//sails.io.sockets.in('notices').emit('update',{data:true});
-            Notice.publishCreate({id:notice.id})
+			Notice.publishCreate({id:notice.id})
 		});
 	}
 };
@@ -33,8 +33,8 @@ module.exports = {
 				,companyId:val.req.session.select_company || val.req.user.select_company
 				,app: val.req.options.controller
 			}
-            if(val.name)
-                req.modelObjName = val.name
+			if(val.name)
+				req.modelObjName = val.name
 			val.req = req;
 		}
 	}

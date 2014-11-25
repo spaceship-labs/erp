@@ -1,0 +1,17 @@
+<script type='text/javascript'>
+    window.service = <%- JSON.stringify(service) %>;
+</script>
+<div ng-controller='serviceEditCTL'>
+    <div class='row-fluid'>
+        <div class="span12">        
+            <div form-helper 
+                fields='content.service' 
+                object='service' 
+                action='/service/update' 
+                form-title='INFORMACIÓN BÁSICA'
+                >
+            </div> 
+        </div>
+    </div>
+    <br/>
+</div>

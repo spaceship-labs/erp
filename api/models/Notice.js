@@ -9,13 +9,13 @@ module.exports = {
 	attributes: {
 		companyId:'string'
 		,userId:{
-            model:'user',
-        }
+			model:'user',
+		}
 		,app:'string'
 		,model:'string'
 		,operation:'string'
 		,modifyId:'string'
-        ,modelObjName:'string'
+		,modelObjName:'string'
 		,modifications:'array'
 	}
 };

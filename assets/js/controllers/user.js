@@ -44,6 +44,10 @@ app.controller('userEditCTL',function($scope,$http){
     $scope.submited_pass_form = false;
     $scope.company = company;
     $scope.permissions = [];
+    $scope.content = content;
+    $scope.hiddenFields = [
+        { key : 'userId',value : $scope.user.id }
+    ];
 
     for(var index in $scope.user.accessList){
         var acl = $scope.user.accessList[index];
@@ -52,8 +56,6 @@ app.controller('userEditCTL',function($scope,$http){
             for (var index1 in acl.permissions) {
                 $scope.user.permissions[acl.permissions[index1][0]] = acl.permissions[index1][1];
             }
-            console.log($scope.user.permissions);
-            console.log(acl.permissions);
             $scope.isAdmin = acl.isAdmin;
         }
     }
@@ -88,6 +90,7 @@ app.controller('userEditCTL',function($scope,$http){
             ,email:$scope.user.email
             ,active:$scope.user.active
         },{}).success(function(data){
+            console.log(data);
             var alt = jQuery('.alert p');
             alt.text(data.text).parent().show();
         });
@@ -115,6 +118,6 @@ app.controller('userEditCTL',function($scope,$http){
     };
 
     $scope.getPermission = function(key){
-        return $scope.user.permissions[key];
+        return $scope.user.permissions ? $scope.user.permissions[key] : false;
     };
 });

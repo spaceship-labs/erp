@@ -91,7 +91,7 @@
 
     <!--SCRIPTS-->
     <script src="/js/dependencies/sails.io.js"></script>
-    <script src="/bower_components/jquery/dist/jquery.js"></script>
+    <script src="/bower_components/jquery/jquery.min.js"></script>
     <script src="/bower_components/modernizr/modernizr.js"></script>
     <script src="/bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script src="/bower_components/angular/angular.js"></script>
@@ -128,5 +128,13 @@
    <% if(page.controller){%>
         <script src="/js/controllers/<%- page.controller -%>"></script>
    <% } %>
+  <% if(page.controllers){
+        var controllers = page.controllers.split(',');
+        console.log(controllers);
+        for (var i in controllers) {
+  %>
+        <script src="/js/controllers/<%- controllers[i] -%>"></script>
+  <% }
+  } %>
   <!--</body>-->
 </html>

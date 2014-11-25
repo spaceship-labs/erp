@@ -12,7 +12,6 @@ module.exports = {
 				Common.view(res.view,{
 					apps : sails.config.apps
 					,currencies:currencies || []
-					,comp:companies
 					,page:{
 						name:'Empresas'
 						,icon:'fa fa-building'		
@@ -24,11 +23,9 @@ module.exports = {
 	}
 	, edit: function(req,res){
 		var id = req.params.id;
-		Company.findOne({id:id}).exec(function(err,company){
+		Company.findOne({id:id}).populate('users').exec(function(err,company){
 			if(err) throw err;
-			var find = {};
-			find['companies.'+id] = {$exists:1};
-			User.find(find).exec(function(err,users){	
+			User.find().exec(function(err,users){
 				Common.view(res.view,{
 					company:company || {}
 					,users:users || []
@@ -45,6 +42,42 @@ module.exports = {
 	, editAjax: function(req,res){
 		Common.editAjax(req,res,update);
 	}
+    , addUser : function(req,res){
+        Company.findOne({id:req.param('company')}).populate('users').exec(function(er,c){
+            if (er) {
+                console.log(er);
+                throw er;
+            }
+            c.users.add(req.param('user'));
+
+            c.save(function(err,su){
+                if (err) {
+                    throw err;
+                }
+                res.json(su);
+            });
+        });
+    }
+    , removeUser : function(req,res){
+        Company.findOne({id:req.param('company')}).populate('users').exec(function(er,c){
+            if (er) {
+                console.log(er);
+                throw er;
+            }
+            for(key in c.users){
+                if (c.users[key].id == req.param('user')) {
+                    c.users.splice(key,1);
+                }
+            }
+
+            c.save(function(err,sc){
+                if (err) {
+                    throw err;
+                }
+                res.json(sc);
+            });
+        });
+    }
 	, addApp : function(req,res){
 		Company.findOne({id:req.param('company')}).exec(function(e,c){
 			if(e) throw(e);
@@ -84,7 +117,15 @@ module.exports = {
            return res.json(company[0]);
         });
     }
-
+    ,change : function(req,res) {
+        var company = req.param('id');
+        Company.findOne(company).populate('currencies').populate('base_currency').exec(function(e,scompany){
+            req.user.select_company = scompany.id;
+            req.user.company = scompany;
+            req.session.select_company = scompany.id;
+            res.redirect('/home');
+        });
+    }
 };
 
 var update = {
