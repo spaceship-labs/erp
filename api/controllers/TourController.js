@@ -44,6 +44,7 @@ module.exports = {
 					tour:tour,
 					locations:locations,
 					page:{
+						saveButton : true,
 						name:tour.name,
 						icon:'fa fa-compass',
 						controller : 'tour.js'

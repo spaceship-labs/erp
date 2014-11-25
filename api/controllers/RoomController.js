@@ -11,7 +11,15 @@ module.exports = {
 		var reads = [
 			function(cb){Room.findOne(req.params.id).populate('hotel').exec(cb)},
 			function(room,cb){Hotel.findOne(room.hotel.id).populate('seasonScheme').exec(function(e,hotel){cb(e,room,hotel)})},
-			function(room,hotel,cb){SeasonScheme.findOne(hotel.seasonScheme.id).populate('seasons').exec(function(e,scheme){cb(e,room,hotel,scheme)})},
+			function(room,hotel,cb){
+				if(hotel.seasonScheme){
+					SeasonScheme.findOne(hotel.seasonScheme.id).populate('seasons').exec(function(e,scheme){
+						cb(e,room,hotel,scheme)
+					});
+				}else{
+					cb(null,room,hotel,false);
+				}
+			},
 		]
 		async.waterfall(reads,function(e,room,hotel,scheme){
 			//if(e) throw(e);
@@ -21,10 +29,16 @@ module.exports = {
 				scheme:scheme,
 				_content:sails.config.content,
 				page:{
+					saveButton : true,
 					name : room.name_es,
 					icon : 'fa fa-home',
 					controller : 'room.js',
-				}
+				},
+				breadcrumb : [
+					{label : 'Hoteles', url : '/hotel/'},
+					{label : hotel.name, url : '/hotel/edit/'+hotel.id},
+					{label : room.name_es}
+				]
 			},req);
 		});
 	},

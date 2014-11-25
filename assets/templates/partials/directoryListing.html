@@ -7,18 +7,10 @@
 	</ul>
 	<div class="peoplelist">
 		<div class="row-fluid">
-			<!--<div class="span6 widgetbox">
-			 	<div class="headtitle">         
-			        <h4 class="widgettitle">Imagen Primaria</h4>
-			    </div>
-			    <div class="widgetcontent">
-			    </div>
-			</div>-->
-
 			<div class="span6 widgetbox" ng-repeat='object in objects | filter:objectFilter' ng-cloak class="ng-cloak">
 				<div class="headtitle">         
-					<h4 class="widgettitle">Imagen Primaria 
-						<li><a href = "#">Editar</a></li><li><a href = "#"><span class = "fa fa-pencil"></span></a></li>
+					<h4 class="widgettitle">{{object.name}}
+						<li><a ng-href="{{editUrl}}{{object.id}}">Editar</a></li><li><a ng-href="{{editUrl}}{{object.id}}"><span class = "fa fa-pencil"></span></a></li>
 					</h4>
 				</div>
 				<div class="widgetcontent" >
