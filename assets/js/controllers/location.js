@@ -19,4 +19,21 @@ app.controller('locationCTL',function($scope,$http){
 app.controller('locationEditCTL',function($scope,$upload,$http){
     $scope.location_o = location_o;
     $scope.content = content;
+    $scope.showZoneForm = false;
+    $scope.zone = {};
+    $scope.newZoneClass = 'fa-plus';
+
+    $scope.toggleZoneForm = function(){
+        $scope.showZoneForm = !$scope.showZoneForm;
+        $scope.newZoneClass = $scope.showZoneForm ? 'fa-minus' : 'fa-plus';
+    };
+    $scope.addZone = function(zone){
+        $scope.zone.location = $scope.location_o.id;
+        $scope.newZoneClass = 'fa-upload';
+        $scope.showZoneForm = false;
+        $http({method: 'POST', url: '/location/addZone',params:$scope.zone}).success(function(location_o){
+            $scope.location_o.zones = location_o.zones;
+            $scope.newZoneClass = 'fa-plus';
+        });
+    };
 });

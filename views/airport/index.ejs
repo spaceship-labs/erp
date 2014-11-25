@@ -1,0 +1,43 @@
+<script type='text/javascript'>
+	window.airports = <%- JSON.stringify(airports) %>;
+	window.locations = <%- JSON.stringify(locations) %>;
+	window.content = <%- JSON.stringify(_content) %>;
+</script>
+<div ng-controller='airportCTL' >
+	<p><button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Nuevo Aeropuerto</button></p>
+	<br/>
+	<div 
+		directory-listing 
+		objects='airports' 
+		searchInput='searchInput' 
+		dir='airports' 
+		edit-url='/airport/edit/' 
+		get-info='getInfo'
+		name-var='name' ></div>
+
+	<div class="clearfix"></div>
+	<div class="span6">
+		<div class="alert alert-block unseen userAlert">
+			<button data-dismiss="alert" class="close" type="button">×</button>
+			<h4>Mensaje</h4>
+			<p>El aeropuerto se creó exitosamente</p>
+		</div>
+	</div>
+	<div class="modal fade" id="myModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div 
+					form-helper 
+			        fields='content.airport' 
+			        form-footer='Agregar'
+			        form-save = 'createAirport'
+			        object = 'airport'
+			        objects = '{locations:locations}'
+			        form-title='Agregar Aeropuerto'
+			       	modal='true'
+			        >
+			    </div>
+			</div>
+		</div>
+	</div>
+</div>

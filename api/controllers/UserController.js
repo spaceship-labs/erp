@@ -213,9 +213,9 @@ function timeFormat(date){
 	date = moment(date);
 	var now = moment();
 	if(now.diff(date,'days',true)<1){
-		return date.lang('es').fromNow();
+		return date.locale('es').fromNow();
 	}
-	return date.lang('es').format('LLLL');
+	return date.locale('es').format('LLLL');
 }
 
 var update = {

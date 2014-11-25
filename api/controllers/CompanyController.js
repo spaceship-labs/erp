@@ -25,7 +25,6 @@ module.exports = {
 		var id = req.params.id;
 		Company.findOne({id:id}).populate('users').exec(function(err,company){
 			if(err) throw err;
-			var find = {};
 			User.find().exec(function(err,users){
 				Common.view(res.view,{
 					company:company || {}
@@ -43,6 +42,42 @@ module.exports = {
 	, editAjax: function(req,res){
 		Common.editAjax(req,res,update);
 	}
+    , addUser : function(req,res){
+        Company.findOne({id:req.param('company')}).populate('users').exec(function(er,c){
+            if (er) {
+                console.log(er);
+                throw er;
+            }
+            c.users.add(req.param('user'));
+
+            c.save(function(err,su){
+                if (err) {
+                    throw err;
+                }
+                res.json(su);
+            });
+        });
+    }
+    , removeUser : function(req,res){
+        Company.findOne({id:req.param('company')}).populate('users').exec(function(er,c){
+            if (er) {
+                console.log(er);
+                throw er;
+            }
+            for(key in c.users){
+                if (c.users[key].id == req.param('user')) {
+                    c.users.splice(key,1);
+                }
+            }
+
+            c.save(function(err,sc){
+                if (err) {
+                    throw err;
+                }
+                res.json(sc);
+            });
+        });
+    }
 	, addApp : function(req,res){
 		Company.findOne({id:req.param('company')}).exec(function(e,c){
 			if(e) throw(e);

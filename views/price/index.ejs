@@ -1,0 +1,39 @@
+<script type='text/javascript'>
+	window.prices = <%- JSON.stringify(prices) %>;
+	window.services = <%- JSON.stringify(services) %>;
+	window.airports = <%- JSON.stringify(airports) %>;
+	window.zones = <%- JSON.stringify(zones) %>;
+	window.companies = <%- JSON.stringify(companies) %>;
+	window.content = <%- JSON.stringify(_content) %>;
+
+</script>
+<div ng-controller="priceCTL" >
+	<p><button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Nuevo Precio</button></p>
+	<br/>
+	<p>Compañía:<select ng-model='mycompany' ng-options="obj.id as obj.name for obj in companies" ></select></p>
+	<br/>
+	<p>Servicio:<select ng-model='myservice' ng-options="obj.id as obj.name for obj in services" ></select></p>
+	<br/>
+	<p>Aeropuertos:<select ng-model='myairport' ng-options="obj.id as obj.name for obj in airports" ></select></p>
+	<br/>
+	<p>Zonas:<select ng-model='myzone' ng-options="obj.id as obj.name for obj in zones" ></select></p>
+	<br/>
+	<div class="clearfix"></div>
+	<div class="modal fade" id="myModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div 
+					form-helper 
+			        fields='content.price' 
+			        form-footer='Agregar'
+			        form-save = 'createPrice'
+			        object = 'price'
+			        objects = '{zones:zones , services:services , airports:airports , companies : companies}'
+			        form-title='Agregar Precio'
+			       	modal='true'
+			        >
+			    </div>
+			</div>
+		</div>
+	</div>
+</div>
