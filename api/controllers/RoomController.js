@@ -12,7 +12,7 @@ module.exports = {
 			function(cb){Room.findOne(req.params.id).populate('hotel').exec(cb)},
 			function(room,cb){Hotel.findOne(room.hotel.id).populate('seasonScheme').exec(function(e,hotel){cb(e,room,hotel)})},
 			function(room,hotel,cb){
-				if(hotel.seasonSecheme){
+				if(hotel.seasonScheme){
 					SeasonScheme.findOne(hotel.seasonScheme.id).populate('seasons').exec(function(e,scheme){
 						cb(e,room,hotel,scheme)
 					});

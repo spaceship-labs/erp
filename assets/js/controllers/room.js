@@ -5,6 +5,7 @@ app.controller('roomEditCTL',function($scope,$upload,$http){
     $scope.company = company;
     $scope.content = content;
     $scope.seasonFields = [];
+    console.log($scope.scheme);
     if($scope.scheme && $scope.scheme.seasons){
         $scope.scheme.seasons.forEach(function(season){
             $scope.seasonFields.push({
