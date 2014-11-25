@@ -43,9 +43,22 @@ module.exports = {
 					]
 				},req);
 			});
-			
+			 
 		})
 		
 	},
+	calendar : function(req,res){
+		Common.view(res.view,{
+			page:{
+				name:'Calendario: '
+				,icon:'fa fa-sun-o'		
+				,controller : 'season.js'					
+			},
+			breadcrumb : [
+				{label : 'Temporadas', url : '/season/'},
+				{label : 'Temporadas'}
+			]
+		},req);
+	}
 };
 
