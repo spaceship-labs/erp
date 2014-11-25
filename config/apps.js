@@ -132,7 +132,7 @@ module.exports.apps = [
         name : 'services',
         label : 'Servicios',
         icon : 'fa-clipboard',
-        views : [
+        actions : [
             {
                 label : 'tours',
                 icon : 'fa-compass',
