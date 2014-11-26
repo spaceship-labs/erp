@@ -18,6 +18,7 @@ module.exports = {
 						description:'AQUI PODRAS VISUALIZAR Y ADMINISRAR TODOS TUS PRODUCTOS'
 						,icon:'fa fa-cube'
 						,name:'PRODUCTOS'
+                        ,controller : 'product.js'
 					}
 					, products:products
 					, product_types:product_types
@@ -34,6 +35,7 @@ module.exports = {
 					description:'',
 					icon:'fa fa-cube',
 					name:'Productos'
+                    ,controller : 'product.js'
 				},	
 				product_type:product_type
 			},req);			
@@ -68,6 +70,7 @@ module.exports = {
 						product:product,
 						product_types:product_types,
                         product_type : product_type,
+                        controller : 'product.js',
 						page:{
 							description: product.description || '',
 							icon : 'fa fa-cube',
@@ -211,6 +214,7 @@ module.exports = {
 					description:'AQUI PODRAS VISUALIZAR Y ADMINISRAR TODOS TUS PRODUCTOS'
 					,icon:'fa fa-cube'
 					,name:'PRODUCTOS'
+                    ,controller : 'product.js'
 				}
 				, products:products
 			});
