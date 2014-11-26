@@ -114,6 +114,9 @@ module.exports = {
                 }
             }
             return false;
+        },
+        test : function() {
+            return "asd";
         }
 	}
 	/*,afterCreate: function(val,cb){
