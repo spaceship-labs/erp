@@ -1,6 +1,6 @@
 
 
-app.controller('clientCTL',function($scope){
+app.controller('clientCTL',function($scope,$http){
     jQuery('form').ajaxForm(function(data){
         if(data){
             jQuery('.alert p').text(data.text).parent().removeClass('unseen');

@@ -14,6 +14,7 @@ module.exports = {
                 page:{
                     icon:'fa fa-users'
                     ,name:'Clientes'
+                    ,controller : 'client.js'
                 },
                 clients : clients || [],
                 client : { name:'',address : '',rfc : '',phone : '' }
@@ -27,6 +28,7 @@ module.exports = {
             page:{
                 icon:'fa fa-users'
                 ,name:'Cliente'
+                ,controller : 'client.js'
             }
         },req);
     },
@@ -38,10 +40,12 @@ module.exports = {
         var company = req.session.select_company || req.user.select_company;
         if (id){
             Client_.findOne({id:id,company : company }).populateAll().exec(function(err,client_){
+                //console.log(client_);
                 Common.view(res.view,{
                     page:{
                         icon:'fa fa-users'
                         ,name:'Editar Cliente'
+                        ,controller : 'client.js'
 
                     },
                     client : client_ || []

@@ -14,7 +14,7 @@
                 <tr ng-repeat="material in materials track by $index">
                     <td data-title="Nombre"><input type="hidden" value="{{material.id}}" />{{material.product.name}}</td>
                     <td data-title="Precio">{{material.product.price.cost * (1 + (material.product.price.margin/100))}}</td>
-                    <td><span ng-click="deleteMaterial($index)" class="icon fa fa-eraser" style="cursor: pointer;"></span></td>
+                    <td><span ng-click="deleteMaterial($index)" class="icon fa fa-trash-o" style="cursor: pointer;"></span></td>
                 </tr>
                 <tr>
                     <td colspan="3">
