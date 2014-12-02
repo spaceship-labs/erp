@@ -69,7 +69,7 @@ module.exports = {
                 });
             }
         },
-        hasCompanyAccess : function(company,cb) {
+        hasCompanyAccess : function(company,app) {
             if (this.accessList) {
                 for (var index in this.accessList){
                     var acl = this.accessList[index];
@@ -96,9 +96,30 @@ module.exports = {
                 }
             }
             return false;
+        },
+        hasAppPermission : function(company,app){
+            if (this.isAdmin) return true;
+            if (this.accessList) {
+                var useAcl = this.hasCompanyAccess(company);
+                if (useAcl.company){
+                    for (var appI in app.actions) {
+                        var actionPermission = app.actions[appI];
+                        console.log(actionPermission);
+                        for (var permissionIndex in useAcl.permissions) {
+                            if (useAcl.permissions[permissionIndex][0] == actionPermission.handle && useAcl.permissions[permissionIndex][1]) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+            return false;
+        },
+        test : function() {
+            return "asd";
         }
 	}
-	/*,afterCreate: function(val,cb){
+	,afterCreate: function(val,cb){
 		Notifications.after(User,val,'create');
 		cb()
 	}
@@ -113,7 +134,7 @@ module.exports = {
 	,beforeCreate: function(val,cb){
 		Notifications.before(val);
 		cb();
-	}*/
+	}
     ,toJSON: function() {
         var obj = this.toObject();
         delete obj.password;

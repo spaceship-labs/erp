@@ -18,6 +18,7 @@ module.exports = {
                 page:{
                     icon:'fa fa-wrench'
                     ,name:'Instalaciones'
+                    ,controller : 'installation.js'
                 },
                 installations : installations || [],
                 moment : moment
@@ -38,6 +39,7 @@ module.exports = {
                                             page:{
                                                 icon:'fa fa-wrench'
                                                 ,name:'Configuracion de Instalaciones'
+                                                ,controller : 'installation.js'
                                             },
                                             cranes : cranes || [],
                                             materials : materials || [],
@@ -75,6 +77,7 @@ module.exports = {
                 page:{
                     icon:'fa fa-wrench'
                     ,name:'Instalacion'
+                    ,controller : 'installation.js'
                 },
                 installation : installation || [],
                 moment : moment

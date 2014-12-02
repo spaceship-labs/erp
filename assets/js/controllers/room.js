@@ -5,13 +5,16 @@ app.controller('roomEditCTL',function($scope,$upload,$http){
     $scope.company = company;
     $scope.content = content;
     $scope.seasonFields = [];
-    $scope.scheme.seasons.forEach(function(season){
-        $scope.seasonFields.push({
-            label : season.title,
-            type : 'money',
-            handle : season.id,
+    console.log($scope.scheme);
+    if($scope.scheme && $scope.scheme.seasons){
+        $scope.scheme.seasons.forEach(function(season){
+            $scope.seasonFields.push({
+                label : season.title,
+                type : 'money',
+                handle : season.id,
+            });
         });
-    });
+    }
     //if($scope.room.fees) $scope.room.fees = JSON.parse($scope.room.fees);
     $scope.saveFees = function(fees,cb){
         var object = {id:room.id,fees:$scope.room.fees};

@@ -18,6 +18,7 @@ module.exports = {
 						description:'AQUI PODRAS VISUALIZAR Y ADMINISRAR TODOS TUS PRODUCTOS'
 						,icon:'fa fa-cube'
 						,name:'PRODUCTOS'
+                        ,controller : 'product.js'
 					}
 					, products:products
 					, product_types:product_types
@@ -33,7 +34,8 @@ module.exports = {
 				page:{
 					description:'',
 					icon:'fa fa-cube',
-					name:'Productos'
+					name:'Productos',
+                    controller : 'product.js'
 				},	
 				product_type:product_type
 			},req);			
@@ -71,7 +73,8 @@ module.exports = {
 						page:{
 							description: product.description || '',
 							icon : 'fa fa-cube',
-							name : product.name
+							name : product.name,
+                            controller : 'product.js'
 						}
 					},req);			
 				});
@@ -211,6 +214,7 @@ module.exports = {
 					description:'AQUI PODRAS VISUALIZAR Y ADMINISRAR TODOS TUS PRODUCTOS'
 					,icon:'fa fa-cube'
 					,name:'PRODUCTOS'
+                    ,controller : 'product.js'
 				}
 				, products:products
 			});
@@ -273,10 +277,11 @@ module.exports = {
                pproduct.quantity = 0;
             }
             pproduct.quantity = parseInt(pproduct.quantity) + parseInt(inventory);
-            Product.update({id : product},{quantity : 0}).exec(function(err,aux_product){
-               if (err) return res.json({text: 'Ocurrio un error.'});
-               res.json({text: 'Inventario actualizado.'});
+            pproduct.save(function(err,aux_product){
+                if (err) return res.json({text: 'Ocurrio un error.'});
+                res.json({text: 'Inventario actualizado.',result : aux_product});
             });
+            //.update({id : product},{quantity : 0}).exec();
         });
     }
 };

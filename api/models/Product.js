@@ -38,6 +38,9 @@ module.exports = {
     width : 'float',
     height : 'float',
     cut_price : 'float',
+    calculatedPrice : function(val,callback){
+        return price.cost * (1 + price.margin/100);
+    },
     addQuantity : function(quantity,callback) {
 
     },
@@ -62,9 +65,7 @@ module.exports = {
 		Notifications.before(val);
 		cb();
 	}
-    ,calculatedPrice : function(val,callback){
-        return price.cost * (1 + price.margin/100);
-    }
+
 
 };
 

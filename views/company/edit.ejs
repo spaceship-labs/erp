@@ -51,8 +51,9 @@
                         <p>
                             <select ng-options="user.name for user in users | filter:filterUsers" ng-model="selectedUser" name="" chosen></select>
                             <button ng-if="selectedUser" class="btn btn-primary ng-scope">Agregar Usuario</button>
-            </form
-                    <a href="/users/new_user/" style="display:block;margin-top:10px">+ Agregar Usuarios</a>
+                        </p>
+                    </form>
+                    <p ng-if="company.users.length == users.length">Todos los usuarios estan agregados</p>
                 </div>
         </div>
             

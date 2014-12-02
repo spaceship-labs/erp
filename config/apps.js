@@ -24,9 +24,9 @@ module.exports.apps = [
                 showInMenu : true
 			},
             {
-                label : 'Precios',
+                label : 'Monedas',
                 icon : 'fa-money',
-                url : '/price/',
+                url : '/admin/currencies',
                 showInMenu : true
             }
 		]
