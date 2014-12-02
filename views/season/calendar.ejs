@@ -1,65 +1,102 @@
-<% for(var i=0; i<12; i++){ %>
-	<div class="calendario">
-		<div class = "thead">
-			<h3>MES</h3>
-		</div>
-		<div class = "week">
-			<ul class = "tr">
-				<li class="weekend">DOM</li>
-				<li>LUN</li>
-				<li>MAR</li>
-				<li>MIE</li>
-				<li>JUE</li>
-				<li>VIE</li>
-				<li class="weekend">SAB</li>
+<div class=' ng-calendar-frame'>
+	<div class = "calendar-nav">
+		<div class = "traverse">
+			<ul>
+				<li><a href = "#"><span class = "fa fa-chevron-circle-left"></span></a></li>
+				<li><a href = "#"><span class = "fa fa-chevron-circle-right"></span></a></li>
 			</ul>
 		</div>
-		<div class = "tbody">
-			<ul class = "tr">
-				<li class="previous weekend"><span class="date">29</span></li>
-				<li class="previous"><span class="date">30</span></li>
-				<li class="previous"><span class="date">31</span></li>
-				<li><span class="date">1</span></li>
-				<li><span class="date">2</span></li>
-				<li><span class="date">3</span></li>
-				<li class="weekend"><span class="date">4</span></li>
-			</ul><br/>
-			<ul class = "tr">
-				<li class="weekend"><span class="date">5</span></li>
-				<li><span class="date">6</span></li>
-				<li><span class="date">7</span></li>
-				<li><span class="date">8</span></li>
-				<li><span class="date">9</span></li>
-				<li><span class="date">10</span></li>
-				<li class="weekend"><span class="date">11</span></li>
-			</ul><br/>
-			<ul class = "tr">
-				<li class="weekend"><span class="date">12</span></li>
-				<li><span class="date">13</span></li>
-				<li><span class="date">14</span></li>
-				<li><span class="date">15</span></li>
-				<li><span class="date">16</span></li>
-				<li><span class="date">17</span></li>
-				<li class="weekend"><span class="date">18</span></li>
-			</ul><br/>
-			<ul class = "tr">
-				<li class="weekend"><span class="date">19</span></li>
-				<li><span class="date">20</span></li>
-				<li><span class="date">21</span></li>
-				<li><span class="date">22</span></li>
-				<li><span class="date">23</span></li>
-				<li><span class="date">24</span></li>
-				<li class="weekend"><span class="date">25</span></li>
-			</ul><br/>
-			<ul class = "tr">
-				<li class="weekend"><span class="date">26</span></li>
-				<li><span class="date">27</span></li>
-				<li><span class="date">28</span></li>
-				<li><span class="date">29</span></li>
-				<li><span class="date">30</span></li>
-				<li><span class="date">31</span></li>
-				<li class="weekend next"><span class="date">1</span></li>
+		<div class = "current-day">
+			<ul>
+				<li><a href = "#"><p> HOY </p></a></li>
+			</ul>
+		</div>
+		<div class ="current-month">
+			<p> FEBRERO 2014 </p>
+		</div>
+		<div class = "month-week">
+			<ul>
+				<li><a href = "#"><p>MES</p></a></li>
+				<li><a href = "#"><p>SEMANA</p></a></li>
+			</ul>
+		</div>
+		<div class = "seasons">
+			<ul>
+				<li><a href = "#"><p>TEMPORADAS</p></a></li>
+			</ul>
+		</div>
+		<div class = "add-seasons">
+			<ul>
+				<li><a href = "#"><span class = "fa fa-plus"></span></a>AGREGAR NUEVA TEMPORADA</li>
 			</ul>
 		</div>
 	</div>
-<% } %>
+
+	<div class = "calendar-positioning">
+		<% for(var i=0; i<12; i++){ %>
+			<div class="calendario">
+				<div class = "thead">
+					<h1>MES</h1>
+				</div>
+				<div class = "week">
+					<ul class = "tr">
+						<li >DOM</li>
+						<li>LUN</li>
+						<li>MAR</li>
+						<li>MIE</li>
+						<li>JUE</li>
+						<li>VIE</li>
+						<li >SAB</li>
+					</ul>
+				</div>
+				<div class = "tbody">
+					<ul class = "tr">
+						<li >29</li>
+						<li >30</li>
+						<li >31</li>
+						<li >1</li>
+						<li >2</li>
+						<li >3</li>
+						<li>4</li>
+					</ul><br/>
+					<ul class = "tr">
+						<li>5</li>
+						<li>6</li>
+						<li>7</li>
+						<li>8</li>
+						<li>9</li>
+						<li>10</li>
+						<li>11</li>
+					</ul><br/>
+					<ul class = "tr">
+						<li>12</li>
+						<li>13</li>
+						<li>14</li>
+						<li>15</li>
+						<li>16</li>
+						<li>17</li>
+						<li>18</li>
+					</ul><br/>
+					<ul class = "tr">
+						<li>19</li>
+						<li>20</li>
+						<li>21</li>
+						<li>22</li>
+						<li>23</li>
+						<li>24</li>
+						<li>25</li>
+					</ul><br/>
+					<ul class = "tr">
+						<li>26</li>
+						<li>27</li>
+						<li>28</li>
+						<li>29</li>
+						<li>30</li>
+						<li>31</li>
+						<li>1</li>
+					</ul>
+				</div>
+			</div>
+		<% } %>
+	</div>
+</div>
