@@ -324,7 +324,7 @@ app.controller('productTypeCTL',function($scope,$http,$parse){
 app.controller('editProductTypeCTL',function($scope,$http){
     $scope.product_types = window.product_types;
     $scope.product_type =  window.product;
-    console.log($scope.product_type);
+    $scope.saveClass = 'fa-save';
 
     var tmp = {};
     for(var i=0;i<window.sales_type.length;i++){
@@ -339,7 +339,7 @@ app.controller('editProductTypeCTL',function($scope,$http){
     $scope.inventory_types = tmp;
 
     function showResponse(data){
-        console.log(data);
+        $scope.saveClass = 'fa-save';
         if(data){
             jQuery('.alert p').text(data.text).parent().removeClass('unseen');
             if(data.url)
@@ -348,6 +348,7 @@ app.controller('editProductTypeCTL',function($scope,$http){
     };
 
     $scope.processForm = function(){
+        $scope.saveClass = 'fa-update';
         $http.post('/product_type/update',$scope.product_type, {}).success(showResponse);
     };
 
