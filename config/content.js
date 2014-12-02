@@ -483,5 +483,27 @@ module.exports.content = {
             handle : 'active',
             type : 'checkbox'
         }
+    ],
+    client : [
+        {
+            label : 'Nombre',
+            handle : 'name',
+            type : 'text'
+        },
+        {
+            label : 'Direccion',
+            handle : 'address',
+            type : 'text'
+        },
+        {
+            label : 'RFC',
+            handle : 'rfc',
+            type : 'text'
+        },
+        {
+            label : 'Telefono',
+            handle : 'phone',
+            type : 'text'
+        }
     ]
 };

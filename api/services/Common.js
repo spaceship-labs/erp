@@ -128,7 +128,6 @@ module.exports.editAjax = function(req,res,update){
 	var form = req.params.all();
 	form.req = req;
 	if(form.userId){
-        console.log(update);
 		if(form.method in update)
 			update[form.method](req,form,function(err,data){
 				var data = {

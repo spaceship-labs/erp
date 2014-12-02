@@ -59,6 +59,7 @@ module.exports = {
 
     , index: function(req,res){
 	   	SaleQuote.find().populateAll().exec(function(err,quotes){
+            //console.log(quotes[0].products);
             if(err) throw err;
 			Common.view(res.view,{
                 page:{
@@ -103,5 +104,9 @@ module.exports = {
             if (err) return res.json(false);
             res.json(true);
         });
+    }
+
+    ,editProduct : function(req,res) {
+
     }
 };

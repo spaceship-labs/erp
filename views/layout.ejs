@@ -121,7 +121,6 @@
    <% } %>
   <% if(page.controllers){
         var controllers = page.controllers.split(',');
-        console.log(controllers);
         for (var i in controllers) {
   %>
         <script src="/js/controllers/<%- controllers[i] -%>"></script>

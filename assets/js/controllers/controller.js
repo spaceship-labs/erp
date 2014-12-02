@@ -80,6 +80,8 @@ app.controller('galleryCTL',function($scope){
 });
 
 app.controller('saleCTL',function($scope,$http){
+    $scope.quote = quote;
+
     function showResponse(data) {
         if(data){
             location.reload();
@@ -99,6 +101,15 @@ app.controller('saleCTL',function($scope,$http){
 
     $scope.editProduct = function(product){
 
+    };
+
+    $scope.totalQuote = function(){
+        console.log($scope.quote);
+        var totalAmount = 0.0;
+        angular.forEach($scope.quote.products,function(product){
+            totalAmount += product.priceTotal;
+        });
+        return totalAmount;
     };
 });
 
@@ -158,7 +169,8 @@ app.controller('saleUpdateClientCTL',function($scope,$http){
 });
 
 app.controller('clientCTL',function($scope,$http){
-    //$scope.client = client;
+    $scope.client = client;
+
     jQuery('form').ajaxForm(function(data){
         if(data){
             jQuery('.alert p').text(data.text).parent().removeClass('unseen');
@@ -243,7 +255,7 @@ app.controller('editMachineCTL',function($scope,$http){
     $scope.machine = machine;
     $scope.machine_modes = machine_modes;
     $scope.product_types = product_types;
-    $scope.machine.product_types = machine_product_types;//TODO WTF con esto , cuando se serializa machine no trae el arreglo y tengo que serializarlo aparte
+    $scope.machine.product_types = machine_product_types;//TODO cuando se serializa machine no trae el arreglo y tengo que serializarlo aparte
 
     console.log(machine);
 

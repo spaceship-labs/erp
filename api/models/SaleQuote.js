@@ -39,6 +39,31 @@ module.exports = {
         company : {
             model : 'Company',
             required : true
+        },
+        totalPrice : function(){
+            var total = 0.0;
+            if (this.products && this.products.length > 0) {
+                for (var i in this.products) {
+                    if (_.isNumber(this.products[i].priceTotal))
+                        total += this.products[i].priceTotal;
+
+                }
+            }
+            return total;
+        },
+        productsString : function(){
+            var result = "";
+            if (this.products && this.products.length > 0) {
+                for (var i in this.products) {
+                    //console.log(this.products[i]);
+                    if (i > 0)
+                        result += " , ";
+                    result += this.products[i].name;
+                }
+            } else {
+                result = "--";
+            }
+            return result;
         }
 
 	}

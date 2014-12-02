@@ -17,4 +17,4 @@ module.exports.template_config = {
 	cssFile : 'style-yellow.css',
 	logo : 'yellow_logo.png',
 	logo2 : 'yellow_logo2.png',*/
-}
+};

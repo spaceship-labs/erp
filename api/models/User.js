@@ -119,7 +119,7 @@ module.exports = {
             return "asd";
         }
 	}
-	/*,afterCreate: function(val,cb){
+	,afterCreate: function(val,cb){
 		Notifications.after(User,val,'create');
 		cb()
 	}
@@ -134,7 +134,7 @@ module.exports = {
 	,beforeCreate: function(val,cb){
 		Notifications.before(val);
 		cb();
-	}*/
+	}
     ,toJSON: function() {
         var obj = this.toObject();
         delete obj.password;
