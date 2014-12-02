@@ -12,7 +12,7 @@
 		<p style="margin: 8px 0">Actualizado exitosamente</p>
    </div>
 	<div class="widgetbox">
-		<h4 class="widgettitle"><%=product_type.name%></h4>
+		<h4 class="widgettitle"><%=product_type.name%> <span ng-click='processForm()' class='fa icon' ng-class='saveClass'></span></h4>
 		<div class="widgetcontent nopadding">                            
 			<form accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine" ng-submit="processForm()">
 				<input type="hidden" name="product_type_id" ng-model="product_type.id" />
@@ -42,10 +42,6 @@
                                       <select type="text" data-placeholder="Escoger unidad" name="inventory_type" class="input-large" ng-options='k as l for (k,l) in  inventory_types' ng-model='product_type.inventory_type' chosen></select>
                                   </span>
                 </p>
-				<p class="stdformbutton">
-			                <button class="btn btn-primary">Guardar</button>
-			                <button type="reset" class="btn">Resetear</button>
-				</p>
 			</form>
 		</div>
 	</div>

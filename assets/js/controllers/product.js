@@ -30,7 +30,7 @@ app.controller('fieldCTL',function($scope,$http){
 });
 
 app.controller('productCTL',function($scope,$http){
-
+    $scope.saveClass = 'fa-save';
     var initialize = function() {
         $scope.product = typeof window.product != 'undefined' ? window.product : {};
         $scope.product_type = typeof window.product_type != 'undefined' ? window.product_type : {};
@@ -72,6 +72,10 @@ app.controller('productCTL',function($scope,$http){
         $scope.product.addInventory = 0;
     };
 
+//    $scope.processInfo = function() {
+//        $scope.saveClass = 'fa-update';
+//        //$http.post('/product/update',)
+//    };
     $scope.processInventory = function() {
         $http.post('/product/updateInventory',{inventory : $scope.product.addInventory,product : $scope.product.id },{}).success(function(data){
             if (data) {

@@ -25,7 +25,6 @@ module.exports.saveFiles = function(req,opts,cb){
 	}else{
 		return cb(true,false);
 	}
-	
 }
 var makeFileName = function(_stream,cb){
 	var ext = _stream.filename.split('.');
