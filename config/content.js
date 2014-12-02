@@ -130,6 +130,46 @@ module.exports.content = {
 			type : 'textarea',
 			handle : 'description_pt',
 		},
+		{
+			label : 'Servicios Español',
+			type : 'textarea',
+			handle : 'services_es',
+		},
+		{
+			label : 'Servicios Ingles',
+			type : 'textarea',
+			handle : 'services_en',
+		},
+		{
+			label : 'Servicios Portugués',
+			type : 'textarea',
+			handle : 'services_pt',
+		},
+		{
+			label : 'Servicios Ruso',
+			type : 'textarea',
+			handle : 'services_ru',
+		},
+		{
+			label : 'Equipamiento Español',
+			type : 'textarea',
+			handle : 'equipment_es',
+		},
+		{
+			label : 'Equipamiento Ingles',
+			type : 'textarea',
+			handle : 'equipment_en',
+		},
+		{
+			label : 'Equipamiento Ruso',
+			type : 'textarea',
+			handle : 'equipment_ru',
+		},
+		{
+			label : 'Equipamiento Portugués',
+			type : 'textarea',
+			handle : 'equipment_pt',
+		},
 	],
 	season : [
 		{
@@ -182,6 +222,11 @@ module.exports.content = {
 		},
 		{
 			label : 'Horario General',
+			type : 'text',
+			handle : 'schedule',
+		},
+		{
+			label : 'Duracion',
 			type : 'text',
 			handle : 'schedule',
 		},
