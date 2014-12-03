@@ -15,7 +15,8 @@ module.exports = {
                         Common.view(res.view,{
                             page:{
                                 icon:'fa fa-cubes',
-                                name:'Categorias'
+                                name:'Categorias',
+                                controller : 'product.js'
                             },
                             product_types: product_types,
                             sales_type : sales_type,
@@ -48,7 +49,8 @@ module.exports = {
                         Common.view(res.view,{
                             page:{
                                 icon:'fa fa-cubes',
-                                name:'Editar Categoria : ' + product_type.name
+                                name:'Editar Categoria : ' + product_type.name,
+                                controller : 'product.js'
                             },
                             product_type:product_type
                             ,product : product_type //hack para la vista new_field
