@@ -14,7 +14,15 @@ module.exports = function(req, res, next) {
 		var select_company = req.session.select_company || req.user.select_company
 		, company = select_company;
 
-        //console.log(req.user);
+//        console.log('<<<<< options >>>>>>');
+//        console.log(req.options);
+//        console.log('<><><>tests<><><>');
+//        console.log(req.user.test());
+
+//        console.log('<<<<< request >>>>>>');
+//        for (var i in req) {
+//            console.log(i);
+//        }
 
 //		if(company && (company.indexOf(req.options.controller)!=-1) || req.options.controller == 'home' || req.options.controller == 'product') {
 //            return res.forbidden();
@@ -25,8 +33,8 @@ module.exports = function(req, res, next) {
 		Company.find({},function(e,c){
 			if(c.length) res.redirect('/home/login');
 			else{
-				res.redirect('/install')
-			};
+				res.redirect('/install');
+			}
 		});	
 	}
 	

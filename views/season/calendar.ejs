@@ -1,0 +1,99 @@
+<div class=' ng-calendar-frame'>
+	<div class = "calendar-nav">
+		<div class = "traverse">
+			<button class="btn btn-primary" data-toggle="modal" data-target="#myModal"><span class = "fa fa-chevron-circle-left"></span></button>
+			<p>TEMPORADAS AÑO 2014</p>
+			<button class="btn btn-primary" data-toggle="modal" data-target="#myModal"><span class = "fa fa-chevron-circle-right"></span></button>
+		</div>	
+		<div class = "seasons-buttons">
+			<button class="btn btn-primary" data-toggle="modal" data-target="#myModal"> TEMPORADAS </button>
+			<!--<a href = "#"><span class = "fa fa-plus"></span>AGREGAR NUEVA TEMPORADA</a>-->
+			<button class="btn btn-primary" data-toggle="modal" data-target="#myModal"><span class = "fa fa-plus"></span> AGREGAR NUEVA TEMPORADA</button>
+		</div>
+	</div>
+	<div class = "clear">
+	</div>
+
+	<div class = "calendar-output row">
+		<div class = "col-md-4">
+			<li><span class = "fa fa-circle"></span>Se encontraron 2 temporadas SEMANA SANTA</li>
+			<li><span class = "fa fa-circle"></span>Se encontraron 4 temporadas VERANO</li>
+			<li><span class = "fa fa-circle"></span>Se encontraron 3 temporadas INVIERNO</li>
+		</div>
+		<div class = "col-md-8">
+			<li><span class = "fa fa-circle"></span>Se encontraron 2 temporadas SEMANA SANTA</li>
+			<li><span class = "fa fa-circle"></span>Se encontraron 4 temporadas VERANO</li>
+			<li><span class = "fa fa-circle"></span>Se encontraron 3 temporadas INVIERNO</li>
+		</div>
+	</div>
+	<div class "clear">
+	</div>
+
+	<div class = "calendar-positioning">
+		<% for(var i=0; i<12; i++){ %>
+			<div class="calendario">
+				<div class = "thead">
+					<h1>MES</h1>
+				</div>
+				<div class = "week">
+					<ul class = "tr">
+						<li >DOM</li>
+						<li>LUN</li>
+						<li>MAR</li>
+						<li>MIE</li>
+						<li>JUE</li>
+						<li>VIE</li>
+						<li >SAB</li>
+					</ul>
+				</div>
+				<div class = "tbody">
+					<ul class = "tr">
+						<li >29</li>
+						<li >30</li>
+						<li >31</li>
+						<li >1</li>
+						<li >2</li>
+						<li >3</li>
+						<li>4</li>
+					</ul><br/>
+					<ul class = "tr">
+						<li>5</li>
+						<li>6</li>
+						<li>7</li>
+						<li>8</li>
+						<li>9</li>
+						<li>10</li>
+						<li>11</li>
+					</ul><br/>
+					<ul class = "tr">
+						<li>12</li>
+						<li>13</li>
+						<li>14</li>
+						<li>15</li>
+						<li>16</li>
+						<li>17</li>
+						<li>18</li>
+					</ul><br/>
+					<ul class = "tr">
+						<li>19</li>
+						<li>20</li>
+						<li>21</li>
+						<li>22</li>
+						<li>23</li>
+						<li>24</li>
+						<li>25</li>
+					</ul><br/>
+					<ul class = "tr">
+						<li>26</li>
+						<li>27</li>
+						<li>28</li>
+						<li>29</li>
+						<li>30</li>
+						<li>31</li>
+						<li>1</li>
+					</ul>
+				</div>
+			</div>
+		<% } %>
+	</div>
+</div>

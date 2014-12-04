@@ -4,7 +4,6 @@
     window.company = <%- JSON.stringify(selected_company) %>;
 </script>
 <div ng-controller='userEditCTL'>
-    <% if (user.isAdmin) {%>
     <div class="span4 profile-left profileEdit">
         <div class="alert alert-block unseen">
             <button data-dismiss="alert" class="close" type="button">×</button>
@@ -12,6 +11,7 @@
                 <p style="margin: 8px 0">El usuario se ha actualizado exitosamente</p>
             </div>
             <div profile-image object='user' update-method='/user/updateIcon' delete-method='/user/destroyIcon' image-attr='icon' dir='users'></div>
+    <% if(!user.isAdmin) {%>
         <div class="widgetbox tags">
             <h4 class="widgettitle">Aplicaciones y Permisos</h4>
             <div class="widgetcontent">
@@ -49,8 +49,8 @@
                 </accordion>
             </div>
         </div>
-    </div>
     <% } %>
+    </div>
     <div class="span6">
         <div form-helper
              fields='content.user'

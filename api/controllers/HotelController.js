@@ -43,6 +43,7 @@ module.exports = {
 								zones:zones,
 								_content:sails.config.content,
 								page:{
+									saveButton : true,
 									name : hotel.name,
 									icon : 'fa fa-building',		
 									controller : 'hotel.js',			

@@ -22,6 +22,8 @@
                         <tr>
                             <th>Fecha</th>
                             <th>Cliente</th>
+                            <th>Monto</th>
+                            <th>Items</th>
                             <th>Editar</th>
                         </tr>
                     </thead>
@@ -30,7 +32,9 @@
                     %>
                     <tr>
                         <td data-title="Fecha"><%= moment(quote.createdAt).format('Do [de] MMMM YYYY, h:mm:ss a') %></td>
-                        <td data-title="Nombre"><%= quote.client.name %></td>
+                        <td data-title="Cliente"><%= quote.client.name %></td>
+                        <td data-title="Monto">$ <%= quote.totalPrice() || "--" %></td>
+                        <td data-title="Items"><%= quote.productsString() || "--"%></td>
                         <td data-title="Editar"><a href="/salesQuote/edit/<%= quote.id %>"><span class="table-icon fa fa-edit"></span></a></td>
                     </tr>
                     <% } %>

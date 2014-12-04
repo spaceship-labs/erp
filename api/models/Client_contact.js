@@ -8,6 +8,8 @@ module.exports = {
 
         email	: { type: 'string' , required : true },
 
+        //type : { type : 'string', enum : ['contact','sale']  },
+
         client : { model : 'Client_' }
 
     }

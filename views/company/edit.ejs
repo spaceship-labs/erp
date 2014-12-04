@@ -17,7 +17,7 @@
         <div class="widgetbox tags">
                 <h4 class="widgettitle">Aplicaciones</h4>
                 <div class="widgetcontent">
-                    <ul class="taglist" ng-repeat='app in usingApps'>
+                    <ul class="taglist" ng-repeat='app in selectedApps'>
         				<li><a>
                             <i ng-bind='app.label'></i>
                             <span class="close" ng-click='removeApp(app)'>×</span>
@@ -27,7 +27,7 @@
                     <form method="post" ng-submit='addApp(selectedApp)' ng-if="missingApps.length > 0">
                         <input type='hidden' value='<%-company.id%>' name='company' />
                         <p>
-                            <select ng-model="selectedApp" name="app" ng-options="app.label for app in missingApps">
+                            <select ng-model="selectedApp" name="app" ng-options="app.label for app in missingApps" chosen="selectedApps">
                             </select>
                             <button type='submit' class="btn btn-primary" ng-if="selectedApp">Agregar App</button>
                         </p>
@@ -37,20 +37,24 @@
 
 
         <div class="widgetbox tags">
-            <h4 class="widgettitle">Usuarios</h4>
-            <div class="widgetcontent">
-            <ul class="taglist">
-    			<% for(var i=0;i<users.length;i++){ %>
-    				<li><a href="/users/edit/<%=users[i].id %>"><%=users[i].name%><span class="close fa fa-edit"></span></a></li>
-    			<% } %>
-    		</ul>
-            <form ng-submit='addUser(selectedUser)' ng-if="missingUsers.length > 0">
+                <h4 class="widgettitle">Usuarios</h4>
+                <div class="widgetcontent">
+                    <ul class="taglist" ng-repeat='user in company.users'>
+                        <li><a>
+                                <i ng-bind='user.name'></i>
+                                <span class="close" ng-click='removeUser(user)'>×</span>
+                            </a></li>
+                    </ul>
+                    <hr>
+                    <form ng-submit='addUser(selectedUser)' ng-if="company.users.length != users.length">
                         <input type='hidden' value='<%-company.id%>' name='company' />
                         <p>
-                            <select ng-options="user.name for user in users" ng-model="selectedUser" name="" chosen></select>
+                            <select ng-options="user.name for user in users | filter:filterUsers" ng-model="selectedUser" name="" chosen></select>
                             <button ng-if="selectedUser" class="btn btn-primary ng-scope">Agregar Usuario</button>
-            </form
-            <p><a href="/users/new_user/" style="display:block;margin-top:10px">+ Agregar Usuarios</a></p>
+                        </p>
+                        <p><a href="/users/new_user/" style="display:block;margin-top:10px">+ Agregar Usuarios</a></p>
+                    </form>
+                    <p ng-if="company.users.length == users.length">Todos los usuarios estan agregados</p>
                 </div>
         </div>
             

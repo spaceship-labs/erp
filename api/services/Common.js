@@ -17,7 +17,7 @@ module.exports.renderMenu = function(req){
 	var menu = "";
     var selected_company = req.res.locals.selected_company;
     _.each(sails.config.apps,function(app){
-        if (_.contains(selected_company.apps,app.name)) {
+        if (_.contains(selected_company.apps,app.name) && req.user.hasAppPermission(selected_company.id,app)) {
             //console.l
             menu += "<li class='dropdown'><a href=''><span class='fa "+app.icon+"'></span>"+app.label+"</a><ul>";
             _.each(app.actions,function(view){
@@ -128,7 +128,6 @@ module.exports.editAjax = function(req,res,update){
 	var form = req.params.all();
 	form.req = req;
 	if(form.userId){
-        console.log(update);
 		if(form.method in update)
 			update[form.method](req,form,function(err,data){
 				var data = {

@@ -52,6 +52,11 @@ module.exports.content = {
 			handle : 'description_ru',
 		},
 		{
+			label : 'Descripcion Portugués',
+			type : 'textarea',
+			handle : 'description_pt',
+		},
+		{
 			label : 'Servicios Español',
 			type : 'textarea',
 			handle : 'services_es',	
@@ -65,6 +70,11 @@ module.exports.content = {
 			label : 'Servicios Ruso',
 			type : 'textarea',
 			handle : 'services_ru',	
+		},
+		{
+			label : 'Servicios Portugués',
+			type : 'textarea',
+			handle : 'services_pt',	
 		}
 	],
 	room : [
@@ -85,6 +95,11 @@ module.exports.content = {
 			handle : 'name_ru',
 		},
 		{
+			label : 'Nombre Portugués',
+			type : 'text',
+			handle : 'name_pt',
+		},
+		{
 			label : 'PAX',
 			type : 'text',
 			handle : 'pax',
@@ -98,6 +113,68 @@ module.exports.content = {
 			label : 'Tarifa por temporadas',
 			type : 'checkbox',
 			handle : 'seasonal',
+		},
+	],
+	roomDesc : [
+		{
+			label : 'Descripcion Español',
+			type : 'textarea',
+			handle : 'description_es',
+		},
+		{
+			label : 'Descripcion Ingles',
+			type : 'textarea',
+			handle : 'description_en',
+		},
+		{
+			label : 'Descripcion Ruso',
+			type : 'textarea',
+			handle : 'description_ru',
+		},
+		{
+			label : 'Descripcion Portugués',
+			type : 'textarea',
+			handle : 'description_pt',
+		},
+		{
+			label : 'Servicios Español',
+			type : 'textarea',
+			handle : 'services_es',
+		},
+		{
+			label : 'Servicios Ingles',
+			type : 'textarea',
+			handle : 'services_en',
+		},
+		{
+			label : 'Servicios Portugués',
+			type : 'textarea',
+			handle : 'services_pt',
+		},
+		{
+			label : 'Servicios Ruso',
+			type : 'textarea',
+			handle : 'services_ru',
+		},
+		{
+			label : 'Equipamiento Español',
+			type : 'textarea',
+			handle : 'equipment_es',
+		},
+		{
+			label : 'Equipamiento Ingles',
+			type : 'textarea',
+			handle : 'equipment_en',
+		},
+		{
+			label : 'Equipamiento Ruso',
+			type : 'textarea',
+			handle : 'equipment_ru',
+		},
+		{
+			label : 'Equipamiento Portugués',
+			type : 'textarea',
+			handle : 'equipment_pt',
 		},
 	],
 	season : [
@@ -145,7 +222,17 @@ module.exports.content = {
 			handle : 'fee',
 		},
 		{
+			label : 'Tarifa niños',
+			type : 'money',
+			handle : 'feeChild',
+		},
+		{
 			label : 'Horario General',
+			type : 'text',
+			handle : 'schedule',
+		},
+		{
+			label : 'Duracion',
 			type : 'text',
 			handle : 'schedule',
 		},
@@ -173,6 +260,11 @@ module.exports.content = {
 			handle : 'name_ru',
 		},
 		{
+			label : 'Nombre Portugués',
+			type : 'text',
+			handle : 'name_pt',
+		},
+		{
 			label : 'Descripción Español',
 			type : 'textarea',
 			handle : 'description_es',
@@ -186,6 +278,51 @@ module.exports.content = {
 			label : 'Descripción Rúso',
 			type : 'textarea',
 			handle : 'description_ru',
+		},
+		{
+			label : 'Descripción Portugués',
+			type : 'textarea',
+			handle : 'description_pt',
+		},
+		{
+			label : 'Incluye Español',
+			type : 'textarea',
+			handle : 'includes_es',
+		},
+		{
+			label : 'Incluye Inglés',
+			type : 'textarea',
+			handle : 'includes_en',
+		},
+		{
+			label : 'Incluye Rúso',
+			type : 'textarea',
+			handle : 'includes_ru',
+		},
+		{
+			label : 'Incluye Portugués',
+			type : 'textarea',
+			handle : 'includes_pt',
+		},
+		{
+			label : 'No incluye Español',
+			type : 'textarea',
+			handle : 'does_not_include_es',
+		},
+		{
+			label : 'No incluye Inglés',
+			type : 'textarea',
+			handle : 'does_not_include_en',
+		},
+		{
+			label : 'No incluye Rúso',
+			type : 'textarea',
+			handle : 'does_not_include_ru',
+		},
+		{
+			label : 'No incluye Portugués',
+			type : 'textarea',
+			handle : 'does_not_include_pt',
 		},
 	],
 	location : [
@@ -402,6 +539,28 @@ module.exports.content = {
             label : 'Activo',
             handle : 'active',
             type : 'checkbox'
+        }
+    ],
+    client : [
+        {
+            label : 'Nombre',
+            handle : 'name',
+            type : 'text'
+        },
+        {
+            label : 'Direccion',
+            handle : 'address',
+            type : 'text'
+        },
+        {
+            label : 'RFC',
+            handle : 'rfc',
+            type : 'text'
+        },
+        {
+            label : 'Telefono',
+            handle : 'phone',
+            type : 'text'
         }
     ]
 };

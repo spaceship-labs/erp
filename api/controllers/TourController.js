@@ -27,7 +27,7 @@ module.exports = {
 	create : function(req,res){
 		var form = req.params.all();
 		form.days = [true,true,true,true,true,true,true];
-		form.name_es = form.name_en = form.name_ru = form.name;
+		form.name_pt = form.name_es = form.name_en = form.name_ru = form.name;
 		Tour.create(form).exec(function(err,tour){
 			if(err) return res.json({text:err});
 			Tour.find({}).sort('name').exec(function(e,tours){
@@ -44,6 +44,7 @@ module.exports = {
 					tour:tour,
 					locations:locations,
 					page:{
+						saveButton : true,
 						name:tour.name,
 						icon:'fa fa-compass',
 						controller : 'tour.js'

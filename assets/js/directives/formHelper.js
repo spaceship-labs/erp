@@ -48,6 +48,9 @@
             }
             return true;
         }
+        $scope.$on('SAVE_ALL',function(){
+            $scope.save();
+        });
 	};
 	controller.$inject = ['$scope','$http'];
     var directive = function () {

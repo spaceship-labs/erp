@@ -6,13 +6,7 @@
 </script>
 <div ng-controller='roomEditCTL'>
     <div class='row-fluid'>
-        <div class="span5 profile-left profileEdit">
-        	<div class="alert alert-block unseen">
-        		<button data-dismiss="alert" class="close" type="button">×</button>
-        		<h4>Mensaje</h4>
-        			<p style="margin: 8px 0">El cuarto se ha actualizado exitosamente</p>
-        	</div>
-            
+        <div class="span5 profile-left profileEdit">        	       
             <div profile-image
                 object='room' 
                 update-method='/room/updateIcon' 
@@ -24,11 +18,10 @@
                 fields='seasonFields' 
                 object='room.fees' 
                 form-save='saveFees' 
-                form-title='Tarifas'
+                form-title='Tarifas por temporada'
                 currency='company.base_currency'
                 >
-            </div>
-                  
+            </div>                  
         </div>
         <div class="span7">        
             <div form-helper 
@@ -39,6 +32,18 @@
                 currency='company.base_currency'
                 >
             </div>        
+        </div>
+    </div>
+    <div class='row-fluid'>
+        <div class='span12'>
+           <div form-helper 
+                fields='content.roomDesc' 
+                object='room' 
+                action='/room/save' 
+                form-title='Contenido'
+                objects='objects'
+                >
+            </div> 
         </div>
     </div>
 </div>
