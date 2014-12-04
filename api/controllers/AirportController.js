@@ -12,6 +12,7 @@ module.exports = {
 				Common.view(res.view,{
 					airports : airports,
 					locations : locations,
+					zones:[],
 					page:{
 						name:'Aeropuertos'
 						,icon:'fa fa-plane'		
@@ -27,20 +28,23 @@ module.exports = {
 	edit : function(req,res){
 		Airport.findOne(req.params.id).exec(function(e,airport){
 			Location.find().sort('name').exec(function(e,locations){
-				if(e) return res.redirect("/airport/");
-				Common.view(res.view,{
-					airport:airport,
-					locations:locations,
-					page:{
-						name:airport.name,
-						icon:'fa fa-plane',
-						controller : 'airport.js'
-					},
-					breadcrumb : [
-						{label : 'Aeropuertos', url: '/airport/'},
-						{label : airport.name},
-					]
-				},req);	
+				Zone.find({ 'location' : airport.location }).exec(function(e,zones){
+					if(e) return res.redirect("/airport/");
+					Common.view(res.view,{
+						airport:airport,
+						locations:locations,
+						zones:zones,
+						page:{
+							name:airport.name,
+							icon:'fa fa-plane',
+							controller : 'airport.js'
+						},
+						breadcrumb : [
+							{label : 'Aeropuertos', url: '/airport/'},
+							{label : airport.name},
+						]
+					},req);
+				});
 			});
 		});
 	},
@@ -55,5 +59,12 @@ module.exports = {
     		});
     	});
     },
+    getZones : function(req,res){
+		params = req.params.all();
+		Zone.find({ 'location' : params.id }).exec(function(e,zones){ 
+			if(e) throw(e);
+			res.json(zones);
+		});
+	},
 };
 

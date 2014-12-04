@@ -4,7 +4,7 @@
     window.company = <%- JSON.stringify(selected_company) %>;
 </script>
 <div ng-controller='userEditCTL'>
-    <% if (!user.isAdmin) {%>
+    <% if (user.isAdmin) {%>
     <div class="span4 profile-left profileEdit">
         <div class="alert alert-block unseen">
             <button data-dismiss="alert" class="close" type="button">×</button>
@@ -20,7 +20,7 @@
                     <input type="checkbox" id="adminInput" ng-model="isAdmin" />
                 </p>
 
-                <accordion close-others='false' ng-if="!isAdmin">
+                <accordion close-others='false' ng-if="isAdmin">
                     <accordion-group heading="{{app.label}}" ng-repeat="app in apps" ng-if="filterApp(app)" style="cursor: pointer;">
                         <table class="table responsive">
                             <thead>

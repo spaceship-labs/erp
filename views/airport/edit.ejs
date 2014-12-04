@@ -1,6 +1,7 @@
 <script type='text/javascript'>
     window.airport = <%- JSON.stringify(airport) %>;
     window.locations = <%- JSON.stringify(locations) %>;
+    window.zones = <%- JSON.stringify(zones) %>;
     console.log(airport);
 </script>
 <div ng-controller='airportEditCTL'>
@@ -9,7 +10,7 @@
             <div form-helper 
                 fields='content.airport' 
                 object='airport' 
-                objects = '{locations:locations}'
+                objects = '{locations:locations,zones:zones}'
                 action='/airport/update' 
                 form-title='INFORMACIÓN BÁSICA'
                 >

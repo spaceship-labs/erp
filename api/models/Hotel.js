@@ -21,6 +21,12 @@ module.exports = {
 		seasonScheme : {
 			model : 'seasonScheme',
 			via : 'hotels',
+		},
+		company : {
+			model : 'company'
+		},
+		zone : {
+			model : 'zone'
 		}
 	}
   	,afterCreate: function(val,cb){
