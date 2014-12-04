@@ -1,26 +1,20 @@
 <div class=' ng-calendar-frame'>
 	<div class = "calendar-nav">
-		
 		<div class = "traverse">
-			<ul>
-				<li><span class = "fa fa-chevron-circle-left"></span></li>
-				<li><p>	TEMPORADAS AÑO 2014	</p></li>
-				<li><span class = "fa fa-chevron-circle-right"></span></a>
-			</ul>
+			<button class="btn btn-primary" data-toggle="modal" data-target="#myModal"><span class = "fa fa-chevron-circle-left"></span></button>
+			<p>TEMPORADAS AÑO 2014</p>
+			<button class="btn btn-primary" data-toggle="modal" data-target="#myModal"><span class = "fa fa-chevron-circle-right"></span></button>
 		</div>	
-		<div class = "month">
-			<p>MES</p>
-		</div>
-		<div class = "blank">
-		</div>
-		<div class = "seasons">
-			<a href = "#"><p>TEMPORADAS</p></a>
-		</div>
-		<div class = "add-seasons">
-			<a href = "#"><span class = "fa fa-plus"></span>AGREGAR NUEVA TEMPORADA</a>
+		<div class = "seasons-buttons">
+			<button class="btn btn-primary" data-toggle="modal" data-target="#myModal"> TEMPORADAS </button>
+			<!--<a href = "#"><span class = "fa fa-plus"></span>AGREGAR NUEVA TEMPORADA</a>-->
+			<button class="btn btn-primary" data-toggle="modal" data-target="#myModal"><span class = "fa fa-plus"></span> AGREGAR NUEVA TEMPORADA</button>
 		</div>
 	</div>
-	<div class = "calendar-output">
+	<div class = "clear">
+	</div>
+
+	<div class = "calendar-output row">
 		<div class = "col-md-4">
 			<li><span class = "fa fa-circle"></span>Se encontraron 2 temporadas SEMANA SANTA</li>
 			<li><span class = "fa fa-circle"></span>Se encontraron 4 temporadas VERANO</li>
@@ -31,6 +25,8 @@
 			<li><span class = "fa fa-circle"></span>Se encontraron 4 temporadas VERANO</li>
 			<li><span class = "fa fa-circle"></span>Se encontraron 3 temporadas INVIERNO</li>
 		</div>
+	</div>
+	<div class "clear">
 	</div>
 
 	<div class = "calendar-positioning">
