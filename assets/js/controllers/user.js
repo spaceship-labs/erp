@@ -59,6 +59,7 @@ app.controller('userEditCTL',function($scope,$http){
             $scope.isAdmin = acl.isAdmin;
         }
     }
+    
     var id = $scope.user.id;
     $scope.updateAccestList = function(){
         console.log($scope.permissions);
