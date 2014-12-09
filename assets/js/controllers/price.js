@@ -20,7 +20,22 @@ app.controller('priceCTL',function($scope,$http){
     	params = { company : $scope.mycompany.id , service : $scope.myservice.id , airport : $scope.myairport.id };
     	$http({method: 'POST', url: '/price/getPrices',params:params }).success(function (prices){
 			$scope.prices = prices;
+			$scope.companies = addPricesOnCompany($scope.companies,prices);
         });
+    }
+    $scope.savePrice = function(data,price){
+    	angular.extend(data, { id : price });
+    	return $http.post('/price/updatePrice', data);
     }
 
 });
+function addPricesOnCompany( companies , prices ){
+	for( i in companies ){
+		companies[i].prices = [];
+		for( j in prices ){
+			if( prices[j].company == companies[i].id )
+				companies[i].prices.push( prices[j] );
+		}
+	}
+	return companies;
+}
