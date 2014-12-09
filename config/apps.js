@@ -23,12 +23,12 @@ module.exports.apps = [
                 handle : 'usuarios',
                 showInMenu : true
 			},
-            {
+            /*{
                 label : 'Monedas',
                 icon : 'fa-money',
                 url : '/admin/currencies',
                 showInMenu : true
-            },
+            },*/
             {
                 label : 'Precios',
                 icon : 'fa-money',
