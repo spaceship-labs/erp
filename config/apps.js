@@ -28,6 +28,12 @@ module.exports.apps = [
                 icon : 'fa-money',
                 url : '/admin/currencies',
                 showInMenu : true
+            },
+            {
+                label : 'Precios',
+                icon : 'fa-money',
+                url : '/price/',
+                showInMenu : true
             }
 		]
 	},

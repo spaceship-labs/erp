@@ -64,7 +64,7 @@ app.controller('hotelEditCTL',function($scope,$upload,$http){
         });
     };
     $scope.getZones = function(){
-        console.log($scope.hotel.location);
+        //console.log($scope.hotel.location);
         $http({method: 'POST', url: '/hotel/getZones',params: $scope.hotel.location }).success(function (zones){
             $scope.zones = zones;
         });
