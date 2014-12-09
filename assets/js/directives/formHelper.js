@@ -30,7 +30,7 @@
                 });
             }else{
                 $http({method:'POST',url:$scope.action,params:submitObject}).success(function (object){
-                    $scope.object = object;
+                    //$scope.object = object;
                     $scope.saveClass = 'fa-save';
                 });
             }
@@ -47,7 +47,7 @@
                 }
             }
             return true;
-        }
+        };
         $scope.$on('SAVE_ALL',function(){
             $scope.save();
         });

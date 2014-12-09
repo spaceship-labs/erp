@@ -20,7 +20,7 @@
                     <input type="checkbox" id="adminInput" ng-model="isAdmin" />
                 </p>
 
-                <accordion close-others='false' ng-if="isAdmin">
+                <accordion close-others='false' ng-if="!isAdmin">
                     <accordion-group heading="{{app.label}}" ng-repeat="app in apps" ng-if="filterApp(app)" style="cursor: pointer;">
                         <table class="table responsive">
                             <thead>
