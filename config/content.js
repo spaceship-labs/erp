@@ -146,16 +146,17 @@ module.exports.content = {
 			type : 'textarea',
 			handle : 'services_en',
 		},
+        {
+            label : 'Servicios Ruso',
+            type : 'textarea',
+            handle : 'services_ru',
+        },
 		{
 			label : 'Servicios Portugués',
 			type : 'textarea',
 			handle : 'services_pt',
 		},
-		{
-			label : 'Servicios Ruso',
-			type : 'textarea',
-			handle : 'services_ru',
-		},
+
 		{
 			label : 'Equipamiento Español',
 			type : 'textarea',

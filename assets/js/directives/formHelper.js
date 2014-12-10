@@ -48,9 +48,13 @@
             }
             return true;
         };
-        $scope.$on('SAVE_ALL',function(){
-            $scope.save();
-        });
+
+        var saveMethod = $scope.formSave();
+        if(!saveMethod) { //esto deberia ser un if update
+            $scope.$on('SAVE_ALL', function () {
+                $scope.save();
+            });
+        }
 	};
 	controller.$inject = ['$scope','$http'];
     var directive = function () {
