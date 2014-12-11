@@ -3,21 +3,68 @@
 	window.services = <%- JSON.stringify(services) %>;
 	window.airports = <%- JSON.stringify(airports) %>;
 	window.zones = <%- JSON.stringify(zones) %>;
-	window.companies = <%- JSON.stringify(companies) %>;
+	window.companies_ = <%- JSON.stringify(companies_) %>;
 	window.content = <%- JSON.stringify(_content) %>;
-
 </script>
 <div ng-controller="priceCTL" >
 	<p><button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Nuevo Precio</button></p>
 	<br/>
-	<p>Compañía:<select ng-model='mycompany' ng-options="obj.id as obj.name for obj in companies" ></select></p>
+	<div class='row-fluid'>
+		<!--<div class='span4'>
+			Compañía:<select ng-change='updatePrices()' ng-model='mycompany' ng-options="obj as obj.name for obj in companies" ></select>
+		</div>-->
+		<div class='span4'>
+			Servicio:<select ng-change='updatePrices()' ng-model='myservice' ng-options="obj as obj.name for obj in services" ></select>
+		</div>
+		<div class='span4'>
+			Aeropuertos:<select ng-change='updatePrices()' ng-model='myairport' ng-options="obj as obj.name for obj in airports" ></select>
+		</div>
+	</div>
+	<!--<p>Zonas:<select ng-model='myzone' ng-options="obj.id as obj.name for obj in zones" ></select></p>-->
 	<br/>
-	<p>Servicio:<select ng-model='myservice' ng-options="obj.id as obj.name for obj in services" ></select></p>
-	<br/>
-	<p>Aeropuertos:<select ng-model='myairport' ng-options="obj.id as obj.name for obj in airports" ></select></p>
-	<br/>
-	<p>Zonas:<select ng-model='myzone' ng-options="obj.id as obj.name for obj in zones" ></select></p>
-	<br/>
+	<div class='widgetbox ng-scope' ng-repeat='cs in companies' ng-show='cs.prices.length'>
+		<div class="headtitle">
+			<h4 class="widgettitle ng-binding">{{cs.name}}</h4>
+		</div>
+		<table class='table table-striped responsive'  ng-show='cs.prices.length'>
+			<thead><tr>
+				<th>Ciudad</th><th>Zona</th><th>Sencillo</th><th>Redondo</th><th>Activo</th>
+				<th>Editar</th>
+			</tr></thead>
+			<tr ng-repeat='price in cs.prices'>
+				<td>{{airports[0].location.name}}</td>
+				<td>{{price.zone.name}}</td>
+				<td>
+					<span 
+						editable-text='price.one_way_fee'
+						e-name='one_way_fee'
+						e-form='rowform' e-required
+					>{{price.one_way_fee}}</span>
+				</td>
+				<td>
+					<span 
+						editable-text="price.round_trip_fee"
+						e-name='round_trip_fee'
+						e-form='rowform' e-required
+					>{{price.round_trip_fee}}</span>
+				</td>
+				<td>{{price.active}}</td>
+				<td>
+					<form editable-form name="rowform" onbeforesave="savePrice($data,price.id)" ng-show="rowform.$visible" class="form-buttons form-inline" >
+			          <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
+			            save
+			          </button>
+			          <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default">
+			            cancel
+			          </button>
+			        </form>
+					<div class="buttons" ng-show="!rowform.$visible">
+			          <button class="btn btn-primary" ng-click="rowform.$show()">edit</button>
+			        </div>
+				</td>
+			</tr>
+		</table>
+	</div>
 	<div class="clearfix"></div>
 	<div class="modal fade" id="myModal">
 		<div class="modal-dialog">

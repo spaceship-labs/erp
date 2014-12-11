@@ -10,6 +10,9 @@ module.exports = {
   	name : 'string',
   	location : {
   		model 	: 'location'
+  	},
+  	zone : {
+  		model : 'zone'
   	}
   }
 };

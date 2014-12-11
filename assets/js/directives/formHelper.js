@@ -30,7 +30,7 @@
                 });
             }else{
                 $http({method:'POST',url:$scope.action,params:submitObject}).success(function (object){
-                    $scope.object = object;
+                    //$scope.object = object;
                     $scope.saveClass = 'fa-save';
                 });
             }
@@ -47,10 +47,14 @@
                 }
             }
             return true;
+        };
+
+        var saveMethod = $scope.formSave();
+        if(!saveMethod) { //esto deberia ser un if update
+            $scope.$on('SAVE_ALL', function () {
+                $scope.save();
+            });
         }
-        $scope.$on('SAVE_ALL',function(){
-            $scope.save();
-        });
 	};
 	controller.$inject = ['$scope','$http'];
     var directive = function () {

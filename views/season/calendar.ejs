@@ -1,26 +1,19 @@
-<div class='ng-calendar-frame'>
-	<div class = "calendar-nav">
-		
-		<div class = "traverse">
-			<ul>
-				<li><span class = "fa fa-chevron-circle-left"></span></li>
-				<li><p>	TEMPORADAS AÑO 2014	</p></li>
-				<li><span class = "fa fa-chevron-circle-right"></span></a>
-			</ul>
+<div class=' ng-calendar-frame'>
+	<div class = "calendar-nav row">
+		<div class = "traverse col-sm-6">
+			<button class="btn btn-primary" data-toggle="modal" data-target="#myModal"><span class = "fa fa-chevron-circle-left"></span></button>
+			<p>TEMPORADAS AÑO 2014</p>
+			<button class="btn btn-primary c" data-toggle="modal" data-target="#myModal"><span class = "fa fa-chevron-circle-right"></span></button>
 		</div>	
-		<div class = "month">
-			<p>MES</p>
-		</div>
-		<div class = "blank">
-		</div>
-		<div class = "seasons">
-			<a href = "#"><p>TEMPORADAS</p></a>
-		</div>
-		<div class = "add-seasons">
-			<a href = "#"><span class = "fa fa-plus"></span>AGREGAR NUEVA TEMPORADA</a>
+		<div class = "seasons-buttons col-sm-6">
+			<button class="btn btn-primary" data-toggle="modal" data-target="#myModal"><span class = "fa fa-plus"></span> AGREGAR NUEVA TEMPORADA</button>
+			<button class="btn btn-primary" data-toggle="modal" data-target="#myModal"> TEMPORADAS </button>
 		</div>
 	</div>
-	<div class = "calendar-output">
+	<div class = "clear">
+	</div>
+
+	<div class = "calendar-output row">
 		<div class = "col-md-4">
 			<li><span class = "fa fa-circle"></span>Se encontraron 2 temporadas SEMANA SANTA</li>
 			<li><span class = "fa fa-circle"></span>Se encontraron 4 temporadas VERANO</li>
@@ -32,16 +25,22 @@
 			<li><span class = "fa fa-circle"></span>Se encontraron 3 temporadas INVIERNO</li>
 		</div>
 	</div>
+	<div class "clear">
+	</div>
 
-	<div class = "calendar-positioning">
-		<% for(var i=0; i<12; i++){ %>
-			<div class="calendario">
+	<div class = "calendar-positioning row">
+		<% for(var i=0; i<12; i++){
+			if(i%3==0 && i!=0){
+				%> </div> <div class = div class = "calendar-positioning row"> <%
+			}
+		 %>
+			<div class="calendario col-md-4">
 				<div class = "thead">
 					<h1>MES</h1>
 				</div>
 				<div class = "week">
 					<ul class = "tr">
-						<li >DOM</li>
+						<li>DOM</li>
 						<li>LUN</li>
 						<li>MAR</li>
 						<li>MIE</li>

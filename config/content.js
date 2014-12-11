@@ -9,13 +9,19 @@ module.exports.content = {
 			label : 'Dirección',
 			type : 'text',
 			handle : 'address',
-			object : 'locations'
 		},
 		{
-			label : 'Población',
+			label : 'Ciudad',
 			type : 'select',
 			handle : 'location',
 			object : 'locations',
+			on_Change : 'getZones()',
+		},
+		{
+			label : 'Zona',
+			type : 'select',
+			handle : 'zone',
+			object : 'zones'
 		},
 		{
 			label : 'Teléfonos',
@@ -140,16 +146,17 @@ module.exports.content = {
 			type : 'textarea',
 			handle : 'services_en',
 		},
+        {
+            label : 'Servicios Ruso',
+            type : 'textarea',
+            handle : 'services_ru',
+        },
 		{
 			label : 'Servicios Portugués',
 			type : 'textarea',
 			handle : 'services_pt',
 		},
-		{
-			label : 'Servicios Ruso',
-			type : 'textarea',
-			handle : 'services_ru',
-		},
+
 		{
 			label : 'Equipamiento Español',
 			type : 'textarea',
@@ -419,10 +426,16 @@ module.exports.content = {
 			type 	: 'text',
 			handle 	: 'name_es'
 		},{
-			label 	: 'Ubicación',
+			label 	: 'Ciudad',
 			type 	: 'select',
 			handle 	: 'location',
-			object 	: 'locations'
+			object 	: 'locations',
+			on_Change : 'getZones()',
+		},{
+			label 	: 'Zona',
+			type 	: 'select',
+			handle 	: 'zone',
+			object 	: 'zones'
 		},{
 			label 	: 'Texto del Voucher Español',
 			type 	: 'textarea',

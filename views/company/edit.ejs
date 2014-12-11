@@ -52,6 +52,7 @@
                             <select ng-options="user.name for user in users | filter:filterUsers" ng-model="selectedUser" name="" chosen></select>
                             <button ng-if="selectedUser" class="btn btn-primary ng-scope">Agregar Usuario</button>
                         </p>
+                        <p><a href="/users/new_user/" style="display:block;margin-top:10px">+ Agregar Usuarios</a></p>
                     </form>
                     <p ng-if="company.users.length == users.length">Todos los usuarios estan agregados</p>
                 </div>
@@ -66,6 +67,30 @@
              form-title='Información de la Empresa'
              restrict="base_currency,apps"
                 >
+        </div>
+
+        <div class="widgetbox">
+                <h4 class="widgettitle">Archivos</h4>
+                <div class="widgetcontent">
+                    <form method="post" ng-submit='' ng-if="">
+                        <p>
+                            <label>Acta constitutiva</label>
+                            <span class='field'>
+                                <div class='fileBtn btn fileinput-button'>
+                                    <input type='text' name='file' data-url='/company/addFile'>
+                                </div>
+                            </span>
+                        </p>
+                        <p>
+                            <label>Rep. legal acta</label>
+                            <span class='field'>
+                                <div class='fileBtn btn fileinput-button'>
+                                    <input type='text' name='file' data-url='/company/addFile'>
+                                </div>
+                            </span>
+                        </p>
+                    </form>
+                </div>
         </div>
     </div><!--span8-->
 </div>

@@ -51,7 +51,7 @@ module.exports = {
     },
     addZone : function(req,res){
 		var form = req.params.all();
-		var location_o = form.location_o;
+		var location_o = form.location;
 		Zone.create(form).exec(function(e,r){
 			if(e) throw(e);
 			Location.findOne(location_o).populate('zones').exec(function(e,location_o){
@@ -59,6 +59,42 @@ module.exports = {
 				location_o = location_o;
 				res.json(location_o)
 			});
+		});
+	},
+	updateIcon: function(req,res){
+    	form = req.params.all();
+		Location.updateAvatar(req,{
+			dir : 'locations_o',
+			profile: 'avatar',
+			id : form.id,
+		},function(e,location){
+			res.json(location);
+		});
+	},
+	addFiles : function(req,res){
+		form = req.params.all();
+    	Location.findOne({id:form.id}).exec(function(e,location){
+    		if(e) throw(e);
+    		location.addFiles(req,{
+    			dir : 'locations_o/gallery',
+    			profile: 'gallery'
+    		},function(e,location){
+    			if(e) throw(e);
+    			res.json(location);
+    		});
+    	});
+	},
+	removeFiles : function(req,res){
+		form = req.params.all();
+		Location.findOne({id:form.id}).exec(function(e,location){
+			location.removeFiles(req,{
+				dir : 'locations_o/gallery',
+				profile : 'gallery',
+				files : form.removeFiles,
+			},function(e,location){
+				if(e) throw(e);
+				res.json(location);
+			})
 		});
 	},
 };

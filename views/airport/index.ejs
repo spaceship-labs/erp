@@ -1,6 +1,7 @@
 <script type='text/javascript'>
 	window.airports = <%- JSON.stringify(airports) %>;
 	window.locations = <%- JSON.stringify(locations) %>;
+	window.zones = <%- JSON.stringify(zones) %>;
 	window.content = <%- JSON.stringify(_content) %>;
 </script>
 <div ng-controller='airportCTL' >
@@ -32,7 +33,7 @@
 			        form-footer='Agregar'
 			        form-save = 'createAirport'
 			        object = 'airport'
-			        objects = '{locations:locations}'
+			        objects = '{locations:locations,zones:zones}'
 			        form-title='Agregar Aeropuerto'
 			       	modal='true'
 			        >

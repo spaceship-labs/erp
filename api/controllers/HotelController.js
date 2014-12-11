@@ -13,6 +13,7 @@ module.exports = {
 				Common.view(res.view,{
 					hotels:hotels,
 					locations:locations,
+					zones:[],
 					page:{
 						name:'Hoteles'
 						,icon:'fa fa-building'		
@@ -34,22 +35,25 @@ module.exports = {
 	    		hotel = formatHotel(hotel);
 	    		Location.find().sort('name').exec(function(e,locations){
 	    			SeasonScheme.find().sort('name').exec(function(e,schemes){
-						Common.view(res.view,{
-							hotel:hotel,
-							locations:locations,
-							schemes:schemes,
-							_content:sails.config.content,
-							page:{
-								saveButton : true,
-								name : hotel.name,
-								icon : 'fa fa-building',		
-								controller : 'hotel.js',			
-							},
-							breadcrumb : [
-								{label : 'Hoteles', url : '/hotel/'},
-								{label : hotel.name}
-							]
-						},req);
+	    				Zone.find({ 'location' : hotel.location }).exec(function(e,zones){
+	    					Common.view(res.view,{
+								hotel:hotel,
+								locations:locations,
+								schemes:schemes,
+								zones:zones,
+								_content:sails.config.content,
+								page:{
+									saveButton : true,
+									name : hotel.name,
+									icon : 'fa fa-building',		
+									controller : 'hotel.js',			
+								},
+								breadcrumb : [
+									{label : 'Hoteles', url : '/hotel/'},
+									{label : hotel.name}
+								]
+							},req);
+	    				});
 					});
 				});
 		   	});
@@ -59,6 +63,7 @@ module.exports = {
         //var form = Common.formValidate(req.params.all(),['name','address','phones','location']);
         var form = req.params.all();
         if(form){
+        	console.log(form);
 	        if(form.phones) form.phones = form.phones.split(',');
             form.location = JSON.parse(form.location);
 	        form.location = form.location.id;
@@ -145,6 +150,13 @@ module.exports = {
 				hotel = formatHotel(hotel);
 				res.json(hotel)
 			});
+		});
+	},
+	getZones : function(req,res){
+		params = req.params.all();
+		Zone.find({ 'location' : params.id }).exec(function(e,zones){ 
+			if(e) throw(e);
+			res.json(zones);
 		});
 	}
 };

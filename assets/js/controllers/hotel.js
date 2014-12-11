@@ -2,6 +2,7 @@ app.controller('hotelCTL',function($scope,$http){
     $scope.hotels = hotels;
     $scope.locations = locations;
     $scope.company = company;
+    $scope.zones = zones;
 
     $scope.createHotel = function(){
         $http({method: 'GET', url: '/hotel/create',params:$scope.newHotel}).success(function (hotels){
@@ -19,12 +20,18 @@ app.controller('hotelCTL',function($scope,$http){
             "Creado" : hotel.createdAtString,
         }
     };
+    $scope.getZones = function(){
+        $http({method: 'POST', url: '/hotel/getZones',params: $scope.newHotel.location }).success(function (zones){
+            $scope.zones = zones;
+        });
+    };
 });
 app.controller('hotelEditCTL',function($scope,$upload,$http){
     $scope.company = company;
     $scope.user = user;
     $scope.hotel = hotel;
     $scope.locations = locations;
+    $scope.zones = zones;
     $scope.schemes = schemes;
     $scope.content = content;
     $scope.showRoomForm = false;
@@ -56,7 +63,12 @@ app.controller('hotelEditCTL',function($scope,$upload,$http){
             $scope.newRoomClass = 'fa-plus';
         });
     };
-
+    $scope.getZones = function(){
+        //console.log($scope.hotel.location);
+        $http({method: 'POST', url: '/hotel/getZones',params: $scope.hotel.location }).success(function (zones){
+            $scope.zones = zones;
+        });
+    };
    
     
 });
