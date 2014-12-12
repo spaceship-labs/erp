@@ -1,0 +1,3 @@
+module.exports.loadCurrencies = function(){
+	
+};
