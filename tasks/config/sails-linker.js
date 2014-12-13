@@ -47,7 +47,7 @@ module.exports = function(grunt) {
 			options: {
 				startTag: '<!--SCRIPTS-->',
 				endTag: '<!--SCRIPTS END-->',
-				fileTmpl: '<script src="%s"></script>',
+				fileTmpl: '<script src="%s?v='+Date.now()+'"></script>',
 				appRoot: '.tmp/public'
 			},
 			files: {
@@ -61,7 +61,7 @@ module.exports = function(grunt) {
 			options: {
 				startTag: '<!--SCRIPTS-->',
 				endTag: '<!--SCRIPTS END-->',
-				fileTmpl: '<script src="%s"></script>',
+				fileTmpl: '<script src="%s?v='+Date.now()+'"></script>',
 				appRoot: '.tmp/public',
 				relative: true
 			},
