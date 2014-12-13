@@ -16,6 +16,7 @@ module.exports = {
 					zones:[],
 					page:{
 						name:'Hoteles'
+						,description: 'AQUI PODRAS VISUALIZAR Y ADMINISTRAR TODO TU PROCESO DE VENTA'
 						,icon:'fa fa-building'		
 						,controller : 'hotel.js'
 							

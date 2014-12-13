@@ -4,12 +4,7 @@
 	window.zones = <%- JSON.stringify(zones) %>;
 </script>
 <div ng-controller='hotelCTL' >
-	<div class="directory-positioning">
-		<p><button class="btn btn-primary" data-toggle="modal" data-target="#myModal"> <span class = "fa fa-plus"></span> AGREGAR NUEVO HOTEL</button></p>
-	</div>
-	<br/>	
-
-	<div directory-listing objects='hotels' searchInput='searchInput' dir='hotels' edit-url='/hotel/edit/' get-info='getInfo' ></div>
+	<div directory-listing objects='hotels' searchInput='searchInput' dir='hotels' edit-url='/hotel/edit/' get-info='getInfo' button-text='test' ></div>
 
 	<div class="clearfix"></div>
 	<div class="span6">
