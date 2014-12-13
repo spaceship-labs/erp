@@ -38,6 +38,7 @@
                 dir : '@',
                 editUrl : '@',
                 getInfo : '&',
+                buttonText : '@'
         	},
         	templateUrl : '/template/find/directoryListing.html'
         };

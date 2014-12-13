@@ -51,6 +51,7 @@ module.exports = {
 		Common.view(res.view,{
 			page:{
 				name:'Calendario: '
+				,description: 'AQUI PODRAS VISUALIZAR Y ADMINISTRAR TODO TU PROCESO DE VENTA'
 				,icon:'fa fa-sun-o'		
 				,controller : 'season.js'					
 			},
