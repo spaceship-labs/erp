@@ -239,10 +239,12 @@ color: #fff;
 .ng-directory-listing .peoplelist .headtitle a{ display: inline-block; float: right; padding-right: 7px;}
 .ng-directory-listing .peoplelist .widgettitle a{ text-decoration: none;}
 .ng-directory-listing { font-weight: bold;}
-.ng-directory-listing .widgetcontent { font-style: italic;} 
-.ng-directory-listing .alphabets{ border-color: #252D5E; margin-right: 220px;}
-.ng-directory-listing .alphabets li{ border-color: #252D5E}
-.ng-directory-listing .alphabets li + li{ color: #252D5E; border: 0; }
+.ng-directory-listing .widgetcontent { font-style: italic;}
+.ng-directory-listing .alphabet-container { padding: 0; } 
+.ng-directory-listing .alphabets{ border-color: #252D5E; float: left; border-left: 1px solid #252D5E;}
+.ng-directory-listing .alphabets li{ border-color: #252D5E; border: 0; color: #252D5E;}
+
+.ng-directory-listing .alphabets-nav .textbutton p{ float: right; }
 
 /* ng-directory-positioning */
 .ng-scope .directory-positioning { position: absolute; right: 7px;	padding-top: 20px;} 
@@ -258,12 +260,12 @@ color: #fff;
 .ng-calendar-frame .calendar-nav button{height: 40px; border: solid #232D5D 1px; background-color: white; color: #383C7C;}
 
 /*calendar-nav buttons*/
-.ng-calendar-frame .calendar-nav .traverse {float: left; /*width: 50%;  min-width: 25%;*/}
+.ng-calendar-frame .calendar-nav .traverse 	{float: left; /*width: 50%;  min-width: 25%;*/}
 .ng-calendar-frame .calendar-nav .traverse button{ float: left; }
 .ng-calendar-frame .calendar-nav .traverse span{ font-size: 25px; }
 .ng-calendar-frame .calendar-nav .traverse p{ float: left; font-size: 23px; padding: 10px}
 
-.ng-calendar-frame .calendar-nav .seasons-buttons { width: 50%; min-width: 25%; font-size: 13px; float: right; }
+.ng-calendar-frame .calendar-nav .seasons-buttons { font-size: 13px; float: right; }
 .ng-calendar-frame .calendar-nav .seasons-buttons button{ float: right; margin-right: 10px;}
 
 /*calendar-nav seasons filter output*/
