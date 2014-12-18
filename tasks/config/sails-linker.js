@@ -107,7 +107,7 @@ module.exports = function(grunt) {
 			options: {
 				startTag: '<!--STYLES-->',
 				endTag: '<!--STYLES END-->',
-				fileTmpl: '<link rel="stylesheet" href="%s">',
+				fileTmpl: '<link rel="stylesheet" href="%s?v='+Date.now()+'">',
 				appRoot: '.tmp/public'
 			},
 			files: {
@@ -121,7 +121,7 @@ module.exports = function(grunt) {
 			options: {
 				startTag: '<!--STYLES-->',
 				endTag: '<!--STYLES END-->',
-				fileTmpl: '<link rel="stylesheet" href="%s">',
+				fileTmpl: '<link rel="stylesheet" href="%s?v='+Date.now()+'">',
 				appRoot: '.tmp/public',
 				relative: true
 			},
