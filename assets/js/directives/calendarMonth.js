@@ -1,6 +1,6 @@
 (function () {
 	var controller = function($scope,$http){
-		$console.log($scope.month,$scope.year);
+		//$console.log($scope.month,$scope.year);
 	};
 	controller.$inject = ['$scope','$http'];
     var directive = function () {
