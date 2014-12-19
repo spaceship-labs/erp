@@ -10,9 +10,9 @@
                 object : '=',
                 resourceURL : '&',
             },
-            templateUrl : '/template/find/deletebutton.html'
+            templateUrl : '/template/find/deleteButton.html'
         };
     };
-    app.directive('deletebutton', directive);
+    app.directive('deleteButton', directive);
 
 }());
