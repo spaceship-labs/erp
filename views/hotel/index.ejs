@@ -4,15 +4,9 @@
 	window.zones = <%- JSON.stringify(zones) %>;
 </script>
 <div ng-controller='hotelCTL' >
-	<div directory-listing objects='hotels' searchInput='searchInput' dir='hotels' edit-url='/hotel/edit/' get-info='getInfo' button-text='test' ></div>
+	<div directory-listing objects='hotels' searchInput='searchInput' dir='hotels' edit-url='/hotel/edit/' get-info='getInfo' button-text='AGREGAR NUEVO HOTEL' ></div>
 
 	<div class="clearfix"></div>
-	<div class="span6">
-		<div class="alert alert-block unseen userAlert">
-			<button data-dismiss="alert" class="close" type="button">×</button>
-			<h4>Mensaje</h4>
-			<p>El hotel se creo exitosamente</p>
-		</div>
-	</div>
+	
 	<%- partial('new-hotel-modal') -%>
 </div>

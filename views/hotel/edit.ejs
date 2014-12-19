@@ -32,14 +32,21 @@
     </div>
     <div class='row-fluid'>
         <div class='span12'>
-           <div form-helper 
+        <div lang-content
+            fields='content.hotelLangs' 
+            object='hotel' 
+            action='/hotel/update' 
+            form-title='Contenido'
+            objects='objects'
+        ></div>
+           <!-- <div form-helper 
                 fields='content.hotelLangs' 
                 object='hotel' 
                 action='/hotel/update' 
                 form-title='Contenido'
                 objects='objects'
                 >
-            </div> 
+            </div>  -->
         </div>
     </div>
     <div class='row-fluid'>
@@ -61,6 +68,9 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div>
+        <div delete-button resource-url='/hotel/delete/' object="hotel"></div>
     </div>
     <br/>
 </div>

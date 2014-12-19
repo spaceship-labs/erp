@@ -1,16 +1,23 @@
- <div class="tabbedwidget">
-    <ul>
-        <li><a href="#tabs-1">Tab 1</a></li>
-        <li><a href="#tabs-2">Tab 2</a></li>
-        <li><a href="#tabs-3">Tab 3</a></li>
+<div class="widgetbox personal-information">
+    <div ng-if='modal' class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">{{formTitle}}</h4>
+    </div>
+    <h4 ng-if='formTitle && !modal' class="widgettitle">{{formTitle}} <span ng-click='save()'  class='fa icon' ng-class='saveClass'></span></h4>
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#lA">Section 1</a></li>
+        <li class=""><a data-toggle="tab" href="#lB">Section 2</a></li>
+        <li class=""><a data-toggle="tab" href="#lC">Section 3</a></li>
     </ul>
-    <div id="tabs-1">
-        Your content goes here for tab 1
-    </div>
-    <div id="tabs-2">
-        Your content goes here for tab 2
-    </div>
-    <div id="tabs-3">
-        Your content goes here for tab 3 
-    </div>
-</div><!--tabbedwidget-->
+    <div class="tab-content">
+        <div id="lA" class="tab-pane active">
+            <p>I'm in Section A.</p>
+        </div>
+        <div id="lB" class="tab-pane">
+            <p>Howdy, I'm in Section B.</p>
+        </div>
+        <div id="lC" class="tab-pane">
+            <p>What up girl, this is Section C.</p>
+        </div>
+    </div><!--tab-content-->
+</div>
