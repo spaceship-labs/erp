@@ -1,6 +1,6 @@
 <div class="calendario col-md-4">
 	<div class = "thead">
-		<h1>MES</h1>
+		<h1>{{label}}</h1>
 	</div>
 	<div class = "days-of-week">
 		<ul class = "days">
@@ -14,55 +14,9 @@
 		</ul>
 	</div>
 	<div class = "all-weeks">
-		<ul class = "week-gral week-1">
-			<li>29</li>
-			<li>30</li>
-			<li>31</li>
-			<li>1</li>
-			<li>2</li>
-			<li>3</li>
-			<li>4</li>
-			<li class = "line"></li>
-		</ul><br/>
-		<ul class = "week-gral week-2">
-			<li class = "sun">5</li>
-			<li>6</li>
-			<li>7</li>
-			<li>8</li>
-			<li>9</li>
-			<li>10</li>
-			<li class = "sat">11</li>
-			<li class = "line"></li>
-		</ul><br/>
-		<ul class = "week-gral week-3">
-			<li class = "sun">12</li>
-			<li>13</li>
-			<li>14</li>
-			<li>15</li>
-			<li>16</li>
-			<li>17</li>
-			<li class = "sat">18</li>
-			<li class = "line"></li>
-		</ul><br/>
-		<ul class = "week-gral week-4">
-			<li class = "sun">19</li>
-			<li>20</li>
-			<li>21</li>
-			<li>22</li>
-			<li>23</li>
-			<li>24</li>
-			<li>25</li>
-			<li class = "line"></li>
-		</ul><br/>
-		<ul class = "week-gral week-5">
-			<li class = "sun">26</li>
-			<li>27</li>
-			<li>28</li>
-			<li>29</li>
-			<li>30</li>
-			<li>31</li>
-			<li>1</li>
-			<li class = "line"></li>
+		<ul class = "week-gral" ng-repeat='week in weeks'>
+			<li ng-repeat='day in week' ng-bind='day'></li>
+			<li class="line"></li>
 		</ul>
 	</div>
 </div>
