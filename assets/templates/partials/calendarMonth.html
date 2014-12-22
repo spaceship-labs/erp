@@ -15,8 +15,8 @@
 	</div>
 	<div class = "all-weeks">
 		<ul class = "week-gral" ng-repeat='week in weeks'>
-			<li ng-repeat='day in week' ng-bind='day'></li>
-			<li class="line width-1 ll-1"></li>
+			<li ng-repeat='day in week.days' ng-bind='day'></li>
+			<li class="line"></li>
 		</ul>
 	</div>
 </div>

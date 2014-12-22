@@ -2,30 +2,36 @@
     window.scheme = <%- JSON.stringify(scheme) %>;
     window.hotels = <%- JSON.stringify(hotels) %>;
 </script>
-<div ng-controller='seasonsEditCTL' >
-	<p><button class="btn btn-default" data-toggle="modal" data-target="#myModal"><span class='fa fa-plus'></span> Nueva Temporada</button></p>
-	<br/>	
-	
- 	<div 
-		class="span10 calendar"
-		ui-calendar="uiConfig.calendar"
-		ng-model="events" >
-	</div> 
-	
-	<div class="modal fade" id="myModal">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div 
-					form-helper 
-			        fields='content.season' 
-			        form-footer='Agregar Temporada'
-			        form-save = 'createSeason'
-			        object = 'newSeason'
-			        form-title='Nueva temporada'
-			       	modal='true'
-			        >
-			    </div>	
-			</div>
+<div class='ng-calendar-frame' ng-controller='calendarCTL'>
+	<div class = "calendar-nav row">
+		<div class = "traverse col-md-6 col-sm-6 col-xm-6 ">
+			<button class="btn btn-primary" data-toggle="modal" data-target="#myModal" ng-click='year = year - 1'>
+				<span class = "fa fa-chevron-circle-left"></span>
+			</button>
+			<p>TEMPORADAS AÑO <span ng-bind='year'></span></p>
+			<button class="btn btn-primary c" data-toggle="modal" data-target="#myModal" ng-click='year = year + 1'>
+				<span class = "fa fa-chevron-circle-right"></span>
+			</button>
+		</div>	
+		<div class = "seasons-buttons col-md-6 col-sm-6 col-xs-6">
+			<button class="btn btn-primary" data-toggle="modal" data-target="#myModal"><span class = "fa fa-plus"></span> AGREGAR NUEVA TEMPORADA</button>
+			<button class="btn btn-primary" data-toggle="modal" data-target="#myModal"> TEMPORADAS </button>
 		</div>
 	</div>
+	<div class = "clear">
+	</div>
+
+	<div class = "calendar-output row">
+		<ul class = "col-md-12">
+			<li ng-repeat='season in scheme.seasons' ng-cloak><span class = "fa fa-circle"></span> {{season.title}} {{season.start}} - {{season.end}}</li>	
+		</ul>
+	</div>
+	<div class = "clear"></div>
+
+	<div calendar-month
+		ng-repeat='month in [0,1,2,3,4,5,6,7,8,9,10,11]'
+	  	month='month'
+	  	year='year'
+	  	seasons='scheme.seasons'
+	></div>
 </div>
