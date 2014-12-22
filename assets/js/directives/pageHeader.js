@@ -5,7 +5,8 @@
         $scope.broadcastSave = function(){
             console.log('broadcast');
             $rootScope.$broadcast('SAVE_ALL');
-        }
+        };
+
 	};
 	controller.$inject = ['$scope','$http','$rootScope'];
     var directive = function () {

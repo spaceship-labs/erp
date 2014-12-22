@@ -38,11 +38,15 @@ module.exports = {
             required : true
         },
 
-        priceTotal : {
+        tax : {
             type : 'float'
         },
 
-        saleQuote : {
+        price_total : {
+            type : 'float'
+        },
+
+        quote : {
             model : 'SaleQuote'
         },
 

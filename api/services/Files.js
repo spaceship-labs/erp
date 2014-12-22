@@ -42,7 +42,9 @@ module.exports.makeCrops = function(req,opts,cb){
 	opts.dirSave = __dirname+'/../../assets/uploads/'+opts.dir+'/';
 	opts.dirPublic = __dirname+'/../../.tmp/public/uploads/'+opts.dir+'/';
 	async.mapSeries(sizes,function(size,callback){
-		Files.makeCrop(size,opts,callback);
+        //console.log(size);
+        //console.log(opts);
+        Files.makeCrop(size,opts,callback);
 	},cb);
 }
 //Makes individual Crop

@@ -11,22 +11,12 @@ module.exports = function(req, res, next) {
 	if(req.isSocket) return next();
 
 	if(req.isAuthenticated()){
-		var select_company = req.session.select_company || req.user.select_company
-		, company = select_company;
+		var select_company = req.session.select_company || req.user.select_company;
+        if (!select_company || !req.user) return res.forbidden();
 
-//        console.log('<<<<< options >>>>>>');
-//        console.log(req.options);
-//        console.log('<><><>tests<><><>');
-//        console.log(req.user.test());
-
-//        console.log('<<<<< request >>>>>>');
-//        for (var i in req) {
-//            console.log(i);
-//        }
-
-//		if(company && (company.indexOf(req.options.controller)!=-1) || req.options.controller == 'home' || req.options.controller == 'product') {
-//            return res.forbidden();
-//		}
+        if (req.options.controller != 'home' && req.options.controller != 'template' && !getPermissionByControllerAction(select_company,req.user,req.options.controller,req.options.action)) {
+            return res.forbidden();
+        }
 
         return next();
 	}else{
@@ -37,5 +27,27 @@ module.exports = function(req, res, next) {
 			}
 		});	
 	}
-	
+
+     function getPermissionByControllerAction(company,user,controller,action) {
+         var auxLastPermission = true;
+         for (var i in sails.config.apps) { //OJO forEach y each maldita asincronia
+             var app = sails.config.apps[i];
+             for (var j in app.actions) {
+                 var aux_action = app.actions[j];
+                 if (aux_action.controller && aux_action.controller == controller) {
+                     if (aux_action.action)
+                     {
+                         if (aux_action.action == action) {
+                             return user.hasPermission(company,aux_action.handle);
+                         }
+                     } else
+                     {
+                         auxLastPermission = user.hasPermission(company,aux_action.handle);
+                     }
+                 }
+             }
+         }
+         return auxLastPermission;
+    }
 };
+
