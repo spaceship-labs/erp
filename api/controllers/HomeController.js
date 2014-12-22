@@ -26,7 +26,7 @@ module.exports = {
 	, index: function(req,res){
 		Common.view(res.view,{
 			page:{
-				description:'AQUI PODRAS VISUALIZAR Y ADMINISRAR TODO TU PROCESO DE VENTA',
+				description:'AQUI PODRAS VISUALIZAR Y ADMINISTRAR TODO TU PROCESO DE VENTA',
 				icon:'fa fa-th-large',
 				name:'Tablero'
 			}

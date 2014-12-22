@@ -7,10 +7,10 @@
         </tr>
     </thead>
     <tbody>
-		<tr ng-repeat='object in objects'>
+		<tr ng-repeat='(key,object) in objects'>
 			<td ng-repeat='column in columns' ng-bind='object[column.handle]'></td>
 			<td><a ng-href='/{{route}}/edit/{{object.id}}' class='fa fa-edit'></a></td>
-			<td><a ng-href='/{{route}}/destroy/{{object.id}}' class='fa fa-trash-o'></a></td>
+			<td><a href='' class='fa fa-trash-o' ng-click='destroyObject(object,key)'></a></td>
 		</tr>    	
     </tbody>
 </table>
