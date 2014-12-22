@@ -14,30 +14,30 @@
         var w = 0;
         //Aqui armamos un arreglo multi-dimensional "$scope.weeks" que representa nuestro mes
         while(d < $scope.monthEnd){
-            $scope.weeks[w] = [];
+            var week = {days:[]};
             //si es la primera semana rellenamos primero con los dias libres
             if(w == 0){
                 for(var i=prevMonthStart; i<=prevMonthEnd;i++)
-                    $scope.weeks[w].push(i);  
+                    week.days.push(i);  
                 for(var i=1;i< 8-($scope.firstDay);i++) 
-                    $scope.weeks[w].push(i);
-                d = $scope.weeks[w][$scope.weeks[w].length-1];
+                    week.days.push(i);
+                d = week.days[6];
             }else{
-                var start = $scope.weeks[w-1][$scope.weeks[w-1].length-1]+1;
+                var start = $scope.weeks[w-1].days[$scope.weeks[w-1].days.length-1]+1;
                 var end = start + 6;
                 //si nos pasamos del fin del mes recortamos
                 end = end <= $scope.monthEnd ? end : $scope.monthEnd;
-                for(var i=start;i<=end;i++) $scope.weeks[w].push(i);
+                for(var i=start;i<=end;i++) week.days.push(i);
                 //si llegamos a fin de mes metemos los dias del mes que sigue para rellenar
                 if(end == $scope.monthEnd){
-                    var end2 = 7 - $scope.weeks[w].length;
-                    for(var i=1;i<=end2;i++) $scope.weeks[w].push(i);
+                    var end2 = 7 - week.days.length;
+                    for(var i=1;i<=end2;i++) week.days.push(i);
                     d = $scope.monthEnd;
                 }else{
-                    d = $scope.weeks[w][$scope.weeks[w].length-1];
+                    d = week.days[6];
                 }
             }
-            w++;
+            $scope.weeks[w++] = week;
         }
 
 
