@@ -10,7 +10,8 @@ module.exports.apps = [
 				icon : 'fa-building',
                 url : '/company/',
                 handle : 'empresas',
-                showInMenu : true
+                showInMenu : true,
+                controller : 'company'
 			},
 			/*'/admin/currencies/' : {
 				label : 'Mondedas',
@@ -21,19 +22,26 @@ module.exports.apps = [
 				icon : 'fa-users',
                 url : '/user/',
                 handle : 'usuarios',
-                showInMenu : true
+                showInMenu : true,
+                controller : 'user',
+                action : 'index'
 			},
             {
                 label : 'Monedas',
                 icon : 'fa-money',
                 url : '/admin/currencies',
-                showInMenu : true
+                handle : 'currencies',
+                showInMenu : true,
+                controller : 'admin',
+                action : 'currencies'
             },
             {
                 label : 'Precios',
                 icon : 'fa-money',
                 url : '/price/',
-                showInMenu : true
+                showInMenu : true,
+                controller : 'price',
+                action : 'index'
             }
 		]
 	},
@@ -48,42 +56,54 @@ module.exports.apps = [
 				icon : 'fa-briefcase',
                 url : '/ventas/',
                 handle : 'ventas',
-                showInMenu : true
+                showInMenu : true,
+                controller : 'sale',
+                action : 'index'
 			},
             {
                 label:'Cotizaciones',
                 icon:'fa-database',
                 url : '/salesQuote/',
                 handle : 'cotizaciones',
-                showInMenu : true
+                showInMenu : true,
+                controller : 'salesQuote',
+                action : 'index'
             },
 			{
 				label : 'Productos',
 				icon : 'fa-cube',
                 url : '/product/',
                 handle : 'productos',
-                showInMenu : true
+                showInMenu : true,
+                controller : 'product',
+                action : 'index'
 			},
 			{
 				label : 'Categorias',
 				icon : 'fa-cubes',
                 url : '/product_type/',
                 handle : 'categorias',
-                showInMenu : true
+                showInMenu : true,
+                controller : 'product_type',
+                action : 'index'
 			},
             {
                 label:'Impresoras',
                 icon:'fa-gears',
                 url : '/machine/',
                 handle : 'impresoras',
-                showInMenu : true
+                showInMenu : true,
+                controller : 'machine',
+                action : 'index'
             },
             {
                 label:'Instalaciones',
                 icon:'fa-wrench',
                 url : '/installation/',
                 handle : 'instalaciones',
-                showInMenu : true
+                showInMenu : true,
+                controller : 'installation',
+                action : 'index'
             }
 		]
 	},
@@ -98,7 +118,9 @@ module.exports.apps = [
                 icon: 'fa-user',
                 url: '/clientes/',
                 handle: 'clientes',
-                showInMenu: true
+                showInMenu: true,
+                controller : 'client',
+                action : 'index'
             }
         ]
     },
@@ -113,21 +135,27 @@ module.exports.apps = [
                 icon : 'fa-building-o',
                 url : '/hotel/',
                 handle : 'hoteles',
-                showInMenu : true
+                showInMenu : true,
+                controller : 'hotel',
+                action : 'index'
             },
             {
                 label : 'Aeropuertos',
                 icon : 'fa-plane',
                 url : '/airport/',
                 handle : 'airports',
-                showInMenu : true
+                showInMenu : true,
+                controller : 'airport',
+                action : 'index'
             },
             {
                 label : 'Temporadas',
                 icon : 'fa-sun-o',
                 url : '/season/',
                 handle : 'temporadas',
-                showInMenu : true
+                showInMenu : true,
+                controller : 'season',
+                action : 'index'
             },
         ],
     },
@@ -142,7 +170,10 @@ module.exports.apps = [
                 icon    : 'fa-flag',
                 url : '/location/',
                 handle : 'ciudades',
-                showInMenu : true
+                showInMenu : true,
+                controller : 'location',
+                action : 'index'
+
             }
         ]
     },
@@ -157,13 +188,18 @@ module.exports.apps = [
                 icon : 'fa-compass',
                 url : '/tour/',
                 handle : 'tours',
-                showInMenu : true
+                showInMenu : true,
+                controller : 'tour',
+                action : 'index'
             },
             {
                 label : 'Servicios',
                 icon : 'fa-car',
                 url : '/service/',
-                showInMenu : true
+                handle : 'service',
+                showInMenu : true,
+                controller : 'service',
+                action : 'index'
             },
             /*'/transfer/' : {
                 label : 'Translados',

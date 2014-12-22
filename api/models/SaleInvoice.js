@@ -9,13 +9,17 @@ module.exports = {
 
 	attributes: {
 
-		name	: { type: 'string' },
+		name : { type: 'string' },
 
         description : { type : 'string'},
 
         amount  : { type:'float' },
 
-        file    : { type: 'string' },
+        tax_amount : {type : 'float'},
+
+        total_amount : {type : 'float'},
+
+        file : { type: 'string' },
 
         create_datetime : { type : 'datetime' },
 

@@ -20,10 +20,12 @@ module.exports = {
 					cb(null,room,hotel,false);
 				}
 			},
-		]
+		];
+
 		async.waterfall(reads,function(e,room,hotel,scheme){
 			//if(e) throw(e);
-			Common.view(res.view,{
+            //console.log(room);
+            Common.view(res.view,{
 				room:room,
 				hotel : hotel,
 				scheme:scheme,

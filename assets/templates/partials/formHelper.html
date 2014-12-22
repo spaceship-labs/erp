@@ -4,7 +4,7 @@
 		<h4 class="modal-title">{{formTitle}}</h4>
 	</div>
 	<h4 ng-if='formTitle && !modal' class="widgettitle">{{formTitle}} <span ng-click='save()'  class='fa icon' ng-class='saveClass'></span></h4>
-	<form ng-class='formClass' class="form stdform stdform2" action='' name='form' method='post' >
+	<form ng-class='formClass' class="form stdform stdform2" action='' name="form" method='post' >
 		<p ng-repeat='field  in fields | filter:formFilter'>
 	        <label>{{field.label}} <span ng-if='field.type == "money"' >({{currency.currency_code}})</span></label>
 	        <span class="field">

@@ -107,42 +107,4 @@ module.exports = {
             res.notFound();
       }
 
-    /*
-     var products = [];
-     //var auxProducts = req.param('products');//falta la funcion map en angular , y no se por que no uso la de jquery
-     _.map(req.param('products'),function(p){
-     products.push({
-     product : p.id,
-     quantity : p.quantity,
-     price : p.price,
-     name : p.name
-     });
-     });
-
-     //creamos la cotizacion
-     var quote = {
-     company : form.company,
-     user : form.user,
-     products : products,
-     sale : newsale.id,
-     client:form.client
-     };
-
-     SaleQuote.create(quote).exec(function(err,saleQuote){
-     if (err) {
-     return res.json({text : 'Ocurrio un error.',message : err.message});
-     }
-     var quotes = [];
-     quotes.push(saleQuote.id);
-     Sale.update({id : newsale.id},{ quotes : quotes }).exec(function(err,sale){
-     if (err) {
-     return res.json({text : 'Ocurrio un error.'});
-     }
-     return res.json({text:'Venta creada.',url:'/ventas/editar/'+newsale.id});
-     });
-
-     });
-
-    * */
-
 };

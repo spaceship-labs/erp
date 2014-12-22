@@ -142,10 +142,10 @@ app.controller('productAddCTL',function($scope,$http){
     $scope.processSelectedProduct = function(quoteID){
         var product = {
             price : $scope.calculateProductPrice() ,
-            priceTotal :  $scope.calculateProductPriceTotal(),
+            price_total :  $scope.calculateProductPriceTotal(),
             product : $scope.product.id,
             quantity : $scope.product.quantity,
-            saleQuote : quoteID,
+            quote : quoteID,
             name : $scope.product.name
         };
 
