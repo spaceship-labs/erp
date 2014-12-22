@@ -40,6 +40,13 @@ app.controller('calendarCTL',function($scope,$http){
     //$scope.newSeason = {scheme:$scope.scheme.id};
     $scope.scheme.seasons.forEach(function(season){
         season.title = season.title || 'sin titulo';
+        console.log(season),
+        season.seasonStart = new Date(season.start);
+        console.log(season.seasonStart.getMonth());
+
+        /*$filter('season.seasonStart')(ddMMyyyy)*/
+        season.seasonEnd = (new Date(season.end));
+        /*$filter('season.seasonEnd')(ddMMyyyy)*/
     });
 
 

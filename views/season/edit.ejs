@@ -22,8 +22,8 @@
 	</div>
 
 	<div class = "calendar-output row">
-		<ul class = "col-md-12">
-			<li ng-repeat='season in scheme.seasons' ng-cloak><span class = "fa fa-circle"></span> {{season.title}} {{season.start}} - {{season.end}}</li>	
+		<ul class = "seasons-columns">
+			<li class= "col-md-6" ng-repeat='season in scheme.seasons' ng-cloak><span class = "fa fa-circle"></span> {{season.title}} {{season.start}} - {{season.end}}</li>	
 		</ul>
 	</div>
 	<div class = "clear"></div>
