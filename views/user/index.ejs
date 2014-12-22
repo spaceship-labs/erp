@@ -1,5 +1,6 @@
 <script type='text/javascript'>
 	window.users = <%- JSON.stringify(users) %>;
+    window.content = <%- JSON.stringify(_content) %>;
 </script>
 <div ng-controller='userCTL' >
 	<p><button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Nuevo Usuario</button></p>
@@ -15,5 +16,13 @@
 			<p>El usuario se creo exitosamente</p>
 		</div>
 	</div>
-	<%- partial('new_user_modal') -%>
+
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <%- partial('partial/new') %>
+            </div>
+        </div>
+    </div>
+
 </div>

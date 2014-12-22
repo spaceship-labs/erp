@@ -78,6 +78,7 @@ var jsFilesToInject = [
 	'/bower_components/fullcalendar/gcal.js',
 	'/bower_components/angular-chosen-localytics/chosen.js',
 	'/bower_components/angular-xeditable/dist/js/xeditable.js',
+    '/bower_components/underscore/underscore-min.js',
 	"/js/themejs/*.js",
 	"/js/*.js",
 	'/js/directives/*.js',

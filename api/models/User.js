@@ -40,7 +40,6 @@ module.exports = {
             type : 'boolean',
             defaultsTo : false
         }
-        ,permissions : 'array'
         ,lastLogin : 'datetime'
 		,setPassword : function(val,cb){
 			this.password = bcrypt.hashSync(val,bcrypt.genSaltSync(10));
@@ -83,16 +82,14 @@ module.exports = {
         hasPermission : function(company,permission) {
             if (this.isAdmin) return true;
             if (this.accessList) {
+                if (!permission) return true;
                 var useAcl = this.hasCompanyAccess(company);
                 if (useAcl.company){
-                    if (permission) {
-                        for (var index in useAcl.permissions){
-                            if (useAcl.permissions[index][0] == permission) {
-                                return useAcl.permissions[index][1];
-                            }
+                    for (var index in useAcl.permissions){
+                        if (useAcl.permissions[index].key == permission) {
+                            return useAcl.permissions[index].value;
                         }
-                    } else
-                        return true;
+                    }
                 }
             }
             return false;
@@ -106,7 +103,7 @@ module.exports = {
                         var actionPermission = app.actions[appI];
                         //console.log(actionPermission);
                         for (var permissionIndex in useAcl.permissions) {
-                            if (useAcl.permissions[permissionIndex][0] == actionPermission.handle && useAcl.permissions[permissionIndex][1]) {
+                            if (useAcl.permissions[permissionIndex].key == actionPermission.handle && useAcl.permissions[permissionIndex].value) {
                                 return true;
                             }
                         }

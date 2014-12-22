@@ -20,17 +20,30 @@ module.exports = {
         internalReference : {
             type : 'string'
         },
-        company : { model : 'Company' },
-        ink_cost : 'float',
-        ink_utility : 'float',
+        company : {
+            model : 'Company'
+        },
         product_types : {
             collection : 'Product_type',
             via : 'machines',
             dominant : true
         },
-        name : 'string'
+        name : 'string',
+        machine_type : {
+            type : 'string',
+            enum : ['router','impresora','laminadora','corte','impresora uv'],
+            default : 'impresora'
+        },
+        //impresora
+        ink_cost : 'float',
+        ink_utility : 'float',
 
-
+        calculateCost : function(){
+            if (this.machine_type == 'impresora') {
+                var machine_use_cost = this.ink_cost * (1 + (this.ink_utility/100));
+                return machine_use_cost;
+            }
+        }
 	}
 
 };

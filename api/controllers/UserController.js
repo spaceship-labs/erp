@@ -57,20 +57,18 @@ module.exports = {
 		var form = req.params.all() || {};
 		form.id || delete form.id;
 		form.active = true;
-		var select_company = req.session.select_company || req.user.select_company
-		, password = form.password;
+		var select_company = req.session.select_company || req.user.select_company;
+		var password = form.password;
 		form.default_company = select_company;
 		form.req = req;
-		form.name = form.user_name;
 		delete form.password;
-		delete form.user_name;
 		Company.findOne({id:select_company}).exec(function(err,company){
-			if(err) return res.forbidden();
+			if(err) return res.json({text : 'error'});
 			User.create(form).exec(function(err,user){
 				if(err) return res.forbidden();
 				user.companies.add(company.id);
 				user.setPassword(password);
-                return res.redirect('/user/edit/'+user.id);
+                return res.json({url : '/user/edit/'+user.id});
 			});	
 		});
 	}
@@ -190,10 +188,9 @@ module.exports = {
     ,updateAccessList : function(req,res) {//ajax only
         var company = req.param('company');
         var user_id = req.param('user');
-        var permissionsk = req.param('permissionsk');
-        var permissionsv = req.param('permissionsv');
-        var permissions = _.zip(permissionsk,permissionsv);
+        var permissions = req.param('permissions');
         var isAdmin = req.param('admin') || false;
+
         User.findOne({id : user_id}).populateAll().exec(function(err,user){
             if (err) {
                 console.log(err);

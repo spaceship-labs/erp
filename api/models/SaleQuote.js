@@ -30,7 +30,7 @@ module.exports = {
 
         products : {
             collection : "SaleProduct",
-            via : "saleQuote"
+            via : "quote"
         },
         client : {
             model : 'Client_',
@@ -44,8 +44,8 @@ module.exports = {
             var total = 0.0;
             if (this.products && this.products.length > 0) {
                 for (var i in this.products) {
-                    if (_.isNumber(this.products[i].priceTotal))
-                        total += this.products[i].priceTotal;
+                    if (_.isNumber(this.products[i].price_total))
+                        total += this.products[i].price_total;
 
                 }
             }

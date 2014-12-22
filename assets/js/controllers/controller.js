@@ -79,7 +79,7 @@ app.controller('galleryCTL',function($scope){
 	updateContent();
 });
 
-app.controller('saleCTL',function($scope,$http){
+app.controller('saleQuoteCTL',function($scope,$http){
     $scope.quote = quote;
 
     function showResponse(data) {
@@ -107,9 +107,56 @@ app.controller('saleCTL',function($scope,$http){
         console.log($scope.quote);
         var totalAmount = 0.0;
         angular.forEach($scope.quote.products,function(product){
-            totalAmount += product.priceTotal;
+            totalAmount += product.price_total;
         });
         return totalAmount;
+    };
+});
+
+app.controller('saleQuoteAddCTL',function($scope,$http) {
+    $scope.selectedProducts = [];
+    $scope.products = [];
+    $scope.clients = [];
+    $scope.client = { id : 0};
+    $scope.total = 0;
+
+    function showResponse(data){
+        console.log(data);
+        if(data){
+            jQuery('.alert p').text(data.text).parent().removeClass('unseen');
+            if(data.url)
+                window.location.href = data.url;
+        }
+    };
+
+    $scope.initialize = function () {
+        $http.get('/product/productsJson').then(function (response) {
+            $scope.products = response.data;
+        });
+
+        $http.get('/client/clientsJson').then(function (response) {
+            $scope.clients = response.data;
+        });
+
+    };
+
+    $scope.initialize();
+
+    $scope.processForm = function(){
+        var dataObject = {
+            products : $scope.selectedProducts,
+            client : $scope.client.id
+        };
+        $http.post('/SalesQuote/add',dataObject, {}).success(showResponse);
+    };
+
+    $scope.totalPrice = function (){
+        $scope.total = 0;
+
+        for (var i = 0;i < $scope.selectedProducts.length;i++) {
+            $scope.total += $scope.selectedProducts[i].price * $scope.selectedProducts[i].quantity;
+        }
+        return $scope.total;
     };
 });
 

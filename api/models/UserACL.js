@@ -15,15 +15,16 @@ module.exports = {
   		model : 'company'
   	},
     permissions : {
-        type : 'array'
-    },
-    permissions2 : {
         type : 'json'
     },
     isAdmin : {
         type : 'boolean',
         defaultsTo : false
+    },
+    role : {
+        model : 'userRole'
     }
+
   }
 };
 

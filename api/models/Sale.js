@@ -38,7 +38,7 @@ module.exports = {
         },
 
         workOrders : {
-            collection : "SaleWorkOrder",
+            collection : "SaleOrder",
             via : "sale"
         }
 

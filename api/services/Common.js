@@ -18,7 +18,6 @@ module.exports.renderMenu = function(req){
     var selected_company = req.res.locals.selected_company;
     _.each(sails.config.apps,function(app){
         if (_.contains(selected_company.apps,app.name) && req.user.hasAppPermission(selected_company.id,app)) {
-            //console.l
             menu += "<li class='dropdown'><a href=''><span class='fa "+app.icon+"'></span>"+app.label+"</a><ul>";
             _.each(app.actions,function(view){
                 if (req.user.hasPermission(selected_company.id,view.handle) && view.showInMenu)
@@ -152,29 +151,3 @@ module.exports.formValidate = function(form,validate){
     }
     return form;
 };
-
-//module.exports.hasPermission = function(user,company,permission){
-//    if (user.isAdmin) return true;
-//    if (user.accessList) {
-//        var useAcl = user.hasCompanyAccess(company);
-//        if (useAcl){
-//            Company.findOne({ id : useAcl.company }).exec(function(err,company_obj){
-//                if (err) {
-//                    console.log(err);
-//                    return false;
-//                }
-//                //console.log(company_obj);
-//                if (permission) {
-//                    for (var index in useAcl.permissions){
-//                        if (useAcl.permissions[index][0] == permission) {
-//                            console.log(useAcl.permissions[index][0] + ' : ' + useAcl.permissions[index][1]);
-//                            return useAcl.permissions[index][1];
-//                        }
-//                    }
-//                } else
-//                    return true;
-//            });
-//        }
-//    }
-//    return false;
-//}
