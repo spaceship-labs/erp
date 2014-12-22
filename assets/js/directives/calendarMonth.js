@@ -1,5 +1,5 @@
 (function () {
-	var controller = function($scope,$http){
+	var controller = function($scope,$http){   
         $scope.initialize = function(){
             var monthLabels = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
             var monthEnds = [31,28,31,30,31,30,31,31,30,31,30,31];
@@ -56,6 +56,7 @@
         	scope : {
                 month : '=',
                 year : '=',
+                seasons : '=',
         	},
         	templateUrl : '/template/find/calendarMonth.html'
         };
