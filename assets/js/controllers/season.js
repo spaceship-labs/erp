@@ -36,20 +36,18 @@ app.controller('calendarCTL',function($scope,$http){
     $scope.hotels = hotels;
     $scope.year = 2014;
     $scope.newSeason = {scheme:$scope.scheme.id};
-    console.log('hi');
     $scope.scheme.seasons.forEach(function(season){
         season.title = season.title || 'sin titulo';
-        console.log(season),
         season.seasonStart = new Date(season.start);
     });
 
-   /* $scope.createSeason = function(){
-        console.log($scope.newSeason);
+   $scope.createSeason = function(){
         $http({method: 'POST', url: '/season/create',params:$scope.newSeason}).success(function (season){
             season.title = season.title || 'sin titulo';
             $scope.scheme.seasons.push(season);
             jQuery('#myModal').modal('hide');
+            $scope.$broadcast('UPDATE SEASONS');
         });    
-    }*/
+    }
 
 });

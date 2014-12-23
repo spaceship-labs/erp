@@ -1,7 +1,7 @@
 (function () {
 	var controller = function($scope,$http){   
         $scope.getLineClass = function(line){
-            return 'start'+line.start+' end'+line.end;
+            return 'start'+line.start+' end'+line.end+' color'+line.season;
         }
         $scope.isDayInSeason = function(day){
             var d = new Date($scope.year,$scope.month,day);
@@ -77,11 +77,11 @@
             }
 
         }
-        $scope.initialize();
-        $scope.$watch('year',function(){
-            $scope.initialize();
-        });       
 
+        $scope.initialize();
+        $scope.$watch('year',$scope.initialize);       
+        //$scope.$watch('seasons',$scope.initialize);
+        $scope.$on('UPDATE SEASONS', $scope.initialize);
 	}
 
 	controller.$inject = ['$scope','$http'];
