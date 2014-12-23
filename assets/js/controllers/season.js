@@ -39,12 +39,9 @@ app.controller('calendarCTL',function($scope,$http){
     console.log('hi');
     $scope.scheme.seasons.forEach(function(season){
         season.title = season.title || 'sin titulo';
-        var start = new Date(season.start);
-        season.startString = start.getDate()+'/'+(start.getMonth()+1)+'/'+start.getFullYear();
-        console.log(season.startString);
+        console.log(season),
+        season.seasonStart = new Date(season.start);
     });
-
-
 
    /* $scope.createSeason = function(){
         console.log($scope.newSeason);
