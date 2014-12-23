@@ -36,21 +36,21 @@ app.controller('calendarCTL',function($scope,$http){
     $scope.hotels = hotels;
     $scope.year = 2014;
     $scope.newSeason = {scheme:$scope.scheme.id};
-    console.log('hi');
     $scope.scheme.seasons.forEach(function(season){
         season.title = season.title || 'sin titulo';
-        console.log(season),
-        /*var dateFormat = new Date(start.getDate() + '/' start.getMonth()+ '/' start.getFullYear());
-        console.log(season);*/
+        var dateFormat = new Date(season.start);
+        var dateFormat2 = new Date(season.end);
+        season.newStartdate = console.log(dateFormat.getDate() + "/" + (dateFormat.getMonth()+1) +"/" + dateFormat.getFullYear());
+        season.newEndDate = console.log(dateFormat2.getDate() + "/" + (dateFormat2.getMonth()+1) +"/" + dateFormat2.getFullYear());
     });
 
-   /* $scope.createSeason = function(){
-        console.log($scope.newSeason);
+   $scope.createSeason = function(){
         $http({method: 'POST', url: '/season/create',params:$scope.newSeason}).success(function (season){
             season.title = season.title || 'sin titulo';
             $scope.scheme.seasons.push(season);
             jQuery('#myModal').modal('hide');
+            $scope.$broadcast('UPDATE SEASONS');
         });    
-    }*/
+    }
 
 });
