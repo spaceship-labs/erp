@@ -40,8 +40,10 @@ app.controller('calendarCTL',function($scope,$http){
         season.title = season.title || 'sin titulo';
         var dateFormat = new Date(season.start);
         var dateFormat2 = new Date(season.end);
-        season.newStartdate = console.log(dateFormat.getDate() + "/" + (dateFormat.getMonth()+1) +"/" + dateFormat.getFullYear());
-        season.newEndDate = console.log(dateFormat2.getDate() + "/" + (dateFormat2.getMonth()+1) +"/" + dateFormat2.getFullYear());
+        /*season.newStartdate = console.log(dateFormat.getDate() + "/" + (dateFormat.getMonth()+1) +"/" + dateFormat.getFullYear());
+        season.newEndDate = console.log(dateFormat2.getDate() + "/" + (dateFormat2.getMonth()+1) +"/" + dateFormat2.getFullYear());*/
+        season.newStartdate = dateFormat.getDate() + "/" + (dateFormat.getMonth()+1) +"/" + dateFormat.getFullYear();
+        season.newEndDate = dateFormat2.getDate() + "/" + (dateFormat2.getMonth()+1) +"/" + dateFormat2.getFullYear();
     });
 
    $scope.createSeason = function(){
