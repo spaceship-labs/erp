@@ -10,9 +10,9 @@
         $scope.changed = false;
 
         //console.log(testForm);
-        $scope.$watch('form',function(formObj){
+        /*$scope.$watch('form',function(formObj){
             console.log(formObj);
-        });
+        });*/
 
         $scope.getClass = function(){
             if ($scope.form.$dirty)
