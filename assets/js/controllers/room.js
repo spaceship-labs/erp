@@ -1,5 +1,11 @@
 app.controller('roomEditCTL',function($scope,$upload,$http){
     $scope.room = room;
+    io.socket.get('/room/find/'+room.id,function(data,jwres){
+        $scope.room = data;
+        $scope.$apply();
+    });
+
+
     $scope.hotel = hotel;
     $scope.scheme = scheme;
     $scope.company = company;

@@ -27,9 +27,15 @@ app.controller('hotelCTL',function($scope,$http){
     };
 });
 app.controller('hotelEditCTL',function($scope,$upload,$http){
+    $scope.hotel = hotel;
+
+    io.socket.get('/hotel/find/'+hotel.id,function(data,jwres){
+        $scope.hotel = data;
+        $scope.$apply();
+    });
+
     $scope.company = company;
     $scope.user = user;
-    $scope.hotel = hotel;
     $scope.locations = locations;
     $scope.zones = zones;
     $scope.schemes = schemes;
@@ -44,6 +50,8 @@ app.controller('hotelEditCTL',function($scope,$upload,$http){
         formatYear: 'yy',
         startingDay: 1
     };
+
+    
     $scope.toggleRoomForm = function(){
         $scope.showRoomForm = !$scope.showRoomForm;
         $scope.newRoomClass = $scope.showRoomForm ? 'fa-minus' : 'fa-plus';

@@ -10,25 +10,6 @@ app.controller('seasonsCTL',function($scope,$http){
     };
 
 });
-app.controller('seasonsEditCTL',function($scope,$http){
-    $scope.content = content;
-    $scope.company = company;
-    $scope.scheme = scheme;
-    $scope.hotels = hotels;
-    $scope.newSeason = {scheme:$scope.scheme.id};
-    $scope.scheme.seasons.forEach(function(season){
-        season.title = season.title || 'sin titulo';
-    });
-    $scope.events = [$scope.scheme.seasons];
-    $scope.createSeason = function(){
-        console.log($scope.newSeason);
-        $http({method: 'POST', url: '/season/create',params:$scope.newSeason}).success(function (season){
-            season.title = season.title || 'sin titulo';
-            $scope.scheme.seasons.push(season);
-            jQuery('#myModal').modal('hide');
-        });    
-    }
-});
 app.controller('calendarCTL',function($scope,$http){
     $scope.content = content;
     $scope.company = company;
@@ -40,10 +21,8 @@ app.controller('calendarCTL',function($scope,$http){
         season.title = season.title || 'sin titulo';
         var dateFormat = new Date(season.start);
         var dateFormat2 = new Date(season.end);
-        /*season.newStartdate = console.log(dateFormat.getDate() + "/" + (dateFormat.getMonth()+1) +"/" + dateFormat.getFullYear());
-        season.newEndDate = console.log(dateFormat2.getDate() + "/" + (dateFormat2.getMonth()+1) +"/" + dateFormat2.getFullYear());*/
-        season.newStartdate = dateFormat.getDate() + "/" + (dateFormat.getMonth()+1) +"/" + dateFormat.getFullYear();
-        season.newEndDate = dateFormat2.getDate() + "/" + (dateFormat2.getMonth()+1) +"/" + dateFormat2.getFullYear();
+        season.newStart = dateFormat.getDate() + "/" + (dateFormat.getMonth()+1) +"/" + dateFormat.getFullYear();
+        season.newEnd = dateFormat2.getDate() + "/" + (dateFormat2.getMonth()+1) +"/" + dateFormat2.getFullYear();
     });
 
    $scope.createSeason = function(){
