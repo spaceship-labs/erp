@@ -19,7 +19,10 @@ app.controller('calendarCTL',function($scope,$http){
     $scope.newSeason = {scheme:$scope.scheme.id};
     $scope.scheme.seasons.forEach(function(season){
         season.title = season.title || 'sin titulo';
-        season.seasonStart = new Date(season.start);
+        var dateFormat = new Date(season.start);
+        var dateFormat2 = new Date(season.end);
+        season.newStartdate = console.log(dateFormat.getDate() + "/" + (dateFormat.getMonth()+1) +"/" + dateFormat.getFullYear());
+        season.newEndDate = console.log(dateFormat2.getDate() + "/" + (dateFormat2.getMonth()+1) +"/" + dateFormat2.getFullYear());
     });
 
    $scope.createSeason = function(){
