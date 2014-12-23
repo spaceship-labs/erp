@@ -10,7 +10,6 @@ app.controller('seasonsCTL',function($scope,$http){
     };
 
 });
-
 app.controller('seasonsEditCTL',function($scope,$http){
     $scope.content = content;
     $scope.company = company;
@@ -36,10 +35,13 @@ app.controller('calendarCTL',function($scope,$http){
     $scope.scheme = scheme;
     $scope.hotels = hotels;
     $scope.year = 2014;
-
-    //$scope.newSeason = {scheme:$scope.scheme.id};
+    $scope.newSeason = {scheme:$scope.scheme.id};
+    console.log('hi');
     $scope.scheme.seasons.forEach(function(season){
         season.title = season.title || 'sin titulo';
+        var start = new Date(season.start);
+        season.startString = start.getDate()+'/'+(start.getMonth()+1)+'/'+start.getFullYear();
+        console.log(season.startString);
     });
 
 
