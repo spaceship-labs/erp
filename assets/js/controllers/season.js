@@ -40,7 +40,8 @@ app.controller('calendarCTL',function($scope,$http){
     $scope.scheme.seasons.forEach(function(season){
         season.title = season.title || 'sin titulo';
         console.log(season),
-        season.seasonStart = new Date(season.start);
+        /*var dateFormat = new Date(start.getDate() + '/' start.getMonth()+ '/' start.getFullYear());
+        console.log(season);*/
     });
 
    /* $scope.createSeason = function(){
