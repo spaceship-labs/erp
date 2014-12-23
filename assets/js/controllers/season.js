@@ -49,8 +49,6 @@ app.controller('calendarCTL',function($scope,$http){
         /*$filter('season.seasonEnd')(ddMMyyyy)*/
     });
 
-
-
    /* $scope.createSeason = function(){
         console.log($scope.newSeason);
         $http({method: 'POST', url: '/season/create',params:$scope.newSeason}).success(function (season){
