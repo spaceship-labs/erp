@@ -5,13 +5,13 @@ app.controller('roomEditCTL',function($scope,$upload,$http){
         $scope.$apply();
     });
 
-
     $scope.hotel = hotel;
     $scope.scheme = scheme;
     $scope.company = company;
     $scope.content = content;
+    $scope.views = views;
+
     $scope.seasonFields = [];
-    console.log($scope.scheme);
     if($scope.scheme && $scope.scheme.seasons){
         $scope.scheme.seasons.forEach(function(season){
             $scope.seasonFields.push({

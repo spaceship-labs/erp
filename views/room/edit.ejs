@@ -2,6 +2,7 @@
     window.room = <%- JSON.stringify(room) %>;
     window.hotel = <%- JSON.stringify(hotel) %>;
     window.scheme = <%- JSON.stringify(scheme) %>;
+    window.views = <%- JSON.stringify(views) %>;
     window.userID = <%- JSON.stringify(req.user.id) %>;
 </script>
 <div ng-controller='roomEditCTL'>
@@ -30,6 +31,7 @@
                 action='/room/save' 
                 form-title='INFORMACIÓN BASICA'
                 currency='company.base_currency'
+                objects='{views:views}'
                 >
             </div>        
         </div>

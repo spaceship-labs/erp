@@ -29,13 +29,13 @@ module.exports.content = {
 			handle : 'phones',
 		},
 		{
-			label : 'Esquema de Temporadas',
+			label : 'Categoria',
 			type : 'select',
-			handle : 'seasonScheme',
-			object : 'schemes',
+			handle : 'category',
+			object : 'categories',
 		},
 		{
-			label : 'Vista',
+			label : 'Esquema de Temporadas',
 			type : 'select',
 			handle : 'seasonScheme',
 			object : 'schemes',
@@ -63,22 +63,22 @@ module.exports.content = {
 			handle : 'description_pt',
 		},
 		{
-			label : 'Servicios Español',
+			label : 'Servicios Español (separar por comma)',
 			type : 'textarea',
 			handle : 'services_es',	
 		},
 		{
-			label : 'Servicios Ingles',
+			label : 'Servicios Ingles (separar por comma)',
 			type : 'textarea',
 			handle : 'services_en',	
 		},
 		{
-			label : 'Servicios Ruso',
+			label : 'Servicios Ruso (separar por comma)',
 			type : 'textarea',
 			handle : 'services_ru',	
 		},
 		{
-			label : 'Servicios Portugués',
+			label : 'Servicios Portugués (separar por comma)',
 			type : 'textarea',
 			handle : 'services_pt',	
 		}
@@ -104,6 +104,12 @@ module.exports.content = {
 			label : 'Nombre Portugués',
 			type : 'text',
 			handle : 'name_pt',
+		},		
+		{
+			label : 'Vista',
+			type : 'select',
+			handle : 'view',
+			object : 'views',
 		},
 		{
 			label : 'PAX',
@@ -143,27 +149,27 @@ module.exports.content = {
 			handle : 'description_pt',
 		},
 		{
-			label : 'Servicios Español',
+			label : 'Servicios Español (separar por comma)',
 			type : 'textarea',
 			handle : 'services_es',
 		},
 		{
-			label : 'Servicios Ingles',
+			label : 'Servicios Ingles (separar por comma)',
 			type : 'textarea',
 			handle : 'services_en',
 		},
         {
-            label : 'Servicios Ruso',
+            label : 'Servicios Ruso (separar por comma)',
             type : 'textarea',
             handle : 'services_ru',
         },
 		{
-			label : 'Servicios Portugués',
+			label : 'Servicios Portugués (separar por comma)',
 			type : 'textarea',
 			handle : 'services_pt',
 		},
 
-		{
+	/*	{
 			label : 'Equipamiento Español',
 			type : 'textarea',
 			handle : 'equipment_es',
@@ -182,7 +188,7 @@ module.exports.content = {
 			label : 'Equipamiento Portugués',
 			type : 'textarea',
 			handle : 'equipment_pt',
-		},
+		},*/
 	],
 	season : [
 		{
@@ -224,7 +230,7 @@ module.exports.content = {
 			handle : 'pax',
 		},
 		{
-			label : 'Tarifa base',
+			label : 'Tarifa adultos',
 			type : 'money',
 			handle : 'fee',
 		},
@@ -241,7 +247,7 @@ module.exports.content = {
 		{
 			label : 'Duracion',
 			type : 'text',
-			handle : 'schedule',
+			handle : 'duration',
 		},
 		{
 			label : 'Ubicación',

@@ -3,6 +3,7 @@ app.controller('hotelCTL',function($scope,$http){
     $scope.locations = locations;
     $scope.company = company;
     $scope.zones = zones;
+    
 
     $scope.createHotel = function(){
         $http({method: 'GET', url: '/hotel/create',params:$scope.newHotel}).success(function (hotels){
@@ -28,6 +29,15 @@ app.controller('hotelCTL',function($scope,$http){
 });
 app.controller('hotelEditCTL',function($scope,$upload,$http){
     $scope.hotel = hotel;
+
+    $scope.categories = [
+        {id:1,name:'1 estrella'},
+        {id:2,name:'2 estrellas'},
+        {id:3,name:'3 estrellas'},
+        {id:4,name:'4 estrellas'},
+        {id:5,name:'5 estrellas'},
+        {id:6,name:'6 estrellas'},
+    ];
 
     io.socket.get('/hotel/find/'+hotel.id,function(data,jwres){
         $scope.hotel = data;

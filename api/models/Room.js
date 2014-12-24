@@ -11,6 +11,9 @@ module.exports = {
 		hotel : {
 			model : 'hotel',
 		},
+		view : {
+			model : 'hotelRoomView',
+		},
 		fees : 'json',
 
 	}
