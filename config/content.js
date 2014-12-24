@@ -34,6 +34,12 @@ module.exports.content = {
 			handle : 'seasonScheme',
 			object : 'schemes',
 		},
+		{
+			label : 'Vista',
+			type : 'select',
+			handle : 'seasonScheme',
+			object : 'schemes',
+		},
 	],
 	hotelLangs : [
 		{
