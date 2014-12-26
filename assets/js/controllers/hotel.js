@@ -6,7 +6,7 @@ app.controller('hotelCTL',function($scope,$http){
     
 
     $scope.createHotel = function(){
-        $http({method: 'GET', url: '/hotel/create',params:$scope.newHotel}).success(function (hotels){
+        $http({method: 'POST', url: '/hotel/create',params:$scope.newHotel}).success(function (hotels){
             $scope.hotels = hotels;
             jQuery('#myModal').modal('hide');
         });
