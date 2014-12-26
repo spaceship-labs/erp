@@ -201,6 +201,18 @@ module.exports.apps = [
                 controller : 'service',
                 action : 'index'
             },
+            {
+                label : 'Cupones',
+                icon : 'fa-ticket',
+                url : '/cupon/',
+                showInMenu : true
+            },
+            {
+                label : 'Instancias cupones',
+                icon : 'fa-ticket',
+                url : '/cupon/',
+                showInMenu : true
+            },
             /*'/transfer/' : {
                 label : 'Translados',
                 icon : 'fa-cab'
