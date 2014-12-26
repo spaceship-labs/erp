@@ -10,23 +10,28 @@ app.controller('seasonsCTL',function($scope,$http){
     };
 
 });
-
-app.controller('seasonsEditCTL',function($scope,$http){
-	$scope.content = content;
+app.controller('calendarCTL',function($scope,$http){
+    $scope.content = content;
     $scope.company = company;
     $scope.scheme = scheme;
-	$scope.hotels = hotels;
+    $scope.hotels = hotels;
+    $scope.year = 2014;
     $scope.newSeason = {scheme:$scope.scheme.id};
     $scope.scheme.seasons.forEach(function(season){
         season.title = season.title || 'sin titulo';
+        var dateFormat = new Date(season.start);
+        var dateFormat2 = new Date(season.end);
+        season.newStart = dateFormat.getDate() + "/" + (dateFormat.getMonth()+1) +"/" + dateFormat.getFullYear();
+        season.newEnd = dateFormat2.getDate() + "/" + (dateFormat2.getMonth()+1) +"/" + dateFormat2.getFullYear();
     });
-    $scope.events = [$scope.scheme.seasons];
-    $scope.createSeason = function(){
-    	console.log($scope.newSeason);
-		$http({method: 'POST', url: '/season/create',params:$scope.newSeason}).success(function (season){
+
+   $scope.createSeason = function(){
+        $http({method: 'POST', url: '/season/create',params:$scope.newSeason}).success(function (season){
             season.title = season.title || 'sin titulo';
-			$scope.scheme.seasons.push(season);
-			jQuery('#myModal').modal('hide');
-		});    
+            $scope.scheme.seasons.push(season);
+            jQuery('#myModal').modal('hide');
+            $scope.$broadcast('UPDATE SEASONS');
+        });    
     }
+
 });

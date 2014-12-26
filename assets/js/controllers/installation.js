@@ -168,10 +168,10 @@ app.controller('installationCTL',function($scope,$http) {
 
             var product = {
                 price : $scope.calculateInstallationTotal() ,
-                priceTotal :  $scope.calculateInstallationTotal(),
+                price_total :  $scope.calculateInstallationTotal(),
                 product : 0,
                 quantity : 1,
-                saleQuote : quoteID,
+                quote : quoteID,
                 name : "Instalacion " + ($scope.installation.zone.name),
                 installation : response.data.id
             };

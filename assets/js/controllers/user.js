@@ -1,5 +1,7 @@
-app.controller('userCTL',function($scope){
-$scope.users = users;
+app.controller('userCTL',function($scope,$http){
+    $scope.users = users;
+    $scope.content = content;
+
 	$scope.userFilter = function(u){		
 		if($scope.searchInputSelect && !$scope.searchInput){
 			//return true;
@@ -19,26 +21,22 @@ $scope.users = users;
 			"Registro":user.createdAtString,
 			"Ultimo acceso":user.lastAccessString,
 			"Email":user.email,
-			"Telefono":user.phone,
+			"Telefono":user.phone
 		}
 	};
 
     $scope.createUser = function(){
-
-        $http.post('/user/create',createUserForm,{}).success(function(data) {
-            if (data) {
-                jQuery('.alert p').text(data.text).parent().removeClass('unseen');
-                $scope.product.fields.push(data.field);
-                $scope.new_field.handle = "";
-                $scope.new_field.name = "";
-            } else {
-                jQuery('.alert p').text('error').parent().removeClass('unseen');
-            }
-        });
+        //console.log($scope.user_form);
+        if ($scope.user_form.$valid) {
+            $http.post('/user/create',$scope.user,{}).success(function(data){
+                console.log(data);
+                showResponse(data);
+            });
+        }
     }
 });
 
-app.controller('userEditCTL',function($scope,$http){
+app.controller('userEditCTL',function($scope,$http,_){
     $scope.user = user;
     $scope.apps = apps;
     $scope.submited_pass_form = false;
@@ -48,34 +46,29 @@ app.controller('userEditCTL',function($scope,$http){
     $scope.hiddenFields = [
         { key : 'userId',value : $scope.user.id }
     ];
+    $scope.saveClassPermissions = 'fa-save';
+    $scope.saveClassPassword = 'fa-save';
 
-    for(var index in $scope.user.accessList){
-        var acl = $scope.user.accessList[index];
+    console.log($scope.user);
+
+    for(var i in $scope.user.accessList){
+        var acl = $scope.user.accessList[i];
         if (acl.company == $scope.company.id) {
-            $scope.user.permissions = [];
-            for (var index1 in acl.permissions) {
-                $scope.user.permissions[acl.permissions[index1][0]] = acl.permissions[index1][1];
-            }
+            $scope.user.permissions = acl.permissions;
             $scope.isAdmin = acl.isAdmin;
         }
     }
+
     var id = $scope.user.id;
     $scope.updateAccestList = function(){
-        console.log($scope.permissions);
-        var permisosk = [];
-        var permisosv = [];
-        for (var key in $scope.permissions) {
-            permisosk.push(key);
-            permisosv.push($scope.permissions[key]);
-        }
+        $scope.saveClassPermissions = 'fa-upload';
         $http.post('/user/updateAccessList/', {
             user:id
-            ,permissionsk:permisosk
-            ,permissionsv:permisosv
+            ,permissions:$scope.permissions
             ,admin:$scope.isAdmin
             ,company : $scope.company.id
         },{}).success(function(data){
-            //console.log(data);
+            $scope.saveClassPermissions = 'fa-save';
             var alt = jQuery('.alert p');
             alt.text(data.msg).parent().show();
         });
@@ -89,22 +82,20 @@ app.controller('userEditCTL',function($scope,$http){
             ,phone:$scope.user.phone
             ,email:$scope.user.email
             ,active:$scope.user.active
-        },{}).success(function(data){
-            console.log(data);
-            var alt = jQuery('.alert p');
-            alt.text(data.text).parent().show();
-        });
+        },{}).success(showResponse);
     };
 
     $scope.updatePassword = function(){
+        $scope.saveClassPassword = 'fa-upload';
+        $scope.submited_pass_form = true;
         if ($scope.old_password && $scope.new_password && $scope.new_password == $scope.new_password_v && $scope.new_password != $scope.old_password) {
             $http.post('/user/updatePassword/',{
                 userId:id
                 ,old_password:$scope.old_password
                 ,new_password:$scope.new_password
             },{}).success(function(data){
-                var alt = jQuery('.alert p');
-                alt.text(data.text).parent().show();
+                $scope.saveClassPassword = 'fa-save';
+                showResponse(data);
             });
         } else {
             console.log($scope.old_password);
@@ -118,6 +109,32 @@ app.controller('userEditCTL',function($scope,$http){
     };
 
     $scope.getPermission = function(key){
-        return $scope.user.permissions ? $scope.user.permissions[key] : false;
+        var test = _.find($scope.user.permissions,
+            function(item){
+                return item.key == key;
+            });
+        if (test)
+            return test.value;
+        return false;
     };
+
+    $scope.setPermission = function(key,app) {
+        var permissionItem = { key : key , value : $scope.getPermission(key) };
+
+        app.permissions.selected.push(key);
+        if (permissionItem.value) {
+            app.permissions.granted.push(key);
+        }
+
+        $scope.permissions.push(permissionItem);
+        var index = $scope.permissions.indexOf(permissionItem);
+        return $scope.permissions[index];
+    };
+
+    $scope.onlyRestricted = function(item) {
+        if (item.handle) {
+            return true;
+        }
+        return false;
+    }
 });

@@ -11,22 +11,26 @@ module.exports = {
 		var reads = [
 			function(cb){Room.findOne(req.params.id).populate('hotel').exec(cb)},
 			function(room,cb){Hotel.findOne(room.hotel.id).populate('seasonScheme').exec(function(e,hotel){cb(e,room,hotel)})},
-			function(room,hotel,cb){
+			function(room,hotel,cb){HotelRoomView.find({}).exec(function(e,views){cb(e,room,hotel,views)})},
+			function(room,hotel,views,cb){
 				if(hotel.seasonScheme){
 					SeasonScheme.findOne(hotel.seasonScheme.id).populate('seasons').exec(function(e,scheme){
-						cb(e,room,hotel,scheme)
+						cb(e,room,hotel,scheme,views)
 					});
 				}else{
-					cb(null,room,hotel,false);
+					cb(null,room,hotel,false,views);
 				}
 			},
-		]
-		async.waterfall(reads,function(e,room,hotel,scheme){
+		];
+
+		async.waterfall(reads,function(e,room,hotel,scheme,views){
 			//if(e) throw(e);
-			Common.view(res.view,{
+            //console.log(room);
+            Common.view(res.view,{
 				room:room,
 				hotel : hotel,
 				scheme:scheme,
+				views:views,
 				_content:sails.config.content,
 				page:{
 					saveButton : true,

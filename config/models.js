@@ -26,13 +26,18 @@ module.exports.models = {
   		object = this;
       opts.file = object.icon;
       async.waterfall([
-        function(callback){Files.saveFiles(req,opts,callback)},
+        function(callback){
+            //console.log('save files');
+            Files.saveFiles(req,opts,callback);
+        },
         function(files,callback){
+          //console.log('crops');
           object.icon = files[0];
           opts.filename = object.icon.filename;
           Files.makeCrops(req,opts,callback)
         },
         function(crops,callback){
+          //console.log('remove');
           if(opts.file) Files.removeFile(opts,callback);
           else callback(null,crops);
         },

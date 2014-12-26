@@ -1,7 +1,8 @@
 jQuery.noConflict();
 
 jQuery(document).ready(function(){
-	
+	 //tabs
+	 jQuery('.tabbedwidget').tabs();
 	// dropdown in leftmenu
 	jQuery('.leftmenu .dropdown > a').click(function(){
 		if(!jQuery(this).next().is(':visible'))

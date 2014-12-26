@@ -22,6 +22,10 @@ app.controller('tourCTL',function($scope,$http){
 
 app.controller('tourEditCTL',function($scope,$http){
     $scope.tour = tour;
+    io.socket.get('/tour/find/'+tour.id,function(data,jwres){
+        $scope.tour = data;
+        $scope.$apply();
+    });
 	$scope.content = content;
     $scope.objects = {locations:locations};
     $scope.company = company;

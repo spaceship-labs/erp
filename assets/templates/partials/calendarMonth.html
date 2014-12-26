@@ -1,0 +1,22 @@
+<div class="calendario col-md-4">
+	<div class = "thead">
+		<h1>{{label}}</h1>
+	</div>
+	<div class = "days-of-week">
+		<ul class = "days">
+			<li>DOM</li>
+			<li>LUN</li>
+			<li>MAR</li>
+			<li>MIE</li>
+			<li>JUE</li>
+			<li>VIE</li>
+			<li>SAB</li>
+		</ul>
+	</div>
+	<div class = "all-weeks">
+		<ul class = "week-gral" ng-repeat='week in weeks'>
+			<li ng-repeat='day in week.days' ng-bind='day'></li>
+			<li ng-repeat='line in week.lines' class='line ng-calendar-line' ng-class='getLineClass(line)' ></li>
+		</ul>
+	</div>
+</div>

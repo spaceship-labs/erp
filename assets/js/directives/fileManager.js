@@ -63,7 +63,7 @@
 				}
 			});
 			var modalInstance = $modal.open({
-				templateUrl: '/template/find/deleteModal.html',
+				templateUrl: '/template/find/deleteFileModal.html',
 				size: 'sm',
 				controller : modalController,
 				resolve: {

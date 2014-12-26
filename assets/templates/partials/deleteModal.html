@@ -1,7 +1,7 @@
 <div class="modal-body">
-    <p>¿Estas seguro que quieres eliminar los siguientes archivos?</p>
+    <p>¿Estas seguro que quieres eliminar este registro?</p>
     <ul>
-        <li ng-repeat='file in files' ng-bind='file.name'></li>
+        <li ng-repeat='(key,val) in object'>{{key}} -> {{val}}</li>
     </ul>
 </div>
 <div class="modal-footer">
