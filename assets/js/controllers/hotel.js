@@ -6,7 +6,7 @@ app.controller('hotelCTL',function($scope,$http){
     
 
     $scope.createHotel = function(){
-        $http({method: 'POST', url: '/hotel/create',params:$scope.newHotel}).success(function (hotels){
+        $http({method: 'POST', url: '/hotel/create',data:$scope.newHotel}).success(function (hotels){
             $scope.hotels = hotels;
             jQuery('#myModal').modal('hide');
         });
@@ -22,7 +22,7 @@ app.controller('hotelCTL',function($scope,$http){
         }
     };
     $scope.getZones = function(){
-        $http({method: 'POST', url: '/hotel/getZones',params: $scope.newHotel.location }).success(function (zones){
+        $http({method: 'POST', url: '/hotel/getZones',data: $scope.newHotel.location }).success(function (zones){
             $scope.zones = zones;
         });
     };
@@ -76,14 +76,14 @@ app.controller('hotelEditCTL',function($scope,$upload,$http){
         $scope.room.hotel = $scope.hotel.id;
         $scope.newRoomClass = 'fa-upload';
         $scope.showRoomForm = false;
-        $http({method: 'POST', url: '/hotel/addRoom',params:$scope.room}).success(function(hotel){
+        $http({method: 'POST', url: '/hotel/addRoom',data:$scope.room}).success(function(hotel){
             $scope.hotel.rooms = hotel.rooms;
             $scope.newRoomClass = 'fa-plus';
         });
     };
     $scope.getZones = function(){
         //console.log($scope.hotel.location);
-        $http({method: 'POST', url: '/hotel/getZones',params: $scope.hotel.location }).success(function (zones){
+        $http({method: 'POST', url: '/hotel/getZones',data: $scope.hotel.location }).success(function (zones){
             $scope.zones = zones;
         });
     };
