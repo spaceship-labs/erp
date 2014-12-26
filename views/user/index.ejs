@@ -3,10 +3,10 @@
     window.content = <%- JSON.stringify(_content) %>;
 </script>
 <div ng-controller='userCTL' >
-	<p><button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Nuevo Usuario</button></p>
-	<br/>	
+	<!--<p><button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Nuevo Usuario</button></p>
+	<br/>-->
 
-	<div directory-listing objects='users' searchInput='searchInput' dir='users' edit-url='/user/edit/' get-info='getInfo' ></div>
+	<div directory-listing objects='users' searchInput='searchInput' dir='users' edit-url='/user/edit/' get-info='getInfo' button-text='Nuevo Usuario'></div>
 
 	<div class="clearfix"></div>
 	<div class="span6">
