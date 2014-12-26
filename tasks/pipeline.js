@@ -82,7 +82,7 @@ var jsFilesToInject = [
 	"/js/themejs/*.js",
 	"/js/*.js",
 	'/js/directives/*.js',
-	'/js/controllers/*.js',
+	//'/js/controllers/*.js',
 ];
 
 
