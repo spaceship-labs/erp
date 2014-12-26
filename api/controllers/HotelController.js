@@ -70,9 +70,9 @@ module.exports = {
         //var form = Common.formValidate(req.params.all(),['name','address','phones','location']);
         var form = req.params.all();
         if(form){
-        	console.log(form);
+        	//console.log(form.location);
 	        if(form.phones) form.phones = form.phones.split(',');
-            form.location = JSON.parse(form.location);
+            //form.location = JSON.parse(form.location);
 	        form.location = form.location.id;
            	form.user = req.user.id;
 			form.req = req;

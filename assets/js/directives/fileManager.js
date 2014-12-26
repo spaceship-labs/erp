@@ -8,6 +8,7 @@
 		$scope.pageLength = 16;
 		$scope.object.files = $scope.object.files ? $scope.object.files : [];
 		$scope.uploadFiles = function($files){
+			$scope.object.files = $scope.object.files ? $scope.object.files : [];
 			$scope.page = Math.ceil($scope.object.files.length/$scope.pageLength) -1;
 			$scope.loading[0] = 0;
 			$scope.upload = $upload.upload({
