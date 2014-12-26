@@ -27,6 +27,9 @@ module.exports = {
 		},
 		zone : {
 			model : 'zone'
+		},
+		category : {
+			model : 'hotelCategory'
 		}
 	}
   	,afterCreate: function(val,cb){

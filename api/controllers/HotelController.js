@@ -8,23 +8,29 @@ var moment = require('moment');
 module.exports = {
 	index : function(req,res){
 		Hotel.find().sort('name').populate('location').exec(function(e,hotels){
+			if(e) throw(e);
 			Location.find().sort('name').exec(function(e,locations){
-				hotels = formatHotels(hotels);
-				Common.view(res.view,{
-					hotels:hotels,
-					locations:locations,
-					zones:[],
-					page:{
-						name:'Hoteles'
-						,description: 'AQUI PODRAS VISUALIZAR Y ADMINISTRAR TODO TU PROCESO DE VENTA'
-						,icon:'fa fa-building'		
-						,controller : 'hotel.js'
-							
-					},
-					breadcrumb : [
-						{label : 'Hoteles'}
-					]
-				},req);
+				if(e) throw(e);
+				HotelCategory.find().sort('name').exec(function(e,categories){
+					hotels = formatHotels(hotels);
+					Common.view(res.view,{
+						hotels:hotels,
+						locations:locations,
+						zones:[],
+						categories : categories,
+						page:{
+							name:'Hoteles'
+							,description: 'Administracion de contenido hoteles'
+							,icon:'fa fa-building'		
+							,controller : 'hotel.js'
+								
+						},
+						breadcrumb : [
+							{label : 'Hoteles'}
+						]
+					},req);
+				});
+				
 			});
 		});
 		
