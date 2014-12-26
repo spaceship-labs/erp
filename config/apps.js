@@ -165,6 +165,18 @@ module.exports.apps = [
                 url : '/service/',
                 showInMenu : true
             },
+            {
+                label : 'Cupones',
+                icon : 'fa-ticket',
+                url : '/cupon/',
+                showInMenu : true
+            },
+            {
+                label : 'Instancias cupones',
+                icon : 'fa-ticket',
+                url : '/cupon/',
+                showInMenu : true
+            },
             /*'/transfer/' : {
                 label : 'Translados',
                 icon : 'fa-cab'
