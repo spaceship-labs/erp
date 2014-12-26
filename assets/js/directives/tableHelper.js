@@ -13,7 +13,7 @@
             });
             modalInstance.result.then(function() {
                 //jQuery('#myModal').modal('hide');
-                $http({method:'POST',url:'/'+$scope.route+'/destroy/',params:object}).success(function (obj){
+                $http({method:'POST',url:'/'+$scope.route+'/destroy/',data:object}).success(function (obj){
                     if(obj.id == object.id) $scope.objects.splice(key,1);
                 });
             });
