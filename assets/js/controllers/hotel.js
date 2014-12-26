@@ -39,9 +39,11 @@ app.controller('hotelEditCTL',function($scope,$upload,$http){
         {id:6,name:'6 estrellas'},
     ];
 
-    io.socket.get('/hotel/find/'+hotel.id,function(data,jwres){
-        $scope.hotel = data;
-        $scope.$apply();
+    $http({method:'POST',url:'/hotel/find/'+hotel.id}).success(function(hotel){
+        hotel.location = hotel.location ? hotel.location.id : null;
+        hotel.seasonScheme = hotel.seasonScheme ? hotel.seasonScheme.id : null;
+        hotel.zone = hotel.zone ? hotel.zone.id : null;
+        $scope.hotel = hotel;
     });
 
     $scope.company = company;
