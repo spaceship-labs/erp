@@ -47,7 +47,7 @@
                     $scope.saveClass = 'fa-check';
                 });
             }else{
-                $http({method:'POST',url:$scope.action,params:submitObject}).success(function (object){
+                $http({method:'POST',url:$scope.action,data:submitObject}).success(function (obj){
                     //$scope.object = object;
                     $scope.saveClass = 'fa-check';
                 });

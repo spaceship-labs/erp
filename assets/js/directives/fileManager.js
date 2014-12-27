@@ -8,6 +8,7 @@
 		$scope.pageLength = 16;
 		$scope.object.files = $scope.object.files ? $scope.object.files : [];
 		$scope.uploadFiles = function($files){
+			$scope.object.files = $scope.object.files ? $scope.object.files : [];
 			$scope.page = Math.ceil($scope.object.files.length/$scope.pageLength) -1;
 			$scope.loading[0] = 0;
 			$scope.upload = $upload.upload({
@@ -75,7 +76,7 @@
 			modalInstance.result.then(function() {
 				jQuery('#myModal').modal('hide');
 				$scope.object.removeFiles = files;
-				$http({method: 'POST', url: $scope.removeMethod,params:$scope.object}).success(function (object){
+				$http({method: 'POST', url: $scope.removeMethod,data:$scope.object}).success(function (object){
 					$scope.object.files = object.files;
 				});
 			},function(){
