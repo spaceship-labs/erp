@@ -8,6 +8,8 @@
 module.exports = {
 
 	attributes: {
+		start : 'date',
+		end : 'date',
 		scheme : {
 			model : 'seasonScheme',
 		},

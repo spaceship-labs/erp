@@ -27,18 +27,18 @@ module.exports = {
 		if(currencies.indexOf(form.base_currency)==-1)
 			currencies.push(form.base_currency);
 		var user = {
-			name : form.user_name,
-			last_name : form.last_name,
-			email : form.email,
+			name : form.uname,
+			last_name : form.ulast_name,
+			email : form.uemail,
 			active : true,
 		};
-		var password = form.password;
+		var password = form.upassword;
 		//delete form.apps;
 		delete form.currencies;
-		delete form.user_name;
-		delete form.last_name;
-		delete form.email;
-		delete form.password;
+		delete form.uname;
+		delete form.ulast_name;
+		delete form.uemail;
+		delete form.upassword;
 		Company.create(form).exec(function(err,company){
 			if(err) return res.json(response);
 			
