@@ -24,7 +24,11 @@
                     if(notice && notice.data)
                         $scope.noticesN.unshift(notice.data)
                 });
-        });    
+        });
+
+        $scope.fromNow = function(tm){
+            return moment(tm).lang('es').fromNow()
+        }
     };
     controller.$inject = ['$scope','$http'];
     var directive = function () {

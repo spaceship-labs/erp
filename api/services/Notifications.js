@@ -29,7 +29,7 @@ var notification = function(type,collection,val){
                         }
                     }
     				if(add){
-                        obj.modifications.push(changes);
+                        obj.modifications.unshift(changes);
                     }
                 }
                 saveAndPublish(obj);

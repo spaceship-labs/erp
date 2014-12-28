@@ -13,12 +13,12 @@
                         <a href="/{{notice.app}}/edit/{{notice.modifyId}}">
                             {{notice.modelObjName}} 
                         </a>
-                        <span class="muted">{{notice.updatedAt}}</span>
+                        <span class="muted">{{ fromNow(notice.updatedAt) }}</span>
                     </p>
                     <accordion close-others='false' ng-if="notice.modifications">
-                        <accordion-group heading="ver mas" style="cursor: pointer;">
+                        <accordion-group heading="Ver más" style="cursor: pointer;">
                             <div ng-repeat="changes in notice.modifications" >
-                                <p>fecha de modificacion: {{changes.updatedAt.after}}</p>
+                                <p>Fue modificado: {{fromNow(changes.updatedAt.after)}}</p>
                                 <table class="table responsive" >
                                     <thead>
                                         <tr>
