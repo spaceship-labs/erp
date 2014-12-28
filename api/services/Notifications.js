@@ -8,19 +8,20 @@ var notification = function(type,collection,val){
             ,model:collection
             ,operation:type
             ,modifyId:val.id
-            ,modelObjName:val.req.modelObjName || collection
+            ,modelObjName:val.req.modelObjName
             ,val:val
             ,modifications:[]
         };
         if(type == 'update'){
             Notice.findOne({modifyId:val.id}).sort('createdAt desc').exec(function(err,notice){
                 if(err) throw err;
+                var add = true;
                 if(notice && notice.val){
-                    var changes = {}
-                    , add = false;
+                    var changes = {};
+                    add = false;
                     obj.modifications = notice.modifications || [];
                     for(var v in val){
-                        if(notice.val[v] != undefined && notice.val[v] != val[v] && v!='req'){
+                        if(notice.val[v] != undefined && v!='req' && !Common.equals(notice.val[v],val[v])){
                             changes[v] = {
                                 after:val[v]
                                 ,before:notice.val[v]
@@ -28,11 +29,17 @@ var notification = function(type,collection,val){
                             add = true;
                         }
                     }
-    				if(add){
+
+                    if(!obj.modelObjName){
+                        obj.val.name = obj.modelObjName = notice.val.name;
+                    }
+                        
+                    if(add){
                         obj.modifications.unshift(changes);
                     }
                 }
-                saveAndPublish(obj);
+                if(add)
+                    saveAndPublish(obj);
             });
         }else{
             saveAndPublish(obj);
