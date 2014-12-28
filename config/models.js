@@ -99,7 +99,7 @@ module.exports.models = {
     },
     beforeUpdate:function(val,cb){
         if(this.tableName != 'notice'){
-            Notifications.before(val);
+            Notifications.before(val,'update');
         }
         cb();
     },

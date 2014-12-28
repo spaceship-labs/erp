@@ -116,22 +116,7 @@ module.exports = {
             return "asd";
         }
 	}
-	,afterCreate: function(val,cb){
-		Notifications.after(User,val,'create');
-		cb()
-	}
-	,afterUpdate: function(val,cb){
-		Notifications.after(User,val,'update');
-		cb();
-	}
-	,beforeUpdate:function(val,cb){
-		Notifications.before(val);
-		cb();
-	}
-	,beforeCreate: function(val,cb){
-		Notifications.before(val);
-		cb();
-	}
+
     ,toJSON: function() {
         var obj = this.toObject();
         delete obj.password;

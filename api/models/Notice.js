@@ -17,6 +17,7 @@ module.exports = {
 		,modifyId:'string'
 		,modelObjName:'string'
 		,modifications:'array'
+		,val:'json'
 	}
 };
 

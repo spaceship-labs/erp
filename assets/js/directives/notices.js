@@ -1,20 +1,20 @@
 (function () {
-	var controller = function($scope,$http){
-    	var options = {
-    		'sort':'updatedAt desc',
-    		'limit':10
-    	}
+    var controller = function($scope,$http){
+        var options = {
+            'sort':'updatedAt desc',
+            'limit':10
+        }
         io.socket.get('/notice/find',options,function(data){
             if(!data)
                 return;
 
             console.log(data)
             $scope.noticesN = data;
-			$scope.$apply();
+            $scope.$apply();
             $scope.noticeTranslate = {
-                update:'actualizo'
-                ,create:'creo'
-                ,destroy:'elimino'
+                update:'actualizo',
+                create:'creo',
+                destroy:'elimino'
             };
         });
         io.socket.on('notice',function(data){
@@ -24,21 +24,19 @@
                     if(notice && notice.data)
                         $scope.noticesN.unshift(notice.data)
                 });
-        });
-        
-	};
-	controller.$inject = ['$scope','$http'];
+        });    
+    };
+    controller.$inject = ['$scope','$http'];
     var directive = function () {
         return {
-        	controller : controller,
-        	scope : {
-        		object : '=',
+            controller : controller,
+            scope : {
+                object : '=',
                 app : '=',
                 apps : '=',
-        	},
-        	templateUrl : '/template/find/notices.html'
+            },
+            templateUrl : '/template/find/notices.html'
         };
     };
     app.directive('notices', directive);
-
 }());

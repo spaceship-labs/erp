@@ -1,19 +1,43 @@
 var notification = function(type,collection,val){
-	if(val && val.req){//session info
-		Notice.create({
-			companyId:val.req.companyId
-			,userId:val.req.userId
-			,app:val.req.app
-			,model:collection
-			,operation:type
-			,modifyId:val.id
-			,modelObjName:val.req.modelObjName || collection
-		}).exec(function(err,notice){
-			if(err) throw err;
-			//sails.io.sockets.in('notices').emit('update',{data:true});
-			Notice.publishCreate({id:notice.id})
-		});
-	}
+    if(val && val.req){//session info
+        delete val['createdAt'];
+        var obj = {
+            companyId:val.req.companyId
+            ,userId:val.req.userId
+            ,app:val.req.app
+            ,model:collection
+            ,operation:type
+            ,modifyId:val.id
+            ,modelObjName:val.req.modelObjName || collection
+            ,val:val
+            ,modifications:[]
+        };
+        if(type == 'update'){
+            Notice.findOne({modifyId:val.id}).sort('createdAt desc').exec(function(err,notice){
+                if(err) throw err;
+                if(notice && notice.val){
+                    var changes = {}
+                    , add = false;
+                    obj.modifications = notice.modifications || [];
+                    for(var v in val){
+                        if(notice.val[v] != undefined && notice.val[v] != val[v] && v!='req'){
+                            changes[v] = {
+                                after:val[v]
+                                ,before:notice.val[v]
+                            }
+                            add = true;
+                        }
+                    }
+    				if(add){
+                        obj.modifications.push(changes);
+                    }
+                }
+                saveAndPublish(obj);
+            });
+        }else{
+            saveAndPublish(obj);
+        }
+    }
 };
 
 module.exports = {
@@ -26,7 +50,7 @@ module.exports = {
 			});*/
 		}
 	}
-	,before:function(val){
+	,before:function(val,action){
 		if(val.req && val.req.user){
 			var req = {
 				userId:val.req.user.id
@@ -89,3 +113,11 @@ module.exports.noticeSuscribe = function(req,find,cb){
 		});
 	});
 };
+
+function saveAndPublish(obj){ 
+    Notice.create(obj).exec(function(err,notice){
+        if(err) throw err;
+        //sails.io.sockets.in('notices').emit('update',{data:true});
+        Notice.publishCreate({id:notice.id})
+    });
+}

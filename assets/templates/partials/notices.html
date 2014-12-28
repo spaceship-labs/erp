@@ -1,22 +1,53 @@
 <div id="dashboard-left" class="span5">
-	<h4 class="widgettitle"><span class="fa fa-bullhorn"></span> Notificaciónes</h4>
-	<div class="widgetcontent nopadding">
-		<ul class="commentlist">
-			<li ng-repeat="notice in noticesN">
-				<img ng-src="{{notice.userId.icon?'/uploads/users/80x80'+notice.userId.icon.filename:'http://placehold.it/80x80'}}"
+    <h4 class="widgettitle"><span class="fa fa-bullhorn"></span> Notificaciónes</h4>
+    <div class="widgetcontent nopadding">
+        <ul class="commentlist">
+            <li ng-repeat="notice in noticesN">
+                <img ng-src="{{notice.userId.icon?'/uploads/users/80x80'+notice.userId.icon.filename:'http://placehold.it/80x80'}}"
                 alt="" class="pull-left">
-				<div class="comment-info" ng-cloak>
-					<h4></h4>
-					<h5><a href="/{{notice.app}}">{{notice.userId.name}}</a></h5>
-					<p>{{notice.userId.name}} {{notice.userId.last_name}}
-                    {{noticeTranslate[notice.operation]}} <a
-                    href="/{{notice.app}}/edit/{{notice.modifyId}}">
-                        {{notice.modelObjName}} 
-                    </a>    <span class="muted">{{notice.updatedAt}}</span></p>
-				</div>
-			</li>
-
-		</ul>
-	</div>
+                <div class="comment-info" ng-cloak>
+                    <h4></h4>
+                    <h5><a href="/{{notice.app}}">{{notice.userId.name}}</a></h5>
+                    <p>{{notice.userId.name}} {{notice.userId.last_name}}
+                        {{noticeTranslate[notice.operation]}} 
+                        <a href="/{{notice.app}}/edit/{{notice.modifyId}}">
+                            {{notice.modelObjName}} 
+                        </a>
+                        <span class="muted">{{notice.updatedAt}}</span>
+                    </p>
+                    <accordion close-others='false' ng-if="notice.modifications">
+                        <accordion-group heading="ver mas" style="cursor: pointer;">
+                            <div ng-repeat="changes in notice.modifications" >
+                                <p>fecha de modificacion: {{changes.updatedAt.after}}</p>
+                                <table class="table responsive" >
+                                    <thead>
+                                        <tr>
+                                            <th>Campo</th>
+                                            <th>Valor previo</th>
+                                            <th>Valor nuevo</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="(field,change) in changes"
+                                        ng-if="field!='updatedAt'">
+                                            <td>
+                                                {{field}}
+                                            </td>
+                                            <td>
+                                                {{change.before}}
+                                            </td>
+                                            <td>
+                                                {{change.after}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </accordion-group>
+                    </accordion>
+                </div>
+            </li>
+        </ul>
+    </div>
 </div>
 <!--col-md-8-->
