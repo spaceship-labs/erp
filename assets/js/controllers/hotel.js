@@ -4,13 +4,18 @@ app.controller('hotelCTL',function($scope,$http){
     $scope.company = company;
     $scope.zones = zones;
     
-
+    var block = false;
     $scope.createHotel = function(){
-        $http({method: 'POST', url: '/hotel/create',data:$scope.newHotel}).success(function (hotels){
-            $scope.hotels = hotels;
-            jQuery('#myModal').modal('hide');
-        });
-    
+    	if(!block){
+		block = true;
+		jQuery('#myModal input[type="submit"]').prop('disabled', true);
+	        $http({method: 'POST', url: '/hotel/create',data:$scope.newHotel}).success(function (hotels){
+	            $scope.hotels = hotels;
+		    jQuery('#myModal input[type="submit"]').prop('disabled', false);
+	            jQuery('#myModal').modal('hide');
+		    block = false;
+	        });
+	}
     };
     $scope.getInfo = function(hotel){
         var phones = hotel.phones ? hotel.phones.join(", ") : "";

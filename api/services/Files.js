@@ -5,7 +5,7 @@ module.exports.saveFiles = function(req,opts,cb){
 	var dirSave = __dirname+'/../../assets/uploads/'+opts.dir+'/';
 	var files = req.file && req.file('file')._files || [];
 	if(files.length){
-		req.file('file').upload({saveAs:makeFileName,dirname:dirSave},function(e,files){
+		req.file('file').upload({saveAs:makeFileName,dirname:dirSave,onProgress:(req.onProgress && req.onProgress.fileProgress || null)},function(e,files){
 			if(e) return cb(e,files);
 			var fFiles = [];
 			files.forEach(function(file){
@@ -81,3 +81,4 @@ module.exports.removeFile = function(opts,cb){
 	if(opts.file.typebase == 'image') sizes.forEach(function(size){routes.push(dirSave+size+filename);});
 	async.map(routes,fs.unlink,cb);
 }
+

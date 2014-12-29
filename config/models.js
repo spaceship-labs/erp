@@ -50,10 +50,13 @@ module.exports.models = {
   		var async = require('async');
       object = this;
   		objectFiles = object.files ? object.files : [];
+		req.onProgress = getOnProgress(req);
   		Files.saveFiles(req,opts,function(e,files){
   			if(e) return cb(e,files);
+
         object.files = objectFiles;
-        async.mapSeries(files,function(file,callback){
+        async.mapSeries(files,function(file,async_callback){
+          var callback = req.onProgress.nextElement(files,async_callback);
           objectFiles.push(file);
           opts.filename = file.filename;
           if(file.typebase == 'image')
@@ -99,7 +102,7 @@ module.exports.models = {
     },
     beforeUpdate:function(val,cb){
         if(this.tableName != 'notice'){
-            Notifications.before(val);
+            Notifications.before(val,'update');
         }
         cb();
     },
@@ -110,3 +113,33 @@ module.exports.models = {
         cb();
     }
 };
+
+function getOnProgress(req){
+    var salt = 5,
+    uid = req.param('uid'),
+    indice = 1;
+    return{
+        fileProgress:function(progress){
+            var written = progress.written,
+            total = progress.stream.byteCount*2,//time crops.
+            porcent = (written*100/total).toFixed(2); 
+            if(porcent >= salt){
+                salt += salt;
+                sails.io.sockets.emit(uid, {porcent: porcent});
+            }
+        }
+        ,nextElement:function(files,cb){ 
+            var size = files && files.length;
+            return function(err){
+                if(size){
+                    var porcent =  (50+(indice*50/size)).toFixed(2);
+                    sails.io.sockets.emit(uid, {
+                        porcent:porcent
+                    });
+                    indice++;            
+                }
+                cb(err);
+            }
+        }
+    };
+}
