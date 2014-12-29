@@ -15,7 +15,7 @@ app.controller('companyCTL',function($scope,$http){
 
     $scope.createCompany = function(newcompany){
         newcompany.users = [ user.id ];
-        $http({method: 'POST', url: '/company/create',params:newcompany}).success(function (company){
+        $http({method: 'POST', url: '/company/create',data:newcompany}).success(function (company){
             $scope.companies.push(newcompany);
             //console.log($scope.companies);
             jQuery('#companyCreate').modal('hide');

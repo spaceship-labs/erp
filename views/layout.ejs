@@ -81,7 +81,7 @@
 
     <!--SCRIPTS-->
     <script src="/js/dependencies/sails.io.js"></script>
-    <script src="/bower_components/jquery/jquery.min.js"></script>
+    <script src="/bower_components/jquery/dist/jquery.js"></script>
     <script src="/bower_components/modernizr/modernizr.js"></script>
     <script src="/bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script src="/bower_components/angular/angular.js"></script>
@@ -103,6 +103,7 @@
     <script src="/bower_components/fullcalendar/gcal.js"></script>
     <script src="/bower_components/angular-chosen-localytics/chosen.js"></script>
     <script src="/bower_components/angular-xeditable/dist/js/xeditable.js"></script>
+    <script src="/bower_components/underscore/underscore-min.js"></script>
     <script src="/js/themejs/exchange-rates.js"></script>
     <script src="/js/themejs/responsive-tables.js"></script>
     <script src="/js/app.js"></script>
@@ -119,6 +120,7 @@
     <script src="/js/directives/profileImage.js"></script>
     <script src="/js/directives/tableHelper.js"></script>
     <!--SCRIPTS END-->
+    
     <script src="/js/controllers/controller.js"></script>
    <% if(page.controller){%>
         <script src="/js/controllers/<%- page.controller -%>"></script>
@@ -130,6 +132,7 @@
         <script src="/js/controllers/<%- controllers[i] -%>"></script>
   <% }
   } %>
+
   <!--<script type="text/javascript">-->
       <!--window.onbeforeunload = function(){-->
           <!--return "test is a test";-->

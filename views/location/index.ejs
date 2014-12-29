@@ -3,8 +3,8 @@
 	window.content = <%- JSON.stringify(_content) %>;
 </script>
 <div ng-controller='locationCTL' >
-	<p><button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Nueva Ciudad</button></p>
-	<br/>
+	<!--<p><button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Nueva Ciudad</button></p>
+	<br/>-->
 	<div 
 		directory-listing 
 		objects='locations' 
@@ -12,7 +12,9 @@
 		dir='locations' 
 		edit-url='/location/edit/' 
 		get-info='getInfo'
-		name-var='name' ></div>
+		name-var='name' 
+		button-text='Nueva Ciudad'
+		></div>
 
 	<div class="clearfix"></div>
 	<div class="span6">

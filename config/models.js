@@ -73,7 +73,7 @@ module.exports.models = {
       var files = opts.files ? opts.files : [];
       files = Array.isArray(files) ? files : [files];
       async.map(files,function(file,callback){
-        opts.file = JSON.parse(file);
+        opts.file = file;
         for(var i = 0;i<object.files.length;i++){
           if(object.files[i].filename == opts.file.filename){
             object.files.splice(i,1);

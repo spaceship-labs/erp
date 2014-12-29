@@ -19,7 +19,12 @@
 	            <input type='text' ng-if='field.type == "text"' name='{{field.handle}}' class='form-control' ng-model='object[field.handle]' />
 	            <input type='password' ng-if='field.type == "password"' name='{{field.handle}}' class='form-control' ng-model='object[field.handle]' />
 	            
-	            <select ng-change='getZones()' ng-if='field.type == "select"' ng-model='object[field.handle]' ng-options="obj.id as obj.name for obj in objects[field.object]" class='form-control' ></select>
+	            <select 
+	            	ng-if='field.type == "select"'
+	            	ng-model='object[field.handle]'
+	            	ng-options="obj.id as obj.name for obj in objects[field.object]"
+	            	class='form-control' >
+	            </select>
 
 
 				<span ng-if='field.type == "money"' class="input-group">
