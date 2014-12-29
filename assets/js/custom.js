@@ -135,11 +135,11 @@ jQuery(document).ready(function(){
 			  
 	}
 	
-	// fixed right panel
-	var winSize = jQuery(window).height();
-	if(jQuery('.rightpanel').height() < winSize) {
-		jQuery('.rightpanel').height(winSize);
-	}
+	// fixed right panel TODO error here
+//	var winSize = jQuery(window).height();
+//	if(jQuery('.rightpanel').height() < winSize) {
+//		jQuery('.rightpanel').height(winSize);
+//	}
 	
 	
 	// if facebook like chat is enabled
