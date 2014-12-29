@@ -8,7 +8,6 @@
             if(!data)
                 return;
 
-            console.log(data)
             $scope.noticesN = data;
             $scope.$apply();
             $scope.noticeTranslate = {
@@ -20,7 +19,6 @@
         io.socket.on('notice',function(data){
             if(data && data.id)
                 $http.get('/notice/'+data.id).then(function(notice){
-                    console.log(notice);
                     if(notice && notice.data)
                         $scope.noticesN.unshift(notice.data)
                 });

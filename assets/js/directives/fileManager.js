@@ -1,5 +1,13 @@
 (function () {
+        io.socket.get('/notice/find',function(data){});
 	var controller = function($scope,$upload,$http,$modal){
+		var uid = Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+		io.socket.on(uid,function(data){
+			if(data)
+				$scope.loading[0]=parseFloat(data.porcent);
+		});
+
+
 		$scope.show = true;
 		$scope.selected = false;
 		$scope.format = 'all';
@@ -13,7 +21,7 @@
 			$scope.loading[0] = 0;
 			$scope.upload = $upload.upload({
                 url: $scope.addMethod,
-                data: {id: $scope.object.id},
+                data: {id: $scope.object.id,uid:uid},
                 file: $files, 	                
             }).progress(function(evt){
             	$scope.loading[0] = parseInt(100.0 * evt.loaded / evt.total);
