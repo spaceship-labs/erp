@@ -3,9 +3,14 @@ var fs = require('fs')
 //Names and Saves a File returns de filename
 module.exports.saveFiles = function(req,opts,cb){
 	var dirSave = __dirname+'/../../assets/uploads/'+opts.dir+'/';
-	var files = req.file && req.file('file')._files || [];
+	var files = req.file && req.file('file')._files || [],
+	maxBytes = 22020096;//max 21mb.
 	if(files.length){
-		req.file('file').upload({saveAs:makeFileName,dirname:dirSave,onProgress:(req.onProgress && req.onProgress.fileProgress || null)},function(e,files){
+		if(req._fileparser.form.bytesExpected>=maxBytes){
+			//cb(new Error('exceeds maxBytes')); //throw en controllers
+			cb(false,[]);
+		}
+		req.file('file').upload({saveAs:makeFileName,dirname:dirSave,onProgress:(req.onProgress && req.onProgress.fileProgress || null),maxBytes:52428800},function(e,files){
 			if(e) return cb(e,files);
 			var fFiles = [];
 			files.forEach(function(file){
