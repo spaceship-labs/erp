@@ -28,6 +28,7 @@ module.exports = {
 		var form = req.params.all();
 		form.days = [true,true,true,true,true,true,true];
 		form.name_pt = form.name_es = form.name_en = form.name_ru = form.name;
+		form.req = req;
 		Tour.create(form).exec(function(err,tour){
 			if(err) return res.json({text:err});
 			Tour.find({}).sort('name').exec(function(e,tours){
@@ -71,6 +72,7 @@ module.exports = {
 	update : function(req,res){
     	var form = req.params.all();
     	var id = form.id;
+	form.req = req;
     	if(form.days){
     		var new_days = [];
     		form.days.forEach(function(day){

@@ -77,28 +77,29 @@ var jsFilesToInject = [
 	'/bower_components/fullcalendar/fullcalendar.js',
 	'/bower_components/fullcalendar/gcal.js',
 	'/bower_components/angular-chosen-localytics/chosen.js',
-	'/bower_components/angular-xeditable/dist/js/xeditable.js',
-    '/bower_components/underscore/underscore-min.js',
-	"/js/themejs/*.js",
-	"/js/*.js",
-	'/js/directives/*.js',
-	//'/js/controllers/*.js',
-];
-
-
-// Client-side HTML templates are injected using the sources below
-// The ordering of these templates shouldn't matter.
-// (uses Grunt-style wildcard/glob/splat expressions)
-//
-// By default, Sails uses JST templates and precompiles them into
-// functions for you.  If you want to use jade, handlebars, dust, etc.,
-// with the linker, no problem-- you'll just want to make sure the precompiled
-// templates get spit out to the same file.  Be sure and check out `tasks/README.md`
-// for information on customizing and installing new tasks.
-var templateFilesToInject = [
-	'templates/**/*.html'
-];
-
+	'/bower_components/angular-xeditable/dist/js/xeditable.js',    
+	'/bower_components/moment/min/moment-with-langs.min.js',
+    '/bower_components/underscore/underscore-min.js',                  
+	"/js/themejs/*.js",                                            
+	"/js/*.js",                                                    
+	'/js/directives/*.js',                                         
+	//'/js/controllers/*.js',                                      
+];                                                                     
+                                                                       
+                                                                       
+// Client-side HTML templates are injected using the sources below     
+// The ordering of these templates shouldn't matter.                   
+// (uses Grunt-style wildcard/glob/splat expressions)                  
+//                                                                     
+// By default, Sails uses JST templates and precompiles them into      
+// functions for you.  If you want to use jade, handlebars, dust, e    tc.,
+// with the linker, no problem-- you'll just want to make sure the     precompiled
+// templates get spit out to the same file.  Be sure and check out     `tasks/README.md`
+// for information on customizing and installing new tasks.            
+var templateFilesToInject = [                                          
+	'templates/**/*.html'                                          
+];                                                                     
+                                                                       
 
 
 
