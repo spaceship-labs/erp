@@ -81,6 +81,26 @@ module.exports.content = {
 			label : 'Servicios Portugués (separar por comma)',
 			type : 'textarea',
 			handle : 'services_pt',	
+		},
+		{
+			label : 'Servicios con costo Español (separar por comma)',
+			type : 'textarea',
+			handle : 'payed_services_es',	
+		},
+		{
+			label : 'Servicios con costo Ingles (separar por comma)',
+			type : 'textarea',
+			handle : 'payed_services_en',	
+		},
+		{
+			label : 'Servicios con costo Ruso (separar por comma)',
+			type : 'textarea',
+			handle : 'payed_services_ru',	
+		},
+		{
+			label : 'Servicios con costo Portugués (separar por comma)',
+			type : 'textarea',
+			handle : 'payed_services_pt',	
 		}
 	],
 	room : [
