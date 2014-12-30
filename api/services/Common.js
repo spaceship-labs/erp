@@ -151,3 +151,45 @@ module.exports.formValidate = function(form,validate){
     }
     return form;
 };
+
+function equals(a,b){
+    var typeA = typeof(a)
+        ,typeB = typeof(b);
+    if((typeA == 'array' && typeB == 'array') || (typeA == 'object' && typeB == 'object' )){
+
+        var p;
+        for(p in a) {
+            if(typeof(b[p])=='undefined'){
+                return false;
+            }
+        }
+    
+        for(p in a){
+            if(a[p]){
+                if(typeof(a[p]) == 'object'){
+                    if(!equals(a[p],(b[p]))){
+                        return false; 
+                    }
+                }else{
+                    if(a[p] != b[p]){ 
+                        return false;
+                    }
+                }
+            }else{
+                if (b[p]){
+                    return false;
+                }
+            }
+        }
+    
+        for(p in b){
+            if(typeof(a[p])=='undefined'){
+                return false;
+            }
+        } 
+        return true;
+    }
+
+    return a==b;
+}
+module.exports.equals = equals;

@@ -23,9 +23,10 @@ app.directive('chosen',function(){
 });
 
 app.controller('currencyCTL',function($scope){
-	for(var i=0;i<preload.length;i++){
-		$scope[preload[i]] = window[preload[i]];
-	}
+	if(window.preload)
+		for(var i=0;i<preload.length;i++){
+			$scope[preload[i]] = window[preload[i]];
+		}
 	
 	charts_currencies($scope);
 
