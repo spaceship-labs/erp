@@ -1,36 +1,44 @@
 (function () {
-        io.socket.get('/notice/find',function(data){});
-	var controller = function($scope,$upload,$http,$modal){
-		var uid = Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-		io.socket.on(uid,function(data){
-			if(data)
-				$scope.loading[0]=parseFloat(data.porcent);
-		});
+    io.socket.get('/notice/find',function(data){});
+    var controller = function($scope,$upload,$http,$modal){
+        $scope.show = true;
+        $scope.selected = false;
+        $scope.format = 'all';
+        $scope.loading = [];
+        $scope.page = 0;
+        $scope.pageLength = 16;
+        $scope.object.files = $scope.object.files ? $scope.object.files : [];
+        $scope.uploadFiles = function($files){
+            $scope.object.files = $scope.object.files ? $scope.object.files : [];
+            $scope.page = Math.ceil($scope.object.files.length/$scope.pageLength) -1;
+            //$scope.loading[0] = 0;
+            $scope.uids = [];
+            $scope.loading = [];
+            $files.forEach(function(e,i){
+                var uid = Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+                $scope.uids.push(uid);
+                $scope.loading.push(0);            
+                io.socket.on(uid,function(data){
+                    var uid_index = parseInt(data.index);
+                    if(data && $scope.loading[uid_index]!=undefined)
+                        $scope.loading[uid_index]=parseFloat(data.porcent);
+                });
 
-
-		$scope.show = true;
-		$scope.selected = false;
-		$scope.format = 'all';
-		$scope.loading = [];
-		$scope.page = 0;
-		$scope.pageLength = 16;
-		$scope.object.files = $scope.object.files ? $scope.object.files : [];
-		$scope.uploadFiles = function($files){
-			$scope.object.files = $scope.object.files ? $scope.object.files : [];
-			$scope.page = Math.ceil($scope.object.files.length/$scope.pageLength) -1;
-			$scope.loading[0] = 0;
-			$scope.upload = $upload.upload({
-                url: $scope.addMethod,
-                data: {id: $scope.object.id,uid:uid},
-                file: $files, 	                
-            }).progress(function(evt){
-            	$scope.loading[0] = parseInt(100.0 * evt.loaded / evt.total);
-            }).success(function(data, status, headers, config) {
-                $scope.object.files = data.files;
-            	$scope.page = Math.ceil($scope.object.files.length/$scope.pageLength) -1;
-                $scope.loading.splice(0, 1);
+                $scope.upload = $upload.upload({
+                    url: $scope.addMethod,
+                    data: {id: $scope.object.id,uid:uid,index:i},
+                    file: e, 	                
+                }).progress(function(evt){
+                    $scope.loading[0] = parseInt(100.0 * evt.loaded / evt.total);
+                }).success(function(data, status, headers, config) {
+                    var index_uid = $scope.uids.indexOf(uid);
+                    $scope.loading.splice(index_uid,1)
+                    $scope.uids.splice(index_uid, 1);
+                    $scope.object.files = data.files;
+                    $scope.page = Math.ceil($scope.object.files.length/$scope.pageLength) -1;
+                });        
             });
-		}
+        };
 		$scope.fileFilter = function () {
 			return function(file){
 				if($scope.format == 'all'){

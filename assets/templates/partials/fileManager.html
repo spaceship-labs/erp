@@ -36,7 +36,7 @@
             >
         		<img ng-src='/uploads/{{dir}}/110x105{{file.filename}}' ng-alt='{{file.name}}' />
         	</div>
-        	<div ng-repeat='file in loading' class='loader' >
+        	<div ng-repeat='file in loading track by $index' class='loader' >
         		<img src='/images/loaders/images-cm.gif' />
         		<p>Cargando <span ng-bind='file'></span>%</p>
         	</div>
