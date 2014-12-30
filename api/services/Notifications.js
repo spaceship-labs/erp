@@ -29,17 +29,15 @@ var notification = function(type,collection,val){
                             add = true;
                         }
                     }
-
-                    if(!obj.modelObjName){
-                        obj.val.name = obj.modelObjName = notice.val.name;
-                    }
                         
                     if(add){
                         obj.modifications.unshift(changes);
                     }
                 }
-                if(add)
+                if(add){
+                    obj.modelObjName = val.name;    
                     saveAndPublish(obj);
+                }        
             });
         }else{
             saveAndPublish(obj);
