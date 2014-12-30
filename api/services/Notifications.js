@@ -21,7 +21,7 @@ var notification = function(type,collection,val){
                     add = false;
                     obj.modifications = notice.modifications || [];
                     for(var v in val){
-                        if(notice.val[v] != undefined && v!='req' && !Common.equals(notice.val[v],val[v])){
+                        if(v!='req' && !Common.equals(notice.val[v],val[v])){
                             changes[v] = {
                                 after:val[v]
                                 ,before:notice.val[v]
