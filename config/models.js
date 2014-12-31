@@ -117,6 +117,7 @@ module.exports.models = {
 function getOnProgress(req){
     var salt = 5,
     uid = req.param('uid'),
+    index = req.param('index')
     indice = 1;
     return{
         fileProgress:function(progress){
@@ -125,16 +126,18 @@ function getOnProgress(req){
             porcent = (written*100/total).toFixed(2); 
             if(porcent >= salt){
                 salt += salt;
-                sails.io.sockets.emit(uid, {porcent: porcent});
+                sails.io.sockets.emit(uid, {porcent: porcent,index:index});
             }
         }
-        ,nextElement:function(files,cb){ 
+        ,nextElement:function(files,cb){//de a 1 
             var size = files && files.length;
             return function(err){
                 if(size){
-                    var porcent =  (50+(indice*50/size)).toFixed(2);
+                    var porcent =  100;
                     sails.io.sockets.emit(uid, {
-                        porcent:porcent
+                        porcent:porcent,
+                        index:index,
+                        file:files[0]
                     });
                     indice++;            
                 }
