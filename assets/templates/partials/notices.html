@@ -21,7 +21,7 @@
                     <div class="clear"></div>
                     <accordion close-others='false' ng-if="notice.modifications">
                         <accordion-group heading="Ver más" style="cursor: pointer;">
-                            <div ng-repeat="changes in notice.modifications" >
+                            <div ng-init="changes = notice.modifications[0]" >
                                 <!--<p>Fue modificado: {{fromNow(changes.updatedAt.after)}}</p>-->
                                 <table class="table responsive" >
                                     <thead>
