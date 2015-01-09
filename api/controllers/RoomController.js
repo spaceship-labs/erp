@@ -77,7 +77,7 @@ module.exports = {
     		});
     	});
 
-    },
+    }, 
     addFiles : function(req,res){
 		form = req.params.all();
     	Room.findOne({id:form.id}).exec(function(e,room){
