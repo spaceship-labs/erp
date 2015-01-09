@@ -46,7 +46,7 @@ module.exports = {
 			},req);
 		});
 	},
-	updateIcon: function(req,res){
+	/*updateIcon: function(req,res){
 		var form = req.params.all();
 		form.req = req;
 		Common.updateIcon(req,{
@@ -64,7 +64,7 @@ module.exports = {
 				res.json(room)
 			});
 		});
-	},
+	},*/
 	update : function(req,res){
     	var form = req.params.all();
     	var id = form.id;
@@ -78,6 +78,32 @@ module.exports = {
     	});
 
     },
+    addFiles : function(req,res){
+		form = req.params.all();
+    	Room.findOne({id:form.id}).exec(function(e,room){
+    		if(e) throw(e);
+    		room.addFiles(req,{
+    			dir : 'rooms/gallery',
+    			profile: 'gallery'
+    		},function(e,room){
+    			if(e) throw(e);
+    			res.json(room);
+    		});
+    	});
+	},
+	removeFiles : function(req,res){
+		form = req.params.all();
+		Room.findOne({id:form.id}).exec(function(e,room){
+			room.removeFiles(req,{
+				dir : 'rooms/gallery',
+				profile : 'gallery',
+				files : form.removeFiles,
+			},function(e,room){
+				if(e) throw(e);
+				res.json(room);
+			})
+		});
+	},
     updateIcon: function(req,res){
     	var form = req.params.all();
 		Room.updateAvatar(req,{
@@ -89,5 +115,4 @@ module.exports = {
 			res.json(room);
 		});
 	}
-
 };
