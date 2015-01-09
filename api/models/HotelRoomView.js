@@ -8,7 +8,10 @@
 module.exports = {
 
   attributes: {
-
+  	rooms : {
+  		collection : 'room',
+  		via : 'views',
+  	}
   }
 };
 

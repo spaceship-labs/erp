@@ -127,9 +127,10 @@ module.exports.content = {
 		},		
 		{
 			label : 'Vista',
-			type : 'select',
-			handle : 'view',
+			type : 'multi-select',
+			handle : 'views',
 			object : 'views',
+			removeAction : '/hotel/removeView'
 		},
 		{
 			label : 'PAX',

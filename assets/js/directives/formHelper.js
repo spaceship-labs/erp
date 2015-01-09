@@ -20,7 +20,16 @@
             else
                 $scope.saveClass = 'fa-check';
         };
+        $scope.removeRel = function(field,object){
+            var data = {
+                obj : $scope.object.id,
+                rel : object.id,
+            }
+            $http({method:'POST',url:field.removeAction,data:data}).success(function (obj){
+                $scope.object[field.handle] = obj[field.handle];
+            });
 
+        }
         $scope.save = function(){
             var submitObject =  $scope.object ? {id:$scope.object.id} : {};
             var restrictArray = $scope.restrict ? $scope.restrict.split(',') : [];

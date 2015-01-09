@@ -1,7 +1,6 @@
 <li class="right">
     <div class="userloggedinfo">
-    	<%var icon = req.user.icon?"/uploads/users/80x80"+req.user.icon.filename:"http://placehold.it/80x80"
-	%>
+    	<%var icon = req.user.icon?"/uploads/users/80x80"+req.user.icon.filename:"http://placehold.it/80x80" %>
         <img src="<%=icon%>" alt="" />
         <div class="userinfo">
             <h5><%- req.user.name %><small>- <%-req.user.email%></small></h5>

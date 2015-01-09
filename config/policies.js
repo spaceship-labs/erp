@@ -33,7 +33,7 @@ module.exports.policies = {
   }
   , main:{
     select_company:true
-  }
+  },
 
   /*
 	// Here's an example of adding some policies to a controller

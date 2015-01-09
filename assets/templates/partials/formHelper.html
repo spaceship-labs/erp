@@ -35,10 +35,13 @@
 				
 				<datepicker ng-if='field.type == "date"' ng-model="object[field.handle]" show-weeks="true" class="well well-sm"></datepicker>
 
+				<span ng-if='field.type == "multi-select"'>
+					<span class='multi-tag' ng-repeat='obj in object[field.handle]'> {{obj.name}} <a href='' ng-click='removeRel(field,obj)'> x </a></span>
+				</span>
 				<select
 					chosen
 					multiple
-					ng-options='obj as obj for obj in objects[field.object]'
+					ng-options='obj as obj.name for obj in objects[field.object]'
 					ng-model='object[field.handle]'
 					ng-if='field.type == "multi-select"' ></select>
 

@@ -35,6 +35,23 @@ module.exports = {
 		});
 		
 	},	
+	destroy : function(req,res){
+		Hotel.destroy({id:req.params.id}).exec(function(e,r){
+			if(e) throw(e);
+			res.json(r);
+		})
+	},
+	removeView : function(req,res){
+		var params = req.params.all();
+		Room.findOne({id:params.obj}).exec(function(e,room){
+			if(e) throw(e);
+			room.views.remove(params.rel);
+			room.save(function(e,room){
+				if(e) throw(e);
+				res.json(room)
+			});
+		})
+	},
     edit : function(req,res){
     	if(req.params.id){
 	    	Hotel.findOne(req.params.id).populate('rooms').exec(function(e,hotel){

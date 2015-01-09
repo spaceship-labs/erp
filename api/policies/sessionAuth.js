@@ -17,6 +17,10 @@ module.exports = function(req, res, next) {
         if (req.options.controller != 'home' && req.options.controller != 'template' && !getPermissionByControllerAction(select_company,req.user,req.options.controller,req.options.action)) {
             return res.forbidden();
         }
+        if(req.method == 'DELETE'){
+            var params = req.params.all()
+            //todo si tienes password checar y dar permiso si no no
+        }
 
         return next();
 	}else{

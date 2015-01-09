@@ -355,9 +355,12 @@ color: #fff;
 .ng-calendar-line.color9{border-bottom:1px solid #FF004A!important};
 
 
+/*Form Helper*/
+.ng-form-helper textarea{height:135px;}
+.ng-form-helper .multi-tag{display:block;float:left;padding:10px 10px 10px 0;}
+.ng-form-helper .multi-tag a{display:block;float:right;margin:0 0 0 4px;font-size:14px;}
 
 .btn { text-shadow: none !important; }
-
 .page-description { color: #4DB248;} 
 
 /*delete-button styles*/
@@ -366,21 +369,15 @@ color: #fff;
 
 
 
-
-/*Form Helper*/
-.ng-form-helper textarea{height:135px;}
 /*delete-overlay*/
-.overlay {display: table; position:fixed; width:100%; height:100%; top:0; left:0; margin:0 auto; background-color: rgba(0,0,70,.8);}
-canvas.overlay{background-color:transparent;}
-.close-war button{position:absolute; top:50px; right:50px; height: 50px; width: 50px; color: white; font-size: 40px; background-color: rgba(0,0,70,.0); border:0; }
-
-.text-war {display:table; margin:0 auto; height: 55px; width: 500px; position:absolute; top:180px; right:454px; color: white; font-size: 30px; font-family: 'Myriad-Pro-Regular'; }
-.text-war p{display: table-cell; text-align: center; vertical-align: middle; }
-
-.img-circlepicture{margin-bottom:2px ; text-align:center; position: absolute; top:240px; left:639px; width: 126px; height:126px; padding: 5px;}
-.img-circlepicture .imgn{position: relative; display:block; width: 116px; height:116px; border-radius:50%; padding:2px; background-color: white; }
-
-.text-log {height: 43px; width: 350px; margin:0 auto; position:absolute; top:375px; left:527px; color: white; font-size: 24px; font-family: 'Myriad-Pro-Regular'; display:table; }
-.text-log p{display: table-cell; text-align: center; vertical-align: middle; }
-
-.input-password input{position:absolute; width: 410px; height:67px; font-family: 'Myriad-Pro-Regular'; font-size: 18px; text-align:center; top:428px; left:498px; margin:0 auto; font-weight: bold;}
+.ng-delete .overlay {display: table; position:fixed; width:100%; height:100%; top:0; left:0; margin:0 auto; background-color: rgba(0,0,70,.8);}
+.ng-delete canvas.overlay{background-color:transparent;}
+.ng-delete .close-war button{height: 50px; width: 50px; color: white; font-size: 40px; background-color: rgba(0,0,70,.0); border:0;position:absolute;right:10px;top:10px;}
+.ng-delete .content{width:550px;height:300px;position:absolute;left:50%;margin-left:-200px;top:50%;margin-top:-150px;}
+.ng-delete .content .text-war {display:table; margin:0 auto; width:100%;text-align:center;height: 55px; color: white; font-size: 30px; font-family: 'Myriad-Pro-Regular'; }
+.ng-delete .content .text-war p{display: table-cell; text-align: center; vertical-align: middle; }
+.ng-delete .content .img-circlepicture{margin-bottom:2px ; text-align:center; width: 126px; height:126px; padding: 5px;margin:0 auto;}
+.ng-delete .content .img-circlepicture img{display:block; width: 116px; height:116px; border-radius:50%; padding:2px; background-color: white; }
+.ng-delete .content .text-log {height: 39px; width:100%; margin:0 auto;color: white; font-size: 20px; font-family: 'Myriad-Pro-Regular'; display:table; }
+.ng-delete .content .text-log p{display: table-cell; text-align: center; vertical-align: middle; }
+.ng-delete .content .input-password input{ padding:10px 12px;width: 410px; line-height:29px; font-family: 'Myriad-Pro-Regular'; font-size: 16px; margin:0 auto; font-weight: bold;display:block;border:none;}
