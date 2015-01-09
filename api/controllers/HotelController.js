@@ -12,23 +12,27 @@ module.exports = {
 			Location.find().sort('name').exec(function(e,locations){
 				if(e) throw(e);
 				HotelCategory.find().sort('name').exec(function(e,categories){
-					hotels = formatHotels(hotels);
-					Common.view(res.view,{
-						hotels:hotels,
-						locations:locations,
-						zones:[],
-						categories : categories,
-						page:{
-							name:'Hoteles'
-							,description: 'Administracion de contenido hoteles'
-							,icon:'fa fa-building'		
-							,controller : 'hotel.js'
-								
-						},
-						breadcrumb : [
-							{label : 'Hoteles'}
-						]
-					},req);
+					if(e) throw(e);					
+					FoodScheme.find().sort('name').exec(function(e,foodSchemes){
+						hotels = formatHotels(hotels);
+						Common.view(res.view,{
+							hotels:hotels,
+							locations:locations,
+							zones:[],
+							categories : categories,
+							foodSchemes : foodSchemes,
+							page:{
+								name:'Hoteles'
+								,description: 'Administracion de contenido hoteles'
+								,icon:'fa fa-building'		
+								,controller : 'hotel.js'
+									
+							},
+							breadcrumb : [
+								{label : 'Hoteles'}
+							]
+						},req);
+					});
 				});
 				
 			});
@@ -52,6 +56,17 @@ module.exports = {
 			});
 		})
 	},
+	removeFoodScheme : function(req,res){
+		var params = req.params.all();
+		Hotel.findOne({id:params.obj}).exec(function(e,hotel){
+			if(e) throw(e);
+			hotel.foodSchemes.remove(params.rel);
+			hotel.save(function(e,hotel){
+				if(e) throw(e);
+				res.json(hotel)
+			});
+		});
+	},
     edit : function(req,res){
     	if(req.params.id){
 	    	Hotel.findOne(req.params.id).populate('rooms').exec(function(e,hotel){
@@ -60,23 +75,26 @@ module.exports = {
 	    		Location.find().sort('name').exec(function(e,locations){
 	    			SeasonScheme.find().sort('name').exec(function(e,schemes){
 	    				Zone.find({ 'location' : hotel.location }).exec(function(e,zones){
-	    					Common.view(res.view,{
-								hotel:hotel,
-								locations:locations,
-								schemes:schemes,
-								zones:zones,
-								_content:sails.config.content,
-								page:{
-									saveButton : true,
-									name : hotel.name,
-									icon : 'fa fa-building',		
-									controller : 'hotel.js',			
-								},
-								breadcrumb : [
-									{label : 'Hoteles', url : '/hotel/'},
-									{label : hotel.name}
-								]
-							},req);
+	    					FoodScheme.find().sort('name').exec(function(e,foodSchemes){
+		    					Common.view(res.view,{
+									hotel:hotel,
+									locations:locations,
+									schemes:schemes,
+									zones:zones,
+									foodSchemes:foodSchemes,
+									_content:sails.config.content,
+									page:{
+										saveButton : true,
+										name : hotel.name,
+										icon : 'fa fa-building',		
+										controller : 'hotel.js',			
+									},
+									breadcrumb : [
+										{label : 'Hoteles', url : '/hotel/'},
+										{label : hotel.name}
+									]
+								},req);
+	    					});
 	    				});
 					});
 				});

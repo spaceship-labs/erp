@@ -56,6 +56,7 @@ app.controller('hotelEditCTL',function($scope,$upload,$http){
     $scope.locations = locations;
     $scope.zones = zones;
     $scope.schemes = schemes;
+    $scope.foodSchemes = foodSchemes;
     $scope.content = content;
     $scope.showRoomForm = false;
     $scope.newRoomClass = 'fa-plus';

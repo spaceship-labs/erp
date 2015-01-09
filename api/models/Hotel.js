@@ -18,6 +18,10 @@ module.exports = {
 			collection : 'room',
 			via: 'hotel',
 		},
+		foodSchemes : {
+			collection : 'foodScheme',
+			via : 'hotels'
+		},
 		seasonScheme : {
 			model : 'seasonScheme',
 			via : 'hotels',

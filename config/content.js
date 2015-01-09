@@ -40,6 +40,13 @@ module.exports.content = {
 			handle : 'seasonScheme',
 			object : 'schemes',
 		},
+		{
+			label : 'Esquemas de Alimentacion',
+			type : 'multi-select',
+			handle : 'foodSchemes',
+			object : 'foodSchemes',
+			removeAction : '/hotel/removeFoodScheme',
+		},
 	],
 	hotelLangs : [
 		{

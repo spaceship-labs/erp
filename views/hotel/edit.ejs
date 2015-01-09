@@ -3,8 +3,8 @@
     window.locations = <%- JSON.stringify(locations) %>;
     window.zones = <%- JSON.stringify(zones) %>;
     window.schemes = <%- JSON.stringify(schemes) %>;
+    window.foodSchemes = <%- JSON.stringify(foodSchemes) %>;
     window.userID = <%- JSON.stringify(req.user.id) %>;
-    console.log(hotel);
 </script>
 <div ng-controller='hotelEditCTL'>
     <div class='row-fluid'>
@@ -23,7 +23,7 @@
                 object='hotel' 
                 action='/hotel/update' 
                 form-title='INFORMACIÓN BASICA'
-                objects='{locations:locations,schemes:schemes,zones:zones,categories:categories}'
+                objects='{locations:locations,schemes:schemes,zones:zones,categories:categories,foodSchemes:foodSchemes}'
                 >
             </div> 
         </div>
