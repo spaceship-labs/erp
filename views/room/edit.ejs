@@ -24,7 +24,7 @@
                 >
             </div>                  
         </div>
-        <div class="span7">        
+        <div class="span7">
             <div form-helper 
                 fields='content.room' 
                 object='room' 
@@ -33,7 +33,12 @@
                 currency='company.base_currency'
                 objects='{views:views}'
                 >
-            </div>        
+            </div>
+        </div>
+    </div>
+    <div class='row-fluid'>
+        <div class='span12'>
+            <div file-manager object='room' add-method='/room/addFiles' remove-method='/room/removeFiles' dir='rooms/gallery' ></div>
         </div>
     </div>
     <div class='row-fluid'>
