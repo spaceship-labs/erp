@@ -19,7 +19,6 @@ app.controller('roomEditCTL',function($scope,$upload,$http){
     $scope.hotel.foodSchemes.forEach(function(scheme){
         $scope.room.fees[scheme.id] = $scope.room.fees[scheme.id] || {};
     });
-    console.log($scope.room.fees);
 
     $scope.seasonFields = [];
     if($scope.scheme && $scope.scheme.seasons){

@@ -40,7 +40,6 @@
                     }
                 }
                 if (!isRestricted) {
-                    console.log($scope.object);
                     submitObject[field.handle] = $scope.object[field.handle];
                 }
             });
