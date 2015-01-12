@@ -15,14 +15,34 @@
                 image-attr='icon' 
                 dir='rooms'>
             </div>
-            <div form-helper 
-                fields='seasonFields' 
-                object='room.fees' 
-                form-save='saveFees' 
-                form-title='Tarifas por temporada'
-                currency='company.base_currency'
-                >
-            </div>                  
+            <div class='fee-selector'>
+                <div class="tabs">
+                    <a class='btn alertboxbutton' ng-click='payScheme = "base"' ><small>Base</small></a>
+                    <a class='btn alertboxbutton' ng-repeat='scheme in hotel.foodSchemes' ng-click='selectScheme(scheme)'>
+                        <small ng-bind='scheme.name' ></small>
+                    </a>                    
+                </div>
+                <div form-helper 
+                    fields='seasonFields' 
+                    object='room.fees.base' 
+                    form-save='saveFees' 
+                    form-title='Tarifas por temporada'
+                    currency='company.base_currency'
+                    ng-show='payScheme == "base"'
+                    >
+                </div>
+
+                <div form-helper 
+                    ng-repeat='scheme in hotel.foodSchemes'
+                    fields='seasonFields' 
+                    object='room.fees[scheme.id]' 
+                    form-save='saveFees' 
+                    form-title='Tarifas por temporada : {{scheme.name}}'
+                    currency='company.base_currency'
+                    ng-show='payScheme == scheme.id'
+                    >
+                </div>                     
+            </div>
         </div>
         <div class="span7">
             <div form-helper 

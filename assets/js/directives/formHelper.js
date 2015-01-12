@@ -5,7 +5,6 @@
         $scope.ad = 1;
         //$scope.saveText = '';
         $scope.object = $scope.object || {};
-        console.log($scope.objects);
         $scope.formClass = $scope.modal ? '' : 'widgetcontent nopadding';
         $scope.changed = false;
 
@@ -41,6 +40,7 @@
                     }
                 }
                 if (!isRestricted) {
+                    console.log($scope.object);
                     submitObject[field.handle] = $scope.object[field.handle];
                 }
             });

@@ -10,7 +10,7 @@ module.exports = {
 	edit : function(req,res){
 		var reads = [
 			function(cb){Room.findOne(req.params.id).populate('hotel').exec(cb)},
-			function(room,cb){Hotel.findOne(room.hotel.id).populate('seasonScheme').exec(function(e,hotel){cb(e,room,hotel)})},
+			function(room,cb){Hotel.findOne(room.hotel.id).populate('seasonScheme').populate('foodSchemes').exec(function(e,hotel){cb(e,room,hotel)})},
 			function(room,hotel,cb){HotelRoomView.find({}).exec(function(e,views){cb(e,room,hotel,views)})},
 			function(room,hotel,views,cb){
 				if(hotel.seasonScheme){
