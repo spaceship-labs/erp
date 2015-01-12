@@ -31,6 +31,7 @@
         }
         $scope.save = function(){
             var submitObject =  $scope.object ? {id:$scope.object.id} : {};
+            console.log(submitObject,$scope.object);
             var restrictArray = $scope.restrict ? $scope.restrict.split(',') : [];
             $scope.fields.forEach(function(field){
                 var isRestricted = false;
