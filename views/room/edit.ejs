@@ -29,6 +29,7 @@
                     form-title='Tarifas por temporada'
                     currency='company.base_currency'
                     ng-show='payScheme == "base"'
+                    process-fields = 'false'
                     >
                 </div>
 
@@ -40,6 +41,7 @@
                     form-title='Tarifas por temporada : {{scheme.name}}'
                     currency='company.base_currency'
                     ng-show='payScheme == scheme.id'
+                    process-fields = 'false'
                     >
                 </div>                     
             </div>

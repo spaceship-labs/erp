@@ -15,11 +15,13 @@ app.controller('roomEditCTL',function($scope,$upload,$http){
     $scope.views = views;
 
     //Inicializa el arreglo de precios para cada categoria si no hay ninguno aun para evitar errores con formHelper
-    $scope.room.fees = $scope.room.fees || {base:{}};
-    $scope.hotel.foodSchemes.forEach(function(scheme){
-        $scope.room.fees[scheme.id] = $scope.room.fees[scheme.id] || {};
+    $scope.$watch('room',function(){
+        $scope.room.fees = $scope.room.fees || {base:{}};
+        $scope.hotel.foodSchemes.forEach(function(scheme){
+            $scope.room.fees[scheme.id] = $scope.room.fees[scheme.id] || {};
+        });    
     });
-
+    
     $scope.seasonFields = [];
     if($scope.scheme && $scope.scheme.seasons){
         $scope.scheme.seasons.forEach(function(season){
@@ -36,9 +38,9 @@ app.controller('roomEditCTL',function($scope,$upload,$http){
     //if($scope.room.fees) $scope.room.fees = JSON.parse($scope.room.fees);
     $scope.saveFees = function(fees,cb){
         var object = {id:room.id,fees:$scope.room.fees};
+        console.log($scope.room.fees);
           $http({method: 'POST', url: '/room/update',params:object}).success(function (room){
             $scope.room.fees = room.fees;
-            jQuery('#myModal').modal('hide');
             cb();   
         });    
     };  

@@ -7,6 +7,7 @@
         $scope.object = $scope.object || {};
         $scope.formClass = $scope.modal ? '' : 'widgetcontent nopadding';
         $scope.changed = false;
+        $scope.processFields = $scope.processFields || true;
 
         //console.log(testForm);
         /*$scope.$watch('form',function(formObj){
@@ -31,7 +32,6 @@
         }
         $scope.save = function(){
             var submitObject =  $scope.object ? {id:$scope.object.id} : {};
-            console.log(submitObject,$scope.object);
             var restrictArray = $scope.restrict ? $scope.restrict.split(',') : [];
             $scope.fields.forEach(function(field){
                 var isRestricted = false;
@@ -49,6 +49,7 @@
                     submitObject[field.key] = field.value;
                 });
             }
+            
             $scope.saveClass = 'fa-upload';
             var saveMethod = $scope.formSave();
             if(saveMethod){
@@ -98,7 +99,7 @@
                 objects : '=',
                 currency : '=',
                 restrict : '@',
-                hiddenFields : '='
+                hiddenFields : '=',
         	},
         	templateUrl : '/template/find/formHelper.html'
         };
