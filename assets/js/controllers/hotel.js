@@ -44,6 +44,14 @@ app.controller('hotelEditCTL',function($scope,$upload,$http){
         {id:6,name:'6 estrellas'},
     ];
 
+    $scope.location = {
+        address : $scope.hotel.address+', '+$scope.hotel.location.name || $scope.hotel.location.name,
+        country : $scope.hotel.location.country,
+        zipcode : $scope.hotel.zipcode,
+        latitude : $scope.hotel.latitude,
+        longitude : $scope.hotel.longitude,
+    };
+
     $http({method:'POST',url:'/hotel/find/'+hotel.id}).success(function(hotel){
         hotel.location = hotel.location ? hotel.location.id : null;
         hotel.seasonScheme = hotel.seasonScheme ? hotel.seasonScheme.id : null;
@@ -70,6 +78,18 @@ app.controller('hotelEditCTL',function($scope,$upload,$http){
     };
 
     
+    $scope.saveGeo = function(marker,cb){
+        var obj = {
+            id : hotel.id,
+            latitude : marker.lat,
+            longitude : marker.lng,
+        }
+        $http({method: 'POST', url: '/hotel/update',data:obj}).success(function(hotel){
+            $scope.hotel.latitude = hotel.latitude;
+            $scope.hotel.longitude = hotel.longitude;
+            cb(null,hotel);
+        });
+    }
     $scope.toggleRoomForm = function(){
         $scope.showRoomForm = !$scope.showRoomForm;
         $scope.newRoomClass = $scope.showRoomForm ? 'fa-minus' : 'fa-plus';

@@ -9,13 +9,9 @@
 <div ng-controller='hotelEditCTL'>
     <div class='row-fluid'>
         <div class="span4 profile-left profileEdit">
-        	<div class="alert alert-block unseen">
-        		<button data-dismiss="alert" class="close" type="button">×</button>
-        		<h4>Mensaje</h4>
-        			<p style="margin: 8px 0">El usuario se ha actualizado exitosamente</p>
-        		</div>
-                
-                <div profile-image object='hotel' update-method='/hotel/updateIcon' delete-method='/hotel/destroyIcon' image-attr='icon' dir='hotels' ></div>
+        	<div profile-image object='hotel' update-method='/hotel/updateIcon' delete-method='/hotel/destroyIcon' image-attr='icon' dir='hotels' ></div>
+
+            <div geo-selector location='location' address='hotel.address' save-function='saveGeo'></div>
         </div>
         <div class="span8">        
             <div form-helper 

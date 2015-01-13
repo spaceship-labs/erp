@@ -85,6 +85,20 @@ module.exports = {
 		}else
 			res.json(false);
 	}
+	,geocode : function(req,res){
+		var params = req.params.all();
+		Geocoding.geocode(params.location,function(e,results){
+			if(e) console.log(e);
+			res.json(results || []);
+		});
+	}
+	,reverseGeocode : function(req,res){
+		var params = req.params.all();
+		Geocoding.reverseGeocode(params.location,function(e,results){
+			if(e) console.log(e);
+			res.json(results || []);
+		});
+	}
 };
 
 function getCompanies(id,cb){

@@ -373,9 +373,19 @@ module.exports.content = {
 			handle : 'name',
 		},
 		{
-			label : 'Tiítulo URL',
+			label : 'Título URL',
 			type : 'text',
 			handle : 'url_title'
+		},
+		{
+			label : 'Código Postal',
+			type : 'text',
+			handle : 'zipcode'
+		},
+		{
+			label : 'País',
+			type : 'text',
+			handle : 'country'
 		}
 	],
 	locationTexts : [
