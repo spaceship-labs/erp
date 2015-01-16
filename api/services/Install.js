@@ -30,9 +30,7 @@ module.exports.preloadAlt = function(){
 
 module.exports.loadObjects = function(params,callback){
 	//Ejecuta findOrCreate asincronamente y manda a llamar el callback cuando termina de procesar todos los objetos
-	async.map(params.objects, (function(object,callback) {
-		params.model.findOrCreate(object, object).exec(function(err,params){
-			console.log(params);
-		});
+	async.map(params.objects, (function(object,cb) {
+		params.model.findOrCreate(object, object).exec(cb);
 	}),callback);
 }
