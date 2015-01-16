@@ -2,9 +2,9 @@ module.exports.preload = function(){
 
 	//Ejecuta la funcion loadObjects en serie;
 	async.series([
-		function(cb){Install.loadObjects({model:Currency,objects:sails.config.currencies})},
-		function(cb){Install.loadObjects({model:FoodScheme,objects:sails.config.foodschemes})},
-		function(cb){Install.loadObjects({model:HotelRoomView,objects:sails.config.hotelroomviews})},
+		function(cb){Install.loadObjects({model:Currency,objects:sails.config.currencies},cb)},
+		function(cb){Install.loadObjects({model:FoodScheme,objects:sails.config.foodschemes},cb)},
+		function(cb){Install.loadObjects({model:HotelRoomView,objects:sails.config.hotelroomviews},cb)},
 	],function(e,results){
 		//Esta funcion se llama cuando se termina todo
 		if(e) throw(e);
