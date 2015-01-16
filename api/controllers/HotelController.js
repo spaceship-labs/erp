@@ -7,7 +7,7 @@
 var moment = require('moment');
 module.exports = {
 	index : function(req,res){
-		Hotel.find().sort('name').exec(function(e,hotels){
+		Hotel.find().sort('name DESC').exec(function(e,hotels){
 			if(e) throw(e);
 			Location.find().sort('name').exec(function(e,locations){
 				if(e) throw(e);
