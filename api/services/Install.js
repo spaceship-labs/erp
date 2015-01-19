@@ -9,7 +9,7 @@ module.exports.preload = function(callback){
 	
 };
 
-module.exports.preloadAlt = function(){
+module.exports.preloadAlt = function(callback){
 	//Otra manera de hacer lo mismo de preload
 	var params = [
 		{model:Currency,objects:sails.config.currencies},
@@ -21,6 +21,7 @@ module.exports.preloadAlt = function(){
 		//Esta funcion se llama cuando se termina todo
 		if(e) throw(e);
 		console.log(results);
+		callback(e,results);
 	});
 }
 

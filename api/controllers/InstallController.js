@@ -7,7 +7,8 @@
 
 module.exports = {
 	index: function(req,res){
-		Install.preload(function(e,results){
+		Install.preloadAlt(function(e,results){
+			console.log(results);
 			Currency.find().exec(function(err,currencies){
 				res.view({
 					layout:null,
