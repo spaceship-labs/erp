@@ -59,6 +59,7 @@ var jsFilesToInject = [
     "/bower_components/modernizr/modernizr.js",
     "/bower_components/jquery-browser-detection/src/browser-detection.js",
 	"/bower_components/bootstrap/dist/js/bootstrap.js",
+	'/bower_components/ng-file-upload/angular-file-upload-html5-shim.min.js',
 	"/bower_components/angular/angular.js",
 	"/bower_components/ng-file-upload/angular-file-upload.js",
 	"/bower_components/chosen/chosen.jquery.min.js",
