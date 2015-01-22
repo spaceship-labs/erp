@@ -66,5 +66,12 @@ module.exports = {
 			res.json(zones);
 		});
 	},
+	getAirport : function(req,res){
+		var params = req.params.all();
+		Airport.find({ 'location' : params.id }).exec(function(e,airports){ 
+			if(e) throw(e);
+			res.json(airports);
+		});
+	}
 };
 

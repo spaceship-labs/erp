@@ -14,24 +14,24 @@ module.exports = {
 			},function(companies_,cb){
 				Airport.find().populate('location').exec(function(e,airports){ cb(e,companies_,airports) })
 			},function(companies_,airports,cb){
-				Service.find().exec(function(e,services){ cb(e,companies_,airports,services) })
-			},function(companies_,airports,services,cb){
-				Zone.find().exec(function(e,zones){ cb(e,companies_,airports,services,zones) })
-			},function(companies_,airports,services,zones,cb){
+				Transfer.find().exec(function(e,transfers){ cb(e,companies_,airports,transfers) })
+			},function(companies_,airports,transfers,cb){
+				Zone.find().exec(function(e,zones){ cb(e,companies_,airports,transfers,zones) })
+			},function(companies_,airports,transfers,zones,cb){
 				//,'company':companies_[0].id
-				Price.find({ 'service':services[0].id,'airport':airports[0].id })
+				Price.find({ 'transfer':transfers[0].id,'airport':airports[0].id })
 					.populate('zone')
-					.exec(function(e,prices){ cb(e,companies_,airports,services,zones,prices) })
+					.exec(function(e,prices){ cb(e,companies_,airports,transfers,zones,prices) })
 			},
 		];
-		async.waterfall(reads,function(e,companies_,airports,services,zones,prices){
+		async.waterfall(reads,function(e,companies_,airports,transfers,zones,prices){
 			if(e) throw(e);
-			//Price.find({ 'service':services[0]._id , 'company':companies_[0]._id }).exec(function(e,prices){
+			//Price.find({ 'transfer':transfers[0]._id , 'company':companies_[0]._id }).exec(function(e,prices){
 				companies_ = addPricesOnCompany( companies_ , prices );
 				Common.view(res.view,{
 					prices:prices,
 					airports : airports,
-					services:services,
+					transfers:transfers,
 					companies_:companies_,
 					zones:zones,
 					_content:sails.config.content,
@@ -47,7 +47,7 @@ module.exports = {
 	getPrices : function(req,res){
 		condiciones = req.params.all();
 		//,'company':condiciones.company
-		Price.find({ 'service':condiciones.service,'airport':condiciones.airport })
+		Price.find({ 'transfer':condiciones.transfer,'airport':condiciones.airport })
 			.populate('zone')
 			.exec(function(e,prices){ 
 				if(e) throw(e);

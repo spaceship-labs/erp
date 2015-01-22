@@ -177,14 +177,23 @@ module.exports.apps = [
             }
         ]
     },
-    /* services */
+    /* transfers */
     {
-        name : 'services',
+        name : 'transfers',
         label : 'Servicios',
         icon : 'fa-clipboard',
         actions : [
             {
-                label : 'tours',
+                label : 'Reservaciones',
+                icon : 'fa-car',
+                url : '/order/',
+                handle : 'orders',
+                showInMenu : true,
+                controller : 'order',
+                action : 'index'
+            },
+            {
+                label : 'Tours',
                 icon : 'fa-compass',
                 url : '/tour/',
                 handle : 'tours',
@@ -193,12 +202,12 @@ module.exports.apps = [
                 action : 'index'
             },
             {
-                label : 'Servicios',
+                label : 'Traslados',
                 icon : 'fa-car',
-                url : '/service/',
-                handle : 'service',
+                url : '/transfer/',
+                handle : 'transfer',
                 showInMenu : true,
-                controller : 'service',
+                controller : 'transfer',
                 action : 'index'
             },
             {

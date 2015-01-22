@@ -1,0 +1,124 @@
+<div class='row-fluid'>
+    <div class='span6'>
+        <h4 class="widgettitle">Información del servicio</h4>
+        <div class='widgetcontent nopadding'>
+            <p>
+                <label> Hotel</label>
+                <span class='field'><select chosen ng-options='obj as obj.name for obj in hotels track by obj.id' ng-change="getAirports()" ng-model='transfer.hotel' ></select></span>
+            </p>
+            <p>
+                <label> Aeropuerto</label>
+                <span class='field'><select ng-change='updatePrice()' ng-options='obj as obj.name for obj in airports track by obj.id' ng-model='transfer.airport' ></select></span>
+            </p>
+            <p>
+                <label> Servicio</label>
+                <span class='field'><select ng-change='updatePrice()' ng-options='obj as obj.name for obj in transfers track by obj.id' ng-model='transfer.transfer' ></select></span>
+            </p>
+            <p>
+                <label> Estado</label>
+                <span class='field'><select ng-options='obj as obj.name for obj in hrevState' ng-model='transfer.state' ></select></span>
+            </p>
+            <p>
+                <label> Método de pago</label>
+                <span class='field'><select ng-options='obj as obj.name for obj in hrevPayment' ng-model='transfer.payment_method' ></select></span>
+            </p>
+            <p ng-show="transfer.payment_method.handle=='creditcard'">
+                <label> Código de autorización</label>
+                <span class='field'><input type='text' name='autorization_code' ng-model="transfer.autorization_code" /></span>
+            </p>
+        </div>
+    </div>
+    <div class='span6'>
+        <h4 class="widgettitle">Información del servicio</h4>
+        <div class='widgetcontent nopadding'>
+            <p>
+                <label> PAX</label>
+                <span class='field'><input ng-change='updatePrice()' type='text' name='pax' ng-model="transfer.pax" /></span>
+            </p>
+            <p>
+                <label> Origen del viaje</label>
+                <span class='field'>
+                    <span class="radio">
+                        <input ng-change='updateDatesFormat()' ng-model="transfer.origin" type="radio" name="origin" value="hotel" checked> Hotel
+                    </span>
+                    <span class="radio">
+                        <input ng-change='updateDatesFormat()' ng-model="transfer.origin" type="radio" name="origin" value="airport"> Aeropuerto
+                    </span>
+                </span>
+            </p>
+            <p>
+                <label> Tipo de viaje</label>
+                <span class='field'>
+                    <span class="radio">
+                        <input ng-change='updateDatesFormat()' ng-model="transfer.type" type="radio" name="transtype" value="round_trip"> Round trip
+                    </span>
+                    <span class="radio">
+                        <input ng-change='updateDatesFormat()' ng-model="transfer.type" type="radio" name="transtype" value="one_way" checked> One way
+                    </span>
+                </span>
+            </p>
+            <p>
+                <label> Tarifa</label>
+                <span class='field'><input type='text' ng-model="transfer.fee" name='fee' /></span>
+            </p>
+        </div>
+    </div>
+</div>
+<div class='row-fluid'>
+    <div class='span6 dtfa-container {{dtfa[0]?"":"disabled"}}'>
+        <h4 class="widgettitle">Vuelo y fecha de llegada</h4>
+        <div class='widgetcontent nopadding'>
+            <p>
+                <label>Fecha de llegada</label>
+                <span class='field'>
+                    <span class='input-group calendar-container'>
+                        <input is-open="open[0]" ng-model='transfer.arrival_date' datepicker-popup />
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click="open($event,0)"><i class="fa fa-calendar"></i></button>
+                        </span>
+                    </span>
+                </span>
+            </p>
+            <p>
+                <label> Vuelo de llegada</label>
+                <span class='field'><input ng-model="transfer.arrival_fly" type='text' name='arrival_fly' /></span>
+            </p>
+            <p>
+                <label> Hora de llegada</label>
+                <span class='field'><timepicker ng-model="transfer.arrival_time" ng-change="" hour-step="1" minute-step="1" show-meridian="true"></timepicker></span>
+            </p>
+            <p>
+                <label> Pickup time</label>
+                <span class='field'><timepicker ng-model="transfer.arrivalpickup_time" ng-change="" hour-step="1" minute-step="1" show-meridian="true"></timepicker></span>
+            </p>
+        </div>
+    </div>
+    <div class='span6 dtfa-container {{dtfa[1]?"":"disabled"}}'>
+        <h4 class="widgettitle">Vuelo y fecha de salida</h4>
+        <div class='widgetcontent nopadding'>
+            <p>
+                <label>Fecha de salida</label>
+                <span class='field'>
+                    <span class='input-group calendar-container'>
+                        <input is-open="open[1]" ng-model='transfer.departure_date' datepicker-popup />
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click="open($event,1)"><i class="fa fa-calendar"></i></button>
+                        </span>
+                    </span>
+                </span>
+            </p>
+            <p>
+                <label> Vuelo de Salida</label>
+                <span class='field'><input ng-model="transfer.departure_fly" type='text' name='departure_fly' /></span>
+            </p>
+            <p>
+                <label> Hora de Salida</label>
+                <span class='field'><timepicker ng-model="transfer.departure_time" ng-change="" hour-step="1" minute-step="1" show-meridian="true"></timepicker></span>
+            </p>
+            <p>
+                <label> Pickup time</label>
+                <span class='field'><timepicker ng-model="transfer.departurepickup_time" ng-change="" hour-step="1" minute-step="1" show-meridian="true"></timepicker></span>
+            </p>
+        </div>
+    </div>
+</div>

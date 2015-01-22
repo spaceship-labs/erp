@@ -1,0 +1,34 @@
+<script type='text/javascript'>
+	window.transfers = <%- JSON.stringify(transfers) %>;
+	window.content = <%- JSON.stringify(_content) %>;
+</script>
+<div ng-controller="transferCTL">
+	<p><button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Nuevo Servicio</button></p>
+	<br/>
+	<div 
+		directory-listing 
+		objects='transfers' 
+		searchInput='searchInput' 
+		dir='transfers' 
+		edit-url='/transfer/edit/' 
+		get-info='getInfo'
+		name-var='name_es' ></div>
+
+	<div class="clearfix"></div>
+	<div class="modal fade" id="myModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div 
+					form-helper 
+			        fields='content.transfer' 
+			        form-footer='Agregar'
+			        form-save = 'createTransfer'
+			        object = 'transfer'
+			        form-title='Agregar Servicio de Traslado'
+			       	modal='true'
+			        >
+			    </div>
+			</div>
+		</div>
+	</div>
+</div>

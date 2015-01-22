@@ -32,6 +32,11 @@ body.loginpage{background: @login-background;overflow: hidden;}
 #mainwrapper .leftmenu .nav-tabs.nav-stacked > li.active > a,
 #mainwrapper .leftmenu .nav-tabs.nav-stacked > li > a:hover{color:@left-color-hover;}
 
+/*Transfers special*/
+.dtfa-container{position: relative;}
+.dtfa-container.disabled{opacity: .3;}
+.dtfa-container.disabled:before{content: '';position: absolute;z-index: 5;width: 100%;height: 100%;top:0;left: 0;}
+
 /*File Manager*/
 .fileManager .widgettitle .text{font-size:11px;text-transform: none;margin-right:0;margin-left:-2px;font-weight:bold;cursor:pointer;}
 .fileManager .widgettitle .title{width:40%;font-size:14px;}
@@ -113,6 +118,7 @@ a, a:hover, a:link, a:active, a:focus{color: @primary}
 .peoplelist .peoplewrapper{height: auto;}
 
 .field input , .input-large, .fileupload .uneditable-input , .chzn-container , .chzn-container-single .chzn-drop, form textarea{max-width: 100%;width: 100%!important}
+.field input[type='radio']{width: auto!important;margin-right: 5px;top: 3px;position: relative;}
 
 
 

@@ -1,0 +1,37 @@
+<script type='text/javascript'>
+	window.orders = <%- JSON.stringify(orders) %>;
+	window.content = <%- JSON.stringify(_content) %>;
+    console.log(window.orders);
+</script>
+<div ng-controller='orderCTL' >
+	<div class='row'>
+		<div class = "textbutton col-sm-12 col-sm-12 col-xs-12">
+			<p><a href="/order/neworder" class='btn btn-primary'><i class = "fa fa-plus"></i> Crear reservación</a></p>
+			<br />
+		</div>
+	</div>
+	<div class="widgetcontent custom-table nopadding">
+        <table class="table table-striped">
+            <tr>
+                <th>Id</th>
+                <th>Usuario</th>
+                <th>Empresa</th>
+                <th>Fecha</th>
+                <th>Total</th>
+                <th>Editar</th>
+                <th>Borrar</th>
+            </tr>
+            <tr ng-repeat="order in orders">
+                <td data-title="Id" ng-bind="order.id"></td>
+                <td data-title="Usuario" ng-bind="order.user.namne"></td>
+                <td data-title="Empresa" ng-bind="order.company.name"></td>
+                <td data-title="Fecha" ng-bind="order.createdAt"></td>
+                <td data-title="Total">0</td>
+                <td data-title="Accion"><a href="/order/edit/{{order.id}}"><span class="table-icon fa fa-edit"></span></a></td>
+                <td data-title="Accion"><a href="/order/edit/{{order.id}}"><span class="table-icon fa fa-remove"></span></a></td>
+            </tr>
+        </table>
+    </div>
+	<div class="clearfix"></div>
+
+</div>

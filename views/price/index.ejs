@@ -1,6 +1,6 @@
 <script type='text/javascript'>
 	window.prices = <%- JSON.stringify(prices) %>;
-	window.services = <%- JSON.stringify(services) %>;
+	window.transfers = <%- JSON.stringify(transfers) %>;
 	window.airports = <%- JSON.stringify(airports) %>;
 	window.zones = <%- JSON.stringify(zones) %>;
 	window.companies_ = <%- JSON.stringify(companies_) %>;
@@ -14,7 +14,7 @@
 			Compañía:<select ng-change='updatePrices()' ng-model='mycompany' ng-options="obj as obj.name for obj in companies" ></select>
 		</div>-->
 		<div class='span4'>
-			Servicio: <select ng-change='updatePrices()' ng-model='myservice' ng-options="obj as obj.name for obj in services" ></select>
+			Servicio: <select ng-change='updatePrices()' ng-model='mytransfer' ng-options="obj as obj.name for obj in transfers" ></select>
 		</div>
 		<div class='span4'>
 			Aeropuertos: <select ng-change='updatePrices()' ng-model='myairport' ng-options="obj as obj.name for obj in airports" ></select>
@@ -75,7 +75,7 @@
 			        form-footer='Agregar'
 			        form-save = 'createPrice'
 			        object = 'price'
-			        objects = '{zones:zones , services:services , airports:airports , companies : companies}'
+			        objects = '{zones:zones , transfers:transfers , airports:airports , companies : companies}'
 			        form-title='Agregar Precio'
 			       	modal='true'
 			        >

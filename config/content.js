@@ -434,7 +434,7 @@ module.exports.content = {
 			handle : 'description_en',
 		}
 	],
-	service : [
+	transfer : [
 		{
 			label 	: 'Nombre Español',
 			type 	: 'text',
@@ -505,8 +505,8 @@ module.exports.content = {
 		},{
 			label 	: 'Servicio',
 			type 	: 'select',
-			handle 	: 'service',
-			object 	: 'services'
+			handle 	: 'transfer',
+			object 	: 'transfers'
 		},{
 			label 	: 'Aeropuerto',
 			type 	: 'select',

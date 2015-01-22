@@ -1,0 +1,52 @@
+<script type='text/javascript'>
+    window.order = <%- JSON.stringify(order) %>;
+    window.clients_ = <%- JSON.stringify(clients_) %>;
+    window.hotels = <%- JSON.stringify(hotels) %>;
+    window.transfers = <%- JSON.stringify(transfers) %>;
+	window.content = <%- JSON.stringify(_content) %>;
+</script>
+<div ng-controller='orderEditCTL' >
+	<div class='row-fluid stdform stdform2'>
+        <div class='span12'><div class="widgetbox personal-information">
+            <div class='headtitle'>
+                <div class='btn-group'><button class="btn btn-primary pull-right" data-toggle="modal" data-target="#myModal"><i class='fa fa-plus'></i> Nuevo Cliente</button></div>
+                <h4 class="widgettitle">Cliente</h4>
+            </div>
+            <div class='widgetcontent nopadding'>
+                <p>
+                    <label>Selecciona un cliente</label>
+                    <span class='field'><select ng-options='obj as obj.name for obj in clients_ track by obj.id' ng-model='transfer.client' ></select></span>
+                </p>
+            </div>
+        </div></div>
+    </div>
+    <form class='stdform stdform2' action='' name='' method='post'>
+        <div class='headtitle'>
+            <div class='btn-group'>
+                <a class="btn btn-primary pull-right" ng-click="isCtransfer = !isCtransfer"><i class='fa {{isCtransfer?"fa-plus":"fa-minus"}}'></i></a>
+                <a class="btn btn-primary pull-right" ng-click="saveAll()"><i class='fa fa-save'></i> Guardar</a>
+            </div>
+            <h4 class="widgettitle">Reservación de Traslado </h4>
+        </div>
+        <div collapse="isCtransfer">
+            <%- partial('inputsEditTransfer') -%> 
+        </div>
+    	<div class="clearfix"></div>
+    </form>
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div 
+                    form-helper 
+                    fields='content.client' 
+                    form-footer='Agregar'
+                    form-save = 'createClient'
+                    object = 'client_c'
+                    form-title='Agregar Cliente'
+                    modal='true'
+                    >
+                </div>  
+            </div>
+        </div>
+    </div>
+</div>
