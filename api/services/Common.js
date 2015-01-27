@@ -6,6 +6,8 @@ module.exports.view = function(view,data,req){
 	data.selected_company = req.session.select_company || req.user.select_company;
 	data.current_user = req.user;
 	data._content = sails.config.content;
+	data._content.socketUrl = sails.config.socketsUrl;
+	//data.socketUrl = sails.config.socketsUrl;
 	Company.findOne(data.selected_company).populate('base_currency').exec(function(e,company){
         if (e) console.log(e);
 		data.selected_company = company;

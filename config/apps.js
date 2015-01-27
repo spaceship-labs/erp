@@ -38,9 +38,9 @@ module.exports.apps = [
             {
                 label : 'Precios',
                 icon : 'fa-money',
-                url : '/price/',
+                url : '/transferprice/',
                 showInMenu : true,
-                controller : 'price',
+                controller : 'transferprice',
                 action : 'index'
             }
 		]

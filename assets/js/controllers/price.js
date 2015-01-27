@@ -1,41 +1,57 @@
 app.controller('priceCTL',function($scope,$http){
 	$scope.prices = prices;
+	$scope.locations_ = locations_;
 	$scope.transfers = transfers;
 	$scope.airports = airports;
 	$scope.companies = companies_;
-	$scope.zones = zones;
+	$scope.thelocation = thelocation_;
+	$scope.isCollapsed = [];
+	//$scope.zones = zones;
 	$scope.content = content;
-
-	$scope.mytransfer = transfers[0];
-	$scope.myairport = airports[0];
-	$scope.mycompany = companies_[0];
-	$scope.createPrice = function(newPrice){
-        $http({method: 'POST', url: '/price/create',params:newPrice}).success(function (price){
-        	if( price.airport == $scope.myairport.id && price.transfer == $scope.mytransfer.id )
-            	$scope.prices.push(price);
-            jQuery('#myModal').modal('hide');
-        });
-    };
     $scope.updatePrices = function(req,res){
-    	params = { company : $scope.mycompany.id , transfer : $scope.mytransfer.id , airport : $scope.myairport.id };
-    	$http({method: 'POST', url: '/price/getPrices',params:params }).success(function (prices){
+    	//params = { company : $scope.mycompany.id , transfer : $scope.mytransfer.id , airport : $scope.myairport.id };
+    	params = { location : $scope.thelocation.id };
+    	$http({method: 'POST', url: '/transferprice/getPrices',params:params }).success(function (prices){
 			$scope.prices = prices;
-			$scope.companies = addPricesOnCompany($scope.companies,prices);
+			//$scope.companies = addPricesOnCompany($scope.companies,prices);
         });
     }
     $scope.savePrice = function(data,price){
     	angular.extend(data, { id : price });
-    	return $http.post('/price/updatePrice', data);
+    	return $http.post('/transferprice/updatePrice', data);
     }
-
+    $scope.sortByField = function(field){
+    	for( i in $scope.prices ){
+    		$scope.prices[i].sort(function(a,b){
+    			if( field != 'active' ){
+    				var item1 = a[field].name.toLowerCase(), 
+    					item2 = b[field].name.toLowerCase();
+    			}else{
+    				var item1=!a[field], item2=!b[field];
+    			}
+    			if (item1 < item2) //ASC
+					return -1 
+				if (item1 > item2) //DESC
+					return 1
+				return 0
+    		});
+    	}
+    }
+    $scope.closeTransfers = function(){
+    	var i = 0;
+    	for( x in $scope.prices ){
+    		$scope.isCollapsed.push(true);
+    	}
+    	$scope.isCollapsed[0] = false;
+    	console.log($scope.isCollapsed);
+    }
+    $scope.closeTransfers();
+    $scope.isFCollapsed = function(index){
+    	console.log($scope.isCollapsed[index]);
+    	$scope.isCollapsed[index] = !$scope.isCollapsed[index];
+    }
+    $scope.getCollapsed = function(index){
+    	return $scope.isCollapsed[index];
+    }
+    //$scope.closeTransfers();
 });
-function addPricesOnCompany( companies , prices ){
-	for( i in companies ){
-		companies[i].prices = [];
-		for( j in prices ){
-			if( prices[j].company == companies[i].id )
-				companies[i].prices.push( prices[j] );
-		}
-	}
-	return companies;
-}

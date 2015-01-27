@@ -1,0 +1,17 @@
+<script type='text/javascript'>
+    window.transfer = <%- JSON.stringify(transfer) %>;
+</script>
+<div ng-controller='transferEditCTL'>
+    <div class='row-fluid'>
+        <div class="span12">        
+            <div form-helper 
+                fields='content.transfer' 
+                object='transfer' 
+                action='/transfer/update' 
+                form-title='INFORMACIÓN BÁSICA'
+                >
+            </div> 
+        </div>
+    </div>
+    <br/>
+</div>

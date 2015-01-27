@@ -25,6 +25,38 @@ module.exports = {
 			},req);	
 		});
 	},
+	create : function(req,res){
+		var reads = [
+			function(cb){
+				Zone.create(req.params.all()).exec(cb)
+			},function(zone,cb){
+				Company.find().exec(function(e,companies_){ cb(e,zone,companies_) })
+			},function(zone,companies_,cb){
+				Location.find({'location' : req.params.all().location }).populate('zones').exec(function(e,locations_){ cb(e,zone,companies_,locations_) })
+			},function(zone,companies_,locations,cb){
+				Transfer.find().exec(function(e,transfers){ cb(e,zone,companies_,locations,transfers) })
+			},
+		];
+		async.waterfall(reads,function(e,zone,companies_,locations_,transfers){
+			if(e) throw(e);
+			var zones1 = [ zone ];
+			Transferprices.afterCreateZone(zones1,locations_,transfers,companies_,function(){
+				res.json(zone);
+			});
+		});
+	},
+	destroy : function(req,res){
+		//Borrar los precios que estén relacionados a la zona
+		console.log(req.params.all())
+		TransferPrice.destroy({ zone1 : req.params.all().id }).exec(function(e,tp){
+			TransferPrice.destroy({ zone2 : req.params.all().id }).exec(function(e,tp2){
+				Zone.destroy({id:req.params.all().id}).exec(function(e,z){
+					if(e) throw(e);
+					res.json(z);
+				});
+			});
+		});
+	},
 	update : function(req,res){
     	var form = req.params.all();
     	var id = form.id;
@@ -71,7 +103,14 @@ module.exports = {
 				res.json(formatZone(zone));
 			})
 		});
-	}
+	},
+	getZones : function(req,res){
+		params = req.params.all();
+		Zone.find({ 'location' : params.id }).exec(function(e,zones){ 
+			if(e) throw(e);
+			res.json(zones);
+		});
+	},
 };
 
 function formatZone(zone){

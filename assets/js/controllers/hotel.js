@@ -27,7 +27,7 @@ app.controller('hotelCTL',function($scope,$http){
         }
     };
     $scope.getZones = function(){
-        $http({method: 'POST', url: '/hotel/getZones',data: $scope.newHotel.location }).success(function (zones){
+        $http({method: 'POST', url: '/zone/getZones',data: $scope.newHotel.location }).success(function (zones){
             $scope.zones = zones;
         });
     };
@@ -111,7 +111,7 @@ app.controller('hotelEditCTL',function($scope,$upload,$http){
     };
     $scope.getZones = function(){
         //console.log($scope.hotel.location);
-        $http({method: 'POST', url: '/hotel/getZones',data: $scope.hotel.location }).success(function (zones){
+        $http({method: 'POST', url: '/zone/getZones',data: $scope.hotel.location }).success(function (zones){
             $scope.zones = zones;
         });
     };

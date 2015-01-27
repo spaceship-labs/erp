@@ -21,6 +21,25 @@ module.exports = {
 			},req);
 		});
 	},
+	create : function(req,res){
+		var reads = [
+			function(cb){
+				var form = req.params.all();
+				Transfer.create(form).exec(cb)
+			},function(transfer,cb){
+				Company.find().exec(function(e,companies_){ cb(e,transfer,companies_) })
+			},function(transfer,companies_,cb){
+				Location.find().populate('zones').exec(function(e,locations_){ cb(e,transfer,companies_,locations_) })
+			},
+		];
+		async.waterfall(reads,function(e,transfer,companies_,locations_){
+			if(e) throw(e);
+			var transfers = [];transfers.push(transfer);
+			Transferprices.createTransferPrices(locations_,transfers,companies_,function(){
+				res.json(transfer);
+			});
+		});
+	},
 	edit : function(req,res){
 		Transfer.findOne(req.params.id).exec(function(e,transfer){
 			if(e) return res.redirect("/transfer/");

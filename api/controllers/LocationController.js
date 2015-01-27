@@ -50,7 +50,25 @@ module.exports = {
     	});
     },
     addZone : function(req,res){
-		var form = req.params.all();
+    	var reads = [
+			function(cb){
+				Zone.create(req.params.all()).exec(cb)
+			},function(zone,cb){
+				Company.find().exec(function(e,companies_){ cb(e,zone,companies_) })
+			},function(zone,companies_,cb){
+				Location.find({'id' : req.params.all().location }).populate('zones').exec(function(e,locations_){ cb(e,zone,companies_,locations_) })
+			},function(zone,companies_,locations_,cb){
+				Transfer.find().exec(function(e,transfers){ cb(e,zone,companies_,locations_,transfers) })
+			},
+		];
+		async.waterfall(reads,function(e,zone,companies_,locations_,transfers){
+			if(e) throw(e);
+			var zones1 = [];zones1.push(zone);
+			Transferprices.afterCreateZone(zones1,locations_,transfers,companies_,function(){
+				res.json(zone);
+			});
+		});
+		/*var form = req.params.all();
 		var location_o = form.location;
 		Zone.create(form).exec(function(e,r){
 			if(e) throw(e);
@@ -59,7 +77,7 @@ module.exports = {
 				location_o = location_o;
 				res.json(location_o)
 			});
-		});
+		});*/
 	},
 	updateIcon: function(req,res){
     	form = req.params.all();

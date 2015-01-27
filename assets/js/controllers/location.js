@@ -31,8 +31,11 @@ app.controller('locationEditCTL',function($scope,$upload,$http){
         $scope.zone.location = $scope.location_o.id;
         $scope.newZoneClass = 'fa-upload';
         $scope.showZoneForm = false;
-        $http({method: 'POST', url: '/location/addZone',params:$scope.zone}).success(function(location_o){
-            $scope.location_o.zones = location_o.zones;
+        $http({method: 'POST', url: '/location/addZone',params:$scope.zone}).success(function(zone){ //location_o
+            //$scope.location_o.zones = location_o.zones;
+            console.log('zone');
+            console.log(zone);
+            $scope.location_o.zones.push(zone);
             $scope.newZoneClass = 'fa-plus';
         });
     };

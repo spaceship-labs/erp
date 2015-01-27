@@ -1,0 +1,75 @@
+<script type='text/javascript'>
+	window.prices = <%- JSON.stringify(prices) %>;
+	window.locations_ = <%- JSON.stringify(locations_) %>;
+	window.thelocation_ = locations_[0];
+	window.transfers = <%- JSON.stringify(transfers) %>;
+	window.airports = <%- JSON.stringify(airports) %>;
+	window.companies_ = <%- JSON.stringify(companies_) %>;
+	window.content = <%- JSON.stringify(_content) %>;
+	//window.cs = window.companies_[0];
+	console.log(prices);
+</script>
+<div ng-controller="priceCTL" >
+	<div class='row-fluid'>
+		<div class='span4'>
+			Ciudad: <select ng-change='updatePrices()' ng-model="thelocation" ng-options="obj as obj.name for obj in locations_" ></select>
+		</div>
+	</div>
+	<br/>
+	<h2 ng-bind="thelocation.name"></h2>
+	<br/>
+	<div class='widgetbox ng-scope' ng-repeat="serv in prices" ng-show='prices'>
+			<div class="headtitle">
+				<h4 class="widgettitle ng-binding ng-cloak"><span ng-bind="serv[0].transfer.name"></span><span class='pull-right'><a href="" ng-click="isFCollapsed($index)"><i class='fa fa-plus'></i></a></span></h4>
+			</div>
+			<div collapse="isCollapsed[$index]"><table class='table table-striped responsive' ng-show='serv'>
+				<thead><tr class='sortable'>
+					<th><a href='' class='sortable-item' ng-click="sortByField('zone1')">Zona <i class='fa fa-sort-asc'></i></a></th>
+					<th><a href='' class='sortable-item' ng-click="sortByField('zone2')">Zona <i class='fa fa-sort-asc'></i></a></th>
+					<th>Sencillo</th>
+					<th>Redondo</th>
+					<th><a href='' class='sortable-item' ng-click="sortByField('active')">Activo <i class='fa fa-sort-asc'></i></a></th>
+					<th>Editar</th>
+				</tr></thead>
+				<tr class='price-row' ng-repeat='price in serv'>
+					<td>{{price.zone1.name}}</td>
+					<td>{{price.zone2.name}}</td>
+					<td>
+						<span 
+							editable-text='price.one_way'
+							e-name='one_way'
+							e-form='rowform' e-required
+						>{{price.one_way}}</span>
+					</td>
+					<td>
+						<span 
+							editable-text="price.round_trip"
+							e-name='round_trip'
+							e-form='rowform' e-required
+						>{{price.round_trip}}</span>
+					</td>
+					<td>
+						<span 
+							editable-checkbox="price.active"
+							e-name='active'
+							e-form='rowform'
+						><i class="active-i fa {{price.active?'active fa-check-square-o':'fa-square-o'}}"></i></span>
+					</td>
+					<td>
+						<form editable-form name="rowform" onbeforesave="savePrice($data,price.id)" ng-show="rowform.$visible" class="form-buttons form-inline" >
+				          <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
+				            save
+				          </button>
+				          <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default">
+				            cancel
+				          </button>
+				        </form>
+						<div class="buttons" ng-show="!rowform.$visible">
+				          <button class="btn btn-primary" ng-click="rowform.$show()">edit</button>
+				        </div>
+					</td>
+				</tr>
+			</table></div>
+	</div>
+	<div class="clearfix"></div>
+</div>
