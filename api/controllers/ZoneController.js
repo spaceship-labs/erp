@@ -106,6 +106,7 @@ module.exports = {
 	},
 	getZones : function(req,res){
 		params = req.params.all();
+		console.log(params);
 		Zone.find({ 'location' : params.id }).exec(function(e,zones){ 
 			if(e) throw(e);
 			res.json(zones);

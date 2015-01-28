@@ -109,10 +109,11 @@ app.controller('hotelEditCTL',function($scope,$upload,$http){
             $scope.newRoomClass = 'fa-plus';
         });
     };
-    $scope.getZones = function(){
-        //console.log($scope.hotel.location);
-        $http({method: 'POST', url: '/zone/getZones',data: $scope.hotel.location }).success(function (zones){
+    $scope.getZones = function(location){
+        var data = { 'id' : location };
+        $http({method: 'POST', url: '/zone/getZones', data: data }).success(function (zones){
             $scope.zones = zones;
+            return zones;
         });
     };
    

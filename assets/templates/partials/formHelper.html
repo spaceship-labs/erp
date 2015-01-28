@@ -23,6 +23,7 @@
 	            	ng-if='field.type == "select"'
 	            	ng-model='object[field.handle]'
 	            	ng-options="obj.id as obj.name for obj in objects[field.object]"
+	            	ng-change="onChangefx(field)"
 	            	class='form-control' >
 	            </select>
 

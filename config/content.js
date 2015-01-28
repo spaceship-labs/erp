@@ -15,7 +15,7 @@ module.exports.content = {
 			type : 'select',
 			handle : 'location',
 			object : 'locations',
-			on_Change : 'getZones()',
+			on_Change : 'getZones',
 		},
 		{
 			label : 'Zona',

@@ -8,6 +8,7 @@
         $scope.formClass = $scope.modal ? '' : 'widgetcontent nopadding';
         $scope.changed = false;
         $scope.processFields = $scope.processFields || true;
+        $scope.pfx = $scope.$parent;
 
         //console.log(testForm);
         /*$scope.$watch('form',function(formObj){
@@ -64,6 +65,13 @@
             }
             
         };
+        $scope.onChangefx = function(field){
+            var changeMethod = $scope.onchanges[field.on_Change];
+            if(changeMethod){
+                var $this = $scope.object[field.handle];
+                changeMethod($this);
+            }
+        }
 
         $scope.formFilter = function(item){
             if ($scope.restrict) {
@@ -90,6 +98,7 @@
         	controller : controller,
         	scope : {
         		object : '=',
+                onchanges : '=',
                 fields : '=',
                 action : '@',
                 formTitle : '@',
