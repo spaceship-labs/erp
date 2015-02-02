@@ -33,6 +33,7 @@ module.exports = {
 			if(err) return res.json({text:err});
 			Tour.find({}).sort('name').exec(function(e,tours){
 				if(e) return res.json({text:e});
+				var result = { tours : tours , thetour : tour }
 				res.json(tours);
 			});
 		});
@@ -114,6 +115,12 @@ module.exports = {
 				res.json(tour);
 			})
 		});
+	},
+	destroy : function(req,res){
+		Tour.destroy({id:req.params.id}).exec(function(e,r){
+			if(e) throw(e);
+			res.json(r);
+		})
 	},
 };
 

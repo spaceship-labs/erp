@@ -1,0 +1,62 @@
+<script type='text/javascript'>
+    window.package_t = <%- JSON.stringify(package_t) %>;
+</script>
+<div ng-controller='packageEditCTL'>
+    <div class='row-fluid'>
+        <div class='span4'>
+            <div profile-image object='package_t' update-method='/packagetour/updateIcon' delete-method='/packagetour/destroyIcon' image-attr='icon' dir='packagetour' ></div>
+        </div>
+    </div>
+    <div class='row-fluid'>
+        <div class="span12"> 
+            <div form-helper 
+                fields='content.packages' 
+                object='package_t' 
+                action='/packagetour/update' 
+                form-title='INFORMACIÓN BÁSICA'
+                >
+            </div> 
+        </div>
+    </div>
+    <div class='row-fluid'>
+        <div class='span12'>
+            <div class="widgetbox">
+                <h4 class="widgettitle">
+                    Días de tour 
+                    <span ng-click='isCollapsed=!isCollapsed' class='fa icon {{isCollapsed?"fa-plus":"fa-minus"}}' ng-class="{{isCollapsed?'fa-plus':'fa-minus'}}"></spa>  
+                </h4>
+                <div ng-hide="isCollapsed"><div>
+                    <div form-helper 
+                        fields='content.packageDay' 
+                        form-footer='Agregar Día'
+                        form-save = 'addDay'
+                        object = 'day' >
+                    </div>
+                </div></div>
+                <div ng-show='package_t.days.length'>
+                    <div table-helper objects='package_t.days' columns='content.packageDayBasic' route='packagetour'></div>
+                    <table class="table table-striped responsive">
+                        <thead>
+                            <tr>
+                                <th>Día</th>
+                                <th>Nombre</th>
+                                <th>Editar</th>
+                                <th>Eliminar</th>
+                            </tr>
+                        </thead>
+                        <tbody ui-sortable ng-model="items">
+                            <tr ng-repeat='obj in package_t.days'>
+                                <td ng-bind='obj.dayorder'></td>
+                                <td ng-bind='obj.name_es'></td>
+                                <td><a ng-href='/{{route}}/edit/{{object.id}}' class='fa fa-edit'></a></td>
+                                <td><a href='' class='fa fa-trash-o' ng-click='destroyObject(object,key)'></a></td>
+                            </tr>       
+                        </tbody>
+                    </table>
+                    <p>{{items}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br/>
+</div>

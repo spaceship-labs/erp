@@ -1,4 +1,4 @@
-app.controller('hotelCTL',function($scope,$http){
+app.controller('hotelCTL',function($scope,$http,$window){
     $scope.hotels = hotels;
     $scope.locations = locations;
     $scope.company = company;
@@ -9,12 +9,13 @@ app.controller('hotelCTL',function($scope,$http){
     	if(!block){
 		block = true;
 		jQuery('#myModal input[type="submit"]').prop('disabled', true);
-	        $http({method: 'POST', url: '/hotel/create',data:$scope.newHotel}).success(function (hotels){
-	            $scope.hotels = hotels;
+        $http({method: 'POST', url: '/hotel/create',data:$scope.newHotel}).success(function (result){
+            $scope.hotels = result.hotels;
 		    jQuery('#myModal input[type="submit"]').prop('disabled', false);
-	            jQuery('#myModal').modal('hide');
+            jQuery('#myModal').modal('hide');
 		    block = false;
-	        });
+            $window.location =  "/hotel/edit/" + result.thehotel.id;
+        });
 	}
     };
     $scope.getInfo = function(hotel){

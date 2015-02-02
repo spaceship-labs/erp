@@ -1,0 +1,24 @@
+<script type='text/javascript'>
+	window.packages = <%- JSON.stringify(packages) %>;
+	window.content = <%- JSON.stringify(_content) %>;
+</script>
+<div ng-controller='packageCTL' >
+	<div directory-listing objects='packages' searchInput='searchInput' dir='packages' edit-url='/packagetour/edit/' get-info='getInfo' button-text='NUEVO PAQUETE' ></div>
+	<div class="clearfix"></div>
+	<div class="modal fade" id="myModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div 
+					form-helper 
+			        fields='content.packages' 
+			        form-footer='Agregar'
+			        form-save = 'createPackage'
+			        object = 'packages'
+			        form-title='Agregar Paquete'
+			       	modal='true'
+			        >
+			    </div>	
+			</div>
+		</div>
+	</div>
+</div>

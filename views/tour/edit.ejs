@@ -26,6 +26,7 @@
                     <button class="btn btn-default" ng-class='{"active":tour.days[5]}' ng-click='tour.days[5] = !tour.days[5]' >S</button>
                     <button class="btn btn-default" ng-class='{"active":tour.days[6]}' ng-click='tour.days[6] = !tour.days[6]' >D</button>
                 </div>
+                <p class='small'>*Seleccionados en azul</p>
             </div>
         </div>
 
@@ -56,4 +57,7 @@
         </div> 
 
     </div>
+    <br/>
+    <div delete-button url='/tour' redirect-url='/tour' object='tour' user='user'></div>
+    <br/>
 </div>

@@ -70,42 +70,42 @@ module.exports.content = {
 			handle : 'description_pt',
 		},
 		{
-			label : 'Servicios Español (separar por comma)',
+			label : 'Servicios Español (separar por enter)',
 			type : 'textarea',
 			handle : 'services_es',	
 		},
 		{
-			label : 'Servicios Ingles (separar por comma)',
+			label : 'Servicios Ingles (separar por enter)',
 			type : 'textarea',
 			handle : 'services_en',	
 		},
 		{
-			label : 'Servicios Ruso (separar por comma)',
+			label : 'Servicios Ruso (separar por enter)',
 			type : 'textarea',
 			handle : 'services_ru',	
 		},
 		{
-			label : 'Servicios Portugués (separar por comma)',
+			label : 'Servicios Portugués (separar por enter)',
 			type : 'textarea',
 			handle : 'services_pt',	
 		},
 		{
-			label : 'Servicios con costo Español (separar por comma)',
+			label : 'Servicios con costo Español (separar por enter)',
 			type : 'textarea',
 			handle : 'payed_services_es',	
 		},
 		{
-			label : 'Servicios con costo Ingles (separar por comma)',
+			label : 'Servicios con costo Ingles (separar por enter)',
 			type : 'textarea',
 			handle : 'payed_services_en',	
 		},
 		{
-			label : 'Servicios con costo Ruso (separar por comma)',
+			label : 'Servicios con costo Ruso (separar por enter)',
 			type : 'textarea',
 			handle : 'payed_services_ru',	
 		},
 		{
-			label : 'Servicios con costo Portugués (separar por comma)',
+			label : 'Servicios con costo Portugués (separar por enter)',
 			type : 'textarea',
 			handle : 'payed_services_pt',	
 		}
@@ -177,17 +177,17 @@ module.exports.content = {
 			handle : 'description_pt',
 		},
 		{
-			label : 'Servicios Español (separar por comma)',
+			label : 'Servicios Español (separar por enter)',
 			type : 'textarea',
 			handle : 'services_es',
 		},
 		{
-			label : 'Servicios Ingles (separar por comma)',
+			label : 'Servicios Ingles (separar por enter)',
 			type : 'textarea',
 			handle : 'services_en',
 		},
         {
-            label : 'Servicios Ruso (separar por comma)',
+            label : 'Servicios Ruso (separar por enter)',
             type : 'textarea',
             handle : 'services_ru',
         },
@@ -283,6 +283,11 @@ module.exports.content = {
 			handle : 'location',
 			object : 'locations'
 		},
+		{
+			label : 'Traslado incluido',
+			type : 'checkbox',
+			handle : 'haveTranslate'
+		},
 	],
 	tourLenguajes : [
 		{
@@ -364,6 +369,26 @@ module.exports.content = {
 			label : 'No incluye Portugués',
 			type : 'textarea',
 			handle : 'does_not_include_pt',
+		},
+		{
+			label : 'Recomendaciones',
+			type : 'textarea',
+			handle : 'recommendations_es',
+		},
+		{
+			label : 'Recomendaciones Inglés',
+			type : 'textarea',
+			handle : 'recommendations_en',
+		},
+		{
+			label : 'Recomendaciones Rúso',
+			type : 'textarea',
+			handle : 'recommendations_ru',
+		},
+		{
+			label : 'Recomendaciones Portugués',
+			type : 'textarea',
+			handle : 'recommendations_pt',
 		},
 	],
 	location : [
@@ -480,7 +505,7 @@ module.exports.content = {
 			type 	: 'select',
 			handle 	: 'location',
 			object 	: 'locations',
-			on_Change : 'getZones()',
+			on_Change : 'getZones',
 		},{
 			label 	: 'Zona',
 			type 	: 'select',
@@ -616,5 +641,86 @@ module.exports.content = {
             handle : 'phone',
             type : 'text'
         }
+    ],
+    packages : [
+    	{
+    		label : 'Nombre Español',
+    		handle : 'name',
+    		type : 'text'
+    	},
+    	{
+    		label : 'Nombre Inglés',
+    		handle : 'name_en',
+    		type : 'text'
+    	},
+    	{
+    		label : 'Nombre Ruso',
+    		handle : 'name_ru',
+    		type : 'text'
+    	},
+    	{
+    		label : 'Nombre Portugués',
+    		handle : 'name_pt',
+    		type : 'text'
+    	},
+    	{
+    		label : 'Servicios Español (separar por enter)',
+    		handle : 'services_es',
+    		type : 'textarea'
+    	},
+    	{
+    		label : 'Servicios Inglés (separar por enter)',
+    		handle : 'services_en',
+    		type : 'textarea'
+    	},
+    	{
+            label : 'Servicios Ruso (separar por enter)',
+            type : 'textarea',
+            handle : 'services_ru',
+        },
+		{
+			label : 'Servicios Portugués (separar por comma)',
+			type : 'textarea',
+			handle : 'services_pt',
+		},
+    	{
+    		label : 'Descripción Español',
+    		handle : 'description_es',
+    		type : 'textarea'
+    	},
+    	{
+    		label : 'Descripción Inglés',
+    		handle : 'description_en',
+    		type : 'textarea'
+    	},
+    	{
+    		label : 'Descripción Ruso',
+    		handle : 'description_ru',
+    		type : 'textarea'
+    	},
+    	{
+    		label : 'Descripción Portugués',
+    		handle : 'description_pt',
+    		type : 'textarea'
+    	},
+    ],
+    packageDay : [
+    	{
+    		label : 'Name Español',
+    		handle : 'name_es',
+    		type : 'text'
+    	}
+    ],
+    packageDayBasic : [
+    	{
+    		label : 'Name Español',
+    		handle : 'name_es',
+    		type : 'text'
+    	},
+    	{
+    		label : 'Name Inglés',
+    		handle : 'name_en',
+    		type : 'text'
+    	},
     ]
 };

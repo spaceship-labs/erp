@@ -116,7 +116,8 @@ module.exports = {
                 if(err) return res.json({text:err});
                 Hotel.find().populate('location').exec(function(e,hotels){
                 	hotels = formatHotels(hotels);
-                	res.json(hotels);
+                	result = {hotels : hotels , thehotel : hotel};
+                	res.json(result);
                 })                
             });
         }

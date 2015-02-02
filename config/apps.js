@@ -211,6 +211,15 @@ module.exports.apps = [
                 action : 'index'
             },
             {
+                label : 'Paquetes',
+                icon : 'fa-dropbox',
+                url : '/packagetour/',
+                handle : 'packagetour',
+                showInMenu : true,
+                controller : 'packagetour',
+                action : 'index'
+            },
+            {
                 label : 'Cupones',
                 icon : 'fa-ticket',
                 url : '/cupon/',
