@@ -1,4 +1,4 @@
-app.controller('tourCTL',function($scope,$http){
+app.controller('tourCTL',function($scope,$http,$window){
     $scope.tours = tours;
     $scope.content = content;
     $scope.objects = {locations:locations};

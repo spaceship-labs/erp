@@ -3,14 +3,37 @@ var fs = require('fs')
 //Names and Saves a File returns de filename
 module.exports.saveFiles = function(req,opts,cb){
 	var dirSave = __dirname+'/../../assets/uploads/'+opts.dir+'/';
-	var files = req.file && req.file('file')._files || [],
+	var $files = req.file && req.file('file')._files || [],
 	maxBytes = 22020096;//max 21mb.
-	if(files.length){
+	if($files.length){
 		if(req._fileparser.form.bytesExpected>=maxBytes){
 			//cb(new Error('exceeds maxBytes')); //throw en controllers
 			cb(false,[]);
 		}
-		req.file('file').upload({saveAs:makeFileName,dirname:dirSave,onProgress:(req.onProgress && req.onProgress.fileProgress || null),maxBytes:52428800},function(e,files){
+		var fFiles = [];
+		//async.map($files, function(file, async_cb) {
+			//console.log('file');
+			//console.log(file);
+			req.file('file').upload({saveAs:makeFileName,dirname:dirSave,onProgress:(req.onProgress && req.onProgress.fileProgress || null),maxBytes:52428800},function(e,files){
+				if(e) return cb(e,files);
+				files.forEach(function(file){
+					var filename = file.fd.split('/');
+					filename = filename[filename.length-1];
+					var typebase = file.type.split('/');
+					fFiles.push({
+			            filename : filename,
+			            name : file.filename,
+			            type : file.type,
+			            size : file.size,
+			            typebase : typebase[0],
+		          	});
+				});
+				cb(e,fFiles);
+			});
+		/*},function(err,files){
+			cb(e,fFiles);
+		});*/
+		/*req.file('file').upload({saveAs:makeFileName,dirname:dirSave,onProgress:(req.onProgress && req.onProgress.fileProgress || null),maxBytes:52428800},function(e,files){
 			if(e) return cb(e,files);
 			var fFiles = [];
 			files.forEach(function(file){
@@ -26,7 +49,7 @@ module.exports.saveFiles = function(req,opts,cb){
 	          	});
 			});
 			cb(e,fFiles);			
-		});
+		});*/
 	}else{
 		return cb(true,false);
 	}

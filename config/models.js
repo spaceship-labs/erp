@@ -50,10 +50,10 @@ module.exports.models = {
   		var async = require('async');
       object = this;
   		objectFiles = object.files ? object.files : [];
-		req.onProgress = getOnProgress(req);
+		  req.onProgress = getOnProgress(req);
   		Files.saveFiles(req,opts,function(e,files){
+        //console.log('files');console.log(files);console.log('files END');
   			if(e) return cb(e,files);
-
         object.files = objectFiles;
         async.mapSeries(files,function(file,async_callback){
           var callback = req.onProgress.nextElement(files,async_callback);
@@ -65,8 +65,10 @@ module.exports.models = {
             callback(null,file);
         },function(e,crops){
           if(e) return cb(e,crops);
+          //console.log('objectFiles');console.log(objectFiles);console.log('objectFiles END');
           object.files = objectFiles;
           object.save(cb);
+          return objectFiles;
         });  			
   		});
   	},
@@ -119,11 +121,15 @@ function getOnProgress(req){
     uid = req.param('uid'),
     index = req.param('index')
     indice = 1;
+    console.log( '---- uid: ' + uid + ' ---- index: ' + index );
     return{
         fileProgress:function(progress){
             var written = progress.written,
             total = progress.stream.byteCount*2,//time crops.
             porcent = (written*100/total).toFixed(2); 
+            console.log('porcent: ' + porcent + ' salt: ' + salt);
+            console.log('written');
+            console.log(written);
             if(porcent >= salt){
                 salt += salt;
                 sails.io.sockets.emit(uid, {porcent: porcent,index:index});
