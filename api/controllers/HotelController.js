@@ -26,7 +26,6 @@ module.exports = {
 								,description: 'Administracion de contenido hoteles'
 								,icon:'fa fa-building'		
 								,controller : 'hotel.js'
-									
 							},
 							breadcrumb : [
 								{label : 'Hoteles'}
@@ -37,7 +36,6 @@ module.exports = {
 				
 			});
 		});
-		
 	},	
 	destroy : function(req,res){
 		Hotel.destroy({id:req.params.id}).exec(function(e,r){

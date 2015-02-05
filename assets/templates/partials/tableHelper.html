@@ -2,13 +2,21 @@
     <thead>
         <tr>
             <th ng-repeat='column in columns' ng-bind='column.label'></th>
-            <th>Editar</th>
+            <th >Editar</th>
             <th>Eliminar</th>
         </tr>
     </thead>
     <tbody>
 		<tr ng-repeat='(key,object) in objects'>
-			<td ng-repeat='column in columns' ng-bind='object[column.handle]'></td>
+			<td ng-repeat='column in columns'>
+                <a ng-if="inlineEdit" 
+                editable-text='object[column.handle]' 
+                e-name='column.handle' 
+                e-required 
+                onbeforesave="updateInline($data,object,column.handle)"
+                >{{object[column.handle] || 'Vacio'}}</a>
+                <span ng-if="!inlineEdit" ng-bind='object[column.handle]'></span>
+            </td>
 			<td><a ng-href='/{{route}}/edit/{{object.id}}' class='fa fa-edit'></a></td>
 			<td><a href='' class='fa fa-trash-o' ng-click='destroyObject(object,key)'></a></td>
 		</tr>    	

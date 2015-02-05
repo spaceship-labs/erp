@@ -1,5 +1,7 @@
 <script type='text/javascript'>
     window.location_o = <%- JSON.stringify(location_o) %>;
+    window.locations = <%- JSON.stringify(locations) %>;
+    console.log(locations);
 </script>
 <div ng-controller='locationEditCTL'>
     <div class='row-fluid'>
@@ -52,4 +54,14 @@
         </div>
     </div>
     <br/>
+    <div class='row-fluid'><div class='span12'>
+        <div form-helper 
+            fields='content.locationRelacion' 
+            object='location_o' 
+            action='/location/update' 
+            form-title='INFORMACIÓN BASICA'
+            objects='{locations:locations}'
+            >
+        </div> 
+    </div></div>
 </div>

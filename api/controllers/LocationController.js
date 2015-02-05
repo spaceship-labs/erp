@@ -24,18 +24,22 @@ module.exports = {
 	edit : function(req,res){
 		Location.findOne(req.params.id).populate('zones').exec(function(e,location){
 			if(e) return res.redirect("/location/");
-			Common.view(res.view,{
-				location_o:location,
-				page:{
-					name:location.name,
-					icon:'fa fa-flag',
-					controller : 'location.js'
-				},
-				breadcrumb : [
-					{label : 'Ciudades', url: '/location/'},
-					{label : location.name},
-				]
-			},req);	
+			Location.find().exec(function(e,locations){
+				if(e) return res.redirect("/location/");
+				Common.view(res.view,{
+					location_o : location,
+					locations : locations,
+					page:{
+						name:location.name,
+						icon:'fa fa-flag',
+						controller : 'location.js'
+					},
+					breadcrumb : [
+						{label : 'Ciudades', url: '/location/'},
+						{label : location.name},
+					]
+				},req);	
+			});
 		});
 	},
 	update : function(req,res){

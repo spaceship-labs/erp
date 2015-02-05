@@ -1,0 +1,26 @@
+<script type='text/javascript'>
+	window.hviews = <%- JSON.stringify(hviews) %>;
+	window.content = <%- JSON.stringify(_content) %>;
+</script>
+<div ng-controller='hroomviewCTL'>
+	<p><button class="btn btn-primary" data-toggle="modal" data-target="#myModal"><i class='fa fa-plus'></i> Nueva Vista</button></p>
+	<br/>
+	<div table-helper inline-edit="/hotelroomview/update/" objects='hviews' columns='content.hotelRoomView' route='room'></div>
+	<div class="clearfix"></div>
+	<div class="modal fade" id="myModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div 
+					form-helper 
+			        fields='content.hotelRoomView' 
+			        form-footer='Agregar'
+			        form-save = 'createView'
+			        object = 'hview'
+			        form-title='Agregar Vista'
+			       	modal='true'
+			        >
+			    </div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -157,6 +157,15 @@ module.exports.apps = [
                 controller : 'season',
                 action : 'index'
             },
+            {
+                label : 'Vistas de cuarto',
+                icon : 'fa-eye',
+                url : '/hotelroomview/',
+                handle : 'hotelroomview',
+                showInMenu : true,
+                controller : 'hotelroomview',
+                action : 'index'
+            },
         ],
     },
     /* locations */
@@ -203,7 +212,7 @@ module.exports.apps = [
             },
             {
                 label : 'Traslados',
-                icon : 'fa-car',
+                icon : 'fa-road',
                 url : '/transfer/',
                 handle : 'transfer',
                 showInMenu : true,
