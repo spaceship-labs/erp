@@ -12,9 +12,9 @@ module.exports = {
   		collection 	: 'zone',
   		via 		: 'location'
   	},
-  	locations : {
+  	/*locations : {
   		collection : 'locationrelated',
   		via : 'location1'
-  	}
+  	}*/
   }
 };
