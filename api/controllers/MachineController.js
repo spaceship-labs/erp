@@ -17,7 +17,7 @@ module.exports = {
             Common.view(res.view,{
                 page:{
                     icon:'fa fa-gears'
-                    ,name:'Impresoras'
+                    ,name:'Maquinarias'
                 },
                 machines : machines
             },req);
@@ -45,7 +45,7 @@ module.exports = {
                 }
 
                 if (!modes) {
-                    return res.json({text:'Impresora creada.',url:'/machine/edit/'+machine.id});
+                    return res.json({text:'Maquinaria creada.',url:'/machine/edit/'+machine.id});
                 }
 
                 var modesComplete = modes.map(function(mode){
@@ -65,7 +65,7 @@ module.exports = {
                             console.log(err);
                             return res.json({text:'Ocurrio un error.'});
                         }
-                        return res.json({text:'Impresora creada.',url:'/machine/edit/'+machine.id});
+                        return res.json({text:'Maquinaria creada.',url:'/machine/edit/'+machine.id});
                     });
 
                 });
@@ -86,11 +86,11 @@ module.exports = {
                         return type.id;
                     });
                     machine.product_types = machine_product_types;
-                    Product_type.find().exec(function(err,product_types) {
+                    Product_type.find({ company : company }).exec(function(err,product_types) {
                         Common.view(res.view,{
                             page:{
                                 icon:'fa fa-gear'
-                                ,name:'Impresora'
+                                ,name:'Maquinaria'
                             },
                             machine : machine || {},
                             product_types : product_types,
@@ -105,9 +105,9 @@ module.exports = {
     update : function (req,res){
         var form = req.param('machine');
         if(form){
-            Machine.update({id:form.id},{ name : form.name , description : form.description , internalReference : form.internalReference , product_types : form.product_types, ink_cost : form.ink_cost,ink_utility : form.ink_utility }).exec(function(err,machine){
+            Machine.update({id:form.id},{ name : form.name , description : form.description , internalReference : form.internalReference , product_types : form.product_types,machine_type : form.machine_type }).exec(function(err,machine){
                     if(err) return res.json({text:'Ocurrio un error.'});
-                    res.json({text:'Impresora actualizada.'});
+                    res.json({text:'Maquinaria actualizada.'});
                 });
         }
     },
@@ -135,7 +135,7 @@ module.exports = {
                 if (err) return res.json({text: 'Ocurrio un error.'});
                 Machine.update({id: machine},{modes : savedModes}).exec(function (err, fmachine) {
                     if (err) return res.json({text: 'Ocurrio un error.'});
-                    res.json({text: 'Impresora actualizada.'});
+                    res.json({text: 'Maquinaria actualizada.'});
                 });
             });
         }

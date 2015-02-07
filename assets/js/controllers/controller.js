@@ -4,15 +4,18 @@
 app.directive('chosen',function(){
    var linker = function(scope,element,attrs){
        var list = attrs['chosen'];
-        scope.$watch(list,function(){
-            element.trigger('liszt:updated');
-            element.trigger('chosen:updated');
 
+        scope.$watchCollection(list,function(newvalue,oldvalue){
+            //console.log(newvalue);
+            //console.log(oldvalue);
+            element.trigger('liszt:updated');
         });
-       scope.$watch(attrs['ngModel'],function(newvalue,oldvalue){
+
+        scope.$watch(attrs['ngModel'],function(newvalue,oldvalue){
            element.trigger('liszt:updated');
            element.trigger('chosen:updated');
-       });
+        });
+
         element.chosen();
    };
 
@@ -105,12 +108,27 @@ app.controller('saleQuoteCTL',function($scope,$http){
     };
 
     $scope.totalQuote = function(){
-        console.log($scope.quote);
+        //console.log($scope.quote.products);
         var totalAmount = 0.0;
         angular.forEach($scope.quote.products,function(product){
             totalAmount += product.price_total;
         });
         return totalAmount;
+    };
+
+    //calendar
+    $scope.minDate = new Date();
+
+    $scope.dateOptions = {
+        formatYear: 'yy',
+        startingDay: 1
+    };
+
+    $scope.open = function($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+
+        $scope.opened = true;
     };
 });
 
@@ -131,34 +149,19 @@ app.controller('saleQuoteAddCTL',function($scope,$http) {
     };
 
     $scope.initialize = function () {
-        $http.get('/product/productsJson').then(function (response) {
-            $scope.products = response.data;
-        });
-
         $http.get('/client/clientsJson').then(function (response) {
             $scope.clients = response.data;
         });
-
     };
-
-    $scope.initialize();
 
     $scope.processForm = function(){
         var dataObject = {
-            products : $scope.selectedProducts,
             client : $scope.client.id
         };
         $http.post('/SalesQuote/add',dataObject, {}).success(showResponse);
     };
 
-    $scope.totalPrice = function (){
-        $scope.total = 0;
-
-        for (var i = 0;i < $scope.selectedProducts.length;i++) {
-            $scope.total += $scope.selectedProducts[i].price * $scope.selectedProducts[i].quantity;
-        }
-        return $scope.total;
-    };
+    $scope.initialize();
 });
 
 app.controller('saleAddCTL',function($scope,$http) {
@@ -216,53 +219,6 @@ app.controller('saleUpdateClientCTL',function($scope,$http){
 
 });
 
-app.controller('clientCTL',function($scope,$http){
-    $scope.client = client;
-
-    jQuery('form').ajaxForm(function(data){
-        if(data){
-            jQuery('.alert p').text(data.text).parent().removeClass('unseen');
-            if(data.url)
-                window.location.href = data.url;
-        }
-    });
-
-    function showResponse(data){
-        if(data){
-            if (data.text)
-                jQuery('.alert p').text(data.text).parent().removeClass('unseen');
-            if(data.url)
-                window.location.href = data.url;
-        }
-    };
-
-    $scope.createClient = function () {
-        //console.log($scope.client_form);
-        var client_form = { name : $scope.client_name,address : $scope.client_address,rfc : $scope.client_rfc , phone : $scope.client_phone };
-        $http.post('/clientes/crear',client_form,{}).success(showResponse);
-    };
-});
-
-app.controller('clientAddCTL',function($scope){
-    jQuery('form').ajaxForm(function(data){
-        if(data){
-            jQuery('.alert p').text(data.text).parent().removeClass('unseen');
-            if(data.url)
-                window.location.href = data.url;
-        }
-    });
-});
-
-app.controller('clientEditCTL',function($scope){
-    jQuery('form').ajaxForm(function(data){
-        if(data){
-            jQuery('.alert p').text(data.text).parent().removeClass('unseen');
-            if(data.url)
-                window.location.href = data.url;
-        }
-    });
-});
-
 app.controller('machineCTL',function($scope,$http){
     $scope.machine = machine;
     $scope.machines = machines;
@@ -282,7 +238,7 @@ app.controller('machineCTL',function($scope,$http){
             id : 0,
             name : '',
             velocity : '',
-            costPerHour : ''
+            price : ''
         });
     };
 
@@ -321,7 +277,7 @@ app.controller('editMachineCTL',function($scope,$http){
             id : 0,
             name : '',
             velocity : '',
-            costPerHour : ''
+            price : ''
         });
     };
 
@@ -372,6 +328,7 @@ app.controller('productTypeCTL',function($scope,$http,$parse){
 app.controller('editProductTypeCTL',function($scope,$http){
     $scope.product_types = window.product_types;
     $scope.product_type =  window.product;
+    $scope.inventory_types = window.inventory_type;
     $scope.saveClass = 'fa-save';
 
     var tmp = {};
@@ -379,12 +336,6 @@ app.controller('editProductTypeCTL',function($scope,$http){
         tmp[window.sales_type[i].type] = window.sales_type[i].name;
     }
     $scope.sales_type = tmp;
-
-    var tmp = {};
-    for(var i=0;i<window.inventory_type.length;i++){
-        tmp[window.inventory_type[i].type] = window.inventory_type[i].name;
-    }
-    $scope.inventory_types = tmp;
 
     function showResponse(data){
         $scope.saveClass = 'fa-save';

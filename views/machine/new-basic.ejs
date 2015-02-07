@@ -10,3 +10,9 @@
     <label for="internalreference">Referencia Interna :</label>
     <span class="field"><input type="text" id="internalreference" name="internalReference" class="form-control" ng-model='machine.internalReference'></span>
 </p>
+<p>
+    <label for="machine_type">Tipo :</label>
+    <span class="field">
+        <select id="machine_type" ng-options="type for type in ['router','laminadora','corte','impresora']" ng-model="machine.machine_type" chosen ng-required></select>
+    </span>
+</p>

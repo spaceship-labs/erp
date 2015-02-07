@@ -29,32 +29,32 @@ module.exports = {
     configure: function (req, res) {
         var select_company = req.session.select_company || req.user.select_company;
         Installation_crane.find({ company : select_company }).exec(function (err,cranes){
-                Installation_material.find({ company : select_company }).populate('product').exec(function (err,materials){
-                    Installation_tool.find({ company : select_company }).populate('product').exec(function (err,tools){
-                        Installation_work_type.find({ company : select_company }).exec(function (err,work_types){
-                            Installation_zone.find({ company : select_company }).exec(function (err,zones){
-                                Installation_hour.find({company : select_company}).exec(function(err,hours) {
-                                    Product.find({company : select_company}).populateAll().exec(function(err,products) {
-                                        Common.view(res.view,{
-                                            page:{
-                                                icon:'fa fa-wrench'
-                                                ,name:'Configuracion de Instalaciones'
-                                                ,controller : 'installation.js'
-                                            },
-                                            cranes : cranes || [],
-                                            materials : materials || [],
-                                            tools : tools || [],
-                                            work_types : work_types || [],
-                                            zones : zones || {},
-                                            hours : hours || {},
-                                            products : products
-                                        },req);
-                                    });
+            Installation_material.find({ company : select_company }).populate('product').exec(function (err,materials){
+                Installation_tool.find({ company : select_company }).populate('product').exec(function (err,tools){
+                    Installation_work_type.find({ company : select_company }).exec(function (err,work_types){
+                        Installation_zone.find({ company : select_company }).exec(function (err,zones){
+                            Installation_hour.find({company : select_company}).exec(function(err,hours) {
+                                Product.find({company : select_company}).populateAll().exec(function(err,products) {
+                                    Common.view(res.view,{
+                                        page:{
+                                            icon:'fa fa-wrench'
+                                            ,name:'Configuracion de Instalaciones'
+                                            ,controller : 'installation.js'
+                                        },
+                                        cranes : cranes || [],
+                                        materials : materials || [],
+                                        tools : tools || [],
+                                        work_types : work_types || [],
+                                        zones : zones || {},
+                                        hours : hours || {},
+                                        products : products
+                                    },req);
                                 });
                             });
                         });
                     });
                 });
+            });
         });
 
     },
@@ -83,16 +83,6 @@ module.exports = {
                 moment : moment
             },req);
         });
-    },
-
-    update : function (req,res){
-        var form = req.param('machine');
-        if(form){
-            Machine.update({id:form.id},{ name : form.name , description : form.description , internalReference : form.internalReference , product_types : form.product_types, ink_cost : form.ink_cost,ink_utility : form.ink_utility }).exec(function(err,machine){
-                if(err) return res.json({text:'Ocurrio un error.'});
-                res.json({text:'Impresora actualizada.'});
-            });
-        }
     },
 
     update_zones : function (req,res){

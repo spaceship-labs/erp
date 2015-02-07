@@ -16,7 +16,6 @@ module.exports = {
 		}
 		,email:'string'
 		,password:'string'
-		,role:'integer'
 		,name:'string'
 		,last_name:'string'
 		,icon:'json'
@@ -39,6 +38,9 @@ module.exports = {
         ,isAdmin : {
             type : 'boolean',
             defaultsTo : false
+        }
+        ,role:{
+            model : 'UserRole'
         }
         ,lastLogin : 'datetime'
 		,setPassword : function(val,cb){

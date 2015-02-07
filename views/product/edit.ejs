@@ -4,7 +4,7 @@
     window.product_type = <%- JSON.stringify(product_type) %>;
 </script>
 <div ng-controller='productCTL'>
-	<div class="span5">
+	<div class="col-md-6">
 		<div class="alert alert-block unseen">
 			<button data-dismiss="alert" class="close" type="button">×</button>
 			<h4>Mensaje</h4>
@@ -12,9 +12,9 @@
 		</div>
 	    
 	     <div class="widgetbox">
-	     	<h4 class="widgettitle">Informacion Basica <span class='fa icon' ng-class='saveClass'></span></h4>
+	     	<h4 class="widgettitle">Informacion Basica</h4>
 	     	<div class="widgetcontent nopadding">                            
-	     		<form action="/product/update" method="post" accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine" >
+	     		<form action="/product/update" accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine" name="productEditForm">
 					<input type='hidden' ng-value='product.id' name='pid' />
 					<%- partial('new-basic') %>
                     <%- partial('inventory-type-fields') %>
@@ -26,29 +26,27 @@
 	     </div>
 	</div>
 
-    <div class="span5" >
+    <div class="col-md-6" >
         <div class="widgetbox">
 		    <%- partial('product-gallery') %>
         </div>
 	</div>
 
-    <% if (product_type.fields.length > 0) {%>
-    <div class="span5" >
+    <% if (product_type.fields && product_type.fields.length > 0) {%>
+    <div class="col-md-6" >
         <div class="widgetbox">
             <%- partial('product-type-fields') %>
         </div>
     </div>
     <% } %>
 
-    <% if (product_type.inventory_use) {%>
-    <div class="span5">
+    <div class="col-md-6">
         <div class="widgetbox">
             <%- partial('inventory') %>
         </div>
     </div>
-    <% } %>
 
-    <div class="span5">
+    <div class="col-md-6">
         <div class="widgetbox">
             <%- partial('quote') %>
         </div>

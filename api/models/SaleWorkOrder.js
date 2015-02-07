@@ -19,8 +19,8 @@ module.exports = {
             model : 'User'
         },
 
-        sale : {
-            model : 'Sale'
+        quote : {
+            model : 'SaleQuote'
         }
 
 	}

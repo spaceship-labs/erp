@@ -5,7 +5,7 @@
     window.product_types = <%- JSON.stringify(product_types) %>;
 </script>
 <div ng-controller='editMachineCTL'>
-	<div class="span5">
+	<div class="col-md-6">
 		<div class="alert alert-block unseen">
 			<button data-dismiss="alert" class="close" type="button">×</button>
 			<h4>Mensaje</h4>
@@ -19,24 +19,6 @@
 					<input type='hidden' ng-value='product.id' name='pid' />
 					<%- partial('edit-basic') %>
                     <p>
-                        <label for="ctinta">Costo tinta m2 :</label>
-                        <span class="field">
-                            <input type="text" id="ctinta" name="ctinta" class="form-control" ng-model='machine.ink_cost'>
-                        </span>
-                    </p>
-                    <p>
-                        <label for="utinta">Utilidad %:</label>
-                        <span class="field">
-                            <input type="text" id="utinta" name="utinta" class="form-control" ng-model='machine.ink_utility'>
-                        </span>
-                    </p>
-                    <p>
-                        <label for="utinta">Precio tinta m2:</label>
-                        <span class="field">
-                            {{machine.ink_cost * (1 + (machine.ink_utility/100))}}
-                        </span>
-                    </p>
-                    <p>
                         <label for="product_types">Categorias de producto que utiliza:</label>
                         <span class="field">
                             <select type="text" id="product_types" name="product_types" class="form-control" ng-options="p.id as p.name for p in product_types" ng-model='machine.product_types' chosen multiple></select>
@@ -49,16 +31,16 @@
 	     	</div>
 	     </div>
 	</div>
-	<div class="span5" >
-		<div class="widgetbox">
-			<h4 class="widgettitle">Modos</h4>
-			<div class="widgetcontent nopadding">
+    <div class="col-md-6" >
+        <div class="widgetbox">
+            <h5 class="widgettitle">Modos</h5>
+            <div class="widgetcontent nopadding">
                 <table class="table responsive">
                     <thead>
                     <tr>
                         <th>Nombre</th>
                         <th>Vel : m2/hr</th>
-                        <th>Costo hora</th>
+                        <th>Precio m2</th>
                         <th>Eliminar</th>
                     </tr>
 
@@ -67,12 +49,12 @@
                     <tr ng-repeat="machine_mode in machine_modes">
                         <td data-title="Nombre"><input type="text" ng-model="machine_mode.name" value="{{machine_mode.name}}"/></td>
                         <td data-title="Vel : m2/hr"><input type="text" class="span1" ng-model="machine_mode.velocity" value="{{machine_mode.velocity}}" /></td>
-                        <td data-title="Costo hora"><input type="text" class="span1" ng-model="machine_mode.costPerHour" value="{{machine_mode.costPerHour}}" /></td>
+                        <td data-title="Precio x m2"><input type="text" class="span1" ng-model="machine_mode.price" value="{{machine_mode.price}}" /></td>
                         <td data-title="Eliminar"><a><span ng-click="deleteMachineMode($index)" class="table-icon fa fa-trash-o" style="cursor : pointer;" tooltip="borrar"></span></a></td>
                     </tr>
                     <tr>
                         <td colspan="4">
-                            <a href="#" class="btn btn-default button-orange" ng-click="addMachineMode()"><span class="table-icon fa fa-plus"></span> Modo de impresion</a>
+                            <a href="#" class="btn btn-default button-orange" ng-click="addMachineMode()"><span class="table-icon fa fa-plus"></span></a>
                         </td>
                     </tr>
                     </tbody>
@@ -83,7 +65,7 @@
                         <button class="btn btn-primary">Guardar</button>
                     </p>
                 </form>
-			</div>
-		</div>
-	</div>
+            </div>
+        </div>
+    </div>
 </div>

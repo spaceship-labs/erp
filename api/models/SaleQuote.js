@@ -9,14 +9,18 @@ module.exports = {
 
 	attributes: {
 
+        priority : {
+            type : 'string',
+            enum : ['normal','alta','urgente'],
+            default : 'normal'
+        },
         status : {
             type : 'string',
             enum : ['approved','on_hold','open','close','expired','delivered'],
-            default : 'on_hold'
+            default : 'open'
         },
-
-        fileName : {
-            type: 'string'
+        files : {
+            type: 'array'
         },
 
         user : {
@@ -26,6 +30,10 @@ module.exports = {
 
         sale : {
             model : 'Sale'
+        },
+
+        estimated_date : {
+            type : 'date'
         },
 
         products : {
@@ -40,28 +48,55 @@ module.exports = {
             model : 'Company',
             required : true
         },
+        name : {
+            type : 'string'
+        },
+        delivery_date : {
+            type : 'date'
+        },
+        delivery_mode : {
+            type : 'string',
+            enum : ['pickup','deliver'],
+            default : 'deliver'
+        },
+        deliver_to : {
+            model : 'Client_'
+        },
+        deliver_to_contact : {
+            model : 'Client_contact'
+        },
+        bill_to : {
+            model : 'Client_'
+        },
+        bill_to_contact : {
+            model : 'Client_contact'
+        },
+        observation_prepress : {
+            type : 'string'
+        },
+        observation_press : {
+            type : 'string'
+        },
+        observation_finish : {
+            type : 'string'
+        },
         totalPrice : function(){
             var total = 0.0;
             if (this.products && this.products.length > 0) {
-                for (var i in this.products) {
-                    if (_.isNumber(this.products[i].price_total))
-                        total += this.products[i].price_total;
-
-                }
+                _.forEach(this.products,function(product){
+                    total += SaleProduct.getPrice(product);
+                });
             }
             return total;
         },
         productsString : function(){
             var result = "";
             if (this.products && this.products.length > 0) {
-                for (var i in this.products) {
-                    //console.log(this.products[i]);
-                    if (i > 0)
-                        result += " , ";
-                    result += this.products[i].name;
-                }
+                _.forEach(this.products,function(product){
+                    result += product.name;
+                });
             } else {
-                result = "--";
+                result = "No products added";
             }
             return result;
         }

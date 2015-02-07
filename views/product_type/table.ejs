@@ -3,7 +3,6 @@
 		<tr>
 			<th>Nombre</th>
 			<th>Descripcion</th>
-			<th>Tipo</th>
 			<th>Editar</th>
 		</tr>
 	</thead>
@@ -11,7 +10,6 @@
 		<tr ng-repeat='product_type in product_types'>
 			<td ng-bind='product_type.name' data-title="Nombre"></td>
 			<td ng-bind='product_type.description' data-title="Descripcion"></td>
-			<td ng-bind='product_type.sales_type' data-title="Tipo"></td>
 			<td data-title="Editar"><a ng-href='/product_type/edit/{{product_type.id}}' ><span class="table-icon fa fa-edit"></span></a></td>
 		</tr>
 	</tbody>

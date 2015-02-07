@@ -29,8 +29,7 @@ app.controller('fieldCTL',function($scope,$http){
     }
 });
 
-app.controller('productCTL',function($scope,$http){
-    $scope.saveClass = 'fa-save';
+app.controller('productCTL',function($scope,$http,$filter){
     var initialize = function() {
         $scope.product = typeof window.product != 'undefined' ? window.product : {};
         $scope.product_type = typeof window.product_type != 'undefined' ? window.product_type : {};
@@ -55,14 +54,26 @@ app.controller('productCTL',function($scope,$http){
                     }
                 }
                 if (!foundOne) {
-                    var field = { id : 0,field: $scope.product_type.fields[i].id, product: $scope.product.id, value: "", type: $scope.product_type.fields[i].type, name: $scope.product_type.fields[i].name, values: $scope.product_type.fields[i].values };
+                    var field = {
+                        id : 0,
+                        field: $scope.product_type.fields[i].id,
+                        product: $scope.product.id,
+                        value: "",
+                        type: $scope.product_type.fields[i].type,
+                        name: $scope.product_type.fields[i].name,
+                        values: $scope.product_type.fields[i].values
+                    };
                     $scope.aux_fields.push(field);
                 }
             }
         }
 
         if (!$scope.product.price) {
-            $scope.product.price = { cost : 0,margin : 0,id : 0 };
+            $scope.product.price = {
+                cost : 0,
+                margin : 0,
+                id : 0
+            };
         }
 
         if (!$scope.product.quantity) {
@@ -72,10 +83,6 @@ app.controller('productCTL',function($scope,$http){
         $scope.product.addInventory = 0;
     };
 
-//    $scope.processInfo = function() {
-//        $scope.saveClass = 'fa-update';
-//        //$http.post('/product/update',)
-//    };
     $scope.processInventory = function() {
         $http.post('/product/updateInventory',{inventory : $scope.product.addInventory,product : $scope.product.id },{}).success(function(data){
             if (data) {
@@ -103,10 +110,9 @@ app.controller('productCTL',function($scope,$http){
     };
 
     $scope.calculatePrice = function(){
-        if ($scope.product.price.cost) {
-            return $scope.product.price.cost * (1 + ($scope.product.price.margin/100));
-        }
-        return 0;
+        var number = $scope.product.price.cost * (1 + ($scope.product.price.margin/100));
+        number = $filter('number')(number, 2);
+        return number ? $filter('currency')(number) : "0.0";
     };
 
     $scope.calculateTotalInventory = function(){
@@ -136,21 +142,33 @@ app.controller('productsCTL',function($scope){
 app.controller('productAddCTL',function($scope,$http){
     $scope.products = window.products;
     $scope.product_types = window.product_types;
+    $scope.machines_ = window.machines;
     $scope.product = {};
-    //$scope.machine = {};
+    $scope.machines = [];
+    $scope.selected_machines = [];
+    $scope.extras = [];
+    $scope.selected_machines_for_real = [];
 
     $scope.processSelectedProduct = function(quoteID){
         var product = {
             price : $scope.calculateProductPrice() ,
-            price_total :  $scope.calculateProductPriceTotal(),
+            original_price : $scope.product.price.cost * (1 + ($scope.product.price.margin/100)),
+            //price_total :  $scope.calculateProductPriceTotal(),
             product : $scope.product.id,
             quantity : $scope.product.quantity,
             quote : quoteID,
-            name : $scope.product.name
+            name : $scope.product.sale_name,
+            size : $scope.product.size,
+            visible_size : $scope.product.visible_size,
+            description : $scope.product.description
         };
 
-        if ($scope.selected_machine) {
-            product.machine = $scope.selected_machine;
+        if ($scope.selected_machines_for_real) {
+            product.machines = $scope.selected_machines_for_real;
+        }
+
+        if ($scope.extras) {
+            product.extras = $scope.extras;
         }
 
         $http.post('/salesQuote/addProduct',{product : product}).then(function(r){
@@ -159,36 +177,79 @@ app.controller('productAddCTL',function($scope,$http){
         });
     };
 
-    $scope.checkMachines = function(){
+    $scope.checkMachines = function(type){
         if ($scope.product.machines && $scope.product.machines.length > 0) {
-            return true;
+            $scope.machines[type] = _.where($scope.product.machines,{ machine_type : type });
+            //console.log($scope.machines);
+            return $scope.machines[type].length > 0;
         }
         return false;
     };
 
     $scope.loadMachines = function(){
-        for (var i=0;i<$scope.product_types.length;i++) {
-            if ($scope.product_types[i].id == $scope.product.product_type.id) {
-                if ($scope.product_types[i].machines && $scope.product_types[i].machines.length > 0) {
-                    $scope.product.machines = $scope.product_types[i].machines;
+        var product_type = _.findWhere($scope.product_types,{ id : $scope.product.product_type.id });
+        $scope.product.machines = _.map(product_type.machines,function(val){
+            return _.findWhere($scope.machines_,{ id : val.id });
+        });
+    };
+
+    $scope.calculateProductPrice = function(){
+        var price = 0.0;
+        var product_size = $scope.product.size ? (($scope.product.size.width || 0) * ($scope.product.size.height || 0)) : 0;
+        var iterator = 0;
+        if ($scope.selected_machines && _.isArray($scope.selected_machines)) {
+            for(var i in $scope.selected_machines) {
+                if (!angular.isUndefined(i) && !angular.isUndefined($scope.selected_machines[i].mode) && $scope.selected_machines[i].mode.price) {
+                    price += parseFloat($scope.selected_machines[i].mode.price) * parseFloat(product_size);
+                    $scope.selected_machines_for_real[iterator++] = $scope.selected_machines[i];
+                }
+            }
+        }
+
+        price += parseFloat(product_size) * $scope.product.price.cost * (1 + ($scope.product.price.margin/100));
+
+        return price;
+    };
+
+    $scope.calculateProductPriceTotal = function(){
+        var price = 0;
+        if (_.size($scope.extras)){
+            _.each($scope.extras,function(extra){
+                price += extra.price * extra.quantity;
+            });
+        }
+        return price + ($scope.calculateProductPrice() * $scope.product.quantity);
+    };
+
+    $scope.getExtraTotal = function() {
+        return _.reduce($scope.extras,function(last,next){ return last + (next.price * next.quantity) },0);
+    };
+
+    $scope.generateDescription = function(){
+        $scope.product.description = "";
+        $scope.product.description += $scope.product.sale_name;
+        $scope.product.description += $scope.product.size ? (" , " + $scope.product.size.width + " m. x " + $scope.product.size.height + " m.") : "";
+
+        if ($scope.selected_machines && _.isArray($scope.selected_machines)) {
+            for(var i in $scope.selected_machines) {
+                if (!angular.isUndefined(i) && !angular.isUndefined($scope.selected_machines[i]) && $scope.selected_machines[i].mode.price) {
+                    $scope.product.description += ' , ' + $scope.selected_machines[i].name;
                 }
             }
         }
     };
 
-    $scope.calculateProductPrice = function(){
-        var price = 0;
-        if ($scope.product.machines && $scope.product.machines.length > 0 && $scope.selected_machine) {
-            price = $scope.selected_machine.ink_cost * (1 + ($scope.selected_machine.ink_utility/100));
-        }
-        if ($scope.product.cut_price && $scope.product.cut){
-            price += $scope.product.cut_price
-        }
-        price += $scope.product.price.cost * (1 + ($scope.product.price.margin/100));
-        return price;
+    $scope.addExtra = function(){
+        var extra = {
+            name : '',
+            quantity : 1,
+            price : 0
+        };
+
+        $scope.extras.push(extra);
     };
 
-    $scope.calculateProductPriceTotal = function(){
-        return $scope.calculateProductPrice() * $scope.product.quantity;
+    $scope.deleteExtra = function(index) {
+        $scope.extras.splice(index,1);
     };
 });

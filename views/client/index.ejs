@@ -36,7 +36,21 @@
                 </table>
             </div>
         </div>
-
     </div>
-    <%- partial('partial/modal') -%>
+    <div class="modal fade" id="addClientModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div
+                        form-helper
+                        fields='content.client'
+                        form-footer='Agregar'
+                        form-save = 'createClient'
+                        object = 'client'
+                        form-title='Agregar Cliente'
+                        modal='true'
+                        >
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

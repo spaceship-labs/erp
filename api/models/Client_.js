@@ -19,7 +19,9 @@ module.exports = {
 
         rfc     : { type : 'string' , required : true },
 
-        user : { type : 'string' , required : true },
+        user : { model : 'User' , required : true },
+
+        comments : { type : 'string' },
 
         sales : {
             collection : "Sale",
@@ -34,6 +36,27 @@ module.exports = {
         contacts : {
             collection : "Client_contact",
             via : "client"
+        },
+
+        product_discounts : {
+            collection : "Product_discount",
+            via : "client"
+        },
+
+        discount : {
+            type : 'float'
+        },
+
+        city : {
+            type : 'string'
+        },
+
+        state : {
+            type : 'string'
+        },
+
+        country : {
+            type : 'string'
         }
 
 	}

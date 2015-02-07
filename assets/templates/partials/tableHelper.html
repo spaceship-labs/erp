@@ -9,8 +9,8 @@
     <tbody>
 		<tr ng-repeat='(key,object) in objects'>
 			<td ng-repeat='column in columns' ng-bind='object[column.handle]'></td>
-			<td><a ng-href='/{{route}}/edit/{{object.id}}' class='fa fa-edit'></a></td>
-			<td><a href='' class='fa fa-trash-o' ng-click='destroyObject(object,key)'></a></td>
+			<td><a ng-href='{{customEditRoute}}/{{object.id}}' class='fa fa-edit' style="cursor: pointer"></a></td>
+			<td><a class='fa fa-trash-o' ng-click='destroyObject(object,key)' style="cursor: pointer"></a></td>
 		</tr>    	
     </tbody>
 </table>

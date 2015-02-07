@@ -1,7 +1,7 @@
 <div class="modal fade" id="addModal">
     <div class="modal-dialog">
     <div class="modal-content" ng-controller="saleQuoteAddCTL">
-            <form accept-charset="utf-8" class="stdform stdform2 ng-pristine ng-valid commonForm" ng-submit="processForm()">
+            <form accept-charset="utf-8" class="stdform stdform2 ng-pristine ng-valid commonForm" ng-submit="processForm()" name="newQuoteForm">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title">Nueva Venta</h4>
@@ -10,10 +10,16 @@
                     <div class="widgetbox">
                         <div class="widgetcontent nopadding">
                             <p>
+                                <label for="name">Nombre :</label>
+                                <span class="field">
+                                    <input type="text" name="name" id="name" required>
+                                </span>
+                            </p>
+                            <p>
                                 <label for="client_id">Selecciona un cliente :</label>
                                 <span class="field">
                                     <span>
-                                        <select class='form-control large required' data-placeholder="Selecciona ..." chosen="clients" ng-model="client" ng-options="client.name for client in clients">
+                                        <select class='form-control large required' data-placeholder="Selecciona ..." ng-model="client" ng-options="client.name for client in clients" required>
                                         </select>
                                         <input class="hidden" type="text" name="clientID" ng-value="client.id"/>
                                     </span>
@@ -23,17 +29,14 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-		    <a class="btn btn-default button-orange" data-toggle="modal" data-target="#addClientModal"><span class="table-icon fa fa-plus"></span> Nuevo cliente</a>
+		            <a class="btn btn-default button-orange" data-toggle="modal" data-target="#addClientModal"><span class="table-icon fa fa-plus"></span> Nuevo cliente</a>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                    <input type="submit" class="btn btn-primary" value='Guardar'>
+                    <input type="submit" class="btn btn-primary" ng-disabled="newQuoteForm.$valid" value='Guardar'>
                 </div>
                 </form>
     </div>
     </div>
 </div>
 <div class="commonForm" ng-controller="saleAddClientCTL">
-    <%
-        var post_url = "create_quote";
-    %>
 	<%-partial('../client/partial/modal') %>
 </div>

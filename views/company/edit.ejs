@@ -4,7 +4,7 @@
     window.users = <%- JSON.stringify(users) %>;
 </script>
 <div class='row-fluid' ng-controller='companyEditCTL'>
-    <div class="span4 profile-left profileEdit Admin">
+    <div class="col-md-4 profile-left profileEdit Admin">
     	<div class="alert alert-block unseen">
     		<button data-dismiss="alert" class="close" type="button">×</button>
     		<h4>Mensaje</h4>
@@ -32,6 +32,7 @@
                             <button type='submit' class="btn btn-primary" ng-if="selectedApp">Agregar App</button>
                         </p>
                     </form>
+                    <p ng-if="missingApps.length == 0">Todas las aplicaciones estan agregadas</p>
                 </div>
         </div>
 
@@ -57,9 +58,27 @@
                     <p ng-if="company.users.length == users.length">Todos los usuarios estan agregados</p>
                 </div>
         </div>
+
+        <div class="widgetbox">
+            <h4 class="widgettitle">Impuestos <span ng-click='toggleNewTax()'  class='fa icon' ng-class='newTaxClass'></span>  </h4>
+            <div class="widgetcontent">
+                <div ng-show='showTaxForm'>
+                    <div form-helper
+                         fields='content.company_tax'
+                         form-footer='Agregar Impuesto'
+                         form-save = 'addTax'
+                         object = 'tax'
+                            >
+                    </div>
+                </div>
+                <div ng-show='company.taxes.length'>
+                    <div table-helper objects='company.taxes' columns='content.company_tax' edit-route="/company/edit_tax" delete-route="/company/delete_tax"></div>
+                </div>
+            </div>
+        </div>
             
     </div><!--span4-->
-    <div class="span8">
+    <div class="col-md-6">
         <div form-helper
              fields='content.company'
              object='company'

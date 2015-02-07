@@ -1,81 +1,83 @@
+<script type='text/javascript'>
+    window.client = <%- JSON.stringify(client) %>;
+    window.products = <%- JSON.stringify(products) %>;
+</script>
+<div ng-controller="clientEditCTL">
+    <div class="col-md-6">
+        <div class="alert alert-block unseen">
+            <button data-dismiss="alert" class="close" type="button">×</button>
+            <h4>Mensaje</h4>
+            <p style="margin: 8px 0">El cliente se ha actualizado exitosamente</p>
+        </div>
+        <div form-helper
+             fields='content.client'
+             object='client'
+             action='/clientes/actualizar'
+             form-title='Información Basica'
+             restrict="email"
+                >
+        </div>
+    </div>
 
-<div ng-controller="clientCTL">
-    <div class="row">
-        <div class="col-md-6">
-            <div class="alert alert-block unseen">
-                <button data-dismiss="alert" class="close" type="button">×</button>
-                <h4>Mensaje</h4>
-                <p style="margin: 8px 0">El cliente se ha actualizado exitosamente</p>
-            </div>
-            <div class="widgetbox">
-                <div class="widgetcontent nopadding">
-                    <form action="/clientes/actualizar" method="post" accept-charset="utf-8" class="stdform stdform2 ng-pristine">
-                        <input type="hidden" name="id" value="<%=client.id%>" />
-                        <%- partial("partial/form") %>
-                        <p class="stdformbutton">
-                            <button class="btn btn-primary">Guardar</button>
-                            <button type="reset" class="btn">Resetear</button>
-                        </p>
-                    </form>
+    <div class="col-md-6">
+        <div class="widgetbox">
+            <h4 class="widgettitle">Precios especiales</h4>
+            <form accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine widgetcontent nopadding" ng-submit="specialPriceProcess()">
+                <p>
+                    <label>Descuento general:</label>
+                    <span class="field">
+                        <span class="input-group">
+                            <input class="form-control" type="text" ng-model='client.discount'>
+                            <span class="input-group-addon">%</span>
+                        </span>
+                    </span>
+                </p>
+
+                <p>
+                    <label>Por productos</label>
+                    <span class="field">
+                        <select class="form-control" ng-options='product.name for product in products' ng-model='selected_products' chosen multiple></select>
+                    </span>
+                </p>
+
+                <p ng-repeat="product in selected_products">
+                    <label ng-init="product = { name : product.name, symbol : '%',showMenu : false, finalPrice : calculatePrice(product.price), cost : product.price.cost,margin : product.price.margin  }">{{product.name}}</label>
+                    <span class="field">
+                        <label>{{product.cost * (1 + ((product.margin ? product.margin : 0)/100))}}</label>
+                        <select class="form-control span2" ng-change="setMenu(product)" ng-model="product.symbol">
+                            <option value="$">- $</option>
+                            <option value="%">- %</option>
+                            <option value="=">=</option>
+                        </select>
+                        <input class="form-control span2" type="text" ng-model='product.discount' ng-change="setMenu(product)">
+                        <label ng-bind='product.finalPrice'></label>
+                    </span>
+                </p>
+                <p class="stdformbutton">
+                    <button class="btn btn-primary">Guardar</button>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="widgetbox">
+            <h4 class="widgettitle">Contactos <span ng-click='toggleNewContact()'  class='fa icon' ng-class='newContactClass'></span>  </h4>
+            <div ng-show='showContactForm'>
+                <div form-helper
+                     fields='content.client_contact'
+                     form-footer='Agregar Contacto'
+                     form-save = 'addContact'
+                     object = 'contact'
+                     hidden-fields = 'hiddenFields'
+                     objects='{contact_types:contact_types}'
+                        >
                 </div>
             </div>
-        </div>
-        <!--<div class="col-md-11">
-            <h4 class="widgettitle"><span class="fa fa-briefcase"></span> Cotizaciones <a href="/cotizaciones/agregar?sc=<%= client.id %>" class="pull-right"><span class="fa fa-plus"></span> Agregar</a></h4>
-            <div class="widgetcontent custom-table nopadding">
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th>Fecha</th>
-                        <th>Vendedor</th>
-                        <th>Cliente</th>
-                        <th>Status</th>
-                        <th>Monto</th>
-                        <th>Editar</th>
-                    </tr>
-                    </thead>
-                    <% for(var i=0;i<client.quotes.length;i++){
-                        var quote = client.quotes[i];
-                    %>
-                    <tr>
-                        <td data-title="Fecha"><%= moment(quote.createdAt).format('Do [de] MMMM YYYY, h:mm:ss a') %></td>
-                        <td data-title="Vendedor"><a href="/ventas/editar/<%= quote.id %>"><%= quote.user.name %></a></td>
-                        <td data-title="Cliente"><%= quote.client.name %></td>
-                        <td data-title="Status"><%= quote.status || 'pendiente' %></td>
-                        <td data-title="Monto"><%= quote.totalAmount || 0 %></td>
-                        <td data-title="Editar"><a href="/ventas/editar/<%= quote.id %>"><span class="table-icon fa fa-edit"></span></a></td>
-                    </tr>
-                    <% } %>
-                </table>
+            <div ng-show='client.contacts.length'>
+                <div table-helper objects='client.contacts' columns='content.client_contact' edit-route='/client/edit_contact' delete-route='/client/delete_contact'></div>
             </div>
-        </div>
-        <div class="col-md-11">
-            <h4 class="widgettitle"><span class="fa fa-briefcase"></span> Ventas <a href="/ventas/agregar?sc=<%= client.id %>" class="pull-right"><span class="fa fa-plus"></span> Agregar</a></h4>
-            <div class="widgetcontent custom-table nopadding">
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th>Fecha</th>
-                        <th>Vendedor</th>
-                        <th>Status</th>
-                        <th>Monto</th>
-                        <th>Editar</th>
-                    </tr>
-                    </thead>
-                    <% for(var i=0;i<client.sales.length;i++){
-                        var sale = client.sales[i];
-                    %>
-                    <tr>
-                        <td data-title="Fecha"><%= moment(sale.createdAt).format('Do [de] MMMM YYYY, h:mm:ss a') %></td>
-                        <td data-title="Vendedor"><a href="/ventas/editar/<%= sale.id %>"><%= sale.user.name %></a></td>
-                        <td data-title="Status"><%= sale.status || 'pendiente' %></td>
-                        <td data-title="Monto"><%= sale.totalAmount || 0 %></td>
-                        <td data-title="Editar"><a href="/ventas/editar/<%= sale.id %>"><span class="table-icon fa fa-edit"></span></a></td>
-                    </tr>
-                    <% } %>
-                </table>
-            </div>
-        </div>-->
 
+        </div>
     </div>
 </div>

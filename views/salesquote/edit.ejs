@@ -8,11 +8,14 @@
     window.zones = <%- JSON.stringify(zones) %>;
     window.hours = <%- JSON.stringify(hours) %>;
     window.quote = <%- JSON.stringify(quote) %>;
+    window.machines = <%- JSON.stringify(machines) %>;
 </script>
 <div ng-controller="saleQuoteCTL">
     <div class="row-fluid">
+
         <%- partial('../product/selectorAdd') %>
         <%- partial('../installation/add-modal') %>
+
     	<div class="col-md-4">
 	        <h4 class="widgettitle"><span class="fa fa-user"></span> Cliente </h4>
 	        <div class="widgetcontent main-client">
@@ -23,8 +26,20 @@
 	                <p><strong>Telefono: </strong><%= quote.client.phone %></p>
 	            </div>
 	        </div>
-	</div>
+	    </div>
         <div class="col-md-8">
+            <div class="buttons-box">
+                <h4>Nombre : <span editable-text="quote.name" e-required style="cursor: pointer;">{{quote.name || "no asignado"}}</span></h4>
+
+                <p class="input-group">
+                    Fecha :
+                    <input type="text" class="form-control" datepicker-popup="dd-MMMM-yyyy" ng-model="quote.estimated_date" is-open="opened" min-date="minDate" datepicker-options="dateOptions" close-text="Close" />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </p>
+            </div>
+
             <div class="buttons-box">
                 <a class="btn btn-default button-orange" data-toggle="modal" data-target="#productModal"><span class="table-icon fa fa-plus"></span> Producto</a>
                 <a class="btn btn-default button-orange" data-toggle="modal" data-target="#installationModal"><span class="table-icon fa fa-plus"></span> Instalacion</a>

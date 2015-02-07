@@ -31,18 +31,8 @@ module.exports = {
         name : 'string',
         machine_type : {
             type : 'string',
-            enum : ['router','impresora','laminadora','corte','impresora uv'],
-            default : 'impresora'
-        },
-        //impresora
-        ink_cost : 'float',
-        ink_utility : 'float',
-
-        calculateCost : function(){
-            if (this.machine_type == 'impresora') {
-                var machine_use_cost = this.ink_cost * (1 + (this.ink_utility/100));
-                return machine_use_cost;
-            }
+            enum : ['router','laminadora','corte','impresora'],
+            required : true
         }
 	}
 

@@ -13,8 +13,10 @@ module.exports = {
             required : true
         }
 		,sales_type:{
-            model : 'Sales_type',
-            required : true
+            type : 'string',
+            required : true,
+            enum   : ['sale', 'rent', 'service'],
+            defaultsTo : 'sale'
         }
 		,fields: {
             collection : 'custom_fields',
@@ -34,15 +36,17 @@ module.exports = {
 			collection:'product'
 			,via:'product_type'
 		},
-        inventory_use : {
-            type : 'boolean'
-        },
         inventory_type : {
-            type : 'string'
+            type : 'string',
+            enum   : ['unit', 'metro', 'metro2'],
+            defaultsTo : 'unit'
         },
         machines : {
             collection : 'Machine',
             via : 'product_types'
+        },
+        active : {
+            type : 'boolean'
         }
 
 	}
