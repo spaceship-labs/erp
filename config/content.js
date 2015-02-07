@@ -48,6 +48,14 @@ module.exports.content = {
 			removeAction : '/hotel/removeFoodScheme',
 		},
 	],
+	locationRelacion : [
+		{
+			label : 'Relacionar con otra ciudad',
+			type : 'multi-select',
+			object : 'locations',
+			handle : 'locations'
+		}
+	],
 	hotelLangs : [
 		{
 			label : 'Descripcion Español',
@@ -371,7 +379,7 @@ module.exports.content = {
 			handle : 'does_not_include_pt',
 		},
 		{
-			label : 'Recomendaciones',
+			label : 'Recomendaciones Español',
 			type : 'textarea',
 			handle : 'recommendations_es',
 		},
@@ -787,21 +795,43 @@ module.exports.content = {
     ],
     packageDay : [
     	{
-    		label : 'Name Español',
+    		label : 'Nombre Español',
     		handle : 'name_es',
     		type : 'text'
     	}
     ],
     packageDayBasic : [
     	{
-    		label : 'Name Español',
+    		label : 'Nombre Español',
     		handle : 'name_es',
     		type : 'text'
     	},
     	{
-    		label : 'Name Inglés',
+    		label : 'Nombre Inglés',
     		handle : 'name_en',
     		type : 'text'
     	},
+    ],
+    hotelRoomView : [
+    	{
+    		label : 'Nombre',
+    		handle : 'name',
+    		type : 'text'
+    	},
+    	{
+    		label : 'Nombre Inglés',
+    		handle : 'name_en',
+    		type : 'text'
+    	},
+    	{
+    		label : 'Nombre Ruso',
+    		handle : 'name_ru',
+    		type : 'text'
+    	},
+    	{
+    		label : 'Nombre Portugués',
+    		handle : 'name_pt',
+    		type : 'text'
+    	}
     ]
 };

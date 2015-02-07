@@ -14,8 +14,16 @@
             //$scope.loading[0] = 0;
             $scope.uids = [];
             $scope.loading = [];
-            $files.forEach(function(e,i){
-                var uid = Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+            var uid = Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+            $scope.uids.push(uid);
+            $scope.loading.push(0);
+            io.socket.on(uid,function(data){
+                var uid_index = parseInt(data.index);
+                if(data && $scope.loading[uid_index]!=undefined)
+                    $scope.loading[uid_index]=parseFloat(data.porcent);
+            });
+            //$files.forEach(function(e,i){
+                /*var uid = Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
                 $scope.uids.push(uid);
                 $scope.loading.push(0);            
                 io.socket.on(uid,function(data){
@@ -23,15 +31,14 @@
                     if(data && $scope.loading[uid_index]!=undefined)
                         $scope.loading[uid_index]=parseFloat(data.porcent);
                 });
-
-                $scope.upload = $upload.upload({
+				$scope.upload = $upload.upload({
                     url: $scope.addMethod,
                     data: {
                         id: $scope.object.id,
                         uid:uid,
                         index:i
                     },
-                    file: e, 	                
+                    file: e,
                 }).progress(function(evt){
                     $scope.loading[0] = parseInt(100.0 * evt.loaded / evt.total);
                 }).success(function(data, status, headers, config) {
@@ -40,7 +47,20 @@
                     $scope.uids.splice(index_uid, 1);
                     $scope.object.files = data.files;
                     $scope.page = Math.ceil($scope.object.files.length/$scope.pageLength) -1;
-                });        
+                });*/
+            //});
+			$scope.upload = $upload.upload({
+                url: $scope.addMethod,
+                data: {id: $scope.object.id,uid:uid,index:0},
+                file: $files,
+            }).progress(function(evt){
+                $scope.loading[0] = parseInt(100.0 * evt.loaded / evt.total);
+            }).success(function(data, status, headers, config) {
+                var index_uid = $scope.uids.indexOf(0);
+                $scope.loading = [];
+                $scope.uids.splice(index_uid, 1);
+                $scope.object.files = data.files;
+                $scope.page = Math.ceil($scope.object.files.length/$scope.pageLength) -1;
             });
         };
 		$scope.fileFilter = function () {

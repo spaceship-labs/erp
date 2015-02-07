@@ -43,8 +43,10 @@ passport.deserializeUser(function(id,done){
 module.exports = {
 	express:{
 		customMiddleware: function(app){
+			var timeout = require('connect-timeout');
 			app.use(passport.initialize());
-			app.use(passport.session())
+			app.use(passport.session());
+			app.use(timeout('60s'));
 		}
 
 	}

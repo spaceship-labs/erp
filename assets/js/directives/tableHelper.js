@@ -24,10 +24,17 @@
                 }
 
             });
-            
         };
 
         $scope.customEditRoute = $scope.editRoute ? ($scope.editRoute): ("/" + $scope.route + "/edit");
+
+        $scope.updateInline = function(data,object,handle){
+            $data = { id:object.id };
+            $data[handle] = data;
+            $http({method:'POST' , url:$scope.inlineEdit , data:$data }).success(function (obj){
+                if(obj.id == object.id) object[handle] = obj[handle];
+            });
+        }
 	};
 	controller.$inject = ['$scope','$http','$modal'];
     var directive = function () {
@@ -36,9 +43,10 @@
         	scope : {
         		objects : '=',
                 columns : '=',
-                route : '@',
                 editRoute : '@',
-                deleteRoute : '@'
+                deleteRoute : '@',
+                inlineEdit : '@', //url to update object
+                route : '@'
         	},
         	templateUrl : '/template/find/tableHelper.html'
         };
