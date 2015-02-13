@@ -43,11 +43,11 @@ app.controller('priceCTL',function($scope,$http){
     		$scope.isCollapsed.push(true);
     	}
     	$scope.isCollapsed[0] = false;
-    	console.log($scope.isCollapsed);
+    	//console.log($scope.isCollapsed);
     }
     $scope.closeTransfers();
     $scope.isFCollapsed = function(index){
-    	console.log($scope.isCollapsed[index]);
+    	//console.log($scope.isCollapsed[index]);
     	$scope.isCollapsed[index] = !$scope.isCollapsed[index];
     }
     $scope.getCollapsed = function(index){

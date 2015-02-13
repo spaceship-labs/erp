@@ -7,14 +7,15 @@
 
 module.exports = {
   attributes: {
-  	name : 'string',
+  	name :'string',
   	zones : {
   		collection 	: 'zone',
   		via 		: 'location'
   	},
-  	/*locations : {
-  		collection : 'locationrelated',
-  		via : 'location1'
-  	}*/
+  	locations : {
+  		collection : 'location',
+  		via : 'id',
+      dominant : true
+  	},
   }
 };

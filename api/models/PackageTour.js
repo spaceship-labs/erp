@@ -14,6 +14,10 @@ module.exports = {
 		},
 		user : {
 			model : 'user'
+		},
+		items : {
+			collection : 'packageitem',
+			via : 'package_'
 		}
 	}
   	,afterCreate: function(val,cb){

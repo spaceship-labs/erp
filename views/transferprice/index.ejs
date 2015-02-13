@@ -6,8 +6,7 @@
 	window.airports = <%- JSON.stringify(airports) %>;
 	window.companies_ = <%- JSON.stringify(companies_) %>;
 	window.content = <%- JSON.stringify(_content) %>;
-	//window.cs = window.companies_[0];
-	console.log(prices);
+	console.log(window.prices);
 </script>
 <div ng-controller="priceCTL" >
 	<div class='row-fluid'>
@@ -32,8 +31,24 @@
 					<th>Editar</th>
 				</tr></thead>
 				<tr class='price-row' ng-repeat='price in serv'>
-					<td>{{price.zone1.name}}</td>
-					<td>{{price.zone2.name}}</td>
+					<td>
+						<span ng-hide="price.location2 && price.location2.id==thelocation.id" >
+							<span ng-bind="price.zone1.name"></span>
+						</span>
+						<span ng-show="price.location2 && price.location2.id==thelocation.id">
+							<span ng-bind="price.zone2.name"></span>
+						</span>
+					</td>
+					<td>
+						<span ng-hide="price.location2 && price.location2.id==thelocation.id" >
+							<span ng-bind="price.zone2.name"></span>
+							<span ng-if="price.location2.name">({{price.location2.name}})</span>
+						</span>
+						<span ng-show="price.location2 && price.location2.id==thelocation.id">
+							<span ng-bind="price.zone1.name"></span>
+							<span>({{price.location.name}})</span>
+						</span>
+					</td>
 					<td>
 						<span 
 							editable-text='price.one_way'

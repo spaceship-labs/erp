@@ -1,5 +1,7 @@
 <script type='text/javascript'>
     window.package_t = <%- JSON.stringify(package_t) %>;
+    window.items = <%- JSON.stringify(items) %>;
+    window.locations = <%- JSON.stringify(locations) %>;
 </script>
 <div ng-controller='packageEditCTL'>
     <div class='row-fluid'>
@@ -30,32 +32,20 @@
                         fields='content.packageDay' 
                         form-footer='Agregar Día'
                         form-save = 'addDay'
-                        object = 'day' >
+                        hidden-fields = "hiddenFields"
+                        object = 'theday'
+                        objects = '{daysnumber:daysnumber,locations:locations}' >
                     </div>
                 </div></div>
-                <div ng-show='package_t.days.length'>
-                    <div table-helper objects='package_t.days' columns='content.packageDayBasic' route='packagetour'></div>
-                    <table class="table table-striped responsive">
-                        <thead>
-                            <tr>
-                                <th>Día</th>
-                                <th>Nombre</th>
-                                <th>Editar</th>
-                                <th>Eliminar</th>
-                            </tr>
-                        </thead>
-                        <tbody ui-sortable ng-model="items">
-                            <tr ng-repeat='obj in package_t.days'>
-                                <td ng-bind='obj.dayorder'></td>
-                                <td ng-bind='obj.name_es'></td>
-                                <td><a ng-href='/{{route}}/edit/{{object.id}}' class='fa fa-edit'></a></td>
-                                <td><a href='' class='fa fa-trash-o' ng-click='destroyObject(object,key)'></a></td>
-                            </tr>       
-                        </tbody>
-                    </table>
-                    <p>{{items}}</p>
+                <div ng-show='items.length'>
+                    <div table-helper objects='items' columns='content.packageDayBasic' route='packageitem'></div>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class='row-fluid'>
+        <div class="span12"> 
+            <div class='big-map-container' ></div>
         </div>
     </div>
     <br/>

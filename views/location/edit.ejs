@@ -1,7 +1,7 @@
 <script type='text/javascript'>
     window.location_o = <%- JSON.stringify(location_o) %>;
     window.locations = <%- JSON.stringify(locations) %>;
-    console.log(locations);
+    console.log(location_o);
 </script>
 <div ng-controller='locationEditCTL'>
     <div class='row-fluid'>
@@ -54,14 +54,30 @@
         </div>
     </div>
     <br/>
-    <!--<div class='row-fluid'><div class='span12'>
-        <div form-helper 
-            fields='content.locationRelacion' 
-            object='location_o' 
-            action='/location/update' 
-            form-title='INFORMACIÓN BASICA'
-            objects='{locations:locations}'
-            >
-        </div> 
-    </div></div>-->
+    <div class='row-fluid'><div class='span12'>
+        <div class="widgetbox profile-left ng-form-helper">
+            <h4 class="widgettitle">Relacionar con otras ciudades</h4>
+            <div class='widgetcontent'>
+                <ul class='taglist'>
+                    <li ng-repeat="l in relatedLocations">
+                        <a href="">
+                            <i ng-bind="l.name"></i>
+                            <span class='close' ng-click="removeLocation(l)">×</span>
+                        </a>
+                    </li>
+                </ul>
+                <hr>
+                <form method="post" ng-submit='addLocation(relatedLocation)' >
+                <p>
+                    <select
+                        chosen
+                        ng-options='obj as obj.name for obj in notRelatedLocations'
+                        ng-model='relatedLocation'
+                        ></select>
+                    <button type='submit' class="btn btn-primary" ng-if="relatedLocation">Agregar Ciudad</button>
+                </p>
+            </form>
+            </div>
+        </div>
+    </div></div>
 </div>

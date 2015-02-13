@@ -25,6 +25,9 @@ module.exports = {
   	},
     location : {
       model   : 'location'
+    },
+    location2 : {
+      model   : 'location'
     }
   }
 };

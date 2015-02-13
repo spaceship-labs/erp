@@ -17,8 +17,14 @@ module.exports = {
 			},function(companies_,airports,transfers,cb){
 				Location.find().populate('zones').exec(function(e,locations){ cb(e,companies_,airports,transfers,locations) })
 			},function(companies_,airports,transfers,locations,cb){
-				TransferPrice.find({company : req.user.default_company , location : locations[0].id }).sort('zone1')
-					.populate('zone1').populate('zone2').populate('transfer').populate('location')
+				TransferPrice.find({
+						company : req.user.default_company , 
+						"$or" : [
+							{'location' : locations[0].id}, 
+							{'location2' : locations[0].id} 
+						]
+					}).sort('zone1')
+					.populate('zone1').populate('zone2').populate('transfer').populate('location').populate('location2')
 					.exec(function(e,prices){ cb(e,companies_,airports,transfers,locations,prices) })
 			},
 		];
@@ -44,8 +50,15 @@ module.exports = {
 	getPrices : function(req,res){
 		var condiciones = req.params.all();
 		console.log(condiciones);
-		TransferPrice.find({ location:condiciones.location, company:req.user.default_company }).sort('zone1')
-			.populate('zone1').populate('zone2').populate('transfer').populate('location')
+		TransferPrice.find({ 
+				company:req.user.default_company ,
+				"$or" : [
+					{ 'location' : condiciones.location }, 
+					{ 'location2' : condiciones.location } 
+				]
+			})
+			.sort('zone1')
+			.populate('zone1').populate('zone2').populate('transfer').populate('location').populate('location2')
 			.exec(function(e,prices){ 
 				if(e) throw(e);
 				//companies_ = addPricesOnCompany( companies_ , prices );
@@ -70,7 +83,7 @@ module.exports = {
 				Transfer.find().exec(function(e,transfers){ cb(e,companies_,airports,transfers) })
 			},function(companies_,airports,transfers,cb){
 				//Zone.find().exec(function(e,zones){ cb(e,companies_,airports,transfers,zones) })
-				Location.find().populate('zones').exec(function(e,locations){ cb(e,companies_,airports,transfers,locations) })
+				Location.find().populate('zones').populate('locations').exec(function(e,locations){ cb(e,companies_,airports,transfers,locations) })
 			},function(companies_,airports,transfers,locations,cb){
 				//,'company':companies_[0].id
 				TransferPrice.find()//{ 'transfer':transfers[0].id,'airport':airports[0].id }
@@ -106,6 +119,7 @@ function addPricesOnCompany( companies , prices ){
 		//companies[i].pricesByLocation = _.groupBy(companies[i].prices, function(price){ return price.location.id; });
 		companies[i].pricesByTransfer = _.groupBy(companies[i].prices, function(price){ return price.transfer.id; });
 	}*/
+	console.log(prices);
 	result = _.groupBy(prices, function(price){ return price.transfer.id; });
 	return result;
 }

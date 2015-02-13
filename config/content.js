@@ -714,9 +714,58 @@ module.exports.content = {
     ],
     packageDay : [
     	{
+    		label : 'Día',
+    		handle : 'day',
+    		type : 'select-num',
+    		required : true,
+    		object : 'daysnumber'
+    	},
+    	{
+    		label : 'Ciudad',
+    		handle : 'location',
+    		type : 'select',
+    		required : true,
+    		object : 'locations'
+    	},
+    	{
     		label : 'Nombre Español',
     		handle : 'name_es',
     		type : 'text'
+    	},
+    	{
+    		label : 'Nombre Inglés',
+    		handle : 'name_en',
+    		type : 'text'
+    	},
+    	{
+    		label : 'Nombre Ruso',
+    		handle : 'name_ru',
+    		type : 'text'
+    	},
+    	{
+    		label : 'Nombre Portugués',
+    		handle : 'name_pt',
+    		type : 'text'
+    	},
+    	{
+    		label : 'Descripción Español',
+    		handle : 'description_es',
+    		type : 'textarea'
+    	},
+    	{
+    		label : 'Descripción Inglés',
+    		handle : 'description_en',
+    		type : 'textarea'
+    	},
+    	{
+    		label : 'Descripción Ruso',
+    		handle : 'description_ru',
+    		type : 'textarea'
+    	},
+    	{
+    		label : 'Descripción Portugués',
+    		handle : 'description_pt',
+    		type : 'textarea'
     	}
     ],
     packageDayBasic : [
@@ -730,6 +779,13 @@ module.exports.content = {
     		handle : 'name_en',
     		type : 'text'
     	},
+    	{
+    		label : 'Día',
+    		handle : 'day',
+    		type : 'select-num',
+    		required : true,
+    		object : 'daysnumber'
+    	}
     ],
     hotelRoomView : [
     	{

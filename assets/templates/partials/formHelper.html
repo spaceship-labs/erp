@@ -26,6 +26,12 @@
 	            	ng-change="onChangefx(field)"
 	            	class='form-control' >
 	            </select>
+	            <select 
+	            	ng-if='field.type == "select-num"'
+	            	ng-model='object[field.handle]'
+	            	ng-options="obj for obj in objects[field.object]"
+	            	class='form-control' >
+	            </select>
 
 
 				<span ng-if='field.type == "money"' class="input-group">
