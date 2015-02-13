@@ -30,6 +30,12 @@ module.exports = {
 			dominant: true
 		}
 		,apps : 'array'
+        ,terms : 'string'
+        ,document_footer : 'string'
+        ,taxes : {
+            collection : 'Company_tax',
+            via : 'company'
+        }
 		,addApps : function(apps,cb){		
 			if(Array.isArray(apps)){
 				if(this.apps){

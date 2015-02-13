@@ -23,7 +23,6 @@ var cssFilesToInject = [
 	"/bower_components/ng-tags-input/ng-tags-input.min.css",
 	'/bower_components/angular-loading-bar/build/loading-bar.min.css',
 	'/bower_components/fullcalendar/fullcalendar.css',
-	'/bower_components/angular-xeditable/dist/css/xeditable.css',
 	'/bower_components/leaflet/dist/leaflet.css',
 	'/styles/bootstrap-responsive.min.css',
 	'/styles/default.css',
@@ -42,7 +41,7 @@ var cssFilesToInject = [
 	'/styles/css/bootstrap.css',
 	'/styles/css/bootstrap-theme.min.css',
 	'/styles/css/font-awesome.min.css',
-	
+    '/bower_components/angular-xeditable/dist/css/xeditable.css',
 	'styles/*.css'
 ];
 
@@ -61,6 +60,7 @@ var jsFilesToInject = [
 	"/bower_components/bootstrap/dist/js/bootstrap.js",
 	'/bower_components/ng-file-upload/angular-file-upload-html5-shim.min.js',
 	"/bower_components/angular/angular.min.js",
+    "/bower_components/tinymce/tinymce.min.js",
 	"/bower_components/ng-file-upload/angular-file-upload.js",
 	"/bower_components/chosen/chosen.jquery.min.js",
 	"/bower_components/angular-ui-bootstrap-bower/ui-bootstrap.min.js",
@@ -79,12 +79,12 @@ var jsFilesToInject = [
 	'/bower_components/angular-ui-calendar/src/calendar.js',
 	'/bower_components/fullcalendar/fullcalendar.js',
 	'/bower_components/fullcalendar/gcal.js',
-	'/bower_components/angular-chosen-localytics/chosen.js',
 	'/bower_components/angular-xeditable/dist/js/xeditable.js',    
 	'/bower_components/moment/min/moment-with-langs.min.js',
     '/bower_components/underscore/underscore-min.js',     
     '/bower_components/leaflet/dist/leaflet.js',
     '/bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.js',
+    '/bower_components/angular-ui-tinymce/src/tinymce.js',
 	"/js/themejs/*.js",                                            
 	"/js/*.js",                                                    
 	'/js/directives/*.js',                                         
@@ -103,7 +103,7 @@ var jsFilesToInject = [
 // for information on customizing and installing new tasks.            
 var templateFilesToInject = [                                          
 	'templates/**/*.html'                                          
-];                                                                     
+];
                                                                        
 
 

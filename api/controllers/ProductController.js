@@ -15,11 +15,14 @@ module.exports = {
 				if(err) throw err;
 				Common.view(res.view,{
 					page:{
-						description:'AQUI PODRAS VISUALIZAR Y ADMINISRAR TODOS TUS PRODUCTOS'
+						description:'AQUI PODRAS VISUALIZAR Y ADMINISTRAR TODOS TUS PRODUCTOS'
 						,icon:'fa fa-cube'
 						,name:'PRODUCTOS'
                         ,controller : 'product.js'
-					}
+					},
+                    breadcrumb : [
+                        {label : "Productos"}
+                    ]
 					, products:products
 					, product_types:product_types
 				},req);
@@ -75,7 +78,11 @@ module.exports = {
 							icon : 'fa fa-cube',
 							name : product.name,
                             controller : 'product.js'
-						}
+						},
+                        breadcrumb : [
+                            {label : 'Productos', url : '/products/'},
+                            {label : product.name}
+                        ]
 					},req);			
 				});
 			});
@@ -86,18 +93,21 @@ module.exports = {
 	},
 
 	update: function(req,res){
-		var form = req.params.all()
-		, id;
+		var form = Common.formValidate(req.params.all(),['pid','name','product_type','internal_reference','barCode','description','width','height']);
+		var id;
 		if(id = form.pid){
 			delete form.pid;
 			form.req = req;
 			Product.update({id:id},form).exec(function(err,product){				
-				/*if(err) return res.json({text:'Ocurrio un error.'});
-				res.json({text:'Producto actualizado.'});*/
+				if(err) {
+                    console.log(err);
+                    res.badRequest();
+                }
+				//res.json({text:'Producto actualizado.'});
 				res.redirect('/product/edit/'+id);
 			});
 		}else{
-			res.json('error');
+			res.badRequest();
 		}
 	},
 	productsJson: function(req,res){

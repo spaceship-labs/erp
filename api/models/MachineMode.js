@@ -15,8 +15,8 @@ module.exports = {
         velocity : {
             type : 'float'
         },
-        costPerHour : {
-            type : 'float'
+        price : {
+            type : 'float' //precio por metro 2
         },
         machine : {
             model : 'Machine'

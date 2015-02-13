@@ -8,6 +8,11 @@
     </thead>
     <tbody>
 		<tr ng-repeat='(key,object) in objects'>
+<<<<<<< HEAD
+			<td ng-repeat='column in columns' ng-bind='object[column.handle]'></td>
+			<td><a ng-href='{{customEditRoute}}/{{object.id}}' class='fa fa-edit' style="cursor: pointer"></a></td>
+			<td><a class='fa fa-trash-o' ng-click='destroyObject(object,key)' style="cursor: pointer"></a></td>
+=======
 			<td ng-repeat='column in columns'>
                 <a ng-if="inlineEdit" 
                 editable-text='object[column.handle]' 
@@ -19,6 +24,7 @@
             </td>
 			<td><a ng-href='/{{route}}/edit/{{object.id}}' class='fa fa-edit'></a></td>
 			<td><a href='' class='fa fa-trash-o' ng-click='destroyObject(object,key)'></a></td>
+>>>>>>> 25d6edc4b6742759c88c1981d3a930bfb711f6ab
 		</tr>    	
     </tbody>
 </table>

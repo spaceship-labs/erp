@@ -32,6 +32,7 @@ module.exports = function(req, res, next) {
 		});	
 	}
 
+     //TODO cambiar a funcion asincrona que reciba callback
      function getPermissionByControllerAction(company,user,controller,action) {
          var auxLastPermission = true;
          for (var i in sails.config.apps) { //OJO forEach y each maldita asincronia

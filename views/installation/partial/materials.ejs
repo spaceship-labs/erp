@@ -18,7 +18,7 @@
                 </tr>
                 <tr>
                     <td colspan="3">
-                        <select ng-model="selected_material" ng-options="p.name group by p.product_type.name for p in products" chosen="materials"></select>
+                        <select ng-model="selected_material" ng-options="p.name group by p.product_type.name for p in products"></select>
                         <a class="btn btn-default button-orange" ng-click="addMaterial()"><span class="table-icon fa fa-plus"></span> Material</a>
                     </td>
                 </tr>

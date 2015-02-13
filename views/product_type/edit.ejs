@@ -12,7 +12,7 @@
 		<p style="margin: 8px 0">Actualizado exitosamente</p>
    </div>
 	<div class="widgetbox">
-		<h4 class="widgettitle"><%=product_type.name%> <span ng-click='processForm()' class='fa icon' ng-class='saveClass'></span></h4>
+		<h4 class="widgettitle">Infomacion Basica <span ng-click='processForm()' class='fa icon' ng-class='saveClass'></span></h4>
 		<div class="widgetcontent nopadding">                            
 			<form accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine" ng-submit="processForm()">
 				<input type="hidden" name="product_type_id" ng-model="product_type.id" />
@@ -20,27 +20,27 @@
 					<label for="name">Nombre*</label>
 					<span class="field"><input type="text" name="name" class="input-large" ng-model="product_type.name"></span>
 				</p>
-				<p><label for="app">Tipo*</label>
-					<span class="field">
-						<select name='sales_type' class='form-control large' data-placeholder="Escoger tipo" ng-options='k as l for (k,l) in sales_type' ng-model="product_type.sales_type" chosen>
-						</select>
-					</span>
-				</p>
+				<!--<p><label for="app">Tipo*</label>-->
+					<!--<span class="field">-->
+						<!--<select name='sales_type' class='form-control large' data-placeholder="Escoger tipo" ng-options='k as l for (k,l) in sales_type' ng-model="product_type.sales_type" chosen>-->
+						<!--</select>-->
+					<!--</span>-->
+				<!--</p>-->
 				<p>
-					<label for="description">Descripcion*</label>
+					<label for="description">Descripcion</label>
 					<span class="field"><input type="text" name="description" class="input-large" ng-model="product_type.description"></span>
 				</p>
+                <!--<p>-->
+                  <!--<label for="inventory_use" style="cursor:pointer;">Inventariado</label>-->
+                  <!--<span class="field">-->
+                      <!--<input type="checkbox" name="inventory_use" id="inventory_use" class="input-large" ng-model='product_type.inventory_use'>-->
+                  <!--</span>-->
+                <!--</p>-->
                 <p>
-                  <label for="inventory_use" style="cursor:pointer;">Inventariado ?</label>
-                  <span class="field">
-                      <input type="checkbox" name="inventory_use" id="inventory_use" class="input-large" ng-model='product_type.inventory_use'>
-                  </span>
-                </p>
-                <p ng-show="product_type.inventory_use == true" class="ng-hide">
-                    <label for="inventory_type">Unidad de inventario</label>
-                                  <span class="field">
-                                      <select type="text" data-placeholder="Escoger unidad" name="inventory_type" class="input-large" ng-options='k as l for (k,l) in  inventory_types' ng-model='product_type.inventory_type' chosen></select>
-                                  </span>
+                    <label for="inventory_type">Unidad de medicion</label>
+                    <span class="field">
+                      <select type="text" data-placeholder="Escoger" name="inventory_type" class="input-large" ng-options='k for k in inventory_types' ng-model='product_type.inventory_type' chosen></select>
+                    </span>
                 </p>
 			</form>
 		</div>

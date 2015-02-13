@@ -18,7 +18,7 @@
                 </tr>
                 <tr>
                     <td colspan="3">
-                        <select ng-model="selected_tool" ng-options="p.name group by p.product_type.name for p in products" chosen="tools"></select>
+                        <select ng-model="selected_tool" ng-options="p.name group by p.product_type.name for p in products"></select>
                         <a class="btn btn-default button-orange" ng-click="addTool()"><span class="table-icon fa fa-plus"></span> Herramienta</a>
                     </td>
                 </tr>

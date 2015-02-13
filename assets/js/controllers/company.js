@@ -31,6 +31,8 @@ app.controller('companyEditCTL',function($scope,$http){
     $scope.users = users;
     $scope.missingApps = [];
     $scope.selectedApps = [];
+    $scope.showTaxForm = false;
+    $scope.newTaxClass = 'fa-plus';
     //$scope.companies = companies;
 
     var updateApps = function(){
@@ -84,7 +86,22 @@ app.controller('companyEditCTL',function($scope,$http){
             }
         });
         return !found;
-    }
+    };
+
+    $scope.toggleNewTax = function(){
+        $scope.showTaxForm = !$scope.showTaxForm;
+        $scope.newTaxClass = $scope.showTaxForm ? 'fa-minus' : 'fa-plus';
+    };
+
+    $scope.addTax = function(){
+        $scope.tax.company = $scope.company.id;
+        $scope.showTaxForm = false;
+        $http({method: 'POST', url: '/company/add_tax',data:$scope.tax}).success(function(result){
+            $scope.company.taxes.push($scope.tax);
+            $scope.tax = {};
+            $scope.newTaxClass = 'fa-plus';
+        });
+    };
 
 });
 

@@ -1,16 +1,31 @@
-<% if (product_type.inventory_use && product_type.inventory_type == 'metro2') {%>
+<% if (product_type.inventory_type == 'metro2') {%>
 <p>
-    <label for="width">Ancho*</label>
-    <span class="field"><input type="text" name="width" class="form-control" ng-model='product.width' required></span>
+    <label for="width">Ancho</label>
+    <span class="field">
+        <span class="input-group">
+            <input type="text" name="width" class="form-control" ng-model='product.width' required>
+            <span class="input-group-addon">m</span>
+        </span>
+    </span>
 </p>
 <p>
-    <label for="height">Alto*</label>
-    <span class="field"><input type="text" name="height" class="form-control" ng-model='product.height' required></span>
+    <label for="height">Alto</label>
+    <span class="field">
+        <span class="input-group">
+            <input type="text" name="height" class="form-control" ng-model='product.height' required>
+            <span class="input-group-addon">m</span>
+        </span>
+    </span>
 </p>
 <% } %>
-<% if (product_type.inventory_use && (product_type.inventory_type == 'metro') || product_type.inventory_type == 'metro2') {%>
+<% if (product_type.inventory_type == 'metro') {%>
 <p>
-    <label for="height">Precio corte*</label>
-    <span class="field"><input type="text" name="cut_price" class="form-control" ng-model='product.cut_price' required></span>
+    <label for="width">Tamaño</label>
+    <span class="field">
+        <span class="input-group">
+            <input type="text" name="height" class="form-control" ng-model='product.height' required>
+            <span class="input-group-addon">m</span>
+        </span>
+    </span>
 </p>
 <% } %>

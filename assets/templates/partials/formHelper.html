@@ -3,7 +3,7 @@
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 		<h4 class="modal-title">{{formTitle}}</h4>
 	</div>
-	<h4 ng-if='formTitle && !modal' class="widgettitle">{{formTitle}} <span ng-click='save()'  class='fa icon' ng-class='saveClass'></span></h4>
+	<h4 ng-if='formTitle && !modal' class="widgettitle">{{formTitle}} <span ng-click='save()' class='fa icon' ng-class='saveClass'></span></h4>
 	<form ng-class='formClass' class="form stdform stdform2" name="form" >
 		<p ng-repeat='field  in fields | filter:formFilter'>
 	        <label>{{field.label}} <span ng-if='field.type == "money"' >({{currency.currency_code}})</span></label>
@@ -15,6 +15,16 @@
 	            	ng-model='object[field.handle]'
 	            	ng-required='field.required'>
 	            </textarea>
+                <textarea
+                        ng-if='field.type == "textarea-editor"'
+                        name='{{field.handle}}'
+                        class='form-control'
+                        ng-model='object[field.handle]'
+                        ng-required='field.required'
+                        ui-tinymce="tinymceOptions"
+                        >
+
+                </textarea>
 	            <input type='checkbox' ng-if='field.type == "checkbox"' name='{{field.handle}}' class='' ng-checked='object[field.handle]' ng-model='object[field.handle]' />
 	            <input type='text' ng-if='field.type == "text"' name='{{field.handle}}' class='form-control' ng-model='object[field.handle]' />
 	            <input type='password' ng-if='field.type == "password"' name='{{field.handle}}' class='form-control' ng-model='object[field.handle]' />

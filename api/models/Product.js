@@ -13,8 +13,7 @@ module.exports = {
         required : true
     },
 	product_type:{
-	    model:'product_type',
-        required : true
+	    model:'product_type'
 	},
     gallery:'array',
     fields : {
@@ -34,18 +33,12 @@ module.exports = {
     barcode : 'string',
     quantity : 'float',
 
-    //respectivo a tipo de inventario metro cuadrado
+    //respectivo a tipo de inventario
     width : 'float',
     height : 'float',
-    cut_price : 'float',
-    calculatedPrice : function(val,callback){
-        return price.cost * (1 + price.margin/100);
-    },
-    addQuantity : function(quantity,callback) {
 
-    },
-    removeQuantity : function(quantity,callback) {
-
+    active : {
+      type : 'boolean'
     }
   }
 

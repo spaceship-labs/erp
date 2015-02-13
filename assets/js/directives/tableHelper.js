@@ -13,12 +13,21 @@
             });
             modalInstance.result.then(function() {
                 //jQuery('#myModal').modal('hide');
-                $http({method:'POST',url:'/'+$scope.route+'/destroy/',data:object}).success(function (obj){
-                    if(obj.id == object.id) $scope.objects.splice(key,1);
-                });
+                if ($scope.deleteRoute) {
+                    $http({method:'POST',url: $scope.deleteRoute + "/",data:object}).success(function (obj){
+                        if(obj.id == object.id) $scope.objects.splice(key,1);
+                    });
+                } else {
+                    $http({method:'POST',url:'/'+$scope.route+'/destroy/',data:object}).success(function (obj){
+                        if(obj.id == object.id) $scope.objects.splice(key,1);
+                    });
+                }
+
             });
-            
-        }
+        };
+
+        $scope.customEditRoute = $scope.editRoute ? ($scope.editRoute): ("/" + $scope.route + "/edit");
+
         $scope.updateInline = function(data,object,handle){
             $data = { id:object.id };
             $data[handle] = data;
@@ -34,6 +43,8 @@
         	scope : {
         		objects : '=',
                 columns : '=',
+                editRoute : '@',
+                deleteRoute : '@',
                 inlineEdit : '@', //url to update object
                 route : '@'
         	},

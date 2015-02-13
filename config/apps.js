@@ -51,15 +51,15 @@ module.exports.apps = [
 		label : 'Ventas',
 		icon : 'fa-briefcase',
         actions : [
-			{
-				label : 'Ventas',
-				icon : 'fa-briefcase',
-                url : '/ventas/',
-                handle : 'ventas',
-                showInMenu : true,
-                controller : 'sale',
-                action : 'index'
-			},
+//			{
+//				label : 'Ventas',
+//				icon : 'fa-briefcase',
+//                url : '/ventas/',
+//                handle : 'ventas',
+//                showInMenu : true,
+//                controller : 'sale',
+//                action : 'index'
+//			},
             {
                 label:'Cotizaciones',
                 icon:'fa-database',
@@ -67,6 +67,15 @@ module.exports.apps = [
                 handle : 'cotizaciones',
                 showInMenu : true,
                 controller : 'salesQuote',
+                action : 'index'
+            },
+            {
+                label:'Ordenes de trabajo',
+                icon:'fa-wrench',
+                url : '/saleWorkOrder/',
+                handle : 'ordenes',
+                showInMenu : true,
+                controller : 'salesWorkOrder',
                 action : 'index'
             },
 			{
@@ -88,10 +97,10 @@ module.exports.apps = [
                 action : 'index'
 			},
             {
-                label:'Impresoras',
+                label:'Maquinas',
                 icon:'fa-gears',
                 url : '/machine/',
-                handle : 'impresoras',
+                handle : 'maquinas',
                 showInMenu : true,
                 controller : 'machine',
                 action : 'index'

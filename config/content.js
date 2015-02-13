@@ -597,6 +597,16 @@ module.exports.content = {
 			handle : 'description',
 			type : 'textarea',
 		},
+        {
+            label : 'Terminos y condiciones',
+            handle : 'terms',
+            type : 'textarea-editor'
+        },
+        {
+            label : 'Firma',
+            handle : 'footer',
+            type : 'textarea-editor'
+        }
 	],
     user : [
         {
@@ -647,6 +657,77 @@ module.exports.content = {
         {
             label : 'Telefono',
             handle : 'phone',
+            type : 'text'
+        },
+        {
+            label : 'E-mail',
+            handle : 'email',
+            type : 'text'
+        },
+        {
+            label : 'Ciudad',
+            handle : 'city',
+            type : 'text'
+        },
+        {
+            label : 'Estado',
+            handle : 'state',
+            type : 'text'
+        },
+        {
+            label : 'Pais',
+            handle : 'country',
+            type : 'text'
+        },
+        {
+            label : 'Comentarios',
+            handle : 'comments',
+            type : 'textarea'
+        }
+    ],
+    client_contact : [
+        {
+            label : 'Nombre',
+            handle : 'name',
+            type : 'text'
+        },
+        {
+            label : 'Telefono',
+            handle : "phone",
+            type : 'text'
+        },
+        {
+            label : 'Extension',
+            handle : 'phone_extension',
+            type : 'text'
+        },
+        {
+            label : 'E-mail',
+            handle : 'email',
+            type : 'text'
+        },
+        {
+            label : "Tipo",
+            handle : "type",
+            type : 'select',
+            object : 'contact_types'
+        },
+        {
+            label : 'Puesto',
+            handle : 'work_position',
+            type : 'text'
+        }
+    ],
+    company_tax : [
+        {
+            label : 'Nombre',
+            handle : 'name',
+            type : 'text'
+
+        },
+        {
+            label : 'Impuesto %',
+            handle : 'value',
             type : 'text'
         }
     ],

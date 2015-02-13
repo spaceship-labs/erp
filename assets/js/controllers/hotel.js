@@ -117,6 +117,8 @@ app.controller('hotelEditCTL',function($scope,$upload,$http){
             return zones;
         });
     };
-   
+    $scope.changeLocations = function(value){
+        console.log(value);
+    };
     
 });

@@ -10,52 +10,213 @@
                     <div class="widgetbox">
                         <div class="widgetcontent nopadding">
                             <p>
-                                <label>Buscar :</label>
+                                <label>Buscar</label>
                                 <span class="field">
                                     <select class='form-control large' data-placeholder="Selecciona ..." ng-model="product" ng-options="p.name group by p.product_type.name for p in products" chosen="product" ng-change="loadMachines()">
                                     </select>
                                     <a ng-if="product.id" href="/product/edit/{{product.id}}">Editar</a>
                                 </span>
                             </p>
-                            <p ng-if="product.id && product.description">
-                                <label>Descripcion: </label>
-                                <span class="field">{{product.description}}</span>
-                            </p>
                             <p ng-if="product.id">
-                                <label>Categoria: </label>
+                                <label>Categoria</label>
                                 <span class="field">{{product.product_type.name}}</span>
                             </p>
-                            <p ng-if="product.id  && product.internalReference">
-                                <label>Referencia Interna: </label>
-                                <span class="field">{{product.internalReference}}</span>
+                            <p ng-if="product.id">
+                                <label>Nombre</label>
+                                <span class="field"><input ng-model="product.sale_name" value="{{product.name}}"/></span>
                             </p>
-                            <p ng-if="product.id  && product.cut_price">
-                                <label for="corte">Agregar corte : </label>
-                                <span class="field"><input type="checkbox" ng-model="product.cut" id="corte"/></span>
-                            </p>
-                            <p ng-show="product.id && checkMachines()">
-                                <label>Impresion : </label>
+                            <div ng-if="product.id" class="par">
+                                <label>Dimensiones</label>
                                 <span class="field">
-                                    <select class='form-control large' data-placeholder="Selecciona ..." ng-model="selected_machine" ng-options="m.name for m in product.machines" chosen="product.machines">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th> </th>
+                                                <th>Visible</th>
+                                                <th>Extra</th>
+                                            </tr>
+                                        </thead>
+                                        <tr>
+                                            <td>
+                                                <span>Ancho</span>
+                                            </td>
+                                            <td data-title="Visible">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" placeholder="0.0" aria-describedby="basic-addon1" ng-model="product.size.width">
+                                                    <span class="input-group-addon">m</span>
+                                                </div>
+                                            </td>
+                                            <td data-title="Extra">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" placeholder="0.0" aria-describedby="basic-addon1" ng-model="product.visible_size.width">
+                                                    <span class="input-group-addon">m</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span>Alto</span>
+                                            </td>
+                                            <td data-title="Visible">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" placeholder="0.0" aria-describedby="basic-addon1" ng-model="product.size.height">
+                                                    <span class="input-group-addon">m</span>
+                                                </div>
+                                            </td>
+                                            <td data-title="Extra">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" placeholder="0.0" aria-describedby="basic-addon1" ng-model="product.visible_size.height">
+                                                    <span class="input-group-addon">m</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td> </td>
+                                            <td>
+                                                <h4>{{((product.size.height * product.size.width) || 0 | number:2) + ' m2'}}</h4>
+                                            </td>
+                                            <td>
+                                                <h4>{{((product.visible_size.height * product.visible_size.width) || 0 | number:2) + ' m2'}}</h4>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </span>
+                            </div>
+                            <div ng-show="product.id && checkMachines('impresora')" class="par">
+                                <label>Impresion</label>
+                                <span class="field">
+                                    <select class='form-control large' data-placeholder="Selecciona ..." ng-model="selected_machines['impresora']" ng-options="m.name for m in machines['impresora']">
+                                        <option value="">ninguna</option>
+                                    </select>
+                                </span>
+                                <div ng-if="selected_machines['impresora']">
+                                    <span class="field">
+                                        <label>Modo Impresion</label>
+                                        <div class="input-group">
+                                            <select class='form-control large' data-placeholder="Selecciona ..." ng-model="selected_machines['impresora'].mode" ng-options="m.name for m in selected_machines['impresora'].modes">
+                                            </select>
+                                            <span class="input-group-addon">$</span>
+                                            <input type="text" ng-model="selected_machines['impresora'].mode.price" />
+                                            <span class="input-group-addon">x m2</span>
+                                        </div>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <p ng-show="product.id && checkMachines('router')">
+                                <label>Router</label>
+                                <span class="field">
+                                    <select class='form-control large' data-placeholder="Selecciona ..." ng-model="selected_machines['router']" ng-options="m.name for m in machines['router']">
                                         <option value="">ninguna</option>
                                     </select>
                                 </span>
                             </p>
+                            <p ng-if="selected_machines['router']">
+                                <label>Modo</label>
+                                <span class="field">
+                                    <select class='form-control large' data-placeholder="Selecciona ..." ng-model="selected_machines['router'].mode" ng-options="m.name for m in selected_machines['router'].modes">
+                                    </select>
+                                    <input type="text" ng-model="selected_machines['router'].mode.price" />
+                                </span>
+                            </p>
+                            <p ng-show="product.id && checkMachines('laminadora')">
+                                <label>Laminacion</label>
+                                <span class="field">
+                                    <select class='form-control large' data-placeholder="Selecciona ..." ng-model="selected_machines['laminadora']" ng-options="m.name for m in machines['laminadora']">
+                                        <option value="">ninguna</option>
+                                    </select>
+                                </span>
+                            </p>
+                            <p ng-if="selected_machines['laminadora']">
+                                <label>Modo laminacion</label>
+                                <span class="field">
+                                    <select class='form-control large' data-placeholder="Selecciona ..." ng-model="selected_machines['laminadora'].mode" ng-options="m.name for m in selected_machines['laminadora'].modes">
+                                    </select>
+                                </span>
+                            </p>
+                            <p ng-show="product.id && checkMachines('corte')">
+                                <label>Corte</label>
+                                <span class="field">
+                                    <select class='form-control large' data-placeholder="Selecciona ..." ng-model="selected_machines['corte']" ng-options="m.name for m in machines['corte']">
+                                        <option value="">ninguna</option>
+                                    </select>
+                                </span>
+                            </p>
+                            <p ng-if="selected_machines['corte']">
+                                <label>Modo corte</label>
+                                <span class="field">
+                                    <select class='form-control large' data-placeholder="Selecciona ..." ng-model="selected_machines['corte'].mode" ng-options="m.name for m in selected_machines['corte'].modes">
+                                    </select>
+                                </span>
+                            </p>
+                            <div ng-if="product.id" class="par">
+                                <label>Extras</label>
+                                <span class="field">
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th>Nombre</th>
+                                            <th>Precio</th>
+                                            <th>Cantidad</th>
+                                            <th>Borrar</th>
+                                        </tr>
+                                        </thead>
+                                        <tr ng-repeat="extra in extras track by $index">
+                                            <td data-title="Nombre">
+                                                <input type="text" class="form-control" placeholder="Nombre" ng-model="extra.name" />
+                                            </td>
+                                            <td data-title="Precio">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">$</span>
+                                                    <input type="text" class="form-control" placeholder="0.0" ng-model="extra.price" />
+                                                </div>
+                                            </td>
+                                            <td data-title="Cantidad">
+                                                <input type="text" class="form-control number" ng-model="extra.quantity" />
+                                            </td>
+                                            <td data-title="Borrar">
+                                                <span class="fa fa-trash-o" ng-click="deleteExtra($index)"></span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <a ng-click="addExtra()" class="btn btn-default button-orange"><span class="table-icon fa fa-plus"></span></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                <h4>Total : </h4>
+                                            </td>
+                                            <td>
+                                                <h4>{{getExtraTotal() | currency}}</h4>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </span>
+                            </div>
                             <p ng-if="product.id">
-                                <label>Price: </label>
-                                <span class="field">{{calculateProductPrice(product)}}</span>
+                                <label>Precio</label>
+                                <span class="field">{{calculateProductPrice() || 0 | currency}}</span>
                             </p>
                             <p ng-if="product.id">
-                                <label>Cantidad: </label>
+                                <label>Cantidad</label>
                                 <span class="field"><input type="number" data-title="Cantidad" class="form-control large number input-spinner" ng-model="product.quantity" min="1"/></span>
                             </p>
                             <p ng-if="product.id">
-                                <label>Total: </label>
-                                <span class="field">{{calculateProductPriceTotal(product)}}</span>
+                                <label>Total</label>
+                                <span class="field">{{calculateProductPriceTotal() || 0 | currency}}</span>
                             </p>
 
                         </div>
-
+                        <div ng-if="product.id" class="widgetcontent nopadding">
+                            <p>
+                                <label>Descripcion</label>
+                                <span class="field">
+                                    <textarea class='form-control large' ng-model="product.description"></textarea>
+                                    <button type="button" class="btn btn-success"  ng-click="generateDescription()">Generar</button>
+                                </span>
+                            </p>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">

@@ -33,13 +33,17 @@
                 });
 				$scope.upload = $upload.upload({
                     url: $scope.addMethod,
-                    data: {id: $scope.object.id,uid:uid,index:i},
+                    data: {
+                        id: $scope.object.id,
+                        uid:uid,
+                        index:i
+                    },
                     file: e,
                 }).progress(function(evt){
                     $scope.loading[0] = parseInt(100.0 * evt.loaded / evt.total);
                 }).success(function(data, status, headers, config) {
                     var index_uid = $scope.uids.indexOf(uid);
-                    $scope.loading.splice(index_uid,1)
+                    $scope.loading.splice(index_uid,1);
                     $scope.uids.splice(index_uid, 1);
                     $scope.object.files = data.files;
                     $scope.page = Math.ceil($scope.object.files.length/$scope.pageLength) -1;

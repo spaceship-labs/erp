@@ -24,8 +24,8 @@ module.exports = {
             model : 'Installation'
         },
 
-        machine : {
-            model : 'Machine'
+        machines : {
+            collection : 'Machine'
         },
 
         quantity: {
@@ -36,6 +36,10 @@ module.exports = {
         price : {
             type : 'float',
             required : true
+        },
+
+        original_price : {
+            type : 'float'
         },
 
         tax : {
@@ -60,9 +64,53 @@ module.exports = {
 
         files : {
             type : 'array'
+        },
+
+        size : {
+            type : 'json'
+        },
+
+        visible_size : {
+            type : 'json'
+        },
+
+        user : {
+            model : 'user'
+        },
+
+        extras : {
+            collection : 'SaleProductExtra',
+            via : 'product'
         }
+    },
 
+    getPrice : function(product) {
+        var total = 0;
+        var size = product.size ? (product.size.width * product.size.height) : 0;
+        if (product.original_price && product.quantity && size) {
+            if (product.machines) {
+                total += _.reduce(product.machines,function(sum,machine){
+                    return sum + (size * machine.mode.price);
+                },0);
+            }
+
+            total += size * product.original_price;
+
+            total *=  product.quantity;
+
+            if (product.extras && product.extras.length > 0) {
+                total += _.reduce(product.extras, function (sum, extra) {
+                    return sum + SaleProductExtra.getPrice(extra);
+                }, 0);
+            }
+            return total;
+        } else {
+            return 0;
+        }
+    },
+
+    beforeCreate : function(values,cb) {
+        values.price_total = this.getPrice(values);
+        cb();
     }
-
-
 };

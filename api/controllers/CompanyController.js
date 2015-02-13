@@ -23,8 +23,9 @@ module.exports = {
 	}
 	, edit: function(req,res){
 		var id = req.params.id;
-		Company.findOne({id:id}).populate('users').exec(function(err,company){
+		Company.findOne({id:id}).populate('users').populate('taxes').exec(function(err,company){
 			if(err) throw err;
+            //console.log(company.taxes);
 			User.find().exec(function(err,users){
 				Common.view(res.view,{
 					company:company || {}
@@ -34,7 +35,11 @@ module.exports = {
 						name:'Empresas'
 						,icon:'fa fa-building'		
 						,controller : 'company.js'		
-					}
+					},
+                    breadcrumb : [
+                        {label : 'Companias', url : '/company/'},
+                        {label : company.name}
+                    ],
 				},req);
 			});
 		});
@@ -108,7 +113,7 @@ module.exports = {
 		});
 	}
     ,update : function(req,res) {
-        var form = Common.formValidate(req.params.all(),['id','name','address','zipcode','description']);
+        var form = Common.formValidate(req.params.all(),['id','name','address','zipcode','description','terms','footer']);
         Company.update({id : form.id},form).exec(function(err,company){
            if (err) {
                console.log(err);
@@ -125,6 +130,48 @@ module.exports = {
             req.session.select_company = scompany.id;
             res.redirect('/home');
         });
+    },
+    add_tax : function(req,res) {
+        var form = Common.formValidate(req.params.all(),['name','value','company']);
+        if (form) {
+            Company_tax.create(form).exec(function(err,tax) {
+                if (err) return res.json({text : err});
+                res.json({ text : 'Impuesto guardado ',data : tax});
+            });
+        }
+    },
+    edit_tax : function(req,res) {
+        var id = req.param('id');
+        var company = req.session.select_company || req.user.select_company;
+        if (id) {
+            Company_tax.find({ id : id }).exec(function(err,contact) {
+                if (err) return res.forbidden();
+                Common.view(res.view,{
+                    page:{
+                        icon:'fa fa-building'
+                        ,name:'Editar Impuesto'
+                        ,controller : 'company.js'
+
+                    },
+                    breadcrumb : [
+                        {label : 'Companias', url : '/company/'},
+                        {label : company.name , url : '/company/' + company.id},
+                        {label : contact.name}
+                    ],
+                    contact : contact || []
+                },req);
+            });
+        }
+    },
+    //TODO validaciones de taxes ya asociados
+    delete_tax : function(req,res) {
+        var id = req.param('id');
+        if (id) {
+            Company_tax.destroy({ id : id }).exec(function(err,tax) {
+                if (err) return res.json({text : err});
+                res.json(tax);
+            });
+        }
     }
 };
 
