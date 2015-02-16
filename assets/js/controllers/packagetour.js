@@ -11,6 +11,7 @@ app.controller('packageCTL',function($scope,$http){
 app.controller('packageEditCTL',function($scope,$http){
 	$scope.package_t = package_t;
 	$scope.items = items;
+	$scope.themarkers = {}
 	$scope.locations = locations;
 	$scope.content = content;
 	$scope.isCollapsed = true;
@@ -19,11 +20,23 @@ app.controller('packageEditCTL',function($scope,$http){
         { key : 'type' , value : 'day' },
         { key : 'package_' , value : $scope.package_t.id }
     ];
+    if($scope.items.length>0){
+    	for(var i=0;i<$scope.items.length;i++){
+    		for(var x in items[i].markers){
+    			$scope.themarkers[i + x] = items[i].markers[x];
+    		}
+    	}
+    }
+    $scope.center = {
+        lat : 21.1667,
+        lng : -86.8333,
+        zoom : 6
+    };
 	$scope.collapseToggle = function(){
 		$scope.isCollapsed = !$scope.isCollapsed;
 		$scope.collapsableClass = $scope.isCollapsed?'fa-plus':'fa-minus';
-		console.log($scope.isCollapsed);
-		console.log($scope.collapsableClass);
+		//console.log($scope.isCollapsed);
+		//console.log($scope.collapsableClass);
 	}
 	$scope.addDay = function(newDay){
 		$http({method: 'POST', url: '/packageitem/create',params:newDay}).success(function (day){
@@ -36,7 +49,7 @@ app.controller('packageEditCTL',function($scope,$http){
 		for(var i = 1; i< 20; i++){
 			$scope.daysnumber.push(i+'');
 		}
-		console.log($scope.daysnumber);
+		//console.log($scope.daysnumber);
 		var items = $scope.package_t.items;
 		if( items ){
 			for(var x in items){
@@ -45,7 +58,7 @@ app.controller('packageEditCTL',function($scope,$http){
 					$scope.daysnumber.splice(index,1);
 				};
 			}
-			console.log($scope.daysnumber);
+			//console.log($scope.daysnumber);
 		}
 	}
 	$scope.updateDays();
@@ -53,9 +66,26 @@ app.controller('packageEditCTL',function($scope,$http){
 app.controller('packageItemEditCTL',function($scope,$http){
 	$scope.content = content;
 	$scope.item = item;
+	$scope.item.markers = item.markers || {};
 	$scope.locations = locations;
+	$scope.location_ = location_;
 	$scope.daysnumber = [];
 	for(var i = 1; i< 20; i++){
 		$scope.daysnumber.push(i+'');
 	}
+	$scope.updateMarkers = function(markers,cb){
+		//console.log($scope.item);
+		//console.log(markers);
+		var data = { id : $scope.item.id , markers : markers };
+		//console.log(data);
+		$http({method: 'POST', url: '/packageitem/update',params:data}).success(function (item){
+            $scope.item = item;
+            cb(null,item);
+        });
+	};
+	$scope.center = {
+        lat : 21.1667,
+        lng : -86.8333,
+        zoom : 6
+    };
 });

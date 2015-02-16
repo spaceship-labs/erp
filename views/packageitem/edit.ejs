@@ -1,6 +1,7 @@
 <script type='text/javascript'>
     window.item = <%- JSON.stringify(item) %>;
     window.locations = <%- JSON.stringify(locations) %>;
+    window.location_ = <%- JSON.stringify(location_) %>;
 </script>
 <div ng-controller='packageItemEditCTL'>
     <div class='row-fluid'>
@@ -17,7 +18,14 @@
     </div>
     <div class='row-fluid'>
         <div class="span12"> 
-            <div class='big-map-container' ></div>
+            <div geo-marker 
+                save-function = "updateMarkers"
+                custom-fields = "[ 'name' ]"
+                center = "center"
+                markers = "item.markers"
+                sizes = "{ height: '350px' }"
+                drag-enabled = "true"
+            ></div>
         </div>
     </div>
     <br/>

@@ -9,23 +9,36 @@ module.exports = {
 	edit : function(req,res){
 	    PackageItem.findOne(req.params.id).populate('package_').exec(function(e,item){
 	    	Location.find().sort('name').exec(function(e,locations){
-		      if(e) return res.redirect("/packagetour/");
-		      Common.view(res.view,{
-		        item:item,
-		        locations : locations, 
-		        page:{
-		          name : item.package_.name ,
-		          icon : 'fa fa-dropbox' ,
-		          controller : 'packagetour.js'
-		        },
-		        breadcrumb : [
-		          { label : 'Paquetes', url: '/packagetour/'},
-		          { label : item.package_.name , url : '/packagetour/' + item.package_.id },
-		          { label : item.name_es }
-		        ]
-		      },req); 
+		    	Location.findOne(item.location).exec(function(e,location_){
+			      if(e) return res.redirect("/packagetour/");
+			      Common.view(res.view,{
+			        item:item,
+			        locations : locations, 
+			        location_ : location_,
+			        page:{
+			          name : item.package_.name ,
+			          icon : 'fa fa-dropbox' ,
+			          controller : 'packagetour.js'
+			        },
+			        breadcrumb : [
+			          { label : 'Paquetes', url: '/packagetour/'},
+			          { label : item.package_.name , url : '/packagetour/' + item.package_.id },
+			          { label : item.name_es }
+			        ]
+			      },req); 
+			    });
 		    });
 	    });
   	},
+  	update : function(req,res){
+    	var form = req.params.all();
+    	PackageItem.update({id:form.id},form,function(e,p){
+    		if(e) throw(e);
+    		PackageItem.findOne(p.id).populate('location').populate('package_').exec(function(e,item){
+    			if(e) throw(e);
+    			res.json(item);
+    		});
+    	});
+  	}
 };
 

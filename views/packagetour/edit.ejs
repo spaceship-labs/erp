@@ -45,7 +45,14 @@
     </div>
     <div class='row-fluid'>
         <div class="span12"> 
-            <div class='big-map-container' ></div>
+            <div geo-marker 
+                save-function = "updateMarkers"
+                custom-fields = "[]"
+                center = "center"
+                markers = "themarkers"
+                sizes = "{ height: '350px' }"
+                drag-enabled = "false"
+            ></div>
         </div>
     </div>
     <br/>

@@ -10,6 +10,10 @@ module.exports = {
 	attributes: {
 		name : 'string',
 		type : 'string',
+		markers : 'json',
+		location : {
+			model : 'location'
+		},
 		company : {
 			model : 'company'
 		},

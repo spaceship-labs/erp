@@ -49,6 +49,17 @@ module.exports = {
       });
     });
   },
+  update : function(req,res){
+    var form = req.params.all();
+    form.req = req;
+    PackageTour.update({id:form.id},form,function(e,p){
+      if(e) throw(e);
+      PackageTour.findOne(p.id).populate('items').exec(function(e,package_t){
+        if(e) throw(e);
+        res.json(item);
+      });
+    });
+  }
 };
 function groupItems(items){
   result = _.groupBy(items, function(item){ return item.type; });

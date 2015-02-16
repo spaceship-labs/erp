@@ -1,0 +1,42 @@
+<div class="widgetbox personal-information ng-form-helper">
+	<h4 class="widgettitle">
+		Selector de destinos
+		<span ng-if='dragEnabled' ng-click='createMarker()'  class='fa icon fa-plus' ></span>
+		<span ng-if='dragEnabled' ng-click='save()' class='fa icon' ng-class='saveClass'></span>
+	</h4>
+	<div class=''>
+		<table class='table' ng-if='dragEnabled'>
+			<thead>
+		        <tr>
+		        	<th>Latitude</th>
+		        	<th>Longitud</th>
+		        	<th>Descripción</th>
+		            <th ng-if="customFields" ng-repeat='column in customFields' ng-bind='column'></th>
+		            <th>Eliminar</th>
+		        </tr>
+		    </thead>
+		    <tbody>
+				<tr ng-repeat='(key,marker) in markers'>
+					<td>
+						<input name='lat' ng-model="marker.lat" >
+					</td>
+					<td>
+						<input name='lng' ng-model="marker.lng" >
+					</td>
+					<td>
+						<input name='message' ng-model="marker.message" >
+					</td>
+					<td ng-if="customFields" ng-repeat='column in customFields'>
+		                <input name="{{column}}" ng-model="marker[column]" placeholder="{{column}}" >
+		            </td>
+					<td><a class='fa fa-trash-o' ng-click='removeMarker(key)' style="cursor: pointer"></a></td>
+				</tr>    	
+		    </tbody>
+		</table>
+	</div>
+	<div class="widgetcontent">
+		<p ng-if='dragEnabled'>Arrastrar para cambiar la ubicación de los marcadores.</p>
+		<leaflet width="{{sizes.width}}" height="{{sizes.height}}" markers='markers' center='center' ></leaflet>
+	</div>
+	
+</div>
