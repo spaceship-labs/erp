@@ -1,4 +1,4 @@
-<div id="dashboard-left" class="span6">
+<div id="dashboard-left" class="span12">
     <h4 class="widgettitle"><span class="fa fa-bullhorn"></span> Notificaciónes</h4>
     <div class="widgetcontent nopadding">
         <ul class="commentlist">
@@ -11,7 +11,7 @@
                     <div class="comment-updates">
                         <h5><a href="/{{notice.app}}">{{notice.userId.name}}</a></h5>
                         <p>{{notice.userId.name}} {{notice.userId.last_name}}
-                            {{noticeTranslate[notice.operation]}}  {{notice.model}}:
+                            <strong>{{noticeTranslate[notice.operation]}}</strong>  {{notice.model}}:
                             <a href="/{{notice.app}}/edit/{{notice.modifyId}}">
                                 {{notice.modelObjName}} 
                             </a>
@@ -19,7 +19,7 @@
                         <span class="muted">{{ fromNow(notice.updatedAt) }}</span>
                     </div>
                     <div class="clear"></div>
-                    <accordion close-others='false' ng-if="notice.modifications">
+                    <accordion close-others='false' ng-if="notice.modifications.length">
                         <accordion-group heading="Ver más" style="cursor: pointer;">
                             <div ng-init="changes = notice.modifications[0]" >
                                 <!--<p>Fue modificado: {{fromNow(changes.updatedAt.after)}}</p>-->

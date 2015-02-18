@@ -9,7 +9,7 @@ module.exports = {
 	index : function(req,res){
 		var reads = [
 			function(cb){
-				Company.find({ id : req.user.default_company }).exec(cb)
+				Company.find().exec(cb)//{ id : req.user.default_company }
 			},function(companies_,cb){
 				Airport.find().populate('location').exec(function(e,airports){ cb(e,companies_,airports) })
 			},function(companies_,airports,cb){
@@ -30,7 +30,6 @@ module.exports = {
 		];
 		async.waterfall(reads,function(e,companies_,airports,transfers,locations,prices){
 			if(e) throw(e);
-			//companies_ = addPricesOnCompany( companies_ , prices );
 			Common.view(res.view,{
 				thelocation : locations[0],
 				locations_:locations,
@@ -38,6 +37,7 @@ module.exports = {
 				airports : airports,
 				transfers:transfers,
 				companies_:companies_,
+				thecompany : req.user.default_company,
 				_content:sails.config.content,
 				page:{
 					name : 'Precios',
@@ -51,7 +51,8 @@ module.exports = {
 		var condiciones = req.params.all();
 		console.log(condiciones);
 		TransferPrice.find({ 
-				company:req.user.default_company ,
+				//company:req.user.default_company ,
+				company : condiciones.company ,
 				"$or" : [
 					{ 'location' : condiciones.location }, 
 					{ 'location2' : condiciones.location } 
@@ -61,7 +62,6 @@ module.exports = {
 			.populate('zone1').populate('zone2').populate('transfer').populate('location').populate('location2')
 			.exec(function(e,prices){ 
 				if(e) throw(e);
-				//companies_ = addPricesOnCompany( companies_ , prices );
 				res.json(addPricesOnCompany( false , prices ));
 			});
 	},
@@ -82,11 +82,9 @@ module.exports = {
 			},function(companies_,airports,cb){
 				Transfer.find().exec(function(e,transfers){ cb(e,companies_,airports,transfers) })
 			},function(companies_,airports,transfers,cb){
-				//Zone.find().exec(function(e,zones){ cb(e,companies_,airports,transfers,zones) })
 				Location.find().populate('zones').populate('locations').exec(function(e,locations){ cb(e,companies_,airports,transfers,locations) })
 			},function(companies_,airports,transfers,locations,cb){
-				//,'company':companies_[0].id
-				TransferPrice.find()//{ 'transfer':transfers[0].id,'airport':airports[0].id }
+				TransferPrice.find()
 					.populate('zone1').populate('zone2')
 					.exec(function(e,prices){ cb(e,companies_,airports,transfers,locations,prices) })
 			},
@@ -99,7 +97,6 @@ module.exports = {
 					airports : airports ,
 					transfers : transfers ,
 					companies_ : companies_ ,
-					//zones:zones,
 					_content : sails.config.content ,
 					page:{
 						name : 'Precios',
@@ -112,33 +109,6 @@ module.exports = {
 	}
 };
 function addPricesOnCompany( companies , prices ){
-	/*for( i in companies ){
-		companies[i].prices = _.where(prices, { company : companies[i].id });
-	}
-	for( i in companies ){
-		//companies[i].pricesByLocation = _.groupBy(companies[i].prices, function(price){ return price.location.id; });
-		companies[i].pricesByTransfer = _.groupBy(companies[i].prices, function(price){ return price.transfer.id; });
-	}*/
-	console.log(prices);
 	result = _.groupBy(prices, function(price){ return price.transfer.id; });
 	return result;
 }
-/*function createAllPrices( zones , transfers , company ){
-	for( var t in transfers ){
-		for( z1 in zones ){
-			for(z2 in zones){
-				if( z1.id != z2.id ){
-					var form = { 
-						'one_way' : 0 , 'round_trip' : 0 , active : false ,
-						'company' : company , 'transfer' : t.id ,
-						'zone1' : z1.id , 'zone2' : z2.id
-					}
-					TransferPrice.create(form).exec(function(e,price){
-						if(e) return res.json({text:e});
-						console.log(price);
-					})
-				}
-			}
-		}
-	}
-}*/

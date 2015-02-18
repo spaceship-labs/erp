@@ -160,13 +160,14 @@ function equals(a,b){
     if((typeA == 'array' && typeB == 'array') || (typeA == 'object' && typeB == 'object' )){
 
         var p;
-        for(p in a) {
-            if(typeof(b[p])=='undefined'){
+        for(p in a){ if( typeof(a[p]) != 'function' ){
+            if( typeof(b[p])=='undefined'){
                 return false;
             }
-        }
+		} }
     
-        for(p in a){
+        for(p in a){ if( typeof(a[p]) != 'function' ){
+
             if(a[p]){
                 if(typeof(a[p]) == 'object'){
                     if(!equals(a[p],(b[p]))){
@@ -182,13 +183,13 @@ function equals(a,b){
                     return false;
                 }
             }
-        }
+        } }
     
-        for(p in b){
+        for(p in b){ if( typeof(b[p]) != 'function' ){
             if(typeof(a[p])=='undefined'){
                 return false;
             }
-        } 
+        } } 
         return true;
     }
 

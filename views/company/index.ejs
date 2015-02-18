@@ -5,22 +5,16 @@
 </script>
 
 <div class="wrap_createCompany row-fluid" ng-controller="companyCTL">
-	<!--<p><button class="btn btn-primary" data-toggle="modal" data-target="#companyCreate"><span class="table-icon fa fa-plus"></span> Empresa</button></p>
-
-	<br/>	-->
-
 	<div directory-listing 
 		 objects='companies' 
 		 searchInput='searchInput' 
 		 dir='companies' 
 		 edit-url='/company/edit/' 
 		 get-info='getInfo' 
-		 button-text='Empresa'
+		 button-text='Nueva Empresa'
 		 >
 	</div>
-
-
-	<div class="modal fade" id="companyCreate">
+	<div class="modal fade" id="myModal">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div 

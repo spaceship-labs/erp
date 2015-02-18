@@ -21,6 +21,8 @@ var notification = function(type,collection,val){
                     add = false;
                     obj.modifications = notice.modifications || [];
                     for(var v in val){
+                    	//console.log('Update Loop: ' + v);
+                    	//console.log(val[v]);console.log(notice.val[v]);
                         if(v!='req' && !Common.equals(notice.val[v],val[v])){
                             changes[v] = {
                                 after:val[v]

@@ -2,7 +2,7 @@
     var controller = function($scope,$http){
         var options = {
             'sort':'updatedAt desc',
-            'limit':10
+            'limit':20
         }
         io.socket.get('/notice/find',options,function(data){
             if(!data)
@@ -11,9 +11,9 @@
             $scope.noticesN = data;
             $scope.$apply();
             $scope.noticeTranslate = {
-                update:'actualizo',
-                create:'creo',
-                destroy:'elimino'
+                update:'actualizó',
+                create:'creó',
+                destroy:'eliminó'
             };
         });
         io.socket.on('notice',function(data){

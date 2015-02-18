@@ -18,6 +18,7 @@ app.controller('companyCTL',function($scope,$http){
         $http({method: 'POST', url: '/company/create',data:newcompany}).success(function (company){
             $scope.companies.push(newcompany);
             //console.log($scope.companies);
+            $scope.apply();
             jQuery('#companyCreate').modal('hide');
         });    
     };
@@ -38,13 +39,17 @@ app.controller('companyEditCTL',function($scope,$http){
     var updateApps = function(){
         $scope.missingApps = [];
         $scope.selectedApps = [];
-        angular.forEach($scope.allApps,function(app){
-            if ($scope.company.apps.indexOf(app.name) == -1) {
-                $scope.missingApps.push(app);
-            } else {
-                $scope.selectedApps.push(app);
-            }
-        });
+        if($scope.company.apps){
+            angular.forEach($scope.allApps,function(app){
+                if ($scope.company.apps.indexOf(app.name) == -1) {
+                    $scope.missingApps.push(app);
+                } else {
+                    $scope.selectedApps.push(app);
+                }
+            });
+        }else{
+            $scope.missingApps = $scope.allApps;
+        }
     };
 
     $scope.removeApp = function(app){

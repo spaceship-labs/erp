@@ -12,18 +12,38 @@ app.controller('packageEditCTL',function($scope,$http){
 	$scope.package_t = package_t;
 	$scope.items = items;
 	$scope.themarkers = {}
+	$scope.thehotels = {}
 	$scope.locations = locations;
+	$scope.categories = [
+        {id:1,name:'1 estrella'},
+        {id:2,name:'2 estrellas'},
+        {id:3,name:'3 estrellas'},
+        {id:4,name:'4 estrellas'},
+        {id:5,name:'5 estrellas'},
+        {id:6,name:'6 estrellas'},
+    ];
 	$scope.content = content;
-	$scope.isCollapsed = true;
+	$scope.isCollapsed = true ; $scope.isCollapsed2 = true;
 	$scope.collapsableClass = 'fa-plus';
 	$scope.hiddenFields = [
         { key : 'type' , value : 'day' },
         { key : 'package_' , value : $scope.package_t.id }
     ];
-    if($scope.items.length>0){
-    	for(var i=0;i<$scope.items.length;i++){
-    		for(var x in items[i].markers){
-    			$scope.themarkers[i + x] = items[i].markers[x];
+    $scope.hiddenFieldsH = [
+        { key : 'type' , value : 'hotel' },
+        { key : 'package_' , value : $scope.package_t.id }
+    ];
+    if($scope.items.day && $scope.items.day.length>0){
+    	for(var i=0;i<$scope.items.day.length;i++){
+    		for(var x in $scope.items.day[i].markers){
+    			$scope.themarkers[i + x] = $scope.items.day[i].markers[x];
+    		}
+    	}
+    }
+    if($scope.items.hotel && $scope.items.hotel.length>0){
+    	for(var i=0;i<$scope.items.hotel.length;i++){
+    		for(var x in $scope.items.hotel[i].markers){
+    			$scope.thehotels[i + x] = $scope.items.hotel[i].markers[x];
     		}
     	}
     }
@@ -40,7 +60,10 @@ app.controller('packageEditCTL',function($scope,$http){
 	}
 	$scope.addDay = function(newDay){
 		$http({method: 'POST', url: '/packageitem/create',params:newDay}).success(function (day){
-            $scope.package_t.items.push(day);
+			if(day.type=='day')
+            	$scope.items.day.push(day);
+            else
+            	$scope.items.hotel.push(day);
             $scope.aply();
         });
 	}
@@ -50,7 +73,7 @@ app.controller('packageEditCTL',function($scope,$http){
 			$scope.daysnumber.push(i+'');
 		}
 		//console.log($scope.daysnumber);
-		var items = $scope.package_t.items;
+		var items = $scope.items.day;
 		if( items ){
 			for(var x in items){
 				var index = $scope.daysnumber.indexOf(items[x].day);

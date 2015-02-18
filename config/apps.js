@@ -175,6 +175,15 @@ module.exports.apps = [
                 controller : 'hotelroomview',
                 action : 'index'
             },
+            {
+                label : 'Esquemas de alimentación',
+                icon : 'fa-cutlery',
+                url : '/foodscheme/',
+                handle : 'foodscheme',
+                showInMenu : true,
+                controller : 'foodscheme',
+                action : 'index'
+            },
         ],
     },
     /* locations */

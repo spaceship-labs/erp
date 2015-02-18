@@ -793,6 +793,54 @@ module.exports.content = {
     		type : 'textarea'
     	},
     ],
+    packageHotel : [
+    	{
+    		label : 'Categoria',
+    		type : 'select',
+			handle : 'category',
+			object : 'categories',
+    	},
+    	{
+    		label : 'Nombre Español',
+    		handle : 'name_es',
+    		type : 'text'
+    	},
+    	{
+    		label : 'Nombre Inglés',
+    		handle : 'name_en',
+    		type : 'text'
+    	},
+    	{
+    		label : 'Nombre Ruso',
+    		handle : 'name_ru',
+    		type : 'text'
+    	},
+    	{
+    		label : 'Nombre Portugués',
+    		handle : 'name_pt',
+    		type : 'text'
+    	},
+    	{
+    		label : 'Descripción Español',
+    		handle : 'description_es',
+    		type : 'textarea'
+    	},
+    	{
+    		label : 'Descripción Inglés',
+    		handle : 'description_en',
+    		type : 'textarea'
+    	},
+    	{
+    		label : 'Descripción Ruso',
+    		handle : 'description_ru',
+    		type : 'textarea'
+    	},
+    	{
+    		label : 'Descripción Portugués',
+    		handle : 'description_pt',
+    		type : 'textarea'
+    	}
+    ],
     packageDay : [
     	{
     		label : 'Día',
@@ -869,6 +917,28 @@ module.exports.content = {
     	}
     ],
     hotelRoomView : [
+    	{
+    		label : 'Nombre',
+    		handle : 'name',
+    		type : 'text'
+    	},
+    	{
+    		label : 'Nombre Inglés',
+    		handle : 'name_en',
+    		type : 'text'
+    	},
+    	{
+    		label : 'Nombre Ruso',
+    		handle : 'name_ru',
+    		type : 'text'
+    	},
+    	{
+    		label : 'Nombre Portugués',
+    		handle : 'name_pt',
+    		type : 'text'
+    	}
+    ],
+    foodschemes : [
     	{
     		label : 'Nombre',
     		handle : 'name',

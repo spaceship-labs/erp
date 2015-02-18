@@ -12,3 +12,13 @@ app.controller('hroomviewEditCTL',function($scope,$http){
 	$scope.hview = hview;
 	$scope.content = content;
 });
+app.controller('hschemeviewCTL',function($scope,$http){
+	$scope.schemes = schemes;
+	$scope.content = content;
+	$scope.createScheme = function(newscheme){
+        $http({method: 'POST', url: '/foodscheme/create',params:newscheme}).success(function (hscheme){
+            $scope.schemes.push(hscheme);
+            jQuery('#myModal').modal('hide');
+        });
+    };
+});

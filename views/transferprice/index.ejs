@@ -6,12 +6,14 @@
 	window.airports = <%- JSON.stringify(airports) %>;
 	window.companies_ = <%- JSON.stringify(companies_) %>;
 	window.content = <%- JSON.stringify(_content) %>;
-	console.log(window.prices);
 </script>
 <div ng-controller="priceCTL" >
 	<div class='row-fluid'>
 		<div class='span4'>
 			Ciudad: <select ng-change='updatePrices()' ng-model="thelocation" ng-options="obj as obj.name for obj in locations_" ></select>
+		</div>
+		<div class='span4'>
+			Agencia: <select ng-change='updatePrices()' ng-model="thecompany" ng-options="obj as obj.name for obj in companies" ></select>
 		</div>
 	</div>
 	<br/>

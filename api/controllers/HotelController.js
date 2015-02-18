@@ -74,6 +74,8 @@ module.exports = {
 	    			SeasonScheme.find().sort('name').exec(function(e,schemes){
 	    				Zone.find({ 'location' : hotel.location.id }).exec(function(e,zones){
 	    					FoodScheme.find().sort('name').exec(function(e,foodSchemes){
+	    						console.log(hotel.foodSchemes);
+	    						console.log(typeof hotel.foodSchemes.add );
 		    					Common.view(res.view,{
 									hotel:hotel,
 									locations:locations,

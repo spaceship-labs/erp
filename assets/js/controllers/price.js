@@ -6,11 +6,13 @@ app.controller('priceCTL',function($scope,$http){
 	$scope.companies = companies_;
 	$scope.thelocation = thelocation_;
 	$scope.isCollapsed = [];
-	//$scope.zones = zones;
 	$scope.content = content;
+    for(var i = 0;i<$scope.companies.length;i++){
+        if($scope.companies[i].id==user.default_company)
+            $scope.thecompany = $scope.companies[i];
+    }
     $scope.updatePrices = function(req,res){
-    	//params = { company : $scope.mycompany.id , transfer : $scope.mytransfer.id , airport : $scope.myairport.id };
-    	params = { location : $scope.thelocation.id };
+    	params = { location : $scope.thelocation.id , company : $scope.thecompany.id };
     	$http({method: 'POST', url: '/transferprice/getPrices',params:params }).success(function (prices){
 			$scope.prices = prices;
 			//$scope.companies = addPricesOnCompany($scope.companies,prices);

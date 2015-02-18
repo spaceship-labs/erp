@@ -1,0 +1,26 @@
+<script type='text/javascript'>
+	window.schemes = <%- JSON.stringify(schemes) %>;
+	window.content = <%- JSON.stringify(_content) %>;
+</script>
+<div ng-controller='hschemeviewCTL'>
+	<p><button class="btn btn-primary" data-toggle="modal" data-target="#myModal"><i class='fa fa-plus'></i> Nuevo Esquema</button></p>
+	<br/>
+	<div table-helper inline-edit="/foodscheme/update/" objects='schemes' columns='content.foodschemes' route='room'></div>
+	<div class="clearfix"></div>
+	<div class="modal fade" id="myModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div 
+					form-helper 
+			        fields='content.foodschemes' 
+			        form-footer='Agregar'
+			        form-save = 'createScheme'
+			        object = 'hview'
+			        form-title='Agregar Vista'
+			       	modal='true'
+			        >
+			    </div>
+			</div>
+		</div>
+	</div>
+</div>

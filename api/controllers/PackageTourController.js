@@ -31,21 +31,21 @@ module.exports = {
   edit: function (req, res) {
     PackageTour.findOne(req.params.id).populate('items').exec(function(e,package_t){
       Location.find().sort('name').exec(function(e,locations){
-        if(e) return res.redirect("/packagetour/");
-        Common.view(res.view,{
-          package_t:package_t,
-          locations : locations,
-          items : package_t.items,//groupItems(package_t.items) ,
-          page:{
-            name:package_t.name,
-            icon:'fa fa-dropbox',
-            controller : 'packagetour.js'
-          },
-          breadcrumb : [
-            {label : 'Paquetes', url: '/packagetour/'},
-            {label : package_t.name},
-          ]
-        },req); 
+          if(e) return res.redirect("/packagetour/");
+          Common.view(res.view,{
+            package_t:package_t,
+            locations : locations,
+            items : groupItems(package_t.items) ,
+            page:{
+              name:package_t.name,
+              icon:'fa fa-dropbox',
+              controller : 'packagetour.js'
+            },
+            breadcrumb : [
+              {label : 'Paquetes', url: '/packagetour/'},
+              {label : package_t.name},
+            ]
+          },req); 
       });
     });
   },
