@@ -17,6 +17,7 @@ app.controller('locationCTL',function($scope,$http){
     };
 });
 app.controller('locationEditCTL',function($scope,$upload,$http){
+    $scope.user = user;
     $scope.location_o = location_o;
     $scope.locations = locations;
     $scope.relatedLocations = [];

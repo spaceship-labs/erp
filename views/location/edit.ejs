@@ -1,7 +1,6 @@
 <script type='text/javascript'>
     window.location_o = <%- JSON.stringify(location_o) %>;
     window.locations = <%- JSON.stringify(locations) %>;
-    console.log(location_o);
 </script>
 <div ng-controller='locationEditCTL'>
     <div class='row-fluid'>
@@ -80,4 +79,5 @@
             </div>
         </div>
     </div></div>
+    <div delete-button url='/location' redirect-url='/location' object='location_o' user='user'></div>
 </div>
