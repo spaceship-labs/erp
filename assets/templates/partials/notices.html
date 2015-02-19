@@ -18,10 +18,10 @@
                         </p>
                         <span class="muted">{{ fromNow(notice.updatedAt) }}</span>
                     </div>
+                    <button class="btn btn-default toogle" ng-click="isCollapsed[$index] = !isCollapsed[$index]">Ver más</button>
                     <div class="clear"></div>
-                    <accordion close-others='false' ng-if="notice.modifications.length">
-                        <accordion-group heading="Ver más" style="cursor: pointer;">
-                            <div ng-init="changes = notice.modifications[0]" >
+                    
+                            <div collapse="!isCollapsed[$index]" class='collapseCustom'>
                                 <!--<p>Fue modificado: {{fromNow(changes.updatedAt.after)}}</p>-->
                                 <table class="table responsive" >
                                     <thead>
@@ -32,7 +32,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr ng-repeat="(field,change) in changes"
+                                        <tr ng-repeat="(field,change) in notice.modifications[0]"
                                         ng-if="field!='updatedAt'">
                                             <td>
                                                 {{field}}
@@ -47,8 +47,6 @@
                                     </tbody>
                                 </table>
                             </div>
-                        </accordion-group>
-                    </accordion>
                     <div class="clear"></div><!--CLASE TEMPORAL-->
                 </div>
             </li>

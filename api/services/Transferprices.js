@@ -22,8 +22,8 @@ module.exports.createTransferPrices = function(locations , transfers , company ,
 }
 module.exports.mapPrices = function(z1,z2,t,c,l,l2,cbF){
 	async.mapSeries( Transferprices.formatAllPrices(z1,z2,t,c,l,l2),(function(object,cb){
-		console.log('object');
-		console.log(object);
+		//console.log('object');
+		//console.log(object);
 		//TransferPrice.findOrCreate(object).exec(cb);
 		TransferPrice.findOrCreate(
 			{
