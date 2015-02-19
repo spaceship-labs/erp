@@ -7,16 +7,15 @@
 	</ul>
 	<p ng-if="buttonText != ''"><button class="btn btn-primary" data-toggle="modal" data-target="#myModal"> <span class = "fa fa-plus"></span>{{buttonText}}</button></p>-->
 	<div class = "alphabets-nav row">	
-		<div class = "alphabet-container col-md-9 col-sm-9 col-xs-9">
+		<div class = "alphabet-container col-md-9 col-sm-9 col-xs-12">
 			<ul class="alphabets">
 				<li ng-repeat="a in alphabet">
 					<span ng-if="alphabetIndex.indexOf(a)!=-1" ng-click="selectLetter(a)" ng-bind='a' ></span>
 					<p ng-if="alphabetIndex.indexOf(a)==-1" ng-bind='a'></p>
 				</li>
-			</ul>
+			</ul><div class='clear'></div>
 		</div>
-		
-		<div class = "textbutton col-sm-3 col-sm-3 col-xs-3">
+		<div class = "textbutton col-sm-3 col-sm-3 col-xs-12">
 			<p ng-if="buttonText != ''"><button class="btn btn-primary" data-toggle="modal" data-target="#myModal"> <span class = "fa fa-plus"></span> {{buttonText}}</button></p>
 		</div>
 	</div>

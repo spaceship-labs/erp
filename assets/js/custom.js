@@ -32,9 +32,7 @@ jQuery(document).ready(function(){
 	jQuery('.topbar .barmenu').click(function() {
 		  
 		  var lwidth = '260px';
-		  if(jQuery(window).width() < 340) {
-					 lwidth = '240px';
-		  }
+		  //if(jQuery(window).width() < 340) {lwidth = '240px';}
 		  
 		  if(!jQuery(this).hasClass('open')) {
 					 jQuery('.rightpanel, .headerinner, .topbar').css({marginLeft: lwidth},'fast');
@@ -59,12 +57,13 @@ jQuery(document).ready(function(){
 	
 	// show/hide left menu
 	jQuery(window).resize(function() {
-		if(!jQuery('.topbar').is(':visible')) {
-		     jQuery('.rightpanel, .headerinner').css({marginLeft: '260px'});
-				jQuery('.logo, .leftpanel').css({marginLeft: 0});
-		} else {
-		     jQuery('.rightpanel, .headerinner').css({marginLeft: 0});
-				jQuery('.logo, .leftpanel').css({marginLeft: '-260px'});
+		if( !jQuery('.topbar').is(':visible') ) {
+			jQuery('.rightpanel, .headerinner').css({marginLeft: '260px'});
+			jQuery('.logo, .leftpanel').css({marginLeft: 0});
+		}else{
+			jQuery('.rightpanel, .headerinner,.topbar').css({marginLeft: 0});
+			jQuery('.logo, .leftpanel').css({marginLeft: '-260px'});
+			jQuery('.topbar .barmenu').removeClass('open');
 		}
    });
 	

@@ -32,14 +32,13 @@
             var requests = [];
             for( var n in $scope.noticesN ){
                 var object = $scope.noticesN[n];
-                console.log('object');
-                console.log(object);
+                //console.log('object');console.log(object);
                 for( var m in object.modifications[0] ){
                     var change = object.modifications[0][m];
                     var dt = change.dataType;
                     //console.log(change);
                     if( typeof dt != 'undefined' ){
-                        console.log(dt);
+                        //console.log(dt);
                         if( dt.type == 'model' ){
                             requests.push({
                                 url : '/'+dt.model+'/find/'+change.before
@@ -69,34 +68,12 @@
             $q.all(requests.map(function(request) {
                 return $http.get(request.url);
             })).then(function(results) {
-                console.log('results');
-                console.log(results);
-                console.log(requests);
+                //console.log('results');console.log(results);
                 for(var i = 0;i<requests.length;i++){
-                    //requests[i].item = results[i].data.name || results[i].data.name_es;
                     $scope.noticesN[requests[i].n].modifications[0][requests[i].m][requests[i].action] = results[i].data.name || results[i].data.name_es;
                 }
-                //parse results array here ...
                 return results;
             });
-            /*var result = value;
-            var dt = obj.dataType;
-            if( typeof dt != 'undefined' ){
-                console.log(dt);
-                if( dt.type == 'model' ){
-                    console.log('http request');
-                    console.log(value);
-                    $http.get('/'+dt.model+'/find/'+value).then(function(item){
-                        item = item.data;
-                        console.log( item );
-                        console.log( '--------------------------' + (item.name || item.name_es) );
-                        result = item.name || item.name_es;
-                        return result + 'test-----------';
-                    });
-                }
-            }else{
-                return result;
-            }*/
         };
         $scope.formatFields();
     };

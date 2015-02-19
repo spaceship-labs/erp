@@ -208,6 +208,9 @@ color: #fff;
 
 }
 
+@media only screen and (max-width: 768px) {
+	.ng-directory-listing .alphabets li{width: 7.5%;text-align: center;}
+}
 @media only screen and (max-width: 650px) {
 	/* Force table to not be like tables anymore */
 	.custom-table table,
@@ -256,13 +259,12 @@ color: #fff;
 	*/
 	.custom-table td:before { content: attr(data-title); }
 }
-
 @media screen and (max-width: 480px){
 	.headmenu .dropdown-menu{border: 2px solid @primary}
 	.userloggedinfo .userinfo{border: 2px solid @primary}
 	.commentlist .comment-info .comment-updates{ padding: 0px;}
-	.commentlist .panel-heading{ top: 0px; right: 0px; width: 100%; position: relative;}
-
+	.commentlist .panel-heading{ }
+	.commentlist .btn.toogle{top: 0px; right: 0px; width: 100%; position: relative;}
 
 }
 
@@ -280,7 +282,8 @@ color: #fff;
 .ng-directory-listing .widgetcontent { font-style: italic;}
 .ng-directory-listing .alphabet-container { padding: 0; } 
 .ng-directory-listing .alphabets{ border-color: #252D5E; float: left; border-left: 1px solid #252D5E;}
-.ng-directory-listing .alphabets li{ border-color: #252D5E; border: 0; color: #252D5E;}
+.ng-directory-listing .alphabets li{ border-color: #252D5E; border: 0; color: #252D5E;padding: 0;}
+.ng-directory-listing .alphabets li > *{padding: 5px 10px;}
 
 .ng-directory-listing .alphabets-nav .textbutton p{ float: right; }
 

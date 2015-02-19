@@ -56,7 +56,7 @@ module.exports = {
       if(e) throw(e);
       PackageTour.findOne(p.id).populate('items').exec(function(e,package_t){
         if(e) throw(e);
-        res.json(item);
+        res.json(package_t);
       });
     });
   }
