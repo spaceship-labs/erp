@@ -25,6 +25,14 @@ module.exports = {
         model : 'userRole'
     }
 
+  },
+
+  getPermissions : function(acl){
+      if (acl.role && acl.role.permissions) {
+          return acl.role.permissions;
+      } else {
+          return acl.permissions;
+      }
   }
 };
 

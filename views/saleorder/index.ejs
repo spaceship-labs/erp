@@ -14,37 +14,35 @@
                     </ul>
                 </div>
                 <!---->
-                <a class="btn btn-default button-orange" data-toggle="modal" data-target="#addModal"><span class="table-icon fa fa-plus"></span> AGREGAR COTIZACIÓN</a>
+                <a class="btn btn-default button-orange" href="/saleOrder/configure">Configurar</a>
             </div>
 
             <div class="widgetcontent custom-table nopadding">
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th>Fecha</th>
+                            <th>Fecha creacion</th>
+                            <th>Fecha entrega</th>
+                            <th>Estado</th>
                             <th>Cliente</th>
                             <th>Proyecto</th>
-                            <th>Monto</th>
-                            <th>Items</th>
                             <th>Editar</th>
                         </tr>
                     </thead>
-                    <% for(var i=0;i<quotes.length;i++){
-                        var quote = quotes[i]
+                    <% for(var i=0;i<orders.length;i++){
+                        var order = orders[i]
                     %>
                     <tr>
-                        <td data-title="Fecha"><%= moment(quote.createdAt).format('Do [de] MMMM YYYY, h:mm:ss a') %></td>
-                        <td data-title="Cliente"><%= quote.client.name %></td>
-                        <td data-title="Proyecto"><%= quote.name %></td>
-                        <td data-title="Monto">$ <%= SaleQuote.totalPriceString(quote) %></td>
-                        <td data-title="Items"><%= quote.productsString() || "--"%></td>
-                        <td data-title="Editar"><a href="/salesQuote/edit/<%= quote.id %>"><span class="table-icon fa fa-edit"></span></a></td>
+                        <td data-title="Fecha creacion"><%= moment(order.createdAt).format('Do [de] MMMM YYYY, h:mm:ss a') %></td>
+                        <td data-title="Fecha entrega"><%= moment(order.createdAt).format('Do [de] MMMM YYYY, h:mm:ss a') %></td>
+                        <td data-title="Estado"><%= order.status %></td>
+                        <td data-title="Cliente"><%= order.client.name %></td>
+                        <td data-title="Proyecto"><%= order.name %></td>
+                        <td data-title="Editar"><a href="/saleOrder/edit/<%= order.id %>"><span class="table-icon fa fa-edit"></span></a></td>
                     </tr>
                     <% } %>
                 </table>
             </div>
-
         </div>
     </div>
-    <%- partial('addModal') -%>
 </div>

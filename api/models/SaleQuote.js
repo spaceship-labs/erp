@@ -16,9 +16,10 @@ module.exports = {
         },
         status : {
             type : 'string',
-            enum : ['approved','on_hold','open','close','expired','delivered'],
+            enum : ['on_hold','open','close','expired','delivered'],
             default : 'open'
         },
+
         files : {
             type: 'array'
         },
@@ -84,7 +85,7 @@ module.exports = {
             var total = 0.0;
             if (this.products && this.products.length > 0) {
                 _.forEach(this.products,function(product){
-                    total += SaleProduct.getPrice(product);
+                    total += SaleProduct.getPrice(product,false);
                 });
             }
             return total;
@@ -100,7 +101,12 @@ module.exports = {
             }
             return result;
         }
+	},
 
-	}
+    totalPriceString : function(quote){
+        var _s = require("underscore.string");
+        var total = quote.totalPrice();
+        return _s.numberFormat(total,2);
+    }
 
 };

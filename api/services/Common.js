@@ -50,6 +50,7 @@ module.exports.updateIcon = function(req,opts,cb){
 			fileName += '.'+ext;
 		}
 	}
+    console.log('update icon file name : ' + fileName);
 	Model.findOne({id:form.userId}).exec(function(err,user){
 		if(err) return cb && cb(err);
 		req.file('icon_input').upload(dirSave+fileName,function(err,files){

@@ -1,0 +1,34 @@
+<script type='text/javascript'>
+    window.order = <%- JSON.stringify(order) %>;
+</script>
+<div ng-controller="saleOrderCTL">
+    <div class="row-fluid">
+
+        <div class="col-md-6">
+            <h4>Entregar en : 4 dias</h4>
+        </div>
+        <div class="col-md-6">
+
+        </div>
+        <div class="col-md-6">
+
+            <div class="buttons-box">
+                <a class="btn btn-default button-orange"><span class="table-icon fa fa-plus"></span> Prioridad : </a>
+            </div>
+
+            <div class="widgetbox col-md-2" style="float:right !important">
+                <h4 class="widgettitle">Total </h4>
+                <div class="widgetcontent">
+                    <span class="span3"><h4><strong>{{totalQuote() | currency}}</strong></h4></span>
+                </div>
+            </div>
+            <div class="buttons-box">
+                <a class="btn btn-default button-orange"><span class="table-icon fa fa-percentage-circle"></span> Descuento</a>
+                <a class="btn btn-default button-green"><span class="table-icon"></span> Saldar</a>
+                <a class="btn btn-default button-red"><span class="table-icon"></span> Cancelar</a>
+            </div>
+
+        </div>
+
+    </div>
+</div>

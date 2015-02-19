@@ -2,6 +2,7 @@
     window.user = <%- JSON.stringify(user) %>;
     window.apps = <%- JSON.stringify(apps) %>;
     window.company = <%- JSON.stringify(selected_company) %>;
+    window.roles = <%- JSON.stringify(roles) %>;
 </script>
 <div ng-controller='userEditCTL'>
     <div class="span4 profile-left profileEdit">
@@ -11,44 +12,10 @@
                 <p style="margin: 8px 0">El usuario se ha actualizado exitosamente</p>
             </div>
             <div profile-image object='user' update-method='/user/updateIcon' delete-method='/user/destroyIcon' image-attr='icon' dir='users'></div>
-    <% if(!user.isAdmin) {%>
-        <div class="widgetbox tags">
-            <h4 class="widgettitle">Aplicaciones y Permisos <span class='fa icon' ng-class='saveClassPermissions' ng-click="updateAccestList()"></span></h4>
-            <div class="widgetcontent">
-                <p>
-                    <label for="adminInput">Administrador</label>
-                    <input type="checkbox" id="adminInput" ng-model="isAdmin" />
-                </p>
-
-                <accordion close-others='false'>
-                    <accordion-group heading="{{app.label}}    ({{app.permissions.granted.length}}/{{app.permissions.selected.length}})" ng-repeat="app in apps | filter:filterApp" style="cursor: pointer;" ng-init="app.permissions = { granted : [],selected : [] }">
-                        <table class="table responsive">
-                            <thead>
-                                <tr>
-                                    <th>Permiso</th>
-                                    <th>Escoger</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat='action in app.actions | filter:onlyRestricted' ng-init="permission = setPermission(action.handle,app)">
-                                    <td>
-                                        <label ng-bind='action.label' for="{{action.handle}}"></label>
-                                    </td>
-                                    <td>
-                                         <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox" id="{{action.handle}}" ng-model="permission.value" />
-                                            </label>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </accordion-group>
-                </accordion>
-            </div>
-        </div>
-    <% } %>
+            <% if(!user.isAdmin || req.user.isAdmin) {%>
+                <%- partial('partial/permissions') %>
+                <%- partial('partial/roles') %>
+            <% } %>
     </div>
     <div class="span6">
         <div form-helper
@@ -61,8 +28,8 @@
         </div>
     </div>
     <% if (req.user.isAdmin || req.user.id == user.id) {%>
-        <div class="span6">
-            <%- partial('partial/change-password') -%>
+        <div class="span4">
+            <%- partial('partial/change-password') %>
         </div>
     <% } %>
 </div>

@@ -84,7 +84,7 @@ module.exports = {
         }
     },
 
-    getPrice : function(product) {
+    getPrice : function(product,single) {
         var total = 0;
         var size = product.size ? (product.size.width * product.size.height) : 0;
         if (product.original_price && product.quantity && size) {
@@ -96,7 +96,8 @@ module.exports = {
 
             total += size * product.original_price;
 
-            total *=  product.quantity;
+            if (!single)
+                total *=  product.quantity;
 
             if (product.extras && product.extras.length > 0) {
                 total += _.reduce(product.extras, function (sum, extra) {
@@ -109,8 +110,20 @@ module.exports = {
         }
     },
 
+    getUnitPriceString : function(product) {
+        var total = this.getPrice(product,true);
+        var _s = require("underscore.string");
+        return _s.numberFormat(total,2);
+    },
+
+    getPriceString : function(product) {
+        var total = this.getPrice(product,false);
+        var _s = require("underscore.string");
+        return _s.numberFormat(total,2);
+    },
+
     beforeCreate : function(values,cb) {
-        values.price_total = this.getPrice(values);
+        values.price_total = this.getPrice(values,false);
         cb();
     }
 };

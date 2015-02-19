@@ -71,11 +71,11 @@ module.exports.apps = [
             },
             {
                 label:'Ordenes de trabajo',
-                icon:'fa-wrench',
-                url : '/saleWorkOrder/',
+                icon:'fa-barcode',
+                url : '/saleOrder/',
                 handle : 'ordenes',
                 showInMenu : true,
-                controller : 'salesWorkOrder',
+                controller : 'saleOrder',
                 action : 'index'
             },
 			{

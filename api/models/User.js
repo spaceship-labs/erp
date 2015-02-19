@@ -39,29 +39,28 @@ module.exports = {
             type : 'boolean',
             defaultsTo : false
         }
-        ,role:{
-            model : 'UserRole'
-        }
         ,lastLogin : 'datetime'
 		,setPassword : function(val,cb){
 			this.password = bcrypt.hashSync(val,bcrypt.genSaltSync(10));
 			this.save(cb);
 		}
-		,createAccessList : function(company,permissions,isAdmin,cb) {
+		,createAccessList : function(company,permissions,isAdmin,role,cb) {
             var user = this;
             var acl = user.hasCompanyAccess(company);
             if (user.accessList && acl) {
                 acl.isAdmin = isAdmin;
                 acl.permissions = permissions;
+                acl.role = role;
                 user.save(cb);
             } else {
-                var a = {
+                var newAcl = {
                     company : company,
                     user : user.id,
                     permissions : permissions,
-                    isAdmin : isAdmin
+                    isAdmin : isAdmin,
+                    role : role
                 };
-                UserACL.create(a).exec(function(err,userACL){
+                UserACL.create(newAcl).exec(function(err,userACL){
                     if (err) {
                         console.log(err);
                         throw err;
