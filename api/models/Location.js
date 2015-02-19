@@ -16,6 +16,6 @@ module.exports = {
   		collection : 'location',
   		via : 'id',
       dominant : true
-  	},
+  	}
   }
 };

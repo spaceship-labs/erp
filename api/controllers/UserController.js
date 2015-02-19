@@ -76,19 +76,22 @@ module.exports = {
 		var id = req.params.id;
 		if(id){
 			User.findOne(id).populate('accessList').exec(function(err,user){
-                if(err) return null;
-                user.avatar2 = user.icon ? '/uploads/users/177x171'+user.icon : 'http://placehold.it/177x171';
-                user.active = user.active?true:false;
-                delete user.password;
-                Common.view(res.view,{
-                    user:user
-                    , apps:sails.config.apps
-                    , page:{
-                        name:'Usuarios'
-                        ,icon:'fa fa-users'
-                        ,controller : 'user.js'
-                    }
-                },req);
+                UserRole.find().exec(function(err,roles) {
+                    if(err) return null;
+                    user.avatar2 = user.icon ? '/uploads/users/177x171'+user.icon : 'http://placehold.it/177x171';
+                    user.active = user.active?true:false;
+                    delete user.password;
+                    Common.view(res.view,{
+                        user:user,
+                        apps:sails.config.apps,
+                        roles : roles || [],
+                        page:{
+                            name:'Usuarios',
+                            icon:'fa fa-users',
+                            controller : 'user.js'
+                        }
+                    },req);
+                });
             });
 		}
 	}
@@ -190,15 +193,49 @@ module.exports = {
         var user_id = req.param('user');
         var permissions = req.param('permissions');
         var isAdmin = req.param('admin') || false;
+        var role = req.param('role');
 
         User.findOne({id : user_id}).populateAll().exec(function(err,user){
             if (err) {
                 console.log(err);
                 res.serverError();
             }
-            user.createAccessList(company,permissions,isAdmin,function(){
+            user.createAccessList(company,permissions,isAdmin,role,function(){
                 res.json({success:true,text:'permisos actualizados'});
             });
+        });
+    },
+
+    saveRole : function(req,res) {
+        var company = req.param('company');//no se esta usando
+        var permissions = req.param('permissions');
+        var isNew = req.param('isNew');
+        var role = req.param('role');
+        var name = req.param('name');
+
+        UserRole.findOne({name : name}).exec(function(err,urole) {
+            if (err) {
+                return res.json({success : false , text : 'find error'});
+            }
+            if (urole && role != urole.id) {
+               return res.json({success : false , text : (name + ' ya existe')});
+            }
+            if (isNew) {
+                UserRole.create({ name : name , permissions : permissions }).exec(function(err,ur){
+                    if (err) {
+                        return res.json({success : false , text : 'create error'});
+                    }
+                    return res.json({success : true,text : ('perfil ' + name + ' creado') , role : ur});
+                });
+            } else {
+                UserRole.update({ id : role },{ name : name , permissions : permissions }).exec(function(err,ur){
+                    if (err) {
+                        return res.json({success : false , text : 'update error'});
+                    }
+                    return res.json({success : true,text : ('perfil ' + name + ' actualizado'),role : ur[0]});
+                });
+            }
+
         });
     }
 };

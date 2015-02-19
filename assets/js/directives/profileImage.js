@@ -2,6 +2,7 @@
 	var controller = function($scope,$upload,$http){
 		$scope.loadingProgress = 0;
 		$scope.loading = false;
+        console.log($scope.object[$scope.imageAttr]);
 		$scope.updateIcon = function($files) {
 			$scope.loading = true;
             $scope.upload = $upload.upload({

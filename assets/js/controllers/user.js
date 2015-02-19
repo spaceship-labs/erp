@@ -36,37 +36,71 @@ app.controller('userCTL',function($scope,$http){
     }
 });
 
-app.controller('userEditCTL',function($scope,$http,_){
+app.controller('userEditCTL',function($scope,$http,_,$filter){
     $scope.user = user;
     $scope.apps = apps;
     $scope.submited_pass_form = false;
     $scope.company = company;
+    $scope.roles = roles;
+    $scope.user_roles = [];
     $scope.permissions = [];
+    $scope.role_permissions = [];
     $scope.content = content;
     $scope.hiddenFields = [
         { key : 'userId',value : $scope.user.id }
     ];
     $scope.saveClassPermissions = 'fa-save';
     $scope.saveClassPassword = 'fa-save';
-
-    console.log($scope.user);
+    $scope._ = _;
+    $scope.selected_role = { permissions : [] };
 
     for(var i in $scope.user.accessList){
         var acl = $scope.user.accessList[i];
         if (acl.company == $scope.company.id) {
+            $scope.user.acl = acl;
             $scope.user.permissions = acl.permissions;
             $scope.isAdmin = acl.isAdmin;
+            angular.copy($scope.roles,$scope.user_roles);
+
+            var emptyRole = { name : 'Ninguno',permissions : acl.permissions,id : '0' };
+            $scope.user_roles.push(emptyRole);
+
+            if (acl.role) {
+                $scope.user.role = _.findWhere($scope.user_roles,{ id : acl.role } );
+            } else {
+                $scope.user.role = emptyRole;
+            }
         }
     }
 
-    var id = $scope.user.id;
+    $scope.saveUserRole = function(){
+        $http.post('/user/saveRole/', {
+            role : $scope.selected_role.id || 0,
+            name : $scope.selected_role.name,
+            permissions:$scope.role_permissions,
+            company : $scope.company.id,
+            isNew : $scope.isNew
+        },{}).success(function(data){
+            var alt = jQuery('.alert p');
+            alt.text(data.text).parent().show();
+            if (data.success) {
+                if ($scope.isNew) {
+                    $scope.roles.push(data.role);
+                    $scope.user_roles.push(data.role);
+                }
+            }
+            jQuery('#userRoleModal').modal('hide');
+        });
+    };
+
     $scope.updateAccestList = function(){
         $scope.saveClassPermissions = 'fa-upload';
         $http.post('/user/updateAccessList/', {
-            user:id
-            ,permissions:$scope.permissions
+            user:$scope.user.id
+            ,permissions: $scope.user.role.id ? $scope.user.role.permissions:$scope.permissions
             ,admin:$scope.isAdmin
             ,company : $scope.company.id
+            ,role : $scope.user.role.id
         },{}).success(function(data){
             $scope.saveClassPermissions = 'fa-save';
             var alt = jQuery('.alert p');
@@ -76,7 +110,7 @@ app.controller('userEditCTL',function($scope,$http,_){
 
     $scope.updateInfo = function(){
         $http.post('/user/updateInfo/',{
-            userId:id
+            userId:$scope.user.id
             ,name:$scope.user.name
             ,last_name:$scope.user.last_name
             ,phone:$scope.user.phone
@@ -90,7 +124,7 @@ app.controller('userEditCTL',function($scope,$http,_){
         $scope.submited_pass_form = true;
         if ($scope.old_password && $scope.new_password && $scope.new_password == $scope.new_password_v && $scope.new_password != $scope.old_password) {
             $http.post('/user/updatePassword/',{
-                userId:id
+                userId:$scope.user.id
                 ,old_password:$scope.old_password
                 ,new_password:$scope.new_password
             },{}).success(function(data){
@@ -108,27 +142,41 @@ app.controller('userEditCTL',function($scope,$http,_){
         return ($scope.company.apps.indexOf(app.name) != -1);
     };
 
-    $scope.getPermission = function(key){
-        var test = _.find($scope.user.permissions,
-            function(item){
-                return item.key == key;
-            });
-        if (test)
-            return test.value;
-        return false;
+
+    $scope.setPermission = function(key) {
+        var permissionItem = _.findWhere($scope.user.permissions,{ key : key });
+        var index = $scope.user.permissions.indexOf(permissionItem);
+        return $scope.user.permissions[index];
     };
 
-    $scope.setPermission = function(key,app) {
-        var permissionItem = { key : key , value : $scope.getPermission(key) };
+    $scope.getRolePermission = function(key) {
+        var permissionItem = _.findWhere($scope.role_permissions,{ key : key} );
+        var index = $scope.role_permissions.indexOf(permissionItem);
+        return $scope.role_permissions[index];
+    };
 
-        app.permissions.selected.push(key);
-        if (permissionItem.value) {
-            app.permissions.granted.push(key);
+    $scope.updateRole = function(){
+        $scope.role_permissions = [];
+    };
+
+    $scope.available = function(item) {
+        if (item.handle) {
+            item.value = false;
+            var permission = _.findWhere($scope.role_permissions,{ key : item.handle });
+            if (!permission)
+            {
+                permission = _.findWhere($scope.selected_role.permissions,{ key : item.handle });
+                if (permission)
+                    $scope.role_permissions.push(permission);
+            }
+
+            if (permission)
+            {
+                item.value = permission.value;
+            }
+            return true;
         }
-
-        $scope.permissions.push(permissionItem);
-        var index = $scope.permissions.indexOf(permissionItem);
-        return $scope.permissions[index];
+        return false;
     };
 
     $scope.onlyRestricted = function(item) {

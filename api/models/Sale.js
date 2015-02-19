@@ -35,11 +35,6 @@ module.exports = {
         invoices : {
             collection : "SaleInvoice",
             via : "sale"
-        },
-
-        workOrders : {
-            collection : "SaleOrder",
-            via : "sale"
         }
 
 	}

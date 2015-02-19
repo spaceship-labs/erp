@@ -29,7 +29,7 @@
 	    </div>
         <div class="col-md-8">
             <div class="buttons-box">
-                <h4>Nombre : <span editable-text="quote.name" e-required style="cursor: pointer;">{{quote.name || "no asignado"}}</span></h4>
+                <h4>Nombre : <a editable-text="quote.name" e-required >{{quote.name || "no asignado"}}</a></h4>
 
                 <!--<p class="input-group">-->
                     <!--Fecha :-->
@@ -67,7 +67,7 @@
                     <tr>
                         <td data-title="Nombre"><%= product.name %></td>
                         <td data-title="Monto">$<%= product.price || 0 %></td>
-			            <td data-title="Cantidad"><%= product.quantity%></td>
+			            <td data-title="Cantidad"><%= product.quantity %></td>
                         <td data-title="Monto total">$<%= total %></td>
                         <td data-title="Agregado / Editado"><%= moment(product.updatedAt).format('Do [de] MMMM YYYY, h:mm:ss a') %></td>
                         <td data-title="Action" class="actions">

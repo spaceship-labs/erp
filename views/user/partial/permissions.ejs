@@ -1,0 +1,55 @@
+<div class="widgetbox tags">
+    <h4 class="widgettitle">Aplicaciones y Permisos <span class='fa icon' ng-class='saveClassPermissions' ng-click="updateAccestList()"></span></h4>
+    <div class="widgetcontent stdform2 stdform nopadding" ng-cloak="">
+
+        <div class="par">
+            <label>Administrador</label>
+            <div class="field">
+                <div class="editable-buttons">
+                    <button class="btn btn-default btn-small" ng-model="isAdmin" btn-radio="true"><span class="glyphicon glyphicon-ok"></span></button>
+                    <button class="btn btn-default btn-small" ng-model="isAdmin" btn-radio="false"><span class="glyphicon glyphicon-remove"></span></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="par" ng-if="!isAdmin">
+            <label>Perfil</label>
+            <div class="field">
+                <div class="editable-buttons">
+                    <select ng-options="s as s.name for s in user_roles" ng-model="user.role" chosen></select>
+                    <a class="btn btn-default" data-toggle="modal" data-target="#userRoleModal"><span class="table-icon fa fa-edit"></span></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="par" ng-if="!isAdmin && (!user.role || user.role.name == 'Ninguno')">
+            <accordion close-others='false'>
+                <accordion-group heading="{{app.label}}" ng-repeat="app in apps | filter:filterApp" style="cursor: pointer;">
+                    <table class="table responsive">
+                        <thead>
+                        <tr>
+                            <th>Permiso</th>
+                            <th>Escoger</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat='action in app.actions | filter:onlyRestricted' ng-init="permission = setPermission(action.handle)">
+                            <td>
+                                <label ng-bind='action.label' for="{{action.handle}}"></label>
+                            </td>
+                            <td>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" id="{{action.handle}}" ng-model="permission.value" />
+                                    </label>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </accordion-group>
+            </accordion>
+        </div>
+    </div>
+</div>
+

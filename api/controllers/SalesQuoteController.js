@@ -50,7 +50,7 @@ module.exports = {
                 Installation_work_type.find({ company : select_company }).exec(function (err,installation_work_types){
                     if(err) throw err;
                     installation_work_typesR = installation_work_types;
-                    cb()
+                    cb();
                 });
             });
 
@@ -58,7 +58,7 @@ module.exports = {
                 Installation_tool.find({ company : select_company }).populate('product').exec(function (err,installation_tools){
                     if(err) throw err;
                     installation_toolsR = installation_tools;
-                    cb()
+                    cb();
                 });
             });
 
@@ -66,7 +66,7 @@ module.exports = {
                 Installation_material.find({ company : select_company }).populate('product').exec(function (err,installation_materials){
                     if(err) throw err;
                     installation_materialsR = installation_materials;
-                    cb()
+                    cb();
                 });
             });
 
@@ -74,7 +74,7 @@ module.exports = {
                 Installation_crane.find({ company : select_company }).exec(function (err,installation_cranes){
                     if(err) throw err;
                     installation_cranesR = installation_cranes;
-                    cb()
+                    cb();
                 });
             });
 
@@ -82,7 +82,7 @@ module.exports = {
                 Product_type.find().populateAll().exec(function(err,product_types){
                     if(err) throw err;
                     product_typesR = product_types;
-                    cb()
+                    cb();
                 });
             });
 
@@ -105,7 +105,7 @@ module.exports = {
                         description:'editar'
                         ,icon:'fa fa-database'
                         ,name:'Cotizacion '
-                        ,controllers : 'product.js,installation.js'
+                        ,controllers : 'product.js,installation.js,sale.js'
                     },
                     moment:moment
                     ,quote:quote
@@ -133,6 +133,7 @@ module.exports = {
                     description:'listado de cotizaciones'
                     ,icon:'fa fa-database'
                     ,name:'Cotizaciones'
+                    ,controller : 'sale.js'
                 },
 				quotes:quotes
 				,moment:moment
@@ -191,6 +192,19 @@ module.exports = {
 
     ,editProduct : function(req,res) {
 
+    },
+
+    updateStatus : function(req,res) {
+        var form = req.params.all();
+        if (form.id || form.status) {
+            SaleQuote.findOne({id : id }).exec(function(err,quote){
+                quote.status = form.status;
+                SaleQuote.update({id : id },{ status : status }).exec(function(err,quotes){
+
+                });
+            });
+
+        }
     },
 
     toPdf : function(req,res) {
