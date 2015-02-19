@@ -154,7 +154,18 @@ module.exports.formValidate = function(form,validate){
     }
     return form;
 };
-
+module.exports.getCollectionAttrType = function(attrs,value){
+	var result = { type : 'string', model : false };
+	if( typeof attrs[value] != 'undefined' ){
+		if( typeof attrs[value].collection != 'undefined' )
+			result = { type : 'collection', model : attrs[value].collection };
+		else if( typeof attrs[value].model != 'undefined' )
+			result = { type : 'model', model : attrs[value].model };
+		else
+			result.type = attrs[value];
+	}
+	return result;
+}
 function equals(a,b){
     var typeA = typeof(a)
         ,typeB = typeof(b);

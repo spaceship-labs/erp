@@ -5,7 +5,7 @@ var notification = function(type,collection,val){
             companyId:val.req.companyId
             ,userId:val.req.userId
             ,app:val.req.app
-            ,model:collection
+            ,model:collection.tableName
             ,operation:type
             ,modifyId:val.id
             ,modelObjName:val.req.modelObjName
@@ -21,12 +21,11 @@ var notification = function(type,collection,val){
                     add = false;
                     obj.modifications = notice.modifications || [];
                     for(var v in val){
-                    	//console.log('Update Loop: ' + v);
-                    	//console.log(val[v]);console.log(notice.val[v]);
                         if(v!='req' && !Common.equals(notice.val[v],val[v])){
                             changes[v] = {
                                 after:val[v]
                                 ,before:notice.val[v]
+                                ,dataType:Common.getCollectionAttrType(collection.attributes,v)
                             }
                             add = true;
                         }
@@ -50,7 +49,7 @@ var notification = function(type,collection,val){
 module.exports = {
 	after: function(Model,val,action){
 		if(val.req && val.req.userId){
-			notification(action,Model.tableName,val);
+			notification(action,Model,val);
 			val.req = {};
 			/*Model.update({id:val.id},val).exec(function(err,model){
 				if(err) throw err;
