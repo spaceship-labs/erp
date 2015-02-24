@@ -127,7 +127,42 @@ a, a:hover, a:link, a:active, a:focus{color: @primary}
 .field input[type='radio']{width: auto!important;margin-right: 5px;top: 3px;position: relative;}
 
 
-
+/*Seccion cotizaciones*/
+.sales-quote [ng-cloak]{display: none!important}
+.loading-angular {
+  display: none;
+}
+[ng-cloak].loading-angular {
+  display: block !important;
+}
+.widget-input-field{
+	.widgettitle{font-size: 10px;padding: 6px 12px}
+	.widgetcontent{padding: 0}
+	.widgetcontent textarea{padding: 6px 12px;resize:none;}
+	.widgetcontent{
+		input[type="text"]{padding: 10px}
+		textarea, input[type="text"]{display: block;width: 100%}
+		input[type="radio"]{vertical-align: middle;margin:0 0 0 5px}
+	}	
+}
+.widgetcontent.with-padding{padding: 10px}
+.widgettitle.top-table{
+	padding: 6px 12px;font-size: 10px;
+	input[type="text"]{margin-left: 5px;}
+}
+.table-form-fields{
+	td{
+		border: 1px solid #CCCCCC;padding: 0;
+		input[type="text"]{border: 0;box-shadow: none;width: 60%}
+		label{display: inline;margin-right: 2px}
+	}
+}
+.custom-table td:before{position: relative;top: auto;left: auto}
+.editable-row{
+	margin-bottom: 10px;
+	a[editable-text]{cursor: pointer;}
+}
+/*-------------*/
 
 .head-contracts{background:url('/images/icon-archive.png');}
 .alphabets{
@@ -243,10 +278,10 @@ color: #fff;
 	 
 	.custom-table td:before {
 	/* Now like a table header */
-	position: absolute;
+	/*position: absolute;
 	/* Top/left values mimic padding */
-	top: 6px;
-	left: 6px;
+	/*top: 6px;
+	left: 6px;*/
 	width: 45%;
 	padding-right: 10px;
 	white-space: nowrap;
