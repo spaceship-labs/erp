@@ -30,6 +30,8 @@ body.loginpage{background: #282828;overflow: hidden;}
 .widgettitle a{color: #fff!important;text-decoration: underline;text-transform: none!important;}
 .widgettitle a span{font-size: 16px;vertical-align: initial;}
 .widgetcontent{border: 2px solid #EA4723;}
+.widgetcontent.widget-input-field{padding: 0}
+.widgetcontent.widget-input-field textarea{resize:none;}
 a, a:hover, a:link, a:active, a:focus{color: #EA4723}
 .btn-primary , .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary{background: #EA4723;border-color: #EA4723}
 .alphabets li span{color: #EA4723}
