@@ -1,20 +1,16 @@
 <table class="table table-striped">
-	<thead>
-		<tr>
-			<th>Nombre</th>
-			<th>Descripción</th>
-			<th>Tipo</th>
-			<th>Referencia</th>
-			<th>Editar</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr ng-repeat='product in products'>
+    <tr>
+        <th>Nombre</th>
+        <th>Direccion</th>
+        <th>Telefono</th>
+        <th>RFC</th>
+        <th>Accion</th>
+    </tr>
+     	<tr ng-repeat='product in products'>
 			<td  data-title="Nombre"><a href="#" ng-href='/product/edit/{{product.id}}' ng-bind='product.name'></a></td>
 			<td ng-bind='product.description' data-title="Descripcion"></td>
 			<td ng-bind='product.product_type.name' data-title="Tipo"></td>
 			<td ng-bind='product.internalReference' data-title="Referencia"></td>
 			<td data-title="Editar"><a ng-href='/product/edit/{{product.id}}' ><span class="table-icon fa fa-edit"></span></a></td>
 		</tr>
-	</tbody>
 </table>
