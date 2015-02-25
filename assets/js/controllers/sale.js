@@ -49,6 +49,11 @@ app.controller('saleQuoteCTL',function($scope,$http){
     };
 });
 
+
+app.controller('salesQuotesCTL',function($scope,$http){
+    $scope.quotes = window.quotes;
+});
+
 app.controller('saleQuoteAddCTL',function($scope,$http) {
     $scope.selectedProducts = [];
     $scope.products = [];
