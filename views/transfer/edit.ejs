@@ -1,7 +1,7 @@
 <script type='text/javascript'>
     window.transfer = <%- JSON.stringify(transfer) %>;
 </script>
-<div ng-controller='transferEditCTL'>
+<div ng-controller='transferEditCTL' class="editar-transfer ng-cloak">
     <div class='row-fluid'>
         <div class="span12">
             <div form-helper 
@@ -15,3 +15,7 @@
     </div>
     <br/>
 </div>
+
+    <div id="cargando-elementos" class="ng-cloak">
+        <img src="/images/loaders/images-cm.gif">
+    </div>

@@ -2350,7 +2350,7 @@ select {width: 220px;border: 1px solid #cccccc;background-color: #ffffff;}
 
 #cargando-elementos img{display: inline-block;}
 
-.peoplelist.ng-cloak{display: none !important;}
-.peoplelist{display: block !important;}
+.peoplelist.ng-cloak, .editar-hotel.ng-cloak,.editar-usuario.ng-cloak,.editar-aeropuerto.ng-cloak, .table-striped.ng-cloak, .ng-calendar-frame.ng-cloak, .custom-table.ng-cloak, .editar-reservacion.ng-cloak, .editar-location.ng-cloak, .editar-tour.ng-cloak, .editar-transfer.ng-cloak, .editar-package-tour.ng-cloak{display: none !important;}
+.peoplelist, .editar-hotel, .editar-usuario, .editar-aeropuerto, .ng-calendar-frame, .custom-table, .editar-reservacion, .editar-location, .editar-tour, .editar-transfer, .editar-package-tour {display: block !important;}
 #cargando-elementos.ng-cloak{display: block!important;}
 #cargando-elementos{width: 100%;text-align: center;display: none !important;}

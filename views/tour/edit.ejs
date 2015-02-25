@@ -3,7 +3,7 @@
     window.locations = <%- JSON.stringify(locations) %>;
     window.content = <%- JSON.stringify(_content) %>;
 </script>
-<div ng-controller='tourEditCTL'>
+<div ng-controller='tourEditCTL' class="editar-tour ng-cloak">
     <div class="span4 profile-left profileEdit">
         <div profile-image 
             object='tour' 
@@ -61,3 +61,7 @@
     <div delete-button url='/tour' redirect-url='/tour' object='tour' user='user'></div>
     <br/>
 </div>
+
+    <div id="cargando-elementos" class="ng-cloak">
+        <img src="/images/loaders/images-cm.gif">
+    </div>

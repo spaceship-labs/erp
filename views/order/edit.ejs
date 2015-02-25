@@ -5,7 +5,7 @@
     window.transfers = <%- JSON.stringify(transfers) %>;
 	window.content = <%- JSON.stringify(_content) %>;
 </script>
-<div ng-controller='orderEditCTL' >
+<div ng-controller='orderEditCTL' class="editar-reservacion ng-cloak">
 	<div class='row-fluid stdform stdform2'>
         <div class='span12'><div class="widgetbox personal-information">
             <div class='headtitle'>
@@ -50,3 +50,7 @@
         </div>
     </div>
 </div>
+
+    <div id="cargando-elementos" class="ng-cloak">
+        <img src="/images/loaders/images-cm.gif">
+    </div>

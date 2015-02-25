@@ -4,7 +4,7 @@
     window.zones = <%- JSON.stringify(zones) %>;
     console.log(airport);
 </script>
-<div ng-controller='airportEditCTL'>
+<div ng-controller='airportEditCTL' class="editar-aeropuerto ng-cloak">
     <div class='row-fluid'>
         <div class="span12">        
             <div form-helper 
@@ -19,3 +19,7 @@
     </div>
     <br/>
 </div>
+
+    <div id="cargando-elementos" class="ng-cloak">
+        <img src="/images/loaders/images-cm.gif">
+    </div>
