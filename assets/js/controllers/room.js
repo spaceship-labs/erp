@@ -1,5 +1,6 @@
-app.controller('roomEditCTL',function($scope,$upload,$http){
+app.controller('roomEditCTL',function($scope,$upload,$http,$window){
     $scope.room = room;
+    $scope.user = user;
     io.socket.get('/room/find/'+room.id,function(data,jwres){
         $scope.room = data;
         $scope.$apply();

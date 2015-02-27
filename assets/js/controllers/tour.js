@@ -21,7 +21,7 @@ app.controller('tourCTL',function($scope,$http,$window){
 
 });
 
-app.controller('tourEditCTL',function($scope,$http){
+app.controller('tourEditCTL',function($scope,$http,$window){
     $scope.tour = tour;
     $scope.user = user;
     io.socket.get('/tour/find/'+tour.id,function(data,jwres){

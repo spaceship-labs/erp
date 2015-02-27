@@ -9,6 +9,7 @@
     window.hours = <%- JSON.stringify(hours) %>;
     window.quote = <%- JSON.stringify(quote) %>;
     window.machines = <%- JSON.stringify(machines) %>;
+    window.userID = <%- JSON.stringify(req.user.id) %>;
 </script>
 <div class="loading-angular" ng-cloak>Cargando...</div>
 <div ng-cloak ng-controller="saleQuoteCTL" class="sales-quote">
@@ -180,4 +181,5 @@
             </div>
         </div>
     </div>
+
 </div>

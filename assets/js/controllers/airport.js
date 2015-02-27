@@ -22,11 +22,12 @@ app.controller('airportCTL',function($scope,$http){
         });
     };
 });
-app.controller('airportEditCTL',function($scope,$upload,$http){
+app.controller('airportEditCTL',function($scope,$upload,$http,$window){
     $scope.airport = airport;
     $scope.locations = locations;
     $scope.zones = zones;
     $scope.content = content;
+    $scope.user = user;
     $scope.getZones = function(thelocation){
         $http({method: 'POST', url: '/zone/getZones',data: {id:thelocation} }).success(function (zones){
             $scope.zones = zones;

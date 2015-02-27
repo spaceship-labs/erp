@@ -102,6 +102,7 @@ app.controller('orderNewCTL',function($scope,$http,$window){
 });
 app.controller('orderEditCTL',function($scope,$http,$window){
     $scope.order = order;
+    $scope.user = user;
     $scope.hotels = hotels;
     $scope.clients_ = clients_;
     $scope.transfers = transfers;

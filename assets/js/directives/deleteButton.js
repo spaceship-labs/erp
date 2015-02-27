@@ -1,6 +1,7 @@
 (function () {
-    var controller = function($scope,$http){
+    var controller = function($scope,$http,$window){
         $scope.showOverlay = false;
+        $scope.user = user;
         $scope.iconSrc = $scope.user.icon ? '/uploads/users/80x80'+$scope.user.icon.filename : 'http://placehold.it/80x80';
         $scope.submitDelete = function(){
             var data = {
