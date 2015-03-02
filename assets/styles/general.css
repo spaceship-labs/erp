@@ -2114,6 +2114,7 @@ select {width: 220px;border: 1px solid #cccccc;background-color: #ffffff;}
 		  
 		  /* bootstrap */
 		  .btn { padding: 4px 12px; }
+		  .editable-buttons .btn{padding: 6px 12px}
 }
 
 @media screen and (max-width: 640px) {
