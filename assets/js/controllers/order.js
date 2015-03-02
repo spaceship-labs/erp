@@ -1,6 +1,33 @@
 app.controller('orderCTL',function($scope,$http){
     $scope.orders = orders;
     $scope.content = content;
+    $scope.formatDate = function(date){
+        var d = new Date(date);
+        if(date)
+            return d.getDate() + '/' + (d.getMonth()+1) + '/' + d.getFullYear();
+        else
+            return false;
+    };
+    $scope.formatTime = function(time){
+        var t = new Date(time);
+        if(time)
+            return t.getHours() + ':' + t.getMinutes();
+        else
+            return false;
+    }
+    $scope.formaOrders = function(){
+        for(var x in $scope.orders){
+            var transfer = false;
+            for( var j in $scope.orders[x].reservations ){
+                var r = $scope.orders[x].reservations[j];
+                if( r.reservation_type == 'transfer' ){
+                    transfer = r;
+                }
+            }
+            $scope.orders[x].transfer = transfer;
+        }
+    };
+    $scope.formaOrders();
 });
 app.controller('orderNewCTL',function($scope,$http,$window){
     $scope.clients_ = clients_;
@@ -113,10 +140,10 @@ app.controller('orderEditCTL',function($scope,$http,$window){
     $scope.getTransfers = function(){
         for(x in $scope.order.reservations){
             var reserve = $scope.order.reservations[x];
-            console.log('reserve');
+            //console.log('reserve');
             if( reserve.reservation_type == 'transfer' ) //$scope.transfers_.push(reserve);
                 $scope.transfer = reserve;
-            console.log(reserve);
+            //console.log(reserve);
         }
     }
     //abre/cierra datepickers

@@ -16,19 +16,45 @@
                 <th>Id</th>
                 <th>Usuario</th>
                 <th>Empresa</th>
+                <th>Llegada</th>
+                <th>Salida</th>
+                <th>Cliente</th>
+                <th>Hotel</th>
+                <th>Aeropuerto</th>
+                <th>Tipo</th>
+                <th>Origen</th>
+                <th>Estado</th>
+                <th>Pago</th>
                 <th>Fecha</th>
                 <th>Total</th>
-                <th>Editar</th>
+                <th>Editar</tho
                 <th>Borrar</th>
             </tr>
             <tr ng-repeat="order in orders">
                 <td data-title="Id" ng-bind="order.id"></td>
-                <td data-title="Usuario" ng-bind="order.user.namne"></td>
+                <td data-title="Usuario" ng-bind="order.user.name + ' ' + order.user.last_name"></td>
                 <td data-title="Empresa" ng-bind="order.company.name"></td>
-                <td data-title="Fecha" ng-bind="order.createdAt"></td>
+                <td><ul>
+                    <li>Vuelo: {{ order.transfer.arrival_fly  || '---' }}</li>
+                    <li>Fecha: {{ formatDate(order.transfer.arrival_date) || '---' }} </li>
+                    <li>Hora: {{ formatTime(order.transfer.arrival_time) || '---' }} </li>
+                </ul></td>
+                <td><ul>
+                    <li>Vuelo: {{ order.transfer.departure_fly  || '---' }}</li>
+                    <li>Fecha: {{ formatDate(order.transfer.departure_date) || '---' }} </li>
+                    <li>Hora: {{ formatTime(order.transfer.departure_time) || '---' }} </li>
+                </ul></td>
+                <td>{{order.transfer.client || "---" }}</td>
+                <td>{{order.transfer.hotel || "---" }}</td>
+                <td>{{order.transfer.airport || "---" }}</td>
+                <td>{{order.transfer.type || "---" }}</td>
+                <td>{{order.transfer.origin || "---" }}</td>
+                <td>{{order.transfer.state || "---" }}</td>
+                <td>{{order.transfer.payment_method || "---" }}</td>
+                <td data-title="Fecha">{{formatDate(order.createdAt)}}</td>
                 <td data-title="Total">0</td>
                 <td data-title="Accion"><a href="/order/edit/{{order.id}}"><span class="table-icon fa fa-edit"></span></a></td>
-                <td data-title="Accion"><a href="/order/edit/{{order.id}}"><span class="table-icon fa fa-remove"></span></a></td>
+                <td data-title="Accion"><a href="/order/edit/{{order.id}}"><span class="table-icon fa fa-trash-o"></span></a></td>
             </tr>
         </table>
     </div>

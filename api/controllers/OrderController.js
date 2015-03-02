@@ -7,7 +7,7 @@
 
 module.exports = {
   index: function (req, res) {
-    Order.find().sort('createdAt').populate('user').populate('company').exec(function(e,orders){
+    Order.find().sort('createdAt').populate('reservations').populate('user').populate('company').exec(function(e,orders){
   		Common.view(res.view,{
   			orders : orders,
   			page:{
