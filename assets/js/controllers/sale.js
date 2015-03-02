@@ -2,6 +2,8 @@
 
 app.controller('saleQuoteCTL',function($scope,$http){
     $scope.quote = quote;
+    console.log("hola");
+    $scope.user = window.user;
 
     function showResponse(data) {
         if(data){
@@ -47,6 +49,11 @@ app.controller('saleQuoteCTL',function($scope,$http){
 
         $scope.opened = true;
     };
+});
+
+
+app.controller('salesQuotesCTL',function($scope,$http){
+    $scope.quotes = window.quotes;
 });
 
 app.controller('saleQuoteAddCTL',function($scope,$http) {

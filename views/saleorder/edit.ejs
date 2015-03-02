@@ -1,34 +1,191 @@
 <script type='text/javascript'>
     window.order = <%- JSON.stringify(order) %>;
 </script>
-<div ng-controller="saleOrderCTL">
-    <div class="row-fluid">
 
-        <div class="col-md-6">
-            <h4>Entregar en : 4 dias</h4>
-        </div>
-        <div class="col-md-6">
-
-        </div>
-        <div class="col-md-6">
-
-            <div class="buttons-box">
-                <a class="btn btn-default button-orange"><span class="table-icon fa fa-plus"></span> Prioridad : </a>
+<div class="loading-angular" ng-cloak>Cargando...</div>
+<div ng-cloak ng-controller="saleOrderCTL" class="sales-quote">
+<div class="row-fluid">
+    <div class="col-md-8">
+        <div class="widgetbox col-md-2" style="float:right !important">
+            <h4 class="widgettitle">Total </h4>
+            <div class="widgetcontent">
+                <span class="span3"><h4><strong>{{totalQuote() | currency}}</strong></h4></span>
             </div>
-
-            <div class="widgetbox col-md-2" style="float:right !important">
-                <h4 class="widgettitle">Total </h4>
-                <div class="widgetcontent">
-                    <span class="span3"><h4><strong>{{totalQuote() | currency}}</strong></h4></span>
-                </div>
-            </div>
-            <div class="buttons-box">
-                <a class="btn btn-default button-orange"><span class="table-icon fa fa-percentage-circle"></span> Descuento</a>
-                <a class="btn btn-default button-green"><span class="table-icon"></span> Saldar</a>
-                <a class="btn btn-default button-red"><span class="table-icon"></span> Cancelar</a>
-            </div>
-
         </div>
-
+        <div class="buttons-box">
+            <a class="btn btn-default button-green"><span class="table-icon"></span> Saldar</a>
+            <a class="btn btn-default button-red"><span class="table-icon"></span> Cancelar</a>
+        </div>
     </div>
 </div>
+<div class="row-fluid editable-row">
+    <div class="col-md-2"><p><strong>Nombre:</strong> <a editable-text="quote.client.name" e-required >{{quote.client.name || "no asignado"}}</a></p></div>
+    <div class="col-md-2"><p><strong>Empresa:</strong> <a editable-text="quote.client.phone" e-required >{{quote.client.address || "no asignado"}}</a></p></div>
+    <div class="col-md-2"><p><strong>Dirección:</strong> <a editable-text="quote.client.phone" e-required >{{quote.client.phone || "no asignado"}}</a></p></div>
+    <div class="col-md-2"><p><strong>No de orden:</strong> <a editable-text="quote.id" e-required >{{quote.id || "no asignado"}}</a></p></div>
+    <div class="col-md-2"><p><strong>Prioridad:</strong> <a editable-text="quote.name" e-required >{{quote.name || "no asignado"}}</a></p></div>
+    <div class="clear"></div>
+</div>
+<div class="row-fluid">
+    <div class="col-md-8">
+        <div class="widget-input-field">
+            <div class="widgettitle">DATOS GENERALES</div>
+            <div class="widget-content">
+                <table class="table table-form-fields">
+                    <tr>
+                        <td>
+                            <label>Contacto:</label><input type="text" />
+                        </td>
+                        <td>
+                            <label>Elaboro:</label><input type="text" />
+                        </td>
+                        <td>
+                            <label>Fecha:</label><input type="text" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Entregar a:</label><input type="text" />
+                        </td>
+                        <td>
+                            <label>Dirección:</label><input type="text" />
+                        </td>
+                        <td>
+                            <label>Contacto:</label><input type="text" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Facturar a:</label><input type="text" />
+                        </td>
+                        <td>
+                            <label>Dirección:</label><input type="text" />
+                        </td>
+                        <td>
+                            <label>Contacto:</label><input type="text" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Proyecto:</label><input type="text" />
+                        </td>
+                        <td>
+                            <label>ODC:</label><input type="text" />
+                        </td>
+                        <td>
+                            <label>Tipo de ORID:</label><input type="text" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="widget-input-field">
+            <div class="widgettitle">INFORMACIÓN DE VENTAS</div>
+            <div class="widget-content">
+                <table class="table table-form-fields">
+                    <tr>
+                        <td colspan="2">
+                            <label>Ejecutivo:</label><input type="text" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <label>Admin V:</label><input type="text" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Fecha Est:</label><input type="text" />
+                        </td>
+                        <td>
+                            <label>Hora Est:</label><input type="text" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <label>Presupuesto:</label><input type="text" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row-fluid"><div class="col-md-12 "><div class="row-fluid widgettitle top-table">
+            <div class="col-md-8">TIPO DE ENTREGA <input type="text" /></div>
+            <div class="col-md-2"><a href="#">IMPRIMIR MINIATURAS</a></div>
+            <div class="col-md-2"><a href="#">INSERTAR</a></div>
+        </div></div></div>
+<div class="row-fluid">
+    <div class="col-md-12">
+        <div class="widgetcontent custom-table nopadding">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Monto</th>
+                    <th>Cantidad</th>
+                    <th>Monto total</th>
+                    <th>Agregado / Editado</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <%
+                var totalQuote = 0;
+                        for(var i=0;i<quote.products.length;i++){
+                    var product = quote.products[i];
+                    var total = product.price * product.quantity;
+                    totalQuote += total;
+                %>
+                <tr>
+                    <td data-title="Nombre"><%= product.name %></td>
+                    <td data-title="Monto">$<%= product.price || 0 %></td>
+                    <td data-title="Cantidad"><%= product.quantity %></td>
+                    <td data-title="Monto total">$<%= total %></td>
+                    <td data-title="Agregado / Editado"><%= moment(product.updatedAt).format('Do [de] MMMM YYYY, h:mm:ss a') %></td>
+                    <td data-title="Action" class="actions">
+                        <span ng-click="editProduct('<%- product.id %>')" class="table-icon fa fa-edit" style="cursor : pointer;" tooltip="editar"></span>
+                        <span ng-click="deleteProduct('<%- product.id %>','<%- quote.id %>')" class="table-icon fa fa-trash-o" style="cursor : pointer;" tooltip="borrar"></span>
+
+                    </td>
+                </tr>
+                <% } %>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="col-md-3">
+        <div class="widget-input-field">
+            <div class="widgettitle"><p><strong>1.002 M2</strong></p></div>
+            <div class="widgetcontent with-padding">
+                <label>Factura</label>
+                <input type="radio" name="factura_" id="yes"><label for="yes">Si</label>
+                <input type="radio" name="factura_" id="no"><label for="no">No</label>
+                <input type="radio" name="factura_" id="contract"><label for="contract">Contrato</label>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="widget-input-field">
+            <div class="widgettitle"><p>OBSERVACIONES PARA PREPEPRENSA</p></div>
+            <div class="widgetcontent"><textarea name=""></textarea></div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="widget-input-field">
+            <div class="widgettitle"><p>OBSERVACIONES PARA IMPRESIÓN</p></div>
+            <div class="widgetcontent"><textarea name=""></textarea></div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="widget-input-field">
+            <div class="widgettitle"><p>OBSERVACIONES PARA ACABADO</p></div>
+            <div class="widgetcontent"><textarea name=""></textarea></div>
+        </div>
+    </div>
+</div>
+</div>
+

@@ -4,7 +4,7 @@
     window.company = <%- JSON.stringify(selected_company) %>;
     window.roles = <%- JSON.stringify(roles) %>;
 </script>
-<div ng-controller='userEditCTL'>
+<div ng-controller='userEditCTL' class="editar-usuario ng-cloak">
     <div class="span4 profile-left profileEdit">
         <div class="alert alert-block unseen">
             <button data-dismiss="alert" class="close" type="button">×</button>
@@ -33,3 +33,7 @@
         </div>
     <% } %>
 </div>
+
+    <div id="cargando-elementos" class="ng-cloak">
+        <img src="/images/loaders/images-cm.gif">
+    </div>

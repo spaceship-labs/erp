@@ -1,8 +1,9 @@
 <script type='text/javascript'>
     window.location_o = <%- JSON.stringify(location_o) %>;
     window.locations = <%- JSON.stringify(locations) %>;
+    window.userID = <%- JSON.stringify(req.user.id) %>;
 </script>
-<div ng-controller='locationEditCTL'>
+<div ng-controller='locationEditCTL' class="editar-location ng-cloak">
     <div class='row-fluid'>
         <div class='span4'>
             <div profile-image object='location_o' update-method='/location/updateIcon' delete-method='/location/destroyIcon' image-attr='icon' dir='locations_o' ></div>
@@ -79,5 +80,9 @@
             </div>
         </div>
     </div></div>
-    <div delete-button url='/location' redirect-url='/location' object='location_o' user='user'></div>
+    <div delete-button url='/location_o' redirect-url='/location_o' object='location_o' user='user'></div>
 </div>
+
+    <div id="cargando-elementos" class="ng-cloak">
+        <img src="/images/loaders/images-cm.gif">
+    </div>

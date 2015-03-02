@@ -2,7 +2,7 @@
     window.scheme = <%- JSON.stringify(scheme) %>;
     window.hotels = <%- JSON.stringify(hotels) %>;
 </script>
-<div class='ng-calendar-frame' ng-controller='calendarCTL'>
+<div class='ng-calendar-frame ng-cloak' ng-controller='calendarCTL'>
 	<div class = "calendar-nav row">
 		<div class = "traverse col-md-6 col-sm-6 col-xm-6 ">
 			<button class="btn btn-primary" ng-click='year = year - 1'>
@@ -57,3 +57,7 @@
 	</div>
 
 </div>
+
+	<div id="cargando-elementos" class="ng-cloak">
+		<img src="/images/loaders/images-cm.gif">
+    </div>

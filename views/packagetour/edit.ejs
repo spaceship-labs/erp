@@ -2,8 +2,9 @@
     window.package_t = <%- JSON.stringify(package_t) %>;
     window.items = <%- JSON.stringify(items) %>;
     window.locations = <%- JSON.stringify(locations) %>;
+    window.userID = <%- JSON.stringify(req.user.id) %>;
 </script>
-<div ng-controller='packageEditCTL'>
+<div ng-controller='packageEditCTL' class="editar-package-tour ng-cloak">
     <div class='row-fluid'>
         <div class='span4'>
             <div profile-image object='package_t' update-method='/packagetour/updateIcon' delete-method='/packagetour/destroyIcon' image-attr='icon' dir='packagetour' ></div>
@@ -79,4 +80,10 @@
         </div>
     </div>
     <br/>
-</div>
+    <div delete-button url='/package_t' redirect-url='/package_t' object='package_t' user='user'></div>
+    <br/>
+</div>package_t
+
+    <div id="cargando-elementos" class="ng-cloak">
+        <img src="/images/loaders/images-cm.gif">
+    </div>

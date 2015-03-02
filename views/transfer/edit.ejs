@@ -1,7 +1,8 @@
 <script type='text/javascript'>
     window.transfer = <%- JSON.stringify(transfer) %>;
+    window.userID = <%- JSON.stringify(req.user.id) %>;
 </script>
-<div ng-controller='transferEditCTL'>
+<div ng-controller='transferEditCTL' class="editar-transfer ng-cloak">
     <div class='row-fluid'>
         <div class="span12">
             <div form-helper 
@@ -14,4 +15,10 @@
         </div>
     </div>
     <br/>
+    <div delete-button url='/transfer' redirect-url='/transfer' object='transfer' user='user'></div>
+    <br/>
 </div>
+
+    <div id="cargando-elementos" class="ng-cloak">
+        <img src="/images/loaders/images-cm.gif">
+    </div>

@@ -6,7 +6,8 @@
     window.foodSchemes = <%- JSON.stringify(foodSchemes) %>;
     window.userID = <%- JSON.stringify(req.user.id) %>;
 </script>
-<div ng-controller='hotelEditCTL'>
+
+<div ng-controller='hotelEditCTL' class="editar-hotel ng-cloak">
     <div class='row-fluid'>
         <div class="span4 profile-left profileEdit">
         	<div profile-image object='hotel' update-method='/hotel/updateIcon' delete-method='/hotel/destroyIcon' image-attr='icon' dir='hotels' ></div>
@@ -71,3 +72,7 @@
     <div delete-button url='/hotel' redirect-url='/hotel' object='hotel' user='user'></div>
     <br/>
 </div>
+
+    <div id="cargando-elementos" class="ng-cloak">
+        <img src="/images/loaders/images-cm.gif">
+    </div>

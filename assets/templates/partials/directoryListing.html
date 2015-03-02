@@ -1,4 +1,4 @@
-<div class='ng-directory-listing'>
+<div class='ng-directory-listing '>
 	<!--<ul class="alphabets">
 		<li ng-repeat="a in alphabet">
 			<span ng-if="alphabetIndex.indexOf(a)!=-1" ng-click="selectLetter(a)" ng-bind='a' ></span>
@@ -20,7 +20,11 @@
 		</div>
 	</div>
 
-	<div class="peoplelist">
+	<div id="cargando-elementos" class="ng-cloak">
+		<img src="/images/loaders/images-cm.gif">
+    </div>
+
+	<div class="peoplelist ng-cloak">
 		<div class="row-fluid">
 			<div class="span6 widgetbox" ng-repeat='object in objects | filter:objectFilter' ng-cloak class="ng-cloak">
 				<div class="headtitle">         
@@ -42,3 +46,4 @@
 		</div>
 	</div>
 </div>
+

@@ -15,7 +15,8 @@ app.controller('transferCTL',function($scope,$http){
         }
     };
 });
-app.controller('transferEditCTL',function($scope,$upload,$http){
+app.controller('transferEditCTL',function($scope,$upload,$http,$window){
     $scope.transfer = transfer;
     $scope.content = content;
+    $scope.user = user;
 });

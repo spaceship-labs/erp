@@ -16,10 +16,9 @@
                 <!---->
                 <a class="btn btn-default button-orange" href="/saleOrder/configure">Configurar</a>
             </div>
-
-            <div class="widgetcontent custom-table nopadding">
-                <table class="table table-striped">
-                    <thead>
+          
+          <div class="widgetcontent custom-table nopadding">
+                    <table class="table table-striped">
                         <tr>
                             <th>Fecha creacion</th>
                             <th>Fecha entrega</th>
@@ -28,21 +27,21 @@
                             <th>Proyecto</th>
                             <th>Editar</th>
                         </tr>
-                    </thead>
-                    <% for(var i=0;i<orders.length;i++){
-                        var order = orders[i]
-                    %>
-                    <tr>
-                        <td data-title="Fecha creacion"><%= moment(order.createdAt).format('Do [de] MMMM YYYY, h:mm:ss a') %></td>
-                        <td data-title="Fecha entrega"><%= moment(order.createdAt).format('Do [de] MMMM YYYY, h:mm:ss a') %></td>
-                        <td data-title="Estado"><%= order.status %></td>
-                        <td data-title="Cliente"><%= order.client.name %></td>
-                        <td data-title="Proyecto"><%= order.name %></td>
-                        <td data-title="Editar"><a href="/saleOrder/edit/<%= order.id %>"><span class="table-icon fa fa-edit"></span></a></td>
-                    </tr>
-                    <% } %>
-                </table>
+                        <% for(var i=0;i<orders.length;i++){
+                            var order = orders[i]
+                        %>
+                        <tr>
+                            <td data-title="Fecha creacion"><%= moment(order.createdAt).format('Do [de] MMMM YYYY, h:mm:ss a') %></td>
+                            <td data-title="Fecha entrega"><%= moment(order.createdAt).format('Do [de] MMMM YYYY, h:mm:ss a') %></td>
+                            <td data-title="Estado"><%= order.status %></td>
+                            <td data-title="Cliente"><%= order.client.name %></td>
+                            <td data-title="Proyecto"><%= order.name %></td>
+                            <td data-title="Editar"><a href="/saleOrder/edit/<%= order.id %>"><span class="table-icon fa fa-edit"></span></a></td>
+                        </tr>
+                        <% } %>
+                    </table>
             </div>
+
         </div>
     </div>
 </div>

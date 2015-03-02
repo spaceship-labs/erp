@@ -31,6 +31,7 @@
                         <td data-title="Telefono"><%= clients[i].phone %></td>
                         <td data-title="RFC"><%= clients[i].rfc %></td>
                         <td data-title="Accion"><a href="/clientes/editar/<%= clients[i].id %>"><span class="table-icon fa fa-edit"></span></a></td>
+                        <td><a style="cursor: pointer" ng-click="destroyObject(object,key)" class="fa fa-trash-o"></a></td>
                     </tr>
                     <% } %>
                 </table>
