@@ -27,9 +27,10 @@
 	</div>
 
     <div class="col-md-4" >
-        <div class="widgetbox">
+        <div profile-image object='product' update-method='/product/updateIcon' delete-method='/product/destroyIcon' image-attr='icon' dir='products' ></div>
+        <!--<div class="widgetbox">
 		    <%- partial('product-gallery') %>
-        </div>
+        </div>-->
 	</div>
 
     <% if (product_type.fields && product_type.fields.length > 0) {%>

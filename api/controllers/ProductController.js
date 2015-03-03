@@ -6,6 +6,7 @@
  */
 var fs = require('fs')
 , im = require('imagemagick');
+var moment = require('moment');
 module.exports = {
 	index: function(req,res){
 		var select_company = req.session.select_company || req.user.select_company;
@@ -293,5 +294,34 @@ module.exports = {
             });
             //.update({id : product},{quantity : 0}).exec();
         });
-    }
+    },
+    updateIcon: function(req,res){
+    	form = req.params.all();
+		Product.updateAvatar(req,{
+			dir : 'products',
+			profile: 'avatar',
+			id : form.id,
+		},function(e,product){
+			res.json(formatProduct(product));
+		});
+	}    
 };
+function formatProduct(product){
+	if(product){
+		product.createdAtString = timeFormat(product.createdAt);
+		product.updatedAtString = timeFormat(product.updatedAt);
+		product.avatar = product.icon ? '/uploads/hotels/'+product.icon : 'http://placehold.it/50x50';
+		product.avatar2 = product.icon ? '/uploads/hotels/177x171'+product.icon : 'http://placehold.it/177x171';
+		return product;
+	}else
+		return false;
+}
+
+function timeFormat(date){
+	date = moment(date);
+	var now = moment();
+	if(now.diff(date,'days',true)<1){
+		return date.lang('es').fromNow();
+	}
+	return date.lang('es').format('LLLL');
+}
