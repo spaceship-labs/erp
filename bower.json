@@ -54,6 +54,7 @@
     "angular-xeditable": "~0.1.8",
     "underscore": "~1.7.0",
     "angular-leaflet-directive": "~0.7.10",
-    "angular-ui-tinymce": "latest"
+    "angular-ui-tinymce": "latest",
+    "angular-chart.js": "~0.5.2"
   }
 }

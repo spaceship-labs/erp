@@ -42,6 +42,8 @@ var cssFilesToInject = [
 	'/styles/css/bootstrap-theme.min.css',
 	'/styles/css/font-awesome.min.css',
     '/bower_components/angular-xeditable/dist/css/xeditable.css',
+    '/bower_components/angular-chart.js/dist/angular-chart.css',
+
 	'styles/*.css'
 ];
 
@@ -85,6 +87,7 @@ var jsFilesToInject = [
     '/bower_components/leaflet/dist/leaflet.js',
     '/bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.js',
     '/bower_components/angular-ui-tinymce/src/tinymce.js',
+	'/bower_components/Chart.js/Chart.js',
 	"/js/themejs/*.js",                                            
 	"/js/*.js",                                                    
 	'/js/directives/*.js',                                         
