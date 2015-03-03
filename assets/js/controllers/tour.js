@@ -4,10 +4,14 @@ app.controller('tourCTL',function($scope,$http,$window){
     $scope.objects = {locations:locations};
     $scope.company = company;
 	$scope.getInfo = function(tour){
+        tour.createdAt=(moment(tour.createdAt).format('LL'));
+        tour.updatedAt=(moment(tour.updatedAt).format('LL'));
 		return {
 			"Nombre":tour.name,
 			"Tarifa Base":tour.fee,
 			"Horarios":tour.email,
+            "Creado" : tour.createdAt,
+            "Actualizado": tour.updatedAt,
 		}
 	};
 

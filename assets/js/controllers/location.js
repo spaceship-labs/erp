@@ -10,9 +10,12 @@ app.controller('locationCTL',function($scope,$http){
         });
     };
     $scope.getInfo = function(location){
+        location.createdAt=(moment(location.createdAt).format('LL'));
+        location.updatedAt=(moment(location.updatedAt).format('LL'));
         return {
             "Nombre" : location.name,
-            "Creado" : location.createdAt
+            "Creado" : location.createdAt,
+            "Actualizado": location.updatedAt,
         }
     };
 });

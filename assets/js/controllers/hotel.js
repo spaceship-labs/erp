@@ -20,12 +20,18 @@ app.controller('hotelCTL',function($scope,$http,$window){
     };
     $scope.getInfo = function(hotel){
         var phones = hotel.phones ? hotel.phones.join(", ") : "";
+        console.log(hotel.createdAt);
+        hotel.createdAt=(moment(hotel.createdAt).format('LL'));
+        hotel.updatedAt=(moment(hotel.updatedAt).format('LL'));
         return {
             "Poblacion" : hotel.location.name,
             "Direccion" : hotel.address,
             "Telefonos" : phones,
-            "Creado" : hotel.createdAtString,
-        }
+            "Creado" : hotel.createdAt,
+            "Actualizado": hotel.updatedAt,
+
+        };
+        
     };
     $scope.getZones = function(){
         $http({method: 'POST', url: '/zone/getZones',data: $scope.newHotel.location }).success(function (zones){
