@@ -1,4 +1,4 @@
-<div id="dashboard-left" class="span12">
+<div id="dashboard-left" class="span6">
     <h4 class="widgettitle"><span class="fa fa-bullhorn"></span> Notificaciónes</h4>
     <div class="widgetcontent nopadding">
         <ul class="commentlist">
@@ -37,10 +37,16 @@
                                             <td>
                                                 {{field}}
                                             </td>
-                                            <td class="change-before"><!--CLASE TEMPORAL-->
+                                            <td class="change-before" ng-if="change.before.filename"><!--CLASE TEMPORAL-->
+                                                {{change.before.filename}}
+                                            </td>
+                                            <td class="change-before" ng-if="!change.before.filename"><!--CLASE TEMPORAL-->
                                                 {{change.before}}
                                             </td>
-                                            <td>
+                                            <td ng-if="change.after.filename">
+                                                {{change.after.filename}}
+                                            </td>
+                                            <td ng-if="!change.after.filename">
                                                 {{change.after}}
                                             </td>
                                         </tr>

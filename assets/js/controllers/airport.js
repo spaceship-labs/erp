@@ -11,9 +11,12 @@ app.controller('airportCTL',function($scope,$http){
         });
     };
     $scope.getInfo = function(airport){
+        airport.createdAt=(moment(airport.createdAt).format('LL'));
+        airport.updatedAt=(moment(airport.updatedAt).format('LL'));
         return {
             "Nombre" : airport.name,
-            "Creado" : airport.createdAt
+            "Creado" : airport.createdAt,
+            "Actualizado": airport.updatedAt,
         }
     };
     $scope.getZones = function(thelocation){
