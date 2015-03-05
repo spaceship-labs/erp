@@ -159,7 +159,7 @@
                     for(var i=0;i<quote.products.length;i++){
                         var product = quote.products[i];
                         var total = product.price * product.quantity;
-                        var size = product.size.width * product.size.height;
+                        var size = product.size ? product.size.width * product.size.height : 0.0;
                         totalQuote += total;
                     %>
                     <tr>

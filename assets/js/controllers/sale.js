@@ -18,7 +18,7 @@ app.controller('saleQuoteCTL',function($scope,$http,$filter,_){
     };
 
     $scope.calculateSurface = function(){
-        var totalSize = _.reduce($scope.quote.products, function(memo, product){ return memo + (product.size.width * product.size.height); }, 0.0);
+        var totalSize = _.reduce($scope.quote.products, function(memo, product){ return memo + (product.size ? (product.size.width * product.size.height) : 0.0); }, 0.0);
         return $scope.quote.products.length > 0 ? totalSize : '0.0';
     };
 
@@ -209,7 +209,7 @@ app.controller('saleOrderCTL',function($scope,$http){
     };
 
     $scope.calculateSurface = function(){
-        var totalSize = _.reduce($scope.quote.products, function(memo, product){ return memo + (product.size.width * product.size.height); }, 0.0);
+        var totalSize = _.reduce($scope.quote.products, function(memo, product){ return memo + (product.size ? (product.size.width * product.size.height) : 0.0); }, 0.0);
         return $scope.quote.products.length > 0 ? totalSize : '0.0';
     };
 
