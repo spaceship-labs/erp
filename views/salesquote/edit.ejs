@@ -10,16 +10,21 @@
     window.quote = <%- JSON.stringify(quote) %>;
     window.machines = <%- JSON.stringify(machines) %>;
     window.userID = <%- JSON.stringify(req.user.id) %>;
+    window.clients = <%- JSON.stringify(clients) %>;
 </script>
 <div class="loading-angular" ng-cloak>Cargando...</div>
 <div ng-cloak ng-controller="saleQuoteCTL" class="sales-quote">
     <%- partial('../product/selectorAdd') %>
     <%- partial('../installation/add-modal') %>
+    <!--<div class="row-fluid">-->
+        <!--<div class="col-md-12">-->
+            <!--<button class="btn btn-default btn-small" style="float: right;"><span class="fa fa-floppy-o"></span> Save</button>-->
+        <!--</div>-->
+    <!--</div>-->
     <div class="row-fluid editable-row">
-        <div class="col-md-2"><p><strong>Nombre:</strong> <a editable-text="quote.client.name" e-required >{{quote.client.name || "no asignado"}}</a></p></div>
-        <div class="col-md-2"><p><strong>Empresa:</strong> <a editable-text="quote.client.phone" e-required >{{quote.client.address || "no asignado"}}</a></p></div>
-        <div class="col-md-2"><p><strong>Dirección:</strong> <a editable-text="quote.client.phone" e-required >{{quote.client.phone || "no asignado"}}</a></p></div>
-        <div class="col-md-2"><p><strong>Prioridad:</strong> <a editable-text="quote.name" e-required >{{quote.name || "no asignado"}}</a></p></div>                        
+        <div class="col-md-3"><p><strong>Nombre:</strong> <a href="#" editable-select="quote.client" e-ng-options="client as client.name for client in clients" onaftersave="setAttribute('client',$data.id)">{{quote.client.name || "no asignado"}}</a></p></div>
+        <div class="col-md-3"><p><strong>Direccion:</strong> {{quote.client.address || "no asignado"}}</p></div>
+        <div class="col-md-3"><p><strong>Prioridad:</strong> <a href="#" editable-select="quote.priority" e-ng-options="s.value as s.text for s in priorities" onaftersave="setAttribute('priority',$data)">{{ showPriority() }}</a></p></div>
         <div class="clear"></div>
     </div>
     <div class="row-fluid">
@@ -30,40 +35,50 @@
                   <table class="table table-form-fields">
                         <tr>
                             <td>
-                                <label>Contacto:</label><input type="text" />
+                                <label>Elaboro:</label>
+                                <span>{{ quote.user.name }}</span>
                             </td>
                             <td>
-                                <label>Elaboro:</label><input type="text" />
+                                <label>Fecha:</label>
+                                <input type="text" ng-model="quote.createdAt"/>
                             </td>
                             <td>
-                                <label>Fecha:</label><input type="text" />
+                                <label>Dirigida a:</label>
+                                <a href="#" editable-select="quote.directed_to_contact" e-ng-options="contact as contact.name for contact in quote.client.contacts" onaftersave="setAttribute('directed_to_contact',$data.id)">{{quote.directed_to_contact.name || "no asignado"}}</a>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <label>Entregar a:</label><input type="text" />
+                                <label>Entregar a:</label>
+                                <a href="#" editable-select="quote.deliver_to" e-ng-options="client as client.name for client in clients" onaftersave="setAttribute('deliver_to',$data.id)">{{quote.deliver_to.name || "no asignado"}}</a>
                             </td>
                             <td>
-                                <label>Dirección:</label><input type="text" />
+                                <label>Dirección:</label>
+                                <span ng-bind="quote.deliver_to.address"></span>
                             </td>
                             <td>
-                                <label>Contacto:</label><input type="text" />
+                                <label>Contacto:</label>
+                                <a href="#" editable-select="quote.deliver_to_contact" e-ng-options="contact as contact.name for contact in quote.deliver_to.contacts" onaftersave="setAttribute('deliver_to_contact',$data.id)">{{quote.deliver_to_contact.name || "no asignado"}}</a>
                             </td>
                         </tr>                        
                         <tr>
                             <td>
-                                <label>Facturar a:</label><input type="text" />
+                                <label>Facturar a:</label>
+                                <a href="#" editable-select="quote.bill_to" e-ng-options="client as client.name for client in clients" onaftersave="setAttribute('bill_to',$data.id)">{{quote.bill_to.name || "no asignado"}}</a>
                             </td>
                             <td>
-                                <label>Dirección:</label><input type="text" />
+                                <label>Dirección:</label>
+                                <span ng-bind="quote.bill_to.address"></span>
                             </td>
                             <td>
-                                <label>Contacto:</label><input type="text" />
+                                <label>Contacto:</label>
+                                <a href="#" editable-select="quote.bill_to_contact" e-ng-options="contact as contact.name for contact in quote.bill_to.contacts" onaftersave="setAttribute('bill_to_contact',$data.id)">{{quote.bill_to_contact.name || "no asignado"}}</a>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <label>Proyecto: </label><input type="text" ng-model="quote.name"/>
+                                <label>Proyecto: </label>
+                                <a href="#" editable-text="quote.name" onaftersave="setAttribute('name',$data)">{{quote.name || "no asignado"}}</a>
                             </td>
                         </tr>                        
                   </table>  
@@ -80,19 +95,29 @@
                                 <label>Aprobado :</label>
                             </td>
                             <td>
-                                <button class="btn btn-default btn-small" ng-model="isApproved" btn-radio="true"><span class="glyphicon glyphicon-ok"></span></button>
-                                <button class="btn btn-default btn-small" ng-model="isApproved" btn-radio="false"><span class="glyphicon glyphicon-remove"></span></button>
+                                <button class="btn btn-default btn-small" ng-model="quote.is_approved" btn-radio="1" ng-change="setAttribute('is_approved',true)"><span class="glyphicon glyphicon-ok"></span></button>
+                                <button class="btn btn-default btn-small" ng-model="quote.is_approved" btn-radio="0" ng-change="setAttribute('is_approved',false)"><span class="glyphicon glyphicon-remove"></span></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>fecha : </label>
                             </td>
                             <td>
-                                el <input type="text" />
+                                <span class="field input-group">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="open($event,1)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                    <input type="text" class="form-control" datepicker-popup="{{formatDate}}" ng-model="quote.approved_date" is-open="opened[1]" datepicker-options="dateOptions" show-button-bar="false" close-text="close" ng-change="setAttribute('approved_date',quote.approved_date)" />
+                                </span>
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 <label>Por:</label>
                             </td>
-                            <td>
-                                <select></select>
+                            <td colspan="2">
+                                <input type="text" />
                             </td>
                         </tr>                        
                         <tr>
@@ -100,9 +125,9 @@
                                 <label>Referencia:</label>
                             </td>
                             <td colspan="2">
-                                <button class="btn btn-default btn-small" ng-model="approvedReason" btn-radio="firm"><span>firma</span></button>
-                                <button class="btn btn-default btn-small" ng-model="approvedReason" btn-radio="odc"><span>odc</span></button>
-                                <button class="btn btn-default btn-small" ng-model="approvedReason" btn-radio="email"><span>email</span></button>
+                                <button class="btn btn-default btn-small" ng-model="quote.approved_reason" btn-radio="'firm'" ng-change="setAttribute('approved_reason','firm')"><span>firma</span></button>
+                                <button class="btn btn-default btn-small" ng-model="quote.approved_reason" btn-radio="'odc'" ng-change="setAttribute('approved_reason','odc')"><span>odc</span></button>
+                                <button class="btn btn-default btn-small" ng-model="quote.approved_reason" btn-radio="'email'" ng-change="setAttribute('approved_reason','email')"><span>email</span></button>
                             </td>
                         </tr>
                   </table>  
@@ -111,7 +136,8 @@
         </div>
     </div>
     <div class="row-fluid"><div class="col-md-12 "><div class="row-fluid widgettitle top-table">
-        <div class="col-md-8">TIPO DE ENTREGA <select><option>Cliente recoge</option><option>Domicilio</option></select></div>
+        <div class="col-md-6">TIPO DE ENTREGA <a editable-select="quote.delivery_mode" e-ng-options="mode.value as mode.text for mode in delivery_modes" onaftersave="setAttribute('delivery_mode',quote.delivery_mode)"></a></div>
+        <div class="col-md-2"><a class="btn btn-primary button-orange" data-toggle="modal" data-target="#extraCharge">* Cargo x Urgencia</a></div>
         <div class="col-md-2"><a class="btn btn-primary button-orange" data-toggle="modal" data-target="#productModal"><span class="table-icon fa fa-plus"></span> Producto</a></div>
         <div class="col-md-2"><a class="btn btn-primary button-orange" data-toggle="modal" data-target="#installationModal"><span class="table-icon fa fa-plus"></span> Instalacion</a></div>
     </div></div></div>
@@ -122,10 +148,9 @@
                     <thead>
                         <tr>
                             <th>Nombre</th>
-                            <th>Monto</th>
                             <th>Cantidad</th>
-                            <th>Monto total</th>
-                            <th>Agregado / Editado</th>
+                            <th>Precio Unitario</th>
+                            <th>Importe</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -134,14 +159,14 @@
                     for(var i=0;i<quote.products.length;i++){
                         var product = quote.products[i];
                         var total = product.price * product.quantity;
+                        var size = product.size ? product.size.width * product.size.height : 0.0;
                         totalQuote += total;
                     %>
                     <tr>
                         <td data-title="Nombre"><%= product.name %></td>
-                        <td data-title="Monto">$<%= product.price || 0 %></td>
                         <td data-title="Cantidad"><%= product.quantity %></td>
-                        <td data-title="Monto total">$<%= total %></td>
-                        <td data-title="Agregado / Editado"><%= moment(product.updatedAt).format('Do [de] MMMM YYYY, h:mm:ss a') %></td>
+                        <td data-title="Precio Unitario">$<%= product.price || 0 %></td>
+                        <td data-title="Importe">$<%= total %></td>
                         <td data-title="Action" class="actions">
                             <span ng-click="editProduct('<%- product.id %>')" class="table-icon fa fa-edit" style="cursor : pointer;" tooltip="editar"></span>
                             <span ng-click="deleteProduct('<%- product.id %>','<%- quote.id %>')" class="table-icon fa fa-trash-o" style="cursor : pointer;" tooltip="borrar"></span>
@@ -156,21 +181,77 @@
     <div class="row-fluid">
         <div class="col-md-3">
             <div class="widget-input-field">
-                <div class="widgettitle"><p><strong>1.002 M2</strong></p></div>
+                <div class="widgettitle"><p style="text-align: center"><strong>{{calculateSurface()}} M2</strong></p></div>
+                <div class="widgettitle"><p><strong>Opciones de este documento</strong></p></div>
                 <div class="widgetcontent with-padding">
-                    <label>Factura</label>
-                    <input type="radio" name="factura_" id="yes"><label for="yes">Si</label>
-                    <input type="radio" name="factura_" id="no"><label for="no">No</label>
-                    <input type="radio" name="factura_" id="contract"><label for="contract">Contrato</label>
+                    <table>
+                        <tr>
+                            <td><button class="btn btn-default" ng-model="detail" btn-radio="false"><span>Totalizar</span></button></td>
+                            <td><button class="btn btn-default" ng-model="detail" btn-radio="true"><span>Desglosar</span></button></td>
+                        </tr>
+                        <tr>
+                            <td><button class="btn btn-default" ng-model="quote.status" btn-radio="'open'" ng-change="updateStatus()"><span>Abierto</span></button></td>
+                            <td> <button class="btn btn-default" ng-model="quote.status" btn-radio="'close'" ng-change="updateStatus()"><span>Cerrado</span></button></td>
+                        </tr>
+                    </table>
                 </div>
             </div>
         </div>
         <div class="col-md-6">
             <div class="widget-input-field">
-                <div class="widgettitle"><p>OBSERVACIONES PARA PREPEPRENSA</p></div>
-                <div class="widgetcontent"><textarea name=""></textarea></div>
+                <div class="widgettitle">
+                    Condiciones
+                </div>
+                <div class="widgetcontent">
+                    <table class="table table-form-fields">
+                        <tr>
+                            <td>
+                                <label>Condiciones de pago : </label>
+                            </td>
+                            <td>
+                                <a editable-text="quote.payment_conditions" onaftersave="setAttribute('payment_conditions',quote.payment_conditions)">{{quote.payment_conditions || 'no definido'}}</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Vigencia : </label>
+                            </td>
+                            <td>
+                                <a editable-select="quote.validity_string" e-ng-options="val as val for val in ['1 semana','15 dias','30 dias']" onaftersave="setAttribute('validity_string',quote.validity_string)">{{ quote.validity_string || 'no definido'}}</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Vencimiento:</label>
+                            </td>
+                            <td>
+                                <span class="field input-group">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="open($event,2)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                    <input type="text" class="form-control" datepicker-popup="{{formatDate}}" ng-model="quote.validity_date" is-open="opened[2]" datepicker-options="dateOptions" show-button-bar="false" close-text="close" ng-change="setAttribute('validity_date',quote.approved_date)" />
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Tiempo de entrega : </label>
+                            </td>
+                            <td>
+                                <a editable-text="quote.delivery_time" onaftersave="setAttribute('delivery_time',quote.delivery_time)">{{quote.delivery_time || 'no definido'}}</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td ng-if="quote.order.id">
+                                <a ng-href="/saleOrder/edit/{{quote.order.id}}">Ir a orden de trabajo</a>
+                            </td>
+                            <td ng-if="quote.invoice.id">
+                                <a ng-href="/saleInvoice/edit/{{quote.invoice.id}}">Ir a factura</a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
             </div>
-        </div>
         </div>
         <div class="col-md-3" style="float:right !important">
             <div class="widget-input-field">
@@ -180,6 +261,8 @@
                 </div>
             </div>
         </div>
+    </div>
+
     </div>
 
 </div>

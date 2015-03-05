@@ -36,6 +36,8 @@ app.controller('hotelCTL',function($scope,$http,$window){
     $scope.getZones = function(){
         $http({method: 'POST', url: '/zone/getZones',data: $scope.newHotel.location }).success(function (zones){
             $scope.zones = zones;
+            console.log('zones');
+            console.log(zones);
         });
     };
 });
@@ -116,11 +118,9 @@ app.controller('hotelEditCTL',function($scope,$upload,$http){
             $scope.newRoomClass = 'fa-plus';
         });
     };
-    $scope.getZones = function(location){
-        var data = { 'id' : location };
-        $http({method: 'POST', url: '/zone/getZones', data: data }).success(function (zones){
+    $scope.getZones = function(){
+        $http({method: 'POST', url: '/zone/getZones',data: {id:$scope.hotel.location.id} }).success(function (zones){
             $scope.zones = zones;
-            return zones;
         });
     };
     $scope.changeLocations = function(value){

@@ -66,10 +66,12 @@
             
         };
         $scope.onChangefx = function(field){
-            var changeMethod = $scope.onchanges[field.on_Change];
-            if(changeMethod){
-                var $this = $scope.object[field.handle];
-                changeMethod($this);
+            if(field.on_Change && typeof field.on_Change != 'undefined'){
+                var changeMethod = $scope.onchanges[field.on_Change];
+                if(changeMethod){
+                    var $this = $scope.object[field.handle];
+                    changeMethod($this);
+                }
             }
         }
 

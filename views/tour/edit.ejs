@@ -1,5 +1,6 @@
 <script type='text/javascript'>
     window.tour = <%- JSON.stringify(tour) %>;
+    window.schemes = <%- JSON.stringify(schemes) %>;
     window.locations = <%- JSON.stringify(locations) %>;
     window.content = <%- JSON.stringify(_content) %>;
 </script>
@@ -38,7 +39,7 @@
             action='/tour/save' 
             form-title='INFORMACIÓN BASICA'
             currency='company.base_currency'
-            objects='objects'
+            objects='{schemes:schemes,locations:locations}'
             >
         </div> 
     </div>  

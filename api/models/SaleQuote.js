@@ -11,13 +11,13 @@ module.exports = {
 
         priority : {
             type : 'string',
-            enum : ['normal','alta','urgente'],
-            default : 'normal'
+            enum : ['normal','fast','urgent'],
+            defaultsTo : 'normal'
         },
         status : {
             type : 'string',
             enum : ['on_hold','open','close','expired','delivered'],
-            default : 'open'
+            defaultsTo : 'open'
         },
 
         files : {
@@ -31,6 +31,14 @@ module.exports = {
 
         sale : {
             model : 'Sale'
+        },
+
+        invoice : {
+            model : 'SaleInvoice'
+        },
+
+        order : {
+            model : 'SaleOrder'
         },
 
         estimated_date : {
@@ -58,7 +66,7 @@ module.exports = {
         delivery_mode : {
             type : 'string',
             enum : ['pickup','deliver'],
-            default : 'deliver'
+            defaultsTo : 'deliver'
         },
         deliver_to : {
             model : 'Client_'
@@ -72,14 +80,31 @@ module.exports = {
         bill_to_contact : {
             model : 'Client_contact'
         },
-        observation_prepress : {
+        is_approved : {
+            type : 'boolean'
+        },
+        approved_reason : {
+            type : 'string',
+            enum : ['none','firm','odc','email'],
+            defaultsTo : 'none'
+        },
+        approved_date : {
+            type : 'date'
+        },
+        payment_conditions : {
             type : 'string'
         },
-        observation_press : {
+        validity_date : {
+            type : "date"
+        },
+        validity_string : {
             type : 'string'
         },
-        observation_finish : {
+        delivery_time : {
             type : 'string'
+        },
+        directed_to_contact : {
+            model : 'Client_contact'
         },
         totalPrice : function(){
             var total = 0.0;
