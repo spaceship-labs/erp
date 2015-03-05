@@ -21,6 +21,7 @@ module.exports = {
             var installation_cranesR = [];
             var product_typesR = [];
             var productsR = [];
+            var clients = [];
 
             asyncTasks.push(function(cb) {
                 Machine.find({company : select_company}).populate('modes').exec(function(err,machines) {
@@ -99,6 +100,14 @@ module.exports = {
                 });
             });
 
+            asyncTasks.push(function(cb){
+                Client_.find({company : select_company}).populateAll().exec(function(err,client_s){
+                    if(err) throw err;
+                    clients = client_s;
+                    cb();
+                });
+            });
+
             async.parallel(asyncTasks,function(){
                 Common.view(res.view,{
                     page:{
@@ -107,6 +116,10 @@ module.exports = {
                         ,name:'Cotizacion '
                         ,controllers : 'product.js,installation.js,sale.js'
                     },
+                    breadcrumb : [
+                        {label : 'Cotizaciones', url : '/salesQuote/'},
+                        {label : quote.name}
+                    ],
                     moment:moment
                     ,quote:quote
                     ,products:productsR
@@ -118,6 +131,7 @@ module.exports = {
                     ,zones : installation_zonesR || {}
                     ,hours : installation_hoursR || {}
                     ,machines : machinesR || {}
+                    ,clients : clients || {}
                 },req);
             });
 
@@ -147,6 +161,8 @@ module.exports = {
         SaleQuote.create({
             user:   req.user.id
             ,client:    form.client
+            ,deliver_to : form.client
+            ,bill_to : form.client
             ,company : company
             ,name : form.name || 'Cotizacion'
         }).exec(function(err,quote){
@@ -196,14 +212,53 @@ module.exports = {
 
     updateStatus : function(req,res) {
         var form = req.params.all();
-        if (form.id || form.status) {
-            SaleQuote.findOne({id : id }).exec(function(err,quote){
+        if (form.id && form.status) {
+            SaleQuote.findOne({id : form.id }).populateAll().exec(function(err,quote){
+                if (err) {
+                    console.log(err);
+                    return res.json({ success : false,err : err,error : 'Error generico'});
+                }
+                if (quote.status == 'open' && form.status == 'close' && quote.products.length == 0) {
+                    return res.json({ success : false,error : 'Necesita tener almenos un item cargado' });
+                }
                 quote.status = form.status;
-                SaleQuote.update({id : id },{ status : status }).exec(function(err,quotes){
-
+                SaleQuote.update({id : quote.id },{ status : form.status }).exec(function(err,quotes){
+                    if (err) {
+                        console.log(err);
+                        return res.json({ success : false,err : err,error : 'Error generico status update'});
+                    }
+                    var order = {
+                        quote : quote.id,
+                        assignedUser : req.user.id
+                    };
+                    SaleOrder.create(order).exec(function(err,order){
+                        if (err) {
+                            console.log(err);
+                            return res.json({ success : false,err : err,error : 'Error generico orden de trabajo'});
+                        }
+                        SaleQuote.update({ id : quote.id },{ order : order }).exec(function(err,quotess){
+                            return res.json({ success : true});
+                        });
+                    });
                 });
             });
 
+        }
+    },
+
+    updateAttribute : function(req,res) {
+        var form = req.params.all();
+        if (form.id) {
+            var ar = {};
+            ar[form.field] = form.value;
+            SaleQuote.update({id : form.id },ar).exec(function(err,m){
+                if (err) {
+                    console.log(err);
+                    return res.json({ success : false ,error : err });
+                }
+                console.log(m);
+                return res.json({ success : true  });
+            });
         }
     },
 

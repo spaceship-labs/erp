@@ -1,11 +1,57 @@
 
 
-app.controller('saleQuoteCTL',function($scope,$http){
+app.controller('saleQuoteCTL',function($scope,$http,$filter,_){
+    $scope.quote = quote;
+    $scope.clients = clients;
+    $scope.detail = false;
+
+
+    $scope.quote.client =  _.findWhere($scope.clients, { id : $scope.quote.client.id });
+    $scope.quote.deliver_to =  _.findWhere($scope.clients, { id : $scope.quote.deliver_to.id });
+    $scope.quote.bill_to =  _.findWhere($scope.clients, { id : $scope.quote.bill_to.id });
 
     function showResponse(data) {
         if(data){
-            location.reload();
+            console.log(data);
+            //location.reload();
         }
+    };
+
+    $scope.calculateSurface = function(){
+        var totalSize = _.reduce($scope.quote.products, function(memo, product){ return memo + (product.size.width * product.size.height); }, 0.0);
+        return $scope.quote.products.length > 0 ? totalSize : '0.0';
+    };
+
+    $scope.priorities = [
+        {value : 'normal',text : 'normal'},
+        {value : 'fast',text : 'rapido'},
+        {value : 'urgent',text : 'urgente'}
+    ];
+
+    $scope.delivery_modes = [
+        { value : 'pickup' , text : 'Cliente recoge' },
+        { value : 'deliver' , text : 'Envio'}
+    ]
+
+    $scope.showPriority = function(){
+        var selected = $filter('filter')($scope.priorities, { value: $scope.quote.priority });
+        return ($scope.quote.priority && selected.length) ? selected[0].text : 'elegir';
+    };
+
+    $scope.updateStatus = function(){
+        $http.post('/salesQuote/updateStatus/' + $scope.quote.id,{ status : $scope.quote.status },{}).success(function(response) {
+            console.log(response);
+            //if (response.success) {
+                //alert(response);
+            //}
+        });
+    };
+
+    $scope.setAttribute = function(field,value) {
+        console.log(value);
+        $http.post('/salesQuote/updateAttribute/' + $scope.quote.id,{ value : value, field : field },{}).success(function(response) {
+            console.log(response);
+        });
     };
 
     $scope.deleteProduct = function(product,quote){
@@ -32,19 +78,22 @@ app.controller('saleQuoteCTL',function($scope,$http){
         return totalAmount;
     };
 
-    //calendar
+    //calendar stuff
     $scope.minDate = new Date();
+    $scope.formatDate = "dd-MM-yyyy";//['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'
+    $scope.showWeeks = false;
+    $scope.opened = [];
 
-    $scope.dateOptions = {
-        formatYear: 'yy',
-        startingDay: 1
-    };
-
-    $scope.open = function($event) {
+    $scope.open = function($event,id) {
         $event.preventDefault();
         $event.stopPropagation();
+        $scope.opened[id] = true;
+    };
 
-        $scope.opened = true;
+    $scope.dateOptions = {
+        showWeeks : false,
+        'year-format': "'yy'",
+        'starting-day': 1
     };
 });
 
@@ -59,6 +108,9 @@ app.controller('saleQuoteAddCTL',function($scope,$http) {
     $scope.clients = [];
     $scope.client = { id : 0};
     $scope.total = 0;
+
+
+    console.log($scope.clients);
 
     function showResponse(data){
         console.log(data);
@@ -77,7 +129,8 @@ app.controller('saleQuoteAddCTL',function($scope,$http) {
 
     $scope.processForm = function(){
         var dataObject = {
-            client : $scope.client.id
+            client : $scope.client.id,
+            name : $scope.name
         };
         $http.post('/SalesQuote/add',dataObject, {}).success(showResponse);
     };
@@ -138,8 +191,73 @@ app.controller('saleEditCTL',function($scope,$http){
 
 app.controller('saleOrderCTL',function($scope,$http){
     $scope.order = order;
+    $scope.quote = quote;
 
-    console.log($scope.order);
+    $scope.clients = clients;
+    $scope.detail = false;
+
+
+    $scope.quote.client =  _.findWhere($scope.clients, { id : $scope.quote.client.id });
+    $scope.quote.deliver_to =  _.findWhere($scope.clients, { id : $scope.quote.deliver_to.id });
+    $scope.quote.bill_to =  _.findWhere($scope.clients, { id : $scope.quote.bill_to.id });
+
+    function showResponse(data) {
+        if(data){
+            console.log(data);
+            //location.reload();
+        }
+    };
+
+    $scope.calculateSurface = function(){
+        var totalSize = _.reduce($scope.quote.products, function(memo, product){ return memo + (product.size.width * product.size.height); }, 0.0);
+        return $scope.quote.products.length > 0 ? totalSize : '0.0';
+    };
+
+    $scope.delivery_modes = [
+        { value : 'pickup' , text : 'Cliente recoge' },
+        { value : 'deliver' , text : 'Envio'}
+    ];
+
+    $scope.setQuoteAttribute = function(field,value) {
+        console.log(value);
+        $http.post('/salesQuote/updateAttribute/' + $scope.quote.id,{ value : value, field : field },{}).success(function(response) {
+            console.log(response);
+        });
+    };
+
+    $scope.setAttribute = function(field,value) {
+        console.log(value);
+        $http.post('/saleOrder/updateAttribute/' + $scope.order.id,{ value : value, field : field },{}).success(function(response) {
+            console.log(response);
+        });
+    };
+
+    $scope.totalQuote = function(){
+        //console.log($scope.quote.products);
+        var totalAmount = 0.0;
+        angular.forEach($scope.quote.products,function(product){
+            totalAmount += product.price_total;
+        });
+        return totalAmount;
+    };
+
+    //calendar stuff
+    $scope.minDate = new Date();
+    $scope.formatDate = "dd-MM-yyyy";//['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'
+    $scope.showWeeks = false;
+    $scope.opened = [];
+
+    $scope.open = function($event,id) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope.opened[id] = true;
+    };
+
+    $scope.dateOptions = {
+        showWeeks : false,
+        'year-format': "'yy'",
+        'starting-day': 1
+    };
 });
 
 app.controller('saleOrderConfigCTL',function($scope,$http){
