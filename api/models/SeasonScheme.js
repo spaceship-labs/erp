@@ -15,6 +15,10 @@ module.exports = {
 		hotels : {
 			collection : 'hotel',
 			via : 'seasonScheme',
+		},
+		tours:{
+			collection:'tour',
+			via:'seasonScheme',
 		}
 	}
 };
