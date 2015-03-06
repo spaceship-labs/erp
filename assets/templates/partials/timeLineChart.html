@@ -1,6 +1,16 @@
 <div id="chart-container">
 	<h4 class="widgettitle"><span class="fa fa-database"></span> {{chartTitle}}</h4>
 	<div class="widgetcontent">
+		<select ng-init="setDefaults()" class="form-control" ng-options="period as period.label for period in periods" ng-model="defaultPeriod" ng-change="setTimePeriods(defaultPeriod.slug)"></select>
+
+        <p class="input-group">
+          <input type="text" class="form-control" datepicker-popup="'dd-MMMM-yyyy'" ng-model="dt" is-open="opened" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions" ng-required="true" close-text="Cerrar" datepicker-mode="'month'" />
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="openDatePicker($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+          </span>
+        </p>
+
+		<h3 class="selected-date">{{selectedDate}}</h3>
 		<canvas id="line" chart-line data="data"
 		  labels="labels" legendchart="true" series="series"
 		  click="onClick">
