@@ -27,7 +27,7 @@
                 <th>Pago</th>
                 <th>Fecha</th>
                 <th>Total</th>
-                <th>Editar</tho
+                <th>Editar</th>
                 <th>Borrar</th>
             </tr>
             <tr ng-repeat="order in orders">
@@ -52,7 +52,7 @@
                 <td>{{order.transfer.state || "---" }}</td>
                 <td>{{order.transfer.payment_method || "---" }}</td>
                 <td data-title="Fecha">{{formatDate(order.createdAt)}}</td>
-                <td data-title="Total">0</td>
+                <td data-title="Total"><span  ng-bind="order.transfer.fee"></span></td>
                 <td data-title="Accion"><a href="/order/edit/{{order.id}}"><span class="table-icon fa fa-edit"></span></a></td>
                 <td data-title="Accion"><a href="/order/edit/{{order.id}}"><span class="table-icon fa fa-trash-o"></span></a></td>
             </tr>

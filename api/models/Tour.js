@@ -6,12 +6,26 @@
 */
 
 module.exports = {
-
-  attributes: {
-	location : {
-		model : 'location',
-	},  	
-	days : 'array',
-  }
+	attributes: {
+		location : {
+			model : 'location',
+		},
+		days : 'array',
+	}
+  	,afterCreate: function(val,cb){
+		Notifications.after(Tour,val,'create');
+		cb()
+	}
+	,afterUpdate: function(val,cb){
+		Notifications.after(Tour,val,'update');
+		cb();
+	}
+	,beforeUpdate:function(val,cb){
+		Notifications.before(val);
+		cb();
+	}
+	,beforeCreate: function(val,cb){
+		Notifications.before(val);
+		cb();
+	}
 };
-

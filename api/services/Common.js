@@ -156,7 +156,7 @@ module.exports.formValidate = function(form,validate){
 };
 module.exports.getCollectionAttrType = function(attrs,value){
 	var result = { type : 'string', model : false };
-	if( typeof attrs[value] != 'undefined' ){
+	if( typeof attrs[value] != 'undefined' && attrs[value] != null ){
 		if( typeof attrs[value].collection != 'undefined' )
 			result = { type : 'collection', model : attrs[value].collection };
 		else if( typeof attrs[value].model != 'undefined' )

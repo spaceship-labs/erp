@@ -19,6 +19,14 @@
                     <span class='field'><select ng-options='obj as obj.name for obj in clients_ track by obj.id' ng-model='transfer.client' ></select></span>
                 </p>
             </div>
+            <div 
+                form-helper 
+                fields='content.client' 
+                object = 'transfer.client'
+                action='/client_/update' 
+                form-title='Datos del cliente'
+                >
+            </div>
         </div></div>
     </div>
     <form class='stdform stdform2' action='' name='' method='post'>

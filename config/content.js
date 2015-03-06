@@ -642,7 +642,8 @@ module.exports.content = {
         {
             label : 'Nombre',
             handle : 'name',
-            type : 'text'
+            type : 'text',
+            required : true
         },
         {
             label : 'Direccion',
@@ -657,12 +658,14 @@ module.exports.content = {
         {
             label : 'Telefono',
             handle : 'phone',
-            type : 'text'
+            type : 'text',
+            required : true
         },
         {
             label : 'E-mail',
             handle : 'email',
-            type : 'text'
+            type : 'text',
+            required : true
         },
         {
             label : 'Ciudad',

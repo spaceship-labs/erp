@@ -66,7 +66,7 @@
             
         };
         $scope.onChangefx = function(field){
-            if(field.on_Change && typeof field.on_Change != 'undefined'){
+            if( typeof field.on_Change != 'undefined' && field.on_Change ){
                 var changeMethod = $scope.onchanges[field.on_Change];
                 if(changeMethod){
                     var $this = $scope.object[field.handle];
