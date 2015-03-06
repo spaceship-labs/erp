@@ -11,6 +11,10 @@ module.exports = {
 			model : 'location',
 		},
 		days : 'array',
+		seasonScheme : {
+			model:'seasonScheme',
+			via:'tours',
+		},
 	}
   	,afterCreate: function(val,cb){
 		Notifications.after(Tour,val,'create');

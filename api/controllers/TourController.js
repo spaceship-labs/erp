@@ -8,19 +8,22 @@
 module.exports = {
 	index: function(req,res){
 		Tour.find({}).sort('name').exec(function(e,tours){
-			Location.find({}).sort('name').exec(function(e,locations){
-				Common.view(res.view,{
-					tours:tours,
-					locations:locations,
-					page:{
-						name:'Tours',
-						icon:'fa fa-compass',
-						controller : 'tour.js'
-					},
-					breadcrumb : [
-						{label : 'Tours'}
-					]
-				},req);	
+			SeasonScheme.find().sort('name').exec(function(e,schemes){
+				Location.find({}).sort('name').exec(function(e,locations){
+					Common.view(res.view,{
+						tours:tours,
+						schemes:schemes,
+						locations:locations,
+						page:{
+							name:'Tours',
+							icon:'fa fa-compass',
+							controller : 'tour.js'
+						},
+						breadcrumb : [
+							{label : 'Tours'}
+						]
+					},req);	
+				});
 			});
 		});
 	},
@@ -34,7 +37,7 @@ module.exports = {
 			Tour.find({}).sort('name').exec(function(e,tours){
 				if(e) return res.json({text:e});
 				var result = { tours : tours , thetour : tour }
-				res.json(tours);
+				res.json(result);
 			});
 		});
 	},
@@ -42,20 +45,23 @@ module.exports = {
 		Tour.findOne(req.params.id).exec(function(e,tour){
 			if(e) return res.redirect("/tour/");
 			Location.find({}).sort('name').exec(function(e,locations){
-				Common.view(res.view,{
-					tour:tour,
-					locations:locations,
-					page:{
-						saveButton : true,
-						name:tour.name,
-						icon:'fa fa-compass',
-						controller : 'tour.js'
-					},
-					breadcrumb : [
-						{label : 'Tours', url: '/tour/'},
-						{label : tour.name},
-					]
-				},req);	
+	    			SeasonScheme.find().sort('name').exec(function(e,schemes){
+					Common.view(res.view,{
+						tour:tour,
+						locations:locations,
+						schemes:schemes,
+						page:{
+							saveButton : true,
+							name:tour.name,
+							icon:'fa fa-compass',
+							controller : 'tour.js'
+						},
+						breadcrumb : [
+							{label : 'Tours', url: '/tour/'},
+							{label : tour.name},
+						]
+					},req);				
+				});
 			});
 		});
 	},

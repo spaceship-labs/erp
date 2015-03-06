@@ -34,8 +34,8 @@
                             <td data-title="Fecha creacion"><%= moment(order.createdAt).format('Do [de] MMMM YYYY, h:mm:ss a') %></td>
                             <td data-title="Fecha entrega"><%= moment(order.createdAt).format('Do [de] MMMM YYYY, h:mm:ss a') %></td>
                             <td data-title="Estado"><%= order.status %></td>
-                            <td data-title="Cliente"><%= order.client.name %></td>
-                            <td data-title="Proyecto"><%= order.name %></td>
+                            <td data-title="Cliente"><%= order.quote.client.name %></td>
+                            <td data-title="Proyecto"><%= order.quote.name %></td>
                             <td data-title="Editar"><a href="/saleOrder/edit/<%= order.id %>"><span class="table-icon fa fa-edit"></span></a></td>
                         </tr>
                         <% } %>

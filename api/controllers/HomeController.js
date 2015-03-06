@@ -28,7 +28,8 @@ module.exports = {
 			page:{
 				description:'AQUI PODRAS VISUALIZAR Y ADMINISTRAR TODO TU PROCESO DE VENTA',
 				icon:'fa fa-th-large',
-				name:'Tablero'
+				name:'Tablero',
+				controller:'dashboard.js'
 			}
 		},req);
 	}

@@ -1,7 +1,7 @@
 <script type='text/javascript'>
 	window.tours = <%- JSON.stringify(tours) %>;
 	window.locations = <%- JSON.stringify(locations) %>;
-	console.log(tours);
+	window.schemes = <%- JSON.stringify(schemes) %>;
 </script>
 <div ng-controller='tourCTL' >
 	<!--<p><button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Nuevo Tour</button></p>-->
@@ -28,7 +28,7 @@
 			        object = 'tour'
 			        form-title='Agregar Tour'
 			       	modal='true'
-			       	objects='objects'
+			        objects='{schemes:schemes,locations:locations}'
 			       	currency='company.base_currency'
 			        >
 			    </div>	

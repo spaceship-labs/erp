@@ -292,6 +292,12 @@ module.exports.content = {
 			object : 'locations'
 		},
 		{
+			label : 'Esquema de Temporadas',
+			type : 'select',
+			handle : 'seasonScheme',
+			object : 'schemes',
+		},
+		{
 			label : 'Traslado incluido',
 			type : 'checkbox',
 			handle : 'haveTranslate'

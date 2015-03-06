@@ -9,7 +9,11 @@ module.exports = {
 
 	attributes: {
 
-        status : { type : 'string'},
+        status : {
+            type : 'string',
+            enum : ['open','close'],
+            defaultsTo : 'open'
+        },
 
         concept : { type : 'string'},
 
@@ -19,6 +23,19 @@ module.exports = {
 
         quote : {
             model : 'SaleQuote'
+        },
+
+        observation_prepress : {
+            type : 'string'
+        },
+        observation_press : {
+            type : 'string'
+        },
+        observation_finish : {
+            type : 'string'
+        },
+        estimated_date : {
+            type : "date"
         }
 	}
 

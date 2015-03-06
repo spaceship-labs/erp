@@ -96,7 +96,7 @@ app.controller('orderNewCTL',function($scope,$http,$window){
                 //console.log('transfer result');console.log(result);
             });
         }
-    }
+    };
     //obtiene los aeropuertos dependiendo de la ciudad elegida
     $scope.getAirports = function(){
         var params = {'id':$scope.transfer.hotel.location.id};

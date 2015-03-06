@@ -1,7 +1,8 @@
 app.controller('tourCTL',function($scope,$http,$window){
     $scope.tours = tours;
     $scope.content = content;
-    $scope.objects = {locations:locations};
+    $scope.locations = locations;
+    $scope.schemes = schemes;
     $scope.company = company;
 	$scope.getInfo = function(tour){
         tour.createdAt=(moment(tour.createdAt).format('LL'));
@@ -26,14 +27,17 @@ app.controller('tourCTL',function($scope,$http,$window){
 });
 
 app.controller('tourEditCTL',function($scope,$http,$window){
+    $scope.schemes = schemes;
+    $scope.locations = locations;
     $scope.tour = tour;
     $scope.user = user;
     io.socket.get('/tour/find/'+tour.id,function(data,jwres){
         $scope.tour = data;
+	$scope.tour.seasonScheme = data.seasonScheme && data.seasonScheme.id || null;
+	$scope.tour.location = data.location && data.location.id || null;
         $scope.$apply();
     });
 	$scope.content = content;
-    $scope.objects = {locations:locations};
     $scope.company = company;
     $scope.saveClass = 'fa-save';
     $scope.save = function(){
