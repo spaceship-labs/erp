@@ -12,7 +12,7 @@
             </p>
             <p>
                 <label> Servicio</label>
-                <span class='field'><select ng-change='updatePrice()' ng-options='obj as obj.name for obj in transfers track by obj.id' ng-model='transfer.transfer' ></select></span>
+                <span class='field'><select ng-change='updatePrice()' ng-options='obj as obj.transfer.name for obj in transfers track by obj.id' ng-model='transfer.transfer' ></select></span>
             </p>
             <p>
                 <label> Estado</label>

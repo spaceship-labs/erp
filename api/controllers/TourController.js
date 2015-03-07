@@ -79,7 +79,7 @@ module.exports = {
 	update : function(req,res){
     	var form = req.params.all();
     	var id = form.id;
-	form.req = req;
+		form.req = req;
     	if(form.days){
     		var new_days = [];
     		form.days.forEach(function(day){

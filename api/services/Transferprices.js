@@ -80,13 +80,12 @@ module.exports.afterCreateZone = function(zone , locations , transfers , company
 			Transferprices.mapPrices(zone,l.zones,transfers,company,l.id,false,function(){
 				//checar las relaciones
 				if( l.locations ){
-					console.log('have locations');
+					//console.log('have locations');
 					//si tiene locations relacionados se recorren para obtener sus zonas
 					async.mapSeries( l.locations , (function(lr,cb_lr) {
 						Location.findOne(lr.id).populate('zones').exec(function(e,location_o){
 							//se crean los precios para: las zonas: del location principal con el location relacionado
-							console.log('empezará a crearlos');
-							console.log(location_o);
+							//console.log('empezará a crearlos');console.log(location_o);
 							Transferprices.mapPrices(zone,location_o.zones,transfers,company,l.id,location_o.id,false);
 						});
 					}),callback);

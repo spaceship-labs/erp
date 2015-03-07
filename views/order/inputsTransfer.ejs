@@ -12,7 +12,7 @@
             </p>
             <p>
                 <label> Servicio</label>
-                <span class='field'><select ng-change='updatePrice()' ng-options='obj as obj.name for obj in transfers track by obj.id' ng-model='transfer.transfer' ></select></span>
+                <span class='field'><select ng-change="updatePriceTransfer()" ng-options='obj as obj.transfer.name for obj in transfers track by obj.id' ng-model='transfer.transfer' ></select></span>
             </p>
             <p>
                 <label> Estado</label>
@@ -33,7 +33,8 @@
         <div class='widgetcontent nopadding'>
             <p>
                 <label> PAX</label>
-                <span class='field'><input ng-change='updatePrice()' type='text' name='pax' ng-model="transfer.pax" /></span>
+                <span class='field'><select ng-change="updatePriceTransfer()" ng-options='obj for obj in pax' ng-model='transfer.pax' ></select></span>
+                <!--<input type='text' name='pax' ng-model="transfer.pax" />-->
             </p>
             <p>
                 <label> Origen del viaje</label>
@@ -50,10 +51,10 @@
                 <label> Tipo de viaje</label>
                 <span class='field'>
                     <span class="radio">
-                        <input ng-change='updateDatesFormat()' ng-model="transfer.type" type="radio" name="transtype" value="round_trip"> Round trip
+                        <input ng-change='updatePriceTransfer()' ng-model="transfer.type" type="radio" name="transtype" value="round_trip"> Round trip
                     </span>
                     <span class="radio">
-                        <input ng-change='updateDatesFormat()' ng-model="transfer.type" type="radio" name="transtype" value="one_way" checked> One way
+                        <input ng-change='updatePriceTransfer()' ng-model="transfer.type" type="radio" name="transtype" value="one_way" checked> One way
                     </span>
                 </span>
             </p>
