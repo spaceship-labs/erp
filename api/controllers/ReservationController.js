@@ -10,6 +10,55 @@ module.exports = {
     index: function (req, res) {
         //return res.json({});
     },
+    statsCategoriesInDay : function(req,res){
+        var asyncTasks = [];
+        var toursReservations = [];
+        var hotelsReservations = [];
+        var transfersReservations = [];
+        var params = req.params.all();
+        var day, start, end;
+        if(params.day){
+            day = new Date(params.day);
+            start = moment(day).startOf("day").toDate();
+            end = moment(day).endOf("day").toDate();
+
+            asyncTasks.push(function(cb){
+                Reservation.count({
+                    reservation_type:'tour', createdAt: { '>': start, '<': end } 
+                }).exec(function(error, toursR) {
+                    toursReservations = toursR;
+                    cb();
+                });
+            }); 
+
+            asyncTasks.push(function(cb){
+                Reservation.count({
+                    reservation_type:'hotel', createdAt: { '>': start, '<': end }
+                }).exec(function(error, hotelsR) {
+                    hotelsReservations = hotelsR;
+                    cb();
+                });
+            }); 
+
+            asyncTasks.push(function(cb){
+                Reservation.count({
+                    reservation_type:'transfer', createdAt: { '>': start, '<': end }
+                }).exec(function(error, transfersR) {
+                    transfersReservations = transfersR;
+                    cb();
+                });
+            });     
+
+            async.parallel(asyncTasks,function(){
+                var response = [
+                    toursReservations,
+                    hotelsReservations,
+                    transfersReservations,
+                ];
+                res.json(response);
+            });
+        }
+    },
     statsCategoriesInMonth : function(req,res){
         var asyncTasks = [];
         var toursReservations = [];
@@ -69,7 +118,7 @@ module.exports = {
         var params = req.params.all();
         var start, end, yearDate;
         var response = {};
-        
+
         var year = params.year || 2015;
         async.eachSeries(months, function(month, callback) {
             yearDate = new Date(year,month);

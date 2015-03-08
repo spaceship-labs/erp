@@ -4,10 +4,9 @@
             Available chartTypes : Line, Bar, Radar, Doughnut, Pie, PolarArea
         */
         $scope.chartType = $scope.chartType || 'Pie';
-        $scope.labels = ["Download Sales", "In-Store Sales", "Mail-Order Sales"];
-        $scope.data = [300, 500, 100];
+        $scope.chartLabels = $scope.chartLabels || ["Download Sales", "In-Store Sales", "Mail-Order Sales"];
+        $scope.chartData = $scope.chartData || [300, 500, 100];
         $scope.series = ["Generic serie"];
-
 	};
 	controller.$inject = ['$scope'];
     var directive = function () {
@@ -17,7 +16,9 @@
                 chartType : '@',
                 object : '=',
                 fields : '=', 
-                chartTitle : '@'               
+                chartTitle : '@',
+                chartData : '=',
+                chartLabels: '=',               
         	},
         	templateUrl : '/template/find/statisticsChart.html'          
         };
