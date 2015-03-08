@@ -4,7 +4,8 @@
             Available chartTypes : Line, Bar, Radar, Doughnut, Pie, PolarArea
         */
         $scope.chartType = $scope.chartType || 'Pie';
-        //$scope.format = 'dd-MM-yyyy';
+        $scope.notFound = $scope.notFound || 'No results found';
+        $scope.format = 'dd-MM-yyyy';
         $scope.dateOptions = {
             formatYear: 'yyyy',
             startingDay: 1,
@@ -35,7 +36,19 @@
             if(newVal != oldVal){
                 $scope.getData();
             }
-        });        
+        });
+
+        $scope.isEmpty = function(arr){
+            if(arr && arr instanceof Array){
+                for(var i=0;i<arr.length;i++){
+                    if(arr[i] && arr[i]!=0){
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }  
+      
 
         $scope.getData();
 	};
@@ -51,7 +64,8 @@
                 chartDataMethod : '@',
                 chartLabels : '=',
                 dayDate : '=',
-                dayPicker : '=',              
+                dayPicker : '=',
+                notFound : '@'                                             
         	},
         	templateUrl : '/template/find/dayStatsChart.html'          
         };

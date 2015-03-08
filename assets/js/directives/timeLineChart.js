@@ -149,7 +149,7 @@
                 object : '=',
                 fields : '=', 
                 chartTitle : '@',
-                onMonthChange : '&'               
+                onMonthChange : '&',
         	},
         	templateUrl : '/template/find/timeLineChart.html'          
         };
