@@ -5,9 +5,13 @@
         <div class="userinfo">
             <h5><%- req.user.name %><small>- <%-req.user.email%></small></h5>
             <ul>
-                <li><a href="/user/edit/<%=req.user.id%>">Editar perfil</a></li>
+                <li><a href="/user/edit/<%=req.user.id%>"><%= __('h-edit') %></a></li>
                 <!-- <li><a href="">Configuracion de cuenta</a></li> -->
-                <li><a href="/home/logout">Cerrar sesion</a></li>
+                <li><a href="/home/logout"><%= __('h-sesion') %></a></li>
+                <!--<li><select chosen>
+                    <option val='es'>Español</option>
+                    <option val='en'>English</option>
+                </select></li>-->
             </ul>
         </div>
     </div>

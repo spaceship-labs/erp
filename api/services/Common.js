@@ -7,6 +7,7 @@ module.exports.view = function(view,data,req){
 	data.current_user = req.user;
 	data._content = sails.config.content;
 	data._content.socketUrl = sails.config.socketsUrl;
+	data._content.lang = req.getLocale();
 	//data.socketUrl = sails.config.socketsUrl;
 	Company.findOne(data.selected_company).populate('base_currency').exec(function(e,company){
         if (e) console.log(e);
