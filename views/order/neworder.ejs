@@ -6,8 +6,8 @@
 	window.content = <%- JSON.stringify(_content) %>;
 </script>
 <div ng-controller='orderNewCTL' >
-	<div class='row-fluid stdform stdform2'>
-        <div class='span12'><div class="widgetbox personal-information">
+	<div class='row stdform stdform2'>
+        <div class='col-md-12'><div class="widgetbox personal-information">
             <div class='headtitle'>
                 <div class='btn-group'><button class="btn btn-primary pull-right" data-toggle="modal" data-target="#myModal"><i class='fa fa-plus'></i> Nuevo Cliente</button></div>
                 <h4 class="widgettitle">Cliente</h4>
@@ -15,50 +15,89 @@
             <div class='widgetcontent nopadding'>
                 <p>
                     <label>Selecciona un cliente</label>
-                    <span class='field'><select chosen ng-options='obj as obj.name for obj in clients_' ng-model='transfer.client' ></select></span>
+                    <span class='field'><select chosen ng-options='obj as obj.name for obj in clients_' ng-model='client' ></select></span>
+                </p>
+                <p>
+                    <label>¿Usar el mismo cliente para las reservas?</label>
+                    <span class='field'><input type='checkbox' name='USClient' model='USClient' checked='checked' ng-change="otherClientChange()"></span>
+                </p>
+            </div>
+            <div ng-if="!USClient">
+                <p>
+                    <label>Nombre</label>
+                    <span class='field'><input type='checkbox' name='USClient' model='USClient' checked='checked' ng-change="otherClientChange()"></span>
                 </p>
             </div>
         </div></div>
     </div>
     <!-- Transfer section -->
-    <form class='stdform stdform2' action='' name='' method='post'>
-        <div class='headtitle'>
-            <div class='btn-group'>
-                <a class="btn btn-primary pull-right" ng-click="isCtransfer = !isCtransfer"><i class='fa {{isCtransfer?"fa-plus":"fa-minus"}}'></i></a>
-                <a class="btn btn-primary pull-right" ng-click="saveAll()"><i class='fa fa-save'></i> Reservar</a>
+    <div class='row'>
+        <form class='stdform stdform2 col-md-12' action='' name='' method='post'>
+            <div class='headtitle'>
+                <div class='btn-group'>
+                    <a class="btn btn-primary pull-right" ng-click="isCtransfer = !isCtransfer"><i class='fa {{isCtransfer?"fa-plus":"fa-minus"}}'></i></a>
+                    <a class="btn btn-primary pull-right" ng-click="saveAll()"><i class='fa fa-save'></i> Reservar</a>
+                </div>
+                <h4 class="widgettitle">Reservación de Traslado </h4>
             </div>
-            <h4 class="widgettitle">Reservación de Traslado </h4>
-        </div>
-        <div collapse="isCtransfer">
-            <%- partial('inputsTransfer') -%> 
-        </div>
-    	<div class="clearfix"></div>
-    </form>
+            <div collapse="isCtransfer">
+                <%- partial('inputsTransfer') -%> 
+            </div>
+        	<div class="clearfix"></div>
+        </form>
+    </div>
     <!-- Tours section -->
-    <form class='stdform stdform2' action='' name='tours' method='post'>
-        <div class='headtitle'>
-            <div class='btn-group'>
-                <a class="btn btn-primary pull-right" ng-click="isCtour = !isCtour"><i class='fa {{isCtour?"fa-plus":"fa-minus"}}'></i></a>
+    <div class='row'>
+        <form class='stdform stdform2 col-md-6' action='' name='tours' method='post'>
+            <div class='headtitle'>
+                <div class='btn-group'>
+                    <a class="btn btn-primary pull-right" ng-click="isCtour = !isCtour"><i class='fa {{!isCtour?"fa-plus":"fa-minus"}}'></i></a>
+                </div>
+                <h4 class="widgettitle">Reservación de Tours </h4>
             </div>
-            <h4 class="widgettitle">Reservación de Tours </h4>
-        </div>
-        <div collapse="!isCtour">
-            <div class='row'>
-                <div class='col-md-10'>
-                    <p><select chosen ng-options='obj as obj.name for obj in allTours' ng-model='addedTour' ></select></p>
-                </div>
-                <div class='col-md-2'>
-                    <a ng-click='addTour()' class='btn-primary btn pull-right'>Agregar</a>
-                </div>
-            </div><br >
-            <div class='isCtourContainer'>
-                <div ng-repeat='item in reservations.tours'>
-                    <%- partial('inputsTour') -%> 
+            <div collapse="!isCtour">
+                <div class='row'>
+                    <div class='col-md-10'>
+                        <p><select chosen ng-options='obj as obj.name for obj in allTours' ng-model='addedTour' ></select></p>
+                    </div>
+                    <div class='col-md-2'>
+                        <a ng-click='addTH("tour")' class='btn-primary btn pull-right'>Agregar</a>
+                    </div>
+                </div><br >
+                <div class='isCtourContainer'>
+                    <div ng-repeat='item in reservations.tours'>
+                        <%- partial('inputsTour') -%> 
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="clearfix"></div>
-    </form>
+            <div class="clearfix"></div>
+        </form>
+        <!-- Hotel section -->
+        <form class='stdform stdform2 col-md-6' action='' name='tours' method='post'>
+            <div class='headtitle'>
+                <div class='btn-group'>
+                    <a class="btn btn-primary pull-right" ng-click="isChotel = !isChotel"><i class='fa {{!isChotel?"fa-plus":"fa-minus"}}'></i></a>
+                </div>
+                <h4 class="widgettitle">Reservación de Hoteles </h4>
+            </div>
+            <div collapse="!isChotel">
+                <div class='row'>
+                    <div class='col-md-10'>
+                        <p><select chosen ng-options='obj as obj.name for obj in hotels' ng-model='addedHotel' ></select></p>
+                    </div>
+                    <div class='col-md-2'>
+                        <a ng-click='addTH("hotel")' class='btn-primary btn pull-right'>Agregar</a>
+                    </div>
+                </div><br >
+                <div class='isCHotelContainer'>
+                    <div ng-repeat='item in reservations.hotels'>
+                        <%- partial('inputsHotel') -%> 
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </form>
+    </div>
     <div class="modal fade" id="myModal">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -75,4 +114,17 @@
             </div>
         </div>
     </div>
+    <div id='popup_overlay' class='ng-hide ng-cloak' ng-hide="!alertM.show"></div>
+    <div id='popup_container' class='alert-warning ng-hide ng-cloak' ng-hide="!alertM.show">
+        <h1 id="popup_title" >Error en la orden</h1>
+        <div id="popup_content" class="alert" ng-show="alertM.show&&alertM.client">
+            <div id="popup_message">Elije un cliente para poder continuar</div>
+            <div id="popup_panel"><a ng-click="alertM.show=false;alertM.client=false;" id="popup_ok" style="display: block;width: 150px;margin: 0 auto;">OK</a></div>
+        </div>
+        <div id="popup_content" class="alert" ng-show="alertM.show&&alertM.allEmpty">
+            <div id="popup_message">Elije un cliente para poder continuar</div>
+            <div id="popup_panel"><a ng-click="alertM.show=false;alertM.allEmpty=false;" id="popup_ok" style="display: block;width: 150px;margin: 0 auto;">OK</a></div>
+        </div>
+    </div>
+    <div custom-message messages="customMessages"></div>
 </div>

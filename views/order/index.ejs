@@ -44,7 +44,7 @@
                     <li>Fecha: {{ formatDate(order.transfer.departure_date) || '---' }} </li>
                     <li>Hora: {{ formatTime(order.transfer.departure_time) || '---' }} </li>
                 </ul></td>
-                <td>{{order.transfer.client || "---" }}</td>
+                <td>{{(order.client.name + ' ' + order.client.last_name) || "---" }}</td>
                 <td>{{order.transfer.hotel || "---" }}</td>
                 <td>{{order.transfer.airport || "---" }}</td>
                 <td>{{order.transfer.type || "---" }}</td>
