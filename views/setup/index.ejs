@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Configurar ERP</title>
+<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+<script src="js/html5shiv.js"></script>
+<script src="js/respond.min.js"></script>
+<![endif]-->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Viewport mobile tag for sensible mobile support -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"> 
+
+    <link rel="stylesheet" href="/bower_components/roboto-fontface/roboto-fontface.css">
+    <link rel="stylesheet" href="/bower_components/lato/css/lato.css">
+    <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/bower_components/chosen/chosen/chosen.css">
+    <link rel="stylesheet" href="/styles/default.css">
+    <link rel="stylesheet" href="/styles/importer.css">
+  </head>
+<body >
+  <div class="wizard" id="some-wizard" data-title="Instalar Sistema">
+    <form action="/install/create/" method="post" accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 companyCreate" >
+      <div class="wizard-card stdform stdform2" data-cardname="card1" >
+        <h3>Empresa</h3>
+        <%- partial('../company/new-basic') -%> 
+      </div>
+      <div class="wizard-card stdform stdform2" data-cardname="card2">
+        <h3>Configuracion Basica</h3>            
+        <%- partial('../company/new-settings') -%> 
+      </div>
+      <div class="wizard-card stdform stdform2" data-cardname="card3">
+        <h3>Usuario</h3>            
+        <%- partial('../user/partial/new') -%>
+      </div>
+    </form>
+  </div>
+  <script src="/bower_components/jquery-modern/dist/jquery.min.js"></script>
+  <script src="/bower_components/jquery-browser-detection/src/browser-detection.js"></script>
+  <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="/bower_components/chosen/chosen/chosen.jquery.min.js"></script>
+  <script src="/js/themejs/responsive-tables.js"></script>
+  <script>
+    $(document).ready(function() {
+      $.fn.wizard.logging = true;
+      var options = {
+        contentHeight: 500,
+        contentWidth: 950,
+        submitUrl: '/setup/create',
+      };
+      var wizard = $("#some-wizard").wizard(options);
+      wizard.show();
+      wizard.on("submitSuccess", function() {
+        window.location = "/home/login";
+      });
+    });
+  </script>
+</body>
+</html>

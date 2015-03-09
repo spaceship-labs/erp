@@ -2,9 +2,9 @@ module.exports.preload = function(callback){
 
 	//Ejecuta la funcion loadObjects en serie;
 	async.series([
-		function(cb){Install.loadObjects({model:Currency,objects:sails.config.currencies},cb)},
-		function(cb){Install.loadObjects({model:FoodScheme,objects:sails.config.foodschemes},cb)},
-		function(cb){Install.loadObjects({model:HotelRoomView,objects:sails.config.hotelroomviews},cb)},
+		function(cb){Setup.loadObjects({model:Currency,objects:sails.config.currencies},cb)},
+		function(cb){Setup.loadObjects({model:FoodScheme,objects:sails.config.foodschemes},cb)},
+		function(cb){Setup.loadObjects({model:HotelRoomView,objects:sails.config.hotelroomviews},cb)},
 	],callback);
 	
 };
@@ -17,7 +17,7 @@ module.exports.preloadAlt = function(callback){
 		{model:HotelRoomView,objects:sails.config.hotelroomviews},
 	];
 
-	async.mapSeries(params,Install.loadObjects,function(e,results){
+	async.mapSeries(params,Setup.loadObjects,function(e,results){
 		//Esta funcion se llama cuando se termina todo
 		if(e) throw(e);
 		console.log(results);

@@ -1,5 +1,5 @@
 /**
- * InstallController.js 
+ * SetupController.js 
  *
  * @description ::
  * @docs        :: http://sailsjs.org/#!documentation/controllers
@@ -7,11 +7,10 @@
 
 module.exports = {
 	index: function(req,res){
-		Install.preloadAlt(function(e,results){
-			//console.log(results);
+		Setup.preloadAlt(function(e,results){
 			Currency.find().exec(function(err,currencies){
 				res.view({
-					layout:null,
+					layout: null,
 					apps: sails.config.apps,
 					currencies:currencies || [],
 				});				
