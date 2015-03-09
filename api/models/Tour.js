@@ -15,6 +15,10 @@ module.exports = {
 			model:'seasonScheme',
 			via:'tours',
 		},
+		cupons : {
+			model:'cupon',
+			via:'tours',
+		},
 	}
   	,afterCreate: function(val,cb){
 		Notifications.after(Tour,val,'create');

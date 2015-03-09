@@ -27,5 +27,23 @@ module.exports = {
 		},req);
   	},req);
   }
+  ,edit:function(req,res){
+  	Cupon.findOne({id:req.param('id')}).exec(function(e,cupon){
+		if(e || !cupon) res.notFound()
+		console.log(cupon);
+  		Common.view(res.view,{
+			cupon:cupon,
+			page:{
+				name:cupon.name
+				,icon:'fa fa-ticket'		
+				,controller : 'cupon.js'
+			},
+			breadcrumb : [
+				{ label : 'Cupones' }
+			]
+		},req);
+  	},req);
+    
+  }
 };
 
