@@ -9,6 +9,12 @@ body.loginpage{background: @login-background;overflow: hidden;}
 .inputwrapper button{background: @login-button;border:1px solid @login-button;}
 .inputwrapper button:focus, .inputwrapper button:active, .inputwrapper button:hover{background: @login-hover;border:1px solid @login-hover;}
 
+/*Messages*/
+#popup_overlay{position: fixed;z-index: 99998;top: 0px;left: 0px;width: 100%;height: 100%;}
+#popup_container{position: fixed;z-index: 99999;padding: 0px;margin: 0px;width: 300px;top: 131.5px;left: 488.5px;}
+#popup_overlay.ng-hide,#popup_container.ng-hide{display: none;}
+.customMessages{position: fixed;bottom: 0px;left: 10px;text-align: center;max-width: 800px;}
+
 /*Header*/
 .header .logo a{background:transparent url(@header-logo) no-repeat center;display:block;}
 .headmenu > li{}

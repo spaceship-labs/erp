@@ -6,12 +6,10 @@
     window.foodSchemes = <%- JSON.stringify(foodSchemes) %>;
     window.userID = <%- JSON.stringify(req.user.id) %>;
 </script>
-
 <div ng-controller='hotelEditCTL' class="editar-hotel ng-cloak">
     <div class='row-fluid'>
         <div class="span4 profile-left profileEdit">
         	<div profile-image object='hotel' update-method='/hotel/updateIcon' delete-method='/hotel/destroyIcon' image-attr='icon' dir='hotels' ></div>
-
             <div geo-selector location='location' address='hotel.address' save-function='saveGeo'></div>
         </div>
         <div class="span8">
