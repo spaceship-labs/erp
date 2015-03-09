@@ -19,8 +19,6 @@
             }
             return true;
         }  
- 
-
 	};
 	controller.$inject = ['$scope'];
     var directive = function () {

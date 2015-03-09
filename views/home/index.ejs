@@ -30,7 +30,20 @@
 	</div>
 	<div class="row-fluid">
 		<div class="span12" 
-		time-line-chart 
+		time-line-chart
+		chart-type="Line"
+		chart-series="['Tours', 'Hoteles', 'Traslados']"
+		chart-data-method-month="/reservation/statsCategoriesInMonth"
+		chart-data-method-year="/reservation/statsCategoriesInYear"
 		chart-title="Reservaciones"></div>		
+	</div>
+	<div class="row-fluid">
+		<div class="span12" 
+		time-line-chart
+		chart-type="Line"
+		chart-series="['Tours', 'Hoteles', 'Traslados']"
+		chart-data-method-month="/reservation/feeCategoriesInMonth"
+		chart-data-method-year="/reservation/feeCategoriesInYear"
+		chart-title="Monto en eservaciones"></div>		
 	</div>
 </div>

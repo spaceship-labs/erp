@@ -2,7 +2,7 @@
 	<h4 class="widgettitle"><span class="fa fa-database"></span> {{chartTitle}}</h4>
 	<div class="widgetcontent">
 		<h4 ng-show="isEmpty(chartData)" ng-bind="notFound"></h4>
-        <p class="input-group" ng-if="dayPicker">
+        <p class="input-group" ng-show="dayPicker">
           <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="chartDate" is-open="opened" datepicker-options="dateOptions" ng-required="true" close-text="Cerrar" ng-disabled="true" />
           <span class="input-group-btn">
             <button type="button" class="btn btn-default" ng-click="openDatePicker($event)"><i class="glyphicon glyphicon-calendar"></i></button>

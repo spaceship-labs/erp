@@ -5,11 +5,12 @@
             Available chartTypes : Line, Bar, Radar, Doughnut, Pie, PolarArea
         */
         $scope.labels = [];
+        $scope.chartType = $scope.chartType || 'Line';
         $scope.periods = [
             {label:'Mensual',slug:'month'},
             {label:'Anual',slug:'year'},
         ];
-        $scope.series = ['Tours', 'Hoteles', 'Traslados'];    
+        $scope.series = $scope.chartSeries || ['Serie A', 'Serie B', 'Serie C'];    
         $scope.data = new Array([],[],[]);
         $scope.chartDate = moment().startOf('month').toDate();
         $scope.total = 0;
@@ -34,11 +35,12 @@
                         $scope.labels.push(d.toString());
                     }
                 }
+                $scope.pickerPeriod = period || 'month';
                 $scope.onChangeDate($scope.chartDate);
                 $scope.dateOptions = {
                     formatYear: 'yyyy',
                     startingDay: 1,
-                    minMode: period
+                    minMode: $scope.pickerPeriod
                 };
             }
         }
@@ -57,8 +59,9 @@
             var params = {
                 year : selectedDate.year()
             };
-            $http.post('/reservation/statsCategoriesInYear',params).success(function(response){
+            $http.post($scope.chartDataMethodYear,params).success(function(response){
                 $scope.data = [];
+                console.log(response);
                 angular.forEach(response,function(category){
                     $scope.data.push(category);                    
                 });
@@ -67,36 +70,12 @@
         }
 
         $scope.fillMonthData = function(chartDate){
-            var selectedDate = moment(chartDate);
-            var end = moment(selectedDate).endOf('month');
             var params = {
-                start : selectedDate.toDate(),
-                end : end.toDate()
+                start : chartDate,
             };
-            $http.post('/reservation/statsCategoriesInMonth',params).success(function(response){
+            $http.post($scope.chartDataMethodMonth,params).success(function(response){
                 $scope.data = new Array([],[],[]);
-                for(var i= 0; i<3;i++){
-                    for(var j = 0;j<$scope.labels.length;j++){
-                        $scope.data[i][j] = 0;
-                    }
-                }
-                var numericIndex = 0;
-                angular.forEach(response, function(cat,index) {
-                    angular.forEach(cat, function(reservation,i) {
-                        if(reservation.order){
-                            if(reservation.order.createdAt){
-                                for(var d=1; d<$scope.labels.length+1; d++){
-                                    var dayOfMonth = moment(reservation.order.createdAt).format('DD');
-                                    if(parseInt(dayOfMonth) == d){
-                                        $scope.data[numericIndex][d-1] = $scope.data[numericIndex][d-1]+1;
-                                    }
-                                }
-                            }
-                        }
-                    });
-                    numericIndex++;
-                });
-                //$scope.calculateTotal($scope.data);
+                $scope.data = response;
             });
         }
 
@@ -113,7 +92,7 @@
         }
 
         $scope.setDefaults = function(){ 
-            $scope.period = $scope.periods[0]            
+            $scope.period = $scope.periods[0]
             $scope.setTimePeriods($scope.period.slug);
             $scope.format = 'yyyy-MM';
             $scope.dateOptions = {
@@ -149,7 +128,11 @@
                 object : '=',
                 fields : '=', 
                 chartTitle : '@',
-                onMonthChange : '&',
+                chartType : '@',
+                chartDataMethodMonth : '@',
+                chartDataMethodYear : '@',               
+                chartLabels : '=',
+                chartSeries : '='              
         	},
         	templateUrl : '/template/find/timeLineChart.html'          
         };
