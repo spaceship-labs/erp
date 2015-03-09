@@ -1,28 +1,50 @@
 <script type='text/javascript'>
 	window.content = <%- JSON.stringify(_content) %>;
+	console.log(content.lang);
 </script>
-<div>
-	<div class='row-fluid' ng-controller="dashboardCTL">
+<div ng-controller="dashboardCTL">
+	<div class='row-fluid' >
 		<% if (req.user.hasPermission(req.res.locals.selected_company.id,'cotizaciones')) {%>
-			<div class="span6" 
+			<div class="span6"
 			statistics-chart 
-			chart-type="Pie" 
-			chart-title="Estado de cotizaciones"></div>
+			chart-type="PolarArea"
+			chart-data="stats.data"
+			chart-labels="stats.labels"
+			chart-title="Cotizaciones"
+			not-found="No se encontraron cotizaciones"></div>
 		<% } %>
 		<div notices></div> 
 	</div>
 	<div class="row-fluid dashboard-row">
 		<div class="span6" 
-		statistics-chart 
-		chart-type="PolarArea" 
-		chart-title="Reservaciones"></div>
+		day-stats-chart 
+		chart-type="Pie" 
+		chart-data-method="/reservation/statsCategoriesInDay"
+		chart-labels="['Tours', 'Hoteles', 'Traslados']"
+		day-date="dayDate"			
+		chart-title="Reservaciones por dia"
+		day-picker="true"
+		not-found="No se encontraron reservaciones este dia"></div>
 		<div class="span6" ng-controller="currencyCTL">
 			<%- partial('../admin/currencies_charts') -%> 
 		</div>	
 	</div>
 	<div class="row-fluid">
 		<div class="span12" 
-		time-line-chart 
+		time-line-chart
+		chart-type="Line"
+		chart-series="['Tours', 'Hoteles', 'Traslados']"
+		chart-data-method-month="/reservation/statsCategoriesInMonth"
+		chart-data-method-year="/reservation/statsCategoriesInYear"
 		chart-title="Reservaciones"></div>		
+	</div>
+	<div class="row-fluid">
+		<div class="span12" 
+		time-line-chart
+		chart-type="Line"
+		chart-series="['Tours', 'Hoteles', 'Traslados']"
+		chart-data-method-month="/reservation/feeCategoriesInMonth"
+		chart-data-method-year="/reservation/feeCategoriesInYear"
+		chart-title="Monto en eservaciones"></div>		
 	</div>
 </div>

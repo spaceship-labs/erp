@@ -968,5 +968,57 @@ module.exports.content = {
     		handle : 'name_pt',
     		type : 'text'
     	}
-    ]
+    ],
+	cupons : [
+		{
+			label : 'Nombre',
+			type : 'text',
+			handle : 'name',
+		},
+		{
+			label : 'Descuento viaje sencillo',
+			type : 'text',
+			handle : 'simple_discount',
+		},
+		{
+			label : 'Descuento viaje redondo',
+			type : 'text',
+			handle : 'round_discount',
+		},
+		{
+			label : 'Numero máximo de pasajeros',
+			type : 'text',
+			handle : 'max_passenger',
+		},
+		{
+			label : 'Viaje redondo',
+			type : 'checkbox',
+			handle : 'round',
+		},
+		{
+			label : 'Viaje simple',
+			type : 'checkbox',
+			handle : 'simple',
+		},
+		{
+			label : 'Comienza en aeropuerto',
+			type : 'checkbox',
+			handle : 'airport',
+		},
+		{
+			label : 'Comienza en hotel',
+			type : 'checkbox',
+			handle : 'hotel',
+		},
+		{
+			label : 'dias de duracion',
+			type : 'text',
+			handle : 'days',
+		},
+		{
+			label : 'perpetuo',
+			type : 'checkbox',
+			handle : 'perpetuo',
+		},
+	],
 };

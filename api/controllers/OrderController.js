@@ -7,7 +7,8 @@
 
 module.exports = {
   index: function (req, res) {
-    Order.find().sort('createdAt').populate('reservations').populate('user').populate('company').exec(function(e,orders){
+    var params = { company : req.user.default_company };
+    Order.find().sort('createdAt desc').populate('client').populate('reservations').populate('user').populate('company').exec(function(e,orders){
   		Common.view(res.view,{
   			orders : formatOrders(orders),
   			page:{
@@ -22,13 +23,13 @@ module.exports = {
   	});
   },
   neworder : function(req,res){
-  	Client_.find().sort('name').exec(function(e,clients_){ Hotel.find().sort('name').populate('location').exec(function(e,hotels){
+  	Client_.find().sort('name').exec(function(e,clients_){ Hotel.find().sort('name').populate('location').populate('rooms').exec(function(e,hotels){
   		Tour.find().sort('name').exec(function(e,allTours){
   			Common.view(res.view,{
-  				clients_ : clients_,
-  				hotels:hotels,
-  				transfers : [], 
-          allTours : allTours,
+  				clients_ : clients_ ,
+  				hotels:hotels ,
+  				transfers : [] ,
+          allTours : allTours ,
   				page:{
   					name:'Reservas'
   					,icon:'fa fa-car'		
@@ -74,21 +75,39 @@ module.exports = {
     params.company = req.session.select_company || req.user.select_company;
 		//var fee = calculateFee(params.fee);
     //var form = Common.formValidate(params,requided);
-    console.log('paaaaaaaaaraaaaaaaaaams');
-    console.log(params);
     Reservation.create(params).exec(function(err,reservation){
       if(err) return res.json(false);
       return res.json(reservation);
     });
   },
+  createReservationTour : function(req,res){
+    var params = req.params.all();
+    async.mapSeries( params.items, function(item,cb) {
+      item.order = params.order;
+      Reservation.create(item).exec(function(err,r){
+        item.id = r.id; cb(err,item);
+      });
+    },function(err,results){
+      return res.json(results);
+    });
+  },
+  updateReservation : function(req,res){
+    var params = req.params.all();
+    async.mapSeries( params.items, function(item,cb) {
+      Reservation.update({id:item.id},item,function(err,r){
+        cb(err,r);
+      });
+    },function(err,results){
+      return res.json(results);
+    });
+  },
   edit : function(req,res){
     Order.findOne( req.params.id ).populate('reservations').exec(function(err,order){
       Reservation.find({ 'order' : req.params.id })
-        .populate('hotel').populate('airport').populate('client').exec(function(err,reservations){
+        .populate('hotel').populate('tour').populate('airport').populate('client').exec(function(err,reservations){
         Client_.find().sort('name').exec(function(e,clients_){ 
-          Transfer.find().sort('name').exec(function(e,transfers){ Hotel.find().sort('name').populate('location').exec(function(e,hotels){
+          Transfer.find().sort('name').exec(function(e,transfers){ Hotel.find().sort('name').populate('location').populate('rooms').exec(function(e,hotels){
             order.reservations = reservations || [];
-            console.log(order);
             Common.view(res.view,{
               order : order, 
               clients_ : clients_ ,

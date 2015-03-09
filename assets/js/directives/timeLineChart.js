@@ -1,80 +1,139 @@
 (function () {
-	var controller = function($scope){
+	var controller = function($scope,$http){
         moment.lang('es');
-
         /*
             Available chartTypes : Line, Bar, Radar, Doughnut, Pie, PolarArea
         */
         $scope.labels = [];
+        $scope.chartType = $scope.chartType || 'Line';
         $scope.periods = [
-            {label:'Mensual',slug:'monthly'},
-            {label:'Anual',slug:'yearly'},
+            {label:'Mensual',slug:'month'},
+            {label:'Anual',slug:'year'},
         ];
-
-        $scope.series = ['Tours', 'Hoteles', 'Traslados'];    
+        $scope.series = $scope.chartSeries || ['Serie A', 'Serie B', 'Serie C'];    
         $scope.data = new Array([],[],[]);
+        $scope.chartDate = moment().startOf('month').toDate();
+        $scope.total = 0;
+        $scope.opened = false;
 
+        $scope.setTimePeriods = function(period){    
+            if(period){
+                if(period == 'year'){                
+                    $scope.format = 'yyyy';                 
+                    $scope.labels = [];
+                    $scope.chartDate = moment($scope.chartDate).startOf('year').toDate();
+                    for(var i=0;i<12;i++){
+                        $scope.labels.push(moment().month(i).format("MMMM"));    
+                    } 
+                }
+                else if(period == 'month'){
+                    $scope.format = 'yyyy-MM';
+                    var firstDay = moment($scope.chartDate);
+                    var lastDay = moment(firstDay).endOf('month');
+                    var monthDaysCount =  lastDay.diff(firstDay, 'days') + 1; 
+                    $scope.labels = [];
+                    for(var d=1; d<monthDaysCount+1; d++){
+                        $scope.labels.push(d.toString());
+                    }
+                }
+                $scope.pickerPeriod = period || 'month';
+                $scope.onChangeDate($scope.chartDate);
+                $scope.dateOptions = {
+                    formatYear: 'yyyy',
+                    startingDay: 1,
+                    minMode: $scope.pickerPeriod
+                };
+            }
+        }
+
+        $scope.onChangeDate = function(chartDate){
+            if($scope.period.slug == 'year'){
+                $scope.fillYearData(chartDate);                             
+            }
+            else if($scope.period.slug == 'month'){
+                $scope.fillMonthData(chartDate);
+            }
+        }
+
+        $scope.fillYearData = function(chartDate){
+            var selectedDate = moment(chartDate);
+            var params = {
+                year : selectedDate.year()
+            };
+            $http.post($scope.chartDataMethodYear,params).success(function(response){
+                $scope.data = [];
+                console.log(response);
+                angular.forEach(response,function(category){
+                    $scope.data.push(category);                    
+                });
+                //$scope.calculateTotal($scope.data);
+            });
+        }
+
+        $scope.fillMonthData = function(chartDate){
+            var params = {
+                start : chartDate,
+            };
+            $http.post($scope.chartDataMethodMonth,params).success(function(response){
+                $scope.data = new Array([],[],[]);
+                $scope.data = response;
+            });
+        }
+
+        $scope.calculateTotal = function(data){
+            $scope.total = 0;
+            console.log(data);
+            for(var arr in data){
+                console.log(arr);
+                for (var item in arr){
+                    console.log(item);
+                    $scope.total+=item;
+                }
+            }
+        }
+
+        $scope.setDefaults = function(){ 
+            $scope.period = $scope.periods[0]
+            $scope.setTimePeriods($scope.period.slug);
+            $scope.format = 'yyyy-MM';
+            $scope.dateOptions = {
+                formatYear: 'yyyy',
+                startingDay: 1,
+                minMode: $scope.period.slug
+            }; 
+        }
+
+        $scope.toggleDatePicker = function($event) {
+            $event.preventDefault();
+            $event.stopPropagation();
+            $scope.opened = !$scope.opened;
+        }; 
 
         $scope.onClick = function (points, evt) {
             console.log(points, evt);
         };
 
-        $scope.setTimePeriods = function(period){    
-            if(period == 'yearly'){
-                $scope.labels = [];
-                for(var i=0;i<12;i++){
-                    $scope.labels.push(moment().month(i).format("MMMM"));    
-                }                 
+        $scope.$watch('chartDate', function (newVal, oldVal) {
+            if(newVal != oldVal){
+                $scope.onChangeDate(newVal);
             }
-            else if(period == 'monthly'){
-                var monthDaysCount = new Date(2015, 2, 0).getDate();
-                $scope.labels = [];
-                for(var d=1; d<monthDaysCount+1; d++){
-                    $scope.labels.push(d.toString());
-                }                              
-            }
-
-            //TODO llenar con valores reales
-            var randomN;
-            var maximum = 20;
-            var minimum = 0;
-            $scope.data = new Array([],[],[]);
-            angular.forEach($scope.series, function(serie,index) {
-                for(var d=1; d<$scope.labels.length+1; d++){
-                    randomN = Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
-                    $scope.data[index].push(randomN);
-                }
-            });
-        }
-
-        $scope.setDefaults = function(){ 
-            $scope.selectedDate = moment().month(2).format('MMMM YYYY');          
-            $scope.defaultPeriod = $scope.periods[0]            
-            $scope.setTimePeriods($scope.defaultPeriod.slug);
-
-            //Provisional
-            $scope.minDate = $scope.minDate ? null : new Date();
-            $scope.dateOptions = {
-                formatYear: 'yy',
-                startingDay: 1
-            };            
-        }
-
-        $scope.openDatePicker = function($event) {
-            $event.preventDefault();
-            $event.stopPropagation();
-            $scope.opened = true;
-        };        
-
+        });
+        $scope.setDefaults();
+       
 	};
-	controller.$inject = ['$scope'];
+	controller.$inject = ['$scope','$http'];
     var directive = function () {
         return {
         	controller : controller,
         	scope : {
                 object : '=',
                 fields : '=', 
-                chartTitle : '@'               
+                chartTitle : '@',
+                chartType : '@',
+                chartDataMethodMonth : '@',
+                chartDataMethodYear : '@',               
+                chartLabels : '=',
+                chartSeries : '='              
         	},
         	templateUrl : '/template/find/timeLineChart.html'          
         };

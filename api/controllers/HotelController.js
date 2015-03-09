@@ -201,7 +201,7 @@ module.exports = {
 			if(e) throw(e);
 			res.json(zones);
 		});
-	}
+	},
 };
 
 

@@ -7,6 +7,11 @@
 
 module.exports = {
   attributes: {
-  	name : 'string'
+        name : 'string',
+		cupons:{
+			model : 'cupon',
+			via : 'transfers',
+		},
+
   }
 };

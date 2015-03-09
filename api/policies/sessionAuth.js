@@ -12,8 +12,9 @@ module.exports = function(req, res, next) {
 
 	if(req.isAuthenticated()){
 		var select_company = req.session.select_company || req.user.select_company;
+        req.session.lang = req.session.lang || 'es';
+        req.setLocale(req.session.lang);
         if (!select_company || !req.user) return res.forbidden();
-
         if (req.options.controller != 'home' && req.options.controller != 'template' && !getPermissionByControllerAction(select_company,req.user,req.options.controller,req.options.action)) {
             return res.forbidden();
         }
@@ -21,7 +22,6 @@ module.exports = function(req, res, next) {
             var params = req.params.all()
             //todo si tienes password checar y dar permiso si no no
         }
-
         return next();
 	}else{
 		Company.find({},function(e,c){
@@ -55,4 +55,3 @@ module.exports = function(req, res, next) {
          return auxLastPermission;
     }
 };
-

@@ -8,7 +8,7 @@
             </p>
             <p>
                 <label> Aeropuerto</label>
-                <span class='field'><select ng-change='updatePrice()' ng-options='obj as obj.name for obj in airports track by obj.id' ng-model='transfer.airport' ></select></span>
+                <span class='field'><select ng-change='updatePriceTransfer()' ng-options='obj as obj.name for obj in airports track by obj.id' ng-model='transfer.airport' ></select></span>
             </p>
             <p>
                 <label> Servicio</label>
@@ -73,7 +73,7 @@
                 <label>Fecha de llegada</label>
                 <span class='field'>
                     <span class='input-group calendar-container'>
-                        <input is-open="open[0]" ng-model='transfer.arrival_date' datepicker-popup />
+                        <input ng-change="validateDates()" is-open="open[0]" ng-model='transfer.arrival_date' datepicker-popup />
                         <span class="input-group-btn">
                             <button type="button" class="btn btn-default" ng-click="open($event,0)"><i class="fa fa-calendar"></i></button>
                         </span>
@@ -101,7 +101,7 @@
                 <label>Fecha de salida</label>
                 <span class='field'>
                     <span class='input-group calendar-container'>
-                        <input is-open="open[1]" ng-model='transfer.departure_date' datepicker-popup />
+                        <input ng-change="validateDates()" is-open="open[1]" ng-model='transfer.departure_date' datepicker-popup />
                         <span class="input-group-btn">
                             <button type="button" class="btn btn-default" ng-click="open($event,1)"><i class="fa fa-calendar"></i></button>
                         </span>
