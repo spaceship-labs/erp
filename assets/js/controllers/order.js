@@ -235,7 +235,7 @@ app.controller('orderNewCTL',function($scope,$http,$window){
             var date_TA = new Date(transfer.arrival_date);
             var date_TD = new Date(transfer.departure_date);
             for( x in $scope.reservations.tours ){
-                var date_t = new Date($scope.reservations.tours[x].startDate)
+                var date_t = new Date($scope.reservations.tours[x].startDate);
                 if( $scope.dtfa[0] ){
                     if( date_t < date_TA ) r1 += (r1!=''?', ':'') + $scope.reservations.tours[x].tour.name;
                 }
@@ -260,8 +260,8 @@ app.controller('orderNewCTL',function($scope,$http,$window){
             var date_TA = new Date(transfer.arrival_date);
             var date_TD = new Date(transfer.departure_date);
             for( x in $scope.reservations.hotels ){
-                var date_ta = new Date($scope.reservations.hotels[x].startDate)
-                var date_td = new Date($scope.reservations.hotels[x].endDate)
+                var date_ta = new Date($scope.reservations.hotels[x].startDate);
+                var date_td = new Date($scope.reservations.hotels[x].endDate);
                 var added = false;
                 if( $scope.dtfa[0] ){
                     if( date_ta != date_TA ){ 
