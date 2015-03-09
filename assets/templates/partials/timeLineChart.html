@@ -1,16 +1,25 @@
 <div id="chart-container">
 	<h4 class="widgettitle"><span class="fa fa-database"></span> {{chartTitle}}</h4>
 	<div class="widgetcontent">
-		<select ng-init="setDefaults()" class="form-control" ng-options="period as period.label for period in periods" ng-model="defaultPeriod" ng-change="setTimePeriods(defaultPeriod.slug)"></select>
-
-        <p class="input-group">
-          <input type="text" class="form-control" datepicker-popup="'dd-MMMM-yyyy'" ng-model="dt" is-open="opened" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions" ng-required="true" close-text="Cerrar" datepicker-mode="'month'" />
-          <span class="input-group-btn">
-            <button type="button" class="btn btn-default" ng-click="openDatePicker($event)"><i class="glyphicon glyphicon-calendar"></i></button>
-          </span>
-        </p>
-
-		<h3 class="selected-date">{{selectedDate}}</h3>
+		<div class="row-fluid">
+			<div class="col-md-6">
+				<select ng-init="setDefaults()" class="form-control" ng-options="period as period.label for period in periods" ng-model="period" ng-change="setTimePeriods(period.slug)"></select>
+			</div>
+		    <div class="col-md-6"> 
+		        <p class="input-group input-picker">
+		          <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="chartDate" is-open="opened" datepicker-options="dateOptions" ng-required="true" close-text="Cerrar" datepicker-mode="period.slug" ng-disabled="true" />
+		          <span class="input-group-btn">
+		            <button type="button" class="btn btn-default" ng-click="openDatePicker($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+		          </span>
+		        </p>
+		    </div>
+	    </div>
+	    <!--<p class="input-group">{{total}}</p>
+        <div ng-switch="period.slug">
+			<h3 class="selected-date" ng-switch-when="month">{{chartDate | date:'MM-yyyy'}}</h3>
+			<h3 class="selected-date" ng-switch-when="year">{{chartDate | date:'yyyy'}}</h3> 
+			<h3 class="selected-date" ng-switch-default>{{chartDate | date:'yyyy'}}</h3>    	
+    	</div>-->
 		<canvas id="line" chart-line data="data"
 		  labels="labels" legendchart="true" series="series"
 		  click="onClick">
