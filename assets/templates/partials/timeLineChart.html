@@ -7,9 +7,9 @@
 			</div>
 		    <div class="col-md-6"> 
 		        <p class="input-group input-picker">
-		          <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="chartDate" is-open="opened" datepicker-options="dateOptions" ng-required="true" close-text="Cerrar" datepicker-mode="pickerPeriod" ng-disabled="true" />
+		          <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="chartDate" is-open="opened" datepicker-options="dateOptions" ng-required="true" close-text="Cerrar" datepicker-mode="pickerPeriod" datepicker-min-mode="pickerPeriod" ng-disabled="true" />
 		          <span class="input-group-btn">
-		            <button type="button" class="btn btn-default" ng-click="openDatePicker($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+		            <button type="button" class="btn btn-default" ng-click="toggleDatePicker($event)"><i class="glyphicon glyphicon-calendar"></i></button>
 		          </span>
 		        </p>
 		    </div>

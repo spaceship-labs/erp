@@ -14,6 +14,7 @@
         $scope.data = new Array([],[],[]);
         $scope.chartDate = moment().startOf('month').toDate();
         $scope.total = 0;
+        $scope.opened = false;
 
         $scope.setTimePeriods = function(period){    
             if(period){
@@ -102,10 +103,10 @@
             }; 
         }
 
-        $scope.openDatePicker = function($event) {
+        $scope.toggleDatePicker = function($event) {
             $event.preventDefault();
             $event.stopPropagation();
-            $scope.opened = true;
+            $scope.opened = !$scope.opened;
         }; 
 
         $scope.onClick = function (points, evt) {
