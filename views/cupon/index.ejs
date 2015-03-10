@@ -1,10 +1,8 @@
 <script type='text/javascript'>
 	window.cupons = <%- JSON.stringify(cupons) %>;
+	window.hotels = <%- JSON.stringify(hotels) %>;
 </script>
 <div ng-controller='cuponCTL' >
-	<!--<p><button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Nuevo Tour</button></p>-->
-	<!--<div directory-listing objects='hotels' searchInput='searchInput' dir='hotels' edit-url='/hotel/edit/' get-info='getInfo' button-text='Nuevo Tour'></div>-->
-
 	<div directory-listing 
 		objects='cupons' 
 		keywords='searchInput' 
@@ -24,6 +22,7 @@
 			        form-footer='Agregar'
 			        form-save = 'createCupon'
 			        object = 'cupons'
+				objects='{hotels:hotels}' 
 			        form-title='Agregar Cupones'
 			       	modal='true'
 			       	currency='company.base_currency'

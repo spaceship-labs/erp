@@ -1020,5 +1020,13 @@ module.exports.content = {
 			type : 'checkbox',
 			handle : 'perpetuo',
 		},
+		{
+			label : 'Hoteles',
+			type : 'multi-select',
+			handle : 'hotels',
+			object : 'hotels',
+			//removeAction : '/hotel/removeFoodScheme',
+			removeAction:'/cupon/removeHotel'
+		},
 	],
 };
