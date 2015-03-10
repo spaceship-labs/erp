@@ -7,17 +7,17 @@
 	window.content = <%- JSON.stringify(_content) %>;
 </script>
 <div ng-controller="priceCTL" >
-	<p><button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Nuevo Precio</button></p>
+	<p><button class="btn btn-primary" data-toggle="modal" data-target="#myModal"><%= __('price-nuevo-precio')%></button></p>
 	<br/>
 	<div class='row-fluid'>
 		<!--<div class='span4'>
 			Compañía:<select ng-change='updatePrices()' ng-model='mycompany' ng-options="obj as obj.name for obj in companies" ></select>
 		</div>-->
 		<div class='span4'>
-			Servicio: <select ng-change='updatePrices()' ng-model='mytransfer' ng-options="obj as obj.name for obj in transfers" ></select>
+			<%= __('price-servicio')%>: <select ng-change='updatePrices()' ng-model='mytransfer' ng-options="obj as obj.name for obj in transfers" ></select>
 		</div>
 		<div class='span4'>
-			Aeropuertos: <select ng-change='updatePrices()' ng-model='myairport' ng-options="obj as obj.name for obj in airports" ></select>
+			<%= __('price-aeropuerto')%>: <select ng-change='updatePrices()' ng-model='myairport' ng-options="obj as obj.name for obj in airports" ></select>
 		</div>
 	</div>
 	<!--<p>Zonas:<select ng-model='myzone' ng-options="obj.id as obj.name for obj in zones" ></select></p>-->
@@ -28,8 +28,8 @@
 		</div>
 		<table class='table table-striped responsive'  ng-show='cs.prices.length'>
 			<thead><tr>
-				<th>Ciudad</th><th>Zona</th><th>Sencillo</th><th>Redondo</th><th>Activo</th>
-				<th>Editar</th>
+				<th><%= __('price-ciudad')%></th><th><%= __('price-zona')%></th><th><%= __('price-sencillo')%></th><th><%= __('price-redondo')%></th><th><%= __('price-activo')%></th>
+				<th><%= __('price-editar')%></th>
 			</tr></thead>
 			<tr ng-repeat='price in cs.prices'>
 				<td>{{airports[0].location.name}}</td>
@@ -61,7 +61,7 @@
 			          </button>
 			        </form>
 					<div class="buttons" ng-show="!rowform.$visible">
-			          <button class="btn btn-primary" ng-click="rowform.$show()">edit</button>
+			          <button class="btn btn-primary" ng-click="rowform.$show()"><%= __('price-editar')%></button>
 			        </div>
 				</td>
 			</tr>
@@ -78,7 +78,7 @@
 			        form-save = 'createPrice'
 			        object = 'price'
 			        objects = '{zones:zones , transfers:transfers , airports:airports , companies : companies}'
-			        form-title='Agregar Precio'
+			        form-title='<%= __('price-agregar-precio')%>'
 			       	modal='true'
 			        >
 			    </div>

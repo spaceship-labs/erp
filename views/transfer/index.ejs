@@ -3,14 +3,14 @@
 	window.content = <%- JSON.stringify(_content) %>;
 </script>
 <div ng-controller="transferCTL">
-	<p><button class="btn btn-primary" data-toggle="modal" data-target="#myModal"><i class='fa fa-plus'></i> Nuevo Servicio</button></p>
+	<p><button class="btn btn-primary" data-toggle="modal" data-target="#myModal"><i class='fa fa-plus'></i><%= __('transfer-nuevo')%> </button></p>
 	<br/>
 	<div class='ng-directory-listing ng-cloak' ng-cloak><div class="peoplelist">
 		<div class="row-fluid">
 			<div class="span6 widgetbox" ng-repeat='object in transfers' ng-cloak class="ng-cloak">
 				<div class="headtitle">         
 					<h4 class="widgettitle">{{object.name}}
-						<li><a ng-href="/transfer/edit/{{object.id}}">Editar</a></li><li><a ng-href="/transfer/edit/{{object.id}}"><span class = "fa fa-pencil"></span></a></li>
+						<li><a ng-href="/transfer/edit/{{object.id}}"><%= __('transfer-editar')%></a></li><li><a ng-href="/transfer/edit/{{object.id}}"><span class = "fa fa-pencil"></span></a></li>
 					</h4>
 				</div>
 				<div class="widgetcontent" >
@@ -19,8 +19,8 @@
 					</div>
 					<div class="peopleinfo" ng-cloak>
 						<ul>
-							<li><span>Nombre: </span> <span ng-bind="object.name"></span></li>
-							<li><span>Pax: </span> <span ng-bind="object.max_pax"></span></li>
+							<li><span><%= __('transfer-nombre')%> </span> <span ng-bind="object.name"></span></li>
+							<li><span><%= __('transfer-pax')%> </span> <span ng-bind="object.max_pax"></span></li>
 						</ul>
 					</div>
 				</div>
@@ -46,7 +46,7 @@
 			        form-footer='Agregar'
 			        form-save = 'createTransfer'
 			        object = 'transfer'
-			        form-title='Agregar Servicio de Traslado'
+			        form-title='<%= __('transfer-agregar')%>'
 			       	modal='true'
 			        >
 			    </div>

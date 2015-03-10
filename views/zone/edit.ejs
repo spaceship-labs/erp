@@ -8,7 +8,7 @@
         	<div class="alert alert-block unseen">
         		<button data-dismiss="alert" class="close" type="button">×</button>
         		<h4>Mensaje</h4>
-        			<p style="margin: 8px 0">La zona se ha actualizado exitosamente</p>
+        			<p style="margin: 8px 0"><%= __('zona-actualizado')%></p>
         	</div>
             <div profile-image
                 object='zone' 
@@ -25,7 +25,7 @@
                 fields='content.zoneBasic' 
                 object='zone' 
                 action='/zone/save' 
-                form-title='INFORMACIÓN BASICA'
+                form-title='<%= __('zona-info')%>'
                 >
             </div>        
         </div>
@@ -36,7 +36,7 @@
                 fields='content.zoneComplement' 
                 object='zone' 
                 action='/zone/save' 
-                form-title='INFORMACIÓN EXTRA'
+                form-title='<%= __('zona-info-e')%>'
                 >
             </div>        
         </div>
