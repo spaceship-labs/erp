@@ -2,6 +2,8 @@
 	window.companies = <%-JSON.stringify(companies) %>;
 	window.currencies = <%-JSON.stringify(currencies) %>;
     window.user = <%- JSON.stringify(current_user) %>;
+    window.selected_company = <%- JSON.stringify(selected_company) %>;
+    console.log(companies);
 </script>
 
 <div class="wrap_createCompany row-fluid" ng-controller="companyCTL">

@@ -38,13 +38,13 @@ module.exports = {
         }
 		,addApps : function(apps,cb){		
 			if(Array.isArray(apps)){
-				if(this.apps){
-					var cApps = this.apps;
+				//if(this.apps){
+					var cApps = this.apps || [];
 					apps.forEach(function(app){
 						if(cApps.indexOf(app) < 0) 
 							cApps.push(app);
 					});
-				}
+				//}
 				this.apps = cApps;
 				this.save(cb);
 			}else{

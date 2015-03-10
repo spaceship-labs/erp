@@ -14,8 +14,8 @@ module.exports = {
 					,currencies:currencies || []
 					,page:{
 						name:'Empresas'
-						,icon:'fa fa-building'		
-						,controller : 'company.js'		
+						,icon:'fa fa-building'
+						,controller : 'company.js'
 					}
 				},req);
 			});
