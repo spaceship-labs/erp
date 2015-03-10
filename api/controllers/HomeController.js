@@ -7,9 +7,16 @@
 var passport = require('passport');
 module.exports = {
 	login: function(req,res){
-		res.view({
-			layout:null
-		});
+		
+	  Company.find({},function(e,c){
+	    if (c.length <= 0) {
+	    	return res.redirect('/setup');
+	    } else {
+				res.view({
+					layout:null
+				});
+	    }
+	  });
 	}
 
 	, logout: function(req,res){

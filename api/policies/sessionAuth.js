@@ -24,12 +24,7 @@ module.exports = function(req, res, next) {
         }
         return next();
   }else{
-    Company.find({},function(e,c){
-      if(c.length) res.redirect('/home/login');
-      else{
-        res.redirect('/setup');
-      }
-    }); 
+    res.redirect('/home/login');
   }
 
      //TODO cambiar a funcion asincrona que reciba callback

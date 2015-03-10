@@ -7,15 +7,19 @@
 
 module.exports = {
 	index: function(req,res){
-		Setup.preloadAlt(function(e,results){
-			Currency.find().exec(function(err,currencies){
-				res.view({
-					layout: null,
-					apps: sails.config.apps,
-					currencies:currencies || [],
-				});				
+	  Company.find({},function(e,c){
+    	if(c.length > 0) return res.redirect('/home/login');
+
+			Setup.preloadAlt(function(e,results){
+				Currency.find().exec(function(err,currencies){
+					res.view({
+						layout: null,
+						apps: sails.config.apps,
+						currencies:currencies || [],
+					});				
+				});
 			});
-		});
+	  });
 	},
 	create: function(req,res){
 		var form = req.params.all() || {}

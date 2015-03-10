@@ -22,7 +22,7 @@ module.exports.policies = {
       login:true
     , auth:true
   }
-  , install :{
+  , setup :{
   	index:true,
   	create:true,
   },
