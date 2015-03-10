@@ -19,9 +19,9 @@ module.exports = {
 	},
 	create: function(req,res){
 		var form = req.params.all() || {}
-		, response = {
-			status:false
-			, msg:'ocurrio un error'
+		var response = {
+			status: false,
+			msg: 'Ocurrio un error'
 		};
 		delete form.id;
 		form.active = true;
@@ -51,12 +51,12 @@ module.exports = {
 
 			user.default_company = company.id;
 			user.active = true;
-            user.isAdmin = true;
+      user.isAdmin = true;
 			User.create(user).exec(function(e,user){
 				if(e) return res.json(response);
 				user.companies.add(company.id);
 				user.setPassword(password);
-				res.json(true);
+				res.json({status: true});
 			});	
 			
 		});

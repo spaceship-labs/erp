@@ -11,50 +11,114 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <!-- Viewport mobile tag for sensible mobile support -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"> 
-
-    <link rel="stylesheet" href="/bower_components/roboto-fontface/roboto-fontface.css">
-    <link rel="stylesheet" href="/bower_components/lato/css/lato.css">
     <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/bower_components/chosen/chosen/chosen.css">
-    <link rel="stylesheet" href="/styles/default.css">
-    <link rel="stylesheet" href="/styles/importer.css">
+    <link rel="stylesheet" href="/bower_components/sweetalert/lib/sweet-alert.css">
+    <link rel="stylesheet" href="/styles/setup.css">
   </head>
-<body >
-  <div class="wizard" id="some-wizard" data-title="Instalar Sistema">
-    <form action="/install/create/" method="post" accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 companyCreate" >
-      <div class="wizard-card stdform stdform2" data-cardname="card1" >
-        <h3>Empresa</h3>
-        <%- partial('../company/new-basic') -%> 
+<body>
+  <div class="wizard">
+    <img src="/images/spaceshiplabs_logo.png" class="logo" alt="logo" />
+    <div class="panel" data-title="Instalar Sistema">
+      <div class="col-md-12">
+        <form action="/setup/create/" method="post" accept-charset="utf-8" enctype="multipart/form-data" id="wizard-form">
+          <header>
+            <h4>Empresa</h4>
+          </header>
+          <section>
+            <p>
+              <label for="name">Nombre*</label>
+              <span class="field"><input type="text" name="name" class="form-control required"></span>
+            </p>
+            <p>
+              <label for="description">Descripción</label>
+              <span class="field"><textarea name="description" class="form-control"></textarea></span>
+            </p>
+            <p>
+              <label for="address">Dirección 1</label>
+              <span class="field"><input type="text" name="address" class="form-control"></span>
+            </p>
+            <p>
+              <label for="zipcode">Código Postal</label>
+              <span class="field"><input type="text" name="zipcode" class="form-control"></span>
+            </p>
+          </section>
+          <header>
+            <h4>Configuracion Basica</h4>
+          </header>
+          <section>
+            <p>
+              <label class="select-label" for="base_currency">Moneda Principal</label>
+              <span class="field">
+                <select name="base_currency" class='chzn-select required'>
+                <%for(var i=0;i<currencies.length;i++){ %>
+                  <option value="<%=currencies[i].id%>"><%=currencies[i].name%> (<%=currencies[i].currency_code%>)</option>
+                <%}%>
+                </select>
+              </span>
+            </p>
+            <p>
+              <label class="select-label" for="currencies">Monedas</label>
+              <span class="field">
+                <select name="currencies" multiple="multiple" class="chzn-select required" data-placeholder="Agregar Monedas...">
+                <%for(var i=0;i<currencies.length;i++){ %>
+                  <option value="<%=currencies[i].id%>"><%=currencies[i].name%> (<%=currencies[i].currency_code%>)</option>
+                <%}%>
+                </select>
+              </span>
+            </p>
+            <p>
+              <label class="select-label" for="apps">Aplicaciones</label>
+              <span class="field">
+                <select name="apps" multiple="multiple" class="chzn-select required" data-placeholder="Agregar Aplicaciones...">
+                  <%for(var handle in apps){ %>
+                    <option value="<%=apps[handle].name%>"><%=apps[handle].label%></option>
+                  <% } %>
+                </select> 
+              </span>
+            </p>
+          </section>
+          <header>
+            <h4>Usuario</h4>
+          </header>
+          <section>
+            <div class="widgetbox personal-information">
+              <p>
+                <label>Nombre *</label>
+                <span class="field">
+                  <input type="text" ng-model="user.name" class="form-control required" ng-required="true" name="uname">
+                </span>
+              </p>
+              <p>
+                <label>Apellido *</label>
+                <span class="field">
+                  <input type="text" ng-model="user.last_name" class="form-control required" name="ulast_name">
+                </span>
+              </p>
+              <p>
+                <label>Correo electrónico *</label>
+               <input type="text" style="display:none">
+                <input type="password" style="display:none">
+                <span class="field">
+                  <input type="email" ng-model="user.email" class="form-control ng-email required" ng-required="true" name="uemail" autocomplete="off">
+                </span>
+              </p>
+              <p>
+                <label>Contraseña *</label>
+                <span class="field">
+                  <input type="password" ng-model="user.password" class="form-control ng-password required" ng-required="true" name="upassword" autocomplete="off">
+                </span>
+              </p>
+            </div>
+          </section>
+        </form>
       </div>
-      <div class="wizard-card stdform stdform2" data-cardname="card2">
-        <h3>Configuracion Basica</h3>            
-        <%- partial('../company/new-settings') -%> 
-      </div>
-      <div class="wizard-card stdform stdform2" data-cardname="card3">
-        <h3>Usuario</h3>            
-        <%- partial('../user/partial/new') -%>
-      </div>
-    </form>
+    </div>
   </div>
   <script src="/bower_components/jquery-modern/dist/jquery.min.js"></script>
-  <script src="/bower_components/jquery-browser-detection/src/browser-detection.js"></script>
-  <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-  <script src="/bower_components/chosen/chosen/chosen.jquery.min.js"></script>
-  <script src="/js/themejs/responsive-tables.js"></script>
-  <script>
-    $(document).ready(function() {
-      $.fn.wizard.logging = true;
-      var options = {
-        contentHeight: 500,
-        contentWidth: 950,
-        submitUrl: '/setup/create',
-      };
-      var wizard = $("#some-wizard").wizard(options);
-      wizard.show();
-      wizard.on("submitSuccess", function() {
-        window.location = "/home/login";
-      });
-    });
-  </script>
+  <script src="/bower_components/jquery.steps/build/jquery.steps.min.js"></script>
+  <script src="/bower_components/parsleyjs/dist/parsley.min.js"></script>
+  <script src="/bower_components/parsleyjs/src/i18n/es.js"></script>
+  <script src="/bower_components/sweetalert/lib/sweet-alert.min.js"></script>
+  <script src="/js/setup.js"></script>
 </body>
 </html>
