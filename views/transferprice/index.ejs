@@ -10,10 +10,10 @@
 <div ng-controller="priceCTL" >
 	<div class='row-fluid'>
 		<div class='span4'>
-			Ciudad: <select ng-change='updatePrices()' ng-model="thelocation" ng-options="obj as obj.name for obj in locations_" ></select>
+			<%= __('tranferprice-ciudad')%><select ng-change='updatePrices()' ng-model="thelocation" ng-options="obj as obj.name for obj in locations_" ></select>
 		</div>
 		<div class='span4'>
-			Agencia: <select ng-change='updatePrices()' ng-model="thecompany" ng-options="obj as obj.name for obj in companies" ></select>
+			<%= __('tranferprice-agencia')%> <select ng-change='updatePrices()' ng-model="thecompany" ng-options="obj as obj.name for obj in companies" ></select>
 		</div>
 	</div>
 	<br/>
@@ -25,12 +25,12 @@
 			</div>
 			<div collapse="isCollapsed[$index]"><table class='table table-striped responsive' ng-show='serv'>
 				<thead><tr class='sortable'>
-					<th><a href='' class='sortable-item' ng-click="sortByField('zone1')">Zona <i class='fa fa-sort-asc'></i></a></th>
-					<th><a href='' class='sortable-item' ng-click="sortByField('zone2')">Zona <i class='fa fa-sort-asc'></i></a></th>
-					<th>Sencillo</th>
-					<th>Redondo</th>
-					<th><a href='' class='sortable-item' ng-click="sortByField('active')">Activo <i class='fa fa-sort-asc'></i></a></th>
-					<th>Editar</th>
+					<th><a href='' class='sortable-item' ng-click="sortByField('zone1')"><%= __('tranferprice-zona')%> <i class='fa fa-sort-asc'></i></a></th>
+					<th><a href='' class='sortable-item' ng-click="sortByField('zone2')"><%= __('tranferprice-zona')%> <i class='fa fa-sort-asc'></i></a></th>
+					<th><%= __('tranferprice-sencillo')%></th>
+					<th><%= __('tranferprice-redondo')%></th>
+					<th><a href='' class='sortable-item' ng-click="sortByField('active')"><%= __('tranferprice-activo')%> <i class='fa fa-sort-asc'></i></a></th>
+					<th><%= __('tranferprice-editar')%></th>
 				</tr></thead>
 				<tr class='price-row' ng-repeat='price in serv'>
 					<td>
@@ -75,14 +75,14 @@
 					<td>
 						<form editable-form name="rowform" onbeforesave="savePrice($data,price.id)" ng-show="rowform.$visible" class="form-buttons form-inline" >
 				          <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
-				            save
+				            <%= __('tranferprice-guardar')%>
 				          </button>
 				          <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default">
-				            cancel
+				            <%= __('tranferprice-cancelar')%>
 				          </button>
 				        </form>
 						<div class="buttons" ng-show="!rowform.$visible">
-				          <button class="btn btn-primary" ng-click="rowform.$show()">edit</button>
+				          <button class="btn btn-primary" ng-click="rowform.$show()"><%= __('tranferprice-editar')%></button>
 				        </div>
 					</td>
 				</tr>

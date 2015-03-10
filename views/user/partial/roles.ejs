@@ -4,13 +4,13 @@
             <form accept-charset='utf-8' enctype='multipart/form-data' class='stdform stdform2' ng-submit="saveUserRole()" name="myForm">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">Roles de usuario</h4>
+                    <h4 class="modal-title"><%= __('user-roles')%></h4>
                 </div>
                 <div class="modal-body">
                     <div class="widgetbox">
                         <div class="widgetcontent nopadding">
                             <p>
-                                <label>Selecciona</label>
+                                <label><%= __('user-selecciona')%></label>
                                 <span class="field">
                                     <select ng-model="selected_role" ng-options="role as role.name for role in roles" ng-change="updateRole()">
                                     </select>
@@ -18,7 +18,7 @@
                             </p>
 
                             <p>
-                                <label>Nombre</label>
+                                <label><%= __('user-nombre')%></label>
                                 <span class="field">
                                     <input type="text" ng-model="selected_role.name"/>
                                 </span>
@@ -30,8 +30,8 @@
                                         <table class="table responsive">
                                             <thead>
                                             <tr>
-                                                <th>Permiso</th>
-                                                <th>Escoger</th>
+                                                <th><%= __('user-permiso')%></th>
+                                                <th><%= __('user-escoger')%></th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -57,7 +57,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><%= __('user-cerrar')%></button>
                     <input type="submit" class="btn btn-default" value='Guardar' btn-radio="false" ng-model="isNew" ng-if="selected_role.id"/>
                     <input type="submit" class="btn btn-primary" value='Crear' btn-radio="true" ng-model="isNew" />
                 </div>

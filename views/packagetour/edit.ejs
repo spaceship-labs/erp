@@ -16,7 +16,7 @@
                 fields='content.packages' 
                 object='package_t' 
                 action='/packagetour/update' 
-                form-title='INFORMACIÓN BÁSICA'
+                form-title='<%= __('packagetour-info')%>'
                 >
             </div> 
         </div>
@@ -25,7 +25,7 @@
         <div class='span12'>
             <div class="widgetbox">
                 <h4 class="widgettitle">
-                    Hoteles
+                    <%= __('packagetour-hoteles')%>
                     <span ng-click='isCollapsed2=!isCollapsed2' class='fa icon {{isCollapsed2?"fa-plus":"fa-minus"}}' ng-class="{{isCollapsed2?'fa-plus':'fa-minus'}}"></spa>  
                 </h4>
                 <div ng-hide="isCollapsed2"><div>
@@ -48,7 +48,7 @@
         <div class='span12'>
             <div class="widgetbox">
                 <h4 class="widgettitle">
-                    Días de tour 
+                    <%= __('packagetour-dias')%> 
                     <span ng-click='isCollapsed=!isCollapsed' class='fa icon {{isCollapsed?"fa-plus":"fa-minus"}}' ng-class="{{isCollapsed?'fa-plus':'fa-minus'}}"></spa>  
                 </h4>
                 <div ng-hide="isCollapsed"><div>

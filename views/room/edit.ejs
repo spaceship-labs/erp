@@ -17,7 +17,7 @@
             </div>
             <div class='fee-selector'>
                 <div class="tabs">
-                    <a class='btn alertboxbutton' ng-click='payScheme = "base"' ><small>Base</small></a>
+                    <a class='btn alertboxbutton' ng-click='payScheme = "base"' ><small><%= __('room-base')%></small></a>
                     <a class='btn alertboxbutton' ng-repeat='scheme in hotel.foodSchemes' ng-click='selectScheme(scheme)'>
                         <small ng-bind='scheme.name' ></small>
                     </a>                    
@@ -26,7 +26,7 @@
                     fields='seasonFields' 
                     object='room.fees.base' 
                     form-save='saveFees' 
-                    form-title='Tarifas por temporada'
+                    form-title='<%= __('room-tarifa-t')%>'
                     currency='company.base_currency'
                     ng-show='payScheme == "base"'
                     process-fields = 'false'
@@ -38,7 +38,7 @@
                     fields='seasonFields' 
                     object='room.fees[scheme.id]' 
                     form-save='saveFees' 
-                    form-title='Tarifas por temporada : {{scheme.name}}'
+                    form-title='<%= __('room-tarifa-t')%>{{scheme.name}}'
                     currency='company.base_currency'
                     ng-show='payScheme == scheme.id'
                     process-fields = 'false'
@@ -51,7 +51,7 @@
                 fields='content.room' 
                 object='room' 
                 action='/room/save' 
-                form-title='INFORMACIÓN BASICA'
+                form-title='<%= __('room-info')%>'
                 currency='company.base_currency'
                 objects='{views:views}'
                 >

@@ -1,9 +1,9 @@
 <div class="widgetbox tags">
-    <h4 class="widgettitle">Aplicaciones y Permisos <span class='fa icon' ng-class='saveClassPermissions' ng-click="updateAccestList()"></span></h4>
+    <h4 class="widgettitle"><%= __('user-app')%> <span class='fa icon' ng-class='saveClassPermissions' ng-click="updateAccestList()"></span></h4>
     <div class="widgetcontent stdform2 stdform nopadding" ng-cloak="">
 
         <div class="par">
-            <label>Administrador</label>
+            <label><%= __('user-admin')%></label>
             <div class="field">
                 <div class="editable-buttons">
                     <button class="btn btn-default btn-small" ng-model="isAdmin" btn-radio="true"><span class="glyphicon glyphicon-ok"></span></button>
@@ -13,7 +13,7 @@
         </div>
 
         <div class="par" ng-if="!isAdmin">
-            <label>Perfil</label>
+            <label><%= __('user-perfil')%></label>
             <div class="field">
                 <div class="editable-buttons">
                     <select ng-options="s as s.name for s in user_roles" ng-model="user.role" chosen></select>
@@ -28,8 +28,8 @@
                     <table class="table responsive">
                         <thead>
                         <tr>
-                            <th>Permiso</th>
-                            <th>Escoger</th>
+                            <th><%= __('user-permiso')%></th>
+                            <th><%= __('user-escoger')%></th>
                         </tr>
                         </thead>
                         <tbody>

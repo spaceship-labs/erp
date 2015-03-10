@@ -14,7 +14,7 @@
 		edit-url='/tour/edit/' 
 		get-info='getInfo'
 		name-var='nombre_completo'
-		button-text='Nuevo Tour'
+		button-text='<%= __('tour-nuevo')%>'
 	>
 	</div>
 	<div class="modal fade" id="myModal">
@@ -26,7 +26,7 @@
 			        form-footer='Agregar'
 			        form-save = 'createTour'
 			        object = 'tour'
-			        form-title='Agregar Tour'
+			        form-title='<%= __('tour-agregar')%>'
 			       	modal='true'
 			        objects='{schemes:schemes,locations:locations}'
 			       	currency='company.base_currency'
