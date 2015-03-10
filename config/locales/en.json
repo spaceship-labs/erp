@@ -1,4 +1,317 @@
 {
   "h-edit": "Profile edit" ,
-  "h-sesion": "Logout"
+  "h-sesion": "Logout",
+
+  /*Admin*/
+"admin-mensaje":"Message",
+"admin-user-actualizado":"El usuario se ha actualizado exitosamente",
+"admin-tipo-cambio":"Type change",
+"admin-tipo-cambioes":"El tipo de cambio es a",
+"admin-guardar":"Save",
+"admin-conf-moneda":"Configuración de Moneda",
+"admin-moneda-base":"Currency Base",
+"admin-porcentaje-comision":"Porcentaje de Comisión por Cambio de Currency",
+"admin-monedas":"Coins",
+"admin-agregar-moneda":"Add Currency",
+/*Admin*/
+
+/*airport*/
+"airport-mensaje":"Message",
+"airport-creo-exitoso":"El aeropuerto se creó exitosamente",
+/*airport*/
+
+/*client*/
+"client-mensaje":"Message",
+"client-cliente-actualizado":"El cliente se ha actualizado exitosamente",
+"client-guardar":"Save",
+"client-cancelar":"Cancel",
+"client-precios-especiales":"Special prices",
+"client-descuento-gen":"General off:",
+"client-por-product":"Por productos",
+"client-contactos":"Contacts",
+"client-filtros":"FILTERS",
+"client-agregar-cliente":"ADD CLIENT",
+"client-nombre":"Name",
+"client-direccion":"Address",
+"client-contacto":"Phone",
+"client-rfc":"RFC",
+"client-accion":"Action",
+/*client*/
+
+/*empresas*/
+  "emp-nueva-emp":"New Company",
+  "emp-agregar-emp":"Add Company",
+  "emp-actualizar":"La empresa se ha actualizado exitosamente",
+  "emp-aplicaciones":"Applications",
+  "emp-agregar-app":"Add application",
+  "emp-app-agregada":"Todas las aplicaciones estan agregadas",
+  "emp-usuarios":"Users",
+  "emp-agregar-usuario":"Add User",
+  "emp-agregar-usuarios":"+ Add User",
+  "emp-todos-usuarios":"Todos los usuarios estan agregados",
+  "emp-archivos":"Archives",
+  "emp-acta":"Acta constitutiva",
+  "emp-legal-acta":"Rep. legal acta",
+  "emp-nombre":"Name*",
+  "emp-descripcion":"Description",
+  "emp-direccion":"Address 1",
+  "emp-codigo-postal":"Postal Code",
+  "emp-moneda-pri":"Main Currency ",
+  "emp-monedas":"Coins",
+  "emp-guardar":"Save",
+  "emp-resetear":"Reset",
+  "emp-impuestos":"Taxation",
+/*empresas*/
+
+/*foodscheme*/
+  "food-new-esquema":"New Escheme",
+/*foodscheme*/
+
+/*global*/
+  "global-empresas":"Company",
+  "global-cambiar":"Change company",
+  "global-tablero":"Panel",
+  "global-notificaciones":"Notifications",
+/*global*/
+
+/*hoteles*/
+  "hotel-habitaciones":"Rooms",
+  "hotel-agregar":"ADD NEW HOTEL",
+  "hotel-nombre":"Name*",
+  "hotel-direccion":"Address",
+  "hotel-telefonos":"Phones",
+  "hotel-localidad":"Locality",
+  "hotel-zona":"Zone",
+  "hotel-nuevo":"New Hotel",
+  "hotel-cerrar":"Close",
+  "hotel-guardar":"Save",
+  "hotel-vista":"New View",
+  "hotel-agregar-vista":"Add View",
+/*hoteles*/
+
+/**home**/
+  "home-cotizaciones": "Quotes",
+  "home-no-cotizaciones": "No se encontraron cotizaciones",
+  "home-reservaciones-dia":"Reservations per day",
+  "home-no-reservaciones-dia":"No se encontraron reservaciones este dia",
+  "home-reservaciones":"Reservations",
+  "home-tipo-cambio":"tipo de cambio historico",
+  "home-user-invalid":"Usuario o password invalido",
+/**home**/
+
+/*location*/
+  "location-zonas":"Zones",
+  "location-relacionar":"Relacionar con otras ciudades",
+  "location-agregar":"Add City",
+  "location-mensaje":"Message",
+  "location-secreo-exit":"La ciudad se creó exitosamente",
+  "location-nueva-ciudad":"New City",
+  "location-cerrar":"Close",
+/*location*/
+
+/*machine*/
+  "machine-nombre":"Name* :",
+  "machine-descripcion":">Description :",
+  "machine-referencia":"Internal reference :",
+  "machine-tipo":"Type :",
+  "machine-nombre":"Name",
+  "machine-velocidad":"Vel : m2/hr",
+  "machine-precio":"Price m2",
+  "machine-eliminar":"Remove",
+  "machine-mensaje":"Message",
+  "machine-info":"Basic Information",
+  "machine-categoria":"Categorias de producto que utiliza:",
+  "machine-guardar":"Save",
+  "machine-modos":"Modes",
+  "machine-guardar":"Save",
+  "machine-filtros":"Filters",
+  "machine-maquinaria":"Machinery",
+  "machine-nombre":"Name* :",
+  "machine-descripcion":"Description :",
+  "machine-referencia":"Internal reference :",
+  "machine-tipo":"Type :",
+  "machine-nueva":"New Machinery",
+  "machine-cerrar":"Close",
+  "machine-editar":"Edit",
+/*machine*/
+
+/*order*/
+  "order-guardar-todo":"Save all",
+  "order-reservar-tras":"Transfer Reservation ",
+  "order-reservar-tour":"Reservation Tours ",
+  "order-reservar-hotel":"Reservation of Hotels ",
+  "order-crear":"Create Reservation",
+  "order-id":"Id",
+  "order-usuario":"User",
+  "order-empresa":"Company",
+  "order-llegada":"Arrival",
+  "order-salida":"Salida",
+  "order-cliente":"Client",
+  "order-hotel":"Hotel",
+  "order-aeropuerto":"Airport",
+  "order-tipo":"Type",
+  "order-origen":"Origin",
+  "order-estado":"Estado",
+  "order-pago":"Payment",
+  "order-fecha":"Date",
+  "order-total":"Total",
+  "order-editar":"Edit",
+  "order-borrar":"Remove",
+  "order-info":"Service Information",
+  "order-servicio":"Service",
+  "order-pago":"Método de pago",
+  "order-autorizacion":"Código de autorización",
+  "order-pax":"PAX",
+  "order-origen":"Origen del viaje",
+  "order-viaje":"Tipo de viaje",
+  "order-tarifa":"Rate",
+  "order-round":"Round trip",
+  "order-one":"One way",
+  "order-vuelof-llegada":"Flight and date arrival",
+  "order-llegada":"Arrival date",
+  "order-vuelo-llegada":" Flight and arrival",
+  "order-hora":" Hora de llegada",
+  "order-pickup":" Pickup time",
+  "order-vuelof-salida":"Vuelo y fecha de salida",
+  "order-fecha-salida":"Fecha de salida",
+  "order-vuelo-salida":" Vuelo de Salida",
+  "order-hora-salida":" Hora de Salida",
+  "order-eliminar":"Remove",
+  "order-reservar-hotel":"Reserve hotel: ",
+  "order-fecha-entrada":" Fecha de entrada",
+  "order-fecha-salida":" Fecha de Salida",
+  "order-cuartos":" Rooms",
+  "order-num-cuartos":" Number of rooms",
+  "order-adultos":"Adults",
+  "order-menores":"Minor",
+  "order-precio":"Price",
+  "order-precio-esp":"Special price",
+  "order-servicio":" Service",
+  "order-estado":" Estado",
+  "order-nuevo-cliente":"New Client",
+  "order-cliente":"Client",
+  "order-selecc":"Select client",
+  "order-reservar":"Reserve",
+  "order-agregar":"Add",
+/*order*/
+
+/*packageitem*/
+  "packageitem-":"",
+/*packageitem*/
+
+/*packagetour*/
+  "packagetour-info":"Basic Information",
+  "packagetour-hoteles":"Hotels",
+  "packagetour-dias":"Tour days",
+  "packagetour-agregar":"Add Package",
+/*packagetour*/
+
+/*price*/
+  "price-info":"Basic Information",
+  "price-nuevo-precio":"New Price",
+  "price-servicio":"Service",
+  "price-aeropuerto":"Airport",
+  "price-ciudad":"City",
+  "price-zona":"Zone",
+  "price-sencillo":"Simple",
+  "price-redondo":"Round",
+  "price-activo":"Active",
+  "price-editar":"Edit",
+  "price-agregar-precio":"Add Price",
+/*price*/
+
+/*room*/
+  "room-base":"Base",
+  "room-tarifa-t":"Tarifas por temporada:",
+  "room-info":"Basic Information",
+/*room*/
+
+/*season*/
+  "season-temporadas-ano":"Years Season",
+  "season-agregar":"ADD NEW SEASON",
+  "season-temporadas":"SEASONS",
+  "season-semana":"Se encontraron 2 temporadas SEMANA SANTA",
+  "season-verano":"Se encontraron 4 temporadas VERANO",
+  "season-invieno":"Se encontraron 3 temporadas INVIERNO",
+  "season-nueva":"New season",
+  "season-nuevo-esq":"New scheme",
+  "season-info":"Basic Information",
+/*season*/
+
+/*service*/
+  "service-info":"Basic Information",
+  "service-nuevo":"New Service",
+  "service-agregar":"Add Service",
+  "service-dias":"Dias de Operación",
+  "service-selecion":"*Seleccionados en azul",
+  "service-info":"Basic Information",
+  "service-nuevo":"New Tour",
+  "service-agregar":"Add Tour",
+  "service-":"",
+/*service*/
+
+/*transfer*/
+  "transfer-info":"Basic Information",
+  "transfer-nuevo":"New Service",
+  "transfer-editar":"Edit",
+  "transfer-nombre":"Name:",
+  "transfer-pax":"Pax:",
+  "transfer-agregar":"Agregar servicio de Traslado",
+/*transfer*/
+
+/*tranferprice*/
+  "tranferprice-nuevo":"New Price",
+  "tranferprice-servicio":"Service:",
+  "tranferprice-aeropuerto":"Airport:",
+  "tranferprice-ciudad":"City",
+  "tranferprice-zona":"Zone",
+  "tranferprice-sencillo":"Simple",
+  "tranferprice-redondo":"Round",
+  "tranferprice-activo":"Active",
+  "tranferprice-guardar":"save",
+  "tranferprice-cancelar":"cancel",
+  "tranferprice-editar":"edit",
+  "tranferprice-info":"Basic Information",
+  "tranferprice-agencia":"Agency:",
+  "tranferprice-activo":"Active",
+  "tranferprice-guardar":"save",
+  "tranferprice-cancelar":"cancel",
+/*tranferprice*/
+
+/*user*/
+  "user-mensaje":"Message",
+  "user-actualizado":"El usuario se ha actualizado exitosamente",
+  "user-cambiar":"Cambiar contraseña",
+  "user-actual":"Actual",
+  "user-nueva":"New",
+  "user-misma":"* estas usando la misma contraseña",
+  "user-requerido":"* required field",
+  "user-minimo":"*minimo de 6 carateres de largo",
+  "user-vuelve":"Vuelve a escribir tu nueva contraseña",
+  "user-error":"* error revisa tu nueva contraseña no coincide",
+  "user-mostrar":"Mostrar caracteres",
+  "user-nuevo":"New User",
+  "user-nombre":"Name",
+  "user-apellido":"Last Name",
+  "user-mail":"E-mail",
+  "user-pass":"Password",
+  "user-agregar":"Add",
+  "user-cancelar":"Cancel",
+  "user-app":"Aplicaiones y Permisos",
+  "user-admin":"Administrator",
+  "user-perfil":"Profile",
+  "user-permiso":"Permission",
+  "user-roles":"Roles de usuario",
+  "user-selecciona":"Select",
+  "user-nombre":"Name",
+  "user-permiso":"Permission",
+  "user-escoger":"Choose",
+  "user-cerrar":"Close",
+  /*user*/
+
+/*zone*/
+  "zone-actualizado":"La zona se ha actualizado exitosamente",
+  "zone-info":"Basic Information",
+  "zone-info-e":"EXTRA INFORMATION",
+/*zone*/ 
 }

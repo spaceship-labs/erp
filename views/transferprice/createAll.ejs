@@ -6,17 +6,17 @@
 	window.content = <%- JSON.stringify(_content) %>;
 </script>
 <div ng-controller="priceCTL" >
-	<p><button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Nuevo Precio</button></p>
+	<p><button class="btn btn-primary" data-toggle="modal" data-target="#myModal"><%= __('tranferprice-nuevo')%></button></p>
 	<br/>
 	<div class='row-fluid'>
 		<!--<div class='span4'>
 			Compañía:<select ng-change='updatePrices()' ng-model='mycompany' ng-options="obj as obj.name for obj in companies" ></select>
 		</div>-->
 		<div class='span4'>
-			Servicio: <select ng-change='updatePrices()' ng-model='mytransfer' ng-options="obj as obj.name for obj in transfers" ></select>
+			<%= __('tranferprice-servicio')%> <select ng-change='updatePrices()' ng-model='mytransfer' ng-options="obj as obj.name for obj in transfers" ></select>
 		</div>
 		<div class='span4'>
-			Aeropuertos: <select ng-change='updatePrices()' ng-model='myairport' ng-options="obj as obj.name for obj in airports" ></select>
+			<%= __('tranferprice-aeropuerto')%> <select ng-change='updatePrices()' ng-model='myairport' ng-options="obj as obj.name for obj in airports" ></select>
 		</div>
 	</div>
 	<!--<p>Zonas:<select ng-model='myzone' ng-options="obj.id as obj.name for obj in zones" ></select></p>-->
@@ -27,8 +27,8 @@
 		</div>
 		<table class='table table-striped responsive'  ng-show='cs.prices.length'>
 			<thead><tr>
-				<th>Ciudad</th><th>Zona</th><th>Sencillo</th><th>Redondo</th><th>Activo</th>
-				<th>Editar</th>
+				<th><%= __('tranferprice-ciudad')%></th><th><%= __('tranferprice-zona')%></th><th><%= __('tranferprice-sencillo')%></th><th><%= __('tranferprice-redondo')%></th><th><%= __('tranferprice-activo')%></th>
+				<th><%= __('tranferprice-editar')%></th>
 			</tr></thead>
 			<tr ng-repeat='price in cs.prices'>
 				<td>{{airports[0].location.name}}</td>
@@ -51,14 +51,14 @@
 				<td>
 					<form editable-form name="rowform" onbeforesave="savePrice($data,price.id)" ng-show="rowform.$visible" class="form-buttons form-inline" >
 			          <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
-			            save
+			            <%= __('tranferprice-guardar')%>
 			          </button>
 			          <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default">
-			            cancel
+			            <%= __('tranferprice-cancelar')%>
 			          </button>
 			        </form>
 					<div class="buttons" ng-show="!rowform.$visible">
-			          <button class="btn btn-primary" ng-click="rowform.$show()">edit</button>
+			          <button class="btn btn-primary" ng-click="rowform.$show()"><%= __('tranferprice-editar')%></button>
 			        </div>
 				</td>
 			</tr>
