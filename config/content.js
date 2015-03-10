@@ -1028,5 +1028,21 @@ module.exports.content = {
 			//removeAction : '/hotel/removeFoodScheme',
 			removeAction:'/cupon/removeHotel'
 		},
+		{
+			label : 'Tours',
+			type : 'multi-select',
+			handle : 'tours',
+			object : 'tours',
+			//removeAction : '/hotel/removeFoodScheme',
+			removeAction:'/cupon/removeTour'
+		},
+		{
+			label : 'Servicios',
+			type : 'multi-select',
+			handle : 'transfers',
+			object : 'transfers',
+			//removeAction : '/hotel/removeFoodScheme',
+			removeAction:'/cupon/removeTransfer'
+		},
 	],
 };
