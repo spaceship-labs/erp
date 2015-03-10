@@ -12,9 +12,13 @@ module.exports = {
 	    if (c.length <= 0) {
 	    	return res.redirect('/setup');
 	    } else {
-				res.view({
-					layout:null
-				});
+  			if (req.isAuthenticated()) {
+	    		return res.redirect('/home/index');
+  			} else {
+					res.view({
+						layout:null
+					});
+				}
 	    }
 	  });
 	}
