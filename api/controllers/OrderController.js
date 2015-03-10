@@ -106,11 +106,13 @@ module.exports = {
       Reservation.find({ 'order' : req.params.id })
         .populate('hotel').populate('tour').populate('airport').populate('client').exec(function(err,reservations){
         Client_.find().sort('name').exec(function(e,clients_){ 
+          Client_.findOne(order.client).populate('contacts').exec(function(e,theclient){ 
           Transfer.find().sort('name').exec(function(e,transfers){ Hotel.find().sort('name').populate('location').populate('rooms').exec(function(e,hotels){
             order.reservations = reservations || [];
             Common.view(res.view,{
               order : order, 
               clients_ : clients_ ,
+              theclient : theclient ,
               hotels : hotels , 
               transfers : transfers ,
               page:{
@@ -124,7 +126,7 @@ module.exports = {
               ]
             },req);
           }); }); // transfer / hotel 
-        }); // client
+        }); }); // client
       });//reservation
     });
   },
