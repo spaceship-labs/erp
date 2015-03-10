@@ -46,3 +46,17 @@ app.controller('cuponEditCTL',function($scope,$http,$window){
     $scope.transfers = transfers;
     $scope.saveClass = 'fa-save';
 });
+
+app.controller('cuponSingleCTL',function($scope,$http,$window){
+    $scope.cupons = cupons;
+    $scope.cuponsSingle = cuponsSingle;
+    $scope.content = content;
+    $scope.getInfo = function(cupon){
+        return cupon;
+    };
+    $scope.createInstance = function(instance){
+        $http({method: 'POST', url: '/cuponSingle/create',data:instance}).success(function(res){
+            jQuery('#myModal').modal('hide');
+        });
+    };
+});

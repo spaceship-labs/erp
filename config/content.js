@@ -1044,5 +1044,32 @@ module.exports.content = {
 			//removeAction : '/hotel/removeFoodScheme',
 			removeAction:'/cupon/removeTransfer'
 		},
+
 	],
+	cuponSingle : [
+		{
+			label : 'Nombre',
+			type : 'text',
+			handle : 'name',
+		},
+		{
+			label : 'token',
+			type : 'text',
+			handle : 'token',
+		},
+    ],
+    cuponInstance:[
+		{
+			label : 'Nombre',
+			type : 'select',
+			handle : 'cupons',
+			object : 'cupons',
+		},
+		{
+			label : 'Cantidad',
+			type : 'text',
+			handle : 'count',
+		},
+    
+    ]
 };
