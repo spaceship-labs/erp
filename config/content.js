@@ -727,6 +727,23 @@ module.exports.content = {
             type : 'text'
         }
     ],
+    client_ct : [
+        {
+            label : 'Nombre',
+            handle : 'name',
+            type : 'text'
+        },
+        {
+            label : 'Telefono',
+            handle : "phone",
+            type : 'text'
+        },
+        {
+            label : 'E-mail',
+            handle : 'email',
+            type : 'text'
+        },
+    ],
     company_tax : [
         {
             label : 'Nombre',
