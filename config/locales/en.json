@@ -56,7 +56,7 @@
   "emp-descripcion":"Description",
   "emp-direccion":"Address 1",
   "emp-codigo-postal":"Código Postal",
-  "emp-moneda-pri":"Principal Currency ",
+  "emp-moneda-pri":"Main Currency ",
   "emp-monedas":"Coins",
   "emp-guardar":"Save",
   "emp-resetear":"Reset",
