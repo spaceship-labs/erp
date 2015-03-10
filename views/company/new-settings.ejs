@@ -1,5 +1,5 @@
 <p>
-	<label for="base_currency">Moneda Principal</label>
+	<label for="base_currency"><%= __('emp-moneda.pri') %></label>
 	<span class="field">
 		<select name="base_currency" class='chzn-select required'>
 		<%for(var i=0;i<currencies.length;i++){ %>
@@ -9,7 +9,7 @@
 	</span>
 </p>
 
-<p><label for="currencies">Monedas</label>
+<p><label for="currencies"><%= __('emp-monedas') %></label>
 <span class="field">
 	<select name="currencies" multiple="multiple" class="chzn-select required" data-placeholder="Agregar Monedas...">
 	<%for(var i=0;i<currencies.length;i++){ %>
@@ -18,7 +18,7 @@
 	</select>
 </span></p>
 
-<p><label for="apps">Aplicaciones</label>
+<p><label for="apps"><%= __('emp-aplicaciones') %></label>
 <span class="field">
 	<select name="apps" multiple="multiple" class="chzn-select required" data-placeholder="Agregar Aplicaciones...">
 		<%for(var handle in apps){ %>

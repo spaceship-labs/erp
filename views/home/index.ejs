@@ -10,8 +10,8 @@
 			chart-type="PolarArea"
 			chart-data="stats.data"
 			chart-labels="stats.labels"
-			chart-title="Cotizaciones"
-			not-found="No se encontraron cotizaciones"></div>
+			chart-title="<%= __('home-cotizaciones') %>"
+			not-found="<%= __('home-no-cotizaciones') %>"></div>
 		<% } %>
 		<div notices></div> 
 	</div>
@@ -22,9 +22,9 @@
 		chart-data-method="/reservation/statsCategoriesInDay"
 		chart-labels="['Tours', 'Hoteles', 'Traslados']"
 		day-date="dayDate"			
-		chart-title="Reservaciones por dia"
+		chart-title="<%= __('home-reservaciones-dia') %>"
 		day-picker="true"
-		not-found="No se encontraron reservaciones este dia"></div>
+		not-found="<%= __('home-no-reservaciones-dia') %>"></div>
 		<div class="span6" ng-controller="currencyCTL">
 			<%- partial('../admin/currencies_charts') -%> 
 		</div>	
@@ -32,6 +32,6 @@
 	<div class="row-fluid">
 		<div class="span12" 
 		time-line-chart 
-		chart-title="Reservaciones"></div>		
+		chart-title="<%= __('home-reservaciones') %>"></div>		
 	</div>
 </div>

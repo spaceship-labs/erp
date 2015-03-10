@@ -9,14 +9,14 @@
     	<div class="alert alert-block unseen">
     		<button data-dismiss="alert" class="close" type="button">×</button>
     		<h4>Mensaje</h4>
-    			<p style="margin: 8px 0">La empresa se ha actualizado exitosamente</p>
+    			<p style="margin: 8px 0"><%= __('emp-actualizar') %></p>
     	</div>
         
         <div profile-image object='company' update-method='/company/updateIcon' delete-method='/company/destroyIcon' image-attr='icon' dir='companies'></div>    
             
             
         <div class="widgetbox tags">
-                <h4 class="widgettitle">Aplicaciones</h4>
+                <h4 class="widgettitle"><%= __('emp-aplicaciones') %></h4>
                 <div class="widgetcontent">
                     <ul class="taglist" ng-repeat='app in selectedApps'>
         				<li><a>
@@ -30,16 +30,16 @@
                         <p>
                             <select ng-model="selectedApp" name="app" ng-options="app.label for app in missingApps" chosen="selectedApps">
                             </select>
-                            <button type='submit' class="btn btn-primary" ng-if="selectedApp">Agregar App</button>
+                            <button type='submit' class="btn btn-primary" ng-if="selectedApp"><%= __('emp-agregar-app') %></button>
                         </p>
                     </form>
-                    <p ng-if="missingApps.length == 0">Todas las aplicaciones estan agregadas</p>
+                    <p ng-if="missingApps.length == 0"><%= __('emp-app-agregada') %></p>
                 </div>
         </div>
 
 
         <div class="widgetbox tags">
-                <h4 class="widgettitle">Usuarios</h4>
+                <h4 class="widgettitle"><%= __('emp-usuarios') %></h4>
                 <div class="widgetcontent">
                     <ul class="taglist" ng-repeat='user in company.users'>
                         <li><a>
@@ -52,16 +52,16 @@
                         <input type='hidden' value='<%-company.id%>' name='company' />
                         <p>
                             <select ng-options="user.name for user in users | filter:filterUsers" ng-model="selectedUser" name="" chosen></select>
-                            <button ng-if="selectedUser" class="btn btn-primary ng-scope">Agregar Usuario</button>
+                            <button ng-if="selectedUser" class="btn btn-primary ng-scope"><%= __('emp-agregar-usuario') %></button>
                         </p>
-                        <p><a href="/users/new_user/" style="display:block;margin-top:10px">+ Agregar Usuarios</a></p>
+                        <p><a href="/users/new_user/" style="display:block;margin-top:10px"><%= __('emp-agregar-usuarios') %></a></p>
                     </form>
-                    <p ng-if="company.users.length == users.length">Todos los usuarios estan agregados</p>
+                    <p ng-if="company.users.length == users.length"><%= __('emp-todos-usuarios') %></p>
                 </div>
         </div>
 
         <div class="widgetbox">
-            <h4 class="widgettitle">Impuestos <span ng-click='toggleNewTax()'  class='fa icon' ng-class='newTaxClass'></span>  </h4>
+            <h4 class="widgettitle"><%= __('emp-impuestos') %> <span ng-click='toggleNewTax()'  class='fa icon' ng-class='newTaxClass'></span>  </h4>
             <div class="widgetcontent">
                 <div ng-show='showTaxForm'>
                     <div form-helper
@@ -90,11 +90,11 @@
         </div>
 
         <div class="widgetbox">
-                <h4 class="widgettitle">Archivos</h4>
+                <h4 class="widgettitle"><%= __('emp-archivos') %></h4>
                 <div class="widgetcontent">
                     <form method="post" ng-submit='' ng-if="">
                         <p>
-                            <label>Acta constitutiva</label>
+                            <label><%= __('emp-acta') %></label>
                             <span class='field'>
                                 <div class='fileBtn btn fileinput-button'>
                                     <input type='text' name='file' data-url='/company/addFile'>
@@ -102,7 +102,7 @@
                             </span>
                         </p>
                         <p>
-                            <label>Rep. legal acta</label>
+                            <label><%= __('emp-legal-acta') %></label>
                             <span class='field'>
                                 <div class='fileBtn btn fileinput-button'>
                                     <input type='text' name='file' data-url='/company/addFile'>

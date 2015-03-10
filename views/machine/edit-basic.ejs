@@ -1,17 +1,17 @@
 <p>
-    <label for="name">Nombre* :</label>
+    <label for="name"><%= __('machine-nombre') %></label>
     <span class="field"><input type="text" id="name" name="name" class="form-control" ng-model='machine.name' ng-required /></span>
 </p>
 <p>
-    <label for="description">Descripcion :</label>
+    <label for="description"><%= __('machine-descripcion') %></label>
     <span class="field"><textarea id="description" name="description" class="form-control" ng-model='machine.description'></textarea></span>
 </p>
 <p>
-    <label for="internalreference">Referencia Interna :</label>
+    <label for="internalreference"><%= __('machine-referencia') %></label>
     <span class="field"><input type="text" id="internalreference" name="internalReference" class="form-control" ng-model='machine.internalReference' /></span>
 </p>
 <p>
-    <label for="machine_type">Tipo :</label>
+    <label for="machine_type"><%= __('machine-tipo') %></label>
     <span class="field">
         <select id="machine_type" ng-options="type as type for type in ['router','laminadora','corte','impresora']" ng-model="machine.machine_type" ng-required></select>
     </span>

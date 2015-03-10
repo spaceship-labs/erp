@@ -3,7 +3,7 @@
 	window.content = <%- JSON.stringify(_content) %>;
 </script>
 <div ng-controller='hroomviewCTL'>
-	<p><button class="btn btn-primary" data-toggle="modal" data-target="#myModal"><i class='fa fa-plus'></i> Nueva Vista</button></p>
+	<p><button class="btn btn-primary" data-toggle="modal" data-target="#myModal"><i class='fa fa-plus'></i><%= __('hotel-vista') %> </button></p>
 	<br/>
 	<div table-helper inline-edit="/hotelroomview/update/" objects='hviews' columns='content.hotelRoomView' route='room'></div>
 	<div class="clearfix"></div>
@@ -16,7 +16,7 @@
 			        form-footer='Agregar'
 			        form-save = 'createView'
 			        object = 'hview'
-			        form-title='Agregar Vista'
+			        form-title='<%= __('hotel-agregar-vista') %>'
 			       	modal='true'
 			        >
 			    </div>

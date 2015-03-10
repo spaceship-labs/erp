@@ -11,7 +11,7 @@
 		 dir='companies' 
 		 edit-url='/company/edit/' 
 		 get-info='getInfo' 
-		 button-text='Nueva Empresa'
+		 button-text='<%= __('emp-nueva-emp') %>'
 		 >
 	</div>
 	<div class="modal fade" id="myModal">
@@ -23,7 +23,7 @@
 			        form-footer='Agregar'
 			        form-save = 'createCompany'
 			        object = 'newcompany'
-			        form-title='Agregar Empresa'
+			        form-title='<%= __('emp-agregar-emp') %>'
 			       	modal='true'
 			       	objects='{currencies:currencies,apps:company.apps}'
 			        >

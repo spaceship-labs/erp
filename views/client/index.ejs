@@ -5,7 +5,7 @@
                 <!-- Single button -->
                 <div class="btn-group">
                     <button type="button" class="btn btn-default button-orange dropdown-toggle" data-toggle="dropdown">
-                        <span class="table-icon fa fa-filter"></span> FILTROS <span class="fa fa-caret-down"></span>
+                        <span class="table-icon fa fa-filter"></span><%= __('client-filtros') %>  <span class="fa fa-caret-down"></span>
                     </button>
                     <ul class="dropdown-menu" role="menu">
                         <li><a href="#">Action</a></li>
@@ -13,16 +13,16 @@
                         <li><a href="#">Something else here</a></li>
                     </ul>
                 </div>
-                <a class="btn btn-default button-orange" data-toggle="modal" data-target="#addClientModal"><span class="table-icon fa fa-plus"></span> AGREGAR CLIENTE</a>
+                <a class="btn btn-default button-orange" data-toggle="modal" data-target="#addClientModal"><span class="table-icon fa fa-plus"></span>   <%= __('client-agregar-cliente') %></a>
             </div>
             <div class="widgetcontent custom-table nopadding">
                 <table class="table table-striped">
                     <tr>
-                        <th>Nombre</th>
-                        <th>Direccion</th>
-                        <th>Telefono</th>
-                        <th>RFC</th>
-                        <th>Accion</th>
+                        <th><%= __('client-nombre') %></th>
+                        <th><%= __('client-direccion') %></th>
+                        <th><%= __('client-contacto') %></th>
+                        <th><%= __('client-rfc') %></th>
+                        <th><%= __('client-accion') %></th>
                     </tr>
                     <% for(var i = 0; i< clients.length; i++){ %>
                     <tr>
