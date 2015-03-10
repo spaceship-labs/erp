@@ -1,4 +1,6 @@
 $(document).ready(function() {
+  $('#wizard-form').parsley();
+
   $('#wizard-form').steps({
     headerTag: 'header',
     bodyTag: 'section',
@@ -23,7 +25,7 @@ $(document).ready(function() {
       if (form.parsley().validate() === true) {
         return true;
       }
-      return true;
+      return false;
     },
     onFinished: function(event, currentIndex) {
       var form = $('#wizard-form');
