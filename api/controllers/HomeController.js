@@ -33,6 +33,15 @@ module.exports = {
 			}
 		},req);
 	}
+
+	, changeLang: function(req, res){
+		var params = req.params.all();
+		var lang = params.lang;
+
+		req.session.lang = lang;
+		req.setLocale(lang);
+		res.redirect('/');
+	}
 	//notices
 	, noticeSuscribeAll: function(req,res){
 		getCompanies(req.session.passport.user.id,function(err,comp){
