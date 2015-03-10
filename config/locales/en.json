@@ -55,7 +55,7 @@
   "emp-nombre":"Name*",
   "emp-descripcion":"Description",
   "emp-direccion":"Address 1",
-  "emp-codigo-postal":"Código Postal",
+  "emp-codigo-postal":"Postal Code",
   "emp-moneda-pri":"Main Currency ",
   "emp-monedas":"Coins",
   "emp-guardar":"Save",
@@ -163,7 +163,7 @@
   "order-autorizacion":"Código de autorización",
   "order-pax":"PAX",
   "order-origen":"Origen del viaje",
-  "order-viaje":"Type de viaje",
+  "order-viaje":"Tipo de viaje",
   "order-tarifa":"Rate",
   "order-round":"Round trip",
   "order-one":"One way",
@@ -201,8 +201,8 @@
 
 /*packagetour*/
   "packagetour-info":"Basic Information",
-  "packagetour-hoteles":"Hoteles",
-  "packagetour-dias":"Días de tour",
+  "packagetour-hoteles":"Hotels",
+  "packagetour-dias":"Tour days",
   "packagetour-agregar":"Add Package",
 /*packagetour*/
 
@@ -227,7 +227,7 @@
 /*room*/
 
 /*season*/
-  "season-temporadas-ano":"TEMPORADAS AÑO",
+  "season-temporadas-ano":"Years Season",
   "season-agregar":"ADD NEW SEASON",
   "season-temporadas":"SEASONS",
   "season-semana":"Se encontraron 2 temporadas SEMANA SANTA",
@@ -256,7 +256,7 @@
   "transfer-editar":"Edit",
   "transfer-nombre":"Name:",
   "transfer-pax":"Pax:",
-  "transfer-agregar":"Add Service de Traslado",
+  "transfer-agregar":"Agregar servicio de Traslado",
 /*transfer*/
 
 /*tranferprice*/
