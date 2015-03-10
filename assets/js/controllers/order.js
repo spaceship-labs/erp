@@ -25,8 +25,8 @@ app.controller('orderCTL',function($scope,$http){
     };
     //$scope.formaOrders();
 });
-app.controller('orderNewCTL',function($scope,$http,$window){
-    $scope.alertM = { show: false, client : false, allEmpty: false };
+app.controller('orderNewCTL',function($scope,$http,$window)
+{    $scope.alertM = { show: false, client : false, allEmpty: false };
     $scope.clients_ = clients_;
     $scope.hotels = hotels;
     $scope.allTours = allTours;
@@ -279,11 +279,24 @@ app.controller('orderNewCTL',function($scope,$http,$window){
             }
         }
     }
-    var validatetH = function(){}
+    var validatetH = function(){};
+    $scope.USClient = true;
+    $scope.saveContact = function(){
+        console.log('contact entra');
+        if($scope.client && $scope.contact.name && $scope.contact.email && $scope.contact.phone ){
+            $scope.contact.client = $scope.client.id;
+            //$http({method: 'POST', url: '/client/add_contact2',params:$scope.contact}).success(function (result){
+            $http.post('/client/add_contact2',$scope.contact,{}).success(function(result) {
+                $scope.contact.id = result.id;
+                console.log(result);
+            });
+        }
+    };
 });
 app.controller('orderEditCTL',function($scope,$http,$window){
     $scope.content = content;
     $scope.order = order;
+    $scope.theclient = theclient;
     $scope.user = user;
     $scope.hotels = hotels;
     $scope.clients_ = clients_;

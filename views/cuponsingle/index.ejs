@@ -1,0 +1,28 @@
+<script type='text/javascript'>
+	window.cupons = <%- JSON.stringify(cupons) %>;
+	window.cuponsSingle = <%- JSON.stringify(cuponsSingle) %>;
+	window.content = <%- JSON.stringify(_content) %>;
+</script>
+<div ng-controller='cuponSingleCTL' >
+    <p><button class="btn btn-primary" data-toggle="modal" data-target="#myModal"><i class='fa fa-plus'></i> Nueva instancia</button></p>
+    <br> 
+    <div table-helper inline-edit="/foodscheme/update/" objects='cuponsSingle' columns='content.cuponSingle' route='cuponsingle'></div>
+	<div class="modal fade" id="myModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div 
+					form-helper 
+			        fields='content.cuponInstance' 
+			        form-footer='Generar'
+			        form-save = 'createInstance'
+			        object = 'instance'
+                    objects='{cupons:cupons}'
+			        form-title='Agregar instancias'
+			       	modal='true'
+			        >
+			    </div>
+			</div>
+		</div>
+	</div>
+
+</div>

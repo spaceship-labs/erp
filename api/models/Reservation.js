@@ -24,7 +24,8 @@ module.exports = {
 		},
 		transfer : {
 			model : 'transfer'
-		}
+		},
+		fee : 'integer'
 	}
   	,migrate : "safe"
 }
