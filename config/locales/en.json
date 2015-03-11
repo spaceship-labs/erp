@@ -33,8 +33,9 @@
 "client-nombre":"Name",
 "client-direccion":"Address",
 "client-contacto":"Phone",
-"client-rfc":"RFC",
+"client-rfc":"TIN",
 "client-accion":"Action",
+"client-select":"Select Client",
 
   "emp-nueva-emp":"New Company",
   "emp-agregar-emp":"Add Company",
@@ -128,7 +129,7 @@
   "order-usuario":"User",
   "order-empresa":"Company",
   "order-llegada":"Arrival",
-  "order-salida":"Salida",
+  "order-salida":"Departure",
   "order-cliente":"Client",
   "order-hotel":"Hotel",
   "order-aeropuerto":"Airport",
@@ -242,7 +243,10 @@
   "tranferprice-agencia":"Agency:",
   "tranferprice-activo":"Active",
   "tranferprice-guardar":"save",
-  "tranferprice-cancelar":"cancel",
+  "tranferprice-cancelar":"cancel"
+
+  ,"tour-info":"Information Tour"
+  ,"tour-dias":"Tour days",
 
   "user-mensaje":"Message",
   "user-actualizado":"User has been successfully updated ",
@@ -320,7 +324,7 @@
   ,"d_primaryImg" : "Primary image"
   ,"d_charge" : "Loading"
   ,"d_empty" : "Empty"
-  ,"d_notifications" : "Notificaciones"
+  ,"d_notifications" : "Notifications"
 
   ,"c_name" : "Name"
   ,"c_created" : "Created"
@@ -362,4 +366,15 @@
   ,"sc_tour" : "Tours"
   ,"sc_transfer" : "Transfers"
   ,"sc_users" : "Users"
+
+  ,"layout-desarrollo":"development"
+  ,"partial-cargar":"Loading"
+  ,"location-gregar-ciudad":"Add City"
+  ,"hotel-contenido":"Content"
+  ,"season-agregar-esq":"Add Escheme"
+  ,"":""
+  ,"":""
+  ,"":""
+  ,"":""
+  ,"":""
 }

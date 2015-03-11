@@ -38,7 +38,7 @@
         	</div>
         	<div ng-repeat='file in loading track by $index' class='loader' >
         		<img src='/images/loaders/images-cm.gif' />
-        		<p>Cargando <span ng-bind='file'></span>%</p>
+        		<p><%= __('partial-cargar') %> <span ng-bind='file'></span>%</p>
         	</div>
         	<div class='clearfix'></div>
         </div>

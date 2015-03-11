@@ -22,7 +22,6 @@
 
 "client-mensaje":"Mensaje",
 "client-cliente-actualizado":"El cliente se ha actualizado exitosamente",
-"client-mensaje":"",
 "client-guardar":"Guardar",
 "client-cancelar":"Cancelar",
 "client-precios-especiales":"Precios especiales",
@@ -31,11 +30,12 @@
 "client-contactos":"Contactos",
 "client-filtros":"FILTROS",
 "client-agregar-cliente":"AGREGAR CLIENTE",
-"client-nombre":"Nombre",
-"client-direccion":"Direccion",
-"client-contacto":"Telefono",
-"client-rfc":"RFC",
+"client-nombre":"Nombre*",
+"client-direccion":"Direccion*",
+"client-contacto":"Telefono*",
+"client-rfc":"RFC*",
 "client-accion":"Accion",
+"client-select":"Seleccionar Cliente",
 
   "emp-nueva-emp":"Nueva Empresa",
   "emp-agregar-emp":"Agregar Empresa",
@@ -180,19 +180,110 @@
   "order-selecc":"Selecciona un cliente",
   "order-reservar":"Reservar",
   "order-agregar":"Agregar",
-  "order-":"",
-  "order-":"",
-  "order-":"",
-  "order-":"",
-  "order-":"",
-  "order-":"",
-  "order-":"",
-  "order-":"",
-  "order-":"",
-  "order-":"",
-  "order-":"",
-  "order-":"",
-  "order-":"",
+
+"packageitem-":"",
+
+  "packagetour-info":"Informacion básica",
+  "packagetour-hoteles":"Hoteles",
+  "packagetour-dias":"Disas del tour",
+  "packagetour-agregar":"Agregar paquete",
+
+  "price-info":"Informacion básica",
+  "price-nuevo-precio":"Nuevo precio",
+  "price-servicio":"Servicio",
+  "price-aeropuerto":"Aeropuerto",
+  "price-ciudad":"Ciudad",
+  "price-zona":"Zona",
+  "price-sencillo":"Sencillo",
+  "price-redondo":"Redondo",
+  "price-activo":"Activo",
+  "price-editar":"Editar",
+  "price-agregar-precio":"AGregar Precio",
+
+  "room-base":"Base",
+  "room-tarifa-t":"Tarifa Temporadas :",
+  "room-info":"Informacion básica",
+
+  "season-temporadas-ano":"Temporada Año",
+  "season-agregar":"Agregar nueva temporada",
+  "season-temporadas":"TEMPORADAS",
+  "season-semana":"Se encontraron 2 temporadas SEMANA SANTA",
+  "season-verano":"Se encontraron 4 temporadas VERANO",
+  "season-invieno":"Se encontraron 3 temporadas INVIERNO",
+  "season-nueva":"Nueva Temporada",
+  "season-nuevo-esq":"Nuevo Esquema",
+  "season-info":"Informacion básica",
+
+  "service-info":"Informacion básica",
+  "service-nuevo":"Nuevo Servicio",
+  "service-agregar":"Agregar servicio",
+  "service-dias":"Dias de opreracion",
+  "service-selecion":"*SEleccionado en azul",
+  "service-info":"Informacion básica",
+  "service-nuevo":"Nuevo tour",
+  "service-agregar":"Agregar tour",
+
+  "transfer-info":"Informacion básica",
+  "transfer-nuevo":"Nuevo servicio",
+  "transfer-editar":"Editar",
+  "transfer-nombre":"Nombre:",
+  "transfer-pax":"Pax:",
+  "transfer-agregar":"Agregar servicio de traslado",
+
+  "tranferprice-nuevo":"Precio nuevo",
+  "tranferprice-servicio":"Servicio:",
+  "tranferprice-aeropuerto":"Aeropuerto:",
+  "tranferprice-ciudad":"Ciudad",
+  "tranferprice-zona":"Zona",
+  "tranferprice-sencillo":"Sencillo",
+  "tranferprice-redondo":"Redondo",
+  "tranferprice-activo":"Activo",
+  "tranferprice-guardar":"guardar",
+  "tranferprice-cancelar":"cancelar",
+  "tranferprice-editar":"editar",
+  "tranferprice-info":"Informacion básica",
+  "tranferprice-agencia":"Agencia:",
+  "tranferprice-activo":"Activo",
+  "tranferprice-guardar":"guardar",
+  "tranferprice-cancelar":"cancelar"
+
+  ,"tour-info":"Informacion del Tour"
+  ,"tour-dias":"Dias del tour",
+
+  "user-mensaje":"Mensaje",
+  "user-actualizado":"Usuario actualizado",
+  "user-cambiar":"Cambiar contraseña",
+  "user-actual":"Actual",
+  "user-nueva":"nueva",
+  "user-misma":"* Estas usando la misma contraseña",
+  "user-requerido":"* campo requerido",
+  "user-minimo":"*MIni 6 caracteres",
+  "user-vuelve":"Error repite la contraseña",
+  "user-error":"* Passwords do not match ",
+  "user-mostrar":"Mostrar caracteres ",
+  "user-nuevo":"Nuevo usuario",
+  "user-nombre":"Nombrere",
+  "user-apellido":"Apellido",
+  "user-mail":"E-mail",
+  "user-pass":"Contraseña",
+  "user-agregar":"Agregar",
+  "user-cancelar":"Cancelar",
+  "user-app":"APlicaciones y permisos",
+  "user-admin":"Administrador",
+  "user-perfil":"Perfil",
+  "user-permiso":"permisos",
+  "user-roles":"roles de usuario ",
+  "user-selecciona":"Seleccionar",
+  "user-nombre":"Nombre",
+  "user-permiso":"permisos",
+  "user-escoger":"escojer",
+  "user-cerrar":"Cerrar",
+
+  "zone-actualizado":"zona actualizada",
+  "zone-info":"Informacion básica",
+  "zone-info-e":"Informacion extra",
+
+
 
   "Directivas. Agregador por Erick" : ""
   ,"d_reset" : "Limpiar campos"
@@ -279,4 +370,11 @@
   ,"sc_tour" : "Tours"
   ,"sc_transfer" : "Traslados"
   ,"sc_users" : "Usuarios"
+
+  ,"layout-desarrollo":"desarrollo"
+  ,"partial-cargar":"Cargando"
+  ,"location-gregar-ciudad":"Agregar Ciudad"
+  ,"hotel-contenido":"Contenido"
+  ,"season-agregar-esq":"Agregar Esquema"
+
 }

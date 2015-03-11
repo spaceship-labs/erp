@@ -17,7 +17,7 @@
                 fields='content.hotel' 
                 object='hotel' 
                 action='/hotel/update' 
-                form-title='INFORMACIÓN BASICA'
+                form-title='<%= __('machine-info') %>'
                 objects='{locations:locations,schemes:schemes,zones:zones,categories:categories,foodSchemes:foodSchemes}'
                 onchanges = "{'getZones' : getZones}"
                 >
@@ -40,7 +40,7 @@
                 fields='content.hotelLangs' 
                 object='hotel' 
                 action='/hotel/update' 
-                form-title='Contenido'
+                form-title='<%= __('hotel-contenido') %>'
                 objects='objects'
                 >
             </div>
