@@ -47,5 +47,8 @@
     "url": "ssh://spaceadmin@projects.spaceshiplabs.com:10022/var/cache/git/spaceerp.git"
   },
   "author": "spaceShipLabs",
-  "license": ""
+  "license": "",
+  "devDependencies": {
+    "should": "^5.1.0"
+  }
 }
