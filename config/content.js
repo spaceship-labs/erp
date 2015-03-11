@@ -1095,41 +1095,6 @@ module.exports.content = {
 			handle : 'description',
 		},
 	],
-	cuponInstance:[
-		{
-			label : 'Tipo',
-			type : 'select',
-			handle : 'cupons',
-			object : 'cupons',
-			required : true,
-		},
-		{
-			label : 'Cantidad',
-			type : 'text',
-			handle : 'count',
-			required : true,
-		},
-		{
-			label : 'Fecha de expiración',
-			type : 'date',
-			handle : 'expiration',
-			options : {
-			    formatYear: 'yy',
-			    startingDay: 1
-			}
-		},
-		{
-			label : 'Multiple',
-			type : 'checkbox',
-			handle : 'multiple',
-		},
-		{
-			label : 'Descripción',
-			type : 'text',
-			handle : 'description',
-		},
-    
-	],
 	cuponSingleEdit : [
 		{
 			label : 'token',

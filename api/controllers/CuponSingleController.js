@@ -23,22 +23,19 @@ module.exports = {
         });
     },
     create: function(req,res){
-        var form = req.params.all(),
-        dumpArray = new Array(parseInt(form.count));
-	form.multiple = form.multiple?true:false;
-        Cupon.findOne({id:form.cupons}).exec(function(err,cuponBase){
-            var generates = [];
-            async.eachSeries(dumpArray,function(i,next){
-                CuponSingle.create({cupon:form.cupons,expiration:form.expiration,multiple:form.multiple,description:form.description}).exec(function(err,cupon){
-                    cupon.name = cuponBase.name;
-                    generates.push(cupon);
-                    next(err);
-                });
-            },function(err){
-                if(err) return res.json([]);
-                res.json(generates);
-            });    
-        });
+        var form = req.params.all();
+        //dumpArray = new Array(parseInt(form.count));
+        form.multiple = form.multiple?true:false;
+        delete form.id;
+        if(form.token){
+            CuponSingle.findOne({token:form.token}).exec(function(err,cuponExist){
+                if(cuponExist) return res.json(false);
+                
+                createCuponAndResponse(form,res);
+            });
+        }else{
+            createCuponAndResponse(form,res);
+        }
     },
     edit:function(req,res){
         var id = req.param('id'); 
@@ -57,3 +54,12 @@ module.exports = {
         });
     }
 };
+
+function createCuponAndResponse(form,res){
+    Cupon.findOne({id:form.cupon}).exec(function(err,cuponBase){
+        CuponSingle.create(form).exec(function(err,cupon){
+            cupon.name = cuponBase.name;
+            res.json([cupon]);
+        }); 
+    });
+}
