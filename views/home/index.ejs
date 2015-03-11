@@ -5,13 +5,13 @@
 <div ng-controller="dashboardCTL">
 	<div class='row-fluid' >
 		<% if (req.user.hasPermission(req.res.locals.selected_company.id,'cotizaciones')) {%>
-			<div class="span6"
+			<!--<div class="span6"
 			statistics-chart 
 			chart-type="PolarArea"
 			chart-data="stats.data"
 			chart-labels="stats.labels"
 			chart-title="Cotizaciones"
-			not-found="No se encontraron cotizaciones"></div>
+			not-found="No se encontraron cotizaciones"></div>-->
 		<% } %>
 		<div notices></div> 
 	</div>
