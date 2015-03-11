@@ -34,6 +34,10 @@ module.exports = {
         user : {
             model : 'user'
         },
+        cuponSingle:{
+            collection:'cuponSingle',
+            via:'cupon'
+        }
 
     },
 

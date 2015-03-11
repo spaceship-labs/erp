@@ -255,7 +255,7 @@ module.exports.apps = [
             {
                 label : 'Instancias cupones',
                 icon : 'fa-ticket',
-                url : '/cupon/',
+                url : '/cuponSingle/',
                 showInMenu : true
             },
             /*'/transfer/' : {

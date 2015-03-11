@@ -27,6 +27,7 @@
                     } 
                 }
                 else if(period == 'month'){
+                    $scope.chartDate = moment().startOf('month').toDate();
                     $scope.format = 'yyyy-MM';
                     var firstDay = moment($scope.chartDate);
                     var lastDay = moment(firstDay).endOf('month');

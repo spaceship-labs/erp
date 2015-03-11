@@ -28,23 +28,23 @@ module.exports = {
         commonFinds({id:req.param('id')},function(err,finds){
             finds.cupon = finds.cupons[0];
             finds.page = {
-                    name:finds.cupon.name,
-                    icon:'fa fa-ticket',
-                    controller : 'cupon.js'
+                name:finds.cupon.name,
+                icon:'fa fa-ticket',
+                controller : 'cupon.js'
             };
             finds.breadcrumb = [
-					{ label : 'Cupones' }
+                { label : 'Cupones' }
             ];
             Common.view(res.view,finds,req); 
         });
     },
-    removeHotel : function(req,res){
+    removeHotel:function(req,res){
         commonRemove(req.params.all(),'hotels',res);
     },
-    removeTour : function(req,res){
+    removeTour:function(req,res){
         commonRemove(req.params.all(),'tours',res);
     },
-    removeTransfer : function(req,res){
+    removeTransfer:function(req,res){
         commonRemove(req.params.all(),'transfers',res);
     }
 };
