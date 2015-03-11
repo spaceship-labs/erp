@@ -376,7 +376,7 @@ h1,h2,h3,h4,h5 { font-weight: normal; line-height: normal; }
 }
 .stdform2 .stdformbutton { margin-left: 0; padding: 15px; background: #fff; }
 .stdform2 input { margin: 0; }
-.stdform2 input[type=checkbox], .stdform2 input[type=radio] { margin: 10px; }
+.stdform2 input[type=checkbox], .stdform2 input[type=radio] { margin: 10px;max-width: 16px;margin: 0 auto; }
 
 .dualselect { display: block; }
 .dualselect select { height: 200px; width: 40%; padding: 0; outline: none; }
