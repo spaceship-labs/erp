@@ -6,17 +6,7 @@
     window.transfers = <%- JSON.stringify(transfers) %>;
 </script>
 <div ng-controller='cuponEditCTL' class="editar-tour ng-cloak">
-    <div class="span4 profile-left profileEdit">
-        <div profile-image 
-            object='cupon' 
-            update-method='/cupon/updateIcon' 
-            delete-method='/cupon/destroyIcon' 
-            image-attr='icon' 
-            dir='cupon'>
-        </div> 
-
-    </div>
-    <div class="span6">
+    <div class="span8">
         <div form-helper 
             fields='content.cupons' 
             object='cupon' 

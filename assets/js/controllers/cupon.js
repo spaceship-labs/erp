@@ -49,14 +49,25 @@ app.controller('cuponEditCTL',function($scope,$http,$window){
 
 app.controller('cuponSingleCTL',function($scope,$http,$window){
     $scope.cupons = cupons;
-    $scope.cuponsSingle = cuponsSingle;
+    $scope.cuponsSingle = cuponsSingle.map(function(e){
+            e.name = e.cupon.name;
+            return e;
+        });
     $scope.content = content;
     $scope.getInfo = function(cupon){
         return cupon;
     };
     $scope.createInstance = function(instance){
         $http({method: 'POST', url: '/cuponSingle/create',data:instance}).success(function(res){
+            $scope.cuponsSingle = res.concat($scope.cuponsSingle);
             jQuery('#myModal').modal('hide');
         });
     };
+});
+
+app.controller('cuponSingleEditCTL',function($scope,$http,$window){
+    cuponSingle.cupon = cuponSingle.cupon.id;
+    $scope.cupon = cupons;
+    $scope.cuponSingle = cuponSingle;
+    $scope.content = content;
 });

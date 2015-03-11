@@ -991,6 +991,7 @@ module.exports.content = {
 			label : 'Nombre',
 			type : 'text',
 			handle : 'name',
+			required : true,
 		},
 		{
 			label : 'Descuento viaje sencillo',
@@ -1077,16 +1078,33 @@ module.exports.content = {
     ],
     cuponInstance:[
 		{
-			label : 'Nombre',
+			label : 'Tipo',
 			type : 'select',
 			handle : 'cupons',
 			object : 'cupons',
+			required : true,
 		},
 		{
 			label : 'Cantidad',
 			type : 'text',
 			handle : 'count',
+			required : true,
 		},
     
-    ]
+    ],
+	cuponSingleEdit : [
+		{
+			label : 'token',
+			type : 'text',
+			handle : 'token',
+		},
+		{
+			label : 'Tipo',
+			type : 'select',
+			handle : 'cupon',
+			object : 'cupon',
+			required : true,
+		},
+
+    ],
 };
