@@ -149,6 +149,21 @@
         <script src="/js/controllers/<%- controllers[i] -%>"></script>
   <% }
   } %>
+    <script type='text/javascript'>
+        //Definición de lenguajes para la directivas
+        app.run(function($rootScope){
+            $rootScope.lang = content.lang;
+            $rootScope.translates = {};
+            $rootScope.translates.d_reset = '<%= __("d_reset") %>';
+            $rootScope.translates.d_dom = '<%= __("d_dom") %>';
+            $rootScope.translates.d_lun = '<%= __("d_lun") %>';
+            $rootScope.translates.d_mar = '<%= __("d_mar") %>';
+            $rootScope.translates.d_mie = '<%= __("d_mie") %>';
+            $rootScope.translates.d_jue = '<%= __("d_jue") %>';
+            $rootScope.translates.d_vie = '<%= __("d_vie") %>';
+            $rootScope.translates.d_sab = '<%= __("d_sab") %>';
+        });
+    </script>
 
   <!--<script type="text/javascript">-->
       <!--window.onbeforeunload = function(){-->

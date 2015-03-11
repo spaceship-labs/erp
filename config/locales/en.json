@@ -2,7 +2,6 @@
   "h-edit": "Profile edit" ,
   "h-sesion": "Logout",
 
-  /*Admin*/
 "admin-mensaje":"Message",
 "admin-user-actualizado":"El usuario se ha actualizado exitosamente",
 "admin-tipo-cambio":"Type change",
@@ -13,14 +12,10 @@
 "admin-porcentaje-comision":"Porcentaje de Comisión por Cambio de Currency",
 "admin-monedas":"Coins",
 "admin-agregar-moneda":"Add Currency",
-/*Admin*/
 
-/*airport*/
 "airport-mensaje":"Message",
 "airport-creo-exitoso":"El aeropuerto se creó exitosamente",
-/*airport*/
 
-/*client*/
 "client-mensaje":"Message",
 "client-cliente-actualizado":"El cliente se ha actualizado exitosamente",
 "client-guardar":"Save",
@@ -36,9 +31,7 @@
 "client-contacto":"Phone",
 "client-rfc":"RFC",
 "client-accion":"Action",
-/*client*/
 
-/*empresas*/
   "emp-nueva-emp":"New Company",
   "emp-agregar-emp":"Add Company",
   "emp-actualizar":"La empresa se ha actualizado exitosamente",
@@ -61,20 +54,14 @@
   "emp-guardar":"Save",
   "emp-resetear":"Reset",
   "emp-impuestos":"Taxation",
-/*empresas*/
 
-/*foodscheme*/
   "food-new-esquema":"New Escheme",
-/*foodscheme*/
 
-/*global*/
   "global-empresas":"Company",
   "global-cambiar":"Change company",
   "global-tablero":"Panel",
   "global-notificaciones":"Notifications",
-/*global*/
 
-/*hoteles*/
   "hotel-habitaciones":"Rooms",
   "hotel-agregar":"ADD NEW HOTEL",
   "hotel-nombre":"Name*",
@@ -87,9 +74,7 @@
   "hotel-guardar":"Save",
   "hotel-vista":"New View",
   "hotel-agregar-vista":"Add View",
-/*hoteles*/
 
-/**home**/
   "home-cotizaciones": "Quotes",
   "home-no-cotizaciones": "No se encontraron cotizaciones",
   "home-reservaciones-dia":"Reservations per day",
@@ -97,9 +82,7 @@
   "home-reservaciones":"Reservations",
   "home-tipo-cambio":"tipo de cambio historico",
   "home-user-invalid":"Usuario o password invalido",
-/**home**/
 
-/*location*/
   "location-zonas":"Zones",
   "location-relacionar":"Relacionar con otras ciudades",
   "location-agregar":"Add City",
@@ -107,9 +90,7 @@
   "location-secreo-exit":"La ciudad se creó exitosamente",
   "location-nueva-ciudad":"New City",
   "location-cerrar":"Close",
-/*location*/
 
-/*machine*/
   "machine-nombre":"Name* :",
   "machine-descripcion":">Description :",
   "machine-referencia":"Internal reference :",
@@ -133,9 +114,7 @@
   "machine-nueva":"New Machinery",
   "machine-cerrar":"Close",
   "machine-editar":"Edit",
-/*machine*/
 
-/*order*/
   "order-guardar-todo":"Save all",
   "order-reservar-tras":"Transfer Reservation ",
   "order-reservar-tour":"Reservation Tours ",
@@ -193,20 +172,14 @@
   "order-selecc":"Select client",
   "order-reservar":"Reserve",
   "order-agregar":"Add",
-/*order*/
 
-/*packageitem*/
   "packageitem-":"",
-/*packageitem*/
 
-/*packagetour*/
   "packagetour-info":"Basic Information",
   "packagetour-hoteles":"Hotels",
   "packagetour-dias":"Tour days",
   "packagetour-agregar":"Add Package",
-/*packagetour*/
 
-/*price*/
   "price-info":"Basic Information",
   "price-nuevo-precio":"New Price",
   "price-servicio":"Service",
@@ -218,15 +191,11 @@
   "price-activo":"Active",
   "price-editar":"Edit",
   "price-agregar-precio":"Add Price",
-/*price*/
 
-/*room*/
   "room-base":"Base",
   "room-tarifa-t":"Tarifas por temporada:",
   "room-info":"Basic Information",
-/*room*/
 
-/*season*/
   "season-temporadas-ano":"Years Season",
   "season-agregar":"ADD NEW SEASON",
   "season-temporadas":"SEASONS",
@@ -236,9 +205,7 @@
   "season-nueva":"New season",
   "season-nuevo-esq":"New scheme",
   "season-info":"Basic Information",
-/*season*/
 
-/*service*/
   "service-info":"Basic Information",
   "service-nuevo":"New Service",
   "service-agregar":"Add Service",
@@ -248,18 +215,14 @@
   "service-nuevo":"New Tour",
   "service-agregar":"Add Tour",
   "service-":"",
-/*service*/
 
-/*transfer*/
   "transfer-info":"Basic Information",
   "transfer-nuevo":"New Service",
   "transfer-editar":"Edit",
   "transfer-nombre":"Name:",
   "transfer-pax":"Pax:",
   "transfer-agregar":"Agregar servicio de Traslado",
-/*transfer*/
 
-/*tranferprice*/
   "tranferprice-nuevo":"New Price",
   "tranferprice-servicio":"Service:",
   "tranferprice-aeropuerto":"Airport:",
@@ -276,9 +239,7 @@
   "tranferprice-activo":"Active",
   "tranferprice-guardar":"save",
   "tranferprice-cancelar":"cancel",
-/*tranferprice*/
 
-/*user*/
   "user-mensaje":"Message",
   "user-actualizado":"El usuario se ha actualizado exitosamente",
   "user-cambiar":"Cambiar contraseña",
@@ -307,11 +268,8 @@
   "user-permiso":"Permission",
   "user-escoger":"Choose",
   "user-cerrar":"Close",
-  /*user*/
 
-/*zone*/
   "zone-actualizado":"La zona se ha actualizado exitosamente",
   "zone-info":"Basic Information",
-  "zone-info-e":"EXTRA INFORMATION",
-/*zone*/ 
+  "zone-info-e":"EXTRA INFORMATION"
 }

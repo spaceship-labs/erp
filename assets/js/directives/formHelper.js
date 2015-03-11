@@ -1,5 +1,5 @@
 (function () {
-	var controller = function($scope,$http){
+	var controller = function($scope,$http,$rootScope){
 		$scope.saveClass = 'fa-check';//check
         var ad = 1;
         $scope.ad = 1;
@@ -9,6 +9,8 @@
         $scope.changed = false;
         $scope.processFields = $scope.processFields || true;
         $scope.pfx = $scope.$parent;
+        $scope.label = $rootScope.lang=='es'?'label':'label_en';
+        $scope.translates = $rootScope.translates;
 
         $scope.getSaveStatusClass = function(){
             if ($scope.saveClass == 'fa-upload')
@@ -100,7 +102,7 @@
         }
 
 	};
-	controller.$inject = ['$scope','$http'];
+	controller.$inject = ['$scope','$http','$rootScope'];
     var directive = function () {
         return {
         	controller : controller,

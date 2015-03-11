@@ -17,6 +17,7 @@
                     ng-model="currentLang" 
                     ng-change="switchLang(currentLang.value)"
                     ng-options="lang.label for lang in langs track by lang.value"
+                    disable-search="true"
                     chosen="langs">
                     </select>
                 </li>

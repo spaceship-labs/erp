@@ -4,9 +4,4 @@
 	window.content = <%- JSON.stringify(_content) %>;
 	window.breadcrumb = <%- JSON.stringify(breadcrumb) %>;
 	window.page = <%- JSON.stringify(page) %>;
-	app.run(function($rootScope){
-		$rootScope.lang_ = content.lang;
-		$rootScope.translates = [];
-		console.log($rootScope);
-	});
 </script>
