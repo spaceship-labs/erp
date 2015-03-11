@@ -25,10 +25,11 @@ module.exports = {
     create: function(req,res){
         var form = req.params.all(),
         dumpArray = new Array(parseInt(form.count));
+	form.multiple = form.multiple?true:false;
         Cupon.findOne({id:form.cupons}).exec(function(err,cuponBase){
             var generates = [];
             async.eachSeries(dumpArray,function(i,next){
-                CuponSingle.create({cupon:form.cupons}).exec(function(err,cupon){
+                CuponSingle.create({cupon:form.cupons,expiration:form.expiration,multiple:form.multiple,description:form.description}).exec(function(err,cupon){
                     cupon.name = cuponBase.name;
                     generates.push(cupon);
                     next(err);

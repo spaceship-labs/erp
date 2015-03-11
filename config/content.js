@@ -1066,7 +1066,7 @@ module.exports.content = {
 	],
 	cuponSingle : [
 		{
-			label : 'Nombre',
+			label : 'Tipo',
 			type : 'text',
 			handle : 'name',
 		},
@@ -1075,8 +1075,27 @@ module.exports.content = {
 			type : 'text',
 			handle : 'token',
 		},
-    ],
-    cuponInstance:[
+		{
+			label : 'Fecha de expiración',
+			type : 'date',
+			handle : 'expiration',
+			options : {
+			    formatYear: 'yy',
+			    startingDay: 1
+			}
+		},
+		{
+			label : 'Multiple',
+			type : 'checkbox',
+			handle : 'multiple',
+		},
+		{
+			label : 'Descripcion',
+			type : 'text',
+			handle : 'description',
+		},
+	],
+	cuponInstance:[
 		{
 			label : 'Tipo',
 			type : 'select',
@@ -1090,8 +1109,27 @@ module.exports.content = {
 			handle : 'count',
 			required : true,
 		},
+		{
+			label : 'Fecha de expiración',
+			type : 'date',
+			handle : 'expiration',
+			options : {
+			    formatYear: 'yy',
+			    startingDay: 1
+			}
+		},
+		{
+			label : 'Multiple',
+			type : 'checkbox',
+			handle : 'multiple',
+		},
+		{
+			label : 'Descripción',
+			type : 'text',
+			handle : 'description',
+		},
     
-    ],
+	],
 	cuponSingleEdit : [
 		{
 			label : 'token',
@@ -1105,6 +1143,26 @@ module.exports.content = {
 			object : 'cupon',
 			required : true,
 		},
+		{
+			label : 'Fecha de expiración',
+			type : 'date',
+			handle : 'expiration',
+			options : {
+			    formatYear: 'yy',
+			    startingDay: 1
+			},
+			required:true
+		},
+		{
+			label : 'Multiple',
+			type : 'checkbox',
+			handle : 'multiple',
+		},
+		{
+			label : 'Descripcion',
+			type : 'text',
+			handle : 'description',
+		},
 
-    ],
+	],
 };

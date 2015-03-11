@@ -51,6 +51,7 @@ app.controller('cuponSingleCTL',function($scope,$http,$window){
     $scope.cupons = cupons;
     $scope.cuponsSingle = cuponsSingle.map(function(e){
             e.name = e.cupon.name;
+	    e.expiration = (moment(e.expiration).format('LL'))
             return e;
         });
     $scope.content = content;
