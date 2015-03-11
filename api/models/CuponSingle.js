@@ -14,7 +14,7 @@ module.exports = {
         token:'string',
         expiration:'date',
         multiple:'boolean',
-        name:'string'
+	description:'string'
     },
     beforeCreate:function(val,cb){ 
         CuponSingle.find().limit(1).sort('createdAt desc').exec(function(err,cupon){
@@ -33,17 +33,17 @@ module.exports = {
 };
 
 function simpleUuid(base){
-	var letters = ['1010','1011','1100','1101','1110','1111'],
+    var letters = ['1010','1011','1100','1101','1110','1111'],
     count = 0;
-	while(1){
-		var base2 = base.toString(2);
-		for(var i=base2.length;i>0;i-=4){
-			var tmp = base2.substring(i-4,i);
-			if(letters.indexOf(tmp)!=-1){
+    while(1){
+        var base2 = base.toString(2);
+        for(var i=base2.length;i>0;i-=4){
+            var tmp = base2.substring(i-4,i);
+            if(letters.indexOf(tmp)!=-1){
                 return base;
-			}
-		}
-		base++;
+            }
+        }
+        base++;
         count++;
         if(count == 20)
             return base;

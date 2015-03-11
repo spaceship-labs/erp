@@ -8,7 +8,7 @@
 var async = require('async');
 module.exports = {
     index:function(req,res){
-        CuponSingle.find().exec(function(err,cuponsSingle){
+        CuponSingle.find().sort('createdAt desc').populateAll().exec(function(err,cuponsSingle){
             Cupon.find().exec(function(err,cupons){
                 Common.view(res.view,{
                     cuponsSingle:cuponsSingle,
@@ -23,16 +23,37 @@ module.exports = {
         });
     },
     create: function(req,res){
-        console.log(req.params.all());
         var form = req.params.all(),
         dumpArray = new Array(parseInt(form.count));
-        async.eachSeries(dumpArray,function(i,next){
-            console.log('cccc');
-            CuponSingle.create({cupon:form.cupons}).exec(function(err,cupon){
-                next(err);
+	form.multiple = form.multiple?true:false;
+        Cupon.findOne({id:form.cupons}).exec(function(err,cuponBase){
+            var generates = [];
+            async.eachSeries(dumpArray,function(i,next){
+                CuponSingle.create({cupon:form.cupons,expiration:form.expiration,multiple:form.multiple,description:form.description}).exec(function(err,cupon){
+                    cupon.name = cuponBase.name;
+                    generates.push(cupon);
+                    next(err);
+                });
+            },function(err){
+                if(err) return res.json([]);
+                res.json(generates);
+            });    
+        });
+    },
+    edit:function(req,res){
+        var id = req.param('id'); 
+        CuponSingle.findOne({id:id}).populateAll().exec(function(err,cuponSingle){ 
+            Cupon.find().exec(function(err,cupons){
+                Common.view(res.view,{
+                    cuponSingle:cuponSingle,
+                    cupons:cupons,
+                    page:{
+                        name:'Editar cupon de '+cuponSingle.cupon.name,
+                        icon:'fa fa-ticket',
+                        controller : 'cupon.js'
+                    }
+                },req);
             });
-        },function(err){
-            res.json(err || true);
         });
     }
 };

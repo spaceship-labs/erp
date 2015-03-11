@@ -1,0 +1,18 @@
+<script type='text/javascript'>
+    window.cupons = <%- JSON.stringify(cupons) %>;
+    window.content = <%- JSON.stringify(_content) %>;
+    window.cuponSingle = <%- JSON.stringify(cuponSingle) %>;
+</script>
+
+<div ng-controller='cuponSingleEditCTL' class="editar-tour ng-cloak">
+    <div class="span8">
+        <div form-helper 
+            fields='content.cuponSingleEdit' 
+            object='cuponSingle' 
+            objects='{cupon:cupon}' 
+            action='/cuponSingle/update/<%=cuponSingle.id%>' 
+            form-title='INFORMACIÓN BASICA'
+            >
+        </div> 
+    </div>  
+</div>
