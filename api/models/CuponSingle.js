@@ -11,12 +11,16 @@ module.exports = {
         cupon:{
             model:'cupon'
         },
-        token:'string',
+        token:{
+            type:'string',
+            unique:true
+        },
         expiration:'date',
         multiple:'boolean',
-	description:'string'
+        description:'string'
     },
     beforeCreate:function(val,cb){ 
+    	if(val.token) return cb();
         CuponSingle.find().limit(1).sort('createdAt desc').exec(function(err,cupon){
             var base;
             if(!cupon.length)

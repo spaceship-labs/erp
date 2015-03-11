@@ -32,6 +32,7 @@ app.controller('cuponCTL',function($scope,$http,$window){
                     $http({method: 'POST', url: '/cupon/'+res.id+'/transfers/add/'+e.id}).success(function(res){
                     });
                 });
+                $scope.cupons.unshift(res);
             }
         });    
     };
@@ -48,10 +49,10 @@ app.controller('cuponEditCTL',function($scope,$http,$window){
 });
 
 app.controller('cuponSingleCTL',function($scope,$http,$window){
-    $scope.cupons = cupons;
+    $scope.cupon = cupon;
     $scope.cuponsSingle = cuponsSingle.map(function(e){
             e.name = e.cupon.name;
-	    e.expiration = (moment(e.expiration).format('LL'))
+            e.expiration = (moment(e.expiration).format('LL'));
             return e;
         });
     $scope.content = content;
@@ -60,6 +61,10 @@ app.controller('cuponSingleCTL',function($scope,$http,$window){
     };
     $scope.createInstance = function(instance){
         $http({method: 'POST', url: '/cuponSingle/create',data:instance}).success(function(res){
+            res = res.map(function(e){
+                    e.expiration = (moment(e.expiration).format('LL'));
+                    return e;
+                });
             $scope.cuponsSingle = res.concat($scope.cuponsSingle);
             jQuery('#myModal').modal('hide');
         });

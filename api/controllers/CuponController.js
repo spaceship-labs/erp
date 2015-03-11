@@ -67,7 +67,7 @@ function commonFinds(cuponFind,done){
             if(cuponFind && cuponFind.id)
                 find = find.populateAll();
 
-            find.exec(function(err,cupons){
+            find.sort('createdAt desc').exec(function(err,cupons){
                 next(err,cupons);
             }); 
         },

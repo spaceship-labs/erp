@@ -1,5 +1,5 @@
 <script type='text/javascript'>
-	window.cupons = <%- JSON.stringify(cupons) %>;
+	window.cupon = <%- JSON.stringify(cupons) %>;
 	window.cuponsSingle = <%- JSON.stringify(cuponsSingle) %>;
 	window.content = <%- JSON.stringify(_content) %>;
 </script>
@@ -12,11 +12,11 @@
 			<div class="modal-content">
 				<div 
 					form-helper 
-			        fields='content.cuponInstance' 
+			        fields='content.cuponSingleEdit' 
 			        form-footer='Generar'
 			        form-save = 'createInstance'
 			        object = 'instance'
-				objects='{cupons:cupons}'
+				objects='{cupon:cupon}'
 			        form-title='Agregar instancias'
 			       	modal='true'
 			        >
