@@ -1,5 +1,3 @@
-
-
 app.controller('clientCTL',function($scope,$http){
     $scope.content = content;
     $scope.client = {};

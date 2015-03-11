@@ -2,6 +2,8 @@
   "h-edit": "Editar perfil" ,
   "h-sesion": "Cerrar sesión",
 
+  "gral_basicInfo":"INFORMACIÓN BÁSICA",
+
 "admin-mensaje":"Mensaje",
 "admin-user-actualizado":"El usuario se ha actualizado exitosamente",
 "admin-tipo-cambio":"Tipo de cambio",
@@ -15,6 +17,8 @@
 
 "airport-mensaje":"Mensaje",
 "airport-creo-exitoso":"El aeropuerto se creó exitosamente",
+"airpot-create" : "Nuevo Aeropuerto",
+"airpot-add" : "Agregar Aeropuerto",
 
 "client-mensaje":"Mensaje",
 "client-cliente-actualizado":"El cliente se ha actualizado exitosamente",
@@ -192,10 +196,87 @@
 
   "Directivas. Agregador por Erick" : ""
   ,"d_reset" : "Limpiar campos"
-  ,"" : ""
-  ,"" : ""
-  ,"" : ""
-  ,"" : ""
-  ,"" : ""
-  ,"" : ""
+  ,"d_dom" : "Dom"
+  ,"d_lun" : "Lun"
+  ,"d_mar" : "Mar"
+  ,"d_mie" : "Mie"
+  ,"d_jue" : "Jue"
+  ,"d_vie" : "Vie"
+  ,"d_sab" : "Sab"
+  ,"d_deleteFile" : "Eliminar archivo"
+  ,"d_deleteperm" : "ELIMINAR PERMANENTEMENTE"
+  ,"d_user" : "Usuario"
+  ,"d_deletePlaceH" : "Ingrese su contraseña para eliminar este documento..."
+  ,"d_edit" : "Editar"
+  ,"d_fileManager" : "DMINISTRADOR DE ARCHIVOS (MAX 1MB)"
+  ,"d_fmselectall" : "Seleccionar Todo"
+  ,"d_min" : "Minimizar"
+  ,"d_max" : "Maximizar"
+  ,"d_all" : "Todos"
+  ,"d_img" : "Imagenes"
+  ,"d_video" : "Videos"
+  ,"d_audio" : "Audios"
+  ,"d_docs" : "Documentos"
+  ,"d_showing" : "Mostrando"
+  ,"d_selectDest" : "Selector de destinos"
+  ,"d_selectGeo" : "Selector de Georeferencia"
+  ,"d_lat" : "Latitude"
+  ,"d_lon" : "Longitud"
+  ,"d_dec" : "Descripción"
+  ,"d_delete" : "Eliminar"
+  ,"d_markLegend" : "Arrastrar para cambiar la ubicación de los marcadores."
+  ,"d_markLegend2" : "Haz click en el mapa para establecer el marcador manualmente."
+  ,"d_seemore" : "Ver más"
+  ,"d_field" : "Campo"
+  ,"d_prevValue" : "Valor previo"
+  ,"d_newValue" : "Valor nuevo"
+  ,"d_searchPH" : "Escribe para realizar una busqueda"
+  ,"d_saveAll" : "Guardar Todo"
+  ,"d_options" : "Opciones"
+  ,"d_change" : "Cambiar"
+  ,"d_primaryImg" : "Imagen Primaria"
+  ,"d_charge" : "Cargando"
+  ,"d_empty" : "Vacío"
+  ,"d_notifications" : "Notificaciones"
+
+  ,"c_name" : "Nombre"
+  ,"c_created" : "Creado"
+  ,"c_updated" : "Actualizado"
+  ,"c_adress" : "Dirección"
+  ,"c_baseCurrency" : "Moneda Base"
+  ,"c_population" : "Poblacion"
+  ,"c_phones" : "Telefonos"
+  ,"c_stars" : "estrellas"
+  ,"c_ordermessg1" : "Algunos tours se reservan para antes de la llegada del cliente, favor de revisar los siguientes:"
+  ,"c_ordermessg2" : "Algunos tours se reservan para después de que el cliente se haya ido, favor de revisar los siguientes:"
+  ,"c_ordermessg3" : "Las fechas de hoteles y traslado no coinciden."
+  ,"c_reg" : "Registro"
+  ,"c_last_acc" : "Último acceso"
+  ,"c_email" : "Email"
+  ,"c_baseRate" : "Tarifa base"
+
+  ,"sc_airport" : "Aeropuertos"
+  ,"sc_clients" : "Clientes"
+  ,"sc_client" : "Cliente"
+  ,"sc_editclient" : "Editar cliente"
+  ,"sc_editcontact" : "Editar contacto"
+  ,"sc_companies" : "Empresas"
+  ,"sc_taxedit" : "Editar impuestos"
+  ,"sc_cupons" : "Cupones"
+  ,"sc_foodscheme" : "Esquemas de alimentación"
+  ,"sc_foodscheme_desc" : "Administracion de esquemas para hoteles"
+  ,"sc_home_desc" : "AQUÍ PODRÁS VISUALIZAR Y ADMINISTRAR TODO TU PROCESO DE VENTA"
+  ,"sc_dashboard" : "Tablero"
+  ,"sc_hotels" : "Hoteles"
+  ,"sc_hotels_desc" : "Administracion de contenido hoteles"
+  ,"sc_hRoomv" : "Vistas de cuartos"
+  ,"sc_hRoomv_desc" : "Administracion de contenido de cuartos"
+  ,"sc_hRoomv_" : "Vista"
+  ,"sc_hRoomv_descedit" : "Edición de la vista"
+  ,"sc_location" : "Ciudades"
+  ,"sc_reservations" : "Reservas"
+  ,"sc_packages" : "Paquetes"
+  ,"sc_tour" : "Tours"
+  ,"sc_transfer" : "Traslados"
+  ,"sc_users" : "Usuarios"
 }

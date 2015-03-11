@@ -29,7 +29,7 @@ module.exports = {
 				 apps: sails.config.apps,
 				 users:users,
 				 page:{
-					name:'Usuarios'
+					name:req.__('sc_users')
 					,icon:'fa fa-users'		
 					,controller : 'user.js'		
 				 }
@@ -86,7 +86,7 @@ module.exports = {
                         apps:sails.config.apps,
                         roles : roles || [],
                         page:{
-                            name:'Usuarios',
+                            name:req.__('sc_users'),
                             icon:'fa fa-users',
                             controller : 'user.js'
                         }

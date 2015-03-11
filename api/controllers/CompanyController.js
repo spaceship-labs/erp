@@ -13,7 +13,7 @@ module.exports = {
 					apps : sails.config.apps
 					,currencies:currencies || []
 					,page:{
-						name:'Empresas'
+						name:req.__('sc_companies')
 						,icon:'fa fa-building'		
 						,controller : 'company.js'		
 					}
@@ -32,12 +32,12 @@ module.exports = {
 					,users:users || []
 					,apps: sails.config.apps
 					,page:{
-						name:'Empresas'
+						name:req.__('sc_companies')
 						,icon:'fa fa-building'		
 						,controller : 'company.js'		
 					},
                     breadcrumb : [
-                        {label : 'Companias', url : '/company/'},
+                        {label : req.__('sc_companies'), url : '/company/'},
                         {label : company.name}
                     ],
 				},req);
@@ -149,12 +149,12 @@ module.exports = {
                 Common.view(res.view,{
                     page:{
                         icon:'fa fa-building'
-                        ,name:'Editar Impuesto'
+                        ,name:req.__('sc_taxedit')
                         ,controller : 'company.js'
 
                     },
                     breadcrumb : [
-                        {label : 'Companias', url : '/company/'},
+                        {label : req.__('sc_companies'), url : '/company/'},
                         {label : company.name , url : '/company/' + company.id},
                         {label : contact.name}
                     ],

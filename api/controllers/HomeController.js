@@ -26,9 +26,9 @@ module.exports = {
 	, index: function(req,res){
 		Common.view(res.view,{
 			page:{
-				description:'AQUI PODRAS VISUALIZAR Y ADMINISTRAR TODO TU PROCESO DE VENTA',
+				description:req.__('sc_home_desc'),
 				icon:'fa fa-th-large',
-				name:'Tablero',
+				name:req.__('sc_dashboard') ,
 				controller:'dashboard.js'
 			}
 		},req);

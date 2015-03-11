@@ -1,4 +1,4 @@
-app.controller('locationCTL',function($scope,$http){
+app.controller('locationCTL',function($scope,$http,$rootScope){
     $scope.locations = locations;
     $scope.company = company;
     $scope.content = content;
@@ -12,11 +12,11 @@ app.controller('locationCTL',function($scope,$http){
     $scope.getInfo = function(location){
         location.createdAt=(moment(location.createdAt).format('LL'));
         location.updatedAt=(moment(location.updatedAt).format('LL'));
-        return {
-            "Nombre" : location.name,
-            "Creado" : location.createdAt,
-            "Actualizado": location.updatedAt,
-        }
+        var r = {}
+        r[$rootScope.translates.c_name] = location.name;
+        r[$rootScope.translates.c_created] = location.createdAt;
+        r[$rootScope.translates.c_updated] = location.updatedAt;
+        return r;
     };
 });
 app.controller('locationEditCTL',function($scope,$upload,$http){

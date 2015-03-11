@@ -11,12 +11,12 @@ module.exports = {
 			Common.view(res.view,{
 				locations:locations,
 				page:{
-					name:'Locations'
+					name:req.__('sc_location')
 					,icon:'fa fa-flag'		
 					,controller : 'location.js'
 				},
 				breadcrumb : [
-					{label : 'Ciudades'}
+					{label : req.__('sc_location')}
 				]
 			},req);
 		});
@@ -37,7 +37,7 @@ module.exports = {
 							controller : 'location.js'
 						},
 						breadcrumb : [
-							{label : 'Ciudades', url: '/location/'},
+							{label : req.__('sc_location'), url: '/location/'},
 							{label : location.name},
 						]
 					},req);	
@@ -49,8 +49,7 @@ module.exports = {
 		var form = req.params.all();
     	var id = form.id;
     	var loc = form.loc;
-    	console.log('add form');
-    	console.log(form);
+    	//console.log('add form');console.log(form);
     	Location.findOne(id).exec(function(err, location_o) {
     		//if(e) throw(e);
     		location_o.locations.add(loc);
@@ -68,8 +67,7 @@ module.exports = {
 		var form = req.params.all();
     	var id = form.id;
     	var loc = form.loc;
-    	console.log('delete form');
-    	console.log(form);
+    	//console.log('delete form');console.log(form);
     	Location.findOne(id).exec(function(err, location_o) {
     		//if(e) throw(e);
     		location_o.locations.remove(loc);
@@ -86,7 +84,7 @@ module.exports = {
 	update : function(req,res){
     	var form = req.params.all();
     	var id = form.id;
-    	console.log(form);
+    	//console.log(form);
     	Location.update({id:id},form,function(e,location_o){
     		//if(e) throw(e);
     		Location.findOne(id).populate('locations').exec(function(e,location_o){

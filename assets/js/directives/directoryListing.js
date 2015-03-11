@@ -1,5 +1,6 @@
 (function () {
-	var controller = function($scope){
+	var controller = function($scope,$rootScope){
+        $scope.translates = $rootScope.translates;
         $scope.alphabet = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']; 
         $scope.alphabetIndex = [];
         $scope.objects.forEach(function(object){
@@ -28,7 +29,7 @@
             return $scope.getInfo()(object);
         }
 	};
-	controller.$inject = ['$scope'];
+	controller.$inject = ['$scope','$rootScope'];
     var directive = function () {
         return {
         	controller : controller,

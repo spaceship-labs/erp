@@ -1,12 +1,12 @@
 <div class="widgetbox span12 fileManager">
     <h4 class="widgettitle">
-    	<span class='title'>ADMINISTRADOR DE ARCHIVOS (MAX 1MB)</span>
+    	<span class='title' ng-bind="translates.d_fileManager"></span>
     	<span class='controls'>
     		<span ng-click='changePage(-1)' class='fa fa-arrow-circle-left'></span>
     		<span ng-click='changePage(1)' class='fa fa-arrow-circle-right'></span>
 
 			<span ng-click='selectAll()' class='fa' ng-class='selected ? "fa-check-square-o" : "fa-square-o"'></span>    		
-			<span class='text'>Seleccionar Todo</span>
+			<span class='text' ng-binf="translates.d_fmselectall"></span>
 
 			<span ng-file-select="uploadFiles($files)" multiple accept="image/*" add-method='/hotel/addFile' class='fa fa-folder-open'></span>
 			<span ng-click='removeSelected()' class='fa fa-trash-o'></span>
@@ -14,17 +14,17 @@
     	</span>
     	<span class='pull-right'>
 	    	<span ng-click='show = !show'  class='fa' ng-class='show ? "fa-minus" : "fa-plus"'></span>
-	    	<span ng-click='show = !show' class='text' ng-bind='show ? "Minimizar" : "Maximizar" '></span>
+	    	<span ng-click='show = !show' class='text' ng-bind='show ? translates.d_min : translates.d_max '></span>
     	</span>
     </h4>
     <div class="widgetcontent nopadding" ng-show='show'>
         <p class='nav'>
-        	<a href='' ng-class='format=="all"?"underline":""' ng-click='format = "all"'>Todos</a>
-        	<a href='' ng-class='format=="image"?"underline":""' ng-click='format = "image"'>Imagenes</a>
-        	<a href='' ng-class='format=="video"?"underline":""' ng-click='format = "video"'>Videos</a>
-        	<a href='' ng-class='format=="audio"?"underline":""' ng-click='format = "audio"'>Audios</a>
-        	<a href='' ng-class='format=="documents"?"underline":""' ng-click='format = "documents"'>Documentos</a>
-        	<span class='pull-right'>Mostrando <span ng-bind='page*pageLength+1'></span>-<span ng-bind='page*pageLength+filterFiles.length'></span> de <span ng-bind='object.files.length'></span></span>
+        	<a href='' ng-class='format=="all"?"underline":""' ng-click='format = "all"'>{{translates.d_all}}</a>
+        	<a href='' ng-class='format=="image"?"underline":""' ng-click='format = "image"'>{{translates.d_img}}</a>
+        	<a href='' ng-class='format=="video"?"underline":""' ng-click='format = "video"'>{{translates.d_video}}</a>
+        	<a href='' ng-class='format=="audio"?"underline":""' ng-click='format = "audio"'>{{translates.d_audio}}</a>
+        	<a href='' ng-class='format=="documents"?"underline":""' ng-click='format = "documents"'>{{translates.d_docs}}</a>
+        	<span class='pull-right'>{{translates.d_showing}} <span ng-bind='page*pageLength+1'></span>-<span ng-bind='page*pageLength+filterFiles.length'></span> de <span ng-bind='object.files.length'></span></span>
         </p>
         <div class='files' >
         <!--  -->

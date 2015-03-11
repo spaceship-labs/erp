@@ -14,8 +14,8 @@
 		dir='airports' 
 		edit-url='/airport/edit/' 
 		get-info='getInfo'
-		name-var='name' }
-		button-text='Nuevo Aeropuerto'
+		name-var='name'
+		button-text= '<%= __('airpot-create') %>'
 		></div>
 
 	<div class="clearfix"></div>
@@ -36,7 +36,7 @@
 			        form-save = 'createAirport'
 			        object = 'airport'
 			        objects = '{locations:locations,zones:zones}'
-			        form-title='Agregar Aeropuerto'
+			        form-title='<%= __('airpot-add') %>' 
 			       	modal='true'
 			       	onchanges = "{'getZones' : getZones}"
 			        >

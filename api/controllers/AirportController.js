@@ -14,18 +14,19 @@ module.exports = {
 					locations : locations,
 					zones:[],
 					page:{
-						name:'Aeropuertos'
-						,icon:'fa fa-plane'		
+						name : req.__('sc_airport')
+						,icon : 'fa fa-plane'		
 						,controller : 'airport.js'
 					},
 					breadcrumb : [
-						{label : 'Aeropuertos'}
+						{label : req.__('sc_airport') }
 					]
 				},req);
 			});
 		});
 	},
 	edit : function(req,res){
+		var namelang = req.getLocale()=='es'?'name':'name_es';
 		Airport.findOne(req.params.id).exec(function(e,airport){
 			Location.find().sort('name').exec(function(e,locations){
 				Zone.find({ 'location' : airport.location }).exec(function(e,zones){
@@ -35,12 +36,12 @@ module.exports = {
 						locations:locations,
 						zones:zones,
 						page:{
-							name:airport.name,
+							name:airport[namelang],
 							icon:'fa fa-plane',
 							controller : 'airport.js'
 						},
 						breadcrumb : [
-							{label : 'Aeropuertos', url: '/airport/'},
+							{label : req.__('sc_airport'), url: '/airport/'},
 							{label : airport.name},
 						]
 					},req);

@@ -13,13 +13,13 @@ module.exports = {
       Common.view(res.view,{
         packages : packages,
         page:{
-          name:'Paquetes'
+          name:req.__('sc_packages')
           ,description: 'Administracion de contenido paquetes de tours'
           ,icon:'fa fa-dropbox'
           ,controller : 'packagetour.js'
         },
         breadcrumb : [
-          {label : 'Paquetes'}
+          {label : req.__('sc_packages')}
         ]
       },req);
     });
@@ -42,7 +42,7 @@ module.exports = {
               controller : 'packagetour.js'
             },
             breadcrumb : [
-              {label : 'Paquetes', url: '/packagetour/'},
+              {label : req.__('sc_packages'), url: '/packagetour/'},
               {label : package_t.name},
             ]
           },req); 

@@ -1,5 +1,6 @@
 (function () {
-    var controller = function($scope,$http){
+    var controller = function($scope,$http,$rootScope){
+        $scope.translates = $rootScope.translates;
         $scope.saveClass = 'fa-save';
         $scope.reverseClass = 'fa-search';
         $scope.markers = {};
@@ -93,7 +94,7 @@
        
     };
 
-    controller.$inject = ['$scope','$http'];
+    controller.$inject = ['$scope','$http','$rootScope'];
     var directive = function () {
         return {
             controller : controller,

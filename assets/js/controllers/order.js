@@ -25,7 +25,7 @@ app.controller('orderCTL',function($scope,$http){
     };
     //$scope.formaOrders();
 });
-app.controller('orderNewCTL',function($scope,$http,$window){
+app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
     $scope.alertM = { show: false, client : false, allEmpty: false };
     $scope.clients_ = clients_;
     $scope.hotels = hotels;
@@ -218,9 +218,9 @@ app.controller('orderNewCTL',function($scope,$http,$window){
     };
     $scope.validateDates = function(){
         $scope.customMessages = {
-            Tta : { show : false , type : 'alert', message : "Algunos tours se reservan para antes de la llegada del cliente, favor de revisar los siguientes:"},
-            Ttd : { show : false , type : 'alert' , message : "Algunos tours se reservan para después de que el cliente se haya ido, favor de revisar los siguientes:"},
-            TH  : { show : false , type : 'alert' , message : "Las fechas de hoteles y traslado no coinciden." }
+            Tta : { show : false , type : 'alert', message : $rootScope.translated.c_ordermessg1 },
+            Ttd : { show : false , type : 'alert' , message : $rootScope.translated.c_ordermessg2 },
+            TH  : { show : false , type : 'alert' , message : $rootScope.translated.c_ordermessg3 }
         };
         if( ! angular.equals( {} , $scope.transfer ) ){
             validateTt();

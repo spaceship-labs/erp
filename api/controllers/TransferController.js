@@ -11,12 +11,12 @@ module.exports = {
 			Common.view(res.view,{
 				transfers:transfers,
 				page:{
-					name:'Traslados'
+					name:req.__('sc_transfer')
 					,icon:'fa fa-car'
 					,controller : 'transfer.js'
 				},
 				breadcrumb : [
-					{label : 'Traslados'}
+					{label : req.__('sc_transfer')}
 				]
 			},req);
 		});
@@ -51,7 +51,7 @@ module.exports = {
 					controller : 'transfer.js'
 				},
 				breadcrumb : [
-					{label : 'Traslados', url: '/transfer/'},
+					{label : req.__('sc_transfer'), url: '/transfer/'},
 					{label : transfer.name},
 				]
 			},req);	

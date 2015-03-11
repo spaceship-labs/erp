@@ -1,4 +1,4 @@
-app.controller('airportCTL',function($scope,$http){
+app.controller('airportCTL',function($scope,$http,$rootScope){
     $scope.airports = airports;
     $scope.locations = locations;
     $scope.zones = zones;
@@ -13,11 +13,11 @@ app.controller('airportCTL',function($scope,$http){
     $scope.getInfo = function(airport){
         airport.createdAt=(moment(airport.createdAt).format('LL'));
         airport.updatedAt=(moment(airport.updatedAt).format('LL'));
-        return {
-            "Nombre" : airport.name,
-            "Creado" : airport.createdAt,
-            "Actualizado": airport.updatedAt,
-        }
+        var r = {}
+        r[$rootScope.translates.c_name] = airport.name;
+        r[$rootScope.translates.c_created] = airport.createdAt;
+        r[$rootScope.translates.c_updated] = airport.updatedAt;
+        return r;
     };
     $scope.getZones = function(thelocation){
         $http({method: 'POST', url: '/zone/getZones',data: {id:thelocation} }).success(function (zones){

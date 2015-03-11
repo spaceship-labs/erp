@@ -2,8 +2,8 @@
     <thead>
         <tr>
             <th ng-repeat='column in columns' ng-bind='column.label'></th>
-            <th >Editar</th>
-            <th>Eliminar</th>
+            <th ng-bind="translates.d_edit"></th>
+            <th ng-bind="translates.d_delete"></th>
         </tr>
     </thead>
     <tbody>
@@ -14,7 +14,7 @@
                 e-name='column.handle' 
                 e-required 
                 onbeforesave="updateInline($data,object,column.handle)"
-                >{{object[column.handle] || 'Vacio'}}</a>
+                >{{object[column.handle] || translates.d_empty}}</a>
                 <span ng-if="!inlineEdit" ng-bind='object[column.handle]'></span>
             </td>
             <td><a ng-href='{{customEditRoute}}/{{object.id}}' class='fa fa-edit' style="cursor: pointer"></a></td>

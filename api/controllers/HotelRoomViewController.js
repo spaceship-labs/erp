@@ -12,13 +12,13 @@ module.exports = {
 			Common.view(res.view,{
 				hviews : hviews,
 				page:{
-					name:'Vistas de cuartos'
-					,description: 'Administracion de contenido de cuartos'
+					name:req.__('sc_hRoomv')
+					,description: req.__('sc_hRoomv_desc')
 					,icon:'fa fa-eye'
 					,controller : 'hotelroomview.js'
 				},
 				breadcrumb : [
-					{label : 'Vistas'}
+					{label : req.__('sc_hRoomv')}
 				]
 			},req);
 		});
@@ -29,13 +29,13 @@ module.exports = {
 			Common.view(res.view,{
 				hview : hview,
 				page:{
-					name:'Vista: ' + hview.name
-					,description: 'Edición de la vista'
+					name:req.__('sc_hRoomv_')+'Vista: ' + hview.name
+					,description: req.__('sc_hRoomv_descedit')
 					,icon:'fa fa-eye'
 					,controller : 'hotelroomview.js'
 				},
 				breadcrumb : [
-					{label : 'Vistas',url : '/hotelroomview/'},
+					{label : req.__('sc_hRoomv'),url : '/hotelroomview/'},
 					{label : hview.name}
 				]
 			},req);

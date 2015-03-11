@@ -2,6 +2,8 @@
   "h-edit": "Profile edit" ,
   "h-sesion": "Logout",
 
+  "gral_basicInfo":"BASIC INFORMATION",
+
 "admin-mensaje":"Message",
 "admin-user-actualizado":"The user has been successfully updated ",
 "admin-tipo-cambio":"Type change",
@@ -15,6 +17,8 @@
 
 "airport-mensaje":"Message",
 "airport-creo-exitoso":"The airport has been successfully created",
+"airpot-create" : "New airport",
+"airpot-add" : "Add airport",
 
 "client-mensaje":"Message",
 "client-cliente-actualizado":"Client has been successfully updated ",
@@ -272,4 +276,90 @@
   "zone-actualizado":"Zone has been successfully updated",
   "zone-info":"Basic Information",
   "zone-info-e":"EXTRA INFORMATION"
+
+  ,"Directivas. Agregador por Erick" : ""
+  ,"d_reset" : "Clear fields"
+  ,"d_dom" : "Sun"
+  ,"d_lun" : "Mon"
+  ,"d_mar" : "Tue"
+  ,"d_mie" : "Wed"
+  ,"d_jue" : "Thu"
+  ,"d_vie" : "Fri"
+  ,"d_sab" : "Sat"
+  ,"d_deleteFile" : "Delete file"
+  ,"d_deleteperm" : "PERMANENTLY DELETE"
+  ,"d_user" : "User"
+  ,"d_deletePlaceH" : "Enter your password to delete this file..."
+  ,"d_edit" : "Edit"
+  ,"d_fileManager" : "FILE MANAGER (MAX 1MB)"
+  ,"d_fmselectall" : "Select all"
+  ,"d_min" : "Minimize"
+  ,"d_max" : "Maximize"
+  ,"d_all" : "All"
+  ,"d_img" : "Images"
+  ,"d_video" : "Videos"
+  ,"d_audio" : "Audios"
+  ,"d_docs" : "Documents"
+  ,"d_showing" : "Showing"
+  ,"d_selectDest" : "Destination selector"
+  ,"d_selectGeo" : "Georeference selector"
+  ,"d_lat" : "Latitude"
+  ,"d_lon" : "Longitud"
+  ,"d_dec" : "Description"
+  ,"d_delete" : "Delete"
+  ,"d_markLegend" : "Drag to change markers ubication."
+  ,"d_markLegend2" : "Click the map to set the marker."
+  ,"d_seemore" : "See more"
+  ,"d_field" : "Field"
+  ,"d_prevValue" : "Previous value"
+  ,"d_newValue" : "New value"
+  ,"d_searchPH" : "Write to search"
+  ,"d_saveAll" : "Save all"
+  ,"d_options" : "Options"
+  ,"d_change" : "Change"
+  ,"d_primaryImg" : "Primary image"
+  ,"d_charge" : "Loading"
+  ,"d_empty" : "Empty"
+  ,"d_notifications" : "Notificaciones"
+
+  ,"c_name" : "Name"
+  ,"c_created" : "Created"
+  ,"c_updated" : "Updated"
+  ,"c_adress" : "Address"
+  ,"c_baseCurrency" : "Base Currency"
+  ,"c_population" : "Population"
+  ,"c_phones" : "Phones"
+  ,"c_stars" : "Stars"
+  ,"c_ordermessg1" : "Some tours are reserved for before the client arrive, please check this: "
+  ,"c_ordermessg2" : "Some tours are reserved for after the client departure, please check this:"
+  ,"c_ordermessg3" : "The hotel and transfers dates doesn't match."
+  ,"c_reg" : "Register"
+  ,"c_last_acc" : "Last access"
+  ,"c_email" : "Email"
+  ,"c_baseRate" : "Base Rate"
+
+  ,"sc_airport" : "Airports"
+  ,"sc_clients" : "Clients"
+  ,"sc_client" : "Client"
+  ,"sc_editclient" : "Client edit"
+  ,"sc_editcontact" : "Contact edit"
+  ,"sc_companies" : "Companies"
+  ,"sc_taxedit" : "Tax edit"
+  ,"sc_cupons" : "Cupons"
+  ,"sc_foodscheme" : "Food scheme"
+  ,"sc_foodscheme_desc" : "Food scheme administration"
+  ,"sc_home_desc" : "Here you can see and administrate all your sale process"
+  ,"sc_dashboard" : "Dashboard"
+  ,"sc_hotels" : "Hotel"
+  ,"sc_hotels_desc" : "Hotels content adminstration"
+  ,"sc_hRoomv" : "Rooms views"
+  ,"sc_hRoomv_desc" : "Rooms views administration"
+  ,"sc_hRoomv_" : "View"
+  ,"sc_hRoomv_descedit" : "View edit"
+  ,"sc_location" : "Locations"
+  ,"sc_reservations" : "Reservations"
+  ,"sc_packages" : "Packages"
+  ,"sc_tour" : "Tours"
+  ,"sc_transfer" : "Transfers"
+  ,"sc_users" : "Users"
 }

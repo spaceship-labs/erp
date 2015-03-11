@@ -17,12 +17,12 @@ module.exports = {
   		Common.view(res.view,{
 			cupons:cupons,
 			page:{
-				name:'Cupons'
+				name:req__('sc_cupons')
 				,icon:'fa fa-ticket'		
 				,controller : 'cupon.js'
 			},
 			breadcrumb : [
-				{ label : 'Cupones' }
+				{ label : req__('sc_cupons') }
 			]
 		},req);
   	},req);
@@ -39,7 +39,7 @@ module.exports = {
 				,controller : 'cupon.js'
 			},
 			breadcrumb : [
-				{ label : 'Cupones' }
+				{ label : req__('sc_cupons') }
 			]
 		},req);
   	},req);

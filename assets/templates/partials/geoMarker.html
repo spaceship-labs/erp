@@ -1,6 +1,6 @@
 <div class="widgetbox personal-information ng-form-helper">
 	<h4 class="widgettitle">
-		Selector de destinos
+		{{translates.d_selectDest}}
 		<span ng-if='dragEnabled' ng-click='createMarker()'  class='fa icon fa-plus' ></span>
 		<span ng-if='dragEnabled' ng-click='save()' class='fa icon' ng-class='saveClass'></span>
 	</h4>
@@ -8,11 +8,11 @@
 		<table class='table' ng-if='dragEnabled'>
 			<thead>
 		        <tr>
-		        	<th>Latitude</th>
-		        	<th>Longitud</th>
-		        	<th>Descripción</th>
+		        	<th ng-bind="translates.d_lat"></th>
+		        	<th ng-bind="translates.d_lon"></th>
+		        	<th ng-bind="translates.d_dec"></th>
 		            <th ng-if="customFields" ng-repeat='column in customFields' ng-bind='column'></th>
-		            <th>Eliminar</th>
+		            <th ng-bind="translates.d_delete"></th>
 		        </tr>
 		    </thead>
 		    <tbody>
@@ -35,7 +35,7 @@
 		</table>
 	</div>
 	<div class="widgetcontent">
-		<p ng-if='dragEnabled'>Arrastrar para cambiar la ubicación de los marcadores.</p>
+		<p ng-if='dragEnabled'  ng-bind="translates.d_markLegend"></p>
 		<leaflet width="{{sizes.width}}" height="{{sizes.height}}" markers='markers' center='center' ></leaflet>
 	</div>
 	

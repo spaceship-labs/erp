@@ -1,5 +1,6 @@
 (function () {
-	var controller = function($scope,$http,$modal){
+	var controller = function($scope,$http,$modal,$rootScope){
+        $scope.translates = $rootScope.translates;
         $scope.destroyObject = function(object,key){
             var modalInstance = $modal.open({
                 templateUrl: '/template/find/deleteModal.html',
@@ -36,7 +37,7 @@
             });
         }
 	};
-	controller.$inject = ['$scope','$http','$modal'];
+	controller.$inject = ['$scope','$http','$modal','$rootScope'];
     var directive = function () {
         return {
         	controller : controller,

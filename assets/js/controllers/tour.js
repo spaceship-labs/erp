@@ -7,13 +7,12 @@ app.controller('tourCTL',function($scope,$http,$window){
 	$scope.getInfo = function(tour){
         tour.createdAt=(moment(tour.createdAt).format('LL'));
         tour.updatedAt=(moment(tour.updatedAt).format('LL'));
-		return {
-			"Nombre":tour.name,
-			"Tarifa Base":tour.fee,
-			"Horarios":tour.email,
-            "Creado" : tour.createdAt,
-            "Actualizado": tour.updatedAt,
-		}
+        var r = {}
+        r[$rootScope.translates.c_name] = tour.name;
+        r[$rootScope.translates.c_baseRate] = tour.fee;
+        r[$rootScope.translates.c_created] = tour.createdAt;
+        r[$rootScope.translates.c_updated] = tour.updatedAt;
+		return r;
 	};
 
 	$scope.createTour = function(newtour){

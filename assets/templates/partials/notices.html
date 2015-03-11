@@ -1,5 +1,5 @@
 <div id="dashboard-left" class="span6">
-    <h4 class="widgettitle"><span class="fa fa-bullhorn"></span><%= __('home-notificaciones') %></h4>
+    <h4 class="widgettitle"><span class="fa fa-bullhorn"></span>{{translates.d_notifications}}</h4>
     <div class="widgetcontent nopadding">
         <ul class="commentlist">
             <li ng-repeat="notice in noticesN">
@@ -18,7 +18,7 @@
                         </p>
                         <span class="muted">{{ fromNow(notice.updatedAt) }}</span>
                     </div>
-                    <button class="btn btn-default toogle" ng-click="isCollapsed[$index] = !isCollapsed[$index]">Ver más</button>
+                    <button class="btn btn-default toogle" ng-click="isCollapsed[$index] = !isCollapsed[$index]">{{translates.d_seemore}}</button>
                     <div class="clear"></div>
                     
                             <div collapse="!isCollapsed[$index]" class='collapseCustom'>
@@ -26,9 +26,9 @@
                                 <table class="table" >
                                     <thead>
                                         <tr>
-                                            <th>Campo</th>
-                                            <th class ="valor-previo" >Valor previo</th><!--CLASE TEMPORAL-->
-                                            <th>Valor nuevo</th>
+                                            <th ng-bind="translates.d_field"></th>
+                                            <th ng-bind="translates.d_prevValue" class ="valor-previo" ></th><!--CLASE TEMPORAL-->
+                                            <th ng-bind="translates.d_newValue"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
