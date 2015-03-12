@@ -22,6 +22,7 @@
                         <th><%= __('client-direccion') %></th>
                         <th><%= __('client-contacto') %></th>
                         <th><%= __('client-rfc') %></th>
+                        <th><%= __('order-editar') %></th>
                         <th><%= __('client-accion') %></th>
                     </tr>
                     <% for(var i = 0; i< clients.length; i++){ %>
@@ -44,10 +45,10 @@
                 <div
                         form-helper
                         fields='content.client'
-                        form-footer='Agregar'
+                        form-footer='<%= __("order-agregar") %>Agregar'
                         form-save = 'createClient'
                         object = 'client'
-                        form-title='Agregar Cliente'
+                        form-title='<%= __("client-agregar-cliente") %>Agregar Cliente'
                         modal='true'
                         >
                 </div>

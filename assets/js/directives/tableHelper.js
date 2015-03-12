@@ -1,6 +1,8 @@
 (function () {
 	var controller = function($scope,$http,$modal,$rootScope){
         $scope.translates = $rootScope.translates;
+        $scope.langH = $rootScope.lang;
+        $scope.labelHelper = $rootScope.lang=='es'?'label':'label_en';
         $scope.destroyObject = function(object,key){
             var modalInstance = $modal.open({
                 templateUrl: '/template/find/deleteModal.html',

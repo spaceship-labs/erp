@@ -37,7 +37,7 @@
                 <!--<input type='text' name='pax' ng-model="transfer.pax" />-->
             </p>
             <p>
-                <label><%= __('order-origen-viaje')%> Origen del viaje</label>
+                <label><%= __('order-origen')%></label>
                 <span class='field'>
                     <span class="radio">
                         <input ng-change='updateDatesFormat()' ng-model="transfer.origin" type="radio" name="origin" value="hotel" checked> Hotel
@@ -48,13 +48,13 @@
                 </span>
             </p>
             <p>
-                <label><%= __('order-tipo-viaje')%> Tipo de viaje</label>
+                <label><%= __('order-tipo-viaje')%> </label>
                 <span class='field'>
                     <span class="radio">
-                        <input ng-change='updatePriceTransfer()' ng-model="transfer.type" type="radio" name="transtype" value="round_trip"> Round trip
+                        <input ng-change='updatePriceTransfer()' ng-model="transfer.type" type="radio" name="transtype" value="round_trip"> <%= __('order_tv_rt')%>
                     </span>
                     <span class="radio">
-                        <input ng-change='updatePriceTransfer()' ng-model="transfer.type" type="radio" name="transtype" value="one_way" checked> One way
+                        <input ng-change='updatePriceTransfer()' ng-model="transfer.type" type="radio" name="transtype" value="one_way" checked> <%= __('order_tv_ow')%>
                     </span>
                 </span>
             </p>

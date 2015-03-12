@@ -1,0 +1,1 @@
+window.ParsleyConfig = { excluded: "input[type=button], input[type=submit], input[type=reset], input[type=hidden], [disabled], :hidden" };

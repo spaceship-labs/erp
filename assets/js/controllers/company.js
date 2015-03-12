@@ -2,8 +2,9 @@ app.controller('companyCTL',function($scope,$http,$rootScope){
     $scope.companies = companies;
     $scope.content = content;
     $scope.currencies = currencies;
-    $scope.company = company;
+    $scope.company = selected_company;
     $scope.user = user;
+    //$scope.apps = apps;
 
     $scope.getInfo = function(company){
         var r = {};

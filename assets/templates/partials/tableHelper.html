@@ -1,7 +1,7 @@
 <table class="table table-striped responsive ng-cloak">
     <thead>
         <tr>
-            <th ng-repeat='column in columns' ng-bind='column.label'></th>
+            <th ng-repeat='column in columns' ng-bind="column[labelHelper]"></th>
             <th ng-bind="translates.d_edit"></th>
             <th ng-bind="translates.d_delete"></th>
         </tr>

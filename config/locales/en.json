@@ -3,6 +3,9 @@
   "h-sesion": "Logout",
 
   "gral_basicInfo":"BASIC INFORMATION",
+  "gral_companyInfo":"Company information",
+  "gral_texts":"Texts",
+  "gral_addZone":"Add zones",
 
 "admin-mensaje":"Message",
 "admin-user-actualizado":"The user has been successfully updated ",
@@ -87,6 +90,7 @@
   "home-reservaciones":"Reservations",
   "home-tipo-cambio":"Historic exchange rate",
   "home-user-invalid":"User or password invalid ",
+  "home_rateReserv":"Reservations sales",
 
   "location-zonas":"Zones",
   "location-relacionar":"Relate with other cities",
@@ -177,8 +181,20 @@
   "order-selecc":"Select client",
   "order-reservar":"Reserve",
   "order-agregar":"Add",
+  "order_userClient" : "¿Use the same user for reservations?"
+  ,"order_create" : "Create"
+  ,"order_createContact" : "Create contact"
+  ,"order_name" : "Name"
+  ,"order_mail" : "Email"
+  ,"order_phone" : "Phone"
+  ,"order_error" : "Order error"
+  ,"order_errC" : "Chose a client to continue"
+  ,"order_errA" : "Empty reservation"
+  ,"order-tipo-viaje" : "Type of trip"
+  ,"order_tv_rt" : "Round trip"
+  ,"order_tv_ow" : "One way"
 
-  "packageitem-":"",
+  ,"packageitem-":"",
 
   "packagetour-info":"Basic Information",
   "packagetour-hoteles":"Hotels",
@@ -247,6 +263,7 @@
 
   ,"tour-info":"Information Tour"
   ,"tour-dias":"Tour days",
+  "tour-nuevo":"Tour nuevo",
 
   "user-mensaje":"Message",
   "user-actualizado":"User has been successfully updated ",
@@ -372,9 +389,13 @@
   ,"location-gregar-ciudad":"Add City"
   ,"hotel-contenido":"Content"
   ,"season-agregar-esq":"Add Escheme"
-  ,"":""
-  ,"":""
-  ,"":""
-  ,"":""
+  
+  ,"cupon_new":"New cupon"
+  ,"cupon_add":"Add cupon"
+  ,"cupon_addInstancia":"Add instance"
+  ,"cupon_generate":"Generate"
+  ,"cupon_addInstancia":"Add instance"
+  ,"cupon_instancia":"Cupons instances"
+  ,"cupon_editInstancia":"Edit cupon: "
   ,"":""
 }

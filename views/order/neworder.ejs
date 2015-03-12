@@ -7,7 +7,7 @@
 </script>
 <div ng-controller='orderNewCTL' >
 	<div class='row stdform stdform2'>
-        <div class='col-md-12'><div class="widgetbox personal-information">
+        <div class='{{USClient?"col-md-12":"col-md-6"}}'><div class="widgetbox personal-information">
             <div class='headtitle'>
                 <div class='btn-group'><button class="btn btn-primary pull-right" data-toggle="modal" data-target="#myModal"><i class='fa fa-plus'></i> <%= __('order-nuevo-cliente')%></button></div>
                 <h4 class="widgettitle"><%= __('order-cliente')%></h4>
@@ -17,12 +17,32 @@
                     <label><%= __('order-selecc')%></label>
                     <span class='field'><select chosen ng-options='obj as obj.name for obj in clients_' ng-model='client' ></select></span>
                 </p>
-                <!--<p>
-                    <label>¿Usar el mismo cliente para las reservas?</label>
-                    <span class='field'><input type='checkbox' name='USClient' model='USClient' checked='checked' ng-change=""></span>
-                </p>-->
+                <p>
+                    <label><%= __('order_userClient') %></label>
+                    <span class='field'><input type='checkbox' ng-model='USClient' ></span>
+                </p>
             </div>
         </div></div>
+        <div class='col-md-6' ng-hide='USClient'>
+            <div class='headtitle'>
+                <div class='btn-group'><a ng-click="saveContact()" class="btn btn-primary pull-right"><i class='fa fa-save'></i> <%= __('order_create') %></a></div>
+                <h4 class="widgettitle"><%= __('order_createContact') %></h4>
+            </div>
+            <div class='widgetcontent nopadding'>
+                <p>
+                    <label><%= __('order_name') %></label>
+                    <span class='field'><input type='text' ng-model="contact.name"></span>
+                </p>
+                <p>
+                    <label><%= __('order_mail') %></label>
+                    <span class='field'><input type='text' ng-model="contact.email"></span>
+                </p>
+                <p>
+                    <label><%= __('order_phone') %></label>
+                    <span class='field'><input type='text' ng-model="contact.phone"></span>
+                </p>
+            </div>
+        </div>
     </div>
     <!-- Transfer section -->
     <div class='row'>
@@ -32,7 +52,7 @@
                     <a class="btn btn-primary pull-right" ng-click="isCtransfer = !isCtransfer"><i class='fa {{isCtransfer?"fa-plus":"fa-minus"}}'></i></a>
                     <a class="btn btn-primary pull-right" ng-click="saveAll()"><i class='fa fa-save'></i><%= __('order-reservar')%> </a>
                 </div>
-                <h4 class="widgettitle"><%= __('order-pickup')%> </h4>
+                <h4 class="widgettitle"><%= __('order-reservar-tras')%> </h4>
             </div>
             <div collapse="isCtransfer">
                 <%- partial('inputsTransfer') -%> 
@@ -110,13 +130,13 @@
     </div>
     <div id='popup_overlay' class='ng-hide ng-cloak' ng-hide="!alertM.show"></div>
     <div id='popup_container' class='alert-warning ng-hide ng-cloak' ng-hide="!alertM.show">
-        <h1 id="popup_title" >Error en la orden</h1>
+        <h1 id="popup_title" ><%= __('order_error') %></h1>
         <div id="popup_content" class="alert" ng-show="alertM.show&&alertM.client">
-            <div id="popup_message">Elije un cliente para poder continuar</div>
+            <div id="popup_message"><%= __('order_errC') %></div>
             <div id="popup_panel"><a ng-click="alertM.show=false;alertM.client=false;" id="popup_ok" style="display: block;width: 150px;margin: 0 auto;">OK</a></div>
         </div>
         <div id="popup_content" class="alert" ng-show="alertM.show&&alertM.allEmpty">
-            <div id="popup_message">Elije un cliente para poder continuar</div>
+            <div id="popup_message"><%= __('order_errA') %></div>
             <div id="popup_panel"><a ng-click="alertM.show=false;alertM.allEmpty=false;" id="popup_ok" style="display: block;width: 150px;margin: 0 auto;">OK</a></div>
         </div>
     </div>

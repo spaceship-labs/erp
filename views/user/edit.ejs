@@ -3,6 +3,7 @@
     window.apps = <%- JSON.stringify(apps) %>;
     window.company = <%- JSON.stringify(selected_company) %>;
     window.roles = <%- JSON.stringify(roles) %>;
+    //console.log(user);
 </script>
 <div ng-controller='userEditCTL' class="editar-usuario ng-cloak">
     <div class="span4 profile-left profileEdit">
@@ -22,7 +23,7 @@
              fields='content.user'
              object='user'
              action='/user/updateInfo'
-             form-title='Información Basica'
+             form-title='<%= __("gral_basicInfo") %>'
              hidden-fields='hiddenFields'
              >
         </div>

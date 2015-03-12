@@ -3,6 +3,7 @@
     window.apps = <%- JSON.stringify(apps) %>;
     window.users = <%- JSON.stringify(users) %>;
     console.log(company);
+    console.log(apps);
 </script>
 <div class='row-fluid' ng-controller='companyEditCTL'>
     <div class="col-md-4 profile-left profileEdit Admin">
@@ -84,7 +85,7 @@
              fields='content.company'
              object='company'
              action='/company/update'
-             form-title='Información de la Empresa'
+             form-title='<%= __("gral_companyInfo") %>'
              restrict="base_currency,apps"
                 >
         </div>

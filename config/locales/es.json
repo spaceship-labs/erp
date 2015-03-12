@@ -3,6 +3,9 @@
   "h-sesion": "Cerrar sesión",
 
   "gral_basicInfo":"INFORMACIÓN BÁSICA",
+  "gral_companyInfo":"Información de la empresa",
+  "gral_texts":"Textos",
+  "gral_addZone":"Agregar zonas",
 
 "admin-mensaje":"Mensaje",
 "admin-user-actualizado":"El usuario se ha actualizado exitosamente",
@@ -87,6 +90,7 @@
   "home-reservaciones":"Reservaciones",
   "home-tipo-cambio":"Tipo de cambio historico",
   "home-user-invalid":"Usuario o password invalido",
+  "home_rateReserv":"Monto en reservaciones",
 
   "location-zonas":"Zonas",
   "location-relacionar":"Relacionar con otras ciudades",
@@ -124,7 +128,7 @@
   "order-reservar-tras":"Reservación de Traslado ",
   "order-reservar-tour":"Reservación de Tours ",
   "order-reservar-hotel":"Reservación de Hoteles ",
-  "order-crear":"Crear reservación<",
+  "order-crear":"Crear reservación",
   "order-id":"Id",
   "order-usuario":"Usuario",
   "order-empresa":"Empresa",
@@ -180,8 +184,20 @@
   "order-selecc":"Selecciona un cliente",
   "order-reservar":"Reservar",
   "order-agregar":"Agregar",
+  "order_userClient" : "¿Usar el mismo cliente para las reservas?"
+  ,"order_create" : "Crear"
+  ,"order_createContact" : "Crear contacto"
+  ,"order_name" : "Nombre"
+  ,"order_mail" : "Correo"
+  ,"order_phone" : "Teléfono"
+  ,"order_error" : "Error en la orden"
+  ,"order_errC" : "Elije un cliente para poder continuar"
+  ,"order_errA" : "Reserva vacía"
+  ,"order-tipo-viaje" : "Tipo de viaje"
+  ,"order_tv_rt" : "Viaje redondo"
+  ,"order_tv_ow" : "Viaje sencillo"
 
-"packageitem-":"",
+  ,"packageitem-":"",
 
   "packagetour-info":"Informacion básica",
   "packagetour-hoteles":"Hoteles",
@@ -248,7 +264,8 @@
   "tranferprice-cancelar":"cancelar"
 
   ,"tour-info":"Informacion del Tour"
-  ,"tour-dias":"Dias del tour",
+  ,"tour-dias":"Dias del tour"
+  ,"tour-nuevo":"Tour nuevo",
 
   "user-mensaje":"Mensaje",
   "user-actualizado":"Usuario actualizado",
@@ -376,5 +393,14 @@
   ,"location-gregar-ciudad":"Agregar Ciudad"
   ,"hotel-contenido":"Contenido"
   ,"season-agregar-esq":"Agregar Esquema"
+
+  ,"cupon_new":"Cupón nuevo"
+  ,"cupon_add":"Agregar cupón"
+  ,"cupon_addInstancia":"Agregar instancia"
+  ,"cupon_generate":"Generar"
+  ,"cupon_addInstancia":"Agregar instancia"
+  ,"cupon_instancia":"Instancias de cupones"
+  ,"cupon_editInstancia":"Editar cupon de "
+  ,"":""
 
 }

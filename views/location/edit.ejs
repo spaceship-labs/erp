@@ -13,7 +13,7 @@
                 fields='content.location' 
                 object='location_o' 
                 action='/location/update' 
-                form-title='INFORMACIÓN BÁSICA'
+                form-title='<%= __("gral_basicInfo") %>'
                 >
             </div> 
         </div>
@@ -24,7 +24,7 @@
                 fields='content.locationTexts' 
                 object='location_o' 
                 action='/location/update' 
-                form-title='Textos'
+                form-title='<%= __("gral_texts") %>'
                 >
             </div> 
         </div>
@@ -42,7 +42,7 @@
                 <div ng-show='showZoneForm'>
                     <div form-helper 
                         fields='content.zoneBasic' 
-                        form-footer='Agregar Zona'
+                        form-footer='<%= __("gral_addZone") %>Agregar Zona'
                         form-save = 'addZone'
                         object = 'zone' >
                     </div>

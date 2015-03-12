@@ -633,7 +633,7 @@ module.exports.content = {
 	price : [
 		{
 			label 	: 'Región',
-			label 	: 'Region',
+			label_en 	: 'Region',
 			type 	: 'select',
 			handle 	: 'zone',
 			object 	: 'zones'
@@ -856,6 +856,26 @@ module.exports.content = {
             handle : 'work_position',
             type : 'text'
         }
+    ],
+    client_ct : [
+        {
+            label : 'Nombre',
+            label_en : 'Name',
+            handle : 'name',
+            type : 'text'
+        },
+        {
+            label : 'Teléfono',
+            label_en : 'Telefono',
+            handle : "phone",
+            type : 'text'
+        },
+        {
+            label : 'E-mail',
+            label_en : 'E-mail',
+            handle : 'email',
+            type : 'text'
+        },
     ],
     company_tax : [
         {
@@ -1149,6 +1169,7 @@ module.exports.content = {
 			label_en : 'Name',
 			type : 'text',
 			handle : 'name',
+			required : true,
 		},
 		{
 			label : 'Descuento viaje sencillo',
@@ -1204,5 +1225,109 @@ module.exports.content = {
 			type : 'checkbox',
 			handle : 'perpetuo',
 		},
+		{
+			label : 'Hoteles',
+			label_en : 'Hotels',
+			type : 'multi-select',
+			handle : 'hotels',
+			object : 'hotels',
+			//removeAction : '/hotel/removeFoodScheme',
+			removeAction:'/cupon/removeHotel'
+		},
+		{
+			label : 'Tours',
+			label_en : 'Tours',
+			type : 'multi-select',
+			handle : 'tours',
+			object : 'tours',
+			//removeAction : '/hotel/removeFoodScheme',
+			removeAction:'/cupon/removeTour'
+		},
+		{
+			label : 'Servicios',
+			label_en : 'Services',
+			type : 'multi-select',
+			handle : 'transfers',
+			object : 'transfers',
+			//removeAction : '/hotel/removeFoodScheme',
+			removeAction:'/cupon/removeTransfer'
+		},
+
+	],
+	cuponSingle : [
+		{
+			label : 'Tipo',
+			label_en : 'Type',
+			type : 'text',
+			handle : 'name',
+		},
+		{
+			label : 'token',
+			label_en : 'token',
+			type : 'text',
+			handle : 'token',
+		},
+		{
+			label : 'Fecha de expiración',
+			label_en : 'Expiration date',
+			type : 'date',
+			handle : 'expiration',
+			options : {
+			    formatYear: 'yy',
+			    startingDay: 1
+			}
+		},
+		{
+			label : 'Multiple',
+			label_en : 'Multiple',
+			type : 'checkbox',
+			handle : 'multiple',
+		},
+		{
+			label : 'Descripción',
+			label_en : 'Description',
+			type : 'text',
+			handle : 'description',
+		},
+	],
+	cuponSingleEdit : [
+		{
+			label : 'token',
+			label_en : 'token',
+			type : 'text',
+			handle : 'token',
+		},
+		{
+			label : 'Tipo',
+			label_en : 'Type',
+			type : 'select',
+			handle : 'cupon',
+			object : 'cupon',
+			required : true,
+		},
+		{
+			label : 'Fecha de expiración',
+			label_en : 'Expiration date',
+			type : 'date',
+			handle : 'expiration',
+			options : {
+			    formatYear: 'yy',
+			    startingDay: 1
+			},
+			required:true
+		},
+		{
+			label : 'Multiple',
+			label_en : 'Multiple',
+			type : 'checkbox',
+			handle : 'multiple',
+		},
+		{
+			label : 'Descripcion',
+			label_en : 'Description',
+			type : 'text',
+			handle : 'description',
+		},
+
 	],
 };

@@ -9,7 +9,8 @@
         $scope.dateOptions = {
             formatYear: 'yyyy',
             startingDay: 1,
-        }; 
+        };
+        $scope.opened = false;
 
         $scope.chartDate = $scope.dayDate || new Date();
 
@@ -26,10 +27,10 @@
                 });
             }
         }
-        $scope.openDatePicker = function($event) {
+        $scope.toggleDatePicker = function($event) {
             $event.preventDefault();
             $event.stopPropagation();
-            $scope.opened = true;
+            $scope.opened = !$scope.opened;
         }; 
 
         $scope.$watch('chartDate', function (newVal, oldVal) {
