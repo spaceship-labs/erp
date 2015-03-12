@@ -1,0 +1,33 @@
+<div class='row-fluid'>
+    <div class='span12'>
+        <div class='headtitle'>
+            <div class='btn-group'>
+                <a class="btn btn-primary pull-right" ng-click="removeTour($index,'tour')"><i class='fa fa-times'></i><%= __('order-eliminar')%> </a>
+            </div>
+            <h4 class="widgettitle"><span><%= __('order-reservar-tour')%><span ng-bind="item.tour.name"></span></span></h4>
+        </div>
+        <div class='widgetcontent nopadding'>
+            <p>
+                <label><%= __('order-fecha')%></label>
+                <span class='field'><span class='input-group calendar-container'>
+                    <input ng-change="validateDates()" is-open="open[item.tour.id+$index]" ng-model='item.startDate' datepicker-popup />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="open($event,item.tour.id+$index)"><i class="fa fa-calendar"></i></button>
+                    </span>
+                </span></span>
+            </p>
+            <p>
+                <label><%= __('order-adultos')%></label>
+                <span class='field'><select ng-change="updateTourPrice(item)" ng-options='obj for obj in [1,2,3,4,5,6,7,8,9,10]' ng-model='item.adultNumber' ></select></span>
+            </p>
+            <p>
+                <label><%= __('order-menores')%> Menores</label>
+                <span class='field'><select ng-change="updateTourPrice(item)" ng-options='obj for obj in [0,1,2,3,4,5,6,7,8,9,10]' ng-model='item.childrenNumber' ></select></span>
+            </p>
+            <p>
+                <label><%= __('order-precio')%></label>
+                <span class='field'><input type='text' ng-model="item.fee"></span>
+            </p>
+        </div>
+    </div>
+</div>

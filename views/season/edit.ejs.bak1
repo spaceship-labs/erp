@@ -3,7 +3,7 @@
     window.hotels = <%- JSON.stringify(hotels) %>;
 </script>
 <div ng-controller='seasonsEditCTL' >
-	<p><button class="btn btn-default" data-toggle="modal" data-target="#myModal"><span class='fa fa-plus'></span> Nueva Temporada</button></p>
+	<p><button class="btn btn-default" data-toggle="modal" data-target="#myModal"><span class='fa fa-plus'></span><%= __('season-nueva')%> </button></p>
 	<br/>	
 	
  	<div 
@@ -21,7 +21,7 @@
 			        form-footer='Agregar Temporada'
 			        form-save = 'createSeason'
 			        object = 'newSeason'
-			        form-title='Nueva temporada'
+			        form-title='<%= __('season-nueva')%>'
 			       	modal='true'
 			        >
 			    </div>	

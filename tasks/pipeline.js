@@ -43,8 +43,9 @@ var cssFilesToInject = [
 	'/styles/css/font-awesome.min.css',
     '/bower_components/angular-xeditable/dist/css/xeditable.css',
     '/bower_components/angular-chart.js/dist/angular-chart.css',
-
-	'styles/*.css'
+	//'/styles/css/*.css',
+	'/styles/general.css',
+	'/styles/importer.css'
 ];
 
 

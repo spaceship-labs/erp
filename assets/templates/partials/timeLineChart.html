@@ -1,0 +1,22 @@
+<div id="chart-container">
+	<h4 class="widgettitle"><span class="fa fa-database"></span> {{chartTitle}}</h4>
+	<div class="widgetcontent">
+		<div class="row-fluid">
+			<div class="col-md-6">
+				<select ng-init="setDefaults()" class="form-control" ng-options="period as period.label for period in periods" ng-model="period" ng-change="setTimePeriods(period.slug)"></select>
+			</div>
+		    <div class="col-md-6"> 
+		        <p class="input-group input-picker">
+		          <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="chartDate" is-open="opened" datepicker-options="dateOptions" ng-required="true" close-text="Cerrar" datepicker-mode="pickerPeriod" datepicker-min-mode="pickerPeriod" ng-disabled="true" />
+		          <span class="input-group-btn">
+		            <button type="button" class="btn btn-default" ng-click="toggleDatePicker($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+		          </span>
+		        </p>
+		    </div>
+	    </div>
+		<canvas id="line" chart-base data="data" chart-type="chartType"
+		  labels="labels" legendchart="true" series="series"
+		  click="onClick">
+		</canvas>
+	</div>	
+</div>

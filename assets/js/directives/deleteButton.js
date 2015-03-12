@@ -1,5 +1,7 @@
 (function () {
-    var controller = function($scope,$http,$window){
+    var controller = function($scope,$http,$window,$rootScope){
+        console.log($rootScope);
+        $scope.translates = $rootScope.translates;
         $scope.showOverlay = false;
         $scope.user = user;
         $scope.iconSrc = $scope.user.icon ? '/uploads/users/80x80'+$scope.user.icon.filename : 'http://placehold.it/80x80';
@@ -15,7 +17,7 @@
             });
         };
     };
-    controller.$inject = ['$scope','$http'];
+    controller.$inject = ['$scope','$http','$window','$rootScope'];
     var directive = function () {
         return {
             controller : controller,

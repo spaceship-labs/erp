@@ -1,8 +1,8 @@
  <div class="pageheader" ng-class="page.saveButton ? 'staticTop' : ''">
     <form action="results.html" method="post" class="searchbar" ng-if='page.searchBar'>
-        <input type="text" name="keyword" placeholder="Escribe para realizar una busqueda" ng-model='searchInput' onfocus="this.placeholder = ''" onblur="this.placeholder = 'Escribe para realizar una busqueda'"/>
+        <input type="text" name="keyword" placeholder="{{translates.d_searchPH}}Escribe para realizar una busqueda" ng-model='searchInput' onfocus="this.placeholder = ''" onblur="this.placeholder = translates.d_searchPH"/>
     </form>
-    <button ng-if='page.saveButton' class="btn btn-primary pull-right" ng-click='broadcastSave()'>Guardar Todo</button>
+    <button ng-if='page.saveButton' class="btn btn-primary pull-right" ng-click='broadcastSave()'>{{translates.d_saveAll}}</button>
     <div class="pageicon">
         <span ng-class="page.icon || 'fa fa-th-large'"></span>
     </div>

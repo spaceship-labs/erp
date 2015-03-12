@@ -1,29 +1,29 @@
 <p>
-	<label for='name'>Nombre*</label>
+	<label for='name'><%= __('hotel-nombre') %>'</label>
 	<span class='field'>
 		<input type='text' name='name' class='form-control required' ng-model='newHotel.name'  />
 	</span>
 </p>	
 <p>
-	<label for='address'>Dirección</label>
+	<label for='address'><%= __('hotel-direccion') %></label>
 	<span class='field'>
 		<input type='text' name='address' ng-model='newHotel.address' class='form-control required'  />
 	</span>
 </p>			
 <p>
-	<label for='phones'>Teléfonos</label>
+	<label for='phones'><%= __('hotel-telefonos') %></label>
 	<span class='field'>
 		<input type='text' ng-model='newHotel.phones'  name='phones' class='form-control required'  />
 	</span>
 </p>	
 <p>
-	<label for='location'>Localidad</label>
+	<label for='location'><%= __('hotel-localidad') %></label>
 	<span class='field'>
 		<select ng-change='getZones()' type='text' name='location' class='form-control required' ng-model='newHotel.location' ng-options='l.name for l in locations track by l.id'></select>
 	</span>
 </p>
 <p>
-	<label for='zone'>Zona</label>
+	<label for='zone'><%= __('hotel-zona') %></label>
 	<span class='field'>
 		<select type='text' name='zone' class='form-control required' ng-model='newHotel.zone' ng-options='l.name for l in zones track by l.id'></select>
 	</span>

@@ -15,7 +15,7 @@
         </div> 
         <div class="widgetbox">
             <div class="headtitle">          
-                <h4 class="widgettitle">Dias de Operación <span ng-click='save()'  class='fa icon' ng-class='saveClass'></span></h4>
+                <h4 class="widgettitle"><%= __('tour-dias')%> <span ng-click='save()'  class='fa icon' ng-class='saveClass'></span></h4>
             </div>
             <div class="widgetcontent">
                 <div class="btn-group ng-selector">
@@ -27,7 +27,7 @@
                     <button class="btn btn-default" ng-class='{"active":tour.days[5]}' ng-click='tour.days[5] = !tour.days[5]' >S</button>
                     <button class="btn btn-default" ng-class='{"active":tour.days[6]}' ng-click='tour.days[6] = !tour.days[6]' >D</button>
                 </div>
-                <p class='small'>*Seleccionados en azul</p>
+                <p class='small'><%= __('tour-selecion')%></p>
             </div>
         </div>
 
@@ -37,7 +37,7 @@
             fields='content.tour' 
             object='tour' 
             action='/tour/save' 
-            form-title='INFORMACIÓN BASICA'
+            form-title='<%= __('tour-info')%>'
             currency='company.base_currency'
             objects='{schemes:schemes,locations:locations}'
             >

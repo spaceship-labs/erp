@@ -1,5 +1,6 @@
 (function () {
-	var controller = function($scope,$http){   
+	var controller = function($scope,$http,$rootScope){   
+        $scope.translates = $rootScope.translates;
         $scope.getLineClass = function(line){
             return 'start'+line.start+' end'+line.end+' color'+line.season;
         }
@@ -84,7 +85,7 @@
         $scope.$on('UPDATE SEASONS', $scope.initialize);
 	}
 
-	controller.$inject = ['$scope','$http'];
+	controller.$inject = ['$scope','$http','$rootScope'];
     var directive = function () {
         return {
         	controller : controller,

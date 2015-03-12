@@ -3,7 +3,6 @@
     window.locations = <%- JSON.stringify(locations) %>;
     window.zones = <%- JSON.stringify(zones) %>;
     window.userID = <%- JSON.stringify(req.user.id) %>;
-    console.log(airport);
 </script>
 <div ng-controller='airportEditCTL' class="editar-aeropuerto ng-cloak">
     <div class='row-fluid'>
@@ -13,7 +12,7 @@
                 object='airport' 
                 objects = '{locations:locations,zones:zones}'
                 action='/airport/update' 
-                form-title='INFORMACIÓN BÁSICA'
+                form-title='<%= __('gral_basicInfo') %>'
                 >
             </div>
         </div>

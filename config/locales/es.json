@@ -1,3 +1,406 @@
 {
-  "Welcome": "Bienvenido"
+  "h-edit": "Editar perfil" ,
+  "h-sesion": "Cerrar sesión",
+
+  "gral_basicInfo":"INFORMACIÓN BÁSICA",
+  "gral_companyInfo":"Información de la empresa",
+  "gral_texts":"Textos",
+  "gral_addZone":"Agregar zonas",
+
+"admin-mensaje":"Mensaje",
+"admin-user-actualizado":"El usuario se ha actualizado exitosamente",
+"admin-tipo-cambio":"Tipo de cambio",
+"admin-tipo-cambioes":"El tipo de cambio es a",
+"admin-guardar":"Guardar",
+"admin-conf-moneda":"Configuración de Moneda",
+"admin-moneda-base":"Moneda Base",
+"admin-porcentaje-comision":"Porcentaje de Comisión por Cambio de Moneda",
+"admin-monedas":"Monedas",
+"admin-agregar-moneda":"Agregar Moneda",
+
+"airport-mensaje":"Mensaje",
+"airport-creo-exitoso":"El aeropuerto se creó exitosamente",
+"airpot-create" : "Nuevo Aeropuerto",
+"airpot-add" : "Agregar Aeropuerto",
+
+"client-mensaje":"Mensaje",
+"client-cliente-actualizado":"El cliente se ha actualizado exitosamente",
+"client-guardar":"Guardar",
+"client-cancelar":"Cancelar",
+"client-precios-especiales":"Precios especiales",
+"client-descuento-gen":"Descuento general:",
+"client-por-product":"Por productos",
+"client-contactos":"Contactos",
+"client-filtros":"FILTROS",
+"client-agregar-cliente":"AGREGAR CLIENTE",
+"client-nombre":"Nombre*",
+"client-direccion":"Direccion*",
+"client-contacto":"Telefono*",
+"client-rfc":"RFC*",
+"client-accion":"Accion",
+"client-select":"Seleccionar Cliente",
+
+  "emp-nueva-emp":"Nueva Empresa",
+  "emp-agregar-emp":"Agregar Empresa",
+  "emp-actualizar":"La empresa se ha actualizado exitosamente",
+  "emp-aplicaciones":"Aplicaciones",
+  "emp-agregar-app":"Agregar App",
+  "emp-app-agregada":"Todas las aplicaciones estan agregadas",
+  "emp-usuarios":"Usuarios",
+  "emp-agregar-usuario":"Agregar Usuario",
+  "emp-agregar-usuarios":"+ Agregar Usuarios",
+  "emp-todos-usuarios":"Todos los usuarios estan agregados",
+  "emp-archivos":"Archivos",
+  "emp-acta":"Acta constitutiva",
+  "emp-legal-acta":"Rep. legal acta",
+  "emp-nombre":"Nombre*",
+  "emp-descripcion":"Descripción",
+  "emp-direccion":"Dirección 1",
+  "emp-codigo-postal":"Código Postal",
+  "emp-moneda-pri":"Moneda Principal",
+  "emp-monedas":"Monedas",
+  "emp-guardar":"Guardar",
+  "emp-resetear":"Resetear",
+  "emp-impuestos":"Impuestos",
+
+  "food-new-esquema":"Nuevo Esquema",
+
+  "global-empresas":"Empresas",
+  "global-cambiar":"Cambiar empresa",
+  "global-tablero":"Tablero",
+  "global-notificaciones":"Notificaciónes",
+
+  "hotel-habitaciones":"Habitaciones",
+  "hotel-agregar":"AGREGAR NUEVO HOTEL",
+  "hotel-nombre":"Nombre*",
+  "hotel-direccion":"Dirección",
+  "hotel-telefonos":"Teléfonos",
+  "hotel-localidad":"Localidad",
+  "hotel-zona":"Zona",
+  "hotel-nuevo":"Nuevo Hotel",
+  "hotel-cerrar":"Cerrar",
+  "hotel-guardar":"Guardar",
+  "hotel-vista":"Nueva Vista",
+  "hotel-agregar-vista":"Agregar Vista",
+
+  "home-cotizaciones": "Cotizaciones",
+  "home-no-cotizaciones": "No se encontraron cotizaciones",
+  "home-reservaciones-dia":"Reservaciones por dia",
+  "home-no-reservaciones-dia":"No se encontraron reservaciones este dia",
+  "home-reservaciones":"Reservaciones",
+  "home-tipo-cambio":"Tipo de cambio historico",
+  "home-user-invalid":"Usuario o password invalido",
+  "home_rateReserv":"Monto en reservaciones",
+
+  "location-zonas":"Zonas",
+  "location-relacionar":"Relacionar con otras ciudades",
+  "location-agregar":"Agregar Ciudad",
+  "location-mensaje":"Mensaje",
+  "location-secreo-exit":"La ciudad se creó exitosament",
+  "location-nueva-ciudad":"Nueva Ciudad",
+  "location-cerrar":"Cerrar",
+
+  "machine-nombre":"Nombre* :",
+  "machine-descripcion":">Descripcion :",
+  "machine-referencia":"Referencia Interna :",
+  "machine-tipo":"Tipo :",
+  "machine-nombre":"Nombre",
+  "machine-velocidad":"Vel : m2/hr",
+  "machine-precio":"Precio m2",
+  "machine-eliminar":"Eliminar",
+  "machine-mensaje":"Mensaje",
+  "machine-info":"Informacion Basica",
+  "machine-categoria":"Categorias de producto que utiliza:",
+  "machine-guardar":"Guardar",
+  "machine-modos":"Modos",
+  "machine-guardar":"Guardar",
+  "machine-filtros":"Filtros",
+  "machine-maquinaria":"Maquinaria",
+  "machine-nombre":"Nombre* :",
+  "machine-descripcion":"Descripcion :",
+  "machine-referencia":"Referencia Interna :",
+  "machine-tipo":"Tipo :",
+  "machine-nueva":"Nueva Maquinaria",
+  "machine-cerrar":"Cerrar",
+  "machine-editar":"Editar",
+
+  "order-guardar-todo":"Guardar todo",
+  "order-reservar-tras":"Reservación de Traslado ",
+  "order-reservar-tour":"Reservación de Tours ",
+  "order-reservar-hotel":"Reservación de Hoteles ",
+  "order-crear":"Crear reservación",
+  "order-id":"Id",
+  "order-usuario":"Usuario",
+  "order-empresa":"Empresa",
+  "order-llegada":"Llegada",
+  "order-salida":"Salida",
+  "order-cliente":"Cliente",
+  "order-hotel":"Hotel",
+  "order-aeropuerto":"Aeropuerto",
+  "order-tipo":"Tipo",
+  "order-origen":"Origen",
+  "order-estado":"Estado",
+  "order-pago":"Pago",
+  "order-fecha":"Fecha",
+  "order-total":"Total",
+  "order-editar":"Editar",
+  "order-borrar":"Borrar",
+  "order-info":"Información del servicio",
+  "order-hotel":"Hotel",
+  "order-aeropuerto":"Aeropuerto",
+  "order-servicio":"Servicio",
+  "order-estado":"Estado",
+  "order-pago":"Método de pago",
+  "order-autorizacion":"Código de autorización",
+  "order-pax":"PAX",
+  "order-origen":"Origen del viaje",
+  "order-viaje":"Tipo de viaje",
+  "order-tarifa":"Tarifa",
+  "order-round":"Round trip",
+  "order-one":"One way",
+  "order-vuelof-llegada":"Vuelo y fecha de llegada",
+  "order-llegada":"Fecha de llegada",
+  "order-vuelo-llegada":" Vuelo de llegada",
+  "order-hora":" Hora de llegada",
+  "order-pickup":" Pickup time",
+  "order-vuelof-salida":"Vuelo y fecha de salida",
+  "order-fecha-salida":"Fecha de salida",
+  "order-vuelo-salida":" Vuelo de Salida",
+  "order-hora-salida":" Hora de Salida",
+  "order-eliminar":"Eliminar",
+  "order-reservar-hotel":"Reservar hotel: ",
+  "order-fecha-entrada":" Fecha de entrada",
+  "order-fecha-salida":" Fecha de Salida",
+  "order-cuartos":" Cuartos",
+  "order-num-cuartos":" Número de cuartos",
+  "order-adultos":"Adultos",
+  "order-menores":"Menores",
+  "order-precio":"Precio",
+  "order-precio-esp":"Precio especial",
+  "order-servicio":" Servicio",
+  "order-estado":" Estado",
+  "order-nuevo-cliente":"Nuevo Cliente",
+  "order-cliente":"Cliente",
+  "order-selecc":"Selecciona un cliente",
+  "order-reservar":"Reservar",
+  "order-agregar":"Agregar",
+  "order_userClient" : "¿Usar el mismo cliente para las reservas?"
+  ,"order_create" : "Crear"
+  ,"order_createContact" : "Crear contacto"
+  ,"order_name" : "Nombre"
+  ,"order_mail" : "Correo"
+  ,"order_phone" : "Teléfono"
+  ,"order_error" : "Error en la orden"
+  ,"order_errC" : "Elije un cliente para poder continuar"
+  ,"order_errA" : "Reserva vacía"
+  ,"order-tipo-viaje" : "Tipo de viaje"
+  ,"order_tv_rt" : "Viaje redondo"
+  ,"order_tv_ow" : "Viaje sencillo"
+
+  ,"packageitem-":"",
+
+  "packagetour-info":"Informacion básica",
+  "packagetour-hoteles":"Hoteles",
+  "packagetour-dias":"Disas del tour",
+  "packagetour-agregar":"Agregar paquete",
+
+  "price-info":"Informacion básica",
+  "price-nuevo-precio":"Nuevo precio",
+  "price-servicio":"Servicio",
+  "price-aeropuerto":"Aeropuerto",
+  "price-ciudad":"Ciudad",
+  "price-zona":"Zona",
+  "price-sencillo":"Sencillo",
+  "price-redondo":"Redondo",
+  "price-activo":"Activo",
+  "price-editar":"Editar",
+  "price-agregar-precio":"AGregar Precio",
+
+  "room-base":"Base",
+  "room-tarifa-t":"Tarifa Temporadas :",
+  "room-info":"Informacion básica",
+
+  "season-temporadas-ano":"Temporada Año",
+  "season-agregar":"Agregar nueva temporada",
+  "season-temporadas":"TEMPORADAS",
+  "season-semana":"Se encontraron 2 temporadas SEMANA SANTA",
+  "season-verano":"Se encontraron 4 temporadas VERANO",
+  "season-invieno":"Se encontraron 3 temporadas INVIERNO",
+  "season-nueva":"Nueva Temporada",
+  "season-nuevo-esq":"Nuevo Esquema",
+  "season-info":"Informacion básica",
+
+  "service-info":"Informacion básica",
+  "service-nuevo":"Nuevo Servicio",
+  "service-agregar":"Agregar servicio",
+  "service-dias":"Dias de opreracion",
+  "service-selecion":"*SEleccionado en azul",
+  "service-info":"Informacion básica",
+  "service-nuevo":"Nuevo tour",
+  "service-agregar":"Agregar tour",
+
+  "transfer-info":"Informacion básica",
+  "transfer-nuevo":"Nuevo servicio",
+  "transfer-editar":"Editar",
+  "transfer-nombre":"Nombre:",
+  "transfer-pax":"Pax:",
+  "transfer-agregar":"Agregar servicio de traslado",
+
+  "tranferprice-nuevo":"Precio nuevo",
+  "tranferprice-servicio":"Servicio:",
+  "tranferprice-aeropuerto":"Aeropuerto:",
+  "tranferprice-ciudad":"Ciudad",
+  "tranferprice-zona":"Zona",
+  "tranferprice-sencillo":"Sencillo",
+  "tranferprice-redondo":"Redondo",
+  "tranferprice-activo":"Activo",
+  "tranferprice-guardar":"guardar",
+  "tranferprice-cancelar":"cancelar",
+  "tranferprice-editar":"editar",
+  "tranferprice-info":"Informacion básica",
+  "tranferprice-agencia":"Agencia:",
+  "tranferprice-activo":"Activo",
+  "tranferprice-guardar":"guardar",
+  "tranferprice-cancelar":"cancelar"
+
+  ,"tour-info":"Informacion del Tour"
+  ,"tour-dias":"Dias del tour"
+  ,"tour-nuevo":"Tour nuevo",
+
+  "user-mensaje":"Mensaje",
+  "user-actualizado":"Usuario actualizado",
+  "user-cambiar":"Cambiar contraseña",
+  "user-actual":"Actual",
+  "user-nueva":"nueva",
+  "user-misma":"* Estas usando la misma contraseña",
+  "user-requerido":"* campo requerido",
+  "user-minimo":"*MIni 6 caracteres",
+  "user-vuelve":"Error repite la contraseña",
+  "user-error":"* Passwords do not match ",
+  "user-mostrar":"Mostrar caracteres ",
+  "user-nuevo":"Nuevo usuario",
+  "user-nombre":"Nombrere",
+  "user-apellido":"Apellido",
+  "user-mail":"E-mail",
+  "user-pass":"Contraseña",
+  "user-agregar":"Agregar",
+  "user-cancelar":"Cancelar",
+  "user-app":"APlicaciones y permisos",
+  "user-admin":"Administrador",
+  "user-perfil":"Perfil",
+  "user-permiso":"permisos",
+  "user-roles":"roles de usuario ",
+  "user-selecciona":"Seleccionar",
+  "user-nombre":"Nombre",
+  "user-permiso":"permisos",
+  "user-escoger":"escojer",
+  "user-cerrar":"Cerrar",
+
+  "zone-actualizado":"zona actualizada",
+  "zone-info":"Informacion básica",
+  "zone-info-e":"Informacion extra",
+
+
+
+  "Directivas. Agregador por Erick" : ""
+  ,"d_reset" : "Limpiar campos"
+  ,"d_dom" : "Dom"
+  ,"d_lun" : "Lun"
+  ,"d_mar" : "Mar"
+  ,"d_mie" : "Mie"
+  ,"d_jue" : "Jue"
+  ,"d_vie" : "Vie"
+  ,"d_sab" : "Sab"
+  ,"d_deleteFile" : "Eliminar archivo"
+  ,"d_deleteperm" : "ELIMINAR PERMANENTEMENTE"
+  ,"d_user" : "Usuario"
+  ,"d_deletePlaceH" : "Ingrese su contraseña para eliminar este documento..."
+  ,"d_edit" : "Editar"
+  ,"d_fileManager" : "DMINISTRADOR DE ARCHIVOS (MAX 1MB)"
+  ,"d_fmselectall" : "Seleccionar Todo"
+  ,"d_min" : "Minimizar"
+  ,"d_max" : "Maximizar"
+  ,"d_all" : "Todos"
+  ,"d_img" : "Imagenes"
+  ,"d_video" : "Videos"
+  ,"d_audio" : "Audios"
+  ,"d_docs" : "Documentos"
+  ,"d_showing" : "Mostrando"
+  ,"d_selectDest" : "Selector de destinos"
+  ,"d_selectGeo" : "Selector de Georeferencia"
+  ,"d_lat" : "Latitude"
+  ,"d_lon" : "Longitud"
+  ,"d_dec" : "Descripción"
+  ,"d_delete" : "Eliminar"
+  ,"d_markLegend" : "Arrastrar para cambiar la ubicación de los marcadores."
+  ,"d_markLegend2" : "Haz click en el mapa para establecer el marcador manualmente."
+  ,"d_seemore" : "Ver más"
+  ,"d_field" : "Campo"
+  ,"d_prevValue" : "Valor previo"
+  ,"d_newValue" : "Valor nuevo"
+  ,"d_searchPH" : "Escribe para realizar una busqueda"
+  ,"d_saveAll" : "Guardar Todo"
+  ,"d_options" : "Opciones"
+  ,"d_change" : "Cambiar"
+  ,"d_primaryImg" : "Imagen Primaria"
+  ,"d_charge" : "Cargando"
+  ,"d_empty" : "Vacío"
+  ,"d_notifications" : "Notificaciones"
+
+  ,"c_name" : "Nombre"
+  ,"c_created" : "Creado"
+  ,"c_updated" : "Actualizado"
+  ,"c_adress" : "Dirección"
+  ,"c_baseCurrency" : "Moneda Base"
+  ,"c_population" : "Poblacion"
+  ,"c_phones" : "Telefonos"
+  ,"c_stars" : "estrellas"
+  ,"c_ordermessg1" : "Algunos tours se reservan para antes de la llegada del cliente, favor de revisar los siguientes:"
+  ,"c_ordermessg2" : "Algunos tours se reservan para después de que el cliente se haya ido, favor de revisar los siguientes:"
+  ,"c_ordermessg3" : "Las fechas de hoteles y traslado no coinciden."
+  ,"c_reg" : "Registro"
+  ,"c_last_acc" : "Último acceso"
+  ,"c_email" : "Email"
+  ,"c_baseRate" : "Tarifa base"
+
+  ,"sc_airport" : "Aeropuertos"
+  ,"sc_clients" : "Clientes"
+  ,"sc_client" : "Cliente"
+  ,"sc_editclient" : "Editar cliente"
+  ,"sc_editcontact" : "Editar contacto"
+  ,"sc_companies" : "Empresas"
+  ,"sc_taxedit" : "Editar impuestos"
+  ,"sc_cupons" : "Cupones"
+  ,"sc_foodscheme" : "Esquemas de alimentación"
+  ,"sc_foodscheme_desc" : "Administracion de esquemas para hoteles"
+  ,"sc_home_desc" : "AQUÍ PODRÁS VISUALIZAR Y ADMINISTRAR TODO TU PROCESO DE VENTA"
+  ,"sc_dashboard" : "Tablero"
+  ,"sc_hotels" : "Hoteles"
+  ,"sc_hotels_desc" : "Administracion de contenido hoteles"
+  ,"sc_hRoomv" : "Vistas de cuartos"
+  ,"sc_hRoomv_desc" : "Administracion de contenido de cuartos"
+  ,"sc_hRoomv_" : "Vista"
+  ,"sc_hRoomv_descedit" : "Edición de la vista"
+  ,"sc_location" : "Ciudades"
+  ,"sc_reservations" : "Reservas"
+  ,"sc_packages" : "Paquetes"
+  ,"sc_tour" : "Tours"
+  ,"sc_transfer" : "Traslados"
+  ,"sc_users" : "Usuarios"
+
+  ,"layout-desarrollo":"desarrollo"
+  ,"partial-cargar":"Cargando"
+  ,"location-gregar-ciudad":"Agregar Ciudad"
+  ,"hotel-contenido":"Contenido"
+  ,"season-agregar-esq":"Agregar Esquema"
+
+  ,"cupon_new":"Cupón nuevo"
+  ,"cupon_add":"Agregar cupón"
+  ,"cupon_addInstancia":"Agregar instancia"
+  ,"cupon_generate":"Generar"
+  ,"cupon_addInstancia":"Agregar instancia"
+  ,"cupon_instancia":"Instancias de cupones"
+  ,"cupon_editInstancia":"Editar cupon de "
+  ,"":""
+
 }

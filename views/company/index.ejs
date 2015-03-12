@@ -2,6 +2,8 @@
 	window.companies = <%-JSON.stringify(companies) %>;
 	window.currencies = <%-JSON.stringify(currencies) %>;
     window.user = <%- JSON.stringify(current_user) %>;
+    window.selected_company = <%- JSON.stringify(selected_company) %>;
+    console.log(companies);
 </script>
 
 <div class="wrap_createCompany row-fluid" ng-controller="companyCTL">
@@ -11,7 +13,7 @@
 		 dir='companies' 
 		 edit-url='/company/edit/' 
 		 get-info='getInfo' 
-		 button-text='Nueva Empresa'
+		 button-text='<%= __('emp-nueva-emp') %>'
 		 >
 	</div>
 	<div class="modal fade" id="myModal">
@@ -23,7 +25,7 @@
 			        form-footer='Agregar'
 			        form-save = 'createCompany'
 			        object = 'newcompany'
-			        form-title='Agregar Empresa'
+			        form-title='<%= __('emp-agregar-emp') %>'
 			       	modal='true'
 			       	objects='{currencies:currencies,apps:company.apps}'
 			        >

@@ -16,12 +16,13 @@ module.exports.policies = {
 
   // Default policy for all controllers and actions
   // (`true` allows public access) 
-  '*':'sessionAuth'
+  '*' : ['sessionAuth','localize']
+  //'*' : 'localize'
   , home:{
       login:true
     , auth:true
   }
-  , install :{
+  , setup :{
   	index:true,
   	create:true,
   },

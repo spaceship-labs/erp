@@ -22,13 +22,13 @@ module.exports = {
 							categories : categories,
 							foodSchemes : foodSchemes,
 							page:{
-								name:'Hoteles'
-								,description: 'Administracion de contenido hoteles'
+								name:req.__('sc_hotels')
+								,description: req.__('sc_hotels_desc')
 								,icon:'fa fa-building'		
 								,controller : 'hotel.js'
 							},
 							breadcrumb : [
-								{label : 'Hoteles'}
+								{label : req.__('sc_hotels')}
 							]
 						},req);
 					});
@@ -90,7 +90,7 @@ module.exports = {
 										controller : 'hotel.js',			
 									},
 									breadcrumb : [
-										{label : 'Hoteles', url : '/hotel/'},
+										{label : req.__('sc_hotels'), url : '/hotel/'},
 										{label : hotel.name}
 									]
 								},req);
@@ -201,7 +201,7 @@ module.exports = {
 			if(e) throw(e);
 			res.json(zones);
 		});
-	}
+	},
 };
 
 

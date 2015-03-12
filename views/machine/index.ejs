@@ -6,7 +6,7 @@
 	<div class="buttons-box">
 		<div class="btn-group">
 		  <button type="button" class="btn btn-default button-orange dropdown-toggle" data-toggle="dropdown">
-		    <span class="table-icon fa fa-bars"></span> Filtros <span class="fa fa-caret-down"></span>
+		    <span class="table-icon fa fa-bars"></span><%= __('machine-filtros') %>  <span class="fa fa-caret-down"></span>
 		  </button>
 		  <ul class="dropdown-menu" role="menu">
 		    <li><a href="#">Action</a></li>
@@ -14,7 +14,7 @@
 		    <li><a href="#">Something else here</a></li>
 		  </ul>
 		</div>	
-		<a class="btn btn-default button-orange" data-toggle="modal" data-target="#myModal" ><span class="table-icon fa fa-plus"></span> Maquinaria</a>
+		<a class="btn btn-default button-orange" data-toggle="modal" data-target="#myModal" ><span class="table-icon fa fa-plus"></span><%= __('machine-maquinaria') %> </a>
 	</div>
 	<div class="widgetcontent custom-table nopadding">
 		<%- partial('table') %>

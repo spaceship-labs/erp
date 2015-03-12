@@ -21,7 +21,7 @@ module.exports = {
 			          controller : 'packagetour.js'
 			        },
 			        breadcrumb : [
-			          { label : 'Paquetes', url: '/packagetour/'},
+			          { label : req.__('sc_packages'), url: '/packagetour/'},
 			          { label : item.package_.name , url : '/packagetour/' + item.package_.id },
 			          { label : item.name_es }
 			        ]

@@ -31,7 +31,11 @@ module.exports = {
 		},
 		zone : {
 			model : 'zone'
-		}
+		},
+		cupons:{
+			model : 'cupon',
+			via : 'hotels',
+		},
 	}
   	,afterCreate: function(val,cb){
 		Notifications.after(Hotel,val,'create');

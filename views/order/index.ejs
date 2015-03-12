@@ -6,29 +6,29 @@
 <div ng-controller='orderCTL' >
 	<div class='row'>
 		<div class = "textbutton col-sm-12 col-sm-12 col-xs-12">
-			<p><a href="/order/neworder" class='btn btn-primary'><i class = "fa fa-plus"></i> Crear reservación</a></p>
+			<p><a href="/order/neworder" class='btn btn-primary'><i class = "fa fa-plus"></i> <%= __('order-crear')%></a></p>
 			<br />
 		</div>
 	</div>
 	<div class="widgetcontent custom-table nopadding ng-cloak">
         <table class="table table-striped">
             <tr>
-                <th>Id</th>
-                <th>Usuario</th>
-                <th>Empresa</th>
-                <th>Llegada</th>
-                <th>Salida</th>
-                <th>Cliente</th>
-                <th>Hotel</th>
-                <th>Aeropuerto</th>
-                <th>Tipo</th>
-                <th>Origen</th>
-                <th>Estado</th>
-                <th>Pago</th>
-                <th>Fecha</th>
-                <th>Total</th>
-                <th>Editar</tho
-                <th>Borrar</th>
+                <th> <%= __('order-id')%> </th>
+                <th> <%= __('order-usuario')%> </th>
+                <th> <%= __('order-empresa')%> </th>
+                <th> <%= __('order-llegada')%> </th>
+                <th> <%= __('order-salida')%> </th>
+                <th> <%= __('order-cliente')%> </th>
+                <th> <%= __('order-hotel')%> </th>
+                <th> <%= __('order-aeropuerto')%> </th>
+                <th> <%= __('order-tipo')%> </th>
+                <th> <%= __('order-origen')%> </th>
+                <th> <%= __('order-estado')%> </th>
+                <th> <%= __('order-pago')%> </th>
+                <th> <%= __('order-fecha')%> </th>
+                <th> <%= __('order-total')%> </th>
+                <th> <%= __('order-editar')%> </th>
+                <th> <%= __('order-borrar')%> </th>
             </tr>
             <tr ng-repeat="order in orders">
                 <td data-title="Id" ng-bind="order.id"></td>
@@ -44,7 +44,7 @@
                     <li>Fecha: {{ formatDate(order.transfer.departure_date) || '---' }} </li>
                     <li>Hora: {{ formatTime(order.transfer.departure_time) || '---' }} </li>
                 </ul></td>
-                <td>{{order.transfer.client || "---" }}</td>
+                <td>{{(order.client.name + ' ' + order.client.last_name) || "---" }}</td>
                 <td>{{order.transfer.hotel || "---" }}</td>
                 <td>{{order.transfer.airport || "---" }}</td>
                 <td>{{order.transfer.type || "---" }}</td>
@@ -52,7 +52,7 @@
                 <td>{{order.transfer.state || "---" }}</td>
                 <td>{{order.transfer.payment_method || "---" }}</td>
                 <td data-title="Fecha">{{formatDate(order.createdAt)}}</td>
-                <td data-title="Total">0</td>
+                <td data-title="Total"><span  ng-bind="order.transfer.fee"></span></td>
                 <td data-title="Accion"><a href="/order/edit/{{order.id}}"><span class="table-icon fa fa-edit"></span></a></td>
                 <td data-title="Accion"><a href="/order/edit/{{order.id}}"><span class="table-icon fa fa-trash-o"></span></a></td>
             </tr>

@@ -1,4 +1,4 @@
-app.controller('hotelCTL',function($scope,$http,$window){
+app.controller('hotelCTL',function($scope,$http,$window,$rootScope){
     $scope.hotels = hotels;
     $scope.locations = locations;
     $scope.company = company;
@@ -23,14 +23,13 @@ app.controller('hotelCTL',function($scope,$http,$window){
         console.log(hotel.createdAt);
         hotel.createdAt=(moment(hotel.createdAt).format('LL'));
         hotel.updatedAt=(moment(hotel.updatedAt).format('LL'));
-        return {
-            "Poblacion" : hotel.location.name,
-            "Direccion" : hotel.address,
-            "Telefonos" : phones,
-            "Creado" : hotel.createdAt,
-            "Actualizado": hotel.updatedAt,
-
-        };
+        var r = {};
+        r[$rootScope.translates.c_population] = hotel.location.name;
+        r[$rootScope.translates.c_adress] = hotel.address;
+        r[$rootScope.translates.c_phones] = hotel.phones;
+        r[$rootScope.translates.c_created] = hotel.createdAt;
+        r[$rootScope.translates.c_updated] = hotel.updatedAt;
+        return r;
         
     };
     $scope.getZones = function(){
@@ -41,16 +40,16 @@ app.controller('hotelCTL',function($scope,$http,$window){
         });
     };
 });
-app.controller('hotelEditCTL',function($scope,$upload,$http){
+app.controller('hotelEditCTL',function($scope,$upload,$http,$rootScope){
     $scope.hotel = hotel;
 
     $scope.categories = [
-        {id:1,name:'1 estrella'},
-        {id:2,name:'2 estrellas'},
-        {id:3,name:'3 estrellas'},
-        {id:4,name:'4 estrellas'},
-        {id:5,name:'5 estrellas'},
-        {id:6,name:'6 estrellas'},
+        {id:1,name:'1 '+$rootScope.translates.c_stars},
+        {id:2,name:'2 '+$rootScope.translates.c_stars},
+        {id:3,name:'3 '+$rootScope.translates.c_stars},
+        {id:4,name:'4 '+$rootScope.translates.c_stars},
+        {id:5,name:'5 '+$rootScope.translates.c_stars},
+        {id:6,name:'6 '+$rootScope.translates.c_stars},
     ];
 
     $scope.location = {

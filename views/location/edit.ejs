@@ -13,7 +13,7 @@
                 fields='content.location' 
                 object='location_o' 
                 action='/location/update' 
-                form-title='INFORMACIÓN BÁSICA'
+                form-title='<%= __("gral_basicInfo") %>'
                 >
             </div> 
         </div>
@@ -24,7 +24,7 @@
                 fields='content.locationTexts' 
                 object='location_o' 
                 action='/location/update' 
-                form-title='Textos'
+                form-title='<%= __("gral_texts") %>'
                 >
             </div> 
         </div>
@@ -36,13 +36,13 @@
         <div class='span12'>
             <div class="widgetbox">
                 <h4 class="widgettitle">
-                    Zonas 
+                    <%= __('location-zonas') %> 
                     <span ng-click='toggleZoneForm()' class='fa icon' ng-class='newZoneClass'></span>  
                 </h4>
                 <div ng-show='showZoneForm'>
                     <div form-helper 
                         fields='content.zoneBasic' 
-                        form-footer='Agregar Zona'
+                        form-footer='<%= __("gral_addZone") %>Agregar Zona'
                         form-save = 'addZone'
                         object = 'zone' >
                     </div>
@@ -56,7 +56,7 @@
     <br/>
     <div class='row-fluid'><div class='span12'>
         <div class="widgetbox profile-left ng-form-helper">
-            <h4 class="widgettitle">Relacionar con otras ciudades</h4>
+            <h4 class="widgettitle"><%= __('location-relacionar') %></h4>
             <div class='widgetcontent'>
                 <ul class='taglist'>
                     <li ng-repeat="l in relatedLocations">
@@ -74,7 +74,7 @@
                         ng-options='obj as obj.name for obj in notRelatedLocations'
                         ng-model='relatedLocation'
                         ></select>
-                    <button type='submit' class="btn btn-primary" ng-if="relatedLocation">Agregar Ciudad</button>
+                    <button type='submit' class="btn btn-primary" ng-if="relatedLocation"><%= __('location-agregar') %></button>
                 </p>
             </form>
             </div>

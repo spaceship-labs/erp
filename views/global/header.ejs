@@ -10,10 +10,10 @@
                     <!--<span class="head-icon  head-contracts"></span>-->
                     <span class="count"><%=companies.length%></span>
                     <span class="fa fa-home menu-icon"></span>
-                    <span class="headmenu-label">Empresas</span>
+                    <span class="headmenu-label"><%= __('global-empresas') %></span>
                 </a>
                 <ul class="dropdown-menu">
-                    <li class="nav-header">Cambiar empresa</li>
+                    <li class="nav-header"><%= __('global-cambiar') %></li>
                     <% for(var i=0;i<companies.length;i++){ %>
                         <li><a href="/company/change?id=<%= companies[i].id %>">
 			                <%
@@ -24,7 +24,6 @@
                             <small><%= companies[i].description %></small>
                         </a></li>
                     <% } %>
-
                 </ul>
             </li>
             <!-- <li>

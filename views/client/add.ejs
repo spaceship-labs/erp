@@ -2,16 +2,16 @@
     <div class="span6">
         <div class="alert alert-block unseen">
             <button data-dismiss="alert" class="close" type="button">×</button>
-            <h4>Mensaje</h4>
-            <p style="margin: 8px 0">El cliente se ha actualizado exitosamente</p>
+            <h4><%= __('client-mensaje') %></h4>
+            <p style="margin: 8px 0"><%= __('client-cliente-actualizado') %></p>
         </div>
         <div class="widgetbox">
             <div class="widgetcontent nopadding">
                 <form action="/clientes/crear" method="get" accept-charset="utf-8" class="stdform stdform2 ng-pristine" ng-submit="createClient()">
                     <%- partial("partial/form") %>
                     <p class="stdformbutton">
-                        <button class="btn btn-primary">Guardar</button>
-                        <button type="reset" class="btn">Cancelar</button>
+                        <button class="btn btn-primary"><%= __('client-guardar') %></button>
+                        <button type="reset" class="btn"><%= __('client-cancelar') %></button>
                     </p>
                 </form>
             </div>

@@ -1,6 +1,8 @@
 (function () {
-	var controller = function($scope,$upload,$http){
-		$scope.loadingProgress = 0;
+	var controller = function($scope,$upload,$http,$rootScope){
+		$scope.translates = $rootScope.translates;
+        console.log($scope.translates);
+        $scope.loadingProgress = 0;
 		$scope.loading = false;
         console.log($scope.object[$scope.imageAttr]);
 		$scope.updateIcon = function($files) {
@@ -18,7 +20,7 @@
             });
 		};
 	};
-	controller.$inject = ['$scope', '$upload','$http'];
+	controller.$inject = ['$scope', '$upload','$http','$rootScope'];
     var directive = function () {
         return {
         	controller : controller,

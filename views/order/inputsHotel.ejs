@@ -1,0 +1,54 @@
+<div class='row-fluid'>
+    <div class='span12'>
+        <div class='headtitle'>
+            <div class='btn-group'>
+                <a class="btn btn-primary pull-right" ng-click="removeTH($index,'hotel')"><i class='fa fa-times'></i><%= __('order-eliminar')%> </a>
+            </div>
+            <h4 class="widgettitle"><span><%= __('order-reservar-hotel')%><span ng-bind="item.hotel.name"></span></span></h4>
+        </div>
+        <div class='widgetcontent nopadding'>
+            <p>
+                <label><%= __('order-fecha-entrada')%></label>
+                <span class='field'><span class='input-group calendar-container'>
+                    <input ng-change="validateDates()" is-open="open[item.hotel.id+$index]" ng-model='item.startDate' datepicker-popup />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="open($event,item.hotel.id+$index)"><i class="fa fa-calendar"></i></button>
+                    </span>
+                </span></span>
+            </p>
+            <p>
+                <label><%= __('order-fecha-salida')%></label>
+                <span class='field'><span class='input-group calendar-container'>
+                    <input ng-change="validateDates()" is-open="open[item.hotel.id+$index+1]" ng-model='item.endDate' datepicker-popup />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="open($event,item.hotel.id+$index+1)"><i class="fa fa-calendar"></i></button>
+                    </span>
+                </span></span>
+            </p>
+            <p>
+                <label><%= __('order-cuartos')%></label>
+                <span class='field'><select ng-change="getPriceHotel(item)" ng-options='obj.id as obj.name_es for obj in item.hotel.rooms' ng-model='item.roomType' ></select></span>
+            </p>
+            <p>
+                <label><%= __('order-num-cuartos')%></label>
+                <span class='field'><select ng-change="getPriceHotel(item)" ng-options='obj for obj in [0,1,2,3,4,5,6,7,8,9,10]' ng-model='item.roomsNumber' ></select></span>
+            </p>
+            <p>
+                <label> <%= __('order-adultos')%></label>
+                <span class='field'><select ng-change="getPriceHotel(item)" ng-options='obj for obj in item.hotel.maxApax' ng-model='item.adultNumber' ></select></span>
+            </p>
+            <p>
+                <label> <%= __('order-menores')%></label>
+                <span class='field'><select ng-change="getPriceHotel(item)" ng-options='obj for obj in item.hotel.maxCpax' ng-model='item.childrenNumber' ></select></span>
+            </p>
+            <p>
+                <label> <%= __('order-precio')%></label>
+                <span class='field'><input type='text' ng-model="item.fee"></span>
+            </p>
+            <p>
+                <label> <%= __('order-precio-esp')%></label>
+                <span class='field'><input type='text' ng-model="item.fee_special"></span>
+            </p>
+        </div>
+    </div>
+</div>

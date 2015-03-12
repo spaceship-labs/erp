@@ -3,14 +3,15 @@
     window.apps = <%- JSON.stringify(apps) %>;
     window.company = <%- JSON.stringify(selected_company) %>;
     window.roles = <%- JSON.stringify(roles) %>;
+    //console.log(user);
 </script>
 
 <div ng-controller='userEditCTL' class="editar-usuario ng-cloak">
     <div class="span4 profile-left profileEdit">
         <div class="alert alert-block unseen">
             <button data-dismiss="alert" class="close" type="button">×</button>
-            <h4>Mensaje</h4>
-                <p style="margin: 8px 0">El usuario se ha actualizado exitosamente</p>
+            <h4><%= __('user-mensaje')%></h4>
+                <p style="margin: 8px 0"><%= __('user-actualizado')%></p>
             </div>
             <div profile-image object='user' update-method='/user/updateIcon' delete-method='/user/destroyIcon' image-attr='icon' dir='users'></div>
             <% if(!user.isAdmin || req.user.isAdmin) {%>
@@ -22,7 +23,7 @@
              fields='content.user'
              object='user'
              action='/user/updateInfo'
-             form-title='Información Basica'
+             form-title='<%= __("gral_basicInfo") %>'
              hidden-fields='hiddenFields'
              >
         </div>

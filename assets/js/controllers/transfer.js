@@ -1,4 +1,4 @@
-app.controller('transferCTL',function($scope,$http){
+app.controller('transferCTL',function($scope,$http,$rootScope){
     $scope.transfers = transfers;
     $scope.content = content;
 
@@ -9,10 +9,10 @@ app.controller('transferCTL',function($scope,$http){
         });
     };
     $scope.getInfo = function(transfer){
-        return {
-            "Nombre" : transfer.name_es,
-            "Creado" : transfer.createdAt
-        }
+        var r = {};
+        r[$rootScope.translates.c_name] = transfer["name_"+$rootScope.lang];
+        r[$rootScope.translates.c_created] = transfer.createdAt;
+        return r;
     };
 });
 app.controller('transferEditCTL',function($scope,$upload,$http,$window){

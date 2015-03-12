@@ -6,7 +6,7 @@
 	<h4 ng-if='formTitle && !modal' class="widgettitle">{{formTitle}} <span ng-click='save()' class='fa icon' ng-class='saveClass'></span></h4>
 	<form ng-class='formClass' class="form stdform stdform2" name="form" >
 		<p ng-repeat='field  in fields | filter:formFilter'>
-	        <label>{{field.label}} <span ng-if='field.type == "money"' >({{currency.currency_code}})</span></label>
+	        <label>{{field[label]}} <span ng-if='field.type == "money"' >({{currency.currency_code}})</span></label>
 	        <span class="field">
 	            <textarea 
 	            	ng-if='field.type == "textarea"' 
@@ -66,7 +66,7 @@
 	    </p>
 	    <p ng-if='formFooter' class="stdformbutton">
             <button ng-click='save()' class="btn btn-primary">{{formFooter}}</button>
-            <button type="reset" class="btn">Resetear</button>
+            <button type="reset" class="btn">{{translates.d_reset}}</button>
         </p>
 	</form>
 </div>

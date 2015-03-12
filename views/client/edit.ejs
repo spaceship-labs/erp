@@ -6,14 +6,14 @@
     <div class="col-md-6">
         <div class="alert alert-block unseen">
             <button data-dismiss="alert" class="close" type="button">×</button>
-            <h4>Mensaje</h4>
-            <p style="margin: 8px 0">El cliente se ha actualizado exitosamente</p>
+            <h4><%= __('client-mensaje') %></h4>
+            <p style="margin: 8px 0"><%= __('client-cliente-actualizado') %></p>
         </div>
         <div form-helper
              fields='content.client'
              object='client'
              action='/clientes/actualizar'
-             form-title='Información Basica'
+             form-title='<%= __('machine-info') %>'
              restrict="email"
                 >
         </div>
@@ -21,10 +21,10 @@
 
     <div class="col-md-6">
         <div class="widgetbox">
-            <h4 class="widgettitle">Precios especiales</h4>
+            <h4 class="widgettitle"><%= __('client-precios-especiales') %></h4>
             <form accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine widgetcontent nopadding" ng-submit="specialPriceProcess()">
                 <p>
-                    <label>Descuento general:</label>
+                    <label><%= __('client-descuente-gen') %></label>
                     <span class="field">
                         <span class="input-group">
                             <input class="form-control" type="text" ng-model='client.discount'>
@@ -34,7 +34,7 @@
                 </p>
 
                 <p>
-                    <label>Por productos</label>
+                    <label><%= __('client-por-product') %></label>
                     <span class="field">
                         <select class="form-control" ng-options='product.name for product in products' ng-model='selected_products' chosen multiple></select>
                     </span>
@@ -54,7 +54,7 @@
                     </span>
                 </p>
                 <p class="stdformbutton">
-                    <button class="btn btn-primary">Guardar</button>
+                    <button class="btn btn-primary"><%= __('client-guardar') %></button>
                 </p>
             </form>
         </div>
@@ -62,11 +62,11 @@
 
     <div class="col-md-6">
         <div class="widgetbox">
-            <h4 class="widgettitle">Contactos <span ng-click='toggleNewContact()'  class='fa icon' ng-class='newContactClass'></span>  </h4>
+            <h4 class="widgettitle"><%= __('client-contactos') %> <span ng-click='toggleNewContact()'  class='fa icon' ng-class='newContactClass'></span>  </h4>
             <div ng-show='showContactForm'>
                 <div form-helper
                      fields='content.client_contact'
-                     form-footer='Agregar Contacto'
+                     form-footer='<%= __('sc_editcontact') %>'
                      form-save = 'addContact'
                      object = 'contact'
                      hidden-fields = 'hiddenFields'

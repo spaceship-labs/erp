@@ -10,16 +10,16 @@ window.preload = [];
 <div class="span7">
 	<div class="alert alert-block unseen userAlert">
 		<button data-dismiss="alert" class="close" type="button">×</button>
-		<h4>Mensaje</h4>
-			<p style="margin: 8px 0">El usuario se ha actualizado exitosamente</p>
+		<h4><%= __('admin-mensaje') %></h4>
+			<p style="margin: 8px 0"><%= __('admin-user-actualizado') %></p>
 	</div>
-    <h4 class="widgettitle">Tipo de cambio</h4>
+    <h4 class="widgettitle"><%= __('admin-tipo-cambio') %></h4>
 <div class="widgetcontent">
 	<p ng-if="!currencyCode">
 		<span ng-bind="currency"></span>
 	</p>
 	<p ng-if="currencyCode">
-		El tipo de cambio es a
+		<%= __('admin-tipo-cambioes') %>
 		<span ng-bind="currency"></span>
 	</p>
 		<form action="/admin/editAjax" method="post" accept-charset="utf-8" ng-repeat="current in currencies" class="form-currencies commonForm">
@@ -33,17 +33,17 @@ window.preload = [];
 				{{current.comission?" ("+current.postName+")":"" }}
 			</span>
 			</p>
-			<p class="stdformbutton"><button class="btn btn-primary">Guardar</button></p>
+			<p class="stdformbutton"><button class="btn btn-primary"><%= __('admin-guardar') %></button></p>
 		</form>
 
 </div>
 <%- partial('currencies_charts') -%> 
 <div class="span5 profile-left">
 	 <div class="widgetbox tags">
-	<h4 class="widgettitle">Configuración de Moneda</h4>
+	<h4 class="widgettitle"><%= __('admin-conf-moneda') %></h4>
 	<div class="widgetcontent">
 		<form method="post" action="/admin/editAjax" accept-charset="utf-8" class="form-currencies commonForm">
-			<p>Moneda Base</p>
+			<p><%= __('admin-moneda-base') %></p>
 			<p><select name="base_currency" >
 					<option ng-value="{{currencyCode}}" ng-bind="currency">
 					</option>
@@ -51,17 +51,17 @@ window.preload = [];
 
 			</select></p>
 
-			<p><label for="currency_comission_input">Porcentaje de Comisión por Cambio de Moneda</label></p>
+			<p><label for="currency_comission_input"><%= __('admin-porcentaje-comision') %></label></p>
 			<p><input name="currency_comission" ng-value="{{comissionVal}}"></p>
 			<input type="hidden" name="method" value="baseCurrency" />
 			<input type="hidden" name="userId" value="true" />
-			<p class="stdformbutton"><button class="btn btn-primary">Guardar</button></p>
+			<p class="stdformbutton"><button class="btn btn-primary"><%= __('admin-guardar') %></button></p>
 
 		</form>
 		<hr>
 		<form method="post" action="/admin/editAjax" accept-charset="utf-8" class="commonForm">
 			<div class="currency_wrap" ng-if="allCurrencies.length">
-				<p><label for="currency_select">Monedas</label></p>
+				<p><label for="currency_select"><%= __('admin-monedas') %></label></p>
 				<p><select name="currency">
 					<option ng-repeat="i in allCurrencies" value="{{i.currency_code}}" ng-cloak>{{i.name+" ("+i.currency_code+")"}}</option>
 					<input type="hidden" name="method" value="addCurrency" />
@@ -84,7 +84,7 @@ window.preload = [];
 					</span>
 				</li>
 			</ul>
-			<p class="stdformbutton" ng-if="allCurrencies.length"><button class="btn btn-primary">Agregar Moneda</button></p>
+			<p class="stdformbutton" ng-if="allCurrencies.length"><button class="btn btn-primary"><%= __('admin-agregar-moneda') %></button></p>
 		</form>
 	</div>	
 </div></div><!--span4-->                

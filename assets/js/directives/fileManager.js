@@ -1,6 +1,7 @@
 (function () {
     io.socket.get('/notice/find',function(data){});
-    var controller = function($scope,$upload,$http,$modal){
+    var controller = function($scope,$upload,$http,$modal,$rootScope){
+    	$scope.translates = $rootScope.translates;
         $scope.show = true;
         $scope.selected = false;
         $scope.format = 'all';
@@ -129,7 +130,7 @@
 		}
 		
 	}
-	controller.$inject = ['$scope','$upload','$http','$modal'];
+	controller.$inject = ['$scope','$upload','$http','$modal','$rootScope'];
 	var modalController = function($scope,$modalInstance,files){
 		$scope.files = files;
 		$scope.ok = function(){			

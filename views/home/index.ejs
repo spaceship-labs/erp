@@ -1,16 +1,50 @@
 <script type='text/javascript'>
 	window.content = <%- JSON.stringify(_content) %>;
+	console.log(content.lang);
 </script>
-<div>
-	<div class='row-fluid'>
-        <% if (req.user.hasPermission(req.res.locals.selected_company.id,'cotizaciones')) {%>
-		    <div statistics-chart></div>
+<div ng-controller="dashboardCTL">
+	<div class='row-fluid' >
+		<% if (req.user.hasPermission(req.res.locals.selected_company.id,'cotizaciones')) {%>
+			<!--<div class="span6"
+			statistics-chart 
+			chart-type="PolarArea"
+			chart-data="stats.data"
+			chart-labels="stats.labels"
+			chart-title="<%= __('home-cotizaciones') %>"
+			not-found="<%= __('home-no-cotizaciones') %>"></div>-->
 		<% } %>
-        <div notices></div>
-	</div>
-	<div class="row">
-		<div class="col-md-5" ng-controller="currencyCTL">
+		<div notices></div> 
+		<div class="span6" ng-controller="currencyCTL">
 			<%- partial('../admin/currencies_charts') -%> 
-		</div>	
+		</div>
+	</div>
+	<div class="row-fluid">
+		<div class="span6" 
+		day-stats-chart 
+		chart-type="Pie" 
+		chart-data-method="/reservation/statsCategoriesInDay"
+		chart-labels="['<%= __('sc_tour') %>', '<%= __('sc_hotels') %>', '<%= __('sc_transfer') %>']"
+		day-date="dayDate"			
+		chart-title="<%= __('home-reservaciones-dia') %>"
+		day-picker="true"
+		not-found="<%= __('home-no-reservaciones-dia') %>"></div>
+		<div class="span6" 
+		time-line-chart 
+		chart-title="<%= __('home-reservaciones') %>"
+		time-line-chart
+		chart-type="Line"
+		chart-series="['<%= __('sc_tour') %>', '<%= __('sc_hotels') %>', '<%= __('sc_transfer') %>']"
+		chart-data-method-month="/reservation/statsCategoriesInMonth"
+		chart-data-method-year="/reservation/statsCategoriesInYear"></div>
+	</div>
+	<div class="row-fluid"></div>
+	<div class="row-fluid">
+		<div class="span12" 
+		time-line-chart
+		chart-type="Line"
+		chart-series="['<%= __('sc_tour') %>', '<%= __('sc_hotels') %>', '<%= __('sc_transfer') %>']"
+		chart-data-method-month="/reservation/feeCategoriesInMonth"
+		chart-data-method-year="/reservation/feeCategoriesInYear"
+		chart-title="<%= __('home_rateReserv') %>"></div>		
 	</div>
 </div>

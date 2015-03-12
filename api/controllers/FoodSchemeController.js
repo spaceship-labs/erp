@@ -12,13 +12,13 @@ module.exports = {
 			Common.view(res.view,{
 				schemes : schemes,
 				page:{
-					name:'Esquemas de alimentación'
-					,description: 'Administracion de esquemas para hoteles'
+					name: req.__('sc_foodscheme')
+					,description: req.__('sc_foodscheme_desc')
 					,icon:'fa fa-cutlery'
 					,controller : 'hotelroomview.js'
 				},
 				breadcrumb : [
-					{label : 'Esquemas'}
+					{label : req.__('sc_foodscheme') }
 				]
 			},req);
 		});

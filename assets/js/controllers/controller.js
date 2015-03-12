@@ -23,6 +23,26 @@ app.directive('chosen',function(){
    }
 });
 
+
+app.controller('switchLangCTL',function($scope, $window){
+    $scope.langs = [
+        {label:'Español',value:'es'},
+        {label:'English',value:'en'},
+    ];
+    $scope.setDefaults = function(){
+        console.log(window.currentLang);
+        if(window.currentLang == 'en'){
+            $scope.currentLang = $scope.langs[1];
+        }else{
+            $scope.currentLang = $scope.langs[0];            
+        }
+    }
+    $scope.switchLang = function(lang){
+        console.log(lang);
+        $window.location.href = '/home/changeLang?lang='+lang;
+    }
+});
+
 app.controller('currencyCTL',function($scope){
 	if(window.preload)
 		for(var i=0;i<preload.length;i++){

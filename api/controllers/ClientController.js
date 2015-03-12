@@ -13,7 +13,7 @@ module.exports = {
             Common.view(res.view,{
                 page:{
                     icon:'fa fa-users'
-                    ,name:'Clientes'
+                    ,name : req.__('sc_clients')
                     ,controller : 'client.js'
                 },
                 clients : clients || [],
@@ -27,7 +27,7 @@ module.exports = {
         Common.view(res.view,{
             page:{
                 icon:'fa fa-users'
-                ,name:'Cliente'
+                ,name:req.__('sc_client')
                 ,controller : 'client.js'
             }
         },req);
@@ -44,7 +44,7 @@ module.exports = {
                     Common.view(res.view,{
                         page:{
                             icon:'fa fa-users'
-                            ,name:'Editar Cliente'
+                            ,name:req.__('sc_editclient')
                             ,controller : 'client.js'
 
                         },
@@ -86,7 +86,6 @@ module.exports = {
             });
         }
     },
-
     add_contact : function(req,res){
         var form = Common.formValidate(req.params.all(),['name','phone','phone_extension','email','client','type','work_position']);
         if(form){
@@ -100,7 +99,19 @@ module.exports = {
             });
         }
     },
-
+    add_contact2 : function(req,res){
+        var form = Common.formValidate(req.params.all(),['name','phone','email','client']);
+        if(form){
+            //console.log(form);
+            Client_contact.create(form).exec(function(err,contact) {
+                if (err) return res.json({text : err});
+                Client_contact.find({ client : contact.client }).exec(function(err,contacts) {
+                    if (err) return res.json({text : err});
+                    res.json({text:'Contacto creado.', contacts:contacts});
+                });
+            });
+        }
+    },
     add_discounts : function(req,res) {
         var form = Common.formValidate(req.params.all(),['id','discount','product_discounts']);
         if (form) {
@@ -163,7 +174,7 @@ module.exports = {
                 Common.view(res.view,{
                     page:{
                         icon:'fa fa-user'
-                        ,name:'Editar Contacto'
+                        ,name:req.__('sc_editcontact')
                         ,controller : 'client.js'
 
                     },
@@ -184,6 +195,17 @@ module.exports = {
     },
     update_contact : function(req,res){
         var form = Common.formValidate(req.params.all(),['id','name','phone','phone_extension','email','client','type','work_position']);
+        var contact_id = form.id;
+        delete form.id;
+        if(form){
+            Client_contact.update({ id : contact_id },form).exec(function(err,contact) {
+                if (err) return res.json({text : err});
+                res.json({text:'Contacto actualizado.', contact:contact});
+            });
+        }
+    },
+    update_contact2 : function(req,res){
+        var form = Common.formValidate(req.params.all(),['id','name','phone','email','client']);
         var contact_id = form.id;
         delete form.id;
         if(form){

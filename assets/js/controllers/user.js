@@ -1,4 +1,4 @@
-app.controller('userCTL',function($scope,$http){
+app.controller('userCTL',function($scope,$http,$rootScope){
     $scope.users = users;
     $scope.content = content;
 
@@ -17,12 +17,12 @@ app.controller('userCTL',function($scope,$http){
 		//updateList();	
 	});
 	$scope.getInfo = function(user){
-		return {
-			"Registro":user.createdAtString,
-			"Ultimo acceso":user.lastAccessString,
-			"Email":user.email,
-			"Telefono":user.phone
-		}
+        var r = {};
+        r[$rootScope.translates.c_reg] = user.createdAtString;
+        r[$rootScope.translates.c_last_acc] = user.lastAccessString;
+        r[$rootScope.translates.c_email] = user.email;
+        r[$rootScope.translates.c_phones] = user.phone;
+		return r;
 	};
 
     $scope.createUser = function(){

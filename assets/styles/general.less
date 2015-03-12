@@ -9,6 +9,12 @@ body.loginpage{background: @login-background;overflow: hidden;}
 .inputwrapper button{background: @login-button;border:1px solid @login-button;}
 .inputwrapper button:focus, .inputwrapper button:active, .inputwrapper button:hover{background: @login-hover;border:1px solid @login-hover;}
 
+/*Messages*/
+#popup_overlay{position: fixed;z-index: 99998;top: 0px;left: 0px;width: 100%;height: 100%;}
+#popup_container{position: fixed;z-index: 99999;padding: 0px;margin: 0px;width: 300px;top: 131.5px;left: 488.5px;}
+#popup_overlay.ng-hide,#popup_container.ng-hide{display: none;}
+.customMessages{position: fixed;bottom: 0px;left: 10px;text-align: center;max-width: 800px;}
+
 /*Header*/
 .header .logo a{background:transparent url(@header-logo) no-repeat center;display:block;}
 .headmenu > li{}
@@ -18,6 +24,10 @@ body.loginpage{background: @login-background;overflow: hidden;}
 .headmenu > li > a .menu-icon{color: @header-icon;font-size: 48px}
 .userloggedinfo .userinfo h5{font-weight: bold;}
 .userloggedinfo img{border-radius: 50%}
+.switch-lang .chosen-container .chosen-results li{color: #000}
+.switch-lang .chosen-container .chosen-results li.highlighted{color: #fff}
+.switch-lang .chosen-container{margin-top: 5px} 
+.switch-lang .chosen-single:hover{background: #fff}
 
 /*Menu*/
 .nav-tabs.nav-stacked > li.active > a, .nav-tabs.nav-stacked > li.active > a:hover, .nav-tabs.nav-stacked > li.active > a:focus{background:@primary!important;}
@@ -31,6 +41,10 @@ body.loginpage{background: @login-background;overflow: hidden;}
 #mainwrapper .leftmenu .nav-tabs.nav-stacked > li > a{color:@left-color;}
 #mainwrapper .leftmenu .nav-tabs.nav-stacked > li.active > a,
 #mainwrapper .leftmenu .nav-tabs.nav-stacked > li > a:hover{color:@left-color-hover;}
+
+
+/*Dashboard*/
+.dashboard-row .span6{margin-left: 0;}
 
 /*Transfers special*/
 .dtfa-container{position: relative;}
@@ -79,7 +93,7 @@ a, a:hover, a:link, a:active, a:focus{color: @primary}
 .item-list .item{line-height: 16px}
 .item-list .item + .item{border-top: 1px solid gray}
 
-.commentlist {height: 330px;overflow: auto}
+.commentlist {height: 380px;overflow: auto}
 .commentlist li{min-height: 68px;padding: 8px 15px}
 .commentlist li img{width: 80px} /*CAMBIO TEMPORAL*/
 .commentlist li p{margin: 0}
@@ -165,9 +179,12 @@ a, a:hover, a:link, a:active, a:focus{color: @primary}
 /*-------------*/
 
 /*Charts home*/
-#chart-container{padding: 0 20px}
-#chart-container .widgetcontent{min-height: 333px}
-
+#chart-container{padding: 0px}
+#chart-container .widgetcontent{min-height: 400px}
+#chart-container .selected-date{margin: 10px 0;text-align: center;text-transform: capitalize;}
+#chart-container .input-group{margin: 5px 0}
+#chart-container .input-picker{margin: 0}
+#chart-container h4{text-align: center;}
 
 .head-contracts{background:url('/images/icon-archive.png');}
 .alphabets{
@@ -250,6 +267,7 @@ color: #fff;
 
 @media only screen and (max-width: 768px) {
 	.ng-directory-listing .alphabets li{width: 7.5%;text-align: center;}
+	#chart-container{padding: 0}
 }
 @media only screen and (max-width: 650px) {
 	/* Force table to not be like tables anymore */

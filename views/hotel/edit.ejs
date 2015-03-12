@@ -6,12 +6,10 @@
     window.foodSchemes = <%- JSON.stringify(foodSchemes) %>;
     window.userID = <%- JSON.stringify(req.user.id) %>;
 </script>
-
 <div ng-controller='hotelEditCTL' class="editar-hotel ng-cloak">
     <div class='row-fluid'>
         <div class="span4 profile-left profileEdit">
         	<div profile-image object='hotel' update-method='/hotel/updateIcon' delete-method='/hotel/destroyIcon' image-attr='icon' dir='hotels' ></div>
-
             <div geo-selector location='location' address='hotel.address' save-function='saveGeo'></div>
         </div>
         <div class="span8">
@@ -19,7 +17,7 @@
                 fields='content.hotel' 
                 object='hotel' 
                 action='/hotel/update' 
-                form-title='INFORMACIÓN BASICA'
+                form-title='<%= __('machine-info') %>'
                 objects='{locations:locations,schemes:schemes,zones:zones,categories:categories,foodSchemes:foodSchemes}'
                 onchanges = "{'getZones' : getZones}"
                 >
@@ -42,7 +40,7 @@
                 fields='content.hotelLangs' 
                 object='hotel' 
                 action='/hotel/update' 
-                form-title='Contenido'
+                form-title='<%= __('hotel-contenido') %>'
                 objects='objects'
                 >
             </div>
@@ -51,7 +49,7 @@
     <div class='row-fluid'>
         <div class='span12'>
             <div class="widgetbox">
-                <h4 class="widgettitle">Habitaciones <span ng-click='toggleRoomForm()'  class='fa icon' ng-class='newRoomClass'></span>  </h4>
+                <h4 class="widgettitle"><%= __('hotel-habitaciones') %> <span ng-click='toggleRoomForm()'  class='fa icon' ng-class='newRoomClass'></span>  </h4>
                 <div ng-show='showRoomForm'>
                     <div form-helper 
                         fields='content.room' 

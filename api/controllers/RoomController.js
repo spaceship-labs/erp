@@ -39,7 +39,7 @@ module.exports = {
 					controller : 'room.js',
 				},
 				breadcrumb : [
-					{label : 'Hoteles', url : '/hotel/'},
+					{label : req.__('sc_hotels'), url : '/hotel/'},
 					{label : hotel.name, url : '/hotel/edit/'+hotel.id},
 					{label : room.name_es}
 				]

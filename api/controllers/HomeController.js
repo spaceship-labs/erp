@@ -7,9 +7,20 @@
 var passport = require('passport');
 module.exports = {
 	login: function(req,res){
-		res.view({
-			layout:null
-		});
+		
+	  Company.find({},function(e,c){
+	    if (c.length <= 0) {
+	    	return res.redirect('/setup');
+	    } else {
+  			if (req.isAuthenticated()) {
+	    		return res.redirect('/home/index');
+  			} else {
+					res.view({
+						layout:null
+					});
+				}
+	    }
+	  });
 	}
 
 	, logout: function(req,res){
@@ -26,11 +37,21 @@ module.exports = {
 	, index: function(req,res){
 		Common.view(res.view,{
 			page:{
-				description:'AQUI PODRAS VISUALIZAR Y ADMINISTRAR TODO TU PROCESO DE VENTA',
+				description:req.__('sc_home_desc'),
 				icon:'fa fa-th-large',
-				name:'Tablero'
+				name:req.__('sc_dashboard') ,
+				controller:'dashboard.js'
 			}
 		},req);
+	}
+
+	, changeLang: function(req, res){
+		var params = req.params.all();
+		var lang = params.lang;
+
+		req.session.lang = lang;
+		req.setLocale(lang);
+		res.redirect('/');
 	}
 	//notices
 	, noticeSuscribeAll: function(req,res){

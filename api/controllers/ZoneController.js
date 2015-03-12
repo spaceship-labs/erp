@@ -18,7 +18,7 @@ module.exports = {
 					controller : 'zone.js'
 				},
 				breadcrumb : [
-					{label : 'Ciudades', url: '/location/'},
+					{label : req.__('sc_location'), url: '/location/'},
 					{label : zone.location.name , url: '/location/edit/' + zone.location.id },
 					{label : zone.name_es},
 				]

@@ -8,24 +8,24 @@
 	<div class="col-md-6">
 		<div class="alert alert-block unseen">
 			<button data-dismiss="alert" class="close" type="button">×</button>
-			<h4>Mensaje</h4>
+			<h4><%= __('machine-mensaje') %></h4>
 				<p style="margin: 8px 0"></p>
 		</div>
 	    
 	     <div class="widgetbox">
-	     	<h4 class="widgettitle">Informacion Basica</h4>
+	     	<h4 class="widgettitle"><%= __('machine-info') %></h4>
 	     	<div class="widgetcontent nopadding">                            
 	     		<form accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine" ng-submit="processMachineForm()">
 					<input type='hidden' ng-value='product.id' name='pid' />
 					<%- partial('edit-basic') %>
                     <p>
-                        <label for="product_types">Categorias de producto que utiliza:</label>
+                        <label for="product_types"><%= __('machine-categoria') %></label>
                         <span class="field">
                             <select type="text" id="product_types" name="product_types" class="form-control" ng-options="p.id as p.name for p in product_types" ng-model='machine.product_types' chosen multiple></select>
                         </span>
                     </p>
 	     			<p class="stdformbutton">
-		                <button class="btn btn-primary">Guardar</button>
+		                <button class="btn btn-primary"><%= __('machine-guardar') %></button>
 	     			</p>
 	     		</form>
 	     	</div>
@@ -33,15 +33,15 @@
 	</div>
     <div class="col-md-6" >
         <div class="widgetbox">
-            <h5 class="widgettitle">Modos</h5>
+            <h5 class="widgettitle"><%= __('machine-modos') %></h5>
             <div class="widgetcontent nopadding">
                 <table class="table responsive">
                     <thead>
                     <tr>
-                        <th>Nombre</th>
-                        <th>Vel : m2/hr</th>
-                        <th>Precio m2</th>
-                        <th>Eliminar</th>
+                        <th><%= __('machine-nombre') %></th>
+                        <th><%= __('machine-velocidad') %></th>
+                        <th><%= __('machine-precio') %></th>
+                        <th><%= __('machine-eliminar') %></th>
                     </tr>
 
                     </thead>
@@ -62,7 +62,7 @@
 
                 <form accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine"  ng-submit="processMachineModeForm()" >
                     <p class="stdformbutton">
-                        <button class="btn btn-primary">Guardar</button>
+                        <button class="btn btn-primary"><%= __('machine-guardar') %></button>
                     </p>
                 </form>
             </div>
