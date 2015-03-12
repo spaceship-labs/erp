@@ -8,7 +8,7 @@ passport.use(new LocalStrategy(function(username, password, done){
 				{ name: username },
 				{ email: username }
 			]
-		}).exec(function(err, user) {
+		}).populate('accessList').exec(function(err, user) {
 			if (err) { return done(null, err); }
 			if (!user) { 
 				//return done(null, true, { message: 'Logged In Successfully'}); 
@@ -30,7 +30,7 @@ passport.serializeUser(function(user,done){
 });
 
 passport.deserializeUser(function(id,done){	
-	User.findOne(id.id).populate('companies').exec(function (err, user){
+	User.findOne(id.id).populate('companies').populate('accessList').exec(function (err, user){
 		user.select_company = user.default_company;
 		Company.findOne(user.select_company).populate('currencies').populate('base_currency').exec(function(e,company){
 			user.company = company;

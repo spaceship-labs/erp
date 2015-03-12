@@ -27,7 +27,7 @@ module.exports = {
 		,registration_date:'date'//createAt
 		,access_date:'date'
 		,accessList : {
-            collection : 'userAcl',
+            collection : 'userACL',
             via : 'user'
         }
 		,companies : {
@@ -80,7 +80,7 @@ module.exports = {
             }
             return false;
         },
-        hasPermission : function(company,permission) {
+        hasPermission : function(company,permission) { 
             if (this.isAdmin) return true;
             if (this.accessList) {
                 if (!permission) return true;
