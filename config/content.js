@@ -561,24 +561,28 @@ module.exports.content = {
 			label 	: 'Nombre Español',
 			label_en : 'Spanish name',
 			type 	: 'text',
+			required: true,
 			handle 	: 'name'
 		},
 		{
 			label 	: 'Nombre Inglés',
 			label_en : 'English name',
 			type 	: 'text',
+			required: false,
 			handle 	: 'name_en'
 		},
 		{
 			label 	: 'URL ',
 			label_en : 'URL',
 			type 	: 'text',
+			required: false,
 			handle 	: 'url_title'
 		},
 		{
 			label 	: 'Personas por servicio',
 			label_en : 'People by service',
 			type 	: 'text',
+			required: false,
 			handle 	: 'max_pax'
 		},
 		{

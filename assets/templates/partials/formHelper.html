@@ -4,7 +4,7 @@
 		<h4 class="modal-title">{{formTitle}}</h4>
 	</div>
 	<h4 ng-if='formTitle && !modal' class="widgettitle">{{formTitle}} <span ng-click='save()' class='fa icon' ng-class='saveClass'></span></h4>
-	<form ng-class='formClass' class="form stdform stdform2" name="form" >
+	<form ng-class='formClass' class="form stdform stdform2" name="form">
 		<p ng-repeat='field  in fields | filter:formFilter'>
 	        <label>{{field[label]}} <span ng-if='field.type == "money"' >({{currency.currency_code}})</span></label>
 	        <span class="field">
@@ -26,7 +26,7 @@
 
                 </textarea>
 	            <input type='checkbox' ng-if='field.type == "checkbox"' name='{{field.handle}}' class='form-control' ng-checked='object[field.handle]' ng-model='object[field.handle]' />
-	            <input type='text' ng-if='field.type == "text"' name='{{field.handle}}' class='form-control' ng-model='object[field.handle]' />
+	            <input type='text' ng-if='field.type == "text"' name='{{field.handle}}' class='form-control' ng-model='object[field.handle]' ng-required='field.required'   ng-class="{ 'has-error' : form[field.handle].$invalid && !form[field.handle].$pristine }" />
 	            <input type='password' ng-if='field.type == "password"' name='{{field.handle}}' class='form-control' ng-model='object[field.handle]' />
 	            
 	            <select 
@@ -34,6 +34,7 @@
 	            	ng-model='object[field.handle]'
 	            	ng-options="obj.id as obj.name for obj in objects[field.object]"
 	            	ng-change="onChangefx(field)"
+	            	ng-required='field.required'
 	            	class='form-control' >
 	            </select>
 	            <select 
@@ -65,8 +66,8 @@
 	        </span>
 	    </p>
 	    <p ng-if='formFooter' class="stdformbutton">
-            <button ng-click='save()' class="btn btn-primary">{{formFooter}}</button>
-            <button type="reset" class="btn">{{translates.d_reset}}</button>
+            <button ng-click='save()' class="btn btn-primary" ng-disabled="form.$invalid">{{formFooter}}</button>
+            <button type="reset" class="btn reset">{{translates.d_reset}}</button>
         </p>
 	</form>
 </div>
