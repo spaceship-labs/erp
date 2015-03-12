@@ -14,8 +14,11 @@
 			not-found="<%= __('home-no-cotizaciones') %>"></div>-->
 		<% } %>
 		<div notices></div> 
+		<div class="span6" ng-controller="currencyCTL">
+			<%- partial('../admin/currencies_charts') -%> 
+		</div>
 	</div>
-	<div class="row-fluid dashboard-row">
+	<div class="row-fluid">
 		<div class="span6" 
 		day-stats-chart 
 		chart-type="Pie" 
@@ -25,12 +28,7 @@
 		chart-title="<%= __('home-reservaciones-dia') %>"
 		day-picker="true"
 		not-found="<%= __('home-no-reservaciones-dia') %>"></div>
-		<div class="span6" ng-controller="currencyCTL">
-			<%- partial('../admin/currencies_charts') -%> 
-		</div>	
-	</div>
-	<div class="row-fluid">
-		<div class="span12" 
+		<div class="span6" 
 		time-line-chart 
 		chart-title="<%= __('home-reservaciones') %>"
 		time-line-chart
@@ -39,6 +37,7 @@
 		chart-data-method-month="/reservation/statsCategoriesInMonth"
 		chart-data-method-year="/reservation/statsCategoriesInYear"></div>
 	</div>
+	<div class="row-fluid"></div>
 	<div class="row-fluid">
 		<div class="span12" 
 		time-line-chart
