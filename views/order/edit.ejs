@@ -37,9 +37,9 @@
         <div class='headtitle'>
             <div class='btn-group'>
                 <a class="btn btn-primary pull-right" ng-click="isCtransfer = !isCtransfer"><i class='fa {{isCtransfer?"fa-plus":"fa-minus"}}'></i></a>
-                <a class="btn btn-primary pull-right" ng-click="saveAll()"><i class='fa fa-save'></i> Guardar todo</a>
+                <a class="btn btn-primary pull-right" ng-click="saveAll()"><i class='fa fa-save'></i><%= __('order-guardar-todo')%></a>
             </div>
-            <h4 class="widgettitle">Reservación de Traslado </h4>
+            <h4 class="widgettitle"><%= __('order-reservar-tras')%></h4>
         </div>
         <div collapse="isCtransfer">
             <%- partial('inputsEditTransfer') -%> 
@@ -51,9 +51,9 @@
             <div class='headtitle'>
                 <div class='btn-group'>
                     <a class="btn btn-primary pull-right" ng-click="isCtour = !isCtour"><i class='fa {{isCtour?"fa-plus":"fa-minus"}}'></i></a>
-                    <a class="btn btn-primary pull-right" ng-click="saveAll()"><i class='fa fa-save'></i> Guardar todo</a>
+                    <a class="btn btn-primary pull-right" ng-click="saveAll()"><i class='fa fa-save'></i><%= __('order-guardar-todo')%> </a>
                 </div>
-                <h4 class="widgettitle">Reservación de Tours </h4>
+                <h4 class="widgettitle"><%= __('order-reservar-tour')%></h4>
             </div>
             <div collapse="isCtour">
                 <div class='isCtourContainer'>
@@ -68,9 +68,9 @@
             <div class='headtitle'>
                 <div class='btn-group'>
                     <a class="btn btn-primary pull-right" ng-click="isChotel = !isChotel"><i class='fa {{isChotel?"fa-plus":"fa-minus"}}'></i></a>
-                    <a class="btn btn-primary pull-right" ng-click="saveAll()"><i class='fa fa-save'></i> Guardar todo</a>
+                    <a class="btn btn-primary pull-right" ng-click="saveAll()"><i class='fa fa-save'></i><%= __('order-guardar-todo')%></a>
                 </div>
-                <h4 class="widgettitle">Reservación de Hoteles </h4>
+                <h4 class="widgettitle"><%= __('order-reservar-hotel')%></h4>
             </div>
             <div collapse="isChotel">
                 <div class='isCtourContainer'>

@@ -14,16 +14,16 @@
 		dir='airports' 
 		edit-url='/airport/edit/' 
 		get-info='getInfo'
-		name-var='name' }
-		button-text='Nuevo Aeropuerto'
+		name-var='name'
+		button-text= '<%= __('airpot-create') %>'
 		></div>
 
 	<div class="clearfix"></div>
 	<div class="span6">
 		<div class="alert alert-block unseen userAlert">
 			<button data-dismiss="alert" class="close" type="button">×</button>
-			<h4>Mensaje</h4>
-			<p>El aeropuerto se creó exitosamente</p>
+			<h4><%= __('airport-mensaje') %></h4>
+			<p><%= __('airport-creo-existoso') %></p>
 		</div>
 	</div>
 	<div class="modal fade" id="myModal">
@@ -36,7 +36,7 @@
 			        form-save = 'createAirport'
 			        object = 'airport'
 			        objects = '{locations:locations,zones:zones}'
-			        form-title='Agregar Aeropuerto'
+			        form-title='<%= __('airpot-add') %>' 
 			       	modal='true'
 			       	onchanges = "{'getZones' : getZones}"
 			        >

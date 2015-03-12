@@ -7,17 +7,20 @@
 
 module.exports = {
   index: function (req, res) {
-    var params = { company : req.user.default_company };
-    Order.find().sort('createdAt desc').populate('client').populate('reservations').populate('user').populate('company').exec(function(e,orders){
+    var params = {};
+    console.log(req.user.isAdmin);
+    if( ! req.user.isAdmin )
+      params = { company : req.user.default_company };
+    Order.find(params).sort('createdAt desc').populate('client').populate('reservations').populate('user').populate('company').exec(function(e,orders){
   		Common.view(res.view,{
   			orders : formatOrders(orders),
   			page:{
-  				name:'Reservas'
+  				name:req.__('sc_reservations')
   				,icon:'fa fa-car'		
   				,controller : 'order.js'
   			},
   			breadcrumb : [
-  				{label : 'Reservas'}
+  				{label : req.__('sc_reservations')}
   			]
   		},req);
   	});
@@ -31,12 +34,12 @@ module.exports = {
   				transfers : [] ,
           allTours : allTours ,
   				page:{
-  					name:'Reservas'
+  					name:req.__('sc_reservations')
   					,icon:'fa fa-car'		
   					,controller : 'order.js'
   				},
   				breadcrumb : [
-  					{label : 'Reservas'}
+  					{label : req.__('sc_reservations')}
   				]
   			},req);
   		});
@@ -116,12 +119,12 @@ module.exports = {
               hotels : hotels , 
               transfers : transfers ,
               page:{
-                name:'Reservación'
+                name:req.__('sc_reservations')
                 ,icon:'fa fa-car'
                 ,controller : 'order.js'
               },
               breadcrumb : [
-                { label : 'Reservas' , url : '/order/' } , 
+                { label : req.__('sc_reservations') , url : '/order/' } , 
                 { label : order.id }
               ]
             },req);

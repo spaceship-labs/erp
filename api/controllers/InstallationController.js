@@ -28,33 +28,86 @@ module.exports = {
 
     configure: function (req, res) {
         var select_company = req.session.select_company || req.user.select_company;
-        Installation_crane.find({ company : select_company }).exec(function (err,cranes){
-            Installation_material.find({ company : select_company }).populate('product').exec(function (err,materials){
-                Installation_tool.find({ company : select_company }).populate('product').exec(function (err,tools){
-                    Installation_work_type.find({ company : select_company }).exec(function (err,work_types){
-                        Installation_zone.find({ company : select_company }).exec(function (err,zones){
-                            Installation_hour.find({company : select_company}).exec(function(err,hours) {
-                                Product.find({company : select_company}).populateAll().exec(function(err,products) {
-                                    Common.view(res.view,{
-                                        page:{
-                                            icon:'fa fa-wrench'
-                                            ,name:'Configuracion de Instalaciones'
-                                            ,controller : 'installation.js'
-                                        },
-                                        cranes : cranes || [],
-                                        materials : materials || [],
-                                        tools : tools || [],
-                                        work_types : work_types || [],
-                                        zones : zones || {},
-                                        hours : hours || {},
-                                        products : products
-                                    },req);
-                                });
-                            });
-                        });
-                    });
-                });
+        var asyncTasks = [];
+        var installation_hoursR = []
+            ,installation_zonesR = []
+            ,installation_work_typesR = []
+            ,installation_toolsR = []
+            ,installation_materialsR = []
+            ,installation_cranesR = []
+            ,productsR = [];
+
+        asyncTasks.push(function(cb){
+            Installation_hour.find({company : select_company}).exec(function(err,installation_hours){
+                if(err) throw err;
+                installation_hoursR = installation_hours;
+                cb();
             });
+        });
+
+        asyncTasks.push(function(cb){
+            Installation_zone.find({ company : select_company }).exec(function (err,installation_zones){
+                if(err) throw err;
+                installation_zonesR = installation_zones;
+                cb();
+            });
+        });
+
+        asyncTasks.push(function(cb){
+            Installation_work_type.find({ company : select_company }).exec(function (err,installation_work_types){
+                if(err) throw err;
+                installation_work_typesR = installation_work_types;
+                cb();
+            });
+        });
+
+        asyncTasks.push(function(cb){
+            Installation_tool.find({ company : select_company }).populate('product').exec(function (err,installation_tools){
+                if(err) throw err;
+                installation_toolsR = installation_tools;
+                cb();
+            });
+        });
+
+        asyncTasks.push(function(cb){
+            Installation_material.find({ company : select_company }).populate('product').exec(function (err,installation_materials){
+                if(err) throw err;
+                installation_materialsR = installation_materials;
+                cb();
+            });
+        });
+
+        asyncTasks.push(function(cb){
+            Installation_crane.find({ company : select_company }).exec(function (err,installation_cranes){
+                if(err) throw err;
+                installation_cranesR = installation_cranes;
+                cb();
+            });
+        });
+
+        asyncTasks.push(function(cb){
+            Product.find({ company : select_company }).exec(function (err,products){
+                if(err) throw err;
+                productsR = products;
+                cb();
+            });
+        });
+
+        async.parallel(asyncTasks,function(){
+            Common.view(res.view,{
+                page:{
+                    icon:'fa fa-wrench'
+                    ,name:'Configuracion de Instalaciones'
+                    ,controller : 'installation.js'
+                },
+                cranes : installation_cranesR || [],
+                materials : installation_materialsR || [],
+                tools : installation_toolsR || [],
+                work_types : installation_work_typesR || [],
+                zones : installation_zonesR || {},
+                hours : installation_hoursR || {},
+                products : productsR
+            },req);
         });
 
     },

@@ -14,12 +14,12 @@ module.exports = {
                 company:req.user.select_company
             };
             finds.page = {
-                name:'Cupons',
+                name:req.__('sc_cupons'),
                 icon:'fa fa-ticket',
                 controller : 'cupon.js'
             };
             finds.breadcrumb = [
-                { label : 'Cupones' }
+                { label : req.__('sc_cupons') }
             ];
             Common.view(res.view,finds,req);        
         });
@@ -33,7 +33,7 @@ module.exports = {
                 controller : 'cupon.js'
             };
             finds.breadcrumb = [
-                { label : 'Cupones' }
+                { label : req.__('sc_cupons') }
             ];
             Common.view(res.view,finds,req); 
         });
@@ -59,14 +59,12 @@ function commonRemove(params,collection,res){
         });
     });
 }
-
 function commonFinds(cuponFind,done){  
     async.parallel({
         cupons:function(next){
             var find = Cupon.find(cuponFind);
             if(cuponFind && cuponFind.id)
                 find = find.populateAll();
-
             find.sort('createdAt desc').exec(function(err,cupons){
                 next(err,cupons);
             }); 

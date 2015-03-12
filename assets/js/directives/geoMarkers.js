@@ -1,7 +1,8 @@
 (function () {
-    var controller = function($scope,$http){
+    var controller = function($scope,$http,$rootScope){
         $scope.saveClass = 'fa-save';
         $scope.reverseClass = 'fa-search';
+        $scope.translates = $rootScope.translates;
         /*Creará un marcador con los campos que se le pasen en la directiva*/
         $scope.createMarker = function(){
             var newIndex = 'item_' + _.keys($scope.markers).length
@@ -57,7 +58,7 @@
        
     };
 
-    controller.$inject = ['$scope','$http'];
+    controller.$inject = ['$scope','$http','$rootScope'];
     /*
         saveFunction : función a la que se mandarán los marcadores
         center : obj con lat y long 

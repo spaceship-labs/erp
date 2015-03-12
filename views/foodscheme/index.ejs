@@ -3,7 +3,7 @@
 	window.content = <%- JSON.stringify(_content) %>;
 </script>
 <div ng-controller='hschemeviewCTL'>
-	<p><button class="btn btn-primary" data-toggle="modal" data-target="#myModal"><i class='fa fa-plus'></i> Nuevo Esquema</button></p>
+	<p><button class="btn btn-primary" data-toggle="modal" data-target="#myModal"><i class='fa fa-plus'></i><%= __('food-new-esquema') %> </button></p>
 	<br/>
 	<div table-helper inline-edit="/foodscheme/update/" objects='schemes' columns='content.foodschemes' route='room'></div>
 	<div class="clearfix"></div>
@@ -13,10 +13,10 @@
 				<div 
 					form-helper 
 			        fields='content.foodschemes' 
-			        form-footer='Agregar'
+			        form-footer='<%= __('user-agregar') %>'
 			        form-save = 'createScheme'
 			        object = 'hview'
-			        form-title='Agregar Vista'
+			        form-title='<%= __('food-new-esquema') %>'
 			       	modal='true'
 			        >
 			    </div>

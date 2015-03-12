@@ -2,7 +2,7 @@
     window.schemes = <%- JSON.stringify(schemes) %>;
 </script>
 <div ng-controller='seasonsCTL' >
-	<p><button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Nuevo esquema</button></p>
+	<p><button class="btn btn-primary" data-toggle="modal" data-target="#myModal"><%= __('season-nuevo-esq')%></button></p>
 	<br/>	
 
 	<div table-helper objects='schemes' columns='content.seasonScheme' route='season'></div>
@@ -12,10 +12,10 @@
 				<div 
 					form-helper 
 			        fields='content.seasonScheme' 
-			        form-footer='Agregar Esquema'
+			        form-footer='<%= __('season-agregar-esq')%>'
 			        form-save = 'addScheme'
 			        object = 'scheme'
-			        form-title='INFORMACIÓN BASICA'
+			        form-title='<%= __('season-info')%>'
 			       	modal='true'
 			        >
 			    </div>	

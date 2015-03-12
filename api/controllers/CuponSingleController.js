@@ -14,7 +14,7 @@ module.exports = {
                     cuponsSingle:cuponsSingle,
                     cupons:cupons,
                     page:{
-                        name:'Instancia de cupones',
+                        name:req.__('cupon_instancia'),
                         icon:'fa fa-ticket',
                         controller : 'cupon.js'
                     }
@@ -45,7 +45,7 @@ module.exports = {
                     cuponSingle:cuponSingle,
                     cupons:cupons,
                     page:{
-                        name:'Editar cupon de '+cuponSingle.cupon.name,
+                        name:req.__('cupon_editInstancia')+cuponSingle.cupon.name,
                         icon:'fa fa-ticket',
                         controller : 'cupon.js'
                     }

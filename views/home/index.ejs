@@ -10,41 +10,41 @@
 			chart-type="PolarArea"
 			chart-data="stats.data"
 			chart-labels="stats.labels"
-			chart-title="Cotizaciones"
-			not-found="No se encontraron cotizaciones"></div>-->
+			chart-title="<%= __('home-cotizaciones') %>"
+			not-found="<%= __('home-no-cotizaciones') %>"></div>-->
 		<% } %>
 		<div notices></div> 
+		<div class="span6" ng-controller="currencyCTL">
+			<%- partial('../admin/currencies_charts') -%> 
+		</div>
 	</div>
-	<div class="row-fluid dashboard-row">
+	<div class="row-fluid">
 		<div class="span6" 
 		day-stats-chart 
 		chart-type="Pie" 
 		chart-data-method="/reservation/statsCategoriesInDay"
-		chart-labels="['Tours', 'Hoteles', 'Traslados']"
+		chart-labels="['<%= __('sc_tour') %>', '<%= __('sc_hotels') %>', '<%= __('sc_transfer') %>']"
 		day-date="dayDate"			
-		chart-title="Reservaciones por dia"
+		chart-title="<%= __('home-reservaciones-dia') %>"
 		day-picker="true"
-		not-found="No se encontraron reservaciones este dia"></div>
-		<div class="span6" ng-controller="currencyCTL">
-			<%- partial('../admin/currencies_charts') -%> 
-		</div>	
-	</div>
-	<div class="row-fluid">
-		<div class="span12" 
+		not-found="<%= __('home-no-reservaciones-dia') %>"></div>
+		<div class="span6" 
+		time-line-chart 
+		chart-title="<%= __('home-reservaciones') %>"
 		time-line-chart
 		chart-type="Line"
-		chart-series="['Tours', 'Hoteles', 'Traslados']"
+		chart-series="['<%= __('sc_tour') %>', '<%= __('sc_hotels') %>', '<%= __('sc_transfer') %>']"
 		chart-data-method-month="/reservation/statsCategoriesInMonth"
-		chart-data-method-year="/reservation/statsCategoriesInYear"
-		chart-title="Reservaciones"></div>		
+		chart-data-method-year="/reservation/statsCategoriesInYear"></div>
 	</div>
+	<div class="row-fluid"></div>
 	<div class="row-fluid">
 		<div class="span12" 
 		time-line-chart
 		chart-type="Line"
-		chart-series="['Tours', 'Hoteles', 'Traslados']"
+		chart-series="['<%= __('sc_tour') %>', '<%= __('sc_hotels') %>', '<%= __('sc_transfer') %>']"
 		chart-data-method-month="/reservation/feeCategoriesInMonth"
 		chart-data-method-year="/reservation/feeCategoriesInYear"
-		chart-title="Monto en eservaciones"></div>		
+		chart-title="<%= __('home_rateReserv') %>"></div>		
 	</div>
 </div>

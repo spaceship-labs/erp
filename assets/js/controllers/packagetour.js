@@ -8,19 +8,19 @@ app.controller('packageCTL',function($scope,$http){
         });
 	}
 });
-app.controller('packageEditCTL',function($scope,$http){
+app.controller('packageEditCTL',function($scope,$http,$rootScope){
 	$scope.package_t = package_t;
 	$scope.items = items;
 	$scope.themarkers = {}
 	$scope.thehotels = {}
 	$scope.locations = locations;
 	$scope.categories = [
-        {id:1,name:'1 estrella'},
-        {id:2,name:'2 estrellas'},
-        {id:3,name:'3 estrellas'},
-        {id:4,name:'4 estrellas'},
-        {id:5,name:'5 estrellas'},
-        {id:6,name:'6 estrellas'},
+        {id:1,name:'1 '+$rootScope.translates.c_stars},
+        {id:2,name:'2 '+$rootScope.translates.c_stars},
+        {id:3,name:'3 '+$rootScope.translates.c_stars},
+        {id:4,name:'4 '+$rootScope.translates.c_stars},
+        {id:5,name:'5 '+$rootScope.translates.c_stars},
+        {id:6,name:'6 '+$rootScope.translates.c_stars},
     ];
 	$scope.content = content;
 	$scope.isCollapsed = true ; $scope.isCollapsed2 = true;

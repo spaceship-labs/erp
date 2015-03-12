@@ -3,10 +3,12 @@ module.exports.apps = [
     {
         name : 'system',
 		label : 'Sistema',
+        label_en : 'System',
 		icon : 'fa-gear',
 		actions : [
 			{
 				label : 'Empresas',
+                label_en : 'Companies',
 				icon : 'fa-building',
                 url : '/company/',
                 handle : 'empresas',
@@ -18,7 +20,8 @@ module.exports.apps = [
 				icon : 'fa-money',
 			},*/
 			{
-				label : 'Usuarios',
+                label : 'Usuarios',
+				label_en : 'Users',
 				icon : 'fa-users',
                 url : '/user/',
                 handle : 'usuarios',
@@ -28,6 +31,7 @@ module.exports.apps = [
 			},
             {
                 label : 'Monedas',
+                label_en : 'Currencies',
                 icon : 'fa-money',
                 url : '/admin/currencies',
                 handle : 'currencies',
@@ -37,6 +41,7 @@ module.exports.apps = [
             },
             {
                 label : 'Precios',
+                label_en : 'Prices',
                 icon : 'fa-money',
                 url : '/transferprice/',
                 showInMenu : true,
@@ -49,6 +54,7 @@ module.exports.apps = [
     {
         name : 'products',
 		label : 'Ventas',
+        label_en : 'Sales',
 		icon : 'fa-briefcase',
         actions : [
 //			{
@@ -62,6 +68,7 @@ module.exports.apps = [
 //			},
             {
                 label:'Cotizaciones',
+                label_en : 'Quotes',
                 icon:'fa-database',
                 url : '/salesQuote/',
                 handle : 'cotizaciones',
@@ -71,6 +78,7 @@ module.exports.apps = [
             },
             {
                 label:'Ordenes de trabajo',
+                label_en : 'Orders',
                 icon:'fa-barcode',
                 url : '/saleOrder/',
                 handle : 'ordenes',
@@ -80,6 +88,7 @@ module.exports.apps = [
             },
 			{
 				label : 'Productos',
+                label_en : 'Products',
 				icon : 'fa-cube',
                 url : '/product/',
                 handle : 'productos',
@@ -88,7 +97,8 @@ module.exports.apps = [
                 action : 'index'
 			},
 			{
-				label : 'Categorias',
+				label : 'Categorías',
+                label_en : 'Categories',
 				icon : 'fa-cubes',
                 url : '/product_type/',
                 handle : 'categorias',
@@ -97,7 +107,8 @@ module.exports.apps = [
                 action : 'index'
 			},
             {
-                label:'Maquinas',
+                label:'Máquinas',
+                label_en : 'Machines',
                 icon:'fa-gears',
                 url : '/machine/',
                 handle : 'maquinas',
@@ -107,6 +118,7 @@ module.exports.apps = [
             },
             {
                 label:'Instalaciones',
+                label_en : 'Setting-up',
                 icon:'fa-wrench',
                 url : '/installation/',
                 handle : 'instalaciones',
@@ -120,10 +132,12 @@ module.exports.apps = [
     {
         name : 'clients',
         label : 'Clientes',
+        label_en : 'Clients',
         icon : 'fa-users',
         actions : [
             {
                 label: 'Buscar',
+                label_en : 'Search',
                 icon: 'fa-user',
                 url: '/clientes/',
                 handle: 'clientes',
@@ -137,10 +151,12 @@ module.exports.apps = [
     {
         name : 'hotels',
         label : 'Hoteles/Aeropuertos',
+        label_en : 'Hotels/Airports',
         icon : 'fa-building',
         actions : [
             {
                 label : 'Hoteles',
+                label_en : 'Hotels',
                 icon : 'fa-building-o',
                 url : '/hotel/',
                 handle : 'hoteles',
@@ -150,6 +166,7 @@ module.exports.apps = [
             },
             {
                 label : 'Aeropuertos',
+                label_en : 'Airports',
                 icon : 'fa-plane',
                 url : '/airport/',
                 handle : 'airports',
@@ -159,6 +176,7 @@ module.exports.apps = [
             },
             {
                 label : 'Temporadas',
+                label_en : 'Seasons',
                 icon : 'fa-sun-o',
                 url : '/season/',
                 handle : 'temporadas',
@@ -168,6 +186,7 @@ module.exports.apps = [
             },
             {
                 label : 'Vistas de cuarto',
+                label_en : 'Rooms views',
                 icon : 'fa-eye',
                 url : '/hotelroomview/',
                 handle : 'hotelroomview',
@@ -177,6 +196,7 @@ module.exports.apps = [
             },
             {
                 label : 'Esquemas de alimentación',
+                label_en : 'Food schemes',
                 icon : 'fa-cutlery',
                 url : '/foodscheme/',
                 handle : 'foodscheme',
@@ -190,10 +210,12 @@ module.exports.apps = [
     {
         name    : 'locations',
         label   : 'Ciudades',
+        label_en : 'Cities',
         icon    : 'fa-flag',
         actions   : [
             {
                 label   : 'Ciudades',
+                label_en : 'Cities',
                 icon    : 'fa-flag',
                 url : '/location/',
                 handle : 'ciudades',
@@ -208,10 +230,12 @@ module.exports.apps = [
     {
         name : 'transfers',
         label : 'Servicios',
+        label_en : 'Services',
         icon : 'fa-clipboard',
         actions : [
             {
                 label : 'Reservaciones',
+                label_en : 'Reservations',
                 icon : 'fa-car',
                 url : '/order/',
                 handle : 'orders',
@@ -221,6 +245,7 @@ module.exports.apps = [
             },
             {
                 label : 'Tours',
+                label_en : 'Tours',
                 icon : 'fa-compass',
                 url : '/tour/',
                 handle : 'tours',
@@ -230,6 +255,7 @@ module.exports.apps = [
             },
             {
                 label : 'Traslados',
+                label_en : 'Transfers',
                 icon : 'fa-road',
                 url : '/transfer/',
                 handle : 'transfer',
@@ -239,6 +265,7 @@ module.exports.apps = [
             },
             {
                 label : 'Paquetes',
+                label_en : 'Packages',
                 icon : 'fa-dropbox',
                 url : '/packagetour/',
                 handle : 'packagetour',
@@ -248,12 +275,14 @@ module.exports.apps = [
             },
             {
                 label : 'Cupones',
+                label_en : 'Cupons',
                 icon : 'fa-ticket',
                 url : '/cupon/',
                 showInMenu : true
             },
             {
                 label : 'Instancias cupones',
+                label_en : 'Cupon instances',
                 icon : 'fa-ticket',
                 url : '/cuponSingle/',
                 showInMenu : true

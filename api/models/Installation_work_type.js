@@ -9,8 +9,7 @@ module.exports = {
             collection : 'Installation',
             via : 'work_type'
         },
-        name : 'string',
-        price : 'float'
+        name : 'string'
     }
 
 };

@@ -8,10 +8,19 @@
                 <li><a href="/user/edit/<%=req.user.id%>"><%= __('h-edit') %></a></li>
                 <!-- <li><a href="">Configuracion de cuenta</a></li> -->
                 <li><a href="/home/logout"><%= __('h-sesion') %></a></li>
-                <!--<li><select chosen>
-                    <option val='es'>Español</option>
-                    <option val='en'>English</option>
-                </select></li>-->
+                <li ng-controller="switchLangCTL" class="switch-lang">
+                    <script>
+                        window.currentLang = '<%- req.session.lang %>';                        
+                    </script>
+                    <select 
+                    ng-init="setDefaults()" 
+                    ng-model="currentLang" 
+                    ng-change="switchLang(currentLang.value)"
+                    ng-options="lang.label for lang in langs track by lang.value"
+                    disable-search="true"
+                    chosen="langs">
+                    </select>
+                </li>
             </ul>
         </div>
     </div>

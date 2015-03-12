@@ -15,12 +15,12 @@ module.exports = {
 						schemes:schemes,
 						locations:locations,
 						page:{
-							name:'Tours',
+							name:req.__('sc_tour'),
 							icon:'fa fa-compass',
 							controller : 'tour.js'
 						},
 						breadcrumb : [
-							{label : 'Tours'}
+							{label : req.__('sc_tour')}
 						]
 					},req);	
 				});
@@ -57,7 +57,7 @@ module.exports = {
 							controller : 'tour.js'
 						},
 						breadcrumb : [
-							{label : 'Tours', url: '/tour/'},
+							{label : req.__('sc_tour'), url: '/tour/'},
 							{label : tour.name},
 						]
 					},req);				

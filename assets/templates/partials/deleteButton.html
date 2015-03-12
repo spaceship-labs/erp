@@ -1,6 +1,6 @@
 <div class='ng-delete'>
 	<button class='ng-delete-button' href='' ng-click='showOverlay = true'> 
-		<strong>Eliminar archivo  </strong>
+		<strong ng-bind='translates.d_deleteFile'> </strong>
 		<span class='fa fa-trash-o' ></span>
 	</button>
 
@@ -12,16 +12,16 @@
 		</div>
 		<div class='content'>
 			<div class="text-war">
-				<p> <strong>ELIMINAR PERMANENTEMENTE</strong></p>
+				<p> <strong ng-bind='translates.d_deleteperm'></strong></p>
 			</div>
 			<div class="img-circlepicture">
         		<img ng-src="{{iconSrc}}" alt="{{user.name}}" />
 			</div>
 			<div class="text-log">
-				<p> <strong>Usuario: {{user.name}}</strong></p>
+				<p> <strong>{{translates.d_user}}: {{user.name}}</strong></p>
 			</div>
 			<form ng-submit='submitDelete()' class="input-password" method='delete' accept-charset="utf-8">				
-				<input type="password" ng-model='passwd' placeholder="Ingrese su contraseña para eliminar este documento..." />
+				<input type="password" ng-model='passwd' placeholder="{{translates.d_deletePlaceH}}" />
 			</form>
 		</div>
 	</div>

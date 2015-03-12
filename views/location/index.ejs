@@ -11,15 +11,15 @@
 		edit-url='/location/edit/' 
 		get-info='getInfo'
 		name-var='name' 
-		button-text='Crear Ciudad'
+		button-text='<%= __('location-gregar-ciudad') %>'
 		></div>
 
 	<div class="clearfix"></div>
 	<div class="span6">
 		<div class="alert alert-block unseen userAlert">
 			<button data-dismiss="alert" class="close" type="button">×</button>
-			<h4>Mensaje</h4>
-			<p>La ciudad se creó exitosamente</p>
+			<h4><%= __('location-mensaje') %></h4>
+			<p><%= __('location-secreo-exit') %></p>
 		</div>
 	</div>
 	<div class="modal fade" id="myModal">
@@ -28,10 +28,10 @@
 				<div 
 					form-helper 
 			        fields='content.location' 
-			        form-footer='Agregar'
+			        form-footer='<%= __('user-agregar') %>'
 			        form-save = 'createLocation'
 			        object = 'location'
-			        form-title='Agregar Ciudad'
+			        form-title='<%= __('location-gregar-ciudad') %>'
 			       	modal='true'
 			        >
 			    </div>	

@@ -16,11 +16,6 @@
 <div ng-cloak ng-controller="saleQuoteCTL" class="sales-quote">
     <%- partial('../product/selectorAdd') %>
     <%- partial('../installation/add-modal') %>
-    <!--<div class="row-fluid">-->
-        <!--<div class="col-md-12">-->
-            <!--<button class="btn btn-default btn-small" style="float: right;"><span class="fa fa-floppy-o"></span> Save</button>-->
-        <!--</div>-->
-    <!--</div>-->
     <div class="row-fluid editable-row">
         <div class="col-md-3"><p><strong>Nombre:</strong> <a href="#" editable-select="quote.client" e-ng-options="client as client.name for client in clients" onaftersave="setAttribute('client',$data.id)">{{quote.client.name || "no asignado"}}</a></p></div>
         <div class="col-md-3"><p><strong>Direccion:</strong> {{quote.client.address || "no asignado"}}</p></div>

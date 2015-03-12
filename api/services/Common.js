@@ -19,12 +19,13 @@ module.exports.view = function(view,data,req){
 module.exports.renderMenu = function(req){
 	var menu = "";
     var selected_company = req.res.locals.selected_company;
+    var label = req.getLocale()=='es'?'label':'label_en';
     _.each(sails.config.apps,function(app){
         if (_.contains(selected_company.apps,app.name) && req.user.hasAppPermission(selected_company.id,app)) {
-            menu += "<li class='dropdown'><a href=''><span class='fa "+app.icon+"'></span>"+app.label+"</a><ul>";
+            menu += "<li class='dropdown'><a href=''><span class='fa "+app.icon+"'></span>"+app[label]+"</a><ul>";
             _.each(app.actions,function(view){
                 if (req.user.hasPermission(selected_company.id,view.handle) && view.showInMenu)
-                    menu += "<li><a href='"+view.url+"'><span class='fa "+view.icon+"'></span> "+view.label+"</a></li>";
+                    menu += "<li><a href='"+view.url+"'><span class='fa "+view.icon+"'></span> "+view[label]+"</a></li>";
             });
             menu += "</ul></li>";
         }

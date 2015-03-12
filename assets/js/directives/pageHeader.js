@@ -1,5 +1,6 @@
 (function () {
 	var controller = function($scope,$http,$rootScope){
+        $scope.translates = $rootScope.translates;
         $scope.page =  page;
 		//TODO: meter estas variables con el scope no globalmente;
         $scope.broadcastSave = function(){

@@ -1,4 +1,4 @@
-app.controller('companyCTL',function($scope,$http){
+app.controller('companyCTL',function($scope,$http,$rootScope){
     $scope.companies = companies;
     $scope.content = content;
     $scope.currencies = currencies;
@@ -7,11 +7,11 @@ app.controller('companyCTL',function($scope,$http){
     //$scope.apps = apps;
 
     $scope.getInfo = function(company){
-        return {
-            "Direccion" : company.address,
-            "Apps" : company.apps.join(', '),
-            "Moneda base" : company.base_currency
-        };
+        var r = {};
+        r[$rootScope.translates.c_adress] = company.address;
+        r["Apps"] = company.apps.join(', ');
+        r[$rootScope.translates.c_baseCurrency] = company.base_currency;
+        return r;
     };
 
     $scope.createCompany = function(newcompany){

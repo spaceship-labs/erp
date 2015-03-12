@@ -1,5 +1,6 @@
 (function () {
-    var controller = function($scope,$http,$q){
+    var controller = function($scope,$http,$q,$rootScope){
+        $scope.translates = $rootScope.translates;
         var options = {
             'sort':'updatedAt desc',
             'limit':10
@@ -77,7 +78,7 @@
         };
         $scope.formatFields();
     };
-    controller.$inject = ['$scope','$http','$q'];
+    controller.$inject = ['$scope','$http','$q','$rootScope'];
     var directive = function () {
         return {
             controller : controller,

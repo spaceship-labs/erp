@@ -1,14 +1,14 @@
 <div class="widgetbox profile-photo">
     <div class="headtitle">
         <div class="btn-group">
-            <button data-toggle="dropdown" class="btn dropdown-toggle">Opciones <span class="caret"></span></button>
+            <button data-toggle="dropdown" class="btn dropdown-toggle">{{translates.d_options}} <span class="caret"></span></button>
             
             <ul class="dropdown-menu">
-                <li><button ng-file-select="updateIcon($files)" accept="image/*" >Cambiar</button></li>
-                <li><a class="confirmbutton" ng-href="{{deleteMethod}}/{{object.id}}">Eliminar</a></li> 
+                <li><button ng-file-select="updateIcon($files)" accept="image/*" >{{translates.d_change}}</button></li>
+                <li><a class="confirmbutton" ng-href="{{deleteMethod}}/{{object.id}}">{{translates.d_delete}}</a></li> 
             </ul>
         </div>            
-        <h4 class="widgettitle">Imagen Primaria</h4>
+        <h4 class="widgettitle">{{translates.d_primaryImg}}</h4>
     </div>
     <div class="widgetcontent">
         <div class="profilethumb" style="background:none">
@@ -16,7 +16,7 @@
             <img ng-if='!loading && !object[imageAttr].filename' src='http://placehold.it/177x171' />  
             <div ng-if='loading'>
                 <img src='/images/loaders/images-cm.gif' />
-                <p>Cargando <span ng-bind='loadingProgress'></span>%</p>
+                <p>{{translates.d_charge}} <span ng-bind='loadingProgress'></span>%</p>
             </div>
         </div>
     </div>

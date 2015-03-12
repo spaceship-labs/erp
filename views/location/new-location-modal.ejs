@@ -11,13 +11,13 @@
       />
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	        <h4 class="modal-title">Nueva Ciudad</h4>
+	        <h4 class="modal-title"><%= __('location-nueva-ciudad') %></h4>
 	      </div>
 	      <div class="modal-body">	        
 				<%- partial('new-basic') -%>
 	      </div>
 	      <div class="modal-footer">
-	        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal"><%= __('location-cerrar') %></button>
 	        <input type="submit" class="btn btn-primary" value='Guardar'>
 	      </div>
 	</form>

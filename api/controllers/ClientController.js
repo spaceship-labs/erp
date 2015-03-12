@@ -13,7 +13,7 @@ module.exports = {
             Common.view(res.view,{
                 page:{
                     icon:'fa fa-users'
-                    ,name:'Clientes'
+                    ,name : req.__('sc_clients')
                     ,controller : 'client.js'
                 },
                 clients : clients || [],
@@ -27,7 +27,7 @@ module.exports = {
         Common.view(res.view,{
             page:{
                 icon:'fa fa-users'
-                ,name:'Cliente'
+                ,name:req.__('sc_client')
                 ,controller : 'client.js'
             }
         },req);
@@ -44,7 +44,7 @@ module.exports = {
                     Common.view(res.view,{
                         page:{
                             icon:'fa fa-users'
-                            ,name:'Editar Cliente'
+                            ,name:req.__('sc_editclient')
                             ,controller : 'client.js'
 
                         },
@@ -174,7 +174,7 @@ module.exports = {
                 Common.view(res.view,{
                     page:{
                         icon:'fa fa-user'
-                        ,name:'Editar Contacto'
+                        ,name:req.__('sc_editcontact')
                         ,controller : 'client.js'
 
                     },

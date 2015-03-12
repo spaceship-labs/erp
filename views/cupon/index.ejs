@@ -17,7 +17,7 @@
 		button-text='Nuevos cupones'
 	>
 	</div>-->
-    <p><button class="btn btn-primary" data-toggle="modal" data-target="#myModal"><i class='fa fa-plus'></i> Nuevo cupon</button></p>
+    <p><button class="btn btn-primary" data-toggle="modal" data-target="#myModal"><i class='fa fa-plus'></i> <%= __('cupon_new')%></button></p>
     <br>
     <div table-helper inline-edit="/foodscheme/update/" objects='cupons' columns='content.cupons' route='cupon'></div>
 	<div class="modal fade" id="myModal">
@@ -26,11 +26,11 @@
 				<div 
 					form-helper 
 			        fields='content.cupons' 
-			        form-footer='Agregar'
+			        form-footer='<%= __("cupon_add") %>'
 			        form-save = 'createCupon'
 			        object = 'cupons'
 				objects='{hotels:hotels,tours:tours,transfers:transfers}' 
-			        form-title='Agregar Cupones'
+			        form-title='<%= __("cupon_add") %>'
 			       	modal='true'
 			       	currency='company.base_currency'
 			        >

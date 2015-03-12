@@ -6,13 +6,14 @@
                 <thead>
                 <tr>
                     <th>Nombre</th>
-                    <th colspan="2">Precio por dia</th>
+                    <th ng-repeat="zone in zones"><span ng-bind="zone.name"></span></th>
+                    <th>Borrar</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="crane in cranes track by $index">
-                    <td data-title="Nombre"><input type="text" ng-model="crane.name" class="span2" value="{{crane.name}}"/><input type="hidden" value="{{crane.id}}" /></td>
-                    <td data-title="Precio por dia"><input type="text" ng-model="crane.price" class="span1" value="{{crane.price}}" /></td>
+                <tr ng-repeat="crane in cranes">
+                    <td data-title="Nombre"><input type="text" ng-model="crane[0].name" class="span2" value="{{crane.name}}"/><input type="hidden" value="{{crane.id}}" /></td>
+                    <td ng-repeat="zone in zones" ng-init="zone_price = getCranePriceZone(crane,zone)"><input type="text" ng-model="zone_price.price" /></td>
                     <td><span ng-click="deleteCrane($index)" class="icon fa fa-trash-o" style="cursor: pointer;"></span></td>
                 </tr>
                 <tr>

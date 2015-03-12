@@ -8,13 +8,13 @@
 			<button class="btn btn-primary" ng-click='year = year - 1'>
 				<span class = "fa fa-chevron-circle-left"></span>
 			</button>
-			<p>TEMPORADAS AÑO <span ng-bind='year'></span></p>
+			<p><%= __('season-temporadas-ano')%> <span ng-bind='year'></span></p>
 			<button class="btn btn-primary c" ng-click='year = year + 1'>
 				<span class = "fa fa-chevron-circle-right"></span>
 			</button>
 		</div>	
 		<div class = "seasons-buttons col-md-6 col-sm-6 col-xs-6">
-			<button class="btn btn-primary" data-toggle="modal" data-target="#myModal"><span class = "fa fa-plus"></span> AGREGAR NUEVA TEMPORADA</button>
+			<button class="btn btn-primary" data-toggle="modal" data-target="#myModal"><span class = "fa fa-plus"></span><%= __('season-agregar')%></button>
 			<!-- <button class="btn btn-primary" data-toggle="modal" data-target="#myModal"> TEMPORADAS </button> -->
 		</div>
 	</div>
@@ -48,7 +48,7 @@
 			        form-footer='Agregar Temporada'
 			        form-save = 'createSeason'
 			        object = 'newSeason'
-			        form-title='Nueva temporada'
+			        form-title='<%= __('season-nueva')%>'
 			       	modal='true'
 			        >
 			    </div>	

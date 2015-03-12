@@ -1,11 +1,11 @@
 <div class="widgetbox personal-information ng-form-helper">
 	<h4 class="widgettitle">
-		Selector de Georeferencia 
+		{{translates.d_selectGeo}}
 		<span ng-click='save()'  class='fa icon' ng-show='markers.manual' ng-class='saveClass'></span>
 		<span ng-click='reverseGeocode()' ng-show='markers.manual' class='fa icon' ng-class='reverseClass'></span>
 	</h4>
 	<div class="widgetcontent">
-		<p>Haz click en el mapa para establecer el marcador manualmente.</p>
+		<p ng-bind="translates.d_markLegend2"></p>
 		<leaflet width="100%" height="259px" markers='markers' center='center' event-broadcast="events" ></leaflet>
 	</div>
 	

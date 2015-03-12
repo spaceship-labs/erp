@@ -1,4 +1,4 @@
-app.controller('installationConfigCTL',function($scope,$http){
+app.controller('installationConfigCTL',function($scope,$http,_){
     $scope.cranes = window.cranes;
     $scope.materials = window.materials;
     $scope.tools = window.tools;
@@ -33,13 +33,15 @@ app.controller('installationConfigCTL',function($scope,$http){
 
     //cranes
     $scope.processCranes = function() {
-        console.log($scope.cranes);
+        //console.log($scope.cranes);
         $http.post('/installation/update_cranes',{ cranes : $scope.cranes}, {}).success(showResponse);
     };
     $scope.addCrane = function() {
         $scope.cranes.push({
             name : '',
-            price : 0.0
+            price_zone : _.map($scope.zones,function(zone){
+                return { price : 0.0 , zone : zone.id };
+            })
         });
     };
     $scope.deleteCrane = function(index) {
@@ -92,8 +94,7 @@ app.controller('installationConfigCTL',function($scope,$http){
     };
     $scope.addWorkType = function() {
         $scope.work_types.push({
-            name : '',
-            price : 0.0
+            name : ''
         });
     };
     $scope.deleteWorkType = function(index) {
@@ -127,6 +128,19 @@ app.controller('installationConfigCTL',function($scope,$http){
     $scope.deleteZone = function(index) {
         $scope.zones.splice(index,1);
     };
+
+    $scope.getCranePriceZone = function(crane,zone){
+        var price_zone = _.findWhere(crane.price_zones,{ zone : zone.id });
+        if (price_zone) {
+            return price_zone;
+        }
+        price_zone = {
+            zone : zone.id,
+            price : 0.0
+        };
+        crane.price_zones.push(price_zone);
+        return price_zone;
+    }
 
 });
 
