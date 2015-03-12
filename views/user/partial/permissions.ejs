@@ -16,7 +16,7 @@
             <label>Perfil</label>
             <div class="field">
                 <div class="editable-buttons">
-                    <select ng-options="s as s.name for s in user_roles" ng-model="user.role" chosen></select>
+                    <select ng-options="s as s.name for s in user_roles" ng-model="user.role" chosen="user_roles"></select>
                     <a class="btn btn-default" data-toggle="modal" data-target="#userRoleModal"><span class="table-icon fa fa-edit"></span></a>
                 </div>
             </div>
@@ -33,7 +33,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat='action in app.actions | filter:onlyRestricted' ng-init="permission = setPermission(action.handle)">
+                        <tr ng-repeat='action in app.actions | filter:onlyRestricted' ng-init="permission = getPermission(action.handle)">
                             <td>
                                 <label ng-bind='action.label' for="{{action.handle}}"></label>
                             </td>

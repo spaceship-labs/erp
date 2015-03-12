@@ -4,6 +4,7 @@
     window.company = <%- JSON.stringify(selected_company) %>;
     window.roles = <%- JSON.stringify(roles) %>;
 </script>
+
 <div ng-controller='userEditCTL' class="editar-usuario ng-cloak">
     <div class="span4 profile-left profileEdit">
         <div class="alert alert-block unseen">
@@ -14,7 +15,6 @@
             <div profile-image object='user' update-method='/user/updateIcon' delete-method='/user/destroyIcon' image-attr='icon' dir='users'></div>
             <% if(!user.isAdmin || req.user.isAdmin) {%>
                 <%- partial('partial/permissions') %>
-                <%- partial('partial/roles') %>
             <% } %>
     </div>
     <div class="span6">
@@ -34,6 +34,8 @@
     <% } %>
 </div>
 
-    <div id="cargando-elementos" class="ng-cloak">
-        <img src="/images/loaders/images-cm.gif">
-    </div>
+<%- partial('partial/roles') %>
+
+<div id="cargando-elementos" class="ng-cloak">
+    <img src="/images/loaders/images-cm.gif">
+</div>

@@ -2,9 +2,42 @@
     window.company = <%- JSON.stringify(company) %>;
     window.apps = <%- JSON.stringify(apps) %>;
     window.users = <%- JSON.stringify(users) %>;
-    console.log(company);
 </script>
 <div class='row-fluid' ng-controller='companyEditCTL'>
+    <div class="col-md-6">
+        <div form-helper
+             fields='content.company'
+             object='company'
+             action='/company/update'
+             form-title='Información de la Empresa'
+             restrict="base_currency,apps"
+                >
+        </div>
+
+        <div class="widgetbox">
+            <h4 class="widgettitle">Archivos</h4>
+            <div class="widgetcontent">
+                <form method="post" ng-submit='' ng-if="">
+                    <p>
+                        <label>Acta constitutiva</label>
+                            <span class='field'>
+                                <div class='fileBtn btn fileinput-button'>
+                                    <input type='text' name='file' data-url='/company/addFile'>
+                                </div>
+                            </span>
+                    </p>
+                    <p>
+                        <label>Rep. legal acta</label>
+                            <span class='field'>
+                                <div class='fileBtn btn fileinput-button'>
+                                    <input type='text' name='file' data-url='/company/addFile'>
+                                </div>
+                            </span>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div><!--span8-->
     <div class="col-md-4 profile-left profileEdit Admin">
     	<div class="alert alert-block unseen">
     		<button data-dismiss="alert" class="close" type="button">×</button>
@@ -14,7 +47,7 @@
         
         <div profile-image object='company' update-method='/company/updateIcon' delete-method='/company/destroyIcon' image-attr='icon' dir='companies'></div>    
             
-            
+        <% if (req.user.isSuperAdmin()) {%>
         <div class="widgetbox tags">
                 <h4 class="widgettitle">Aplicaciones</h4>
                 <div class="widgetcontent">
@@ -37,7 +70,6 @@
                 </div>
         </div>
 
-
         <div class="widgetbox tags">
                 <h4 class="widgettitle">Usuarios</h4>
                 <div class="widgetcontent">
@@ -59,6 +91,7 @@
                     <p ng-if="company.users.length == users.length">Todos los usuarios estan agregados</p>
                 </div>
         </div>
+        <% } %>
 
         <div class="widgetbox">
             <h4 class="widgettitle">Impuestos <span ng-click='toggleNewTax()'  class='fa icon' ng-class='newTaxClass'></span>  </h4>
@@ -79,38 +112,5 @@
         </div>
             
     </div><!--span4-->
-    <div class="col-md-6">
-        <div form-helper
-             fields='content.company'
-             object='company'
-             action='/company/update'
-             form-title='Información de la Empresa'
-             restrict="base_currency,apps"
-                >
-        </div>
 
-        <div class="widgetbox">
-                <h4 class="widgettitle">Archivos</h4>
-                <div class="widgetcontent">
-                    <form method="post" ng-submit='' ng-if="">
-                        <p>
-                            <label>Acta constitutiva</label>
-                            <span class='field'>
-                                <div class='fileBtn btn fileinput-button'>
-                                    <input type='text' name='file' data-url='/company/addFile'>
-                                </div>
-                            </span>
-                        </p>
-                        <p>
-                            <label>Rep. legal acta</label>
-                            <span class='field'>
-                                <div class='fileBtn btn fileinput-button'>
-                                    <input type='text' name='file' data-url='/company/addFile'>
-                                </div>
-                            </span>
-                        </p>
-                    </form>
-                </div>
-        </div>
-    </div><!--span8-->
 </div>

@@ -1,4 +1,4 @@
-<div class="modal fade" id="userRoleModal">
+<div class="modal fade" id="userRoleModal" ng-controller="userRoleCTL">
     <div class="modal-dialog">
         <div class="modal-content">
             <form accept-charset='utf-8' enctype='multipart/form-data' class='stdform stdform2' ng-submit="saveUserRole()" name="myForm">
@@ -12,7 +12,7 @@
                             <p>
                                 <label>Selecciona</label>
                                 <span class="field">
-                                    <select ng-model="selected_role" ng-options="role as role.name for role in roles" ng-change="updateRole()">
+                                    <select ng-model="selected_role" ng-options="role as role.name for role in roles">
                                     </select>
                                 </span>
                             </p>
@@ -35,7 +35,7 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr ng-repeat='action in app.actions | filter:available'>
+                                            <tr ng-repeat='action in app.actions | filter:onlyRestricted' >
                                                 <td>
                                                     <label ng-bind='action.label' for="{{action.handle}}_s"></label>
                                                 </td>

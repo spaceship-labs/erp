@@ -113,8 +113,8 @@ module.exports = {
             }
             return false;
         },
-        test : function() {
-            return "asd";
+        isSuperAdmin : function() {
+            return this.isAdmin;
         }
 	}
 

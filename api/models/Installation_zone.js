@@ -9,8 +9,7 @@ module.exports = {
             collection : 'Installation',
             via : 'zone'
         },
-        name : 'string',
-        price : 'float'
+        name : 'string'
     }
 
 };

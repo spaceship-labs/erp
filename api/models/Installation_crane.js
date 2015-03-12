@@ -13,9 +13,8 @@ module.exports = {
             type : 'string',
             required : true
         },
-        price : {
-            type : 'float',
-            required : true
+        price_zone : {
+            type : 'json'
         }
     }
 
