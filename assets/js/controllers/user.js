@@ -37,41 +37,41 @@ app.controller('userCTL',function($scope,$http,$rootScope){
 });
 
 app.controller('userEditCTL',function($scope,$http,_){
+    $scope._ = _;
+    $scope.content = content;
     $scope.user = user;
     $scope.user.permissions = [];
     $scope.apps = apps;
     $scope.submited_pass_form = false;
     $scope.company = company;
-    $scope.roles = roles;
     $scope.user_roles = [];
+    angular.copy(roles,$scope.user_roles);
     $scope.permissions = [];
-    $scope.content = content;
     $scope.hiddenFields = [
         { key : 'userId',value : $scope.user.id }
     ];
     $scope.saveClassPermissions = 'fa-save';
     $scope.saveClassPassword = 'fa-save';
-    $scope._ = _;
-    $scope.selected_role = { permissions : [] };
 
+    var emptyRole = { name : 'Ninguno',permissions : [] ,id : '0' };
     for(var i in $scope.user.accessList){
         var acl = $scope.user.accessList[i];
         if (acl.company == $scope.company.id) {
             $scope.user.acl = acl;
             $scope.user.permissions = acl.permissions;
             $scope.isAdmin = acl.isAdmin;
-            angular.copy($scope.roles,$scope.user_roles);
 
-            var emptyRole = { name : 'Ninguno',permissions : acl.permissions,id : '0' };
-            $scope.user_roles.push(emptyRole);
+            emptyRole = { name : 'Ninguno',permissions : acl.permissions,id : '0' };
 
             if (acl.role) {
                 $scope.user.role = _.findWhere($scope.user_roles,{ id : acl.role } );
-            } else {
-                $scope.user.role = emptyRole;
             }
         }
     }
+    if (!$scope.user.role) {
+        $scope.user.role = emptyRole;
+    }
+    $scope.user_roles.push(emptyRole);
 
     $scope.updateAccestList = function(){
         //console.log($scope.user);
@@ -174,11 +174,9 @@ app.controller('userRoleCTL',function($scope,$http,_) {
 
     $scope.getRolePermission = function(key) {
         var permissionItem = _.findWhere($scope.selected_role.permissions,{ key : key } );
-        //console.log(permissionItem);
         if (!permissionItem) {
             permissionItem = { key : key , value : false };
             $scope.selected_role.permissions.push(permissionItem);
-            //console.log($scope.selected_role);
         }
         var index = $scope.selected_role.permissions.indexOf(permissionItem);
         return $scope.selected_role.permissions[index];
