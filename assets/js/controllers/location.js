@@ -7,6 +7,7 @@ app.controller('locationCTL',function($scope,$http,$rootScope){
         $http({method: 'POST', url: '/location/create',params:newLocation}).success(function (location){
             $scope.locations.push(location);
             jQuery('#myModal').modal('hide');
+            window.location.reload();
         });
     };
     $scope.getInfo = function(location){
