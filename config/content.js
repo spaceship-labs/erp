@@ -5,6 +5,7 @@ module.exports.content = {
 			label_en : 'Name',
 			type : 'text',
 			handle : 'name',
+			required : true,
 		},
 		{
 			label : 'Dirección',
@@ -19,13 +20,15 @@ module.exports.content = {
 			handle : 'location',
 			object : 'locations',
 			on_Change : 'getZones',
+			required : true,
 		},
 		{
 			label : 'Zona',
 			label_en : 'Zone',
 			type : 'select',
 			handle : 'zone',
-			object : 'zones'
+			object : 'zones',
+			required : true,
 		},
 		{
 			label : 'Teléfonos',
@@ -604,7 +607,8 @@ module.exports.content = {
 			label 	: 'Nombre',
 			label_en : 'Name',
 			type 	: 'text',
-			handle 	: 'name'
+			handle 	: 'name',
+			required : true,
 		},{
 			label 	: 'Nombre Inglés',
 			label_en : 'English name',
@@ -617,12 +621,14 @@ module.exports.content = {
 			handle 	: 'location',
 			object 	: 'locations',
 			on_Change : 'getZones',
+			required : true,
 		},{
 			label 	: 'Zona',
 			label_en : 'Zone',
 			type 	: 'select',
 			handle 	: 'zone',
-			object 	: 'zones'
+			object 	: 'zones',
+			required : true,
 		},{
 			label 	: 'Texto del Voucher Español',
 			label_en : 'Spanish Voucher text',

@@ -8,6 +8,7 @@ app.controller('airportCTL',function($scope,$http,$rootScope){
         $http({method: 'POST', url: '/airport/create',params:newAirport}).success(function (airport){
             $scope.airports.push(airport);
             jQuery('#myModal').modal('hide');
+            window.location.reload();
         });
     };
     $scope.getInfo = function(airport){
