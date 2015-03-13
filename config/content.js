@@ -558,8 +558,8 @@ module.exports.content = {
 	],
 	transfer : [
 		{
-			label 	: 'Nombre Español',
-			label_en : 'Spanish name',
+			label 	: 'Nombre Español *',
+			label_en : 'Spanish name *',
 			type 	: 'text',
 			required: true,
 			handle 	: 'name'
