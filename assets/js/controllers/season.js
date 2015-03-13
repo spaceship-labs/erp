@@ -1,4 +1,4 @@
-app.controller('seasonsCTL',function($scope,$http){
+app.controller('seasonshemeCTL',function($scope,$http){
     $scope.schemes = schemes;
     $scope.content = content;
     $scope.company = company;
@@ -15,7 +15,7 @@ app.controller('calendarCTL',function($scope,$http){
     $scope.company = company;
     $scope.scheme = scheme;
     $scope.hotels = hotels;
-    $scope.year = 2014;
+    $scope.year = 2015;
     $scope.newSeason = {scheme:$scope.scheme.id};
     $scope.scheme.seasons.forEach(function(season){
         season.title = season.title || 'sin titulo';

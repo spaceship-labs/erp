@@ -272,6 +272,7 @@ module.exports.content = {
 			label_en : 'Name',
 			type : 'text',
 			handle : 'title',
+			required : true,
 		},
 		{
 			label : 'Inicio',
@@ -296,6 +297,7 @@ module.exports.content = {
 			label_en : 'Name',
 			type : 'text',
 			handle : 'name',
+			required : true,
 		},	
 	],
 	tour : [
