@@ -31,6 +31,7 @@ app.controller('userCTL',function($scope,$http,$rootScope){
             $http.post('/user/create',$scope.user,{}).success(function(data){
                 console.log(data);
                 showResponse(data);
+                window.location.reload();
             });
         }
     }
