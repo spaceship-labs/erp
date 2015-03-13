@@ -5,6 +5,7 @@ app.controller('packageCTL',function($scope,$http){
 		$http({method: 'POST', url: '/packagetour/create',params:newPackage}).success(function (package_){
             $scope.packages.push(package_);
             jQuery('#myModal').modal('hide');
+            window.location.reload();
         });
 	}
 });

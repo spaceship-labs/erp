@@ -301,6 +301,7 @@ module.exports.content = {
 			label_en : 'Name',
 			type : 'text',
 			handle : 'name',
+			required : true,
 		},
 		{
 			label : 'Máximo de clientes',
@@ -558,8 +559,8 @@ module.exports.content = {
 	],
 	transfer : [
 		{
-			label 	: 'Nombre Español *',
-			label_en : 'Spanish name *',
+			label 	: 'Nombre Español',
+			label_en : 'Spanish name',
 			type 	: 'text',
 			required: true,
 			handle 	: 'name'
@@ -901,6 +902,7 @@ module.exports.content = {
     		label : 'Nombre Español',
     		label_en : 'Spanish name',
     		handle : 'name',
+    		required: true,
     		type : 'text'
     	},
     	{
