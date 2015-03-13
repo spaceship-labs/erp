@@ -18,9 +18,8 @@ app.controller('companyCTL',function($scope,$http,$rootScope){
         newcompany.users = [ user.id ];
         $http({method: 'POST', url: '/company/create',data:newcompany}).success(function (company){
             $scope.companies.push(newcompany);
-            //console.log($scope.companies);
-            $scope.apply();
             jQuery('#companyCreate').modal('hide');
+            window.location.reload();
         });    
     };
 });

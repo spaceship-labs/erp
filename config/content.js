@@ -691,12 +691,14 @@ module.exports.content = {
 			label_en : 'Name',
 			handle : 'name',
 			type : 'text',
+			required : true,
 		},
 		{
 			label : 'Direccion',
 			label_en : 'Address',
 			handle : 'address',
 			type : 'text',
+			required : true,
 		},
 		{
 			label : 'Código Postal',
@@ -710,6 +712,7 @@ module.exports.content = {
 			type : 'select',
 			handle : 'base_currency',
 			object : 'currencies',
+			required : true,
 		},
 		{
 			label : 'Aplicaciones',
@@ -790,7 +793,8 @@ module.exports.content = {
             label : 'RFC',
             label_en : 'RFC',
             handle : 'rfc',
-            type : 'text'
+            type : 'text',
+            required : true
         },
         {
             label : 'Teléfono',

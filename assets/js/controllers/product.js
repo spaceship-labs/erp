@@ -111,7 +111,6 @@ app.controller('productCTL',function($scope,$http,$filter){
 
     $scope.calculatePrice = function(){
         var number = $scope.product.price.cost * (1 + ($scope.product.price.margin/100));
-        number = $filter('number')(number, 2);
         return number ? $filter('currency')(number) : "0.0";
     };
 
