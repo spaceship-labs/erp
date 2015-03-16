@@ -37,6 +37,9 @@ body {
   border-top-width: 3px;
   border-color: #cfdbe2;
 }
+.readonly {
+  pointer-events: none;
+}
 /*
 ==============================================================================
 :: Errors

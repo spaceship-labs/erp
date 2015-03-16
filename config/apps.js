@@ -178,10 +178,10 @@ module.exports.apps = [
                 label : 'Temporadas',
                 label_en : 'Seasons',
                 icon : 'fa-sun-o',
-                url : '/season/',
+                url : '/seasonScheme/',
                 handle : 'temporadas',
                 showInMenu : true,
-                controller : 'season',
+                controller : 'seasonScheme',
                 action : 'index'
             },
             {

@@ -5,6 +5,7 @@ module.exports.content = {
 			label_en : 'Name',
 			type : 'text',
 			handle : 'name',
+			required : true,
 		},
 		{
 			label : 'Dirección',
@@ -19,13 +20,15 @@ module.exports.content = {
 			handle : 'location',
 			object : 'locations',
 			on_Change : 'getZones',
+			required : true,
 		},
 		{
 			label : 'Zona',
 			label_en : 'Zone',
 			type : 'select',
 			handle : 'zone',
-			object : 'zones'
+			object : 'zones',
+			required : true,
 		},
 		{
 			label : 'Teléfonos',
@@ -269,6 +272,7 @@ module.exports.content = {
 			label_en : 'Name',
 			type : 'text',
 			handle : 'title',
+			required : true,
 		},
 		{
 			label : 'Inicio',
@@ -293,6 +297,7 @@ module.exports.content = {
 			label_en : 'Name',
 			type : 'text',
 			handle : 'name',
+			required : true,
 		},	
 	],
 	tour : [
@@ -301,6 +306,7 @@ module.exports.content = {
 			label_en : 'Name',
 			type : 'text',
 			handle : 'name',
+			required : true,
 		},
 		{
 			label : 'Máximo de clientes',
@@ -561,24 +567,28 @@ module.exports.content = {
 			label 	: 'Nombre Español',
 			label_en : 'Spanish name',
 			type 	: 'text',
+			required: true,
 			handle 	: 'name'
 		},
 		{
 			label 	: 'Nombre Inglés',
 			label_en : 'English name',
 			type 	: 'text',
+			required: false,
 			handle 	: 'name_en'
 		},
 		{
 			label 	: 'URL ',
 			label_en : 'URL',
 			type 	: 'text',
+			required: false,
 			handle 	: 'url_title'
 		},
 		{
 			label 	: 'Personas por servicio',
 			label_en : 'People by service',
 			type 	: 'text',
+			required: false,
 			handle 	: 'max_pax'
 		},
 		{
@@ -599,7 +609,8 @@ module.exports.content = {
 			label 	: 'Nombre',
 			label_en : 'Name',
 			type 	: 'text',
-			handle 	: 'name'
+			handle 	: 'name',
+			required : true,
 		},{
 			label 	: 'Nombre Inglés',
 			label_en : 'English name',
@@ -612,12 +623,14 @@ module.exports.content = {
 			handle 	: 'location',
 			object 	: 'locations',
 			on_Change : 'getZones',
+			required : true,
 		},{
 			label 	: 'Zona',
 			label_en : 'Zone',
 			type 	: 'select',
 			handle 	: 'zone',
-			object 	: 'zones'
+			object 	: 'zones',
+			required : true,
 		},{
 			label 	: 'Texto del Voucher Español',
 			label_en : 'Spanish Voucher text',
@@ -678,12 +691,14 @@ module.exports.content = {
 			label_en : 'Name',
 			handle : 'name',
 			type : 'text',
+			required : true,
 		},
 		{
 			label : 'Direccion',
 			label_en : 'Address',
 			handle : 'address',
 			type : 'text',
+			required : true,
 		},
 		{
 			label : 'Código Postal',
@@ -697,6 +712,7 @@ module.exports.content = {
 			type : 'select',
 			handle : 'base_currency',
 			object : 'currencies',
+			required : true,
 		},
 		{
 			label : 'Aplicaciones',
@@ -777,7 +793,8 @@ module.exports.content = {
             label : 'RFC',
             label_en : 'RFC',
             handle : 'rfc',
-            type : 'text'
+            type : 'text',
+            required : true
         },
         {
             label : 'Teléfono',
@@ -897,6 +914,7 @@ module.exports.content = {
     		label : 'Nombre Español',
     		label_en : 'Spanish name',
     		handle : 'name',
+    		required: true,
     		type : 'text'
     	},
     	{

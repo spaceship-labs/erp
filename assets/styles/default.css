@@ -1,3 +1,33 @@
 body{min-width: 290px}
 strong{font-weight: bold;}
 .row .row{max-width: 100%;margin: 0}
+/*
+==============================================================================
+:: Errors
+============================================================================== */
+.has-error {
+  color: #a94442 !important;
+  background-color: #ffebe8 !important;
+  border: 1px solid #EED3D7 !important;
+}
+input.parsley-success, textarea.parsley-success {
+  color: #468847 !important;
+  background-color: #DFF0D8 !important;
+  border: 1px solid #D6E9C6 !important;
+}
+.parsley-errors-list {
+  display: none;
+  visibility: hidden;
+}
+/*
+==============================================================================
+:: Menu
+============================================================================== */
+li.selected {
+  background-color: #2c2c2c;
+  border-color: #232323;
+  color: white;
+}
+li.selected a {
+  color: white;
+}

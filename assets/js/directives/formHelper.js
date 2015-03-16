@@ -15,7 +15,7 @@
         $scope.getSaveStatusClass = function(){
             if ($scope.saveClass == 'fa-upload')
                 return;
-            if ($scope.form.$dirty)
+            if ($scope.form.$dirty && !$scope.form.$invalid)
                 $scope.saveClass = 'fa-save';
             else
                 $scope.saveClass = 'fa-check';

@@ -22,8 +22,16 @@ module.exports.renderMenu = function(req){
     var label = req.getLocale()=='es'?'label':'label_en';
     _.each(sails.config.apps,function(app){
         if (_.contains(selected_company.apps,app.name) && req.user.hasAppPermission(selected_company.id,app)) {
-            menu += "<li class='dropdown'><a href=''><span class='fa "+app.icon+"'></span>"+app[label]+"</a><ul>";
+            var contains = false;
             _.each(app.actions,function(view){
+              contains = view.url.toLowerCase().indexOf(req.options.controller.toLowerCase()) > -1 ? true : false;
+              if (contains) return false;
+            });
+            active_class = contains ? 'selected' : '';
+            expand_menu = contains ? 'display:block' : '';
+            menu += "<li class='dropdown " + active_class + "'><a href=''><span class='fa "+app.icon+"'></span>"+app[label]+"</a><ul style="+expand_menu+">";
+            _.each(app.actions,function(view){
+
                 if (req.user.hasPermission(selected_company.id,view.handle) && view.showInMenu)
                     menu += "<li><a href='"+view.url+"'><span class='fa "+view.icon+"'></span> "+view[label]+"</a></li>";
             });

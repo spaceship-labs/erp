@@ -81,7 +81,7 @@ module.exports = {
                             controller : 'product.js'
 						},
                         breadcrumb : [
-                            {label : 'Productos', url : '/products/'},
+                            {label : 'Productos', url : '/product/'},
                             {label : product.name}
                         ]
 					},req);			

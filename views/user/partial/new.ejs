@@ -6,9 +6,9 @@
 
     <form name="user_form" class="form stdform stdform2" ng-submit="createUser()">
         <p>
-            <label><%= __('user-nombre')%> </label>
+            <label><%= __('user-nombre')%> *</label>
 	        <span class="field">
-	            <input type="text" ng-model="user.name" class="form-control" ng-required="true" name="uname">
+	            <input type="text" ng-model="user.name" class="form-control" ng-required="true" name="uname" ng-class="{ 'has-error' : user_form.uname.$invalid && !user_form.uname.$pristine }">
 	        </span>
         </p>
         <p>
@@ -18,19 +18,21 @@
 	        </span>
         </p>
         <p>
-            <label><%= __('user-mail')%></label>
+               <input type="text" style="display:none">
+                <input type="password" style="display:none">
+            <label><%= __('user-mail')%> *</label>
 	        <span class="field">
-	            <input type="email" ng-model="user.email" class="form-control ng-email" ng-required="true" name="uemail">
+	            <input type="email" ng-model="user.email" class="form-control ng-email" ng-required="true" name="uemail" ng-class="{ 'has-error' : user_form.uemail.$invalid && !user_form.uemail.$pristine }">
 	        </span>
         </p>
         <p>
-            <label><%= __('user-pass')%></label>
+            <label><%= __('user-pass')%> *</label>
 	        <span class="field">
-	            <input type="password" ng-model="user.password" class="form-control ng-password" ng-required="true" name="upassword">
+	            <input type="password" ng-model="user.password" class="form-control ng-password" ng-required="true" name="upassword" ng-class="{ 'has-error' : user_form.upassword.$invalid && !user_form.upassword.$pristine }">
 	        </span>
         </p>
         <p class="stdformbutton">
-            <button type="submit" class="btn btn-primary ng-binding"><%= __('user-agregar')%></button>
+            <button type="submit" class="btn btn-primary ng-binding" ng-disabled="user_form.$invalid"><%= __('user-agregar')%></button>
             <button class="btn" type="reset" data-dismiss="modal"><%= __('user-cancelar')%></button>
         </p>
     </form>

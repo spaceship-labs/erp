@@ -14,7 +14,11 @@ module.exports = {
 		default_company:{
 			model:'company'
 		}
-		,email:'string'
+        ,email : {
+            type : 'string',
+            unique: true,
+            required: true
+        }
 		,password:'string'
 		,name:'string'
 		,last_name:'string'

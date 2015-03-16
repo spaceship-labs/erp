@@ -34,7 +34,7 @@
               <span class="field"><textarea name="description" class="form-control"></textarea></span>
             </p>
             <p>
-              <label for="address">Dirección 1</label>
+              <label for="address">Dirección</label>
               <span class="field"><input type="text" name="address" class="form-control"></span>
             </p>
             <p>
@@ -69,9 +69,9 @@
             <p>
               <label class="select-label" for="apps">Aplicaciones</label>
               <span class="field">
-                <select name="apps" multiple="multiple" class="chzn-select required" data-placeholder="Agregar Aplicaciones...">
+                <select name="apps" multiple="multiple" class="chzn-select required readonly" data-placeholder="Agregar Aplicaciones...">
                   <%for(var handle in apps){ %>
-                    <option value="<%=apps[handle].name%>"><%=apps[handle].label%></option>
+                    <option value="<%=apps[handle].name%>" selected><%=apps[handle].label%></option>
                   <% } %>
                 </select> 
               </span>

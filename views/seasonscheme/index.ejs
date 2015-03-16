@@ -1,11 +1,11 @@
 <script type='text/javascript'>
     window.schemes = <%- JSON.stringify(schemes) %>;
 </script>
-<div ng-controller='seasonsCTL' >
+<div ng-controller='seasonshemeCTL' >
 	<p><button class="btn btn-primary" data-toggle="modal" data-target="#myModal"><%= __('season-nuevo-esq')%></button></p>
 	<br/>	
 
-	<div table-helper objects='schemes' columns='content.seasonScheme' route='season'></div>
+	<div table-helper objects='schemes' columns='content.seasonScheme' route='seasonScheme'></div>
 	<div class="modal fade" id="myModal">
 		<div class="modal-dialog">
 			<div class="modal-content">

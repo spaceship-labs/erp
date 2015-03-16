@@ -19,6 +19,8 @@ module.exports = {
 			model:'cupon',
 			via:'tours',
 		},
+		fee : 'decimal',
+		fee_child : 'decimal'
 	}
   	,afterCreate: function(val,cb){
 		Notifications.after(Tour,val,'create');
