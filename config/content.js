@@ -1134,7 +1134,8 @@ module.exports.content = {
     		label : 'Nombre',
     		label_en : 'Name',
     		handle : 'name',
-    		type : 'text'
+    		type : 'text',
+    		required : true,
     	},
     	{
     		label : 'Nombre Inglés',
@@ -1160,7 +1161,8 @@ module.exports.content = {
     		label : 'Nombre',
     		label_en : 'Name',
     		handle : 'name',
-    		type : 'text'
+    		type : 'text',
+    		required : true,
     	},
     	{
     		label : 'Nombre Inglés',

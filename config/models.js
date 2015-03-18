@@ -20,10 +20,16 @@ module.exports.models = {
       obj.updateAvatar(req,opts,cb);
     });
   },
+  destroyAvatar : function(req,opts,cb){
+    this.findOne({id:opts.id}).exec(function(e,obj){
+      if(e) return cb && cb(e,obj);
+      obj.destroyAvatar(req,opts,cb);
+    });
+  },
   attributes : {
-  	updateAvatar : function(req,opts,cb){
+    updateAvatar : function(req,opts,cb){
       var async = require('async');
-  		object = this;
+      object = this;
       opts.file = object.icon;
       async.waterfall([
         function(callback){
@@ -45,7 +51,12 @@ module.exports.models = {
         if(e) console.log(e);
         object.save(cb);
       });
-  	},
+    },
+    destroyAvatar : function(req,opts,cb){
+      object = this;
+      object.icon = null;
+      object.save(cb);
+    },
   	addFiles : function(req,opts,cb){
   		var async = require('async');
       object = this;
