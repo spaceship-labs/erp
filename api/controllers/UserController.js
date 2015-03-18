@@ -75,7 +75,7 @@ module.exports = {
 	, edit: function(req,res){
 		var id = req.params.id;
 		if(id){
-			User.findOne(id).populate('accessList').exec(function(err,user){
+			User.findOne(id).populate('accessList').populate('companies').exec(function(err,user){
                 UserRole.find().exec(function(err,roles) {
                     if(err) return null;
                     user.avatar2 = user.icon ? '/uploads/users/177x171'+user.icon : 'http://placehold.it/177x171';
@@ -153,6 +153,26 @@ module.exports = {
             res.forbidden();
         }
     }
+    , updateCompany : function(req,res){
+    	var params = req.params.all();
+    	//console.log('params');console.log(params);
+    	if(params.id){
+			User.findOne(params.id).populate('companies').exec(function(err,user){
+				if(err) return null;
+				var isCompany = _.find(user.companies,function(c){ return c.id == params.default_company });
+				//console.log('Companies');console.log(user.companies);
+				//console.log('isCompany');console.log(isCompany);
+				if(isCompany){
+					var form = {default_company : isCompany.id};
+					User.update({ id : params.id},form).exec(function(err,user){
+		               if (err) res.json({ text : err.message });
+		               delete user[0].password;
+		               res.json(formatUser(user[0]));
+		            });
+				}else{ res.json({ text : "No se encontró disponible la compañia seleccionada" }); }
+            });
+		}
+    }
 	, updateIcon: function(req,res){
     	form = req.params.all();
 		User.updateAvatar(req,{
@@ -193,6 +213,7 @@ module.exports = {
         var user_id = req.param('user');
         var permissions = req.param('permissions');
         var isAdmin = req.param('admin') || false;
+        var isRep = req.param('rep') || false;
         var role = req.param('role');
 
         User.findOne({id : user_id}).populateAll().exec(function(err,user){
@@ -200,7 +221,7 @@ module.exports = {
                 console.log(err);
                 res.serverError();
             }
-            user.createAccessList(company,permissions,isAdmin,role,function(){
+            user.createAccessList(company,permissions,isAdmin,isRep,role,function(){
                 res.json({success:true,text:'permisos actualizados'});
             });
         });

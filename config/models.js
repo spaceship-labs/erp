@@ -121,15 +121,14 @@ function getOnProgress(req){
     uid = req.param('uid'),
     index = req.param('index')
     indice = 1;
-    console.log( '---- uid: ' + uid + ' ---- index: ' + index );
+    //console.log( '---- uid: ' + uid + ' ---- index: ' + index );
     return{
         fileProgress:function(progress){
             var written = progress.written,
             total = progress.stream.byteCount*2,//time crops.
             porcent = (written*100/total).toFixed(2); 
-            console.log('porcent: ' + porcent + ' salt: ' + salt);
-            console.log('written');
-            console.log(written);
+            //console.log('porcent: ' + porcent + ' salt: ' + salt);
+            //console.log('written');console.log(written);
             if(porcent >= salt){
                 salt += salt;
                 sails.io.sockets.emit(uid, {porcent: porcent,index:index});

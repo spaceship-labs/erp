@@ -41,26 +41,34 @@
                     if( typeof dt != 'undefined' ){
                         //console.log(dt);
                         if( dt.type == 'model' ){
-                            requests.push({
-                                url : '/'+dt.model+'/find/'+change.before
-                                ,action : 'before'
-                                ,n : n
-                                ,m : m
-                            });
-                            requests.push({
-                                url : '/'+dt.model+'/find/'+change.after
-                                ,action : 'after'
-                                ,n : n
-                                ,m : m
-                            });
+                            if( change.before ){
+                                requests.push({
+                                    url : '/'+dt.model+'/find/'+change.before
+                                    ,action : 'before'
+                                    ,n : n
+                                    ,m : m
+                                });
+                            }
+                            if( change.after ){
+                                requests.push({
+                                    url : '/'+dt.model+'/find/'+change.after
+                                    ,action : 'after'
+                                    ,n : n
+                                    ,m : m
+                                });
+                            }
                         }else if( dt.type == 'collection' ){
                             var aux = '';
-                            for(var x = 0;x<change.after.length;x++)
-                                aux += (x==0?'':', ') + (change.after[x].name||change.after[x].name_es||'');
+                            if (change.after){
+                                for(var x = 0;x<change.after.length;x++)
+                                    aux += (x==0?'':', ') + (change.after[x].name||change.after[x].name_es||'');
+                            }
                             change.after = aux;
                             var aux = '';
-                            for(var x = 0;x<change.before.length;x++)
-                                aux += (x==0?'':', ') + (change.before[x].name||change.before[x].name_es||'');
+                            if (change.before){
+                                for(var x = 0;x<change.before.length;x++)
+                                    aux += (x==0?'':', ') + (change.before[x].name||change.before[x].name_es||'');
+                            }
                             change.before = aux;
                         }
                     }

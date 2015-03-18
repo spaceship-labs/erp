@@ -42,17 +42,22 @@ module.exports = {
         ,isAdmin : {
             type : 'boolean',
             defaultsTo : false
+            /*
+                Este campo no es el mismo que el del access list, 
+                este es el que crea el sistema y tiene permiso para TODO
+            */
         }
         ,lastLogin : 'datetime'
 		,setPassword : function(val,cb){
 			this.password = bcrypt.hashSync(val,bcrypt.genSaltSync(10));
 			this.save(cb);
 		}
-		,createAccessList : function(company,permissions,isAdmin,role,cb) {
+		,createAccessList : function(company,permissions,isAdmin,isRep,role,cb) {
             var user = this;
             var acl = user.hasCompanyAccess(company);
             if (user.accessList && acl) {
                 acl.isAdmin = isAdmin;
+                acl.isRep = isRep;
                 acl.permissions = permissions;
                 acl.role = role;
                 user.save(cb);
@@ -62,6 +67,7 @@ module.exports = {
                     user : user.id,
                     permissions : permissions,
                     isAdmin : isAdmin,
+                    isRep : isRep,
                     role : role
                 };
                 UserACL.create(newAcl).exec(function(err,userACL){

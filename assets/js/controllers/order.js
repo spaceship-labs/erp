@@ -68,7 +68,7 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
         //crear una orden
         if( ! angular.equals( {} , $scope.client ) ){
             if( ! angular.equals( {} , $scope.transfer ) || ! angular.equals( {} , $scope.reservations.tours ) || ! angular.equals( {} , $scope.reservations.hotels ) ){
-                var params = { client:$scope.client };
+                var params = { client : $scope.client , reservation_method : 'intern' };
                 $http.post('/order/createOrder',params,{}).success(function(order) {
                     //console.log('order');console.log(order);
                     if(order){
@@ -218,9 +218,9 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
     };
     $scope.validateDates = function(){
         $scope.customMessages = {
-            Tta : { show : false , type : 'alert', message : $rootScope.translated.c_ordermessg1 },
-            Ttd : { show : false , type : 'alert' , message : $rootScope.translated.c_ordermessg2 },
-            TH  : { show : false , type : 'alert' , message : $rootScope.translated.c_ordermessg3 }
+            Tta : { show : false , type : 'alert', message : $rootScope.translates.c_ordermessg1 },
+            Ttd : { show : false , type : 'alert' , message : $rootScope.translates.c_ordermessg2 },
+            TH  : { show : false , type : 'alert' , message : $rootScope.translates.c_ordermessg3 }
         };
         if( ! angular.equals( {} , $scope.transfer ) ){
             validateTt();
@@ -396,10 +396,10 @@ app.controller('orderEditCTL',function($scope,$http,$window){
         }
     };*/
     var reservationTransfer = function(){
-        var params = $scope.transfer;
+        var params = {item : $scope.transfer};
         if( $scope.order ){
-            params.transfer.transfer = $scope.transfer.transfer.transfer.id;
-            $http.get('/reservation/update',params,{}).success(function(result) {
+            params.item.transfer.transfer = $scope.transfer.transfer.transfer.id;
+            $http.post('/reservation/update/',params).success(function(result) {
                 console.log('Update transfer');
                 console.log(result);
             });

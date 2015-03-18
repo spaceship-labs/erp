@@ -1,7 +1,7 @@
 <script type='text/javascript'>
 	window.orders = <%- JSON.stringify(orders) %>;
 	window.content = <%- JSON.stringify(_content) %>;
-    console.log(user);
+    //console.log(user);
 </script>
 <div ng-controller='orderCTL' >
 	<div class='row'>
@@ -28,7 +28,9 @@
                 <th> <%= __('order-fecha')%> </th>
                 <th> <%= __('order-total')%> </th>
                 <th> <%= __('order-editar')%> </th>
-                <th> <%= __('order-borrar')%> </th>
+                <% if (req.user.hasPermission(req.res.locals.selected_company.id,'orders_d')) {%>
+                    <th> <%= __('order-borrar')%> </th>
+                <% } %>
             </tr>
             <tr ng-repeat="order in orders">
                 <td data-title="Id" ng-bind="order.id"></td>
@@ -53,8 +55,12 @@
                 <td>{{order.transfer.payment_method || "---" }}</td>
                 <td data-title="Fecha">{{formatDate(order.createdAt)}}</td>
                 <td data-title="Total"><span  ng-bind="order.transfer.fee"></span></td>
-                <td data-title="Accion"><a href="/order/edit/{{order.id}}"><span class="table-icon fa fa-edit"></span></a></td>
-                <td data-title="Accion"><a href="/order/edit/{{order.id}}"><span class="table-icon fa fa-trash-o"></span></a></td>
+                <% if (req.user.hasPermission(req.res.locals.selected_company.id,'orders_e')) {%>
+                    <td data-title="Accion"><a href="/order/edit/{{order.id}}"><span class="table-icon fa fa-edit"></span></a></td>
+                <% } %>
+                <% if (req.user.hasPermission(req.res.locals.selected_company.id,'orders_d')) {%>
+                    <td data-title="Accion"><a href="/order/edit/{{order.id}}"><span class="table-icon fa fa-trash-o"></span></a></td>
+                <% } %>
             </tr>
         </table>
     </div>

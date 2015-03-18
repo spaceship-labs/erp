@@ -1,4 +1,6 @@
 var notification = function(type,collection,val){
+	console.log('req');
+	console.log(val);
     if(val && val.req){//session info
         delete val['createdAt'];
         var obj = {
@@ -12,6 +14,9 @@ var notification = function(type,collection,val){
             ,val:val
             ,modifications:[]
         };
+        console.log('notice');
+        console.log(type);
+        console.log(obj);
         if(type == 'update'){
             Notice.findOne({modifyId:val.id}).sort('createdAt desc').exec(function(err,notice){
                 if(err) throw err;
@@ -30,7 +35,6 @@ var notification = function(type,collection,val){
                             add = true;
                         }
                     }
-                        
                     if(add){
                         obj.modifications.unshift(changes);
                     }
@@ -48,7 +52,10 @@ var notification = function(type,collection,val){
 
 module.exports = {
 	after: function(Model,val,action){
+		console.log('after: ' + Model.tableName);
+		console.log('after2: ' + val.id);
 		if(val.req && val.req.userId){
+			console.log('after enter');
 			notification(action,Model,val);
 			val.req = {};
 			/*Model.update({id:val.id},val).exec(function(err,model){
@@ -57,7 +64,9 @@ module.exports = {
 		}
 	}
 	,before:function(val,action){
+		//console.log(val);
 		if(val.req && val.req.user){
+			console.log('before: ' + val.id);
 			var req = {
 				userId:val.req.user.id
 				,companyId:val.req.session.select_company || val.req.user.select_company
@@ -65,6 +74,8 @@ module.exports = {
 			}
 			if(val.name)
 				req.modelObjName = val.name
+			else
+				req.modelObjName = "test";
 			val.req = req;
 		}
 	}
@@ -121,6 +132,7 @@ module.exports.noticeSuscribe = function(req,find,cb){
 };
 
 function saveAndPublish(obj){ 
+	console.log('saveAndPublish');
     Notice.create(obj).exec(function(err,notice){
         if(err) throw err;
         //sails.io.sockets.in('notices').emit('update',{data:true});

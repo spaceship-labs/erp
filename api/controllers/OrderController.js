@@ -4,14 +4,11 @@
  * @description :: Server-side logic for managing orders
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
-
+var async = require('async');
 module.exports = {
   index: function (req, res) {
-    var params = {};
-    console.log(req.user.isAdmin);
-    if( ! req.user.isAdmin )
-      params = { company : req.user.default_company };
-    Order.find(params).sort('createdAt desc').populate('client').populate('reservations').populate('user').populate('company').exec(function(e,orders){
+    //Order.find(params).sort('createdAt desc').populate('client').populate('reservations').populate('user').populate('company').exec(function(e,orders){
+    Order.find().where(Common.getCompaniesForSearch(req.user)).sort('createdAt desc').populate('client').populate('reservations').populate('user').populate('company').exec(function(e,orders){
   		Common.view(res.view,{
   			orders : formatOrders(orders),
   			page:{
@@ -26,8 +23,8 @@ module.exports = {
   	});
   },
   neworder : function(req,res){
-  	Client_.find().sort('name').exec(function(e,clients_){ Hotel.find().sort('name').populate('location').populate('rooms').exec(function(e,hotels){
-  		Tour.find().sort('name').exec(function(e,allTours){
+    var select_company = req.session.select_company || req.user.select_company;
+  	Client_.find({company:select_company}).sort('name').exec(function(e,clients_){ Hotel.find().sort('name').populate('location').populate('rooms').exec(function(e,hotels){ Tour.find().sort('name').exec(function(e,allTours){
   			Common.view(res.view,{
   				clients_ : clients_ ,
   				hotels:hotels ,
@@ -45,6 +42,13 @@ module.exports = {
   		});
     }); });
   },
+  getorder : function(req,res){
+    console.log(req.user);
+    Order.find().where(Common.getCompaniesForSearch(req.user)).sort('createdAt desc').populate('reservations').populate('user').exec(function(e,orders){
+      if(err) return res.json(false);
+      res.json(orders);
+    });
+  },
 	createClient : function(req,res){
       var form = Common.formValidate(req.params.all(),['name','address','phone','rfc']);
       if(form){
@@ -60,6 +64,7 @@ module.exports = {
     var params = req.params.all();
     params.user = req.user.id;
     params.company = req.session.select_company || req.user.select_company;
+    params.req = req;
     Order.create(params).exec(function(err,order){
         if(err) return res.json(false);
         return res.json(order);
@@ -87,6 +92,7 @@ module.exports = {
     var params = req.params.all();
     async.mapSeries( params.items, function(item,cb) {
       item.order = params.order;
+      //item.req = req;
       Reservation.create(item).exec(function(err,r){
         item.id = r.id; cb(err,item);
       });
@@ -96,7 +102,8 @@ module.exports = {
   },
   updateReservation : function(req,res){
     var params = req.params.all();
-    async.mapSeries( params.items, function(item,cb) {
+    items = params.items || [];
+    async.mapSeries( items, function(item,cb) {
       Reservation.update({id:item.id},item,function(err,r){
         cb(err,r);
       });
