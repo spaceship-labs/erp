@@ -153,17 +153,28 @@ module.exports = {
             res.forbidden();
         }
     }
-	, updateIcon: function(req,res){
-    	form = req.params.all();
-		User.updateAvatar(req,{
-			dir : 'users',
-			profile: 'avatar',
-			id : form.id,
-		},function(e,user){
-			if(e) console.log(e);
-			res.json(formatUser(user));
-		});
-	}
+  , updateIcon: function(req,res){
+      form = req.params.all();
+    User.updateAvatar(req,{
+      dir : 'users',
+      profile: 'avatar',
+      id : form.id,
+    },function(e,user){
+      if(e) console.log(e);
+      res.json(formatUser(user));
+    });
+  }
+  , destroyIcon: function(req,res){
+      form = req.params.all();
+    User.destroyAvatar(req,{
+      dir : 'users',
+      profile: 'avatar',
+      id : form.id,
+    },function(e,user){
+      if(e) console.log(e);
+      return res.redirect("user/edit/" + user.id);
+    });
+  }
     ,updatePassword : function(req,res){
         var userId = req.param('userId');
         var new_password = req.param('new_password');
