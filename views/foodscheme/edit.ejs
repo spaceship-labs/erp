@@ -1,0 +1,18 @@
+<script type='text/javascript'>
+  window.scheme = <%- JSON.stringify(scheme) %>;
+  window.content = <%- JSON.stringify(_content) %>;
+</script>
+<div ng-controller='hschemeviewEditCTL'>
+    <div class='row-fluid'>
+        <div class="span12">        
+            <div form-helper 
+                fields='content.foodschemes' 
+                object='scheme' 
+                action='/foodscheme/update' 
+                form-title='<%= __('machine-info') %>'
+                >
+            </div> 
+        </div>
+    </div>
+    <br/>
+</div>

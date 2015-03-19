@@ -60,5 +60,9 @@ module.exports = {
         }
 
 	}
+    ,labels : {
+        es : 'Clientes'
+        ,en : 'Clients'
+    }
 
 };

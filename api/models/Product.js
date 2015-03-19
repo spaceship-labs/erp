@@ -41,7 +41,10 @@ module.exports = {
       type : 'boolean'
     }
   }
-
+    ,labels : {
+        es : 'Productos'
+        ,en : 'Products'
+    }
 	,afterCreate: function(val,cb){
 		Notifications.after(Product,val,'create');
 		cb();

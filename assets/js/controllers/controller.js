@@ -30,7 +30,7 @@ app.controller('switchLangCTL',function($scope, $window){
         {label:'English',value:'en'},
     ];
     $scope.setDefaults = function(){
-        console.log(window.currentLang);
+        //console.log(window.currentLang);
         if(window.currentLang == 'en'){
             $scope.currentLang = $scope.langs[1];
         }else{

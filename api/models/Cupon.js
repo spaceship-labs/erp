@@ -39,9 +39,12 @@ module.exports = {
             via:'cupon'
         }
 
-    },
-
-    beforeCreate: function(val,cb){
+    }
+    ,labels : {
+        es : 'Cupones'
+        ,en : 'Cupons'
+    }
+    ,beforeCreate: function(val,cb){
         if(!val.simple_discount && val.round_discount)
             val.simple_discount = val.round_discount;
         

@@ -15,10 +15,6 @@ module.exports.apps = [
                 showInMenu : true,
                 controller : 'company'
 			},
-			/*'/admin/currencies/' : {
-				label : 'Mondedas',
-				icon : 'fa-money',
-			},*/
 			{
                 label : 'Usuarios',
 				label_en : 'Users',
@@ -279,6 +275,9 @@ module.exports.apps = [
                 icon : 'fa-ticket',
                 url : '/cupon/',
                 showInMenu : true
+                ,handle : 'cupon'
+                ,controller : 'cupon'
+                ,action : 'index'
             },
             {
                 label : 'Instancias cupones',
@@ -286,11 +285,10 @@ module.exports.apps = [
                 icon : 'fa-ticket',
                 url : '/cuponSingle/',
                 showInMenu : true
-            },
-            /*'/transfer/' : {
-                label : 'Translados',
-                icon : 'fa-cab'
-            },*/
+                ,handle : 'cuponSingle'
+                ,controller : 'cuponSingle'
+                ,action : 'index'
+            }
         ]
     }
 ];

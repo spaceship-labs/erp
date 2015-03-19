@@ -12,7 +12,7 @@ module.exports = {
 			Location.find().sort('name').exec(function(e,locations){
 				if(e) throw(e);
 				HotelCategory.find().sort('name').exec(function(e,categories){
-					if(e) throw(e);					
+					if(e) throw(e);
 					FoodScheme.find().sort('name').exec(function(e,foodSchemes){
 						hotels = formatHotels(hotels);
 						Common.view(res.view,{

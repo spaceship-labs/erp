@@ -1,5 +1,7 @@
 <div id="dashboard-left" class="span6">
-    <h4 class="widgettitle"><span class="fa fa-bullhorn"></span>{{translates.d_notifications}}</h4>
+    <h4 class="widgettitle">
+        <span class="fa fa-bullhorn"></span>{{translates.d_notifications}}
+    </h4>
     <div class="widgetcontent nopadding">
         <ul class="commentlist">
             <li ng-repeat="notice in noticesN">
@@ -9,13 +11,14 @@
                     <h4></h4>
                     <!--CLASE CREADA PARA ACOMODAR TEXTO-->
                     <div class="comment-updates">
-                        <h5><a href="/{{notice.app}}">{{notice.userId.name}}</a></h5>
+                        <h5><a href="/{{notice.app}}">{{notice.model_label.es || notice.model }}</a></h5>
                         <p>{{notice.userId.name}} {{notice.userId.last_name}}
-                            <strong>{{noticeTranslate[notice.operation]}}</strong>  {{notice.model}}:
+                            <strong>{{noticeTranslate[notice.operation]}}</strong> :
                             <a href="/{{notice.app}}/edit/{{notice.modifyId}}">
                                 {{notice.modelObjName}} 
                             </a>
                         </p>
+                        <p><a href="/{{notice.app}}/edit/{{notice.modifyId}}"><span ng-bind='getReservationString(notice)'></span></a></p>
                         <span class="muted">{{ fromNow(notice.updatedAt) }}</span>
                     </div>
                     <button class="btn btn-default toogle" ng-click="isCollapsed[$index] = !isCollapsed[$index]">{{translates.d_seemore}}</button>

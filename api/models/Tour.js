@@ -22,6 +22,10 @@ module.exports = {
 		fee : 'decimal',
 		fee_child : 'decimal'
 	}
+	,labels : {
+        es : 'Tours'
+        ,en : 'Tours'
+    }
   	,afterCreate: function(val,cb){
 		Notifications.after(Tour,val,'create');
 		cb()

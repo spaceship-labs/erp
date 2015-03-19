@@ -41,29 +41,44 @@
                     if( typeof dt != 'undefined' ){
                         //console.log(dt);
                         if( dt.type == 'model' ){
-                            requests.push({
-                                url : '/'+dt.model+'/find/'+change.before
-                                ,action : 'before'
-                                ,n : n
-                                ,m : m
-                            });
-                            requests.push({
-                                url : '/'+dt.model+'/find/'+change.after
-                                ,action : 'after'
-                                ,n : n
-                                ,m : m
-                            });
+                            if( change.before ){
+                                requests.push({
+                                    url : '/'+dt.model+'/find/'+change.before
+                                    ,action : 'before'
+                                    ,n : n
+                                    ,m : m
+                                });
+                            }
+                            if( change.after ){
+                                requests.push({
+                                    url : '/'+dt.model+'/find/'+change.after
+                                    ,action : 'after'
+                                    ,n : n
+                                    ,m : m
+                                });
+                            }
                         }else if( dt.type == 'collection' ){
                             var aux = '';
-                            for(var x = 0;x<change.after.length;x++)
-                                aux += (x==0?'':', ') + (change.after[x].name||change.after[x].name_es||'');
+                            if (change.after){
+                                for(var x = 0;x<change.after.length;x++)
+                                    aux += (x==0?'':', ') + (change.after[x].name||change.after[x].name_es||'');
+                            }
                             change.after = aux;
                             var aux = '';
-                            for(var x = 0;x<change.before.length;x++)
-                                aux += (x==0?'':', ') + (change.before[x].name||change.before[x].name_es||'');
+                            if (change.before){
+                                for(var x = 0;x<change.before.length;x++)
+                                    aux += (x==0?'':', ') + (change.before[x].name||change.before[x].name_es||'');
+                            }
                             change.before = aux;
                         }
                     }
+                }
+                if( object.model == 'order' ){
+                    requests.push({
+                        url : '/'+object.model+'/find/'+object.modifyId
+                        ,action : 'reservation'
+                        ,n : n
+                    });
                 }
             }
             $q.all(requests.map(function(request) {
@@ -71,12 +86,28 @@
             })).then(function(results) {
                 //console.log('results');console.log(results);
                 for(var i = 0;i<requests.length;i++){
-                    $scope.noticesN[requests[i].n].modifications[0][requests[i].m][requests[i].action] = results[i].data.name || results[i].data.name_es;
+                    if( requests[i].action == 'reservation' ){
+                        $scope.noticesN[requests[i].n].rdata = results[i].data;
+                        //console.log(results[i].data);
+                    }else{
+                        $scope.noticesN[requests[i].n].modifications[0][requests[i].m][requests[i].action] = results[i].data.name || results[i].data.name_es;
+                    }
                 }
                 return results;
             });
         };
         $scope.formatFields();
+        $scope.getReservationString = function(notice){
+            var results = '';
+            if( notice.rdata ){
+                var rss = _.groupBy(notice.rdata.reservations,function(res){ return res.reservation_type });
+                for(var x in rss){
+                    results += ( results==''?'':', ' ) + x;
+                }
+                results = results!=''? "Reservaciones de " + results:'';
+            }
+            return results;
+        }
     };
     controller.$inject = ['$scope','$http','$q','$rootScope'];
     var directive = function () {

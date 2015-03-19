@@ -5,34 +5,46 @@
     window.roles = <%- JSON.stringify(roles) %>;
     //console.log(user);
 </script>
-
 <div ng-controller='userEditCTL' class="editar-usuario ng-cloak">
-    <div class="span4 profile-left profileEdit">
-        <div class="alert alert-block unseen">
-            <button data-dismiss="alert" class="close" type="button">×</button>
-            <h4><%= __('user-mensaje')%></h4>
-                <p style="margin: 8px 0"><%= __('user-actualizado')%></p>
+    <div class='row-fluid'>
+        <div class="span4 profile-left profileEdit">
+            <div class="alert alert-block unseen">
+                <button data-dismiss="alert" class="close" type="button">×</button>
+                <h4><%= __('user-mensaje')%></h4>
+                    <p style="margin: 8px 0"><%= __('user-actualizado')%></p>
+                </div>
+                <div profile-image object='user' update-method='/user/updateIcon' delete-method='/user/destroyIcon' image-attr='icon' dir='users'></div>
+        </div>
+        <div class="span8">
+            <div form-helper
+                 fields='content.user'
+                 object='user'
+                 action='/user/updateInfo'
+                 form-title='<%= __("gral_basicInfo") %>'
+                 hidden-fields='hiddenFields'
+                 >
             </div>
-            <div profile-image object='user' update-method='/user/updateIcon' delete-method='/user/destroyIcon' image-attr='icon' dir='users'></div>
-            <% if(!user.isAdmin || req.user.isAdmin) {%>
-                <%- partial('partial/permissions') %>
-            <% } %>
-    </div>
-    <div class="span6">
-        <div form-helper
-             fields='content.user'
-             object='user'
-             action='/user/updateInfo'
-             form-title='<%= __("gral_basicInfo") %>'
-             hidden-fields='hiddenFields'
-             >
         </div>
     </div>
-    <% if (req.user.isAdmin || req.user.id == user.id) {%>
-        <div class="span4">
-            <%- partial('partial/change-password') %>
-        </div>
-    <% } %>
+    <h4 class='widgettitle'>Seguridad</h4>
+    <br>
+    <div class='row-fluid'>
+        <% if(!user.isAdmin || req.user.isAdmin) {%>
+            <div class="span4">
+                <div class='row-fluid'>
+                    <div class=""> <%- partial('partial/permissions') %> </div>
+                    <div class="">
+                        <%- partial('partial/defaultcompany') %>
+                    </div>
+                </div>
+            </div>
+        <% } %>
+        <% if (req.user.isAdmin || req.user.id == user.id) {%>
+            <div class="span8">
+                <%- partial('partial/change-password') %>
+            </div>
+        <% } %>
+    </div>
 </div>
 
 <%- partial('partial/roles') %>

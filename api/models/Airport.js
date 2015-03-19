@@ -15,4 +15,8 @@ module.exports = {
   		model : 'zone'
   	}
   }
+  ,labels : {
+    es : 'Aeropuertos'
+    ,en : 'Airports'
+  }
 };

@@ -61,6 +61,7 @@ app.controller('userEditCTL',function($scope,$http,_){
             $scope.user.acl = acl;
             $scope.user.permissions = acl.permissions;
             $scope.isAdmin = acl.isAdmin;
+            $scope.isRep = acl.isRep;
 
             emptyRole = { name : 'Ninguno',permissions : acl.permissions,id : '0' };
 
@@ -81,6 +82,7 @@ app.controller('userEditCTL',function($scope,$http,_){
             user:$scope.user.id
             ,permissions: $scope.user.role.id ? $scope.user.role.permissions:$scope.user.permissions
             ,admin:$scope.isAdmin
+            ,rep:$scope.isRep
             ,company : $scope.company.id
             ,role : $scope.user.role.id
         },{}).success(function(data){
@@ -98,6 +100,12 @@ app.controller('userEditCTL',function($scope,$http,_){
             ,phone:$scope.user.phone
             ,email:$scope.user.email
             ,active:$scope.user.active
+        },{}).success(showResponse);
+    };
+    $scope.updateCompany = function(){
+        $http.post('/user/updateCompany/',{
+            id:$scope.user.id
+            ,default_company : $scope.user.default_company
         },{}).success(showResponse);
     };
 

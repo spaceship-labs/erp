@@ -35,6 +35,7 @@ module.exports = {
 	   })
 
 	, index: function(req,res){
+		//console.log(req.user);
 		Common.view(res.view,{
 			page:{
 				description:req.__('sc_home_desc'),
