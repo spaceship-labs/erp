@@ -20,15 +20,19 @@ module.exports = {
 			collection : 'reservation', via : 'order'
 		}
 	}
+	,labels : {
+        es : 'Reservaciones'
+        ,en : 'Reservations'
+    }
 	,migrate : "safe"
 	,afterCreate: function(val,cb){
 		Notifications.after(Order,val,'create');
 		cb();
 	},afterUpdate: function(val,cb){
-		Notifications.after(Order,val,'update');
+		//Notifications.after(Order,val,'update');
 		cb();
 	},beforeUpdate:function(val,cb){
-		Notifications.before(val);
+		//Notifications.before(val);
 		cb();
 	},beforeCreate: function(val,cb){
 		Notifications.before(val);

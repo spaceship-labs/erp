@@ -15,6 +15,7 @@ module.exports = {
         if( params.item.id ){
             var item = params.item;
             item.req = req;
+            //console.log('------------------------------------item');console.log(item);console.log('item-.----------------------------------');
             Reservation.update({id:item.id},item,function(err,r){
                 Reservation.find({id:item.id}).exec(function(error, reservation) {
                     return res.json(reservation);

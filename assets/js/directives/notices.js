@@ -73,18 +73,41 @@
                         }
                     }
                 }
+                if( object.model == 'order' ){
+                    requests.push({
+                        url : '/'+object.model+'/find/'+object.modifyId
+                        ,action : 'reservation'
+                        ,n : n
+                    });
+                }
             }
             $q.all(requests.map(function(request) {
                 return $http.get(request.url);
             })).then(function(results) {
                 //console.log('results');console.log(results);
                 for(var i = 0;i<requests.length;i++){
-                    $scope.noticesN[requests[i].n].modifications[0][requests[i].m][requests[i].action] = results[i].data.name || results[i].data.name_es;
+                    if( requests[i].action == 'reservation' ){
+                        $scope.noticesN[requests[i].n].rdata = results[i].data;
+                        //console.log(results[i].data);
+                    }else{
+                        $scope.noticesN[requests[i].n].modifications[0][requests[i].m][requests[i].action] = results[i].data.name || results[i].data.name_es;
+                    }
                 }
                 return results;
             });
         };
         $scope.formatFields();
+        $scope.getReservationString = function(notice){
+            var results = '';
+            if( notice.rdata ){
+                var rss = _.groupBy(notice.rdata.reservations,function(res){ return res.reservation_type });
+                for(var x in rss){
+                    results += ( results==''?'':', ' ) + x;
+                }
+                results = results!=''? "Reservaciones de " + results:'';
+            }
+            return results;
+        }
     };
     controller.$inject = ['$scope','$http','$q','$rootScope'];
     var directive = function () {

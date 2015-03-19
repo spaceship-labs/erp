@@ -20,6 +20,10 @@ module.exports = {
 			via : 'package_'
 		}
 	}
+	,labels : {
+        es : 'Paquetes'
+        ,en : 'Packages'
+    }
   	,afterCreate: function(val,cb){
 		Notifications.after(PackageTour,val,'create');
 		cb()

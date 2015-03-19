@@ -16,6 +16,10 @@ module.exports = {
 
 	}
   	,migrate : "safe"
+	,labels : {
+        es : 'Temporadas'
+        ,en : 'Seasons'
+    }
   	,afterCreate: function(val,cb){
 		Notifications.after(Season,val,'create');
 		cb()

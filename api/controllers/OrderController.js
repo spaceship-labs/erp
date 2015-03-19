@@ -71,7 +71,7 @@ module.exports = {
     });
   },
   createReservation : function(req,res){
-  	var requided = ['hotel','airport','transfer','state','payment_method','pax','fee','origin','type','fee'];
+  	//var requided = ['hotel','airport','transfer','state','payment_method','pax','fee','origin','type','fee'];
   	var params = req.params.all();
   	params.hotel = params.hotel.id;
   	params.state = params.state.handle;
@@ -81,10 +81,15 @@ module.exports = {
   	params.client = params.client.id;
     params.user = req.user.id;
     params.company = req.session.select_company || req.user.select_company;
+    params.req = {};
+    params.req.user = req.user || false;
+    params.req.session = req.session || false;
+    params.req.options = req.options || false;
+    //console.log(params);
 		//var fee = calculateFee(params.fee);
     //var form = Common.formValidate(params,requided);
     Reservation.create(params).exec(function(err,reservation){
-      if(err) return res.json(false);
+      if(err) return res.json(err);
       return res.json(reservation);
     });
   },
@@ -92,7 +97,7 @@ module.exports = {
     var params = req.params.all();
     async.mapSeries( params.items, function(item,cb) {
       item.order = params.order;
-      //item.req = req;
+      item.req = req;
       Reservation.create(item).exec(function(err,r){
         item.id = r.id; cb(err,item);
       });
@@ -104,6 +109,7 @@ module.exports = {
     var params = req.params.all();
     items = params.items || [];
     async.mapSeries( items, function(item,cb) {
+      item.req = req;
       Reservation.update({id:item.id},item,function(err,r){
         cb(err,r);
       });

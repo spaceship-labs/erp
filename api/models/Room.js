@@ -19,7 +19,10 @@ module.exports = {
 
 	}
   	,migrate : "safe"
-  	
+	,labels : {
+        es : 'Cuartos'
+        ,en : 'Rooms'
+    }
   	,afterCreate: function(val,cb){
 		Notifications.after(Room,val,'create');
 		cb()

@@ -37,6 +37,10 @@ module.exports = {
 			via : 'hotels',
 		},
 	}
+	,labels : {
+        es : 'Hoteles'
+        ,en : 'Hotels'
+    }
   	,afterCreate: function(val,cb){
 		Notifications.after(Hotel,val,'create');
 		cb()

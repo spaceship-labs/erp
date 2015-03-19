@@ -16,4 +16,8 @@ module.exports = {
 			via : 'transfers',
 		},
   }
+  ,labels : {
+        es : 'Traslados'
+        ,en : 'Transfers'
+    }
 };

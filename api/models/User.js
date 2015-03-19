@@ -9,7 +9,6 @@ var bcrypt = require('bcrypt');
 var async = require('async');
 
 module.exports = {
-
 	attributes: {
 		default_company:{
 			model:'company'
@@ -127,10 +126,26 @@ module.exports = {
             return this.isAdmin;
         }
 	}
-
+    ,labels : {
+        es : 'Usuarios'
+        ,en : 'Users'
+    }
     ,toJSON: function() {
         var obj = this.toObject();
         delete obj.password;
         return obj;
+    }
+    ,afterCreate: function(val,cb){
+        Notifications.after(User,val,'create');
+        cb();
+    },afterUpdate: function(val,cb){
+        Notifications.after(User,val,'update');
+        cb();
+    },beforeUpdate:function(val,cb){
+        Notifications.before(val);
+        cb();
+    },beforeCreate: function(val,cb){
+        Notifications.before(val);
+        cb();
     }
 };

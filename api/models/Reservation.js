@@ -34,19 +34,23 @@ module.exports = {
 			model : 'transfer' }
 	}
 	,migrate : "safe"
+	,labels : {
+        es : 'Reservaciones'
+        ,en : 'Reservations'
+    }
 	,afterCreate: function(val,cb){
-		Notifications.after(Reservation,val,'create');
-		cb()
+		//Notifications.after(Reservation,val,'create');
+		cb();
 	},afterUpdate: function(val,cb){
-		console.log('está entrando aquí? after update');
+		console.log('afterUpdate');
 		Notifications.after(Reservation,val,'update');
 		cb();
 	},beforeUpdate:function(val,cb){
-		console.log('está entrando aquí? before update');
+		console.log('beforeUpdate');
 		Notifications.before(val);
 		cb();
 	},beforeCreate: function(val,cb){
-		Notifications.before(val);
+		//Notifications.before(val);cb();
 		cb();
 	}
 }

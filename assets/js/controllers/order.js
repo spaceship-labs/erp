@@ -200,6 +200,8 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
             $http({method: 'POST', url: '/order/getAvailableTransfers',params:params}).success(function (result){
                 console.log('prices');console.log(result);
                 $scope.transfers = result;
+                console.log('transfers available');
+                console.log(result);
             });
         }
     };
@@ -380,6 +382,7 @@ app.controller('orderEditCTL',function($scope,$http,$window){
             $http({method: 'POST', url: '/order/getAvailableTransfers',params:params}).success(function (result){
                 $scope.transfers = result;
                 for(var j=0;j<result.length;j++){ if( result[j].transfer.id == $scope.transfer.transfer ) $scope.transfer.transfer = result[j]; }
+                    console.log(transfers);
             });
         }
     };
@@ -398,7 +401,7 @@ app.controller('orderEditCTL',function($scope,$http,$window){
     var reservationTransfer = function(){
         var params = {item : $scope.transfer};
         if( $scope.order ){
-            params.item.transfer.transfer = $scope.transfer.transfer.transfer.id;
+            params.item.transfer = $scope.transfer.transfer.transfer.id;
             $http.post('/reservation/update/',params).success(function(result) {
                 console.log('Update transfer');
                 console.log(result);
