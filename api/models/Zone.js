@@ -13,4 +13,6 @@ module.exports = {
   		model : 'location'
   	}
   }
+  ,label_es : 'Zonas'
+	,label_en : 'Zones'
 };

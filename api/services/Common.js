@@ -157,6 +157,25 @@ module.exports.editAjax = function(req,res,update){
 	
 };
 
+module.exports.getCompaniesForSearch = function(user){
+	var params = {};
+	if( user.accessList[0] && user.accessList[0].isRep ){
+		params = { user : user.id };
+	}else if( ! user.isAdmin ){
+      //debe de regresar un arreglo de compaías a las que pertenece, no?
+      var companies = user.default_company;
+      if( user.companies.length > 0 && user.companies[0].id ){
+        companies = [];
+        for(var x in user.companies ){
+          if( user.companies[x].id )
+            companies.push( user.companies[x].id );
+        }
+      }
+      params = { company : companies };
+    }
+    return params;
+}
+
 module.exports.formValidate = function(form,validate){
     for(var i in form){
         if(validate.indexOf(i)==-1)

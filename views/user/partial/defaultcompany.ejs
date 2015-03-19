@@ -1,0 +1,14 @@
+<div class="widgetbox tags">
+    <h4 class="widgettitle">Compañía predeterminada <span class='fa icon fa-save' ng-click="updateCompany()"></span></h4>
+    <div class="widgetcontent stdform2 stdform nopadding" ng-cloak="">
+        <div class="par">
+            <label>Compañias</label>
+            <div class="field">
+                <div class="editable-buttons">
+                    <select ng-options="s.id as s.name for s in user.companies" ng-model="user.default_company" chosen></select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,6 +1,7 @@
 <script type='text/javascript'>
 	window.content = <%- JSON.stringify(_content) %>;
-	console.log(content.lang);
+	window.user = <%- JSON.stringify(req.user) %>;
+	//console.log(user);
 </script>
 <div ng-controller="dashboardCTL">
 	<div class='row-fluid' >
@@ -18,6 +19,7 @@
 			<%- partial('../admin/currencies_charts') -%> 
 		</div>
 	</div>
+    <% if (req.user.hasPermission(req.res.locals.selected_company.id,'hoteles')) {%>
 	<div class="row-fluid">
 		<div class="span6" 
 		day-stats-chart 
@@ -47,4 +49,5 @@
 		chart-data-method-year="/reservation/feeCategoriesInYear"
 		chart-title="<%= __('home_rateReserv') %>"></div>		
 	</div>
+    <% } %>
 </div>

@@ -7,7 +7,7 @@
 var passport = require('passport');
 module.exports = {
 	login: function(req,res){
-		
+
 	  Company.find({},function(e,c){
 	    if (c.length <= 0) {
 	    	return res.redirect('/setup');
@@ -35,6 +35,7 @@ module.exports = {
 	   })
 
 	, index: function(req,res){
+		//console.log(req.user);
 		Common.view(res.view,{
 			page:{
 				description:req.__('sc_home_desc'),

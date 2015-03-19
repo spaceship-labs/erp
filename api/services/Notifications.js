@@ -6,6 +6,7 @@ var notification = function(type,collection,val){
             ,userId:val.req.userId
             ,app:val.req.app
             ,model:collection.tableName
+            ,model_label : collection.labels || { es : collection.tableName }
             ,operation:type
             ,modifyId:val.id
             ,modelObjName:val.req.modelObjName
@@ -30,7 +31,6 @@ var notification = function(type,collection,val){
                             add = true;
                         }
                     }
-                        
                     if(add){
                         obj.modifications.unshift(changes);
                     }
@@ -48,6 +48,7 @@ var notification = function(type,collection,val){
 
 module.exports = {
 	after: function(Model,val,action){
+		//console.log(val);
 		if(val.req && val.req.userId){
 			notification(action,Model,val);
 			val.req = {};

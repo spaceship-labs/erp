@@ -18,4 +18,8 @@ module.exports = {
       dominant : true
   	}
   }
+  ,labels : {
+      es : 'Ciudades'
+      ,en : 'Cities'
+  }
 };

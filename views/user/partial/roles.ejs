@@ -1,7 +1,7 @@
 <div class="modal fade" id="userRoleModal" ng-controller="userRoleCTL">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form accept-charset='utf-8' enctype='multipart/form-data' class='stdform stdform2' ng-submit="saveUserRole()" name="myForm">
+            <form accept-charset='utf-8' enctype='multipart/form-data' class='stdform stdform2 rolesForm' ng-submit="saveUserRole()" name="myForm">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title"><%= __('user-roles')%></h4>
@@ -31,7 +31,12 @@
                                             <thead>
                                             <tr>
                                                 <th><%= __('user-permiso')%></th>
-                                                <th><%= __('user-escoger')%></th>
+                                                <!--<th><%= __('user-escoger')%></th>-->
+
+                                                <th>Entrar</th>
+                                                <th>Crear</th>
+                                                <th>Editar</th>
+                                                <th>Borrar</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -46,6 +51,9 @@
                                                         </label>
                                                     </div>
                                                 </td>
+                                                <td><div class="checkbox"><label><input type="checkbox" id="{{action.handle}}_c_s" ng-model="getRolePermission(action.handle+'_c').value" /></label></div></td>
+                                                <td><div class="checkbox"><label><input type="checkbox" id="{{action.handle}}_e_s" ng-model="getRolePermission(action.handle+'_e').value" /></label></div></td>
+                                                <td><div class="checkbox"><label><input type="checkbox" id="{{action.handle}}_d_s" ng-model="getRolePermission(action.handle+'_d').value" /></label></div></td>
                                             </tr>
                                             </tbody>
                                         </table>

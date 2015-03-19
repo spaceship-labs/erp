@@ -64,7 +64,10 @@ module.exports = {
 		}
 
 	}
-	
+	,labels : {
+        es : 'Empresas'
+        ,en : 'Companies'
+    }
 	,afterCreate: function(val,cb){
 		Notifications.after(Company,val,'create');
 		cb()

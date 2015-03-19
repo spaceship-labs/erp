@@ -25,7 +25,7 @@
                                 <label>Nombre</label>
                                 <span class="field"><input ng-model="product.sale_name" value="{{product.name}}"/></span>
                             </p>
-                            <div ng-if="product.id" class="par">
+                            <div ng-if="product.id && (checkMachines('impresora') || checkMachines('corte'))" class="par">
                                 <label>Dimensiones</label>
                                 <span class="field">
                                     <table class="table">
@@ -196,7 +196,7 @@
                             </div>
                             <p ng-if="product.id">
                                 <label>Precio</label>
-                                <span class="field">{{calculateProductPrice() || 0 | currency}}</span>
+                                <span class="field">{{(calculateProductPrice() || 0) | currency}}</span>
                             </p>
                             <p ng-if="product.id">
                                 <label>Cantidad</label>
