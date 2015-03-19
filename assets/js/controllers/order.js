@@ -68,6 +68,15 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
         //crear una orden
         if( ! angular.equals( {} , $scope.client ) ){
             if( ! angular.equals( {} , $scope.transfer ) || ! angular.equals( {} , $scope.reservations.tours ) || ! angular.equals( {} , $scope.reservations.hotels ) ){
+                if( ! angular.equals( {} , $scope.transfer ) ) {
+                    var arrivalDate = new Date($scope.transfer.arrival_date);
+                    var departureDate = new Date($scope.transfer.departure_date);
+                    if (arrivalDate > departureDate) {
+                        $scope.alertM.show = true;
+                        $scope.alertM.date = true;
+                        return;
+                    }
+                }
                 var params = { client:$scope.client };
                 $http.post('/order/createOrder',params,{}).success(function(order) {
                     //console.log('order');console.log(order);
@@ -218,9 +227,9 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
     };
     $scope.validateDates = function(){
         $scope.customMessages = {
-            Tta : { show : false , type : 'alert', message : $rootScope.translated.c_ordermessg1 },
-            Ttd : { show : false , type : 'alert' , message : $rootScope.translated.c_ordermessg2 },
-            TH  : { show : false , type : 'alert' , message : $rootScope.translated.c_ordermessg3 }
+            Tta : { show : false , type : 'alert' , message : '$rootScope.translate.c_ordermessg1' },
+            Ttd : { show : false , type : 'alert' , message : '$rootScope.translate.c_ordermessg2' },
+            TH  : { show : false , type : 'alert' , message : '$rootScope.translate.c_ordermessg3' }
         };
         if( ! angular.equals( {} , $scope.transfer ) ){
             validateTt();

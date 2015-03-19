@@ -194,6 +194,7 @@
   ,"order_error" : "Error en la orden"
   ,"order_errC" : "Elije un cliente para poder continuar"
   ,"order_errA" : "Reserva vacía"
+  ,"order_errDate" : "Fecha no valida"
   ,"order-tipo-viaje" : "Tipo de viaje"
   ,"order_tv_rt" : "Viaje redondo"
   ,"order_tv_ow" : "Viaje sencillo"
