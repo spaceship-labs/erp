@@ -13,7 +13,7 @@ module.exports = {
             type : 'string',
             required : true
         },
-        price_zone : {
+        price_zones : {
             type : 'json'
         }
     }

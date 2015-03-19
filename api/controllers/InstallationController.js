@@ -86,7 +86,7 @@ module.exports = {
         });
 
         asyncTasks.push(function(cb){
-            Product.find({ company : select_company }).exec(function (err,products){
+            Product.find({ company : select_company }).populate('price').exec(function (err,products){
                 if(err) throw err;
                 productsR = products;
                 cb();
@@ -251,18 +251,25 @@ module.exports = {
             async.each(form,function(crane,callback){
                 if (crane.id) {
                     Installation_crane.update({id : crane.id},crane).exec(function(err,fcrane){
-                        savedCranes.push(crane);
-                        callback();
+                        if (err) {
+                            console.log(err);
+                        }
+                        savedCranes.push(fcrane);
+                        callback(err);
                     });
                 } else {
                     crane.company = select_company;
+
                     Installation_crane.create(crane).exec(function(err,fcrane){
+                        if (err) {
+                            console.log(err);
+                        }
                         savedCranes.push(fcrane);
-                        callback();
+                        callback(err);
                     });
                 }
             },function(err) {
-                if (err) return res.json({text: 'Ocurrio un error.'});
+                if (err) return res.json({text: 'Ocurrio un error.',error : err});
                 res.json({text: 'Gruas actualizadas.',cranes : savedCranes});
             });
         }
@@ -292,5 +299,23 @@ module.exports = {
                 res.json({text: 'Categorias de horarios actualizadas.',hours : savedHours});
             });
         }
+    },
+
+    delete_element : function(req,res) {
+        var element = req.param('e');
+        var id = req.param('id');
+        var validElements = ['crane','hour','material','tool','zone','work_type'];
+        console.log(validElements.indexOf(element));
+        if (validElements.indexOf(element) > -1) {
+            var modelName = 'installation_' + element;
+
+            console.log(sails.models[modelName]);
+            sails.models[modelName].destroy({ id : id }).exec(function(err,modelres){
+                if (err) return res.json({text : 'error yo',msg : err});
+                return res.json({text: " Eliminado con exito "});
+            });
+        }
+        res.json({text : 'error no'});
+        //if (id && element.co)
     }
 };

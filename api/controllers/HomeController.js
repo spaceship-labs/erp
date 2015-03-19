@@ -7,7 +7,7 @@
 var passport = require('passport');
 module.exports = {
 	login: function(req,res){
-		
+
 	  Company.find({},function(e,c){
 	    if (c.length <= 0) {
 	    	return res.redirect('/setup');
