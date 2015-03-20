@@ -6,9 +6,7 @@
 	window.content = <%- JSON.stringify(_content) %>;
     window.userID = <%- JSON.stringify(req.user.id) %>;
     window.theclient = <%- JSON.stringify(theclient) %>;
-    console.log(theclient.contacts[0]);
-    console.log(order);
-    console.log(hotels);
+    //console.log(theclient.contacts[0]);console.log(order);console.log(hotels);
 </script>
 <div ng-controller='orderEditCTL' class="editar-reservacion ng-cloak">
 	<div class='row-fluid stdform stdform2'>
