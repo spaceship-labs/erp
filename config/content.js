@@ -578,6 +578,20 @@ module.exports.content = {
 			handle 	: 'name_en'
 		},
 		{
+			label 	: 'Precio viaje sencillo',
+			label_en : 'One Way',
+			type 	: 'text',
+			required: true,
+			handle 	: 'oneWay'
+		},
+		{
+			label 	: 'Precio viaje redondo',
+			label_en : 'Roundtrip',
+			type 	: 'text',
+			required: true,
+			handle 	: 'roundTrip'
+		},
+		{
 			label 	: 'URL ',
 			label_en : 'URL',
 			type 	: 'text',
