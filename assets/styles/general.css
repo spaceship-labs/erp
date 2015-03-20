@@ -243,8 +243,8 @@ h1,h2,h3,h4,h5 { font-weight: normal; line-height: normal; }
 	font-size: 12px; border: 1px solid #ddd; height: auto;
 }
 
-.maincontent { float: left; width: 100%; }
-.maincontentinner { padding: 20px; }
+.maincontent { float: left; width: 100%;}
+.maincontentinner { padding: 20px; min-height: 400px;}
 .subtitle { text-transform: uppercase; font-size: 11px; color: #999; margin-bottom: 5px; }
 .subtitle2 { font-size: 13px; text-transform: uppercase; color: #333; margin-bottom: 5px; }
 
@@ -318,7 +318,7 @@ h1,h2,h3,h4,h5 { font-weight: normal; line-height: normal; }
 .headtitle .btn-group { float: right; }
 .headtitle .btn-group .btn, .headtitle .btn-group .btn:focus,
 .headtitle .btn-group.open .btn.dropdown-toggle {
-		  background: none; border: 0; border-left: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 11px 20px; }
+		  background: none; border: 0; border-left: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 11px 20px!important; }
 .headtitle .dropdown-menu { left: auto; right: 0; }
 .headtitle .btn-group .btn .caret { border-top: 4px solid #fff; }
 

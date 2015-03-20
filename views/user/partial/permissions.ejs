@@ -12,7 +12,7 @@
             </div>
         </div>
 
-        <div class="par">
+        <div class="par" ng-if="!isAdmin">
             <label>Ver sólo mis datos <br> *Representante</label>
             <div class="field">
                 <div class="editable-buttons">
@@ -27,12 +27,12 @@
             <div class="field">
                 <div class="editable-buttons">
                     <select ng-options="s as s.name for s in user_roles" ng-model="user.role" chosen="user_roles"></select>
-                    <a class="btn btn-default" data-toggle="modal" data-target="#userRoleModal"><span class="table-icon fa fa-edit"></span></a>
+                    <a class="btn btn-default" data-toggle="modal" data-target="#userRoleModal"><span class="table-icon fa fa-edit">{{user.role.name == 'Ninguno'?'Crear':'Editar'}}</span></a>
                 </div>
             </div>
         </div>
 
-        <div class="par" ng-if="!isAdmin && (!user.role || user.role.name == 'Ninguno')">
+        <!--<div class="par" ng-if="!isAdmin && (!user.role || user.role.name == 'Ninguno')">
             <accordion close-others='false'>
                 <accordion-group heading="{{app.label}}" ng-repeat="app in apps | filter:filterApp" style="cursor: pointer;">
                     <table class="table responsive">
@@ -59,7 +59,7 @@
                     </table>
                 </accordion-group>
             </accordion>
-        </div>
+        </div>-->
     </div>
 </div>
 

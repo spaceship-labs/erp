@@ -16,29 +16,33 @@ var notification = function(type,collection,val){
         if(type == 'update'){
             Notice.findOne({modifyId:val.id}).sort('createdAt desc').exec(function(err,notice){
                 if(err) throw err;
-                var add = true;
-                if(notice && notice.val){
-                    var changes = {};
-                    add = false;
-                    obj.modifications = notice.modifications || [];
-                    for(var v in val){
-                        if(v!='req' && !Common.equals(notice.val[v],val[v])){
-                            changes[v] = {
-                                after:val[v]
-                                ,before:notice.val[v]
-                                ,dataType:Common.getCollectionAttrType(collection.attributes,v)
-                            }
-                            add = true;
-                        }
-                    }
-                    if(add){
-                        obj.modifications.unshift(changes);
-                    }
+                if(typeof notice == 'undefined'){
+                	saveAndPublish(obj);
+                }else{
+	                var add = true;
+	                if(notice && notice.val){
+	                    var changes = {};
+	                    add = false;
+	                    obj.modifications = notice.modifications || [];
+	                    for(var v in val){
+	                        if(v!='req' && !Common.equals(notice.val[v],val[v])){
+	                            changes[v] = {
+	                                after:val[v]
+	                                ,before:notice.val[v]
+	                                ,dataType:Common.getCollectionAttrType(collection.attributes,v)
+	                            }
+	                            add = true;
+	                        }
+	                    }
+	                    if(add){
+	                        obj.modifications.unshift(changes);
+	                    }
+	                }
+	                if(add){
+	                    obj.modelObjName = val.name;    
+	                    saveAndPublish(obj);
+	                }
                 }
-                if(add){
-                    obj.modelObjName = val.name;    
-                    saveAndPublish(obj);
-                }        
             });
         }else{
             saveAndPublish(obj);
@@ -67,6 +71,7 @@ module.exports = {
 			if(val.name)
 				req.modelObjName = val.name
 			val.req = req;
+			console.log(val);
 		}
 	}
 };

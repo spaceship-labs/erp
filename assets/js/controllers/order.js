@@ -343,41 +343,49 @@ app.controller('orderEditCTL',function($scope,$http,$window){
         $scope.dtfa[1] = ( !h && r ) || h;
     }
     $scope.getAirports = function(){
-        var params = {'id':$scope.transfer.hotel.location};
-        $http({method: 'POST', url: '/airport/getAirport',params:params}).success(function (result){
-            $scope.airports = result;
-        });
+        if( $scope.transfer ){
+            var params = {'id':$scope.transfer.hotel.location};
+            $http({method: 'POST', url: '/airport/getAirport',params:params}).success(function (result){
+                $scope.airports = result;
+            });
+        }
     }
     $scope.updateTourPrice = function(item){
         item.fee = item.tour.fee&&item.adultNumber?item.tour.fee*item.adultNumber:0;
         item.fee += item.tour.feeChild&&item.childrenNumber?item.tour.feeChild*item.childrenNumber:0;
     }
     //Obtiene el precio cada que se hace una modificación elegida
+    //tenemos que obtener el prcio con porcentaje en el caso de las agencias
     $scope.updatePriceTransfer = function(){
-        var transfer = $scope.transfer;
-        //console.log('update price');
-        if( transfer.hotel && transfer.airport && transfer.type ){
-            var mult = transfer.pax?( Math.ceil( transfer.pax / transfer.transfer.transfer.max_pax ) ):1;
-            //console.log( 'mult: ' + mult + ' price: ' + transfer.transfer[transfer.type] );
-            $scope.transfer.fee = transfer.transfer[transfer.type] * mult;
-        }else{
-            $scope.transfer.fee = 0;
+        if($scope.transfer){
+            var transfer = $scope.transfer;
+            //console.log('update price');
+            if( transfer.hotel && transfer.airport && transfer.type ){
+                var mult = transfer.pax?( Math.ceil( transfer.pax / transfer.transfer.transfer.max_pax ) ):1;
+                //console.log( 'mult: ' + mult + ' price: ' + transfer.transfer[transfer.type] );
+                $scope.transfer.fee = transfer.transfer[transfer.type] * mult;
+            }else{
+                $scope.transfer.fee = 0;
+            }
+            $scope.updateDatesFormat();
         }
-        $scope.updateDatesFormat();
     };
     $scope.printClient = function(){
         //console.log($scope.transfer.client);
     };
     $scope.saveAll = function(){
-        if( ! angular.equals( {} , $scope.transfer ) )
+        console.log('enter!!!!!!!!!!!');
+        console.log($scope.transfer);
+        if( $scope.transfer!=false && ! angular.equals( {} , $scope.transfer ) )
             reservationTransfer();
         if( $scope.reservations.tours.length>0 )
             reservationTours();
         if( $scope.reservations.hotels.length>0 )
             reservationHotels();
+        return true;
     };
     $scope.getTransfers = function(){
-        if( $scope.transfer.hotel.zone && $scope.transfer.airport.zone ){
+        if( $scope.transfer && $scope.transfer.hotel.zone && $scope.transfer.airport.zone ){
             var params = { zone1 : $scope.transfer.hotel.zone , zone2 : $scope.transfer.airport.zone };
             $http({method: 'POST', url: '/order/getAvailableTransfers',params:params}).success(function (result){
                 $scope.transfers = result;
@@ -400,8 +408,9 @@ app.controller('orderEditCTL',function($scope,$http,$window){
     };*/
     var reservationTransfer = function(){
         var params = {item : $scope.transfer};
-        if( $scope.order ){
+        if( $scope.order && $scope.transfer.transfer && $scope.transfer.hotel ){
             params.item.transfer = $scope.transfer.transfer.transfer.id;
+            params.item.hotel = $scope.transfer.hotel.id || false;
             $http.post('/reservation/update/',params).success(function(result) {
                 console.log('Update transfer');
                 console.log(result);

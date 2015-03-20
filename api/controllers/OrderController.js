@@ -110,7 +110,10 @@ module.exports = {
     items = params.items || [];
     async.mapSeries( items, function(item,cb) {
       //item.req = req;
-      Reservation.update({id:item.id},item,function(err,r){
+      var id = item.id;
+      item.hotel = item.hotel.id;
+      delete item.id;
+      Reservation.update({id:id},item,function(err,r){
         cb(err,r);
       });
     },function(err,results){
