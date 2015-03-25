@@ -1,3 +1,6 @@
+<script type='text/javascript'>
+    window.installations = <%- JSON.stringify(installations) %>;
+</script>
 <div class="col-md-12">
     <div class="buttons-box">
         <div class="btn-group">
@@ -11,6 +14,7 @@
             </ul>
         </div>
         <a class="btn btn-default button-orange right"  href="/installation/configure">Configuracion</a>
+        <input type="text" placeholder="Buscar" class="form-control pull-right search" ng-model="searchText" />
     </div>
     <div class="widgetcontent custom-table nopadding">
         <table class="table table-striped">
@@ -30,7 +34,7 @@
             <% for(var i=0;i<installations.length;i++){
                 var installation = installations[i];
             %>
-                <tr>
+                <tr ng-repeat='installation in installations | filter:searchText'>
                     <td data-title="Fecha de instalacion"><%= moment(installation.date).format('Do [de] MMMM YYYY') %></td>
                     <td data-title="Creada"><%= moment(installation.createdAt).format('Do [de] MMMM YYYY, h:mm:ss a') %></td>
                     <td data-title="Creada por"><%= installation.user.name %></td>

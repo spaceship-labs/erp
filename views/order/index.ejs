@@ -6,8 +6,9 @@
 <div ng-controller='orderCTL' >
 	<div class='row'>
 		<div class = "textbutton col-sm-12 col-sm-12 col-xs-12">
-			<p><a href="/order/neworder" class='btn btn-primary'><i class = "fa fa-plus"></i> <%= __('order-crear')%></a></p>
-			<br />
+			<p style="display:inline-block;"><a href="/order/neworder" class='btn btn-primary'><i class = "fa fa-plus"></i> <%= __('order-crear')%></a></p>
+            <input type="text" placeholder="Buscar" class="form-control pull-right search" ng-model="searchText" />
+			<br /><br />
 		</div>
 	</div>
 	<div class="widgetcontent custom-table nopadding ng-cloak">
@@ -32,7 +33,7 @@
                     <th> <%= __('order-borrar')%> </th>
                 <% } %>
             </tr>
-            <tr ng-repeat="order in orders">
+            <tr ng-repeat='order in orders | filter:searchText'>
                 <td data-title="Id" ng-bind="order.id"></td>
                 <td data-title="Usuario" ng-bind="order.user.name + ' ' + order.user.last_name"></td>
                 <td data-title="Empresa" ng-bind="order.company.name"></td>
