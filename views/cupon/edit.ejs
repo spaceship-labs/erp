@@ -15,6 +15,17 @@
             form-title='<%= __("gral_basicInfo") %>'
             >
         </div> 
+        <p><a ng-click="advanced=!advanced">Opciones avanzadas <i class='fa fa-plus'></i></a></p>
+        <div collapse="!advanced">
+            <div form-helper 
+            fields='content.cuponsadvance' 
+            object='cupon' 
+            objects='{hotels:hotels,tours:tours,transfers:transfers}' 
+            action='/cupon/update/<%=cupon.id%>' 
+            form-title='<%= __("gral_basicInfo") %>'
+            >
+        </div> 
+        </div>
     </div>  
 
 </div>

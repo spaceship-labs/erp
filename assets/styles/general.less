@@ -2,12 +2,16 @@ body{min-width: 290px;background:url(@left-bar) repeat-y 0 0;}
 .header{background:@header-background;}
 strong{font-weight: bold;}
 .row .row{max-width: 100%;margin: 0}
+.show-sm{display: none!important;}
 
 /*Login page*/
 .loginpanelinner .logo{padding:0;display:block;background-repeat:no-repeat;background-image:url(@login-logo);width:100%;height:120px;background-position:center center;background-size: contain;}
 body.loginpage{background: @login-background;overflow: hidden;}
 .inputwrapper button{background: @login-button;border:1px solid @login-button;}
 .inputwrapper button:focus, .inputwrapper button:active, .inputwrapper button:hover{background: @login-hover;border:1px solid @login-hover;}
+
+/*fee selector*/
+.fee-selector .tabs .tab.selected{border: 1px solid gray;border-bottom: 0 none;border-top-right-radius: 5px;border-top-left-radius: 5px;}
 
 /*Messages*/
 #popup_overlay{position: fixed;z-index: 99998;top: 0px;left: 0px;width: 100%;height: 100%;}
@@ -39,8 +43,10 @@ body.loginpage{background: @login-background;overflow: hidden;}
 .page-description{color: #CCCCCC}
 /*Lateral Menu*/
 #mainwrapper .leftmenu .nav-tabs.nav-stacked > li > a{color:@left-color;}
+#mainwrapper .leftmenu .nav-tabs.nav-stacked > li.selected > a,
 #mainwrapper .leftmenu .nav-tabs.nav-stacked > li.active > a,
 #mainwrapper .leftmenu .nav-tabs.nav-stacked > li > a:hover{color:@left-color-hover;}
+#mainwrapper .leftmenu .nav-tabs.nav-stacked > li ul li.selected{background:#cfcfcf; }
 
 
 /*Dashboard*/
@@ -82,6 +88,8 @@ body.loginpage{background: @login-background;overflow: hidden;}
 .widgettitle a span{font-size: 16px;vertical-align: initial;}
 .widgetcontent{border: 2px solid @primary;}
 .widgetcontent.custom-table{border: 2px solid @primary;overflow: auto;}
+/*.ng-directory-listing .peoplelist  .widgettitle a.text-limit,
+.widgettitle .text-limit{overflow: hidden;text-overflow: ellipsis;white-space: nowrap;float: none;display: block;}*/
 a, a:hover, a:link, a:active, a:focus{color: @primary}
 html .btn-primary , .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary{background: @primary;border-color: @primary;color: white;}
 .alphabets li span{color: @primary}
@@ -103,6 +111,7 @@ html .btn-primary , .btn-primary:hover, .btn-primary:focus, .btn-primary:active,
 .custom-table table th{position: relative;}
 .custom-table table th:last-child:after{content: "";background: @primary;height: 100%;position: absolute;right: -1px;top: 0;width: 1px}
 .custom-table table th,.custom-table table td{font-size: 12px;padding: 6px;}
+.custom-table table td.th,
 .custom-table table th{background: @login-background!important;border: none!important;color: #fff;font-size: 13px;}
 .custom-table table .table-icon{color: @login-background;font-size: 15px}
 .custom-table table .actions .table-icon {margin-left: 5px}
@@ -112,6 +121,7 @@ html .btn-primary , .btn-primary:hover, .btn-primary:focus, .btn-primary:active,
 .table .price-row .active-i{color: lightgray}
 .table .price-row .active-i.active{color: green;}
 .table .sortable .sortable-item{color: white;}
+.custom-table table td.th a{color: white}
 .stdform.rolesForm table label{width: auto;}
 .stdform.rolesForm .panel-body{padding: 0;}
 .stdform.rolesForm .panel-title a{display: block;}
@@ -274,6 +284,10 @@ color: #fff;
 	#chart-container{padding: 0}
 }
 @media only screen and (max-width: 650px) {
+	/*Class to hide on here*/
+	.hide-sm{display: none!important;}
+	.show-sm{display: block!important;}
+	.hide-row{display: none!important;}
 	/* Force table to not be like tables anymore */
 	.custom-table table,
 	.custom-table thead,
@@ -436,7 +450,8 @@ color: #fff;
 
 /*Form Helper*/
 .ng-form-helper textarea{height:135px;}
-.ng-form-helper .multi-tag{display:block;float:left;padding:10px 10px 10px 0;}
+.ng-form-helper .multi-tag{display:block;float:left;padding: 3px 6px;background: #e3e3e3;border-radius: 5px;margin-bottom: 5px;}
+.ng-form-helper .multi-tag + .multi-tag{margin-left: 4px;}
 .ng-form-helper .multi-tag a{display:block;float:right;margin:0 0 0 4px;font-size:14px;}
 
 .btn { text-shadow: none !important; }

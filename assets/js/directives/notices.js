@@ -2,8 +2,8 @@
     var controller = function($scope,$http,$q,$rootScope){
         $scope.translates = $rootScope.translates;
         var options = {
-            'sort':'updatedAt desc',
-            'limit':10
+            'sort' : 'updatedAt desc',
+            'limit' : 20
         }
         io.socket.get('/notice/find',options,function(data){
             if(!data)
@@ -12,9 +12,9 @@
             $scope.noticesN = data;
             //$scope.$apply();
             $scope.noticeTranslate = {
-                update:'actualizó',
-                create:'creó',
-                destroy:'eliminó'
+                update:'actualizó: ',
+                create:'creó un elemento',
+                destroy:'eliminó: '
             };
             $scope.formatFields();
         });

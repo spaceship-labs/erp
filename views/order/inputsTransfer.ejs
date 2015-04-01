@@ -73,7 +73,7 @@
                 <label><%= __('order-llegada')%></label>
                 <span class='field'>
                     <span class='input-group calendar-container'>
-                        <input ng-change="validateDates()" is-open="open[0]" ng-model='transfer.arrival_date' datepicker-popup />
+                        <input is-open="open[0]" ng-model='transfer.arrival_date' id="arrival-date" datepicker-popup />
                         <span class="input-group-btn">
                             <button type="button" class="btn btn-default" ng-click="open($event,0)"><i class="fa fa-calendar"></i></button>
                         </span>
@@ -101,7 +101,7 @@
                 <label><%= __('order-fecha-salida')%></label>
                 <span class='field'>
                     <span class='input-group calendar-container'>
-                        <input ng-change="validateDates()" is-open="open[1]" ng-model='transfer.departure_date' datepicker-popup />
+                        <input is-open="open[1]" ng-model='transfer.departure_date' datepicker-popup />
                         <span class="input-group-btn">
                             <button type="button" class="btn btn-default" ng-click="open($event,1)"><i class="fa fa-calendar"></i></button>
                         </span>

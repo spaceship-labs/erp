@@ -139,6 +139,10 @@
             <div id="popup_message"><%= __('order_errA') %></div>
             <div id="popup_panel"><a ng-click="alertM.show=false;alertM.allEmpty=false;" id="popup_ok" style="display: block;width: 150px;margin: 0 auto;">OK</a></div>
         </div>
+        <div id="popup_content" class="alert" ng-show="alertM.show&&alertM.date">
+            <div id="popup_message"><%= __('order_errDate') %></div>
+            <div id="popup_panel"><a ng-click="alertM.show=false;alertM.date=false;" id="popup_ok" style="display: block;width: 150px;margin: 0 auto;">OK</a></div>
+        </div>
     </div>
     <div custom-message messages="customMessages"></div>
 </div>

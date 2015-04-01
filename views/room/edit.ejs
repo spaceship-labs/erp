@@ -17,8 +17,8 @@
             </div>
             <div class='fee-selector'>
                 <div class="tabs">
-                    <a class='btn alertboxbutton' ng-click='payScheme = "base"' ><small><%= __('room-base')%></small></a>
-                    <a class='btn alertboxbutton' ng-repeat='scheme in hotel.foodSchemes' ng-click='selectScheme(scheme)'>
+                    <a class='btn tab alertboxbutton' ng-class="payScheme=='base'?'selected':''" ng-click='payScheme = "base"' ><small><%= __('room-base')%></small></a>
+                    <a class='btn tab alertboxbutton' ng-class="payScheme==scheme.id?'selected':''" ng-repeat='scheme in hotel.foodSchemes' ng-click='selectScheme(scheme)'>
                         <small ng-bind='scheme.name' ></small>
                     </a>                    
                 </div>

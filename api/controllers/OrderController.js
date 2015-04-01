@@ -49,6 +49,12 @@ module.exports = {
       res.json(orders);
     });
   },
+  getorderfor : function(req,res){
+    Order.findOne({id:req.param('id')}).populate('reservations').populate('client').populate('company').exec(function(e,order){
+      if(e) return res.json(false);
+      res.json(order);
+    });
+  },
 	createClient : function(req,res){
       var form = Common.formValidate(req.params.all(),['name','address','phone','rfc']);
       if(form){
@@ -121,7 +127,7 @@ module.exports = {
     });
   },
   edit : function(req,res){
-    Order.findOne( req.params.id ).populate('reservations').exec(function(err,order){
+    Order.findOne( req.params.id ).populate('reservations').populate('claims').populate('lostandfounds').exec(function(err,order){
       Reservation.find({ 'order' : req.params.id })
         .populate('hotel').populate('tour').populate('airport').populate('client').exec(function(err,reservations){
         Client_.find().sort('name').exec(function(e,clients_){ 
@@ -172,6 +178,28 @@ module.exports = {
     }else{
       return res.json(false);
     }
+  },
+  customsearch : function(req,res){
+    var params = req.params.all();
+    var o = params.createdAt?{ createdAt : params.createdAt }:{};
+    var c = {};
+    if(params.name)
+      c.name = new RegExp(params.name,"i");
+    if(params.last_name)
+      c.last_name = new RegExp(params.last_name,"i");
+    var r = {};
+    if(params.reservation_type)
+      r = {reservation_type : params.reservation_type};
+    //console.log(params);console.log(c);console.log(o);console.log(r);
+    Order.find(o).populate('client',c).populate('reservations',r).populate('company').then(function(orders) {
+      var result = [];
+      for(var x in orders){
+        //console.log(orders[x].reservations.length);
+        if(orders[x].reservations.length>0 && typeof orders[x].client != 'undefined' ) result.push(orders[x]);
+      }
+      //console.log(result);
+      res.json(result);
+    });
   }
 };
 function formatOrders(orders){

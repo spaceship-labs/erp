@@ -291,4 +291,32 @@ module.exports.apps = [
             }
         ]
     }
+    ,{
+        name : 'claims'
+        ,label : 'Quejas y Objetos perdidos'
+        ,label_en : 'Claims and Lost&Found'
+        ,icon : 'fa-exclamation'
+        ,actions : [
+            {
+                label : 'Quejas'
+                ,label_en : 'Claims'
+                ,icon : 'fa-exclamation'
+                ,url : '/claim/'
+                ,showInMenu : true
+                ,handle : 'claim'
+                ,controller : 'claim'
+                ,action : 'index'
+            }
+            ,{
+                label : 'Objetos perdidos'
+                ,label_en : 'Lost&Found'
+                ,icon : 'fa-question'
+                ,url : '/lostandfound/'
+                ,showInMenu : true
+                ,handle : 'claim'
+                ,controller : 'claim'
+                ,action : 'index'
+            }
+        ]
+    }
 ];

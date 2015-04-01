@@ -67,5 +67,17 @@ module.exports = {
     			res.json(transfer);
     		});
     	});
-	}
+	},
+    updateIcon: function(req,res){
+        form = req.params.all();
+        Transfer.updateAvatar(req,{
+            dir : 'transfers',
+            profile: 'avatar',
+            id : form.id,
+        },
+        function(e,tour){
+            if(e) console.log(e);
+            res.json(tour);
+        });
+	},
 };

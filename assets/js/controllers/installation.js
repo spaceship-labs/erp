@@ -7,17 +7,20 @@ app.controller('installationConfigCTL',function($scope,$http,_){
     $scope.products = window.products;
     $scope.hours = window.hours;
 
+
     for (var i=0;i<$scope.products.length;i++) {
         for (var ti=0;ti<$scope.tools.length;ti++) {
             if ($scope.products[i].id == $scope.tools[ti].product.id) {
                 $scope.tools[ti].product = $scope.products[i];
                 //$scope.products.splice(i,1);
+                console.log(i);
             }
         }
         for (var mi=0;mi<$scope.materials.length;mi++) {
             if ($scope.products[i].id == $scope.materials[mi].product.id) {
                 $scope.materials[mi].product = $scope.products[i];
                 //$scope.products.splice(i,1);
+                console.log(i);
             }
         }
     }
@@ -34,7 +37,10 @@ app.controller('installationConfigCTL',function($scope,$http,_){
     //cranes
     $scope.processCranes = function() {
         //console.log($scope.cranes);
-        $http.post('/installation/update_cranes',{ cranes : $scope.cranes}, {}).success(showResponse);
+        $http.post('/installation/update_cranes',{ cranes : $scope.cranes}, {}).success(function(response){
+            showResponse(response);
+            $scope.craneForm.$setPristine();
+        });
     };
     $scope.addCrane = function() {
         $scope.cranes.push({
@@ -45,17 +51,25 @@ app.controller('installationConfigCTL',function($scope,$http,_){
         });
     };
     $scope.deleteCrane = function(index) {
+        var el = $scope.cranes[index];
+        if (el.id) {
+            $scope.deleteInstallationConfig('crane',el.id);
+        }
         $scope.cranes.splice(index,1);
     };
 
     //materials
     $scope.processMaterials = function() {
-        $http.post('/installation/update_materials',{ materials : $scope.materials}, {}).success(showResponse);
+        $http.post('/installation/update_materials',{ materials : $scope.materials}, {}).success(function(response){
+            showResponse(response);
+            $scope.materialForm.$setPristine();
+        });
     };
     $scope.addMaterial = function() {
         if ($scope.selected_material && $scope.selected_material.id) {
             $scope.materials.push({product : $scope.selected_material });
             var index = $scope.products.indexOf($scope.selected_material);
+            console.log(index);
             $scope.products.splice(index,1);
             $scope.selected_material = {};
 
@@ -65,6 +79,10 @@ app.controller('installationConfigCTL',function($scope,$http,_){
     };
     $scope.deleteMaterial = function(index) {
         $scope.products.push($scope.materials[index].product);
+        var el = $scope.materials[index];
+        if (el.id) {
+            $scope.deleteInstallationConfig('material',el.id);
+        }
         $scope.materials.splice(index,1);
     };
 
@@ -85,6 +103,10 @@ app.controller('installationConfigCTL',function($scope,$http,_){
     };
     $scope.deleteTool = function(index) {
         $scope.products.push($scope.tools[index].product);
+        var el = $scope.tools[index];
+        if (el.id) {
+            $scope.deleteInstallationConfig('tool',el.id);
+        }
         $scope.tools.splice(index,1);
     };
 
@@ -98,6 +120,10 @@ app.controller('installationConfigCTL',function($scope,$http,_){
         });
     };
     $scope.deleteWorkType = function(index) {
+        var el = $scope.work_types[index];
+        if (el.id) {
+            $scope.deleteInstallationConfig('work_type',el.id);
+        }
         $scope.work_types.splice(index,1);
     };
 
@@ -112,6 +138,10 @@ app.controller('installationConfigCTL',function($scope,$http,_){
         });
     };
     $scope.deleteHour = function(index) {
+        var el = $scope.hours[index];
+        if (el.id) {
+            $scope.deleteInstallationConfig('hour',el.id);
+        }
         $scope.hours.splice(index,1);
     };
 
@@ -126,14 +156,23 @@ app.controller('installationConfigCTL',function($scope,$http,_){
         });
     };
     $scope.deleteZone = function(index) {
+        var el = $scope.zones[index];
+        if (el.id) {
+            $scope.deleteInstallationConfig('zone',el.id);
+        }
         $scope.zones.splice(index,1);
     };
 
     $scope.getCranePriceZone = function(crane,zone){
-        var price_zone = _.findWhere(crane.price_zones,{ zone : zone.id });
-        if (price_zone) {
-            return price_zone;
+        if (crane.price_zones) {
+            var price_zone = _.findWhere(crane.price_zones,{ zone : zone.id });
+            if (price_zone) {
+                return price_zone;
+            }
+        } else {
+            crane.price_zones = [];
         }
+
         price_zone = {
             zone : zone.id,
             price : 0.0
@@ -142,9 +181,13 @@ app.controller('installationConfigCTL',function($scope,$http,_){
         return price_zone;
     }
 
+    $scope.deleteInstallationConfig = function(obj,id) {
+        $http.post('/installation/delete_element',{ e : obj , id : id}, {}).success(showResponse);
+    }
+
 });
 
-app.controller('installationCTL',function($scope,$http) {
+app.controller('installationCTL',function($scope,$http,_) {
     $scope.cranes = window.cranes;
     $scope.materials = window.materials;
     $scope.tools = window.tools;
@@ -180,9 +223,10 @@ app.controller('installationCTL',function($scope,$http) {
 
         $http.post('/installation/create',{installation : $scope.installation},{}).success(function(response) {
 
+            var priceTotal = $scope.calculateInstallationTotal();
             var product = {
-                price : $scope.calculateInstallationTotal() ,
-                price_total :  $scope.calculateInstallationTotal(),
+                price :  priceTotal,
+                price_total :  priceTotal,
                 product : 0,
                 quantity : 1,
                 quote : quoteID,
@@ -204,9 +248,7 @@ app.controller('installationCTL',function($scope,$http) {
     $scope.calculateInstallationTotal = function(){
         if ($scope.installation) {
             return 0
-                + ($scope.installation.zone ? $scope.installation.zone.price : 0)
                 + ($scope.installation.staff ? $scope.installation.staff * 100 : 0)
-                + ($scope.installation.work_type && $scope.installation.materials.length > 0 ? $scope.installation.work_type.price : 0)
                 + ($scope.installation.materials.length > 0 ? $scope.calculateProductPrices($scope.installation.materials) : 0)
                 + ($scope.installation.tools.length > 0 ? $scope.calculateProductPrices($scope.installation.tools) : 0)
                 + ($scope.installation.crane ? $scope.calculateItemPrice($scope.installation.crane) : 0)
@@ -229,7 +271,14 @@ app.controller('installationCTL',function($scope,$http) {
     };
 
     $scope.calculateItemPrice = function(item){
-        if (item) return item.quantity * item.price;
+        if (item && item.price_zones && $scope.installation.zone) {
+            //console.log(item.price_zones);
+            var iprice = _.findWhere(item.price_zones,{ zone : $scope.installation.zone.id });
+            //console.log(iprice);
+            return item.quantity * iprice.price;
+        } else if (item) {
+            return item.quantity * item.price;
+        }
         else return 0;
     };
 

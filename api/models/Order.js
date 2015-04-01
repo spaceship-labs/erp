@@ -17,8 +17,11 @@ module.exports = {
 		,company : {
 			model : 'company' }
 		,reservations : {
-			collection : 'reservation', via : 'order'
-		}
+			collection : 'reservation', via : 'order' }
+		,claims : {
+			collection : 'claim', via : 'order' }
+		,lostandfounds : {
+			collection : 'lostandfound', via : 'order' }
 	}
 	,labels : {
         es : 'Reservaciones'

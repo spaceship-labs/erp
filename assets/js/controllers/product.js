@@ -194,7 +194,7 @@ app.controller('productAddCTL',function($scope,$http){
 
     $scope.calculateProductPrice = function(){
         var price = 0.0;
-        var product_size = $scope.product.size ? (($scope.product.size.width || 0) * ($scope.product.size.height || 0)) : 0;
+        var product_size = $scope.product.size ? (($scope.product.size.width || 0) * ($scope.product.size.height || 0)) : 1;
         var iterator = 0;
         if ($scope.selected_machines && _.isArray($scope.selected_machines)) {
             for(var i in $scope.selected_machines) {
@@ -227,6 +227,7 @@ app.controller('productAddCTL',function($scope,$http){
     $scope.generateDescription = function(){
         $scope.product.description = "";
         $scope.product.description += $scope.product.sale_name;
+        $scope.product.description += "(" + $scope.product.name + ")";
         $scope.product.description += $scope.product.size ? (" , " + $scope.product.size.width + " m. x " + $scope.product.size.height + " m.") : "";
 
         if ($scope.selected_machines && _.isArray($scope.selected_machines)) {

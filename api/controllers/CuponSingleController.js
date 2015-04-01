@@ -17,7 +17,10 @@ module.exports = {
                         name:req.__('cupon_instancia'),
                         icon:'fa fa-ticket',
                         controller : 'cupon.js'
-                    }
+                    },
+                    breadcrumb :[
+                        { label: 'Instancias de cupones' }
+                    ]
                 },req);
             });
         });
@@ -30,7 +33,6 @@ module.exports = {
         if(form.token){
             CuponSingle.findOne({token:form.token}).exec(function(err,cuponExist){
                 if(cuponExist) return res.json(false);
-                
                 createCuponAndResponse(form,res);
             });
         }else{
@@ -52,9 +54,19 @@ module.exports = {
                 },req);
             });
         });
+    },
+    validatetoken : function(req,res){
+        var token = req.param('token');
+        var expiration = req.param('expiration');
+        //, expiration:{'>':new Date(expiration)}
+        CuponSingle.findOne().where({ token:token }).exec(function(err,exist){
+            if (err) console.log(err);
+            var result = 't';
+            if (exist) result = 'f';
+            res.json(result);
+        });
     }
 };
-
 function createCuponAndResponse(form,res){
     Cupon.findOne({id:form.cupon}).exec(function(err,cuponBase){
         CuponSingle.create(form).exec(function(err,cupon){

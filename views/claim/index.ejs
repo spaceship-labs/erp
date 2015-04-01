@@ -1,0 +1,40 @@
+<script type='text/javascript'>
+	window.claims = <%- JSON.stringify(claims) %>;
+	window.content = <%- JSON.stringify(_content) %>;
+    console.log(claims);
+</script>
+<div ng-controller='claimCTL' >
+	<div class='row'>
+		<div class = "textbutton col-sm-12 col-xs-12">
+			<p><a href="/claim/newitem" class='btn btn-primary'><i class = "fa fa-plus"></i> Nuevo reporte</a></p>
+			<br />
+		</div>
+	</div>
+	<div class='row'>
+		<div class='col-sm-12'>
+			<div class="widgetcontent custom-table nopadding">
+                <table class="table table-striped">
+                    <tr class='hide-sm'>
+                        <th>Id</th>
+                        <th>Usuario</th>
+                        <th>Cliente</th>
+                        <th>Encontrado</th>
+                        <th>Fecha</th>
+                        <th><%= __('order-editar') %></th>
+                    </tr>
+                    <tr ng-repeat="lf in claims">
+                        <td class='show-sm th'><span>Queja de: {{lf.order.client.name}}</span></td>
+                        <td data-title='Id'><span ng-bind="lf.id"></span></td>
+                        <td data-title='Usuario'><span ng-bind="lf.user.name"></span></td>
+                        <td data-title='Cliente'><span ng-bind="lf.order.client.name"></span></td>
+                        <td data-title='Resuelto'>
+                            <i ng-if='!lf.end_date' class="fa {{lf.end_date?'fa-check':'fa-times'}}"></i> <span ng-if='lf.end_date' ng-bind='formatDate(lf.end_date)'></span>
+                        </td>
+                        <td data-title='Fecha'><span ng-bind="formatDate(lf.createdAt)"></span></td>
+                        <td data-title='Editar'><a ng-href="/claim/edit/{{lf.id}}"><span class="table-icon fa fa-edit"></span></a></td>
+                    </tr>
+                </table>
+            </div>
+		</div>
+	</div>
+</div>

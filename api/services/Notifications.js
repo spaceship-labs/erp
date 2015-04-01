@@ -64,14 +64,14 @@ module.exports = {
 	,before:function(val,action){
 		if(val.req && val.req.user){
 			var req = {
-				userId:val.req.user.id
-				,companyId:val.req.session.select_company || val.req.user.select_company
+				userId:val.req.user.companyId
+				,id:val.req.session.select_company || val.req.user.select_company
 				,app: val.req.options.controller
 			}
 			if(val.name)
 				req.modelObjName = val.name
 			val.req = req;
-			console.log(val);
+			//console.log(val);
 		}
 	}
 };

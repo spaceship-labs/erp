@@ -1,11 +1,12 @@
 <div class="widgetbox">
     <h4 class="widgettitle">Tipos de trabajo</h4>
     <div class="widgetcontent nopadding">
-        <form accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine" ng-submit="processWorkTypes()">
+        <form accept-charset="utf-8" enctype="multipart/form-data" class="stdform stdform2 ng-pristine" ng-submit="processWorkTypes()" name="workTypesForm">
             <table class="table responsive">
                 <thead>
                 <tr>
-                    <th colspan="2">Nombre</th>
+                    <th>Nombre</th>
+                    <th>Borrar</th>
                 </tr>
 
                 </thead>
@@ -15,14 +16,14 @@
                     <td><span ng-click="deleteWorkType($index)" class="icon fa fa-trash-o" style="cursor: pointer;"></span></td>
                 </tr>
                 <tr>
-                    <td colspan="3">
-                        <a class="btn btn-default button-orange" ng-click="addWorkType()"><span class="table-icon fa fa-plus"></span> Tipo de trabajo</a>
+                    <td colspan="2">
+                        <a class="btn btn-default button-orange" ng-click="addWorkType()"><span class="table-icon fa fa-plus"></span></a>
                     </td>
                 </tr>
                 </tbody>
             </table>
             <p class="stdformbutton">
-                <button class="btn btn-primary">Guardar</button>
+                <button class="btn btn-primary" ng-disabled="!workTypesForm.$dirty">Guardar</button>
             </p>
         </form>
     </div>

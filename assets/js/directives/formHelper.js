@@ -4,6 +4,8 @@
         var ad = 1;
         $scope.ad = 1;
         //$scope.saveText = '';
+        $scope.customvalidation = typeof $scope.customvalidation=='undefined'?'t':$scope.customvalidation;
+        console.log('c: ' + $scope.customvalidation );
         $scope.object = $scope.object || {};
         $scope.formClass = $scope.modal ? '' : 'widgetcontent nopadding';
         $scope.changed = false;
@@ -118,7 +120,8 @@
                 objects : '=',
                 currency : '=',
                 restrict : '@',
-                hiddenFields : '='
+                hiddenFields : '=',
+                customvalidation : '@'
         	},
         	templateUrl : '/template/find/formHelper.html'
         };

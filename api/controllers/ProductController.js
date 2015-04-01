@@ -304,7 +304,18 @@ module.exports = {
 		},function(e,product){
 			res.json(formatProduct(product));
 		});
-	}    
+	}
+  , destroyIcon: function(req,res){
+      form = req.params.all();
+    Product.destroyAvatar(req,{
+      dir : 'products',
+      profile: 'avatar',
+      id : form.id,
+    },function(e,user){
+      if(e) console.log(e);
+      return res.redirect("product/edit/" + user.id);
+    });
+  }    
 };
 function formatProduct(product){
 	if(product){

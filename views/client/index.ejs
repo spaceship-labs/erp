@@ -17,7 +17,7 @@
             </div>
             <div class="widgetcontent custom-table nopadding">
                 <table class="table table-striped">
-                    <tr>
+                    <tr class='hide-sm'>
                         <th><%= __('client-nombre') %></th>
                         <th><%= __('client-direccion') %></th>
                         <th><%= __('client-contacto') %></th>
@@ -27,12 +27,18 @@
                     </tr>
                     <% for(var i = 0; i< clients.length; i++){ %>
                     <tr>
-                        <td data-title="Nombre"><%= clients[i].name %></td>
-                        <td data-title="Direccion"><%= clients[i].address %></td>
-                        <td data-title="Telefono"><%= clients[i].phone %></td>
-                        <td data-title="RFC"><%= clients[i].rfc %></td>
-                        <td data-title="Accion"><a href="/clientes/editar/<%= clients[i].id %>"><span class="table-icon fa fa-edit"></span></a></td>
-                        <td><a style="cursor: pointer" ng-click="destroyObject(object,key)" class="fa fa-trash-o"></a></td>
+                        <td class='show-sm th'>
+                            <a class='pull-right btn' ng-click="isHiden[<%= i %>]=!isHiden[<%= i %>]"><i class='fa fa-{{!isHiden[<%= i %>]?"plus":"minus"}}'></i> {{!isHiden[<%= i %>]?'Expandir':'Cerrar'}}</a>
+                            <span>
+                            cliente: <strong><%= clients[i].name %></strong>
+                            </span>
+                        </td>
+                        <td ng-class='!isHiden[<%= i %>]?"hide-row":""' data-title="Nombre"><%= clients[i].name %></td>
+                        <td ng-class='!isHiden[<%= i %>]?"hide-row":""' data-title="Direccion"><%= clients[i].address %></td>
+                        <td ng-class='!isHiden[<%= i %>]?"hide-row":""' data-title="Telefono"><%= clients[i].phone %></td>
+                        <td ng-class='!isHiden[<%= i %>]?"hide-row":""' data-title="RFC"><%= clients[i].rfc %></td>
+                        <td ng-class='!isHiden[<%= i %>]?"hide-row":""' data-title="Editar"><a href="/clientes/editar/<%= clients[i].id %>"><span class="table-icon fa fa-edit"></span></a></td>
+                        <td ng-class='!isHiden[<%= i %>]?"hide-row":""'><a style="cursor: pointer" ng-click="destroyObject(object,key)" class="fa fa-trash-o"></a></td>
                     </tr>
                     <% } %>
                 </table>
