@@ -38,7 +38,7 @@ $(document).ready(function() {
             if(data.status == false) {
               swal({   title: "Error!",   text: data.msg,   type: "error",   confirmButtonText: "OK" });
             } else {
-              window.location = "/home/login";
+              window.location = "/entrar";
             }
           },
           error: function (data) {

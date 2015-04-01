@@ -7,7 +7,7 @@
             <ul>
                 <li><a href="/user/edit/<%=req.user.id%>"><%= __('h-edit') %></a></li>
                 <!-- <li><a href="">Configuracion de cuenta</a></li> -->
-                <li><a href="/home/logout"><%= __('h-sesion') %></a></li>
+                <li><a href="/salir"><%= __('h-sesion') %></a></li>
                 <li ng-controller="switchLangCTL" class="switch-lang">
                     <script>
                         window.currentLang = '<%- req.session.lang %>';                        
