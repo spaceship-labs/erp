@@ -15,8 +15,6 @@ module.exports.policies = {
 
   '*' : ['authorize','localize'],
   
-  SessionController: { '*': true },
-
   SessionController: {
     new: 'open',
     auth: 'open',

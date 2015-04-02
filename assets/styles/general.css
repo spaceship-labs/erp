@@ -2355,3 +2355,11 @@ select {width: 220px;border: 1px solid #cccccc;background-color: #ffffff;}
 .peoplelist, .editar-hotel, .editar-usuario, .editar-aeropuerto, .ng-calendar-frame, .custom-table, .editar-reservacion, .editar-location, .editar-tour, .editar-transfer, .editar-package-tour {display: block !important;}
 #cargando-elementos.ng-cloak{display: block!important;}
 #cargando-elementos{width: 100%;text-align: center;display: none !important;}
+
+.header .logo {
+  border-right: rgba(255,255,255,0.15) 1px solid;
+  height: 100%;
+}
+.accordion-toggle {
+	cursor: pointer;
+}
