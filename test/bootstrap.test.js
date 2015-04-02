@@ -1,4 +1,5 @@
 var Sails = require('sails');
+require('should');
 
 before(function(done) {
   Sails.lift({
@@ -20,6 +21,5 @@ before(function(done) {
 });
 
 after(function(done) {
-  // here you can clear fixtures, etc.
   Sails.lower(done);
 });

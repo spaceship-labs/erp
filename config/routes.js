@@ -21,72 +21,68 @@
 
 module.exports.routes = {
 
-
-  // Make the view located at `views/homepage.ejs` (or `views/homepage.jade`, etc. depending on your
-  // default view engine) your home page.
-  // 
-  // (Alternatively, remove this and add an `index.html` file in your `assets` directory)
   '/': {
-    //view: 'controller'
      controller:'home'
   },
+  '/entrar': {
+    controller: 'session',
+    action: 'new'
+  },
+  '/salir': {
+    controller: 'session',
+    action: 'destroy'
+  },
 
-  // Custom routes here...
 
-
-  // If a request to a URL doesn't match any of the custom routes above, it is matched 
-  // against Sails route blueprints.  See `config/blueprints.js` for configuration options
-  // and examples.
-
-    '/clientes' : {
-        controller : 'client',
-        action : 'index'
-    },
-
-    '/clientes/agregar' : {
-        controller : 'client',
-        action : 'add'
-    },
-
-    '/clientes/crear' : {
-        controller : 'client',
-        action : 'create'
-    },
-
-    '/clientes/editar/:id' : {
-        controller : 'client',
-        action : 'edit'
-    },
-
-    '/clientes/actualizar' : {
+  '/clientes' : {
       controller : 'client',
+      action : 'index'
+  },
+
+  '/clientes/agregar' : {
+      controller : 'client',
+      action : 'add'
+  },
+
+  '/clientes/crear' : {
+      controller : 'client',
+      action : 'create'
+  },
+
+  '/clientes/editar/:id' : {
+      controller : 'client',
+      action : 'edit'
+  },
+
+  '/clientes/actualizar' : {
+    controller : 'client',
+    action : 'update'
+  },
+
+  '/ventas' : {
+      controller : 'sale',
+      action : 'index'
+  },
+
+  '/ventas/agregar' : {
+      controller : 'sale',
+      action : 'add'
+  },
+
+  '/ventas/crear' : {
+      controller : 'sale',
+      action : 'create'
+  },
+
+  '/ventas/editar/:id' : {
+      controller : 'sale',
+      action : 'edit'
+  },
+
+  'product_type/update' : {
+      controller : 'product_type',
       action : 'update'
-    },
-
-    '/ventas' : {
-        controller : 'sale',
-        action : 'index'
-    },
-
-    '/ventas/agregar' : {
-        controller : 'sale',
-        action : 'add'
-    },
-
-    '/ventas/crear' : {
-        controller : 'sale',
-        action : 'create'
-    },
-
-    '/ventas/editar/:id' : {
-        controller : 'sale',
-        action : 'edit'
-    },
-
-    'product_type/update' : {
-        controller : 'product_type',
-        action : 'update'
-    }
+  }
 
 
 };

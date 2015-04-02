@@ -8,7 +8,7 @@
 module.exports = {
 	index: function(req,res){
 	  Company.find({},function(e,c){
-    	if(c.length > 0) return res.redirect('/home/login');
+    	if(c.length > 0) return res.redirect('/entrar');
 
 			Setup.preloadAlt(function(e,results){
 				Currency.find().exec(function(err,currencies){

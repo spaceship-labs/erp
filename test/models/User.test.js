@@ -1,4 +1,4 @@
-
+require("../bootstrap.test.js")
 var should = require('should');
 
 describe('User', function() {

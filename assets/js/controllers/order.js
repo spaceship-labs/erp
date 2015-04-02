@@ -482,3 +482,20 @@ app.controller('orderEditCTL',function($scope,$http,$window){
     $scope.updateDatesFormat();
     //$scope.printClient();
 });
+/*
+    Calcula el tiempo de pickup dependiendo del origen
+    Order: orden generando para tener todos los datos
+    Type: arrival o departure
+*/
+/*var getpickuptime function(order,type){
+    var result = false;
+    if(type=='arrival' && order.hotel && order.arrival_time && order.arrival_date){
+        var adate = moment(order.arrival_time);
+        var d = moment(order.arrival_date);
+        adate.hour(adate.hour());
+        adate.minute(adate.minute());
+
+        adate.subtract(order.zone.,'hour');
+        result = adate.toISOString();
+    }
+}*/

@@ -9,7 +9,7 @@
 		</tr>
 	</thead>
 	<tbody>
-		<tr ng-repeat='machine in machines'>
+		<tr ng-repeat='machine in machines | filter:searchText'>
 			<td ng-bind='machine.name' data-title="Nombre"></td>
             <td ng-bind='machine.machine_type' data-title="Tipo"></td>
 			<td ng-bind='machine.description' data-title="Descripcion"></td>

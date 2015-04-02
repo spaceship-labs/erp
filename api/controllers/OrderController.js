@@ -24,7 +24,7 @@ module.exports = {
   },
   neworder : function(req,res){
     var select_company = req.session.select_company || req.user.select_company;
-  	Client_.find({company:select_company}).sort('name').exec(function(e,clients_){ Hotel.find().sort('name').populate('location').populate('rooms').exec(function(e,hotels){ Tour.find().sort('name').exec(function(e,allTours){
+  	Client_.find({company:select_company}).sort('name').exec(function(e,clients_){ Hotel.find().sort('name').populate('location').populate('zone').populate('rooms').exec(function(e,hotels){ Tour.find().sort('name').exec(function(e,allTours){
   			Common.view(res.view,{
   				clients_ : clients_ ,
   				hotels:hotels ,

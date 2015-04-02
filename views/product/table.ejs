@@ -6,7 +6,7 @@
         <th>RFC</th>
         <th>Accion</th>
     </tr>
-     	<tr ng-repeat='product in products'>
+     	<tr ng-repeat='product in products | filter:searchText'>
 			<td  data-title="Nombre"><a href="#" ng-href='/product/edit/{{product.id}}' ng-bind='product.name'></a></td>
 			<td ng-bind='product.description' data-title="Descripcion"></td>
 			<td ng-bind='product.product_type.name' data-title="Tipo"></td>
