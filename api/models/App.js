@@ -6,18 +6,19 @@
 */
 
 module.exports = {
-
 	attributes: {
-		name:'string'
-		,handle:{
+		name:{
+			required : true,
+			type : 'string'
+		},
+		handle: {
 			index : true,
 			type : 'string'
+		},
+		companies : {
+			collection : 'company',
+			via : 'apps'
 		}
-		,companies : {
-			collection : 'company'
-			,via : 'apps'
-		}
-		
 	}
 };
 

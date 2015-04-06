@@ -7,16 +7,19 @@
 
 module.exports = {
   attributes: {
-  	name : 'string',
+    name : {
+      type : 'string',
+      required : true
+    },
   	location : {
-  		model 	: 'location'
+  		model : 'location'
   	},
   	zone : {
   		model : 'zone'
   	}
-  }
-  ,labels : {
-    es : 'Aeropuertos'
-    ,en : 'Airports'
+  },
+  labels : {
+    es : 'Aeropuertos',
+    en : 'Airports'
   }
 };

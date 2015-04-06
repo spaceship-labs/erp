@@ -1,5 +1,5 @@
 var Sails = require('sails');
-require('should');
+var should = require('should');
 
 before(function(done) {
   Sails.lift({
