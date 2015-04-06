@@ -3,7 +3,7 @@
         $scope.translates = $rootScope.translates;
         var options = {
             'sort' : 'updatedAt desc',
-            'limit' : 20
+            'limit' : 10
         }
         io.socket.get('/notice/find',options,function(data){
             if(!data)
