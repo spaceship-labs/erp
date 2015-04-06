@@ -9,11 +9,12 @@ module.exports = {
 	index: function(req,res){
 		Tour.find({}).sort('name').exec(function(e,tours){
 			SeasonScheme.find().sort('name').exec(function(e,schemes){
-				Location.find({}).sort('name').exec(function(e,locations){
+				Location.find({}).sort('name').exec(function(e,locations){ TourProvider.find().exec(function(e,providers){
 					Common.view(res.view,{
 						tours:tours,
 						schemes:schemes,
 						locations:locations,
+						providers : providers,
 						page:{
 							name:req.__('sc_tour'),
 							icon:'fa fa-compass',
@@ -23,7 +24,7 @@ module.exports = {
 							{label : req.__('sc_tour')}
 						]
 					},req);	
-				});
+				}); });
 			});
 		});
 	},
@@ -45,11 +46,14 @@ module.exports = {
 		Tour.findOne(req.params.id).exec(function(e,tour){
 			if(e) return res.redirect("/tour/");
 			Location.find({}).sort('name').exec(function(e,locations){
-	    			SeasonScheme.find().sort('name').exec(function(e,schemes){
+	    		SeasonScheme.find().sort('name').exec(function(e,schemes){ TourProvider.find().exec(function(e,providers){
+	    			if(tour.provider)
+	    				tour.provider = tour.provider.id || tour.provider;
 					Common.view(res.view,{
 						tour:tour,
 						locations:locations,
 						schemes:schemes,
+						providers : providers,
 						page:{
 							saveButton : true,
 							name:tour.name,
@@ -61,7 +65,7 @@ module.exports = {
 							{label : tour.name},
 						]
 					},req);				
-				});
+				}); });
 			});
 		});
 	},

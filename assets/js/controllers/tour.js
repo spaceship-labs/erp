@@ -4,6 +4,7 @@ app.controller('tourCTL',function($scope,$http,$window,$rootScope){
     $scope.locations = locations;
     $scope.schemes = schemes;
     $scope.company = company;
+    $scope.providers = providers;
 	$scope.getInfo = function(tour){
         tour.createdAt=(moment(tour.createdAt).format('LL'));
         tour.updatedAt=(moment(tour.updatedAt).format('LL'));
@@ -28,12 +29,14 @@ app.controller('tourCTL',function($scope,$http,$window,$rootScope){
 app.controller('tourEditCTL',function($scope,$http,$window){
     $scope.schemes = schemes;
     $scope.locations = locations;
+    $scope.providers = providers;
     $scope.tour = tour;
     $scope.user = user;
     io.socket.get('/tour/find/'+tour.id,function(data,jwres){
         $scope.tour = data;
-	$scope.tour.seasonScheme = data.seasonScheme && data.seasonScheme.id || null;
-	$scope.tour.location = data.location && data.location.id || null;
+	    $scope.tour.seasonScheme = data.seasonScheme && data.seasonScheme.id || null;
+        $scope.tour.location = data.location && data.location.id || null;
+	    $scope.tour.provider = data.provider && data.provider.id || null;
         $scope.$apply();
     });
 	$scope.content = content;

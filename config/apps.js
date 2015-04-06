@@ -250,6 +250,16 @@ module.exports.apps = [
                 action : 'index'
             },
             {
+                label : 'Proveedores de Tours',
+                label_en : 'Tours Providers',
+                icon : 'fa-compass',
+                url : '/tourprovider/',
+                handle : 'toursprovider',
+                showInMenu : true,
+                controller : 'tourprovider',
+                action : 'index'
+            },
+            {
                 label : 'Traslados',
                 label_en : 'Transfers',
                 icon : 'fa-road',

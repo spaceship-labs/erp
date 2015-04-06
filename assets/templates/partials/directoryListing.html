@@ -29,8 +29,9 @@
 			<div class="span6 widgetbox" ng-repeat='object in objects | filter:objectFilter' ng-cloak class="ng-cloak">
 				<div class="headtitle">         
 					<h4 class="widgettitle">
-						{{object.name}}
+						<a class='text-limit'>{{object.name}}</a>
 						<li><a ng-href="{{editUrl}}{{object.id}}">{{translates.d_edit}}</a></li><li><a ng-href="{{editUrl}}{{object.id}}"><span class = "fa fa-pencil"></span></a></li>
+						<div class='clear'></div>
 					</h4>
 				</div>
 				<div class="widgetcontent" >

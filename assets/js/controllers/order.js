@@ -208,11 +208,22 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
             $scope.transfer.fee = 0;
         }
         $scope.updateDatesFormat();
+        if( transfer.arrival_time )
+            transfer.arrivalpickup_time = getpickuptime(transfer,'arrival');
+        if( transfer.departure_time )
+            transfer.departurepickup_time = getpickuptime(transfer,'departure');
     };
+    $scope.getpickuptime = function(){
+        var transfer = $scope.transfer;
+        if( transfer.arrival_time )
+            transfer.arrivalpickup_time = getpickuptime(transfer,'arrival');
+        if( transfer.departure_time )
+            transfer.departurepickup_time = getpickuptime(transfer,'departure');
+    }
     //obtiene los servicios que están disponibles dependiendo de las zonas que se elijan 
     $scope.getTransfers = function(){
         if( $scope.transfer.hotel.zone && $scope.transfer.airport.zone ){
-            var params = { zone1 : $scope.transfer.hotel.zone , zone2 : $scope.transfer.airport.zone };
+            var params = { zone1 : $scope.transfer.hotel.zone.id , zone2 : $scope.transfer.airport.zone };
             console.log(params);
             $http({method: 'POST', url: '/order/getAvailableTransfers',params:params}).success(function (result){
                 console.log('prices');console.log(result);
@@ -385,6 +396,23 @@ app.controller('orderEditCTL',function($scope,$http,$window){
                 $scope.transfer.fee = 0;
             }
             $scope.updateDatesFormat();
+            if( transfer.arrival_time )
+                transfer.arrivalpickup_time = getpickuptime(transfer,'arrival');
+            if( transfer.departure_time )
+                transfer.departurepickup_time = getpickuptime(transfer,'departure');
+        }
+    };
+    //obtiene los servicios que están disponibles dependiendo de las zonas que se elijan 
+    $scope.getTransfers = function(){
+        if( $scope.transfer.hotel.zone && $scope.transfer.airport.zone ){
+            var params = { zone1 : $scope.transfer.hotel.zone.id , zone2 : $scope.transfer.airport.zone };
+            console.log(params);
+            $http({method: 'POST', url: '/order/getAvailableTransfers',params:params}).success(function (result){
+                console.log('prices');console.log(result);
+                $scope.transfers = result;
+                console.log('transfers available');
+                console.log(result);
+            });
         }
     };
     $scope.printClient = function(){
@@ -487,15 +515,25 @@ app.controller('orderEditCTL',function($scope,$http,$window){
     Order: orden generando para tener todos los datos
     Type: arrival o departure
 */
-/*var getpickuptime function(order,type){
+var getpickuptime = function(order,type){
     var result = false;
-    if(type=='arrival' && order.hotel && order.arrival_time && order.arrival_date){
-        var adate = moment(order.arrival_time);
-        var d = moment(order.arrival_date);
-        adate.hour(adate.hour());
-        adate.minute(adate.minute());
-
-        adate.subtract(order.zone.,'hour');
-        result = adate.toISOString();
+    if(type=='departure' && order.hotel && order.departure_time && order.departure_date){
+        var aux = new Date(order.departure_time);
+        var adate = new Date(order.departure_date);
+        adate.setHours(aux.getHours());
+        adate.setMinutes(aux.getMinutes());
+        var d = moment(adate.toISOString());
+        console.log('Hrs: ' + order.hotel.zone.pickup_hrs);
+        d.subtract(parseInt(order.hotel.zone.pickup_hrs),'hours');
+        result = d.format();
     }
-}*/
+    if( type=='arrival' && order.arrival_time && order.arrival_date ){
+        var aux = new Date(order.arrival_time);
+        var adate = new Date(order.arrival_date);
+        adate.setHours(aux.getHours());
+        adate.setMinutes(aux.getMinutes());
+        var d = moment(adate.toISOString());
+        result = d.format();
+    }
+    return result;
+}

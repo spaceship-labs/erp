@@ -351,6 +351,13 @@ module.exports.content = {
 			handle : 'duration',
 		},
 		{
+			label : 'Proveedor',
+			label_en : 'LocationProvider',
+			type : 'select',
+			handle : 'provider',
+			object : 'providers'
+		},
+		{
 			label : 'Ubicación',
 			label_en : 'Location',
 			type : 'select',
@@ -1469,6 +1476,40 @@ module.exports.content = {
 			,label_en : 'Found'
 			,type : 'checkbox'
 			,handle : 'found'
+		}
+	]
+	,tourprovider : [
+		{
+			label : 'Nombre'
+			,label_en : 'Name'
+			,type : 'text'
+			,handle : 'name'
+			,required : true
+		}
+		,{
+			label: 'Dirección'
+			,label_en : 'Address'
+			,type : 'text'
+			,handle : 'address'
+		}
+		,{
+			label : 'Ciudad'
+			,label_en : 'City'
+			,type : 'select'
+			,handle : 'location'
+			,object : 'locations'
+		}
+		,{
+			label : 'País'
+			,label_en : 'Country'
+			,type : 'text'
+			,handle : 'country'
+		}
+		,{
+			label : 'Crédito'
+			,label_en : 'Credit'
+			,type : 'checkbox'
+			,handle : 'isCredit'
 		}
 	]
 };

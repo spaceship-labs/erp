@@ -1,0 +1,33 @@
+<script type='text/javascript'>
+	window.providers = <%- JSON.stringify(providers) %>;
+	window.locations = <%- JSON.stringify(locations) %>;
+</script>
+<div ng-controller="tourproviderCTL">
+	<div directory-listing 
+		objects='providers' 
+		keywords='searchInput' 
+		dir='providers' 
+		edit-url='/tourprovider/edit/' 
+		get-info='getInfo'
+		name-var='nombre_completo'
+		button-text='Proveedor nuevo'
+	></div>
+	<div class="modal fade" id="myModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div 
+					form-helper 
+			        fields='content.tourprovider' 
+			        form-footer='<%= __('order-agregar')%>'
+			        form-save = 'createTourProvider'
+			        object = 'provider'
+			        form-title='<%= __('tour-agregar')%>'
+			       	modal='true'
+			        objects='{locations:locations}'
+			       	currency='company.base_currency'
+			        >
+			    </div>	
+			</div>
+		</div>
+	</div>
+</div>
