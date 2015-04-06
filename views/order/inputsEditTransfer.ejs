@@ -72,7 +72,7 @@
                 <label><%= __('order-llegada')%></label>
                 <span class='field'>
                     <span class='input-group calendar-container'>
-                        <input is-open="open[0]" ng-model='transfer.arrival_date' datepicker-popup />
+                        <input is-open="open[0]" ng-model='transfer.arrival_date' datepicker-popup ng-change="getpickuptime()" />
                         <span class="input-group-btn">
                             <button type="button" class="btn btn-default" ng-click="open($event,0)"><i class="fa fa-calendar"></i></button>
                         </span>
@@ -89,7 +89,7 @@
             </p>
             <p>
                 <label><%= __('order-pickup')%></label>
-                <span class='field'><timepicker ng-model="transfer.arrivalpickup_time" ng-change="" hour-step="1" minute-step="1" show-meridian="ismeridian"></timepicker></span>
+                <span class='field'><timepicker ng-model="transfer.arrivalpickup_time" ng-change="getpickuptime()" hour-step="1" minute-step="1" show-meridian="ismeridian"></timepicker></span>
             </p>
         </div>
     </div>
@@ -100,7 +100,7 @@
                 <label><%= __('order-fecha-salida')%></label>
                 <span class='field'>
                     <span class='input-group calendar-container'>
-                        <input is-open="open[1]" ng-model='transfer.departure_date' datepicker-popup />
+                        <input is-open="open[1]" ng-model='transfer.departure_date' datepicker-popup ng-change="getpickuptime()" />
                         <span class="input-group-btn">
                             <button type="button" class="btn btn-default" ng-click="open($event,1)"><i class="fa fa-calendar"></i></button>
                         </span>
@@ -113,7 +113,7 @@
             </p>
             <p>
                 <label><%= __('order-hora-salida')%></label>
-                <span class='field'><timepicker ng-model="transfer.departure_time" ng-change="" hour-step="1" minute-step="1" show-meridian="ismeridian"></timepicker></span>
+                <span class='field'><timepicker ng-model="transfer.departure_time" ng-change="getpickuptime()" hour-step="1" minute-step="1" show-meridian="ismeridian"></timepicker></span>
             </p>
             <p>
                 <label> <%= __('order-pickup')%></label>

@@ -7,11 +7,11 @@
 var moment = require('moment');
 module.exports = {
 	index : function(req,res){
-		Hotel.find({company: req.session.select_company}).sort('name DESC').exec(function(e,hotels){
+		Hotel.find({company: req.session.select_company}).sort('name DESC').populate('location').exec(function(e,hotels){
 			if(e) throw(e);
 			Location.find().sort('name').exec(function(e,locations){
 				if(e) throw(e);
-				HotelCategory.find().sort('name').exec(function(e,categories){
+				SeasonScheme.find().sort('name').exec(function(e,schemes){
 					if(e) throw(e);
 					FoodScheme.find().sort('name').exec(function(e,foodSchemes){
 						hotels = formatHotels(hotels);
@@ -19,8 +19,9 @@ module.exports = {
 							hotels:hotels,
 							locations:locations,
 							zones:[],
-							categories : categories,
+							schemes : schemes,
 							foodSchemes : foodSchemes,
+							_content:sails.config.content,
 							page:{
 								name:req.__('sc_hotels')
 								,description: req.__('sc_hotels_desc')

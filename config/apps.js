@@ -250,6 +250,16 @@ module.exports.apps = [
                 action : 'index'
             },
             {
+                label : 'Proveedores de Tours',
+                label_en : 'Tours Providers',
+                icon : 'fa-compass',
+                url : '/tourprovider/',
+                handle : 'toursprovider',
+                showInMenu : true,
+                controller : 'tourprovider',
+                action : 'index'
+            },
+            {
                 label : 'Traslados',
                 label_en : 'Transfers',
                 icon : 'fa-road',
@@ -287,6 +297,34 @@ module.exports.apps = [
                 showInMenu : true
                 ,handle : 'cuponSingle'
                 ,controller : 'cuponSingle'
+                ,action : 'index'
+            }
+        ]
+    }
+    ,{
+        name : 'claims'
+        ,label : 'Quejas y Objetos perdidos'
+        ,label_en : 'Claims and Lost&Found'
+        ,icon : 'fa-exclamation'
+        ,actions : [
+            {
+                label : 'Quejas'
+                ,label_en : 'Claims'
+                ,icon : 'fa-exclamation'
+                ,url : '/claim/'
+                ,showInMenu : true
+                ,handle : 'claim'
+                ,controller : 'claim'
+                ,action : 'index'
+            }
+            ,{
+                label : 'Objetos perdidos'
+                ,label_en : 'Lost&Found'
+                ,icon : 'fa-question'
+                ,url : '/lostandfound/'
+                ,showInMenu : true
+                ,handle : 'claim'
+                ,controller : 'claim'
                 ,action : 'index'
             }
         ]

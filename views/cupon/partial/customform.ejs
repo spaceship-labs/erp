@@ -1,0 +1,106 @@
+<div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	<h4 class="modal-title">Agregar cupón</h4>
+</div>
+<form ng-class='formClass' class="form stdform stdform2" name="form">
+	<p>
+		<label>Nombre*</label>
+		<span class="field">
+			<input type='text' name='name' class='form-control' ng-model='cupon.name' required='required' ng-class="{ 'has-error' : form['name'].$invalid && !form['name'].$pristine }" />
+		</span>
+	</p>
+	<p>
+		<label>Descuento general</label>
+		<span class="field">
+			<input type='text' name='gral_discount' class='form-control' ng-model='cupon.gral_discount' />
+		</span>
+	</p>
+	<p>
+		<label>Días de duración*</label>
+		<span class="field">
+			<input type='text' name='days' class='form-control' ng-model='cupon.days' required='required' ng-class="{ 'has-error' : form['days'].$invalid && !form['days'].$pristine }" />
+		</span>
+	</p>
+	<p>
+		<label>Hoteles disponibles</label>
+		<span class="field">
+			<select chosen multiple
+					ng-options='obj as obj.name for obj in hotels'
+					ng-model='cupon.hotels' ></select>
+		</span>
+	</p>
+	<p>
+		<label>Tours disponibles</label>
+		<span class="field">
+			<select chosen multiple
+					ng-options='obj as obj.name for obj in tours'
+					ng-model='cupon.tours' ></select>
+		</span>
+	</p>
+	<p>
+		<label>Servicios disponibles</label>
+		<span class="field">
+			<select chosen multiple
+					ng-options='obj as obj.name for obj in transfers'
+					ng-model='cupon.transfers' ></select>
+		</span>
+	</p>
+	<p>
+		<label><a ng-click="advanced=!advanced">Opciones avanzadas <i class='fa fa-plus'></i></a></label>
+		<span class='clear'></span>
+	</p>
+	<div class='collapseCustom' collapse="!advanced">
+		<p>
+			<label>Descuento viaje sencillo</label>
+			<span class="field">
+				<input type='text' name='simple_discount' class='form-control' ng-model='cupon.simple_discount' />
+			</span>
+		</p>
+		<p>
+			<label>Descuento viaje redondo</label>
+			<span class="field">
+				<input type='text' name='round_discount' class='form-control' ng-model='cupon.round_discount' />
+			</span>
+		</p>
+		<p>
+			<label>Número máximo de pasajeros</label>
+			<span class="field">
+				<input type='text' name='max_pax' class='form-control' ng-model='cupon.max_pax' ng-class="{ 'has-error' : form['max_pax'].$invalid && !form['max_pax'].$pristine }" />
+			</span>
+		</p>
+		<p>
+			<label>Viaje redondo</label>
+			<span class="field">
+				<input type='checkbox' name='perpetuo' class='form-control' ng-checked='cupon.perpetuo' ng-model='cupon.round' />
+			</span>
+		</p>
+		<p>
+			<label>Viaje simple</label>
+			<span class="field">
+				<input type='checkbox' name='perpetuo' class='form-control' ng-checked='cupon.perpetuo' ng-model='cupon.simple' />
+			</span>
+		</p>
+		<p>
+			<label>Comienza en aeropuerto</label>
+			<span class="field">
+				<input type='checkbox' name='perpetuo' class='form-control' ng-checked='cupon.perpetuo' ng-model='cupon.airport' />
+			</span>
+		</p>
+		<p>
+			<label>Comienza en hotel</label>
+			<span class="field">
+				<input type='checkbox' name='hotel' class='form-control' ng-checked='cupon.hotel' ng-model='cupon.hotel' />
+			</span>
+		</p>
+		<p>
+			<label>Cupón perpetuo</label>
+			<span class="field">
+				<input type='checkbox' name='perpetuo' class='form-control' ng-checked='cupon.perpetuo' ng-model='cupon.perpetuo' />
+			</span>
+		</p>
+	</div>
+    <p class="stdformbutton">
+        <button ng-click='createCupon(cupon)' class="btn btn-primary" ng-disabled="form.$invalid">Crear cupón</button>
+        <button type="reset" class="btn reset">Limpiar campos</button>
+    </p>
+</form>

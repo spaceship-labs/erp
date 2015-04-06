@@ -16,29 +16,33 @@ var notification = function(type,collection,val){
         if(type == 'update'){
             Notice.findOne({modifyId:val.id}).sort('createdAt desc').exec(function(err,notice){
                 if(err) throw err;
-                var add = true;
-                if(notice && notice.val){
-                    var changes = {};
-                    add = false;
-                    obj.modifications = notice.modifications || [];
-                    for(var v in val){
-                        if(v!='req' && !Common.equals(notice.val[v],val[v])){
-                            changes[v] = {
-                                after:val[v]
-                                ,before:notice.val[v]
-                                ,dataType:Common.getCollectionAttrType(collection.attributes,v)
-                            }
-                            add = true;
-                        }
-                    }
-                    if(add){
-                        obj.modifications.unshift(changes);
-                    }
+                if(typeof notice == 'undefined'){
+                	saveAndPublish(obj);
+                }else{
+	                var add = true;
+	                if(notice && notice.val){
+	                    var changes = {};
+	                    add = false;
+	                    obj.modifications = notice.modifications || [];
+	                    for(var v in val){
+	                        if(v!='req' && !Common.equals(notice.val[v],val[v])){
+	                            changes[v] = {
+	                                after:val[v]
+	                                ,before:notice.val[v]
+	                                ,dataType:Common.getCollectionAttrType(collection.attributes,v)
+	                            }
+	                            add = true;
+	                        }
+	                    }
+	                    if(add){
+	                        obj.modifications.unshift(changes);
+	                    }
+	                }
+	                if(add){
+	                    obj.modelObjName = val.name;    
+	                    saveAndPublish(obj);
+	                }
                 }
-                if(add){
-                    obj.modelObjName = val.name;    
-                    saveAndPublish(obj);
-                }        
             });
         }else{
             saveAndPublish(obj);
@@ -60,13 +64,14 @@ module.exports = {
 	,before:function(val,action){
 		if(val.req && val.req.user){
 			var req = {
-				userId:val.req.user.id
-				,companyId:val.req.session.select_company || val.req.user.select_company
+				userId:val.req.user.companyId
+				,id:val.req.session.select_company || val.req.user.select_company
 				,app: val.req.options.controller
 			}
 			if(val.name)
 				req.modelObjName = val.name
 			val.req = req;
+			//console.log(val);
 		}
 	}
 };

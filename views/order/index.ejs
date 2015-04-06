@@ -13,7 +13,7 @@
 	</div>
 	<div class="widgetcontent custom-table nopadding ng-cloak">
         <table class="table table-striped">
-            <tr>
+            <tr class='hide-sm'>
                 <th> <%= __('order-id')%> </th>
                 <th> <%= __('order-usuario')%> </th>
                 <th> <%= __('order-empresa')%> </th>
@@ -34,33 +34,40 @@
                 <% } %>
             </tr>
             <tr ng-repeat='order in orders | filter:searchText'>
-                <td data-title="Id" ng-bind="order.id"></td>
-                <td data-title="Usuario" ng-bind="order.user.name + ' ' + order.user.last_name"></td>
-                <td data-title="Empresa" ng-bind="order.company.name"></td>
-                <td><ul>
+                <td class='show-sm th'>
+                    <a class='pull-right btn' ng-click="isHiden[$index]=!isHiden[$index]"><i class='fa fa-{{isHiden[$index]?"plus":"minus"}}'></i> {{isHiden[$index]?'Expandir':'Cerrar'}}</a>
+                    <span>Reserva para <strong ng-bind='order.company.name'></strong>, 
+                    creada por <strong ng-bind="order.user.name + ' ' + order.user.last_name"></strong>,
+                    Para <strong ng-bind="order.client.name + ' ' + order.client.last_name"></strong>
+                    </span>
+                </td>
+                <td ng-class='isHiden[$index]?"hide-row":""' data-title="<%= __('order-id')%>" ng-bind="order.id"></td>
+                <td ng-class='isHiden[$index]?"hide-row":""' data-title="<%= __('order-usuario')%>" ng-bind="order.user.name + ' ' + order.user.last_name"></td>
+                <td ng-class='isHiden[$index]?"hide-row":""' data-title="<%= __('order-empresa')%>" ng-bind="order.company.name"></td>
+                <td ng-class='isHiden[$index]?"hide-row":""' data-title='<%= __('order-llegada')%>'><ul>
                     <li>Vuelo: {{ order.transfer.arrival_fly  || '---' }}</li>
                     <li>Fecha: {{ formatDate(order.transfer.arrival_date) || '---' }} </li>
                     <li>Hora: {{ formatTime(order.transfer.arrival_time) || '---' }} </li>
                 </ul></td>
-                <td><ul>
+                <td ng-class='isHiden[$index]?"hide-row":""' data-title='<%= __('order-salida')%>'><ul>
                     <li>Vuelo: {{ order.transfer.departure_fly  || '---' }}</li>
                     <li>Fecha: {{ formatDate(order.transfer.departure_date) || '---' }} </li>
                     <li>Hora: {{ formatTime(order.transfer.departure_time) || '---' }} </li>
                 </ul></td>
-                <td>{{(order.client.name + ' ' + order.client.last_name) || "---" }}</td>
-                <td>{{order.transfer.hotel || "---" }}</td>
-                <td>{{order.transfer.airport || "---" }}</td>
-                <td>{{order.transfer.type || "---" }}</td>
-                <td>{{order.transfer.origin || "---" }}</td>
-                <td>{{order.transfer.state || "---" }}</td>
-                <td>{{order.transfer.payment_method || "---" }}</td>
-                <td data-title="Fecha">{{formatDate(order.createdAt)}}</td>
-                <td data-title="Total"><span  ng-bind="order.transfer.fee"></span></td>
+                <td ng-class='isHiden[$index]?"hide-row":""' data-title='<%= __('order-cliente')%>'>{{(order.client.name + ' ' + order.client.last_name) || "---" }}</td>
+                <td ng-class='isHiden[$index]?"hide-row":""' data-title='<%= __('order-hotel')%>'>{{order.transfer.hotel || "---" }}</td>
+                <td ng-class='isHiden[$index]?"hide-row":""' data-title='<%= __('order-aeropuerto')%>'>{{order.transfer.airport || "---" }}</td>
+                <td ng-class='isHiden[$index]?"hide-row":""' data-title='<%= __('order-tipo')%>'>{{order.transfer.type || "---" }}</td>
+                <td ng-class='isHiden[$index]?"hide-row":""' data-title='<%= __('order-origen')%>'>{{order.transfer.origin || "---" }}</td>
+                <td ng-class='isHiden[$index]?"hide-row":""' data-title='<%= __('order-estado')%>'>{{order.transfer.state || "---" }}</td>
+                <td ng-class='isHiden[$index]?"hide-row":""' data-title='<%= __('order-pago')%>'>{{order.transfer.payment_method || "---" }}</td>
+                <td ng-class='isHiden[$index]?"hide-row":""' data-title="Fecha">{{formatDate(order.createdAt)}}</td>
+                <td ng-class='isHiden[$index]?"hide-row":""' data-title="Total"><span  ng-bind="order.transfer.fee"></span></td>
                 <% if (req.user.hasPermission(req.res.locals.selected_company.id,'orders_e')) {%>
-                    <td data-title="Accion"><a href="/order/edit/{{order.id}}"><span class="table-icon fa fa-edit"></span></a></td>
+                    <td ng-class='isHiden[$index]?"hide-row":""' data-title="Editar"><a href="/order/edit/{{order.id}}"><span class="table-icon fa fa-edit"></span></a></td>
                 <% } %>
                 <% if (req.user.hasPermission(req.res.locals.selected_company.id,'orders_d')) {%>
-                    <td data-title="Accion"><a href="/order/edit/{{order.id}}"><span class="table-icon fa fa-trash-o"></span></a></td>
+                    <td ng-class='isHiden[$index]?"hide-row":""' data-title="Cancelar"><a href="/order/edit/{{order.id}}"><span class="table-icon fa fa-trash-o"></span></a></td>
                 <% } %>
             </tr>
         </table>

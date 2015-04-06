@@ -28,10 +28,12 @@ module.exports = {
 		cb()
 	}
 	,afterUpdate: function(val,cb){
+		console.log('afterUpdate: room');
 		Notifications.after(Room,val,'update');
 		cb();
 	}
 	,beforeUpdate:function(val,cb){
+		console.log('beforeUpdate: room');
 		Notifications.before(val);
 		cb();
 	}

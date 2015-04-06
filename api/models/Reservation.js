@@ -42,11 +42,11 @@ module.exports = {
 		//Notifications.after(Reservation,val,'create');
 		cb();
 	},afterUpdate: function(val,cb){
-		//console.log('afterUpdate');
+		console.log('afterUpdate: reservation');
 		//Notifications.after(Reservation,val,'update');
 		cb();
 	},beforeUpdate:function(val,cb){
-		//console.log('beforeUpdate');
+		console.log('beforeUpdate reservation');
 		//Notifications.before(val);
 		cb();
 	},beforeCreate: function(val,cb){

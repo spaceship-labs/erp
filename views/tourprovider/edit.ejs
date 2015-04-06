@@ -1,0 +1,46 @@
+<script type='text/javascript'>
+    window.provider = <%- JSON.stringify(provider) %>;
+    window.locations = <%- JSON.stringify(locations) %>;
+</script>
+<div ng-controller='tourproviderEditCTL' class="ng-cloak">
+    <div class='row'>
+        <div class="col-md-6">
+            <div form-helper 
+                fields='content.tourprovider' 
+                object='provider' 
+                action='/tourprovider/update' 
+                form-title='<%= __('tour-info')%>'
+                currency='company.base_currency'
+                objects='{locations:locations}'
+                ></div>
+        </div>
+    </div>
+    <div class='row' ng-if="provider.tours">
+        <div class="col-md-12">
+            <div class="widgetcontent custom-table nopadding ng-cloak">
+                <h4 class='widgettitle'>Tours</h4>
+                <table class='table table-striped'>
+                    <tr class='hide-sm'>
+                        <th>Nombre</th>
+                        <th>Precio</th>
+                        <th>Personas</th>
+                        <th>Ciudad</th>
+                    </tr>
+                    <tr ng-repeat="t in provider.tours">
+                        <td data-title="Nombre" ng-bind="t.name"></td>
+                        <td data-title="Precio" ng-bind="t.fee"></td>
+                        <td data-title="Personas" ng-bind="t.pax"></td>
+                        <td data-title="Ciudad" ng-bind="t.location"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class='clear'></div>
+    <div delete-button url='/tourprovider' redirect-url='/tourprovider' object='provider' user='user'></div>
+    <br/>
+</div>
+<div id="cargando-elementos" class="ng-cloak">
+    <img src="/images/loaders/images-cm.gif">
+</div>

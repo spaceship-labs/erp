@@ -11,8 +11,7 @@
         </div>
       </div>
     </div>
-
-    <div class="par">
+    <div class="par" ng-hide="isAdmin">
       <label>Ver sólo mis datos <br> *Representante</label>
       <div class="field">
         <div class="editable-buttons">
@@ -21,45 +20,42 @@
         </div>
       </div>
     </div>
-
-    <div class="par" ng-if="!isAdmin">
-      <label><%= __('user-perfil')%></label>
-      <div class="field">
-        <div class="editable-buttons">
-          <select ng-options="s as s.name for s in user_roles" ng-model="user.role" chosen="user_roles"></select>
-          <a class="btn btn-default" data-toggle="modal" data-target="#userRoleModal"><span class="table-icon fa fa-edit"></span></a>
-        </div>
-      </div>
-    </div>
-
-    <div class="par" ng-if="!isAdmin && (!user.role || user.role.name == 'Ninguno')">
-      <accordion close-others='false'>
-        <accordion-group heading="{{app.label}}" ng-repeat="app in apps | filter:filterApp" style="" data-target="#ElementToExpandOnClick">
-          <table class="table responsive">
-            <thead>
-            <tr>
-              <th><%= __('user-permiso')%></th>
-              <th><%= __('user-escoger')%></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat='action in app.actions | filter:onlyRestricted' ng-init="permission = getPermission(action.handle)">
-              <td>
-                <label ng-bind='action.label' for="{{action.handle}}"></label>
-              </td>
-              <td>
-                <div class="checkbox">
-                  <label>
-                    <input type="checkbox" id="{{action.handle}}" ng-model="permission.value" />
-                  </label>
+        <div class="par" ng-if="!isAdmin">
+            <label><%= __('user-perfil')%></label>
+            <div class="field">
+                <div class="editable-buttons">
+                    <select ng-options="s as s.name for s in user_roles" ng-model="user.role" chosen="user_roles"></select>
+                    <a class="btn btn-default" data-toggle="modal" data-target="#userRoleModal"><span class="table-icon fa fa-edit">{{user.role.name == 'Ninguno'?'Crear':'Editar'}}</span></a>
                 </div>
-              </td>
-            </tr>
-            </tbody>
-          </table>
-        </accordion-group>
-      </accordion>
+            </div>
+        </div>
+        <!--<div class="par" ng-if="!isAdmin && (!user.role || user.role.name == 'Ninguno')">
+            <accordion close-others='false'>
+                <accordion-group heading="{{app.label}}" ng-repeat="app in apps | filter:filterApp" style="cursor: pointer;">
+                    <table class="table responsive">
+                        <thead>
+                        <tr>
+                            <th><%= __('user-permiso')%></th>
+                            <th><%= __('user-escoger')%></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat='action in app.actions | filter:onlyRestricted' ng-init="permission = getPermission(action.handle)">
+                            <td>
+                                <label ng-bind='action.label' for="{{action.handle}}"></label>
+                            </td>
+                            <td>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" id="{{action.handle}}" ng-model="permission.value" />
+                                    </label>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </accordion-group>
+            </accordion>
+        </div>-->
     </div>
   </div>
-</div>
-

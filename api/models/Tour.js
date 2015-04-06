@@ -21,6 +21,9 @@ module.exports = {
 		},
 		fee : 'decimal',
 		fee_child : 'decimal'
+		,provider : {
+			model : 'tourprovider'
+		}
 	}
 	,labels : {
         es : 'Tours'

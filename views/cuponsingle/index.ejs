@@ -6,7 +6,7 @@
 <div ng-controller='cuponSingleCTL' >
     <p><button class="btn btn-primary" data-toggle="modal" data-target="#myModal"><i class='fa fa-plus'></i> <%= __('cupon_addInstancia')%></button></p>
     <br> 
-    <div table-helper inline-edit="/foodscheme/update/" objects='cuponsSingle' columns='content.cuponSingle' route='cuponsingle'></div>
+    <div table-helper objects='cuponsSingle' columns='content.cuponSingle' route='cuponsingle'></div>
 	<div class="modal fade" id="myModal">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -16,9 +16,11 @@
 			        form-footer='<%= __('cupon_generate')%>'
 			        form-save = 'createInstance'
 			        object = 'instance'
-				objects='{cupon:cupon}'
+					objects='{cupon:cupon}'
 			        form-title='<%= __('cupon_addInstancia')%>'
 			       	modal='true'
+			       	onchanges = "{'validateToken' : validateToken}"
+			       	customvalidation = "{{customvalidation}}";
 			        >
 			    </div>
 			</div>
