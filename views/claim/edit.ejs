@@ -1,0 +1,78 @@
+<script type='text/javascript'>
+	window.claim = <%- JSON.stringify(claim) %>;
+	window.content = <%- JSON.stringify(_content) %>;
+	window.user = <%- JSON.stringify(current_user) %>;
+	console.log(claim);
+</script>
+<div ng-controller='claimEditCTL' >
+	<p>
+		<a class='btn btn-primary' ng-click="">Generar reporte</a>
+	</p>
+	<br>
+	<div class='row'>
+		<div class='co-sm-12'>
+			<div class="widgetbox stdform stdform2">
+	            <div class='headtitle'>
+	                <h4 class="widgettitle">Orden de reserva</h4>
+	            </div>
+	            <div class='widgetcontent nopadding'>
+	                <p>
+	                    <label>Folio</label>
+	                    <span class='field'><input ng-change="getOrder()" type='text' name='folio' ng-model="claim.order"></span>
+	                </p>
+	            </div>
+	        </div>
+	        <div class="widgetbox" ng-if='theorder'>
+	        	<table class='table table-invoice'>
+	        		<tr>
+	        			<td>Cliente</td>
+	        			<td>
+	        				<p><strong>Nombre:</strong> {{theorder.client.name}} {{theorder.client.last_name}}</p>
+	        				<p><strong>Email:</strong> {{theorder.client.email}}</p>
+	        				<p><strong>Teléfono:</strong> {{theorder.client.phone}}</p>
+	        			</td>
+	        		</tr>
+	        		<tr>
+	        			<td>Fechas</td>
+	        			<td>
+	        				<p><strong>Reservado:</strong> {{formatDate(theorder.createdAt)}}</p>
+	        			</td>
+	        		</tr>
+	        		<tr>
+	        			<td>Reservas</td>
+	        			<td>
+	        				<div ng-repeat="reserv in theorder.reservations">
+	        					<p><strong>Reserva de: {{reserv.reservation_type}} | {{reserv.state}} </strong></p>
+	        					<p>Agencia: {{theorder.company.name}} </p>
+	        					<p>Número de personas: {{reserv.pax}} </p>
+	        					<p>Método de pago: {{reserv.payment_method}} </p>
+	        					<p>Monto: {{reserv.fee | currency}}</p>
+	        				</div>
+	        			</td>
+	        		</tr>
+	        	</table>
+	        </div>
+	        <br>
+	        <div class="widgetbox stdform stdform2">
+	        	
+			</div>
+		</div>
+	</div>
+	<div class='row'>
+		<div class='col-md-6'>
+			<div form-helper
+                fields='content.claims'
+                form-title='<%= __("gral_basicInfo") %>'
+                object = 'claim'
+                action='/claim/update' 
+                objects='{claimtypes:claimtypes}' ></div>
+		</div>
+		<div class='col-md-6'>
+			<div form-helper
+                fields='content.claimResolve'
+                form-title='Seguimiento y Resolución'
+                object = 'claim'
+                action='/claim/update' ></div>
+		</div>
+	</div>
+</div>

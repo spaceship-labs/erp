@@ -2,15 +2,27 @@
 	window.hotels = <%- JSON.stringify(hotels) %>;
 	window.locations = <%- JSON.stringify(locations) %>;
 	window.zones = <%- JSON.stringify(zones) %>;
+	window.schemes = <%- JSON.stringify(schemes) %>;
+    window.foodSchemes = <%- JSON.stringify(foodSchemes) %>;
 </script>
 <div ng-controller='hotelCTL' >
 	<div directory-listing objects='hotels' searchInput='searchInput' dir='hotels' edit-url='/hotel/edit/' get-info='getInfo' button-text='<%= __('hotel-agregar') %>' ></div>
 
 	<div class="clearfix"></div>
-	<%- partial('new-hotel-modal') -%>
-
-
-
-
-
+	<div class="modal fade" id="myModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div form-helper 
+	                fields='content.hotel' 
+	                object='newHotel' 
+	                form-title='<%= __('machine-info') %>'
+	                form-footer='<%= __('machine-info') %>'
+	                objects='{locations:locations,schemes:schemes,zones:zones,categories:categories,foodSchemes:foodSchemes}'
+	                onchanges = "{'getZones' : getZones}"
+	                modal='true'
+	                >
+	            </div> 
+			</div>
+		</div>
+	</div>
 </div>

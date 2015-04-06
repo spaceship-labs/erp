@@ -58,6 +58,12 @@ module.exports.content = {
 			object : 'foodSchemes',
 			removeAction : '/hotel/removeFoodScheme',
 		},
+		{
+			label : "Visible en web"
+			,label_en : "Visible on web"
+			,type : 'checkbox'
+			,handle : 'visible'
+		}
 	],
 	locationRelacion : [
 		{
@@ -167,7 +173,13 @@ module.exports.content = {
 			label_en : 'Portuguese name',
 			type : 'text',
 			handle : 'name_pt',
-		},		
+		},
+		{
+			label : "Activo"
+			,label_en : "Active"
+			,type : 'checkbox'
+			,handle : 'active'
+		},
 		{
 			label : 'Vista',
 			label_en : 'View',
@@ -339,11 +351,24 @@ module.exports.content = {
 			handle : 'duration',
 		},
 		{
+			label : 'Proveedor',
+			label_en : 'LocationProvider',
+			type : 'select',
+			handle : 'provider',
+			object : 'providers'
+		},
+		{
 			label : 'Ubicación',
 			label_en : 'Location',
 			type : 'select',
 			handle : 'location',
 			object : 'locations'
+		},
+		{
+			label : "Visible en web"
+			,label_en : "Visible on web"
+			,type : 'checkbox'
+			,handle : 'visible'
 		},
 		{
 			label : 'Esquema de Temporadas',
@@ -576,6 +601,20 @@ module.exports.content = {
 			type 	: 'text',
 			required: false,
 			handle 	: 'name_en'
+		},
+		{
+			label 	: 'Precio viaje sencillo',
+			label_en : 'One Way',
+			type 	: 'text',
+			required: true,
+			handle 	: 'oneWay'
+		},
+		{
+			label 	: 'Precio viaje redondo',
+			label_en : 'Roundtrip',
+			type 	: 'text',
+			required: true,
+			handle 	: 'roundTrip'
 		},
 		{
 			label 	: 'URL ',
@@ -936,6 +975,12 @@ module.exports.content = {
     		type : 'text'
     	},
     	{
+			label : "Visible en web"
+			,label_en : "Visible on web"
+			,type : 'checkbox'
+			,handle : 'visible'
+		},
+    	{
     		label : 'Servicios Español (separar por enter)',
     		label_en : 'Spanish services (separate with enter)',
     		handle : 'services_es',
@@ -1183,8 +1228,8 @@ module.exports.content = {
     		type : 'text'
     	}
     ],
-	cupons : [
-		{
+    cupons : [
+    	{
 			label : 'Nombre',
 			label_en : 'Name',
 			type : 'text',
@@ -1192,58 +1237,10 @@ module.exports.content = {
 			required : true,
 		},
 		{
-			label : 'Descuento viaje sencillo',
-			label_en : 'One way discount',
-			type : 'text',
-			handle : 'simple_discount',
-		},
-		{
-			label : 'Descuento viaje redondo',
-			label_en : 'Round trip discount',
-			type : 'text',
-			handle : 'round_discount',
-		},
-		{
-			label : 'Numero máximo de pasajeros',
-			label_en : 'People max number',
-			type : 'text',
-			handle : 'max_passenger',
-		},
-		{
-			label : 'Viaje redondo',
-			label_en : 'Round trip',
-			type : 'checkbox',
-			handle : 'round',
-		},
-		{
-			label : 'Viaje simple',
-			label_en : 'One way',
-			type : 'checkbox',
-			handle : 'simple',
-		},
-		{
-			label : 'Comienza en aeropuerto',
-			label_en : 'Start at airport',
-			type : 'checkbox',
-			handle : 'airport',
-		},
-		{
-			label : 'Comienza en hotel',
-			label_en : 'Start at hotel',
-			type : 'checkbox',
-			handle : 'hotel',
-		},
-		{
 			label : 'Días de duración',
 			label_en : 'Duration days',
 			type : 'text',
 			handle : 'days',
-		},
-		{
-			label : 'Perpetuo',
-			label_en : 'Perpetual',
-			type : 'checkbox',
-			handle : 'perpetuo',
 		},
 		{
 			label : 'Hoteles',
@@ -1271,7 +1268,57 @@ module.exports.content = {
 			object : 'transfers',
 			//removeAction : '/hotel/removeFoodScheme',
 			removeAction:'/cupon/removeTransfer'
+		}
+    ],
+	cuponsadvance : [
+		{
+			label : 'Descuento viaje sencillo',
+			label_en : 'One way discount',
+			type : 'text',
+			handle : 'simple_discount',
 		},
+		{
+			label : 'Descuento viaje redondo',
+			label_en : 'Round trip discount',
+			type : 'text',
+			handle : 'round_discount',
+		},
+		{
+			label : 'Numero máximo de pasajeros',
+			label_en : 'People max number',
+			type : 'text',
+			handle : 'max_pax',
+		},
+		{
+			label : 'Viaje redondo',
+			label_en : 'Round trip',
+			type : 'checkbox',
+			handle : 'round',
+		},
+		{
+			label : 'Viaje simple',
+			label_en : 'One way',
+			type : 'checkbox',
+			handle : 'simple',
+		},
+		{
+			label : 'Comienza en aeropuerto',
+			label_en : 'Start at airport',
+			type : 'checkbox',
+			handle : 'airport',
+		},
+		{
+			label : 'Comienza en hotel',
+			label_en : 'Start at hotel',
+			type : 'checkbox',
+			handle : 'hotel',
+		},
+		{
+			label : 'Perpetuo',
+			label_en : 'Perpetual',
+			type : 'checkbox',
+			handle : 'perpetuo',
+		}
 
 	],
 	cuponSingle : [
@@ -1282,12 +1329,6 @@ module.exports.content = {
 			handle : 'name',
 		},
 		{
-			label : 'token',
-			label_en : 'token',
-			type : 'text',
-			handle : 'token',
-		},
-		{
 			label : 'Fecha de expiración',
 			label_en : 'Expiration date',
 			type : 'date',
@@ -1296,6 +1337,13 @@ module.exports.content = {
 			    formatYear: 'yy',
 			    startingDay: 1
 			}
+		},
+		{
+			label : 'token',
+			label_en : 'token',
+			type : 'text',
+			handle : 'token',
+			on_Change : 'validateToken'
 		},
 		{
 			label : 'Multiple',
@@ -1311,12 +1359,6 @@ module.exports.content = {
 		},
 	],
 	cuponSingleEdit : [
-		{
-			label : 'token',
-			label_en : 'token',
-			type : 'text',
-			handle : 'token',
-		},
 		{
 			label : 'Tipo',
 			label_en : 'Type',
@@ -1337,6 +1379,13 @@ module.exports.content = {
 			required:true
 		},
 		{
+			label : 'token',
+			label_en : 'token',
+			type : 'text',
+			handle : 'token',
+			on_Change : 'validateToken'
+		},
+		{
 			label : 'Multiple',
 			label_en : 'Multiple',
 			type : 'checkbox',
@@ -1350,4 +1399,117 @@ module.exports.content = {
 		},
 
 	],
+	claims : [
+		{
+			label : 'Tipo de queja'
+			,label_en : 'Claim type'
+			,type : 'select'
+			,handle : 'type'
+			,object : 'claimtypes'
+		},
+		{
+			label : 'Queja'
+			,label_en : 'Claim text'
+			,type : 'textarea'
+			,handle : 'claim_text'
+		},
+		{
+			label : 'Operador'
+			,label_en : 'Driver'
+			,type : 'text'
+			,handle : 'driver'
+		},
+		{
+			label : 'Respuesta al cliente'
+			,label_en : 'Answer to client'
+			,type : 'textarea'
+			,handle : 'answer'
+		},
+		{
+			label : 'Informar a customer service'
+			,label_en : 'Inform customer services'
+			,type : 'checkbox'
+			,handle : 'informCS'
+		}
+	],
+	claimResolve : [
+		{
+			label : 'Departamento'
+			,label_en : 'Department'
+			,type : 'text'
+			,handle : 'department'
+		},
+		{
+			label : 'Seguimiento'
+			,label_en : 'Follow up'
+			,type : 'textarea'
+			,handle : 'followup'
+		},
+		{
+			label : 'Fecha de resolución'
+			,label_en : 'Resolve date'
+			,type : 'date'
+			,handle : 'end_date'
+		}
+	],
+	lostandfound : [
+		{
+			label : 'Objetos'
+			,label_en : 'Objects'
+			,type : 'textarea'
+			,handle : 'objects'
+		},
+		{
+			label : 'Respuesta al cliente'
+			,label_en : 'Answer to client'
+			,type : 'textarea'
+			,handle : 'answer'
+		},
+		{
+			label : 'Respuesta depto. operaciones'
+			,label_en : 'Answer operations department'
+			,type : 'textarea'
+			,handle : 'base_answer'
+		},
+		{
+			label : 'Encontrado'
+			,label_en : 'Found'
+			,type : 'checkbox'
+			,handle : 'found'
+		}
+	]
+	,tourprovider : [
+		{
+			label : 'Nombre'
+			,label_en : 'Name'
+			,type : 'text'
+			,handle : 'name'
+			,required : true
+		}
+		,{
+			label: 'Dirección'
+			,label_en : 'Address'
+			,type : 'text'
+			,handle : 'address'
+		}
+		,{
+			label : 'Ciudad'
+			,label_en : 'City'
+			,type : 'select'
+			,handle : 'location'
+			,object : 'locations'
+		}
+		,{
+			label : 'País'
+			,label_en : 'Country'
+			,type : 'text'
+			,handle : 'country'
+		}
+		,{
+			label : 'Crédito'
+			,label_en : 'Credit'
+			,type : 'checkbox'
+			,handle : 'isCredit'
+		}
+	]
 };

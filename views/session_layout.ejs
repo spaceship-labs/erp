@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" ng-app="spaceerp">
   <head>
     <title>ERP - LOGIN</title>
 <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -10,8 +10,9 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <!-- Viewport mobile tag for sensible mobile support -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
+    <!-- <link rel="stylesheet" href="/styles/css/font-awesome.min.css">  -->
     <!--STYLES-->
     <link rel="stylesheet" href="/bower_components/roboto-fontface/roboto-fontface.css">
     <link rel="stylesheet" href="/bower_components/lato/css/lato.css">
@@ -41,45 +42,16 @@
     <link rel="stylesheet" href="/styles/general.css">
     <link rel="stylesheet" href="/styles/importer.css">
     <!--STYLES END-->
-    <!--STYLE TEMPLATE-->
-    <!--<link rel="stylesheet" href="/styles/custom/<%= sails.config.template_config.cssFile %>">-->
-
-
+  
   </head>
+  <!-- <link rel="stylesheet" href="/styles/custom/<%= sails.config.template_config.cssFile %>"> -->
 
-<body class="loginpage">
+  <body class="loginpage">
+    <%- body %>
 
-<div class="loginpanel">
-    <div class="loginpanelinner">
-        
-        <div class="logo"></div>
-        <form id="login" action="/home/auth" method="post">
-            
-            <div class="inputwrapper login-alert">
-                <div class="alert alert-error">Usuario o password inválido</div>
-            </div>
-            <div class="inputwrapper">
-                <input type="text" name="username" id="username" placeholder="username" />
-            </div>
-            <div class="inputwrapper">
-                <input type="password" name="password" id="password" placeholder="password" />
-            </div>
-            <div class="inputwrapper">
-                <button name="submit">Sign in</button>
-            </div>
-            <div class="inputwrapper">
-                <!-- <div class="pull-right">Not a member? <a href="registration.html">Sign Up</a></div> -->
-                <!-- <label><input type="checkbox" class="remember" name="signin" /> Keep me sign in</label> -->
-            </div>
-            
-        </form>
-        
-    </div><!--loginpanelinner-->
-</div><!--loginpanel-->
-
-<!-- <div class="loginfooter">
-    <p>&copy; 2013. Shamcey Admin Template. All Rights Reserved.</p>
-</div> -->
+    <!--TEMPLATES-->
+    <script type="text/javascript" src="/jst.js"></script>
+    <!--TEMPLATES END-->
 
     <!--SCRIPTS-->
     <script src="/js/dependencies/jspdf.min.js"></script>
@@ -141,5 +113,8 @@
     <script src="/js/directives/timeLineChart.js"></script>
     <script src="/js/directives/validNumber.js"></script>
     <!--SCRIPTS END-->
+    
+    <script src="/js/controllers/controller.js"></script>
+    <%- partial('shared/jsTranslateVars') -%> 
   </body>
 </html>

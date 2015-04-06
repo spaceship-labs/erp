@@ -189,6 +189,7 @@ module.exports = {
         var form = req.params.all();
         form.product.user = req.user.id;
         form.product.type = 'product';
+        console.log(form.product);
         SaleProduct.create(form.product).exec(function(err,saleProduct){
             if(err) {
                 console.log(err);

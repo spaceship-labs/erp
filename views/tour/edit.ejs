@@ -1,8 +1,10 @@
 <script type='text/javascript'>
     window.tour = <%- JSON.stringify(tour) %>;
     window.schemes = <%- JSON.stringify(schemes) %>;
+    window.providers = <%- JSON.stringify(providers) %>;
     window.locations = <%- JSON.stringify(locations) %>;
     window.content = <%- JSON.stringify(_content) %>;
+    //console.log(tour);
 </script>
 <div ng-controller='tourEditCTL' class="editar-tour ng-cloak">
     <div class="span4 profile-left profileEdit">
@@ -30,7 +32,6 @@
                 <p class='small'><%= __('tour-selecion')%></p>
             </div>
         </div>
-
     </div>
     <div class="span6">
         <div form-helper 
@@ -39,30 +40,25 @@
             action='/tour/save' 
             form-title='<%= __('tour-info')%>'
             currency='company.base_currency'
-            objects='{schemes:schemes,locations:locations}'
+            objects='{schemes:schemes,locations:locations,providers:providers}'
             >
         </div> 
-    </div>  
-
+    </div> 
     <div class='row-fluid'>
         <div file-manager object='tour' add-method='/tour/addFiles' remove-method='/tour/removeFiles' dir='tours/gallery' ></div>
     </div>
-
     <div class='row-fluid'>
         <div form-helper 
             fields='content.tourLenguajes' 
             object='tour' 
             action='/tour/save' 
             form-title='Lenguajes'
-        >
-        </div> 
-
+        ></div> 
     </div>
     <br/>
     <div delete-button url='/tour' redirect-url='/tour' object='tour' user='user'></div>
     <br/>
 </div>
-
-    <div id="cargando-elementos" class="ng-cloak">
-        <img src="/images/loaders/images-cm.gif">
-    </div>
+<div id="cargando-elementos" class="ng-cloak">
+    <img src="/images/loaders/images-cm.gif">
+</div>

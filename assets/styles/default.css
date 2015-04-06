@@ -31,3 +31,8 @@ li.selected {
 li.selected a {
   color: white;
 }
+
+input.search { 
+  display: inline-block;
+  width:200px;
+}

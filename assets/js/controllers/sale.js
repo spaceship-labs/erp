@@ -72,6 +72,7 @@ app.controller('saleQuoteCTL',function($scope,$http,$filter,_){
     $scope.totalQuote = function(){
         //console.log($scope.quote.products);
         var totalAmount = 0.0;
+        //console.log($scope.quote.products);
         angular.forEach($scope.quote.products,function(product){
             totalAmount += product.price_total;
         });

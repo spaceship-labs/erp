@@ -4,18 +4,15 @@ app.controller('cuponCTL',function($scope,$http,$window){
     $scope.hotels = hotels;
     $scope.tours = tours;
     $scope.transfers = transfers;
-
     $scope.getInfo = function(cupon){
         return cupon;
     }
-
-
     $scope.createCupon = function(cupon){
         cupon.user = user.id;
         cupon.company = user.company;
         cupon.hotels = cupon.hotels || [];
         cupon.tours = cupon.tours || [];
-        cupon.transfers = transfers || [];
+        cupon.transfers = cupon.transfers || [];
         $http({method: 'POST', url: '/cupon/create',params:cupon}).success(function(res){
             jQuery('#myModal').modal('hide');
             if(res && res.id){
@@ -38,7 +35,6 @@ app.controller('cuponCTL',function($scope,$http,$window){
     };
 
 });
-
 app.controller('cuponEditCTL',function($scope,$http,$window){
     $scope.cupon = cupon;
     $scope.hotels = hotels;
@@ -47,9 +43,9 @@ app.controller('cuponEditCTL',function($scope,$http,$window){
     $scope.transfers = transfers;
     $scope.saveClass = 'fa-save';
 });
-
 app.controller('cuponSingleCTL',function($scope,$http,$window){
     $scope.cupon = cupon;
+    $scope.customvalidation = 'f';
     $scope.cuponsSingle = cuponsSingle.map(function(e){
             e.name = e.cupon.name;
             e.expiration = (moment(e.expiration).format('LL'));
@@ -69,11 +65,32 @@ app.controller('cuponSingleCTL',function($scope,$http,$window){
             jQuery('#myModal').modal('hide');
         });
     };
+    $scope.validateToken = function(){
+        var instance = $scope.instance;
+        $http({method: 'POST', url: '/cuponSingle/validatetoken',data:instance}).success(function(res){
+            $scope.customvalidation = res;
+            console.log('res: ' + res);
+        });
+    };
 });
-
 app.controller('cuponSingleEditCTL',function($scope,$http,$window){
     cuponSingle.cupon = cuponSingle.cupon.id;
     $scope.cupon = cupons;
     $scope.cuponSingle = cuponSingle;
     $scope.content = content;
+    var thetoken = cuponSingle.token;
+    $scope.customMessages = {
+            tk : { show : false , type : 'alert' , message : 'Token inválido, favor de cambiarlo antes de guardar' }
+        };
+    $scope.validateToken = function(){
+        var instance = $scope.cuponSingle;
+        if( instance.token != thetoken ){
+            $http({method: 'POST', url: '/cuponSingle/validatetoken',data:instance}).success(function(res){
+                $scope.customvalidation = res;
+                console.log('res: ' + res);
+                if(res=='f')
+                    $scope.customMessages.tk.show = true;
+            });
+        }
+    };
 });

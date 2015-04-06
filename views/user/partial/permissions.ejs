@@ -1,27 +1,25 @@
 <div class="widgetbox tags">
-    <h4 class="widgettitle"><%= __('user-app')%> <span class='fa icon' ng-class='saveClassPermissions' ng-click="updateAccestList()"></span></h4>
-    <div class="widgetcontent stdform2 stdform nopadding" ng-cloak="">
+  <h4 class="widgettitle"><%= __('user-app')%> <span class='fa icon' ng-class='saveClassPermissions' ng-click="updateAccestList()"></span></h4>
+  <div class="widgetcontent stdform2 stdform nopadding" ng-cloak="">
 
-        <div class="par">
-            <label><%= __('user-admin')%></label>
-            <div class="field">
-                <div class="editable-buttons">
-                    <button class="btn btn-default btn-small" ng-model="isAdmin" btn-radio="true"><span class="glyphicon glyphicon-ok"></span></button>
-                    <button class="btn btn-default btn-small" ng-model="isAdmin" btn-radio="false"><span class="glyphicon glyphicon-remove"></span></button>
-                </div>
-            </div>
+    <div class="par">
+      <label><%= __('user-admin')%></label>
+      <div class="field">
+        <div class="editable-buttons">
+          <button class="btn btn-default btn-small" ng-model="isAdmin" btn-radio="true"><span class="glyphicon glyphicon-ok"></span></button>
+          <button class="btn btn-default btn-small" ng-model="isAdmin" btn-radio="false"><span class="glyphicon glyphicon-remove"></span></button>
         </div>
-
-        <div class="par" ng-hide="isAdmin">
-            <label>Ver sólo mis datos <br> *Representante</label>
-            <div class="field">
-                <div class="editable-buttons">
-                    <button class="btn btn-default btn-small" ng-model="isRep" btn-radio="true"><span class="glyphicon glyphicon-ok"></span></button>
-                    <button class="btn btn-default btn-small" ng-model="isRep" btn-radio="false"><span class="glyphicon glyphicon-remove"></span></button>
-                </div>
-            </div>
+      </div>
+    </div>
+    <div class="par" ng-hide="isAdmin">
+      <label>Ver sólo mis datos <br> *Representante</label>
+      <div class="field">
+        <div class="editable-buttons">
+          <button class="btn btn-default btn-small" ng-model="isRep" btn-radio="true"><span class="glyphicon glyphicon-ok"></span></button>
+          <button class="btn btn-default btn-small" ng-model="isRep" btn-radio="false"><span class="glyphicon glyphicon-remove"></span></button>
         </div>
-
+      </div>
+    </div>
         <div class="par" ng-if="!isAdmin">
             <label><%= __('user-perfil')%></label>
             <div class="field">
@@ -31,7 +29,6 @@
                 </div>
             </div>
         </div>
-
         <!--<div class="par" ng-if="!isAdmin && (!user.role || user.role.name == 'Ninguno')">
             <accordion close-others='false'>
                 <accordion-group heading="{{app.label}}" ng-repeat="app in apps | filter:filterApp" style="cursor: pointer;">
@@ -61,5 +58,4 @@
             </accordion>
         </div>-->
     </div>
-</div>
-
+  </div>

@@ -33,7 +33,8 @@ module.exports = {
                 controller : 'cupon.js'
             };
             finds.breadcrumb = [
-                { label : req.__('sc_cupons') }
+                { label : req.__('sc_cupons') , url : '/cupon/' },
+                { label : finds.cupon.name }
             ];
             Common.view(res.view,finds,req); 
         });

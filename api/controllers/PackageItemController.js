@@ -22,7 +22,7 @@ module.exports = {
 			        },
 			        breadcrumb : [
 			          { label : req.__('sc_packages'), url: '/packagetour/'},
-			          { label : item.package_.name , url : '/packagetour/' + item.package_.id },
+			          { label : item.package_.name , url : '/packagetour/edit/' + item.package_.id },
 			          { label : item.name_es }
 			        ]
 			      },req); 

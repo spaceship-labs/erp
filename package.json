@@ -49,6 +49,7 @@
   "author": "spaceShipLabs",
   "license": "",
   "devDependencies": {
-    "should": "^5.1.0"
+    "should": "^5.1.0",
+    "supertest": "^0.15.0"
   }
 }

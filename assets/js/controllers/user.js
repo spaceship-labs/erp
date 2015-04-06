@@ -103,6 +103,8 @@ app.controller('userEditCTL',function($scope,$http,_){
         },{}).success(showResponse);
     };
     $scope.updateCompany = function(){
+        console.log('update company??');
+        console.log($scope.user.default_company);
         $http.post('/user/updateCompany/',{
             id:$scope.user.id
             ,default_company : $scope.user.default_company
@@ -144,7 +146,11 @@ app.controller('userEditCTL',function($scope,$http,_){
             return true;
         }
         return false;
-    }
+    };
+    $scope.$on('SAVE_ALL', function () {
+        $scope.updateAccestList();
+        $scope.updateCompany();
+    });
 });
 
 app.controller('userRoleCTL',function($scope,$http,_) {

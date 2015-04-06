@@ -2,6 +2,7 @@
 	window.tours = <%- JSON.stringify(tours) %>;
 	window.locations = <%- JSON.stringify(locations) %>;
 	window.schemes = <%- JSON.stringify(schemes) %>;
+	window.providers = <%- JSON.stringify(providers) %>;
 </script>
 <div ng-controller='tourCTL' >
 	<!--<p><button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Nuevo Tour</button></p>-->
@@ -15,8 +16,7 @@
 		get-info='getInfo'
 		name-var='nombre_completo'
 		button-text='<%= __('tour-nuevo')%>'
-	>
-	</div>
+	></div>
 	<div class="modal fade" id="myModal">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -28,7 +28,7 @@
 			        object = 'tour'
 			        form-title='<%= __('tour-agregar')%>'
 			       	modal='true'
-			        objects='{schemes:schemes,locations:locations}'
+			        objects='{schemes:schemes,locations:locations,providers:providers}'
 			       	currency='company.base_currency'
 			        >
 			    </div>	

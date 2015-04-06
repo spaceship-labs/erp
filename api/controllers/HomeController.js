@@ -4,37 +4,9 @@
  * @description ::
  * @docs        :: http://sailsjs.org/#!documentation/controllers
  */
-var passport = require('passport');
 module.exports = {
-	login: function(req,res){
-		
-	  Company.find({},function(e,c){
-	    if (c.length <= 0) {
-	    	return res.redirect('/setup');
-	    } else {
-  			if (req.isAuthenticated()) {
-	    		return res.redirect('/home/index');
-  			} else {
-					res.view({
-						layout:null
-					});
-				}
-	    }
-	  });
-	}
 
-	, logout: function(req,res){
-		req.logout();
-		res.redirect('/home/login');	
-	}
-
-	, auth: passport.authenticate('local',{
-		    successRedirect: '/'
-	       ,failureRedirect: '/home/login'
-		   ,failureFlash: true
-	   })
-
-	, index: function(req,res){
+	index: function(req,res){
 		//console.log(req.user);
 		Common.view(res.view,{
 			page:{
