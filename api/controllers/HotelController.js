@@ -7,7 +7,7 @@
 var moment = require('moment');
 module.exports = {
 	index : function(req,res){
-		Hotel.find().sort('name DESC').exec(function(e,hotels){
+		Hotel.find({company: req.session.select_company}).sort('name DESC').exec(function(e,hotels){
 			if(e) throw(e);
 			Location.find().sort('name').exec(function(e,locations){
 				if(e) throw(e);
@@ -102,26 +102,22 @@ module.exports = {
     	}
     },
 	create : function(req,res){
-        //var form = Common.formValidate(req.params.all(),['name','address','phones','location']);
-        var form = req.params.all();
-        if(form){
-        	//console.log(form.location);
-	        if(form.phones) form.phones = form.phones.split(',');
-            //form.location = JSON.parse(form.location);
-	        form.location = form.location.id;
-           	form.user = req.user.id;
+    var form = req.params.all();
+    if(form){
+      if(form.phones) form.phones = form.phones.split(',');
+      form.location = form.location.id;
+      form.user = req.user.id;
 			form.req = req;
-            form.company = req.session.select_company || req.user.select_company;
-            Hotel.create(form).exec(function(err,hotel){
-                if(err) return res.json({text:err});
-                Hotel.find().populate('location').exec(function(e,hotels){
-                	hotels = formatHotels(hotels);
-                	result = {hotels : hotels , thehotel : hotel};
-                	res.json(result);
-                })                
-            });
-        }
-    },
+      form.company = req.session.select_company || req.user.select_company;
+      Hotel.create(form).exec(function(err,hotel){
+        if(err) return res.json({text:err});
+        Hotel.find().populate('location').exec(function(e,hotels){
+        	result = {thehotel : hotel};
+        	res.json(result);
+        })
+      });
+    }
+  },
     update : function(req,res){
     	var form = req.params.all();
     	form.req = req;

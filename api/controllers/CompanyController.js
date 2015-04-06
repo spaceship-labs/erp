@@ -128,7 +128,9 @@ module.exports = {
             req.user.select_company = scompany.id;
             req.user.company = scompany;
             req.session.select_company = scompany.id;
-            res.redirect('/home');
+            ('Referer') || '/'
+            var backURL = req.header('Referer') || '/';
+            res.redirect(backURL);
         });
     },
     add_tax : function(req,res) {

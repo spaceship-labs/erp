@@ -10,11 +10,7 @@ app.controller('hotelCTL',function($scope,$http,$window,$rootScope){
 		block = true;
 		jQuery('#myModal input[type="submit"]').prop('disabled', true);
         $http({method: 'POST', url: '/hotel/create',data:$scope.newHotel}).success(function (result){
-            $scope.hotels = result.hotels;
-		    jQuery('#myModal input[type="submit"]').prop('disabled', false);
-            jQuery('#myModal').modal('hide');
-		    block = false;
-            $window.location =  "/hotel/edit/" + result.thehotel.id;
+            $window.location.href = '/hotel/edit/' + result.thehotel.id;
         });
 	}
     };
