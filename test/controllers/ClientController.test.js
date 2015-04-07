@@ -13,7 +13,7 @@ describe('ClientController', function() {
         .end(done);
     });
   });
-  describe('authenticated ClientController', function() {
+  describe('authenticated administrator ClientController', function() {
     before(function(done) {
       user = agent(sails.hooks.http.app);
       user
@@ -23,11 +23,31 @@ describe('ClientController', function() {
           done();
         });
     });
-    it('should succeed for authenticated request', function (done) {
+    it('should succeed for authenticated request with permission', function (done) {
       User.find().exec(function(err, users) {
         user
           .get('/client')  
           .expect(200, done);
+      });
+    });
+  });
+  describe('authenticated user without permission for ClientController', function() {
+    before(function(done) {
+      user = agent(sails.hooks.http.app);
+      user
+        .post('/session/auth')
+        .send({ username: 'admin@admin.com', password: 'admin123' })
+        .end(function (err, res) {
+          done();
+        });
+    });
+    it('should fail for authenticated request without permission', function (done) {
+      User.find().exec(function(err, users) {
+        user
+          .get('/client')  
+          .expect(302)
+          .expect('Location', '/entrar')
+          .end(done);
       });
     });
   });

@@ -56,6 +56,14 @@ module.exports.connections = {
     password  : '',
     database  : 'spaceerp'
   },
+  testing_mongodb: {
+    adapter   : 'sails-mongo',
+    host      : 'localhost',
+    port      : 27017,
+    user      : '',
+    password  : '',
+    database  : 'testspaceerp'
+  },
 
   // PostgreSQL is another officially supported relational database. 
   // http://en.wikipedia.org/wiki/PostgreSQL

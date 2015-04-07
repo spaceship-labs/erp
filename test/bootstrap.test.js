@@ -10,8 +10,11 @@ before(function(done) {
       mongo: {
         module: 'sails-mongo',
         host: 'localhost',
-        database: 'spaceerp',
+        database: 'asdas',
       }
+    },
+    models: {
+      connection: 'testing_mongodb',
     }
  
   }, function(err, sails) {
