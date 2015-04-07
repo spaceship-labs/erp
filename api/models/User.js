@@ -18,7 +18,9 @@ module.exports = {
             unique: true,
             required: true
         }
-		,password:'string'
+        ,password : {
+            type : 'string'
+        }
 		,name:'string'
 		,last_name:'string'
 		,icon:'json'
@@ -40,11 +42,8 @@ module.exports = {
 		}
         ,isAdmin : {
             type : 'boolean',
-            defaultsTo : false
-            /*
-                Este campo no es el mismo que el del access list, 
-                este es el que crea el sistema y tiene permiso para TODO
-            */
+            defaultsTo : false,
+            required : true
         }
         ,lastLogin : 'datetime'
 		,setPassword : function(val,cb){

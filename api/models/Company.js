@@ -8,7 +8,10 @@
 module.exports = {
 
 	attributes: {
-		name:'string'
+    name : {
+      type : 'string',
+      required: true
+    }
 		,icon:'json'
 		,description:'string'
 		,address:'string'
@@ -30,14 +33,14 @@ module.exports = {
 			dominant: true
 		}
 		,apps : 'array'
-        ,terms : 'string'
-        ,document_footer : 'string'
-        ,taxes : {
-            collection : 'Company_tax',
-            via : 'company'
-        }
+      ,terms : 'string'
+      ,document_footer : 'string'
+      ,taxes : {
+        collection : 'Company_tax',
+        via : 'company'
+      }
 		,addApps : function(apps,cb){		
-			if(Array.isArray(apps)){
+			if (Array.isArray(apps)){
 				//if(this.apps){
 					var cApps = this.apps || [];
 					apps.forEach(function(app){
@@ -47,22 +50,21 @@ module.exports = {
 				//}
 				this.apps = cApps;
 				this.save(cb);
-			}else{
+			} else {
 				cb({message:'no apps'},this);
 			}
 		}
 		,removeApp : function(app,cb){
-			if(this.apps){
+			if (this.apps) {
 				cApps = this.apps;
 				for(key in this.apps){
 					if(this.apps[key] == app) this.apps.splice(key,1);
 				}
 				this.save(cb);
-			}else{
+			} else {
 				cb(null,this);
 			}
 		}
-
 	}
 	,attrs_labels : {
 		name : { es : 'Nombre' , en : 'Name' }
@@ -77,9 +79,9 @@ module.exports = {
 		,users : { es : 'Usuarios' , en : 'Users' }
 	}
 	,labels : {
-        es : 'Empresas'
-        ,en : 'Companies'
-    }
+    es : 'Empresas',
+    en : 'Companies'
+  }
 	,afterCreate: function(val,cb){
 		Notifications.after(Company,val,'create');
 		cb()

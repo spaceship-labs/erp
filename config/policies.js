@@ -24,12 +24,10 @@ module.exports.policies = {
   	create: true,
   },
   company: {
-  	find: true,
+    find: true,
+    change: true,
   },
   user: {
   	find: true
-  },
-  main: {
-    select_company: true
-  },
+  }
 };

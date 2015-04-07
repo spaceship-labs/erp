@@ -8,9 +8,11 @@
 module.exports = {
 
 	attributes: {
-		name : 'string',
+    name : {
+      type : 'string',
+      required: true
+    },
 		phones : 'array',
-		//files : 'json',
 		location : {
 			model : 'location',
 		},
@@ -27,7 +29,8 @@ module.exports = {
 			via : 'hotels',
 		},
 		company : {
-			model : 'company'
+			model : 'company',
+      required: true
 		},
 		zone : {
 			model : 'zone'
@@ -62,10 +65,10 @@ module.exports = {
 		,longitude : { es : 'Coordenadas (Longitud)' , en : 'Coordinates (Longitud)' }
 	}
 	,labels : {
-        es : 'Hoteles'
-        ,en : 'Hotels'
-    }
-  	,afterCreate: function(val,cb){
+    es : 'Hoteles',
+    en : 'Hotels'
+  }
+  ,afterCreate: function(val,cb){
 		Notifications.after(Hotel,val,'create');
 		cb()
 	},afterUpdate: function(val,cb){
