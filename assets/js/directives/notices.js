@@ -33,7 +33,6 @@
             var requests = [];
             for( var n in $scope.noticesN ){
                 var object = $scope.noticesN[n];
-                console.log('object');console.log(object.attrs);
                 for( var m in object.modifications[0] ){
                     var change = object.modifications[0][m];
                     var dt = change.dataType;

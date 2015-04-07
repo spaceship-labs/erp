@@ -6,39 +6,28 @@
 */
 
 module.exports = {
-
 	attributes: {
-    name : {
-      type : 'string',
-      required: true
-    },
+	    name : {
+	      type : 'string',
+	      required: true },
 		phones : 'array',
-		location : {
-			model : 'location',
-		},
+		location : { model : 'location' },
 		rooms : {
 			collection : 'room',
-			via: 'hotel',
-		},
+			via: 'hotel' },
 		foodSchemes : {
 			collection : 'foodScheme',
-			via : 'hotels'
-		},
+			via : 'hotels' },
 		seasonScheme : {
 			model : 'seasonScheme',
-			via : 'hotels',
-		},
+			via : 'hotels' },
 		company : {
 			model : 'company',
-      required: true
-		},
-		zone : {
-			model : 'zone'
-		},
+      		required: true },
+		zone : { model : 'zone' },
 		cupons:{
 			model : 'cupon',
-			via : 'hotels',
-		},
+			via : 'hotels' },
 	}
 	,attrs_labels : {
 		name : { es : 'Nombre' , en : 'Nombre' }
@@ -65,13 +54,14 @@ module.exports = {
 		,longitude : { es : 'Coordenadas (Longitud)' , en : 'Coordinates (Longitud)' }
 	}
 	,labels : {
-    es : 'Hoteles',
-    en : 'Hotels'
-  }
-  ,afterCreate: function(val,cb){
+		es : 'Hoteles',
+		en : 'Hotels'
+	}
+  	,afterCreate: function(val,cb){
 		Notifications.after(Hotel,val,'create');
 		cb()
 	},afterUpdate: function(val,cb){
+		console.log('update hotel');
 		Notifications.after(Hotel,val,'update');
 		cb();
 	},beforeUpdate:function(val,cb){
