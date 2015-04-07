@@ -11,11 +11,11 @@ module.exports = {
 		console.log('find notices');
 		console.log(params);
 		delete params.id;
-		Notice.find(params).exec(function(e,notices){
+		Notice.find(params).populateAll().exec(function(e,notices){
 			console.log(notices.length);
 			for(var x in notices){
 				if(sails.models[notices[x].model])
-					notices[x].attrs = sails.models[notices[x].model]._attributes || {};
+					notices[x].attrs = sails.models[notices[x].model].attrs_labels || {};
 			}
 			res.json(notices);
 		});

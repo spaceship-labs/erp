@@ -126,6 +126,17 @@ module.exports = {
             return this.isAdmin;
         }
 	}
+    ,attrs_labels : {
+        name : { es : 'Nombre' , en : 'Name' }
+        ,last_name : { es : 'Apellido' , en : 'Lastname' }
+        ,email : { es : 'Email' , en : 'Email' }
+        ,active : { es : 'Activo' , en : 'Active' }
+        ,default_company : { es : 'Empresa principal' , en : 'Default company' }
+        ,isAdmin : { es : 'Es administrador' , en : 'Is admin' }
+        ,phone : { es : 'Teléfono' , en : 'Phone' }
+        ,password : { es : 'Contraseña' , en : 'Password' }
+        ,icon : { es : 'Foto de perfil' , en : 'Profile picture' }
+    }
     ,labels : {
         es : 'Usuarios'
         ,en : 'Users'
