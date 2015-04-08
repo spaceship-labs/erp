@@ -29,21 +29,21 @@ describe('ClientController', function() {
         .expect(200, done);
     });
   });
-  //describe('authenticated user without permission for ClientController', function() {
-  //  before(function(done) {
-  //    user = agent(sails.hooks.http.app);
-  //    user
-  //      .post('/session/auth')
-  //      .send({ username: 'ana@ana.com', password: 'admin123' })
-  //      .end(function (err, res) {
-  //        done();
-  //      });
-  //  });
-  //  it('should fail for authenticated request without permission', function (done) {
-  //    user
-  //      .get('/client')
-  //      .expect(403)
-  //      .end(done);
-  //  });
-  //});
+  describe('authenticated user without permission for ClientController', function() {
+    before(function(done) {
+      user = agent(sails.hooks.http.app);
+      user
+        .post('/session/auth')
+        .send({ username: 'ana@ana.com', password: 'admin123' })
+        .end(function (err, res) {
+          done();
+        });
+    });
+    it('should fail for authenticated request without permission', function (done) {
+      user
+        .get('/client')
+        .expect(403)
+        .end(done);
+    });
+  });
 });
