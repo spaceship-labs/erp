@@ -11,7 +11,7 @@ describe('SessionController', function() {
     User.find().exec(function(err, users) {
       request(sails.hooks.http.app)
           .post('/session/auth')
-          .send({ username: users[0].email, password: 'admin123' })
+          .send({ username: 'admin@admin.com', password: 'admin123' })
           .expect(302)
           .expect('Location', '/')
           .end(done);

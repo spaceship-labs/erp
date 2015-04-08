@@ -1,0 +1,12 @@
+[
+  { 
+    "name" : "Spaceship labs", 
+    "description" : "", 
+    "address" : "", 
+    "zipcode" : "", 
+    "apps" : [ "system", "products", "clients", "hotels", "locations", "transfers", "claims" ], 
+    "active" : true, 
+    "createdAt" : "2015-04-07T13:33:15.007Z",
+    "updatedAt" : "2015-04-07T13:33:15.527Z"
+  }
+]

@@ -1,0 +1,24 @@
+[
+  { 
+    "company" : "1", 
+    "user" : "2", 
+    "permissions" : [ 
+        { 
+          "key" : "empresas", 
+          "value" : true }, 
+          { "key" : "empresas_c", "value" : true }, 
+          { "key" : "empresas_e", "value" : false }, 
+          { "key" : "empresas_d", "value" : false }, 
+          { "key" : "usuarios", "value" : false }, 
+          { "key" : "usuarios_c", "value" : false }, 
+          { "key" : "usuarios_e", "value" : false }, 
+          { "key" : "usuarios_d", "value" : false }, { "key" : "currencies", "value" : false }, { "key" : "currencies_c", "value" : false }, { "key" : "currencies_e", "value" : false }, { "key" : "currencies_d", "value" : false }, { "key" : "cotizaciones", "value" : false }, { "key" : "cotizaciones_c", "value" : false }, { "key" : "cotizaciones_e", "value" : false }, { "key" : "cotizaciones_d", "value" : false }, { "key" : "ordenes", "value" : false }, { "key" : "ordenes_c", "value" : false }, { "key" : "ordenes_e", "value" : false }, { "key" : "ordenes_d", "value" : false }, { "key" : "productos", "value" : false }, { "key" : "productos_c", "value" : false }, { "key" : "productos_e", "value" : false }, { "key" : "productos_d", "value" : false }, { "key" : "categorias", "value" : false }, { "key" : "categorias_c", "value" : false }, { "key" : "categorias_e", "value" : false }, { "key" : "categorias_d", "value" : false }, { "key" : "maquinas", "value" : false }, { "key" : "maquinas_c", "value" : false }, { "key" : "maquinas_e", "value" : false }, { "key" : "maquinas_d", "value" : false }, { "key" : "instalaciones", "value" : false }, { "key" : "instalaciones_c", "value" : false }, { "key" : "instalaciones_e", "value" : false }, { "key" : "instalaciones_d", "value" : false }, { "key" : "clientes", "value" : false }, { "key" : "clientes_c", "value" : false }, { "key" : "clientes_e", "value" : false }, { "key" : "clientes_d", "value" : false }, { "key" : "hoteles", "value" : false }, { "key" : "hoteles_c", "value" : false }, { "key" : "hoteles_e", "value" : false }, { "key" : "hoteles_d", "value" : false }, { "key" : "airports", "value" : false }, { "key" : "airports_c", "value" : false }, { "key" : "airports_e", "value" : false }, { "key" : "airports_d", "value" : false }, { "key" : "temporadas", "value" : false }, { "key" : "temporadas_c", "value" : false }, { "key" : "temporadas_e", "value" : false }, { "key" : "temporadas_d", "value" : false }, { "key" : "hotelroomview", "value" : false }, { "key" : "hotelroomview_c", "value" : false }, { "key" : "hotelroomview_e", "value" : false }, { "key" : "hotelroomview_d", "value" : false }, { "key" : "foodscheme", "value" : false }, { "key" : "foodscheme_c", "value" : false }, { "key" : "foodscheme_e", "value" : false }, { "key" : "foodscheme_d", "value" : false }, { "key" : "ciudades", "value" : false }, { "key" : "ciudades_c", "value" : false }, { "key" : "ciudades_e", "value" : false }, { "key" : "ciudades_d", "value" : false }, { "key" : "orders", "value" : false }, { "key" : "orders_c", "value" : false }, { "key" : "orders_e", "value" : false }, { "key" : "orders_d", "value" : false }, { "key" : "tours", "value" : false }, { "key" : "tours_c", "value" : false }, { "key" : "tours_e", "value" : false }, { "key" : "tours_d", "value" : false }, { "key" : "toursprovider", "value" : false }, { "key" : "toursprovider_c", "value" : false }, { "key" : "toursprovider_e", "value" : false }, { "key" : "toursprovider_d", "value" : false }, { "key" : "transfer", "value" : false }, { "key" : "transfer_c", "value" : false }, { "key" : "transfer_e", "value" : false }, { "key" : "transfer_d", "value" : false }, { "key" : "packagetour", "value" : false }, { "key" : "packagetour_c", "value" : false }, { "key" : "packagetour_e", "value" : false }, { "key" : "packagetour_d", "value" : false }, { "key" : "cupon", "value" : false }, { "key" : "cupon_c", "value" : false }, { "key" : "cupon_e", "value" : false }, { "key" : "cupon_d", "value" : false }, { "key" : "cuponSingle", "value" : false }, { "key" : "cuponSingle_c", "value" : false }, { "key" : "cuponSingle_e", "value" : false }, { "key" : "cuponSingle_d", "value" : false }, { "key" : "claim", "value" : false }, { "key" : "claim_c", "value" : false }, { "key" : "claim_e", "value" : false }, { "key" : "claim_d", "value" : false 
+        } 
+      ], 
+      "isAdmin" : false, 
+      "isRep" : false, 
+    "createdAt" : "2015-04-07T14:58:26.806Z", 
+    "updatedAt" : "2015-04-07T14:58:26.806Z",
+    "req" : { "userId" : null, "id" : "1", "app" : "user", "modelObjName" : "Banana" }
+  }
+]
