@@ -1,0 +1,34 @@
+[
+  { 
+    "name" : "Juan", 
+    "last_name" : "Ku", 
+    "email" : "admin@admin.com", 
+    "active" : true, 
+    "default_company" : "1", 
+    "isAdmin" : true, 
+    "phone" : "", 
+    "createdAt" : "2015-04-07T13:33:15.529Z", 
+    "updatedAt" : "2015-04-07T13:33:18.293Z", 
+    "password" : "$2a$10$QQPWX.1v7SbFAqY6Xkecauz.nEdHaSmjVtJ5E/2S9BnPNvD1Hbz52",
+    "lastLogin" : "2015-04-07T13:33:18.292Z"
+  },
+  { 
+    "name" : "Banana", 
+    "last_name" : "Ana", 
+    "email" : "ana@ana.com", 
+    "active" : true, 
+    "default_company" : "1", 
+    "req" : { 
+      "userId" : null, 
+      "id" : "1", 
+      "app" : "user", 
+      "modelObjName" : "Banana" 
+    }, 
+    "phone" : "", 
+    "isAdmin" : false, 
+    "createdAt" : "2015-04-07T14:53:13.066Z", 
+    "updatedAt" : "2015-04-07T15:08:48.176Z", 
+    "password" : "$2a$10$QAOPNvdIxGQDO6jRHUS/G.I2XGakmEhGspkDQd.82Ui/Sb4hIa31C", 
+    "lastLogin" : "2015-04-07T15:08:48.175Z" 
+  }
+]
