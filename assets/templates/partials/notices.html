@@ -38,7 +38,7 @@
                                         <tr ng-repeat="(field,change) in notice.modifications[0]"
                                         ng-if="field!='updatedAt'">
                                             <td>
-                                                {{field}}
+                                                {{notice.attrs[field].es || field }}
                                             </td>
                                             <td class="change-before" ng-if="change.before.filename"><!--CLASE TEMPORAL-->
                                                 {{change.before.filename}}

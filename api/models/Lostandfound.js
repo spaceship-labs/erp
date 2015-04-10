@@ -11,6 +11,12 @@ module.exports = {
   	order : { model : 'order' }
   	, user : { model : 'user' }
   }
+  , attrs_labels: {
+  	answer : { es : 'Respuesta al cliente' , en : 'Answer to client' }
+  	,base_answer : { es : 'Respuesta depto. operaciones' , en : 'Answer operations department' }
+  	,objects : { es : 'Objetos perdidos' , en : 'Lost objects' }
+  	,found : { es : 'Encontrado' , en : 'Found' }
+  }
   ,labels : {
         es : 'Objetos perdidos'
         ,en : 'Lost&Found'

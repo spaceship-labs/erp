@@ -27,7 +27,7 @@ app.controller('hotelCTL',function($scope,$http,$window,$rootScope){
     };
     $scope.getInfo = function(hotel){
         var phones = hotel.phones ? hotel.phones.join(", ") : "";
-        console.log(hotel.createdAt);
+        //console.log(hotel.createdAt);
         hotel.createdAt=(moment(hotel.createdAt).format('LL'));
         hotel.updatedAt=(moment(hotel.updatedAt).format('LL'));
         var r = {};
@@ -42,8 +42,7 @@ app.controller('hotelCTL',function($scope,$http,$window,$rootScope){
     $scope.getZones = function(){
         $http({method: 'POST', url: '/zone/getZones',data: {id:$scope.newHotel.location} }).success(function (zones){
             $scope.zones = zones;
-            console.log('zones');
-            console.log(zones);
+            //console.log('zones');console.log(zones);
         });
     };
 });
@@ -60,8 +59,8 @@ app.controller('hotelEditCTL',function($scope,$upload,$http,$rootScope){
     ];
 
     $scope.location = {
-        address : $scope.hotel.address+', '+$scope.hotel.location.name || $scope.hotel.location.name,
-        country : $scope.hotel.location.country,
+        address : $scope.hotel.address+', '+ ($scope.hotel.location?$scope.hotel.location.name : ''),
+        country : $scope.hotel.location?$scope.hotel.location.country:'',
         zipcode : $scope.hotel.zipcode,
         latitude : $scope.hotel.latitude,
         longitude : $scope.hotel.longitude,

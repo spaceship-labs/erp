@@ -7,6 +7,7 @@
  * @docs        :: http://sailsjs.org/#!documentation/policies
  *
  */
+var bcrypt = require('bcrypt');
 module.exports = function(req, res, next) {
   if(req.isSocket) return next();
 
@@ -14,15 +15,26 @@ module.exports = function(req, res, next) {
     var select_company = req.session.select_company || req.user.select_company;
     req.session.lang = req.session.lang || 'es';
     req.setLocale(req.session.lang);
+    req.session.select_company = select_company;
     if (!select_company || !req.user) return res.forbidden();
     if (req.options.controller != 'home' && req.options.controller != 'template' && !getPermissionByControllerAction(select_company,req.user,req.options.controller,req.options.action)) {
         return res.forbidden();
     }
     if(req.method == 'DELETE'){
-      var params = req.params.all()
+      var params = req.params.all();
       //todo si tienes password checar y dar permiso si no no
+      User.findOne(req.user.id).populate('accessList').exec(function(err, u) {
+        if (err) { return res.redirect('/') }
+        if (!u) { return res.redirect('/') }
+        bcrypt.compare(params.pass, u.password, function(err, r) {
+          if (!r) return res.redirect('/');
+          return next();
+        });
+      })
+      //return res.forbidden();
+    }else{
+      return next();
     }
-    return next();
   } else {
     Company.find().exec(function(err, companies){
       if (companies.length > 0) {

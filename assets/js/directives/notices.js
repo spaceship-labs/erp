@@ -3,7 +3,7 @@
         $scope.translates = $rootScope.translates;
         var options = {
             'sort' : 'updatedAt desc',
-            'limit' : 20
+            'limit' : 10
         }
         io.socket.get('/notice/find',options,function(data){
             if(!data)
@@ -33,7 +33,6 @@
             var requests = [];
             for( var n in $scope.noticesN ){
                 var object = $scope.noticesN[n];
-                console.log('object');console.log(object.attrs);
                 for( var m in object.modifications[0] ){
                     var change = object.modifications[0][m];
                     var dt = change.dataType;

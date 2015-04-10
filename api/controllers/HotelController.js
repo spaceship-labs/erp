@@ -67,13 +67,14 @@ module.exports = {
 		});
 	},
     edit : function(req,res){
-    	if(req.params.id){
+    	if( req.params.id ){
 	    	Hotel.findOne(req.params.id).populate('rooms').populate('location').exec(function(e,hotel){
 	    		if(e) throw(e);
 	    		hotel = formatHotel(hotel);
 	    		Location.find().sort('name').exec(function(e,locations){
 	    			SeasonScheme.find().sort('name').exec(function(e,schemes){
-	    				Zone.find({ 'location' : hotel.location.id }).exec(function(e,zones){
+	    				var zoneparams = hotel.location ? { 'location' : hotel.location.id } : {};
+	    				Zone.find(zoneparams).exec(function(e,zones){
 	    					FoodScheme.find().sort('name').exec(function(e,foodSchemes){
 	    						//console.log(hotel.foodSchemes);
 	    						//console.log(typeof hotel.foodSchemes.add );
@@ -103,22 +104,22 @@ module.exports = {
     	}
     },
 	create : function(req,res){
-    var form = req.params.all();
-    if(form){
-      if(form.phones) form.phones = form.phones.split(',');
-      form.location = form.location.id;
-      form.user = req.user.id;
+    	var form = req.params.all();
+    	if(form){
+      		if(form.phones) form.phones = form.phones.split(',');
+	      	//form.location = form.location.id;
+	      	form.user = req.user.id;
 			form.req = req;
-      form.company = req.session.select_company || req.user.select_company;
-      Hotel.create(form).exec(function(err,hotel){
-        if(err) return res.json({text:err});
-        Hotel.find().populate('location').exec(function(e,hotels){
-        	result = {thehotel : hotel};
-        	res.json(result);
-        })
-      });
-    }
-  },
+	      	form.company = req.session.select_company || req.user.select_company;
+	      	Hotel.create(form).exec(function(err,hotel){
+	        	if(err) return res.json({text:err});
+	        	Hotel.find().populate('location').exec(function(e,hotels){
+	        		result = {thehotel : hotel};
+	        		res.json(result);
+	        	});
+	      	});
+    	}
+  	},
     update : function(req,res){
     	var form = req.params.all();
     	form.req = req;

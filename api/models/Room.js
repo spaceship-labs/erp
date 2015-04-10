@@ -18,6 +18,26 @@ module.exports = {
 		fees : 'json',
 
 	}
+	, attrs_labels : {
+		name_es : { es : 'Nombre' , en : 'Name' }
+		,name_en : { es : 'Nombre inglés' , en : 'English name' }
+		,name_ru : { es : 'Nombre ruso' , en : 'Russian name' }
+		,name_pt : { es : 'Nombre portugués' , en : 'Portuguese name' }
+		,description_es : { es : 'Descripción español' , en : 'Spanish description' }
+		,description_en : { es : 'Descripción inglés' , en : 'English description' }
+		,description_ru : { es : 'Descripción ruso' , en : 'Russian description' }
+		,description_pt : { es : 'Descripción portugués' , en : 'Portuguese description' }
+		,services_es : { es : 'Servicios español' , en : 'Spanish services' }
+		,services_en : { es : 'Servicios inglés' , en : 'English services' }
+		,services_ru : { es : 'Servicios ruso' , en : 'Russian services' }
+		,services_pt : { es : 'Servicios portugués' , en : 'Portuguese services' }
+		,fee : { es : 'Precio base'  , en : 'Base rate' }
+		,fees : { es : 'Precios por temporadas' , en : 'Rates per season' }
+		,active : { es : 'Activo' , en : 'Active' }
+		,pax : { es : 'Personas' , en : 'People' }
+		,views : { es : 'Vistas' , en : 'Views' }
+		,seasonal : { es : 'Usar tarifas por temporada' , en : 'Use season rates' }
+	}
   	,migrate : "safe"
 	,labels : {
         es : 'Cuartos'

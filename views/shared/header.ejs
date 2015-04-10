@@ -15,7 +15,7 @@
           <% for(var i=0;i<companies.length;i++){ %>
             <li><a href="/company/change?id=<%= companies[i].id %>">
               <%
-                var icon = companies[i].icon?"/uploads/companies/50x50"+companies[i].icon:"http://placehold.it/50x50";
+                var icon = companies[i].icon?"/uploads/companies/50x50" + companies[i].icon.filename : "http://placehold.it/50x50";
                    %>
                 <img src="<%=icon%>" alt="" />
                 <strong><%= companies[i].name %></strong>

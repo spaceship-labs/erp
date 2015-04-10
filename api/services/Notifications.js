@@ -52,8 +52,9 @@ var notification = function(type,collection,val){
 
 module.exports = {
 	after: function(Model,val,action){
-		//console.log(val);
+		//console.log('after');console.log(val);
 		if(val.req && val.req.userId){
+			//console.log('creating');
 			notification(action,Model,val);
 			val.req = {};
 			/*Model.update({id:val.id},val).exec(function(err,model){
@@ -64,7 +65,7 @@ module.exports = {
 	,before:function(val,action){
 		if(val.req && val.req.user){
 			var req = {
-				userId:val.req.user.companyId
+				userId:val.req.user.id //companyId??
 				,id:val.req.session.select_company || val.req.user.select_company
 				,app: val.req.options.controller
 			}

@@ -66,6 +66,18 @@ module.exports = {
 			}
 		}
 	}
+	,attrs_labels : {
+		name : { es : 'Nombre' , en : 'Name' }
+		,description : { es : 'Descripción' , en : 'Description' }
+		,address : { es : 'Dirección' , en : 'Address' }
+		,zipcode : { es : 'Código postal' , en : 'Zip code' }
+		,base_currency : { es : 'Moneda base' , en : 'Base currency' }
+		,apps : { es : 'Apps' , en : 'Apps' }
+		,active : { es : 'Activo' , en : 'Active' }
+		,terms : { es : 'Términos y condiciones' , en : 'Terms and conditions' }
+		,footer : { es : 'Firma' , en : 'Sign' }
+		,users : { es : 'Usuarios' , en : 'Users' }
+	}
 	,labels : {
     es : 'Empresas',
     en : 'Companies'

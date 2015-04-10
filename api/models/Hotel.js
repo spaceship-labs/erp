@@ -6,48 +6,62 @@
 */
 
 module.exports = {
-
 	attributes: {
-    name : {
-      type : 'string',
-      required: true
-    },
+	    name : {
+	      type : 'string',
+	      required: true },
 		phones : 'array',
-		location : {
-			model : 'location',
-		},
+		location : { model : 'location' },
 		rooms : {
 			collection : 'room',
-			via: 'hotel',
-		},
+			via: 'hotel' },
 		foodSchemes : {
 			collection : 'foodScheme',
-			via : 'hotels'
-		},
+			via : 'hotels' },
 		seasonScheme : {
 			model : 'seasonScheme',
-			via : 'hotels',
-		},
+			via : 'hotels' },
 		company : {
 			model : 'company',
-      required: true
-		},
-		zone : {
-			model : 'zone'
-		},
+      		required: true },
+		zone : { model : 'zone' },
 		cupons:{
 			model : 'cupon',
-			via : 'hotels',
-		},
+			via : 'hotels' },
+	}
+	,attrs_labels : {
+		name : { es : 'Nombre' , en : 'Nombre' }
+		,address : { es : 'Dirección' , en : 'Address' }
+		,location : { es : 'Ciudad' , en : 'City' }
+		,zone : { es : 'Zona' , en : 'Zone' }
+		,phones : { es : 'Teléfonos' , en : 'Phones' }
+		,seasonScheme : { es : 'Esquema de temporadas' , en : 'Seasons scheme' }
+		,foodSchemes : { es : 'Esquema de alimentación' , en : 'Food scheme' }
+		,description_es : { es : 'Descripción Español' , en : 'Spanish Description' }
+		,description_en : { es : 'Descripción Inglés' , en : 'English Description' }
+		,description_ru : { es : 'Descripción Ruso' , en : 'Russian Description' }
+		,description_pt : { es : 'Descripción Portugués' , en : 'Portuguese Description' }
+		,services_es : { es : 'Servicios Español' , en : 'Spanish Services' }
+		,services_en : { es : 'Servicios Inglés' , en : 'English Services' }
+		,services_ru : { es : 'Servicios Ruso' , en : 'Russian Services' }
+		,services_pt : { es : 'Servicios Portugués' , en : 'Portuguese Services' }
+		,payed_services_es : { es : 'Servicios pagados Español' , en : 'Spanish Payed services' }
+		,payed_services_en : { es : 'Servicios pagados Inglés' , en : 'English Payed services' }
+		,payed_services_ru : { es : 'Servicios pagados Ruso' , en : 'Russian Payed services' }
+		,payed_services_pt : { es : 'Servicios pagados Portugués' , en : 'Portuguese Payed services' }
+		,rooms : { es : 'Cuartos' , en : 'Rooms' }
+		,latitude : { es : 'Coordenadas (Latitud)' , en : 'Coordinates (Latitude)' }
+		,longitude : { es : 'Coordenadas (Longitud)' , en : 'Coordinates (Longitud)' }
 	}
 	,labels : {
-    es : 'Hoteles',
-    en : 'Hotels'
-  }
-  ,afterCreate: function(val,cb){
+		es : 'Hoteles',
+		en : 'Hotels'
+	}
+  	,afterCreate: function(val,cb){
 		Notifications.after(Hotel,val,'create');
 		cb()
 	},afterUpdate: function(val,cb){
+		console.log('update hotel');
 		Notifications.after(Hotel,val,'update');
 		cb();
 	},beforeUpdate:function(val,cb){

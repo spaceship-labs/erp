@@ -25,7 +25,7 @@ module.exports.session = {
   //   maxAge: 24 * 60 * 60 * 1000  
   // }
   
-  adapter: 'redis',
+  //adapter: 'redis',
 
   /***************************************************************************
   *                                                                          *
@@ -73,7 +73,7 @@ module.exports.session = {
   //
   // username: '',
   // password: '',
-  // auto_reconnect: false,
+  //auto_reconnect: true,
   // ssl: false,
   // stringify: true
 

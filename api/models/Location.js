@@ -18,6 +18,16 @@ module.exports = {
       dominant : true
   	}
   }
+  , attrs_labels : {
+    name : { es : 'Nombre' , en : 'Name' }
+    ,url_title : { es : 'Título url' , en : 'Url title' }
+    ,zipcode : { es : 'Código postal' , en : 'Zip code' }
+    ,country : { es : 'País' , en : 'Country' }
+    ,locations : { es : 'Ciudades relacionadas' , en : 'Related Cities' }
+    ,zones : { es : 'Zonas' , en : 'Zones' }
+    ,description_es : { es : 'Descripción español' , en : 'Spanish description' }
+    ,description_en : { es : 'Descripción inglés' , en : 'English description' }
+  }
   ,labels : {
       es : 'Ciudades'
       ,en : 'Cities'
