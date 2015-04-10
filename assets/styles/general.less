@@ -90,9 +90,9 @@ body.loginpage{background: @login-background;overflow: hidden;}
 .widgetcontent.custom-table{border: 2px solid @primary;overflow: auto;}
 .ng-directory-listing .peoplelist  .widgettitle a.text-limit,
 .widgettitle .text-limit{overflow: hidden;text-overflow: ellipsis;white-space: nowrap;padding-right: 85px;margin-right: -85px;float: left;text-transform: uppercase!important;width: 100%;}
-a, a:hover, a:link, a:active, a:focus{color: @primary}
+a, a:hover, a:link, a:active, a:focus{color: @links-color;}
 html .btn-primary , .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary{background: @primary;border-color: @primary;color: white;}
-.alphabets li span{color: @primary}
+.alphabets li span{color: @primary;}
 
 .main-client{margin-bottom: 6px;padding: 8px 12px}
 .main-client .client-info{margin-left: 95px}
@@ -202,7 +202,7 @@ html .btn-primary , .btn-primary:hover, .btn-primary:focus, .btn-primary:active,
 
 .head-contracts{background:url('/images/icon-archive.png');}
 .alphabets{
-	li span{color:blue;cursor:pointer}
+	li span{cursor:pointer}
 }
 .peoplelist { margin: 25px 0;
 	.peoplewrapper { border: 1px solid #ccc; padding: 15px; background: #fff; height: 115px; margin-bottom: 20px; }
@@ -373,8 +373,8 @@ color: #fff;
 .ng-calendar-frame .col-md-3 .title h1 { text-align: center; background-color: #252D5E; color: white; }
 
 /*calendar-nav-container*/
-.ng-calendar-frame .calendar-nav{ width: 100%; height: 40px; color: #383C7C; font-weight: bold; }
-.ng-calendar-frame .calendar-nav button{height: 40px; border: solid #232D5D 1px; background-color: white; color: #383C7C;}
+.ng-calendar-frame .calendar-nav{ width: 100%; height: 40px; color: @primary; font-weight: bold; }
+.ng-calendar-frame .calendar-nav button{height: 40px; border: solid @primary 1px; background-color: white; color: @primary;}
 
 /*calendar-nav buttons*/
 .ng-calendar-frame .calendar-nav .traverse 	{float: left; /*width: 50%;  min-width: 25%;*/}
@@ -395,7 +395,7 @@ color: #fff;
 
 /*calendar responsive*/
 .ng-calendar-frame .calendario { margin-bottom: 10px; height: 390px; }
-.ng-calendar-frame .calendario .thead { height: 80px; background-color: #212D5E; color: white; padding-top: 6px; }
+.ng-calendar-frame .calendario .thead { height: 80px; background-color: @primary; color: white; padding-top: 6px; }
 .ng-calendar-frame .calendario .thead p{ text-align: center; font-size: 16px;}
 .ng-calendar-frame .calendario .days-of-week { height: 35px; padding-top: 10px;}
 .ng-calendar-frame .calendario .days-of-week li{ font-weight: bold; color: #63BB5F; font-size: 12px; }

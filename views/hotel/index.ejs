@@ -16,9 +16,10 @@
 	                fields='content.hotel' 
 	                object='newHotel' 
 	                form-title='<%= __('machine-info') %>'
-	                form-footer='<%= __('machine-info') %>'
+	                form-footer='<%= __('gral_create') %>'
 	                objects='{locations:locations,schemes:schemes,zones:zones,categories:categories,foodSchemes:foodSchemes}'
 	                onchanges = "{'getZones' : getZones}"
+	                form-save = 'createHotel'
 	                modal='true'
 	                >
 	            </div> 
