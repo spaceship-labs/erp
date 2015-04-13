@@ -32,6 +32,11 @@ module.exports = {
 			via: 'companies',
 			dominant: true
 		}
+		,hotels : {
+			collection: 'hotel',
+			via: 'companies',
+			dominant: true
+		}
 		,apps : 'array'
       ,terms : 'string'
       ,document_footer : 'string'

@@ -23,24 +23,27 @@ module.exports = {
 	}
 	, edit: function(req,res){
 		var id = req.params.id;
-		Company.findOne({id:id}).populate('users').populate('taxes').exec(function(err,company){
+		Company.findOne({id:id}).populate('users').populate('hotels').populate('taxes').exec(function(err,company){
 			if(err) throw err;
             //console.log(company.taxes);
 			User.find().exec(function(err,users){
-				Common.view(res.view,{
-					company:company || {}
-					,users:users || []
-					,apps: sails.config.apps
-					,page:{
-						name:req.__('sc_companies')
-						,icon:'fa fa-building'		
-						,controller : 'company.js'		
-					},
-                    breadcrumb : [
-                        {label : req.__('sc_companies'), url : '/company/'},
-                        {label : company.name}
-                    ],
-				},req);
+                Hotel.find().exec(function(err,hotels){
+    				Common.view(res.view,{
+    					company:company || {}
+                        ,users:users || []
+                        ,hotels:hotels || []
+    					,apps: sails.config.apps
+    					,page:{
+    						name:req.__('sc_companies')
+    						,icon:'fa fa-building'		
+    						,controller : 'company.js'		
+    					},
+                        breadcrumb : [
+                            {label : req.__('sc_companies'), url : '/company/'},
+                            {label : company.name}
+                        ],
+    				},req);
+                });
 			});
 		});
 	}
@@ -71,7 +74,7 @@ module.exports = {
             }
             for(key in c.users){
                 if (c.users[key].id == req.param('user')) {
-                    c.users.splice(key,1);
+                    c.users.remove(c.users[key].id);
                 }
             }
 
@@ -80,6 +83,36 @@ module.exports = {
                     throw err;
                 }
                 res.json(sc);
+            });
+        });
+    }
+    , addHotel : function(req,res){
+        Company.findOne({id:req.param('company')}).populate('hotels').exec(function(er,c){
+            if (er) {
+                console.log(er);
+                throw er;
+            }
+            c.hotels.add(req.param('hotel'));
+
+            c.save(function(err,su){
+                if (err) {
+                    console.log(err);
+                    throw err;
+                }
+                res.json(su);
+            });
+        });
+    }
+    , removeHotel : function(req,res){
+        Company.findOne({id:req.param('company')}).populate('hotels').exec(function(e,c){
+            if(e) throw(e);
+            for(key in c.hotels){
+                if (c.hotels[key].id == req.param('hotel')) {
+                    c.hotels.remove(c.hotels[key].id);
+                }
+            }
+            c.save(function(err) {
+                res.json(c);
             });
         });
     }
