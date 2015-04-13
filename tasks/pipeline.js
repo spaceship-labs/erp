@@ -89,6 +89,7 @@ var jsFilesToInject = [
     '/bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.js',
     '/bower_components/angular-ui-tinymce/src/tinymce.js',
 	'/bower_components/Chart.js/Chart.js',
+	"/bower_components/jquery-steps/jquery.steps.min.js",
 	"/js/themejs/*.js",                                            
 	"/js/*.js",                                                    
 	'/js/directives/*.js',                                         
