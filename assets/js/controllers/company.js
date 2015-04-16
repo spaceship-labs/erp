@@ -30,6 +30,7 @@ app.controller('companyEditCTL',function($scope,$http){
     $scope.content = content;
     $scope.allApps = apps;
     $scope.users = users;
+    $scope.hotels = hotels;
     $scope.missingApps = [];
     $scope.selectedApps = [];
     $scope.showTaxForm = false;
@@ -83,10 +84,37 @@ app.controller('companyEditCTL',function($scope,$http){
         });
     };
 
+    $scope.removeHotel = function(hotel){
+        io.socket.post('/company/removeHotel',{company:company.id,hotel:hotel.id},function(result){
+            var indexU = $scope.company.hotels.indexOf(hotel);
+            $scope.company.hotels.splice(indexU,1);
+            $scope.$apply();
+        });
+    };
+    $scope.addHotel = function(hotel){
+        io.socket.post('/company/addHotel',{company:$scope.company.id,hotel:hotel.id},function(result){
+            if($scope.company.hotels === undefined) {
+                $scope.company.hotels = [];
+            }
+            $scope.company.hotels.push(hotel);
+            $scope.$apply();
+        });
+    };
+
     $scope.filterUsers = function(user) {
         var found = false;
         angular.forEach($scope.company.users,function(suser){
             if (user.id == suser.id) {
+                found = true;
+            }
+        });
+        return !found;
+    };
+
+    $scope.filterHotels = function(hotel) {
+        var found = false;
+        angular.forEach($scope.company.hotels,function(shotel){
+            if (hotel.id == shotel.id) {
                 found = true;
             }
         });

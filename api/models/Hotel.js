@@ -21,6 +21,11 @@ module.exports = {
 		seasonScheme : {
 			model : 'seasonScheme',
 			via : 'hotels' },
+		companies : {
+			collection: 'company',
+			via: 'hotels',
+			dominant: false
+		},
 		company : {
 			model : 'company',
       		required: true },

@@ -56,10 +56,16 @@
     "angular-leaflet-directive": "~0.7.10",
     "angular-ui-tinymce": "latest",
     "angular-chart.js": "~0.5.2",
-    "parsleyjs": "~2.0.7"
+    "parsleyjs": "~2.0.7",
+    "jquery-steps": "~1.1.0",
+    "sweetalert": "~0.5.0"
   },
   "resolutions": {
     "jquery": "~2.x",
     "angular": "~1.x"
+  },
+  "devDependencies": {
+    "jquery-steps": "~1.1.0",
+    "sweetalert": "~0.5.0"
   }
 }

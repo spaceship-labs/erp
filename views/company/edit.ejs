@@ -2,6 +2,7 @@
     window.company = <%- JSON.stringify(company) %>;
     window.apps = <%- JSON.stringify(apps) %>;
     window.users = <%- JSON.stringify(users) %>;
+    window.hotels = <%- JSON.stringify(hotels) %>;
 </script>
 <div class='row-fluid' ng-controller='companyEditCTL'>
     <div class="col-md-6">
@@ -90,6 +91,28 @@
                         <p><a href="/users/new_user/" style="display:block;margin-top:10px"><%= __('emp-agregar-usuarios') %></a></p>
                     </form>
                     <p ng-if="company.users.length == users.length"><%= __('emp-todos-usuarios') %></p>
+                </div>
+        </div>
+
+        <div class="widgetbox tags">
+                <h4 class="widgettitle"><%= __('emp-hoteles') %></h4>
+                <div class="widgetcontent">
+                    <ul class="taglist" ng-repeat='hotel in company.hotels'>
+                        <li><a>
+                                <i ng-bind='hotel.name'></i>
+                                <span class="close" ng-click='removeHotel(hotel)'>×</span>
+                            </a></li>
+                    </ul>
+                    <hr>
+                    <form ng-submit='addHotel(selectedHotel)' ng-if="company.hotels.length != hotels.length">
+                        <input type='hidden' value='<%-company.id%>' name='company' />
+                        <p>
+                            <select ng-options="hotel.name for hotel in hotels | filter:filterHotels" ng-model="selectedHotel" name="" chosen></select>
+                            <button ng-if="selectedHotel" class="btn btn-primary ng-scope"><%= __('emp-agregar-hotel') %></button>
+                        </p>
+                        <p><a href="/hotels/new_hotel/" style="display:block;margin-top:10px"><%= __('emp-agregar-hoteles') %></a></p>
+                    </form>
+                    <p ng-if="company.hotels.length == hotels.length"><%= __('emp-todos-hoteles') %></p>
                 </div>
         </div>
         <% } %>
