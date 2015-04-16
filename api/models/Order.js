@@ -7,7 +7,12 @@
 /* campos default : _id, createdAt, updatedAt	*/
 module.exports = {
 	attributes: {
-		reservation_method : {
+		folio : {
+			type: 'integer'
+    		,autoIncrement: true
+    		,unique: true
+		}
+		,reservation_method : {
 		    type: 'string'
 		    ,enum: ['intern', 'api', 'rep', 'agencyApi'] ,required : true }
 		,client : {

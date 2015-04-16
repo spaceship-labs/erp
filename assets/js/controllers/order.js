@@ -1,6 +1,72 @@
-app.controller('orderCTL',function($scope,$http,$window){
+app.controller('orderCTL',function($scope,$http,$window,$upload){
     $scope.orders = orders;
     $scope.content = content;
+    $scope.totalOrders = totalOrders;
+    $scope.currentPage = 1;
+    $scope.filters = {};
+    $scope.filtersArray = [
+         { label : 'Arrival date' , value : 'arrival' , type : 'date' , field : 'arrival_date' }
+        ,{ label : 'Departure date' , value : 'departure' , type : 'date' , field : 'departure_date' }
+        ,{ label : 'Reservation date' , value : 'reserve' , type : 'date' , field : 'createdAt' }
+        ,{ label : 'Client' , value : 'client' , type : 'string' , field : 'client' }
+        ,{ label : 'Hotel' , value : 'hotel' , type : 'string' , field : 'hotel' }
+        ,{ label : 'Zone' , value : 'zone' , type : 'string' , field : 'zone' }
+        ,{ label : 'Transfer Type' , value : 'type' , type : 'select' , field : 'type' , options : [{ value : 'All' , key : 'all' },{value:'One way',key:'one_way'},{value:'Round Trip',key:'round_trip'}] }
+        ,{ label : 'Payment state' , value : 'payment_state' , type : 'select' , field : 'state' , options : [{ value : 'All' , key : 'all' },{value:'Pending',key:'pending'},{value:'Liquidated',key:'liquidated'},{value:'Canceled',key:'canceled'}] }
+        ,{ label : 'Agency' , value : 'agency' , type : 'select-object' , field : 'agency'  , options : [{}] }
+    ];
+    $scope.openFilter = function(f){
+        for( x in $scope.filtersArray )
+            $scope.filtersArray[x].open = false;
+        f.open = true;
+        $scope.isCollapsedFilter = true;
+    };
+    $scope.sendFilter = function(f){
+        $scope.isCollapsedFilter = false;
+        $scope.filters[f.field] = f;
+        $scope.currentPage = 1;
+        sendFilterFx(0);
+    };
+    $scope.resetFilter = function(){
+        $scope.isCollapsedFilter = false;
+        $scope.filters = {};
+        $scope.currentPage = 1;
+        sendFilterFx(0);
+    }
+    var sendFilterFx = function(skip){
+        var fx = {};
+        var f = $scope.filters;
+        console.log(f);
+        for( var x in f ){
+            if( f[x].model[f[x].field] ){
+                if( f[x].type == 'date' ){
+                    console.log(f[x]);
+                    var field = f[x].field;
+                    fx['$and'] = [{
+                        field : { '>=' : f[x].model[f[x].field].to }
+                        ,field : { '<=' : f[x].model[f[x].field].from }
+                    }];
+                }else if( f[x].type == 'select' ){
+                    fx[ f[x].field ] = f[x].model[f[x].field].item;
+                }
+            }
+        }
+        //if( ! angular.equals( {} , fx ) ){
+            //var skip = skip || 0;
+            //$scope.currentPage = 1;
+            var params = { fields : fx , skip : skip };
+            $http.post('/order/customFind',params,{}).success(function(result) {
+                console.log('result');
+                console.log(result);
+                //$scope.totalOrders = 50;
+                //$scope.currentPage = 1;
+                if(result){
+                    $scope.orders = result.result;
+                    $scope.formaOrders();
+                }
+            });
+        //}
+    }
     $scope.formatDate = function(date){
         var d = new Date(date);
         if(date) return d.getDate() + '/' + (d.getMonth()+1) + '/' + d.getFullYear();
@@ -31,7 +97,38 @@ app.controller('orderCTL',function($scope,$http,$window){
             }
         }
     });
-    //$scope.formaOrders();
+    $scope.pageChanged = function() {
+        var skip = ($scope.currentPage-1) * 2;
+        //var params = { skip : skip };
+        sendFilterFx(skip);
+        /*$http.post('/order/customFind',params,{}).success(function(result) {
+            if(result){
+                $scope.orders = result;
+                $scope.formaOrders();
+            }
+        });*/
+        //console.log('Page changed to: ' + $scope.currentPage);
+    };
+    $scope.saveFile = function() {
+        $scope.loading = true;
+        $scope.upload = $upload.upload({
+            url: '/order/uploadcvs',
+            file: $scope.cvsfile
+        }).progress(function(evt){
+            $scope.loadingProgress = parseInt(100.0 * evt.loaded / evt.total);
+        }).success(function(data, status, headers, config) {
+            $scope.loading = false;
+            $scope.loadingProgress = 0;
+            //window.location = "/order";
+            console.log(data);
+        });
+    };
+    $scope.WFile = function($files,$e){
+        if($files) {
+            //console.log($files[0].name);
+            $scope.fileName = $files[0].name;
+        }
+    };
 });
 app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
     $scope.alertM = { show: false, client : false, allEmpty: false };

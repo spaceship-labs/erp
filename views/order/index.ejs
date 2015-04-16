@@ -1,17 +1,38 @@
 <script type='text/javascript'>
 	window.orders = <%- JSON.stringify(orders) %>;
+    window.totalOrders = <%- JSON.stringify(totalOrders) %>;
 	window.content = <%- JSON.stringify(_content) %>;
-    //console.log(user);
 </script>
-<div ng-controller='orderCTL' >
+<div ng-controller='orderCTL' class='' >
 	<div class='row'>
-		<div class = "textbutton col-sm-12 col-sm-12 col-xs-12">
+		<div class = "textbutton col-sm-12 col-md-12 col-xs-12">
 			<p style="display:inline-block;"><a href="/order/neworder" class='btn btn-primary'><i class = "fa fa-plus"></i> <%= __('order-crear')%></a></p>
             <input type="text" placeholder="Buscar" class="form-control pull-right search" ng-model="searchText" />
-			<br /><br />
+			<br />
 		</div>
 	</div>
-	<div class="widgetcontent custom-table nopadding ng-cloak">
+    <br>
+    <div class='row pagination-row'>
+        <div class='col-md-4'>
+            <!--<span class='dropdown'>
+                <a class="btn btn-primary" data-toggle="modal" data-target="#uploadCVS"><i class="fa fa-upload"></i> Importar CVS</a>
+                <a dropdown-toggle class='btn btn-primary'><i class='fa fa-filter'></i> Filtros</a>
+                <ul role='menu' class='dropdown-menu'>
+                    <li ng-repeat="f in filtersArray">
+                        <a ng-click="openFilter(f)" ng-class='!f.active?"inactive":""'>{{f.label}}</a>
+                    </li>
+                </ul>
+            </span>
+            <a ng-click='resetFilter()' class='btn btn-primary'><i class='fa fa-refresh'></i> Reset</a>-->
+        </div>
+        <div class='col-md-8'>
+            <pagination total-items="totalOrders" items-per-page='2' ng-model="currentPage" max-size="8" class="pagination-sm pull-right" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="pageChanged()"></pagination>
+        </div>
+    </div>
+    
+    <br>
+    <div class='row'><div class='col-md-12'>
+	   <div class="widgetcontent custom-table nopadding ng-cloak">
         <table class="table table-striped">
             <tr class='hide-sm'>
                 <th> <%= __('order-id')%> </th>
@@ -71,8 +92,55 @@
                 <% } %>
             </tr>
         </table>
-    </div>
+        </div>
+    </div></div>
 	<div class="clearfix"></div>
+    <div class="modal fade" id="uploadCVS">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form class='form stdform stdform2'>
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title ng-binding">Importar CVS</h4>
+                    </div>
+                    <p>
+                        <label>Seleccionar archivo</label>
+                        <span class='field'>
+                            <span 
+                                ng-file-select="WFile($files,$event)" 
+                                ng-model="cvsfile" 
+                                multiple="false" 
+                                accept=".csv"><a class='btn btn-primary'>Seleccionar archivo</a></span>
+                                <span ng-bind='fileName'></span>
+                        </span>
+                    </p>
+                    <!--<p>
+                        <label>Arrastrar archivo</label>
+                        <span class='field'>
+                            <span ng-file-drop
+                                  ng-model="file"
+                                  class="drop-box field"
+                                  drag-over-class="{accept:'dragover', reject:'dragover-err', delay:100}"
+                                  accept="*.csv">
+                                Drop csv file here
+                            </span>
+                            <span ng-no-file-drop class="field">No soportado por este navegador</span>
+                        </span>
+                    </p>-->
+                    <p ng-if='loading' class='loader' >
+                        <label>Cargando, favor de esperar <br>Loading , please wait this action can take alot of time to finish</label>
+                        <span>
+                            <span ng-bind='loadingProgress'></span>%
+                            <img src='/images/loaders/images-cm.gif' />
+                        </span>
+                    </p>
+                    <p class="stdformbutton ng-scope">
+                        <button ng-click="saveFile()" class="btn btn-primary" ng-disabled="form.$invalid || !fileName">Subir</button>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
 
 </div>
 
