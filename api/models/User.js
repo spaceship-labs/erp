@@ -110,7 +110,6 @@ module.exports = {
                 if (useAcl.company){
                     for (var appI in app.actions) {
                         var actionPermission = app.actions[appI];
-                        //console.log(actionPermission);
                         for (var permissionIndex in useAcl.permissions) {
                             if (useAcl.permissions[permissionIndex].key == actionPermission.handle && useAcl.permissions[permissionIndex].value) {
                                 return true;
