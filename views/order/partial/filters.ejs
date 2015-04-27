@@ -1,19 +1,22 @@
+<div class='col-md-12 active-filters tag-container'>
+    <span class='multi-tag' ng-repeat='filter in filters'>{{filter.label}}</span>
+    <div class='clear'></div>
+</div>
 <div class='col-md-12 filters-form' collapse="!isCollapsedFilter">
     <form ng-repeat='f in filtersArray' class='stdform' ng-show="f.open">
         <div class='row'>
             <div class='col-md-3'>
-                <input ng-if='f.type=="date"' ng-model="f.model[f.field].from" placeholder="Desde" type='text' >
+                <!--<input ng-if='f.type=="date"' ng-model="f.model[f.field].from" placeholder="Desde" type='text' >-->
+                <datepicker ng-if='f.type == "date"' ng-model="f.model[f.field].from" show-weeks="true" class="well well-sm"></datepicker>
                 <select ng-if="f.type=='select'" ng-model="f.model[f.field].item" ng-options="obj.key as obj.value for obj in f.options" placeholder="f.label"></select>
             </div>
             <div class='col-md-3' ng-if='f.type=="date"'>
-                <input ng-model="f.model[field].to" placeholder="Hasta"  type='text' >
+                <!--<input ng-init="f.model[f.field].to = f.options.to" ng-if='f.type=="date"' ng-model="f.model[f.field].to" placeholder="Hasta" type='text' >-->
+                <datepicker ng-if='f.type == "date"' ng-init="f.model[f.field].to = f.options.to" ng-model="f.model[f.field].to" show-weeks="true" class="well well-sm"></datepicker>
             </div>
             <div class='col-md-2'>
                 <button ng-click="sendFilter(f)" class="btn btn-primary">Filtrar</button>
             </div>
         </div>
     </form>
-</div>
-<div class='col-md-12 active-filters'>
-    <span ng-repeat='filter in filters'>{{filter.label}}</span>
 </div>

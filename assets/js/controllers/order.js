@@ -5,7 +5,7 @@ app.controller('orderCTL',function($scope,$http,$window,$upload){
     $scope.currentPage = 1;
     $scope.filters = {};
     $scope.filtersArray = [
-         { label : 'Arrival date' , value : 'arrival' , type : 'date' , field : 'arrival_date' }
+         { label : 'Arrival date' , value : 'arrival' , type : 'date' , field : 'arrival_date' , options : { to : new Date() } }
         ,{ label : 'Departure date' , value : 'departure' , type : 'date' , field : 'departure_date' }
         ,{ label : 'Reservation date' , value : 'reserve' , type : 'date' , field : 'createdAt' }
         ,{ label : 'Client' , value : 'client' , type : 'string' , field : 'client' }
@@ -36,37 +36,39 @@ app.controller('orderCTL',function($scope,$http,$window,$upload){
     var sendFilterFx = function(skip){
         var fx = {};
         var f = $scope.filters;
-        console.log(f);
-        for( var x in f ){
+        //console.log(f);
+        /*for( var x in f ){
             if( f[x].model[f[x].field] ){
                 if( f[x].type == 'date' ){
-                    console.log(f[x]);
-                    var field = f[x].field;
-                    fx['$and'] = [{
-                        field : { '>=' : f[x].model[f[x].field].to }
-                        ,field : { '<=' : f[x].model[f[x].field].from }
-                    }];
+                    //console.log(f[x]); //var field = f[x].field;
+                    var from = {}; from[f[x].field] = { '>=' : new Date(f[x].model[f[x].field].from) };
+                    var to = {}; to[f[x].field] = { '<=' : new Date(f[x].model[f[x].field].to) };
+                    fx['$and'] = [from,to];
                 }else if( f[x].type == 'select' ){
                     fx[ f[x].field ] = f[x].model[f[x].field].item;
                 }
             }
-        }
+        }*/
         //if( ! angular.equals( {} , fx ) ){
             //var skip = skip || 0;
             //$scope.currentPage = 1;
-            var params = { fields : fx , skip : skip };
-            $http.post('/order/customFind',params,{}).success(function(result) {
+            var params = { fields : f , skip : skip };
+            //$http.post('/order/customFind',params,{}).success(function(result) {
+            console.log(params);
+            $http.post('/order/customindex',params,{}).success(function(result) {
                 console.log('result');
                 console.log(result);
                 //$scope.totalOrders = 50;
                 //$scope.currentPage = 1;
                 if(result){
-                    $scope.orders = result.result;
+                    $scope.orders = result.orders;
                     $scope.formaOrders();
+                    $scope.totalOrders = result.count;
                 }
             });
         //}
     }
+    sendFilterFx(0);
     $scope.formatDate = function(date){
         var d = new Date(date);
         if(date) return d.getDate() + '/' + (d.getMonth()+1) + '/' + d.getFullYear();
@@ -111,9 +113,10 @@ app.controller('orderCTL',function($scope,$http,$window,$upload){
     };
     $scope.saveFile = function() {
         $scope.loading = true;
+        $scope.f = { finish : false };
         $scope.upload = $upload.upload({
             url: '/order/uploadcvs',
-            file: $scope.cvsfile
+            file: $scope.file
         }).progress(function(evt){
             $scope.loadingProgress = parseInt(100.0 * evt.loaded / evt.total);
         }).success(function(data, status, headers, config) {
@@ -121,12 +124,17 @@ app.controller('orderCTL',function($scope,$http,$window,$upload){
             $scope.loadingProgress = 0;
             //window.location = "/order";
             console.log(data);
+            $scope.f.finish = true;
+            $scope.f.success = data.success;
+            $scope.f.results = data.result;
+            $scope.f.errors = data.errors;
         });
     };
     $scope.WFile = function($files,$e){
         if($files) {
             //console.log($files[0].name);
             $scope.fileName = $files[0].name;
+            $scope.file = $files;
         }
     };
 });

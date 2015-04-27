@@ -13,8 +13,8 @@
 	</div>
     <br>
     <div class='row pagination-row'>
-        <div class='col-md-4'>
-            <!--<span class='dropdown'>
+        <!--<div class='col-md-4'>
+            <span class='dropdown'>
                 <a class="btn btn-primary" data-toggle="modal" data-target="#uploadCVS"><i class="fa fa-upload"></i> Importar CVS</a>
                 <a dropdown-toggle class='btn btn-primary'><i class='fa fa-filter'></i> Filtros</a>
                 <ul role='menu' class='dropdown-menu'>
@@ -23,13 +23,12 @@
                     </li>
                 </ul>
             </span>
-            <a ng-click='resetFilter()' class='btn btn-primary'><i class='fa fa-refresh'></i> Reset</a>-->
-        </div>
+            <a ng-click='resetFilter()' class='btn btn-primary'><i class='fa fa-refresh'></i> Reset</a>
+        </div>-->
         <div class='col-md-8'>
-            <pagination total-items="totalOrders" items-per-page='2' ng-model="currentPage" max-size="8" class="pagination-sm pull-right" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="pageChanged()"></pagination>
+            <pagination total-items="totalOrders" items-per-page='10' ng-model="currentPage" max-size="8" class="pagination-sm pull-right" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="pageChanged()"></pagination>
         </div>
     </div>
-    
     <br>
     <div class='row'><div class='col-md-12'>
 	   <div class="widgetcontent custom-table nopadding ng-cloak">
@@ -37,16 +36,16 @@
             <tr class='hide-sm'>
                 <th> <%= __('order-id')%> </th>
                 <th> <%= __('order-usuario')%> </th>
-                <th> <%= __('order-empresa')%> </th>
+                <!--<th> <%= __('order-empresa')%> </th>-->
                 <th> <%= __('order-llegada')%> </th>
                 <th> <%= __('order-salida')%> </th>
                 <th> <%= __('order-cliente')%> </th>
                 <th> <%= __('order-hotel')%> </th>
                 <th> <%= __('order-aeropuerto')%> </th>
-                <th> <%= __('order-tipo')%> </th>
-                <th> <%= __('order-origen')%> </th>
+                <!--<th> <%= __('order-tipo')%> </th>
+                <th> <%= __('order-origen')%> </th>-->
                 <th> <%= __('order-estado')%> </th>
-                <th> <%= __('order-pago')%> </th>
+                <!--<th> <%= __('order-pago')%> </th>-->
                 <th> <%= __('order-fecha')%> </th>
                 <th> <%= __('order-total')%> </th>
                 <th> <%= __('order-editar')%> </th>
@@ -63,8 +62,8 @@
                     </span>
                 </td>
                 <td ng-class='isHiden[$index]?"hide-row":""' data-title="<%= __('order-id')%>" ng-bind="order.id"></td>
-                <td ng-class='isHiden[$index]?"hide-row":""' data-title="<%= __('order-usuario')%>" ng-bind="order.user.name + ' ' + order.user.last_name"></td>
-                <td ng-class='isHiden[$index]?"hide-row":""' data-title="<%= __('order-empresa')%>" ng-bind="order.company.name"></td>
+                <td ng-class='isHiden[$index]?"hide-row":""' data-title="<%= __('order-usuario')%>" ng-bind="order.user.name + ' ' + order.user.last_name + ', ' + order.company.name"><</td>
+                <!--<td ng-class='isHiden[$index]?"hide-row":""' data-title="<%= __('order-empresa')%>" ng-bind="order.company.name"></td>-->
                 <td ng-class='isHiden[$index]?"hide-row":""' data-title='<%= __('order-llegada')%>'><ul>
                     <li>Vuelo: {{ order.transfer.arrival_fly  || '---' }}</li>
                     <li>Fecha: {{ formatDate(order.transfer.arrival_date) || '---' }} </li>
@@ -78,10 +77,17 @@
                 <td ng-class='isHiden[$index]?"hide-row":""' data-title='<%= __('order-cliente')%>'>{{(order.client.name + ' ' + order.client.last_name) || "---" }}</td>
                 <td ng-class='isHiden[$index]?"hide-row":""' data-title='<%= __('order-hotel')%>'>{{order.transfer.hotel || "---" }}</td>
                 <td ng-class='isHiden[$index]?"hide-row":""' data-title='<%= __('order-aeropuerto')%>'>{{order.transfer.airport || "---" }}</td>
-                <td ng-class='isHiden[$index]?"hide-row":""' data-title='<%= __('order-tipo')%>'>{{order.transfer.type || "---" }}</td>
-                <td ng-class='isHiden[$index]?"hide-row":""' data-title='<%= __('order-origen')%>'>{{order.transfer.origin || "---" }}</td>
+                <td ng-class='isHiden[$index]?"hide-row":""' data-title='<%= __('order-tipo')%>'>
+                    <ul>
+                        <li><%= __('order-tipo')%>: {{order.transfer.type || "---" }}</li>
+                        <li><%= __('order-origen')%>: {{order.transfer.origin || "---" }}</li>
+                        <li><%= __('order-estado')%>: {{order.transfer.state || "---" }}</li>
+                        <li><%= __('order-pago')%>: {{order.transfer.payment_method || "---" }}</li>
+                    </ul>
+                </td>
+                <!--<td ng-class='isHiden[$index]?"hide-row":""' data-title='<%= __('order-origen')%>'>{{order.transfer.origin || "---" }}</td>
                 <td ng-class='isHiden[$index]?"hide-row":""' data-title='<%= __('order-estado')%>'>{{order.transfer.state || "---" }}</td>
-                <td ng-class='isHiden[$index]?"hide-row":""' data-title='<%= __('order-pago')%>'>{{order.transfer.payment_method || "---" }}</td>
+                <td ng-class='isHiden[$index]?"hide-row":""' data-title='<%= __('order-pago')%>'>{{order.transfer.payment_method || "---" }}</td>-->
                 <td ng-class='isHiden[$index]?"hide-row":""' data-title="Fecha">{{formatDate(order.createdAt)}}</td>
                 <td ng-class='isHiden[$index]?"hide-row":""' data-title="Total"><span  ng-bind="order.transfer.fee"></span></td>
                 <% if (req.user.hasPermission(req.res.locals.selected_company.id,'orders_e')) {%>
@@ -108,7 +114,7 @@
                         <span class='field'>
                             <span 
                                 ng-file-select="WFile($files,$event)" 
-                                ng-model="cvsfile" 
+                                ng-model="file" 
                                 multiple="false" 
                                 accept=".csv"><a class='btn btn-primary'>Seleccionar archivo</a></span>
                                 <span ng-bind='fileName'></span>
@@ -134,6 +140,14 @@
                             <img src='/images/loaders/images-cm.gif' />
                         </span>
                     </p>
+                    <p class='results' ng-if='f.finish&&f.success' >
+                        <label ng-if='f.success'>Archivo importado exitosamente</label>
+                    </p>
+                    <ul class='results errorslist' ng-if='f.finish&&!f.success' ng-if='f.finish'>
+                        <li>Lista de folios que causaron error:</li>
+                        <li ng-repeat="o in f.errors">
+                            Folio: {{o.r.referencia}} , <span ng-repeat="err_ in o.err">{{$index>0?' | ':''}}{{err_}}</span></li>
+                    </ul>
                     <p class="stdformbutton ng-scope">
                         <button ng-click="saveFile()" class="btn btn-primary" ng-disabled="form.$invalid || !fileName">Subir</button>
                     </p>

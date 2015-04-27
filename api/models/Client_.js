@@ -13,13 +13,13 @@ module.exports = {
 		company	: { model : 'Company'  },
 		address	: { type: 'string' },
         rfc     : { type : 'string' , required : true },
-        user : { model : 'User' , required : true },
+        user    : { model : 'User' , required : true }, //usuario que crea este usuario
         comments : { type : 'string' },
-        sales : {
+        sales   : {
             collection : "Sale",
             via : "client"
         },
-        quotes : {
+        quotes  : {
             collection : "SaleQuote",
             via : "client"
         },
