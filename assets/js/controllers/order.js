@@ -8,7 +8,7 @@ app.controller('orderCTL',function($scope,$http,$window,$upload){
          { label : 'Arrival date' , value : 'arrival' , type : 'date' , field : 'arrival_date' , options : { to : new Date() } }
         ,{ label : 'Departure date' , value : 'departure' , type : 'date' , field : 'departure_date' , options : { to : new Date() } }
         ,{ label : 'Reservation date' , value : 'reserve' , type : 'date' , field : 'createdAt' , options : { to : new Date() } }
-        /*,{ label : 'Client' , value : 'client' , type : 'autocomplete' , field : 'client' , action : 
+        ,{ label : 'Client' , value : 'client' , type : 'autocomplete' , field : 'client' , action : 
             function(term){
                 return $http.get('/client/find', {
                     params: { 'name': term , 'limit': 10 , 'sort' : 'name asc' }
@@ -40,7 +40,7 @@ app.controller('orderCTL',function($scope,$http,$window,$upload){
                     //return [{id:1,name:'jsdjds'},{id:1,name:'jsdjds'}];
                 });
             }
-        }*/
+        }
         ,{ label : 'Transfer Type' , value : 'type' , type : 'select' , field : 'type' , options : [{ value : 'All' , key : 'all' },{value:'One way',key:'one_way'},{value:'Round Trip',key:'round_trip'}] }
         ,{ label : 'Payment state' , value : 'payment_state' , type : 'select' , field : 'state' , options : [{ value : 'All' , key : 'all' },{value:'Pending',key:'pending'},{value:'Liquidated',key:'liquidated'},{value:'Canceled',key:'canceled'}] }
         //,{ label : 'Agency' , value : 'agency' , type : 'select-object' , field : 'agency'  , options : [{}] }
