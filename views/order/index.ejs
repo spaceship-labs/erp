@@ -1,6 +1,4 @@
 <script type='text/javascript'>
-	window.orders = <%- JSON.stringify(orders) %>;
-    window.totalOrders = <%- JSON.stringify(totalOrders) %>;
 	window.content = <%- JSON.stringify(_content) %>;
 </script>
 <div ng-controller='orderCTL' class='' >
@@ -12,10 +10,12 @@
 		</div>
 	</div>
     <br>
+    <!--<input type="text" ng-model="myModel" placeholder="Autocomplete" typeahead="item as item.name for item in getClients($viewValue)" typeahead-loading="loadingLocations" class="form-control">
+    <br>-->
     <div class='row pagination-row'>
-        <!--<div class='col-md-4'>
+        <div class='col-md-4'>
             <span class='dropdown'>
-                <a class="btn btn-primary" data-toggle="modal" data-target="#uploadCVS"><i class="fa fa-upload"></i> Importar CVS</a>
+                <!--<a class="btn btn-primary" data-toggle="modal" data-target="#uploadCVS"><i class="fa fa-upload"></i> Importar CVS</a>-->
                 <a dropdown-toggle class='btn btn-primary'><i class='fa fa-filter'></i> Filtros</a>
                 <ul role='menu' class='dropdown-menu'>
                     <li ng-repeat="f in filtersArray">
@@ -24,11 +24,12 @@
                 </ul>
             </span>
             <a ng-click='resetFilter()' class='btn btn-primary'><i class='fa fa-refresh'></i> Reset</a>
-        </div>-->
+        </div>
         <div class='col-md-8'>
             <pagination total-items="totalOrders" items-per-page='10' ng-model="currentPage" max-size="8" class="pagination-sm pull-right" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="pageChanged()"></pagination>
         </div>
     </div>
+    <%- partial('partial/filters') -%> 
     <br>
     <div class='row'><div class='col-md-12'>
 	   <div class="widgetcontent custom-table nopadding ng-cloak">

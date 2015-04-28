@@ -5,12 +5,13 @@
 <div class='col-md-12 filters-form' collapse="!isCollapsedFilter">
     <form ng-repeat='f in filtersArray' class='stdform' ng-show="f.open">
         <div class='row'>
-            <div class='col-md-3'>
+            <div class='col-md-5'>
                 <!--<input ng-if='f.type=="date"' ng-model="f.model[f.field].from" placeholder="Desde" type='text' >-->
                 <datepicker ng-if='f.type == "date"' ng-model="f.model[f.field].from" show-weeks="true" class="well well-sm"></datepicker>
                 <select ng-if="f.type=='select'" ng-model="f.model[f.field].item" ng-options="obj.key as obj.value for obj in f.options" placeholder="f.label"></select>
+                <input nf-id='f.type="autocomplete"' type="text" ng-model="f.model[f.field].item" placeholder="Autocomplete" typeahead="item as item.name for item in f.action($viewValue)" class="form-control" typeahead-editable='false' >
             </div>
-            <div class='col-md-3' ng-if='f.type=="date"'>
+            <div class='col-md-5' ng-if='f.type=="date"'>
                 <!--<input ng-init="f.model[f.field].to = f.options.to" ng-if='f.type=="date"' ng-model="f.model[f.field].to" placeholder="Hasta" type='text' >-->
                 <datepicker ng-if='f.type == "date"' ng-init="f.model[f.field].to = f.options.to" ng-model="f.model[f.field].to" show-weeks="true" class="well well-sm"></datepicker>
             </div>

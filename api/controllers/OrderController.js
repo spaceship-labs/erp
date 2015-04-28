@@ -8,45 +8,30 @@ var async = require('async');
 var fs = require('fs');
 module.exports = {
   index: function (req, res) {
-    //Order.find(params).sort('createdAt desc').populate('client').populate('reservations').populate('user').populate('company').exec(function(e,orders){
-    Order.find().where(Common.getCompaniesForSearch(req.user)).sort('createdAt desc')
-        .populate('client').populate('reservations').populate('user').populate('company')
-    .limit(10).exec(function(e,orders){
-      Order.count().where(Common.getCompaniesForSearch(req.user)).exec(function(e,totalOrders){
-  		Common.view(res.view,{
-  			orders : []//formatOrders(orders),
-        ,totalOrders : totalOrders
-  			,page:{
-  				name:req.__('sc_reservations')
-  				,icon:'fa fa-car'		
-  				,controller : 'order.js'
-  			},
-  			breadcrumb : [
-  				{label : req.__('sc_reservations')}
-  			]
-  		},req);
-    });
-  	});
+  	Common.view(res.view,{
+  		page:{
+  			name:req.__('sc_reservations')
+  			,icon:'fa fa-car'		
+  			,controller : 'order.js'
+  		},
+  		breadcrumb : [
+  			{label : req.__('sc_reservations')}
+  		]
+  	},req);
   },
-  customindex : function(req,res){
+  customFind : function(req,res){
     var params = req.params.all();
     var skip = params.skip || 0;
     var limit = params.limit || 10;
     //var fields = params.fields || {};
     var fields = formatFilterFields(params.fields);
     Reservation.native(function(e,reservation){
-      reservation.aggregate( [
-          { $skip : skip } , { $limit : limit } , { $sort : { createdAt : -1 } }
-          ,{ $match : fields } , { $group : { _id : "$order" } }
+      reservation.aggregate([ { $sort : { createdAt : -1 } },{ $match : fields },{ $group : { _id : "$order" } },{ $skip : skip } , { $limit : limit }
       ],function(err,reservations){
         var ids = [];
-        for(x in reservations)
-          ids.push( reservations[x]._id );
-        console.log('----------IDS---------');console.log(fields);
-        //console.log(reservations);
-        console.log(ids);
-        Order.find().where({ id : ids })
-          .populate('client').populate('reservations').populate('user').populate('company')
+        for(x in reservations) ids.push( reservations[x]._id );
+        //console.log('----------IDS---------');console.log(ids);
+        Order.find().where({ id : ids }).populate('client').populate('reservations').populate('user').populate('company')
           .exec(function(err,orders){
           //console.log('----------orders-------------');console.log(orders);
           reservation.aggregate([
@@ -56,23 +41,6 @@ module.exports = {
           });
         });
       });
-    });
-  },
-  customFind : function(req,res){
-    var params = req.params.all();
-    var skip = params.skip || 0;
-    var limit = params.limit || 10;
-    var fields = params.fields || {};
-    console.log(fields);
-    Order.find().where( {reservations : [ fields ]} ).skip(skip).limit(limit).sort('createdAt desc')
-    .populate('client').populate('reservations').populate('user').populate('company')
-    .exec(function(err,orders){
-      if(err) res.json(false);
-      var result = [];
-      for(var x in orders){
-        if( orders[x].reservations.length>0 ) result.push(orders[x]);
-      }
-      res.json({result:result,orders:orders});
     });
   },
   neworder : function(req,res){
@@ -424,12 +392,12 @@ function formatFilterFields(f){
   for( var x in f ){
     if( f[x].model[f[x].field] ){
       if( f[x].type == 'date' ){
-        var from = {}; from[f[x].field] = { '>=' : new Date(f[x].model[f[x].field].from) };
-        var to = {}; to[f[x].field] = { '<=' : new Date(f[x].model[f[x].field].to) };
+        var from = {}; from[f[x].field] = { '$gte' : new Date(f[x].model[f[x].field].from) };
+        var to = {}; to[f[x].field] = { '$lte' : new Date(f[x].model[f[x].field].to) };
         fx['$and'] = [from,to];
         console.log('from');console.log(from);
         console.log('to');console.log(to);
-      }else if( f[x].type == 'select' ){
+      }else if( f[x].type == 'select' || f[x].type == 'autocomplete' ){
         fx[ f[x].field ] = f[x].model[f[x].field].item;
       }
     }

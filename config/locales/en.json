@@ -307,7 +307,7 @@
   ,"d_jue" : "Thu"
   ,"d_vie" : "Fri"
   ,"d_sab" : "Sat"
-  ,"d_deleteFile" : "Delete file"
+  ,"d_deleteFile" : "Delete"
   ,"d_deleteperm" : "PERMANENTLY DELETE"
   ,"d_user" : "User"
   ,"d_deletePlaceH" : "Enter your password to delete this file..."

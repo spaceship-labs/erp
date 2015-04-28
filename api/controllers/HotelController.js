@@ -37,7 +37,16 @@ module.exports = {
 				
 			});
 		});
-	},	
+	},
+	find : function(req,res){
+		var params = req.params.all();
+		delete params.id;
+        if(params.name) params.name = new RegExp(params.name,"i");
+        Hotel.find(params).exec(function(err,hotels){
+            if(err) res.json('err');
+            res.json(hotels);
+        });
+	},
 	destroy : function(req,res){
 		Hotel.destroy({id:req.params.id}).exec(function(e,r){
 			if(e) throw(e);
