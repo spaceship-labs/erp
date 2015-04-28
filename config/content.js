@@ -63,6 +63,12 @@ module.exports.content = {
 			,label_en : "Visible on web"
 			,type : 'checkbox'
 			,handle : 'visible'
+		},
+		{
+			label : 'Permite reservar',
+			label_en : 'Allow booking',
+			type 	: 'checkbox',
+			handle 	: 'active',
 		}
 	],
 	locationRelacion : [
