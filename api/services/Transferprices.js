@@ -97,3 +97,15 @@ module.exports.afterCreateZone = function(zone , locations , transfers , company
 		}
 	});
 }
+/*
+	Haré dos, una en la que sólo tenga los ids y otra en la que tenga todo el objeto
+	Recibe: 
+		- Hotel para obtener su zona
+		- Aeropuerto para obtener su zona
+		- Transfer
+		- Tipo transfer (oneway roundtrup)
+		- Pax, para calcular del monto final
+		- Comapany para filtrar por coompany
+*/
+module.exports.calculatePrice = function(hotel,airport,transfer,t_type,pax,company,cb){
+}

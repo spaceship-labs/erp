@@ -21,6 +21,20 @@ module.exports = {
 			});
 		});
 	}
+    , find : function(req,res){
+        var params = req.params.all();
+        delete params.id;
+        if(params.name) params.name = new RegExp(params.name,"i");
+        if( req.user.isAdmin ){
+            Company.find(params).exec(function(err,companies){
+                res.json(companies);
+            });
+        }else{
+            User.findOne(req.user.id).populate('companies',params).exec(function(err,user){
+                res.json( user.companies );
+            });
+        }
+    }
 	, edit: function(req,res){
 		var id = req.params.id;
 		Company.findOne({id:id}).populate('users').populate('hotels').populate('taxes').exec(function(err,company){

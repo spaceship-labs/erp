@@ -7,16 +7,16 @@
 var moment = require('moment');
 module.exports = {
 	index : function(req,res){
-		Hotel.find({company: req.session.select_company}).sort('name DESC').populate('location').exec(function(e,hotels){
-			if(e) throw(e);
+		//Hotel.find({company: req.session.select_company}).sort('name DESC').limit(5).populate('location').exec(function(e,hotels){
+			//if(e) throw(e);
 			Location.find().sort('name').exec(function(e,locations){
 				if(e) throw(e);
 				SeasonScheme.find().sort('name').exec(function(e,schemes){
 					if(e) throw(e);
 					FoodScheme.find().sort('name').exec(function(e,foodSchemes){
-						hotels = formatHotels(hotels);
+						//hotels = formatHotels(hotels);
 						Common.view(res.view,{
-							hotels:hotels,
+							hotels:[],
 							locations:locations,
 							zones:[],
 							schemes : schemes,
@@ -36,15 +36,23 @@ module.exports = {
 				});
 				
 			});
-		});
+		//});
 	},
 	find : function(req,res){
 		var params = req.params.all();
+		var skip = params.skip || 30;
+		console.log(params);
 		delete params.id;
+		delete params.skip;
+		params.company = req.session.select_company;
         if(params.name) params.name = new RegExp(params.name,"i");
-        Hotel.find(params).exec(function(err,hotels){
-            if(err) res.json('err');
-            res.json(hotels);
+        Hotel.find(params).skip(skip).exec(function(err,hotels){
+        	if(err) res.json('err');
+        	Hotel.count(params).exec(function(e,count){
+        		if(e) res.json('err');
+        		hotels = formatHotels(hotels);
+            	res.json({ results : hotels , count : count });
+        	});
         });
 	},
 	destroy : function(req,res){

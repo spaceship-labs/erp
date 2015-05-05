@@ -4,55 +4,43 @@ app.controller('orderCTL',function($scope,$http,$window,$upload){
     $scope.totalOrders = 0;
     $scope.currentPage = 1;
     $scope.filters = {};
+    $scope.theView = 'table';
     $scope.filtersArray = [
          { label : 'Arrival date' , value : 'arrival' , type : 'date' , field : 'arrival_date' , options : { to : new Date() } }
         ,{ label : 'Departure date' , value : 'departure' , type : 'date' , field : 'departure_date' , options : { to : new Date() } }
         ,{ label : 'Reservation date' , value : 'reserve' , type : 'date' , field : 'createdAt' , options : { to : new Date() } }
-        ,{ label : 'Client' , value : 'client' , type : 'autocomplete' , field : 'client' , action : 
+        ,{ label : 'Client' , value : 'client' , type : 'autocomplete' , field : 'client' , model_ : 'client_' , action : 
             function(term){
-                return $http.get('/client/find', {
-                    params: { 'name': term , 'limit': 10 , 'sort' : 'name asc' }
-                }).then(function(response){
-                    console.log(response);
-                    return response.data;
-                    //return [{id:1,name:'jsdjds'},{id:1,name:'jsdjds'}];
-                });
+                return $http.get('/client/find', { params: { 'name': term , 'limit': 10 , 'sort' : 'name asc' }
+                }).then(function(response){ return response.data; });
             } 
         }
-        ,{ label : 'Hotel' , value : 'hotel' , type : 'string' , field : 'hotel' , action : 
+        ,{ label : 'Hotel' , value : 'hotel' , type : 'autocomplete' , field : 'hotel' , model_ : 'hotel' , action : 
             function(term){
-                return $http.get('/hotel/find', {
-                    params: { 'name': term , 'limit': 10 , 'sort' : 'name asc' }
-                }).then(function(response){
-                    console.log(response);
-                    return response.data;
-                    //return [{id:1,name:'jsdjds'},{id:1,name:'jsdjds'}];
-                });
+                return $http.get('/hotel/find', { params: { 'name': term , 'limit': 10 , 'sort' : 'name asc' }
+                }).then(function(response){ return response.data.results; });
             }
         }
-        ,{ label : 'Aeropuerto' , value : 'aurport' , type : 'autocomplete' , field : 'airport', action : 
+        ,{ label : 'Aeropuerto' , value : 'aurport' , type : 'autocomplete' , field : 'airport', model_ : 'airport' , action : 
             function(term){
-                return $http.get('/airport/find', {
-                    params: { 'name': term , 'limit': 10 , 'sort' : 'name asc' }
-                }).then(function(response){
-                    console.log(response);
-                    return response.data;
-                    //return [{id:1,name:'jsdjds'},{id:1,name:'jsdjds'}];
-                });
+                return $http.get('/airport/find', { params: { 'name': term , 'limit': 10 , 'sort' : 'name asc' }
+                }).then(function(response){ return response.data.results; });
+            }
+        }
+        ,{ label : 'Agency' , value : 'company' , type : 'autocomplete' , field : 'company' , model_ : 'company' , action : 
+            function(term){
+                return $http.get('/company/find', { params: { 'name': term , 'limit': 10 , 'sort' : 'name asc' }
+                }).then(function(response){ return response.data; });
             }
         }
         ,{ label : 'Transfer Type' , value : 'type' , type : 'select' , field : 'type' , options : [{ value : 'All' , key : 'all' },{value:'One way',key:'one_way'},{value:'Round Trip',key:'round_trip'}] }
         ,{ label : 'Payment state' , value : 'payment_state' , type : 'select' , field : 'state' , options : [{ value : 'All' , key : 'all' },{value:'Pending',key:'pending'},{value:'Liquidated',key:'liquidated'},{value:'Canceled',key:'canceled'}] }
-        //,{ label : 'Agency' , value : 'agency' , type : 'select-object' , field : 'agency'  , options : [{}] }
     ];
-    $scope.getClients = function(term){
-        return $http.get('/client/find', {
-            params: { 'name': term , 'limit': 10 , 'sort' : 'name asc' }
-        }).then(function(response){
-            console.log(response);
-            return response.data;
-            //return response.data.map(function(item){ return item.name; });
-        });
+    $scope.removeFilter = function(f){
+        delete $scope.filters[f.field];
+        $scope.isCollapsedFilter = false;
+        $scope.currentPage = 1;
+        sendFilterFx(0);
     };
     $scope.openFilter = function(f){
         for( x in $scope.filtersArray )
@@ -71,7 +59,7 @@ app.controller('orderCTL',function($scope,$http,$window,$upload){
         $scope.filters = {};
         $scope.currentPage = 1;
         sendFilterFx(0);
-    }
+    };
     var sendFilterFx = function(skip){
         var fx = {};
         var f = $scope.filters;
@@ -84,7 +72,7 @@ app.controller('orderCTL',function($scope,$http,$window,$upload){
                 $scope.totalOrders = result.count;
             }
         });
-    }
+    };
     sendFilterFx(0);
     $scope.formatDate = function(date){
         var d = new Date(date);
@@ -95,14 +83,20 @@ app.controller('orderCTL',function($scope,$http,$window,$upload){
         var t = new Date(time);
         if(time) return t.getHours() + ':' + t.getMinutes();
         else return false;
-    }
+    };
     $scope.formaOrders = function(){
         for(var x in $scope.orders){
             var transfer = false;
+            $scope.orders[x].tours = [];
+            $scope.orders[x].hotels = [];
             for( var j in $scope.orders[x].reservations ){
                 var r = $scope.orders[x].reservations[j];
                 if( r.reservation_type == 'transfer' ){
                     transfer = r;
+                }else if( r.reservation_type == 'tour' ){
+                    $scope.orders[x].tours.push(r);
+                }else if( r.reservation_type == 'hotel' ){
+                    $scope.orders[x].hotels.push(r);
                 }
             }
             $scope.orders[x].transfer = transfer;
@@ -117,7 +111,7 @@ app.controller('orderCTL',function($scope,$http,$window,$upload){
         }
     });
     $scope.pageChanged = function() {
-        var skip = ($scope.currentPage-1) * 2;
+        var skip = ($scope.currentPage-1) * 20;
         sendFilterFx(skip);
     };
     $scope.saveFile = function() {
@@ -139,6 +133,10 @@ app.controller('orderCTL',function($scope,$http,$window,$upload){
             $scope.fileName = $files[0].name;
             $scope.file = $files;
         }
+    };
+    $scope.orderDetails = function(order){
+        $scope.theorder = order;
+        jQuery('#orderModal').modal('show');
     };
 });
 app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
@@ -342,10 +340,15 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
         }
     };
     $scope.addTH = function(type){
-        if( type=='tour' && $scope.addedTour ){
-            $scope.reservations.tours = $scope.reservations.tours.concat({tour:$scope.addedTour, reservation_type : 'tour'});
-        }else if( type=='hotel' && $scope.addedHotel ){
-            $scope.reservations.hotels = $scope.reservations.hotels.concat({hotel:$scope.addedHotel, reservation_type : 'hotel'});
+        if( ! angular.equals( {} , $scope.client ) ){
+            if( type=='tour' && $scope.addedTour ){
+                $scope.reservations.tours = $scope.reservations.tours.concat({tour:$scope.addedTour, reservation_type : 'tour' , client : $scope.client });
+            }else if( type=='hotel' && $scope.addedHotel ){
+                $scope.reservations.hotels = $scope.reservations.hotels.concat({hotel:$scope.addedHotel, reservation_type : 'hotel' , client : $scope.client });
+            }
+        }else{
+            $scope.alertM.show = true;
+            $scope.alertM.client = true;
         }
     };
     $scope.removeTH = function(index,type){

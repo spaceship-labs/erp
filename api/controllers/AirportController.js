@@ -25,6 +25,17 @@ module.exports = {
 			});
 		});
 	},
+	find : function(req,res){
+		var params = req.params.all();
+		delete params.id;
+        if(params.name) params.name = new RegExp(params.name,"i");
+        Airport.find(params).exec(function(err,airports){
+            if(err) res.json('err');
+            Airport.count(params).exec(function(e,count){
+            	res.json({ results : airports , count : count });
+            });
+        });
+	},
 	edit : function(req,res){
 		var namelang = req.getLocale()=='es'?'name':'name_es';
 		Airport.findOne(req.params.id).exec(function(e,airport){

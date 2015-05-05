@@ -26,7 +26,7 @@ app.controller('hotelCTL',function($scope,$http,$window,$rootScope){
 	}
     };
     $scope.getInfo = function(hotel){
-        var phones = hotel.phones ? hotel.phones.join(", ") : "";
+        //var phones = hotel.phones ? hotel.phones.join(", ") : "";
         //console.log(hotel.createdAt);
         hotel.createdAt=(moment(hotel.createdAt).format('LL'));
         hotel.updatedAt=(moment(hotel.updatedAt).format('LL'));

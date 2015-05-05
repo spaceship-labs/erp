@@ -1,7 +1,7 @@
 body{min-width: 290px;background:url(@left-bar) repeat-y 0 0;}
 .header{background:@header-background;}
 strong{font-weight: bold;}
-.row .row{max-width: 100%;margin: 0}
+/*.row .row{max-width: 100%;margin: 0}*/
 .show-sm{display: none!important;}
 
 /*Login page*/
@@ -26,7 +26,19 @@ body.loginpage{background: @login-background;overflow: hidden;}
 .pagination-row{margin: 10px 0;}
 .pagination-row .pagination{margin: 0;}
 .filters-form form{margin: 5px 0;}
-
+.filters-form .row{padding: 10px;}
+.viewsIcons .icon{font-size: 30px;margin-left:10px;cursor: pointer;}
+.viewsIcons .icon:hover,
+.viewsIcons .icon.on{color: @primary;}
+.cardsContainer .card{padding: 5px;background: #F3F3F3;border:1px solid #ddd;margin-bottom:5px;position: relative;border-radius: 8px;}
+.cardsContainer .card .actions{position: absolute;right: 0;top: 0;font-size: 20px;background: @primary;padding: 7px 15px;border-top-right-radius: 8px;}
+.cardsContainer .card .actions a{color: white;}
+.cardsContainer .card h4{padding:5px 10px;font-size: 19px;}
+.cardsContainer .card .small-item{list-style: none;padding: 0 15px;}
+.cardsContainer .card .cont-hl{margin-left: 15px;border-left: 4px solid #DADADA;}
+.invoiceModal .modal-data h4{font-weight: bold;margin: 5px 0;padding-bottom: 5px;border-bottom: 1px solid #e3e3e3;text-transform: uppercase;}
+.invoiceModal ul{list-style: none;}
+.invoiceModal .modal-data{padding: 15px;}
 /*Header*/
 .header .logo a{background:transparent url(@header-logo) no-repeat center;display:block;}
 .headmenu > li{}
@@ -100,6 +112,7 @@ body.loginpage{background: @login-background;overflow: hidden;}
 .widgettitle .text-limit{overflow: hidden;text-overflow: ellipsis;white-space: nowrap;padding-right: 85px;margin-right: -85px;float: left;text-transform: uppercase!important;width: 100%;}
 a, a:hover, a:link, a:active, a:focus{color: @links-color;}
 html .btn-primary , .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary{background: @primary;border-color: @primary;color: white;}
+.row.alphabets-nav{margin-bottom: 10px;}
 .alphabets li span{color: @primary;}
 
 .main-client{margin-bottom: 6px;padding: 8px 12px}
@@ -463,7 +476,7 @@ color: #fff;
 .tag-container .multi-tag + .multi-tag,
 .ng-form-helper .multi-tag + .multi-tag{margin-left: 4px;}
 .tag-container .multi-tag a,
-.ng-form-helper .multi-tag a{display:block;float:right;margin:0 0 0 4px;font-size:14px;}
+.ng-form-helper .multi-tag a{display:block;float:right;margin:0 0 0 4px;font-size:14px;cursor: pointer;}
 
 .tag-container{margin-top: 15px;}
 

@@ -22,15 +22,24 @@ module.exports = {
   customFind : function(req,res){
     var params = req.params.all();
     var skip = params.skip || 0;
-    var limit = params.limit || 10;
+    var limit = params.limit || 20;
     //var fields = params.fields || {};
     var fields = formatFilterFields(params.fields);
+    if( ! req.user.isAdmin ){
+      var c_ = [];
+      for(c in req.user.companies ){
+        if( req.user.companies[c].id )
+          c_.push( sails.models['company'].mongo.objectId(req.user.companies[c].id) );
+      }
+      console.log('companies');console.log(c_);
+      fields.company = { "$in" : c_ };
+    }
     Reservation.native(function(e,reservation){
       reservation.aggregate([ { $sort : { createdAt : -1 } },{ $match : fields },{ $group : { _id : "$order" } },{ $skip : skip } , { $limit : limit }
       ],function(err,reservations){
         var ids = [];
         for(x in reservations) ids.push( reservations[x]._id );
-        //console.log('----------IDS---------');console.log(ids);
+        //console.log('----------IDS---------');console.log(fields);console.log(ids);
         Order.find().where({ id : ids }).populate('client').populate('reservations').populate('user').populate('company')
           .exec(function(err,orders){
           //console.log('----------orders-------------');console.log(orders);
@@ -45,6 +54,8 @@ module.exports = {
   },
   neworder : function(req,res){
     var select_company = req.session.select_company || req.user.select_company;
+    console.log('select_company');
+    console.log(select_company);
   	Client_.find({company:select_company}).sort('name').exec(function(e,clients_){ Hotel.find().sort('name').populate('location').populate('zone').populate('rooms').exec(function(e,hotels){ Tour.find().sort('name').exec(function(e,allTours){
   			Common.view(res.view,{
   				clients_ : clients_ ,
@@ -64,7 +75,7 @@ module.exports = {
     }); });
   },
   getorder : function(req,res){
-    console.log(req.user);
+    //console.log(req.user);
     Order.find().where(Common.getCompaniesForSearch(req.user)).sort('createdAt desc').populate('reservations').populate('user').exec(function(e,orders){
       if(err) return res.json(false);
       res.json(orders);
@@ -120,7 +131,7 @@ module.exports = {
     //console.log(params);
 		//var fee = calculateFee(params.fee);
     //var form = Common.formValidate(params,requided);
-    Order.findOne(params.order).exec(function(e,theorder){
+    Order.findOne(params.order.id).exec(function(e,theorder){
       if(e) return res.json(e);
       Reservation.create(params).exec(function(err,reservation){
         if(err) return res.json(err);
@@ -137,9 +148,12 @@ module.exports = {
   },
   createReservationTour : function(req,res){
     var params = req.params.all();
-    Order.findOne(params.order).exec(function(e,theorder){
+    Order.findOne(params.order.id).exec(function(e,theorder){
+      if(e) return res.json(e);
       async.mapSeries( params.items, function(item,cb) {
         item.order = params.order;
+        item.company = req.session.select_company || req.user.select_company;
+        item.user = req.user.id;
         delete item.id;
         Reservation.create(item).exec(function(err,r){
           item.id = r.id; 
@@ -263,8 +277,8 @@ module.exports = {
             var lineList = fs.readFileSync(dirSave + dateString +".csv").toString().split('\n');
             lineList.shift();
             //var schemaKeyList = ["hotel","airport","fee","transfer","autorization_code","state","payment_method","pax","origin","type","arrival_date","arrival_fly","arrival_time","arrivalpickup_time","client","departure_date","departure_fly","departure_time","departurepickup_time"];
-            //var schemaKeyList = ["referencia","Client","Email","Phone","Pax","Precio Web Total","Total","Moneda","Descuento (%)","Cupon","Agencia","Precio Agencia","Moneda","Agencia diferencia","Usuario","Flight Number(arrival)","Arrival Date","Arrival time","Hotel","Region","Flight Number(departure)","Pickup Date Departure","Pickup Time Departure","Departure Date","Departure Time","Amount of Services","Service type","Metodo de pago","Airport","Service Type","Reservation Date","Status","CuponID","Cupon Token","Cupon Nombre","Usuario de instancia","Tour"];
-            var schemaKeyList = ["origin","client","pax","arrival_date","arrival_fly",'arrival_time','hotel','transfer','departure_date','departure_fly','departure_time','note','agency'];
+            var schemaKeyList = ["referencia","Client","Email","Phone","Pax","Precio Web Total","Total","Moneda","Descuento (%)","Cupon","Agencia","Precio Agencia","Moneda","Agencia diferencia","Usuario","Flight Number(arrival)","Arrival Date","Arrival time","Hotel","Region","Flight Number(departure)","Pickup Date Departure","Pickup Time Departure","Departure Date","Departure Time","Amount of Services","Service type","Metodo de pago","Airport","Service Type","Reservation Date","Status","CuponID","Cupon Token","Cupon Nombre","Usuario de instancia","Tour"];
+            var schemaKeyList = ['service','client','pax','arrival_date','arrival_fly','arrival_time','Hotel','transfer','departure_date','departure_fly','departure_time','note','agency','Airport'];
             async.mapSeries(lineList,function(line,callback) {
                 var reservation = {};
                 line.split(',').forEach(function (entry, i) {
@@ -272,17 +286,11 @@ module.exports = {
                 });
                 var reads = [
                     function(cbt){
-                        Hotel.findOne({ name : reservation['hotel'].replace(/(")/g, "") }).populate('location').exec(function(err,hotels){ cbt(err,hotels) })
-                        //Hotel.findOne({ name : reservation['hotel'] }).exec(cb)
+                        Hotel.findOne({ name : reservation['Hotel'].replace(/(")/g, "") }).populate('location').exec(function(err,hotels){ cbt(err,hotels) })
                     },function(hotels,cbt){
-                        Location.findOne().populate('airports').exec(function(err,loc_){
-                          airport 
-                        });
                         Airport.findOne({ name : reservation['Airport'].replace(/(")/g, "") }).exec(function(err,airports){ cbt(err,hotels,airports) })
-                        //Airport.findOne({ name : reservation['airport'] }).exec(function(e,airports){ cb(e,hotels,airports) })
                     },function(hotels,airports,cbt){
-                        Transfer.findOne({ name : reservation['Service Type'].replace(/(")/g, "") }).exec(function(err,transfers){ cbt(err,hotels,airports,transfers) })
-                        //Transfer.findOne({ name : reservation['transfer'] }).exec(function(e,transfers){ cb(e,hotels,airports,transfers) })
+                        Transfer.findOne({ name : reservation['transfer'].replace(/(")/g, "") }).exec(function(err,transfers){ cbt(err,hotels,airports,transfers) })
                     }
                 ];
                 async.waterfall(reads,function(e,hotels,airports,transfers){
@@ -296,7 +304,7 @@ module.exports = {
                     if(typeof airports != 'undefined' && airports.id ) reservation['Airport'] = airports.id;
                     else ash.push('Airport');
 
-                    if(typeof transfers != 'undefined' && transfers.id ) reservation['Service Type'] = transfers.id;
+                    if(typeof transfers != 'undefined' && transfers.id ) reservation['transfer'] = transfers.id;
                     else ash.push('Transfer');
 
                     if(ash.length>0) errors.push({r:reservation,err:ash});
@@ -327,37 +335,42 @@ module.exports = {
   }
 };
 /*
-  "referencia","Client","Email","Phone","Pax","Precio Web Total","Total","Moneda",
-  "Descuento (%)","Cupon","Agencia","Precio Agencia","Moneda","Agencia diferencia",
-  "Usuario","Flight Number(arrival)","Arrival Date","Arrival time","Hotel","Region",
-  "Flight Number(departure)","Pickup Date Departure","Pickup Time Departure",
-  "Departure Date","Departure Time","Amount of Services","Service type",
-  "Metodo de pago","Airport","Service Type","Reservation Date","Status","CuponID",
-  "Cupon Token","Cupon Nombre","Usuario de instancia","Tour"];
+  'service','client','pax','arrival_date','arrival_fly','arrival_time','Hotel','transfer',
+  'departure_date','departure_fly','departure_time','note','agency','Airport';
 
-Por ahora voy a omitir moneda, cupón, usuario, region(no creo sea necesario)
+Esta función formatea los campos que vienen del cvs para: 
+  - Pasar un objeto al create
+  - Calcular el precio
+  - Agregar los campos que hacen falta (ya que no mandan todo lo que guardamos)
 */
 function formatReservation(r){
   var result = { reservation : {} , client : {} };
   //Reservation fields
-  result.reservation.pax = r['Pax'];
-  result.reservation.fee = r['Total'];
-  //result.reservation.cupon = r['Cupon'];
-  result.reservation.company = r['Agencia'];
-  result.reservation.arrival_fly = r['Flight Number(arrival)'];
-  result.reservation.arrival_date = r['Arrival Date'];
-  result.reservation.arrival_time = r['Arrival time'];
-  result.reservation.departure_fly = r['Flight Number(departure)'];
-  result.reservation.departure_date = r['Departure Date'];
-  result.reservation.departure_time = r['Departure Time'];
-  result.reservation.departurepickup_time = r['Pickup Date Departure']; // unir con: Pickup Date Departure
+  result.reservation.pax = r['pax'];
+  result.reservation.company = r['agency'];
   result.reservation.hotel = r['Hotel'];
-  result.reservation.transfer = r['Service type'];
-  result.reservation.payment_method = r['Metodo de pago'];
+  result.reservation.transfer = r['transfer'];
   result.reservation.airport = r['Airport'];
-  result.reservation.type = r['Service Type'];
-  result.reservation.state = r['Status'];
-  //result.reservation. = r[''];result.reservation. = r[''];
+  result.reservation.notes = r['note'];
+  if(r['service'].toLowerCase()=='llegada'){
+    result.reservation.origin = 'airport';
+    result.reservation.arrival_fly = r['arrival_fly'];
+    result.reservation.arrival_date = new Date(r['arrival_date']);
+    result.reservation.arrival_time = new Date(r['arrival_date'] + ' ' + r['arrival_time']);
+  }else{
+    result.reservation.origin = 'hotel';
+    result.reservation.departure_fly = r['departure_fly'];
+    result.reservation.departure_date = new Date(r['departure_date']);
+    result.reservation.departure_time = new Date(r['departure_date'] + ' ' + r['departure_time']);
+    result.reservation.departurepickup_time = result.reservation.departure_time;
+  }
+  //control attributes fixed
+  result.reservation.reservation_type = 'transfer';
+  result.reservation.type = 'one_way';
+  result.reservation.state = 'pending';
+  result.reservation.payment_method = '';
+  //hay que calcular este monto
+  result.reservation.fee = '0.0';
   //Client fields
   result.client.name = r['Client'];
   result.client.phone = r['Phone'];
@@ -390,15 +403,19 @@ function getRequiredFields(requided,fields){
 function formatFilterFields(f){
   var fx = {};
   for( var x in f ){
-    if( f[x].model[f[x].field] ){
+    if( f[x].model ){
       if( f[x].type == 'date' ){
-        var from = {}; from[f[x].field] = { '$gte' : new Date(f[x].model[f[x].field].from) };
-        var to = {}; to[f[x].field] = { '$lte' : new Date(f[x].model[f[x].field].to) };
+        var from = {}; from[f[x].field] = { '$gte' : new Date(f[x].model.from) };
+        var to = {}; to[f[x].field] = { '$lte' : new Date(f[x].model.to) };
         fx['$and'] = [from,to];
-        console.log('from');console.log(from);
-        console.log('to');console.log(to);
-      }else if( f[x].type == 'select' || f[x].type == 'autocomplete' ){
-        fx[ f[x].field ] = f[x].model[f[x].field].item;
+        //console.log('from');console.log(from);console.log('to');console.log(to);
+      }else if( f[x].type == 'autocomplete' ){
+        if(sails.models[f[x].model_]) 
+          fx[ f[x].field ] = sails.models[f[x].model_].mongo.objectId(f[x].model.item.id);
+        else
+          fx[ f[x].field ] = f[x].model.item.id;
+      }else if( f[x].type == 'select' ){
+        fx[ f[x].field ] = f[x].model.item;
       }
     }
   }
