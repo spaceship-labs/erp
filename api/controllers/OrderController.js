@@ -131,7 +131,7 @@ module.exports = {
     //console.log(params);
 		//var fee = calculateFee(params.fee);
     //var form = Common.formValidate(params,requided);
-    Order.findOne(params.order.id).exec(function(e,theorder){
+    Order.findOne(params.order).exec(function(e,theorder){
       if(e) return res.json(e);
       Reservation.create(params).exec(function(err,reservation){
         if(err) return res.json(err);
@@ -148,7 +148,7 @@ module.exports = {
   },
   createReservationTour : function(req,res){
     var params = req.params.all();
-    Order.findOne(params.order.id).exec(function(e,theorder){
+    Order.findOne(params.order).exec(function(e,theorder){
       if(e) return res.json(e);
       async.mapSeries( params.items, function(item,cb) {
         item.order = params.order;

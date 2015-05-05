@@ -35,7 +35,7 @@
     "rc": "~0.3.3",
     "sails": "~0.10.5",
     "sails-disk": "~0.10.0",
-    "sails-mongo": "^0.10.5",
+    "sails-mongo": "0.10.5",
     "underscore.string": "^3.0.3"
   },
   "scripts": {
