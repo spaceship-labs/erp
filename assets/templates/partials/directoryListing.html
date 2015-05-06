@@ -56,9 +56,9 @@
 	</div>
 	<div class='widgetcontent custom-table nopadding ng-cloak' ng-hide="myView!='table'">
 		<table class="table table-striped">
-			<tr>
+			<tr ng-if="objects.length>0">
 				<th>Name</th>
-				<th ng-repeat='(key,val) in info(objects[0])'>{{key}}: </th>
+				<th ng-repeat='(key,val) in info(objects[0])'>{{key}} </th>
 			</tr>
 			<tr ng-repeat="o in objects">
 				<td data-title="Name">{{o.name}}</td>
