@@ -1,4 +1,4 @@
-app.controller('orderCTL',function($scope,$http,$window,$upload){
+app.controller('orderCTL',function($scope,$http,$window,$upload,$rootScope){
     $scope.orders = [];
     $scope.content = content;
     $scope.totalOrders = 0;
@@ -6,36 +6,37 @@ app.controller('orderCTL',function($scope,$http,$window,$upload){
     $scope.filters = {};
     $scope.theView = 'table';
     $scope.filtersArray = [
-         { label : 'Arrival date' , value : 'arrival' , type : 'date' , field : 'arrival_date' , options : { to : new Date() } }
-        ,{ label : 'Departure date' , value : 'departure' , type : 'date' , field : 'departure_date' , options : { to : new Date() } }
-        ,{ label : 'Reservation date' , value : 'reserve' , type : 'date' , field : 'createdAt' , options : { to : new Date() } }
-        ,{ label : 'Client' , value : 'client' , type : 'autocomplete' , field : 'client' , model_ : 'client_' , action : 
+         { label : $rootScope.translates.arrival_date , value : 'arrival' , type : 'date' , field : 'arrival_date' , options : { to : new Date() } }
+        ,{ label : $rootScope.translates.departure_date , value : 'departure' , type : 'date' , field : 'departure_date' , options : { to : new Date() } }
+        ,{ label : $rootScope.translates.reservation_date , value : 'reserve' , type : 'date' , field : 'createdAt' , options : { to : new Date() } }
+        ,{ label : $rootScope.translates.client , value : 'client' , type : 'autocomplete' , field : 'client' , model_ : 'client_' , action : 
             function(term){
                 return $http.get('/client/find', { params: { 'name': term , 'limit': 10 , 'sort' : 'name asc' }
                 }).then(function(response){ return response.data; });
             } 
         }
-        ,{ label : 'Hotel' , value : 'hotel' , type : 'autocomplete' , field : 'hotel' , model_ : 'hotel' , action : 
+        ,{ label : $rootScope.translates.hotel , value : 'hotel' , type : 'autocomplete' , field : 'hotel' , model_ : 'hotel' , action : 
             function(term){
                 return $http.get('/hotel/find', { params: { 'name': term , 'limit': 10 , 'sort' : 'name asc' }
                 }).then(function(response){ return response.data.results; });
             }
         }
-        ,{ label : 'Aeropuerto' , value : 'aurport' , type : 'autocomplete' , field : 'airport', model_ : 'airport' , action : 
+        ,{ label : $rootScope.translates.airport , value : 'aurport' , type : 'autocomplete' , field : 'airport', model_ : 'airport' , action : 
             function(term){
                 return $http.get('/airport/find', { params: { 'name': term , 'limit': 10 , 'sort' : 'name asc' }
                 }).then(function(response){ return response.data.results; });
             }
         }
-        ,{ label : 'Agency' , value : 'company' , type : 'autocomplete' , field : 'company' , model_ : 'company' , action : 
+        ,{ label : $rootScope.translates.agency , value : 'company' , type : 'autocomplete' , field : 'company' , model_ : 'company' , action : 
             function(term){
                 return $http.get('/company/find', { params: { 'name': term , 'limit': 10 , 'sort' : 'name asc' }
                 }).then(function(response){ return response.data; });
             }
         }
-        ,{ label : 'Transfer Type' , value : 'type' , type : 'select' , field : 'type' , options : [{ value : 'All' , key : 'all' },{value:'One way',key:'one_way'},{value:'Round Trip',key:'round_trip'}] }
-        ,{ label : 'Payment state' , value : 'payment_state' , type : 'select' , field : 'state' , options : [{ value : 'All' , key : 'all' },{value:'Pending',key:'pending'},{value:'Liquidated',key:'liquidated'},{value:'Canceled',key:'canceled'}] }
+        ,{ label : $rootScope.translates.transfer_type , value : 'type' , type : 'select' , field : 'type' , options : [{ value : $rootScope.translates.d_all , key : 'all' },{value:$rootScope.translates.one_way,key:'one_way'},{value:$rootScope.translates.round_trip,key:'round_trip'}] }
+        ,{ label : $rootScope.translates.payment_state , value : 'payment_state' , type : 'select' , field : 'state' , options : [{ value : $rootScope.translates.d_all , key : 'all' },{value:$rootScope.translates.pending,key:'pending'},{value:$rootScope.translates.liquidated,key:'liquidated'},{value:$rootScope.translates.canceled,key:'canceled'}] }
     ];
+    $scope.setIC = function(val){ $scope.isCollapsedFilter = val; }
     $scope.removeFilter = function(f){
         delete $scope.filters[f.field];
         $scope.isCollapsedFilter = false;
@@ -162,6 +163,11 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
     $scope.pax = [];
     for(var j=1;j<30;j++) $scope.pax.push(j);
     //funciones de control
+    //lismpia todos los campos de la reserva
+    $scope.resetForm = function(){
+        $scope.transfer = {}
+        $scope.reservations = { tours : [] , hotels : [] };
+    };
     //Crea un cliente en caso de que sea uno nuevo
     $scope.createClient = function(newClient){
         //$http({method: 'POST', url: '/order/createClient',params:newClient}).success(function (client_){

@@ -41,7 +41,7 @@ module.exports = {
 	find : function(req,res){
 		var params = req.params.all();
 		var skip = params.skip || 30;
-		console.log(params);
+		//console.log(params);
 		delete params.id;
 		delete params.skip;
 		params.company = req.session.select_company;

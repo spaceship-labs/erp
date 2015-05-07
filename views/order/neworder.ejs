@@ -6,6 +6,12 @@
 	window.content = <%- JSON.stringify(_content) %>;
 </script>
 <div ng-controller='orderNewCTL' >
+    <div class='row'>
+        <div class='col-md-12'>
+            <a class="btn btn-primary btn-big pull-right" ng-click="saveAll()"><i class='fa fa-save'></i> <%= __('order-reservar')%> </a>
+            <a class='btn btn-primary btn-big pull-right' ng-click="resetForm()" ><i class='fa fa-eraser'></i> Limpiar campos</a>
+        </div>
+    </div><br>
 	<div class='row stdform stdform2'>
         <div class='{{USClient?"col-md-12":"col-md-6"}}'><div class="widgetbox personal-information">
             <div class='headtitle'>
@@ -111,6 +117,12 @@
             </div>
             <div class="clearfix"></div>
         </form>
+    </div>
+    <div class='row'>
+        <div class='col-md-12'>
+            <a class="btn btn-primary btn-big pull-right" ng-click="saveAll()"><i class='fa fa-save'></i> <%= __('order-reservar')%> </a>
+            <a class='btn btn-primary btn-big pull-right' ng-click="resetForm()" ><i class='fa fa-eraser'></i> Limpiar campos</a>
+        </div>
     </div>
     <div class="modal fade" id="myModal">
         <div class="modal-dialog">

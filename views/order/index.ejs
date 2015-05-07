@@ -1,10 +1,15 @@
 <script type='text/javascript'>
 	window.content = <%- JSON.stringify(_content) %>;
 </script>
-<div ng-controller='orderCTL' class='ng-cloak' ng-cloak >
+<div ng-controller='orderCTL' >
+    <div id="cargando-elementos" class='ng-cloak' ng-cloak><img src="/images/loaders/images-cm.gif"></div>
+    <div class='ng-cloak' ng-cloak>
 	<div class='row'>
 		<div class = "textbutton col-sm-12 col-md-12 col-xs-12">
-			<p style="display:inline-block;"><a href="/order/neworder" class='btn btn-primary'><i class = "fa fa-plus"></i> <%= __('order-crear')%></a></p>
+			<p style="display:inline-block;">
+                <a href="/order/neworder" class='btn btn-primary'><i class = "fa fa-plus"></i> <%= __('order-crear')%></a>
+                <a class="btn btn-primary" data-toggle="modal" data-target="#uploadCVS"><i class="fa fa-upload"></i> <%= __('gral_importcvs')%></a>
+            </p>
             <input type="text" placeholder="Buscar" class="form-control pull-right search" ng-model="searchText" />
 			<br />
 		</div>
@@ -15,15 +20,14 @@
     <div class='row pagination-row'>
         <div class='col-md-4'>
             <span class='dropdown'>
-                <a class="btn btn-primary" data-toggle="modal" data-target="#uploadCVS"><i class="fa fa-upload"></i> Importar CVS</a>
-                <a dropdown-toggle class='btn btn-primary'><i class='fa fa-filter'></i> Filtros</a>
+                <a dropdown-toggle class='btn btn-primary'><i class='fa fa-filter'></i> <%= __('gral_filters')%></a>
                 <ul role='menu' class='dropdown-menu'>
                     <li ng-repeat="f in filtersArray">
                         <a ng-click="openFilter(f)" ng-class='!f.active?"inactive":""'>{{f.label}}</a>
                     </li>
                 </ul>
             </span>
-            <a ng-click='resetFilter()' class='btn btn-primary'><i class='fa fa-refresh'></i> Reset</a>
+            <a ng-click='resetFilter()' class='btn btn-primary'><i class='fa fa-refresh'></i> <%= __('gral_reset')%></a>
         </div>
         <div class='col-md-8'>
             <div class='viewsIcons'>
@@ -38,9 +42,5 @@
     <%- partial('partial/rViews') -%>
 	<div class="clearfix"></div>
     <%- partial('partial/cvsForm') -%>
-
-</div>
-
-    <div id="cargando-elementos" class="ng-cloak">
-        <img src="/images/loaders/images-cm.gif">
     </div>
+</div>

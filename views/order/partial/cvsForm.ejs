@@ -4,16 +4,16 @@
             <form class='form stdform stdform2'>
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title ng-binding">Importar CVS</h4>
+                    <h4 class="modal-title ng-binding"><%= __('gral_importcvs')%></h4>
                 </div>
                 <p>
-                    <label>Seleccionar archivo</label>
+                    <label><%= __('gral_selectfile')%></label>
                     <span class='field'>
                         <span 
                             ng-file-select="WFile($files,$event)" 
                             ng-model="file" 
                             multiple="false" 
-                            accept=".csv"><a class='btn btn-primary'>Seleccionar archivo</a></span>
+                            accept=".csv"><a class='btn btn-primary'><%= __('gral_selectfile')%></a></span>
                             <span ng-bind='fileName'></span>
                     </span>
                 </p>
@@ -31,22 +31,22 @@
                     </span>
                 </p>-->
                 <p ng-if='loading' class='loader' >
-                    <label>Cargando, favor de esperar <br>Loading , please wait this action can take alot of time to finish</label>
+                    <label><%= __('gral_msgloading')%></label>
                     <span>
                         <span ng-bind='loadingProgress'></span>%
                         <img src='/images/loaders/images-cm.gif' />
                     </span>
                 </p>
                 <p class='results' ng-if='f.finish&&f.success' >
-                    <label ng-if='f.success'>Archivo importado exitosamente</label>
+                    <label ng-if='f.success'><%= __('gral_msgsuccess')%></label>
                 </p>
                 <ul class='results errorslist' ng-if='f.finish&&!f.success' ng-if='f.finish'>
-                    <li>Lista de folios que causaron error:</li>
+                    <li><%= __('gral_msglines')%>:</li>
                     <li ng-repeat="o in f.errors">
-                        Folio: {{o.r.referencia}} , <span ng-repeat="err_ in o.err">{{$index>0?' | ':''}}{{err_}}</span></li>
+                        <%= __('gral_line')%>: {{o.index}} , <span ng-repeat="err_ in o.err">{{$index>0?' | ':''}}{{err_}}</span></li>
                 </ul>
                 <p class="stdformbutton ng-scope">
-                    <button ng-click="saveFile()" class="btn btn-primary" ng-disabled="form.$invalid || !fileName">Subir</button>
+                    <button ng-click="saveFile()" class="btn btn-primary" ng-disabled="form.$invalid || !fileName"><%= __('gral_upload')%></button>
                 </p>
             </form>
         </div>

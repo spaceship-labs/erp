@@ -8,6 +8,20 @@
   "gral_addZone":"Agregar zonas",
   "gral_nav":"Navegación",
   "gral_create":"Crear",
+  "gral_cancel":"Cancelar",
+  "gral_filter":"Filtrar",
+  "gral_filters":"Filtros",
+  "gral_importcvs":"Importar CVS",
+  "gral_reset":"Borrar Filtros",
+  "gral_data":"Datos",
+  "gral_close":"Cerrar",
+  "gral_expand":"Expandir",
+  "gral_selectfile":"Seleccionar archivo",
+  "gral_upload":"Subir",
+  "gral_line":"Linea",
+  "gral_msglines":"Lista de lineas que causaron error",
+  "gral_msgloading":"Cargando, favor de esperar esto puede tardar un momento",
+  "gral_msgsuccess":"Archivo cargado exitosamente",
 
 "admin-mensaje":"Mensaje",
 "admin-user-actualizado":"El usuario se ha actualizado exitosamente",
@@ -146,7 +160,6 @@
   "order-tipo":"Tipo",
   "order-origen":"Origen",
   "order-estado":"Estado",
-  "order-pago":"Pago",
   "order-fecha":"Fecha",
   "order-total":"Total",
   "order-editar":"Editar",
@@ -155,7 +168,6 @@
   "order-hotel":"Hotel",
   "order-aeropuerto":"Aeropuerto",
   "order-servicio":"Servicio",
-  "order-estado":"Estado",
   "order-pago":"Método de pago",
   "order-autorizacion":"Código de autorización",
   "order-pax":"PAX",
@@ -183,7 +195,6 @@
   "order-precio":"Precio",
   "order-precio-esp":"Precio especial",
   "order-servicio":" Servicio",
-  "order-estado":" Estado",
   "order-nuevo-cliente":"Nuevo Cliente",
   "order-cliente":"Cliente",
   "order-selecc":"Selecciona un cliente",
@@ -202,6 +213,17 @@
   ,"order-tipo-viaje" : "Tipo de viaje"
   ,"order_tv_rt" : "Viaje redondo"
   ,"order_tv_ow" : "Viaje sencillo"
+  ,"order_transfer" : "Traslado"
+  ,"order_title" : "Orden de compra"
+  ,"order_for" : "para"
+  ,"order_agency" : "Agencia"
+  ,"order_createdby" : "Creado por"
+  ,"order_reservfor" : "Reservado para"
+  ,"order_reservdate" : "Fecha de reservación"
+  ,"order_paymentstate":" Estado de pago"
+  ,"order_pending" : "Pendiente"
+  ,"order_liquidated" : "Liquidado"
+  ,"order_canceled" : "Cancelado"
 
   ,"packageitem-":"",
 

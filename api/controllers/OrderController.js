@@ -19,6 +19,7 @@ module.exports = {
   		]
   	},req);
   },
+  /*Esta será la función que obtenga las ordenes*/
   customFind : function(req,res){
     var params = req.params.all();
     var skip = params.skip || 0;
@@ -136,11 +137,9 @@ module.exports = {
       Reservation.create(params).exec(function(err,reservation){
         if(err) return res.json(err);
         theorder.reservations.push(reservation.id);
-        console.log('reservations');
-        console.log(theorder);
+        //console.log('reservations');console.log(theorder);
         theorder.save(function(err_o){
-          console.log('reservations');
-          console.log(theorder);
+          //console.log('reservations');console.log(theorder);
           return res.json(reservation);
         });
       });
@@ -265,73 +264,74 @@ module.exports = {
     var dateValue = new Date();
     var dateString = 'cvstest';
     var errors = [];
+    var thecompany = req.user.default_company;
+    var theuser = req.user.id;
     req.file('file').upload({saveAs:dateString + '.csv',dirname:dirSave,maxBytes:52428800},function(e,files){
-        if(e) console.log(e);
         if(e) res.json({text : 'error'});
-        if (files && files[0]) {
-            var fileImported = {
-                fileName : files[0].filename,
-                dtStart : dateValue,
-                status : 'processing'
-            };
+        if (files && files[0]){
+            var fileImported = { fileName : files[0].filename, dtStart : dateValue, status : 'processing' };
             var lineList = fs.readFileSync(dirSave + dateString +".csv").toString().split('\n');
             lineList.shift();
-            //var schemaKeyList = ["hotel","airport","fee","transfer","autorization_code","state","payment_method","pax","origin","type","arrival_date","arrival_fly","arrival_time","arrivalpickup_time","client","departure_date","departure_fly","departure_time","departurepickup_time"];
-            var schemaKeyList = ["referencia","Client","Email","Phone","Pax","Precio Web Total","Total","Moneda","Descuento (%)","Cupon","Agencia","Precio Agencia","Moneda","Agencia diferencia","Usuario","Flight Number(arrival)","Arrival Date","Arrival time","Hotel","Region","Flight Number(departure)","Pickup Date Departure","Pickup Time Departure","Departure Date","Departure Time","Amount of Services","Service type","Metodo de pago","Airport","Service Type","Reservation Date","Status","CuponID","Cupon Token","Cupon Nombre","Usuario de instancia","Tour"];
+            //var schemaKeyList = ["referencia","Client","Email","Phone","Pax","Precio Web Total","Total","Moneda","Descuento (%)","Cupon","Agencia","Precio Agencia","Moneda","Agencia diferencia","Usuario","Flight Number(arrival)","Arrival Date","Arrival time","Hotel","Region","Flight Number(departure)","Pickup Date Departure","Pickup Time Departure","Departure Date","Departure Time","Amount of Services","Service type","Metodo de pago","Airport","Service Type","Reservation Date","Status","CuponID","Cupon Token","Cupon Nombre","Usuario de instancia","Tour"];
             var schemaKeyList = ['service','client','pax','arrival_date','arrival_fly','arrival_time','Hotel','transfer','departure_date','departure_fly','departure_time','note','agency','Airport'];
             async.mapSeries(lineList,function(line,callback) {
                 var reservation = {};
-                line.split(',').forEach(function (entry, i) {
-                    reservation[schemaKeyList[i]] = entry;
-                });
+                //set keys for items in reservations
+                line.split(',').forEach(function (entry, i) { reservation[schemaKeyList[i]] = entry; });
                 var reads = [
-                    function(cbt){
-                        Hotel.findOne({ name : reservation['Hotel'].replace(/(")/g, "") }).populate('location').exec(function(err,hotels){ cbt(err,hotels) })
-                    },function(hotels,cbt){
-                        Airport.findOne({ name : reservation['Airport'].replace(/(")/g, "") }).exec(function(err,airports){ cbt(err,hotels,airports) })
-                    },function(hotels,airports,cbt){
-                        Transfer.findOne({ name : reservation['transfer'].replace(/(")/g, "") }).exec(function(err,transfers){ cbt(err,hotels,airports,transfers) })
-                    }
+                    function(cbt){ Hotel.findOne({ name : reservation['Hotel'].replace(/(")/g, "") }).exec(function(err,hotels){ cbt(err,hotels) })
+                    },function(hotels,cbt){ Airport.findOne({ name : reservation['Airport'].replace(/(")/g, "") }).exec(function(err,airports){ cbt(err,hotels,airports) })
+                    },function(hotels,airports,cbt){ Transfer.findOne({ name : reservation['transfer'].replace(/(")/g, "") }).exec(function(err,transfers){ cbt(err,hotels,airports,transfers) }) }
                 ];
+                var index = 0;
                 async.waterfall(reads,function(e,hotels,airports,transfers){
                     console.log(' ----------------------: ' + reservation['referencia']);
-                    //console.log(reservation);
                     if(e) throw(e);
-                    var ash = [];
+                    var ash = []; //array de campos que han causado error
                     if(typeof hotels != 'undefined' && hotels.id ) reservation['Hotel'] = hotels.id;
                     else ash.push('Hotel');
-
                     if(typeof airports != 'undefined' && airports.id ) reservation['Airport'] = airports.id;
                     else ash.push('Airport');
-
                     if(typeof transfers != 'undefined' && transfers.id ) reservation['transfer'] = transfers.id;
                     else ash.push('Transfer');
-
-                    if(ash.length>0) errors.push({r:reservation,err:ash});
-
+                    if(ash.length>0) errors.push({r:reservation,index:index,err:ash});
+                    //callback reservación formateada
                     callback(null,formatReservation(reservation));
-                });
+                    index++;
+                });//async waterfall END
             }, function(err,result) { //async cb
-                var $r = 'finished'
                 var success = false;
-                if (err) {
-                    console.log('err: ');
-                    console.log(err);
-                }
+                if(err){ console.log('err: ');console.log(err); }
                 if( errors.length == 0 ){
-                  //create reservations
                   success = true;
+                  //create reservations
+                  async.mapSeries(result,function(r,callback){
+                    TransferPrice.calculatePrice(r.reservation.hotel, r.reservation.airport, r.reservation.transfer, r.reservation.type, r.reservation.pax, thecompany, function(theprice){
+                      Client_.create(r.client).exec(function(o_err,client){
+                        var o = { user:req.user.id, company:thecompany, reservation_method:'import', reservations:[], client : client.id };
+                        Order.create(o).exec(function(o_err,order){
+                          r.reservation.order = order.id;
+                          r.reservation.user = theuser;
+                          r.reservation.company = thecompany;
+                          Reservation.create(r.reservation).exec(function(r_err,reservation){
+                            callback(r_err,reservation);
+                          });//reservation create END
+                        });//order create END
+                      });//client create END
+                    });//get price END
+                  },function(err_,result_) {
+                    res.json({success : success, result : result , errors : errors });
+                  });//async create reservations
                 }else{
                   success = false;
+                  res.json({success : success, result : result , errors : errors });
                 }
-                //console.log('result');console.log(result);
-                res.json({success : success, result : result , errors : errors });
+                //res.json({success : success, result : result , errors : errors });
             }); //async end
         }else{
           res.json({success : false , result : [] , errors : [] });
         }
     });
-    //res.json({text : 'err',success : false});
   }
 };
 /*
@@ -368,13 +368,13 @@ function formatReservation(r){
   result.reservation.reservation_type = 'transfer';
   result.reservation.type = 'one_way';
   result.reservation.state = 'pending';
-  result.reservation.payment_method = '';
+  result.reservation.payment_method = 'i don´t care';
   //hay que calcular este monto
   result.reservation.fee = '0.0';
   //Client fields
   result.client.name = r['Client'];
-  result.client.phone = r['Phone'];
-  result.client.email = r['Email'];
+  //result.client.phone = r['Phone'];
+  //result.client.email = r['Email'];
   return result
 }
 function formatOrders(orders){

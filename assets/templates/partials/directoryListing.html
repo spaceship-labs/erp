@@ -57,12 +57,14 @@
 	<div class='widgetcontent custom-table nopadding ng-cloak' ng-hide="myView!='table'">
 		<table class="table table-striped">
 			<tr ng-if="objects.length>0">
-				<th>Name</th>
+				<th>{{translates.c_name}}</th>
 				<th ng-repeat='(key,val) in info(objects[0])'>{{key}} </th>
+				<th>{{translates.d_edit}}</th>
 			</tr>
 			<tr ng-repeat="o in objects">
-				<td data-title="Name">{{o.name}}</td>
+				<td data-title="{{translates.c_name}}">{{o.name}}</td>
 				<td ng-repeat='(key,val) in info(o)' data-title="{{key}}">{{val}}</td>
+				<td data-title="{{translates.d_edit}}"><a ng-href="{{editUrl}}{{o.id}}" class='fa fa-edit' style="cursor: pointer"></a></td>
 			</tr>
 		</table>
 	</div>

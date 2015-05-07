@@ -14,16 +14,16 @@
         <div class='row'>
             <div class='col-md-5'>
                 <datepicker ng-if='f.type == "date"' ng-model="f.model.from" show-weeks="true" class="well well-sm"></datepicker>
-                <select ng-if="f.type=='select'" ng-model="f.model.item" ng-options="obj.key as obj.value for obj in f.options" placeholder="f.label"></select>
-                <select ng-if="f.type=='select-object'" ng-model="f.model.item" ng-options="obj as obj.name for obj in f.options" placeholder="f.label"></select>
-                <input ng-if='f.type=="autocomplete"' type="text" ng-model="f.model.item" placeholder="Autocomplete" typeahead="item as item.name for item in f.action($viewValue)" class="form-control" typeahead-editable='false' >
+                <select ng-if="f.type=='select'" ng-model="f.model.item" ng-options="obj.key as obj.value for obj in f.options" placeholder="{{f.label}}"></select>
+                <select ng-if="f.type=='select-object'" ng-model="f.model.item" ng-options="obj as obj.name for obj in f.options" placeholder="{{f.label}}"></select>
+                <input ng-if='f.type=="autocomplete"' type="text" ng-model="f.model.item" placeholder="{{f.label}}" typeahead="item as item.name for item in f.action($viewValue)" class="form-control" typeahead-editable='false' >
             </div>
             <div class='col-md-5' ng-if='f.type=="date"'>
                 <datepicker ng-if='f.type == "date"' ng-init="f.model.to = f.options.to" ng-model="f.model.to" show-weeks="true" class="well well-sm"></datepicker>
             </div>
             <div class='col-md-2'>
-                <button ng-click="sendFilter(f)" class="btn btn-primary">Filtrar</button>
-                <button ng-click="isCollapsedFilter=!isCollapsedFilter" class="btn btn-primary">Cancelar</button>
+                <button ng-click="sendFilter(f)" class="btn btn-primary"><%= __('gral_filter')%></button>
+                <button ng-click="setIC(false)" class="btn btn-primary"><%= __('gral_cancel')%></button>
             </div>
         </div>
     </form>

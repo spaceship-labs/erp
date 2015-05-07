@@ -99,13 +99,28 @@ module.exports.afterCreateZone = function(zone , locations , transfers , company
 }
 /*
 	Haré dos, una en la que sólo tenga los ids y otra en la que tenga todo el objeto
-	Recibe: 
-		- Hotel para obtener su zona
-		- Aeropuerto para obtener su zona
-		- Transfer
+	calculatePrice recibe: 
+		- Hotel (object) para obtener su zona
+		- Aeropuerto (object) para obtener su zona
+		- Transfer (object)
 		- Tipo transfer (oneway roundtrup)
 		- Pax, para calcular del monto final
-		- Comapany para filtrar por coompany
+		- Comapany (object) para filtrar por coompany
 */
 module.exports.calculatePrice = function(hotel,airport,transfer,t_type,pax,company,cb){
+	if( hotel && hotel.zone && airport && airport.zone && transfer && pax ){
+		TransferPrice.findOne({ 
+	        company : company, transfer : transfer.id, active : true, 
+	        "$or":[ 
+	          { "$and" : [{ 'zone1' : hotel.zone, 'zone2' : airport.zone }] } , 
+	          { "$and" : [{ 'zone1' : airport.zone, 'zone2' : hotel.zone }] } 
+	        ] 
+      	}).exec(function(err,price){
+      		if(err) cb(0);
+      		var result = price[t_type] * priceMath.ceil( pax / transfer.max_pax );
+      		cb(result);
+      	});
+	}else{
+		cb(0);
+	}
 }

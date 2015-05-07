@@ -1,31 +1,31 @@
 <div class="widgetcontent custom-table nopadding">
-<table class="table table-striped responsive ng-cloak">
-    <thead>
-        <tr>
-            <th ng-repeat='column in columns' ng-bind="column[labelHelper]"></th>
-            <th ng-if="!inlineEdit" ng-bind="translates.d_edit"></th>
-            <th ng-bind="translates.d_delete"></th>
-        </tr>
-    </thead>
-    <tbody>
-		<tr ng-repeat='(key,object) in objects'>
-			<td ng-repeat='column in columns'>
-                <a ng-if="inlineEdit" 
-                editable-text='object[column.handle]' 
-                e-name='column.handle' 
-                e-required 
-                onbeforesave="updateInline($data,object,column.handle)"
-                >{{object[column.handle] || translates.d_empty}}</a>
-                <span ng-if="!inlineEdit" ng-bind='object[column.handle]'></span>
-            </td>
-            <td ng-if="!inlineEdit">
-                <a ng-href='{{customEditRoute}}/{{object.id}}' class='fa fa-edit' style="cursor: pointer"></a>
-            </td>
-			<td><a class='fa fa-trash-o' ng-click='destroyObject(object,key)' style="cursor: pointer"></a></td>
-		</tr>    	
-    </tbody>
-</table>
+    <table class="table table-striped responsive ng-cloak">
+        <thead>
+            <tr>
+                <th ng-repeat='column in columns' ng-bind="column[labelHelper]"></th>
+                <th ng-if="!inlineEdit" ng-bind="translates.d_edit"></th>
+                <th ng-bind="translates.d_delete"></th>
+            </tr>
+        </thead>
+        <tbody>
+    		<tr ng-repeat='(key,object) in objects'>
+    			<td ng-repeat='column in columns'>
+                    <a ng-if="inlineEdit" 
+                    editable-text='object[column.handle]' 
+                    e-name='column.handle' 
+                    e-required 
+                    onbeforesave="updateInline($data,object,column.handle)"
+                    >{{object[column.handle] || translates.d_empty}}</a>
+                    <span ng-if="!inlineEdit" ng-bind='object[column.handle]'></span>
+                </td>
+                <td ng-if="inlineEdit==''">
+                    <a ng-href='{{customEditRoute}}/{{object.id}}' class='fa fa-edit' style="cursor: pointer"></a>
+                </td>
+    			<td><a class='fa fa-trash-o' ng-click='destroyObject(object,key)' style="cursor: pointer"></a></td>
+    		</tr>    	
+        </tbody>
+    </table>
 </div>
-    <div id="cargando-elementos" class="ng-cloak">
-        <img src="/images/loaders/images-cm.gif">
-    </div>
+<div id="cargando-elementos" class="ng-cloak">
+    <img src="/images/loaders/images-cm.gif">
+</div>

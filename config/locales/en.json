@@ -8,6 +8,20 @@
   "gral_addZone":"Add zones",
   "gral_nav":"Navigation",
   "gral_create":"Create",
+  "gral_cancel":"Cancel",
+  "gral_filter":"Filter",
+  "gral_filters":"Filters",
+  "gral_importcvs":"Import CVS",
+  "gral_reset":"Reset filters",
+  "gral_data":"Data",
+  "gral_close":"Close",
+  "gral_expand":"Expand",
+  "gral_selectfile":"Select file",
+  "gral_upload":"Upload",
+  "gral_line":"Line",
+  "gral_msglines":"List of lines with errors",
+  "gral_msgloading":"Loading , please wait this action can take alot of time to finish",
+  "gral_msgsuccess":"successfully file upload",
 
 "admin-mensaje":"Message",
 "admin-user-actualizado":"The user has been successfully updated ",
@@ -49,9 +63,13 @@
   "emp-agregar-app":"Add application",
   "emp-app-agregada":"All the aplications are added ",
   "emp-usuarios":"Users",
+  "emp-hoteles":"Hoteles",
   "emp-agregar-usuario":"Add User",
   "emp-agregar-usuarios":"+ Add User",
   "emp-todos-usuarios":"All users are added ",
+  "emp-agregar-hotel":"Add Hotel",
+  "emp-agregar-hoteles":"+ Add Hotels",
+  "emp-todos-hoteles":"All hotels was added",
   "emp-archivos":"Archives",
   "emp-acta":"Incorporation agreement ",
   "emp-legal-acta":"Legal representative certificate",
@@ -141,7 +159,6 @@
   "order-aeropuerto":"Airport",
   "order-tipo":"Type",
   "order-origen":"Origin",
-  "order-estado":"Estado",
   "order-pago":"Payment",
   "order-fecha":"Date",
   "order-total":"Total",
@@ -193,6 +210,17 @@
   ,"order-tipo-viaje" : "Type of trip"
   ,"order_tv_rt" : "Round trip"
   ,"order_tv_ow" : "One way"
+  ,"order_transfer" : "Transfer"
+  ,"order_title" : "Purchase Order"
+  ,"order_for" : "for"
+  ,"order_agency" : "Agency"
+  ,"order_createdby" : "Created by"
+  ,"order_reservfor" : "Reserved for"
+  ,"order_reservdate" : "Reservation date"
+  ,"order_paymentstate":"Payment state"
+  ,"order_pending" : "Pending"
+  ,"order_liquidated" : "Liquidated"
+  ,"order_canceled" : "Canceled"
 
   ,"packageitem-":"",
 

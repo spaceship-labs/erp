@@ -9,6 +9,15 @@ strong{font-weight: bold;}
 body.loginpage{background: @login-background;overflow: hidden;}
 .inputwrapper button{background: @login-button;border:1px solid @login-button;}
 .inputwrapper button:focus, .inputwrapper button:active, .inputwrapper button:hover{background: @login-hover;border:1px solid @login-hover;}
+.btn-primary{
+	moz-transition: all 0.2s ease-out 0s;
+	-webkit-transition: all 0.2s ease-out 0s;
+	transition: all 0.2s ease-out 0s;
+}
+.btn-primary:hover{background: darken(@primary,10%);border-color: darken(@primary,10%);}
+.btn-big{padding: 8px 46px;font-size: 15px;}
+.btn-big + .btn-big{margin-right: 10px;}
+.btn-big.pull-right + .btn-big.pull-right{margin-left: 10px;}
 
 /*fee selector*/
 .fee-selector .tabs .tab.selected{border: 1px solid gray;border-bottom: 0 none;border-top-right-radius: 5px;border-top-left-radius: 5px;}
@@ -27,7 +36,8 @@ body.loginpage{background: @login-background;overflow: hidden;}
 .pagination-row .pagination{margin: 0;}
 .filters-form form{margin: 5px 0;}
 .filters-form .row{padding: 10px;}
-.viewsIcons .icon{font-size: 30px;margin-left:10px;cursor: pointer;}
+.viewsIcons .icon{font-size: 30px;margin-left:10px;cursor: pointer;color: #DDDDDD;padding: 4px 7px 2px 7px;border: 1px solid rgb(221, 221, 221);}
+.viewsIcons .icon + .icon{margin-left: 10px;border-right: 0;}
 .viewsIcons .icon:hover,
 .viewsIcons .icon.on{color: @primary;}
 .cardsContainer .card{padding: 5px;background: #F3F3F3;border:1px solid #ddd;margin-bottom:5px;position: relative;border-radius: 8px;}
@@ -111,7 +121,7 @@ body.loginpage{background: @login-background;overflow: hidden;}
 .ng-directory-listing .peoplelist  .widgettitle a.text-limit,
 .widgettitle .text-limit{overflow: hidden;text-overflow: ellipsis;white-space: nowrap;padding-right: 85px;margin-right: -85px;float: left;text-transform: uppercase!important;width: 100%;}
 a, a:hover, a:link, a:active, a:focus{color: @links-color;}
-html .btn-primary , .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary{background: @primary;border-color: @primary;color: white;}
+html .btn-primary , .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary{background: @primary;border-color: @primary;color: white;}
 .row.alphabets-nav{margin-bottom: 10px;}
 .alphabets li span{color: @primary;}
 
@@ -131,7 +141,7 @@ html .btn-primary , .btn-primary:hover, .btn-primary:focus, .btn-primary:active,
 .custom-table table{margin-bottom: 0!important;width: 100%}
 .custom-table table th{position: relative;}
 .custom-table table th:last-child:after{content: "";background: @primary;height: 100%;position: absolute;right: -1px;top: 0;width: 1px}
-.custom-table table th,.custom-table table td{font-size: 12px;padding: 6px;}
+.custom-table table th,.custom-table table td{font-size: 12px;padding: 6px;max-width: 400px;}
 .custom-table table td.th,
 .custom-table table th{background: @login-background!important;border: none!important;color: #fff;font-size: 13px;}
 .custom-table table .table-icon{color: @login-background;font-size: 15px}
@@ -169,6 +179,7 @@ html .btn-primary , .btn-primary:hover, .btn-primary:focus, .btn-primary:active,
 .ng-selector > .btn:not(.active):hover, .ng-selector > .btn:not(.active):focus, .ng-selector > .btn:not(.active):active{color:@primary;background:white;box-shadow: none;border-color:#ccc;}
 
 /*Dropdowns*/
+.dropdown-menu>li>a{cursor: pointer;}
 .dropdown-menu>li>a:hover, .dropdown-menu>li>a:focus, .dropdown-menu>.active>a, .dropdown-menu>.active>a:hover, .dropdown-menu>.active>a:focus{background: @primary!important}
 .peoplelist .peoplewrapper{height: auto;}
 
