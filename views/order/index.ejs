@@ -31,8 +31,8 @@
         </div>
         <div class='col-md-8'>
             <div class='viewsIcons'>
-                <a ng-click="theView='table'" class='pull-right icon {{theView=="table"?"on":""}}'><i class="fa fa-table"></i></a>
-                <a ng-click="theView='list'" class='pull-right icon {{theView=="list"?"on":""}}'><i class="fa fa-th-list"></i></a>
+                <a ng-click="theView='table'" class='pull-right icon {{theView=="table"?"on":""}}'><i class="fa fa-th"></i></a>
+                <a ng-click="theView='list'" class='pull-right icon {{theView=="list"?"on":""}}'><i class="fa fa-list-ul"></i></a>
             </div>
             <pagination total-items="totalOrders" items-per-page='20' ng-model="currentPage" max-size="8" class="pagination-sm pull-right" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="pageChanged()"></pagination>
         </div>

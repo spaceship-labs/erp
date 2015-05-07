@@ -18,7 +18,7 @@
                     >{{object[column.handle] || translates.d_empty}}</a>
                     <span ng-if="!inlineEdit" ng-bind='object[column.handle]'></span>
                 </td>
-                <td ng-if="inlineEdit==''">
+                <td ng-if="!inlineEdit">
                     <a ng-href='{{customEditRoute}}/{{object.id}}' class='fa fa-edit' style="cursor: pointer"></a>
                 </td>
     			<td><a class='fa fa-trash-o' ng-click='destroyObject(object,key)' style="cursor: pointer"></a></td>
