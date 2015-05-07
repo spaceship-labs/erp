@@ -58,6 +58,7 @@ module.exports = {
                 acl.isRep = isRep;
                 acl.permissions = permissions;
                 acl.role = role;
+                acl.company = company;
                 user.save(cb);
             } else {
                 var newAcl = {

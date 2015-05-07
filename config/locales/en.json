@@ -152,13 +152,12 @@
   "order-pago":"Payment method ",
   "order-autorizacion":"Authorization code ",
   "order-pax":"PAX",
-  "order-origen":"Trip origen ",
+  "order-origen2":"Trip origen ",
   "order-viaje":"Trip type ",
   "order-tarifa":"Rate",
   "order-round":"Round trip",
   "order-one":"One way",
   "order-vuelof-llegada":"Flight and date arrival",
-  "order-llegada":"Arrival date",
   "order-vuelo-llegada":" Flight and arrival",
   "order-hora":" Arrival time ",
   "order-pickup":" Pickup time",
@@ -308,7 +307,7 @@
   ,"d_jue" : "Thu"
   ,"d_vie" : "Fri"
   ,"d_sab" : "Sat"
-  ,"d_deleteFile" : "Delete file"
+  ,"d_deleteFile" : "Delete"
   ,"d_deleteperm" : "PERMANENTLY DELETE"
   ,"d_user" : "User"
   ,"d_deletePlaceH" : "Enter your password to delete this file..."

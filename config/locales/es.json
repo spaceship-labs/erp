@@ -159,13 +159,13 @@
   "order-pago":"Método de pago",
   "order-autorizacion":"Código de autorización",
   "order-pax":"PAX",
-  "order-origen":"Origen del viaje",
+  "order-origen2":"Origen del viaje",
   "order-viaje":"Tipo de viaje",
   "order-tarifa":"Tarifa",
   "order-round":"Round trip",
   "order-one":"One way",
   "order-vuelof-llegada":"Vuelo y fecha de llegada",
-  "order-llegada":"Fecha de llegada",
+  "order-llegada2":"Fecha de llegada",
   "order-vuelo-llegada":" Vuelo de llegada",
   "order-hora":" Hora de llegada",
   "order-pickup":" Pickup time",
@@ -318,7 +318,7 @@
   ,"d_jue" : "Jue"
   ,"d_vie" : "Vie"
   ,"d_sab" : "Sab"
-  ,"d_deleteFile" : "Eliminar archivo"
+  ,"d_deleteFile" : "Eliminar"
   ,"d_deleteperm" : "ELIMINAR PERMANENTEMENTE"
   ,"d_user" : "Usuario"
   ,"d_deletePlaceH" : "Ingrese su contraseña para eliminar este documento..."

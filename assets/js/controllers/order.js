@@ -1,6 +1,79 @@
-app.controller('orderCTL',function($scope,$http,$window){
-    $scope.orders = orders;
+app.controller('orderCTL',function($scope,$http,$window,$upload){
+    $scope.orders = [];
     $scope.content = content;
+    $scope.totalOrders = 0;
+    $scope.currentPage = 1;
+    $scope.filters = {};
+    $scope.theView = 'table';
+    $scope.filtersArray = [
+         { label : 'Arrival date' , value : 'arrival' , type : 'date' , field : 'arrival_date' , options : { to : new Date() } }
+        ,{ label : 'Departure date' , value : 'departure' , type : 'date' , field : 'departure_date' , options : { to : new Date() } }
+        ,{ label : 'Reservation date' , value : 'reserve' , type : 'date' , field : 'createdAt' , options : { to : new Date() } }
+        ,{ label : 'Client' , value : 'client' , type : 'autocomplete' , field : 'client' , model_ : 'client_' , action : 
+            function(term){
+                return $http.get('/client/find', { params: { 'name': term , 'limit': 10 , 'sort' : 'name asc' }
+                }).then(function(response){ return response.data; });
+            } 
+        }
+        ,{ label : 'Hotel' , value : 'hotel' , type : 'autocomplete' , field : 'hotel' , model_ : 'hotel' , action : 
+            function(term){
+                return $http.get('/hotel/find', { params: { 'name': term , 'limit': 10 , 'sort' : 'name asc' }
+                }).then(function(response){ return response.data.results; });
+            }
+        }
+        ,{ label : 'Aeropuerto' , value : 'aurport' , type : 'autocomplete' , field : 'airport', model_ : 'airport' , action : 
+            function(term){
+                return $http.get('/airport/find', { params: { 'name': term , 'limit': 10 , 'sort' : 'name asc' }
+                }).then(function(response){ return response.data.results; });
+            }
+        }
+        ,{ label : 'Agency' , value : 'company' , type : 'autocomplete' , field : 'company' , model_ : 'company' , action : 
+            function(term){
+                return $http.get('/company/find', { params: { 'name': term , 'limit': 10 , 'sort' : 'name asc' }
+                }).then(function(response){ return response.data; });
+            }
+        }
+        ,{ label : 'Transfer Type' , value : 'type' , type : 'select' , field : 'type' , options : [{ value : 'All' , key : 'all' },{value:'One way',key:'one_way'},{value:'Round Trip',key:'round_trip'}] }
+        ,{ label : 'Payment state' , value : 'payment_state' , type : 'select' , field : 'state' , options : [{ value : 'All' , key : 'all' },{value:'Pending',key:'pending'},{value:'Liquidated',key:'liquidated'},{value:'Canceled',key:'canceled'}] }
+    ];
+    $scope.removeFilter = function(f){
+        delete $scope.filters[f.field];
+        $scope.isCollapsedFilter = false;
+        $scope.currentPage = 1;
+        sendFilterFx(0);
+    };
+    $scope.openFilter = function(f){
+        for( x in $scope.filtersArray )
+            $scope.filtersArray[x].open = false;
+        f.open = true;
+        $scope.isCollapsedFilter = true;
+    };
+    $scope.sendFilter = function(f){
+        $scope.isCollapsedFilter = false;
+        $scope.filters[f.field] = f;
+        $scope.currentPage = 1;
+        sendFilterFx(0);
+    };
+    $scope.resetFilter = function(){
+        $scope.isCollapsedFilter = false;
+        $scope.filters = {};
+        $scope.currentPage = 1;
+        sendFilterFx(0);
+    };
+    var sendFilterFx = function(skip){
+        var fx = {};
+        var f = $scope.filters;
+        var params = { fields : f , skip : skip };
+        console.log(f);
+        $http.post('/order/customFind',params,{}).success(function(result) {
+            if(result){
+                $scope.orders = result.orders;
+                $scope.formaOrders();
+                $scope.totalOrders = result.count;
+            }
+        });
+    };
+    sendFilterFx(0);
     $scope.formatDate = function(date){
         var d = new Date(date);
         if(date) return d.getDate() + '/' + (d.getMonth()+1) + '/' + d.getFullYear();
@@ -10,14 +83,20 @@ app.controller('orderCTL',function($scope,$http,$window){
         var t = new Date(time);
         if(time) return t.getHours() + ':' + t.getMinutes();
         else return false;
-    }
+    };
     $scope.formaOrders = function(){
         for(var x in $scope.orders){
             var transfer = false;
+            $scope.orders[x].tours = [];
+            $scope.orders[x].hotels = [];
             for( var j in $scope.orders[x].reservations ){
                 var r = $scope.orders[x].reservations[j];
                 if( r.reservation_type == 'transfer' ){
                     transfer = r;
+                }else if( r.reservation_type == 'tour' ){
+                    $scope.orders[x].tours.push(r);
+                }else if( r.reservation_type == 'hotel' ){
+                    $scope.orders[x].hotels.push(r);
                 }
             }
             $scope.orders[x].transfer = transfer;
@@ -31,7 +110,34 @@ app.controller('orderCTL',function($scope,$http,$window){
             }
         }
     });
-    //$scope.formaOrders();
+    $scope.pageChanged = function() {
+        var skip = ($scope.currentPage-1) * 20;
+        sendFilterFx(skip);
+    };
+    $scope.saveFile = function() {
+        $scope.loading = true;
+        $scope.f = { finish : false };
+        $scope.upload = $upload.upload({ url: '/order/uploadcvs' , file: $scope.file
+        }).progress(function(evt){ $scope.loadingProgress = parseInt(100.0 * evt.loaded / evt.total);
+        }).success(function(data, status, headers, config) {
+            $scope.loading = false;
+            $scope.loadingProgress = 0;
+            $scope.f.finish = true;
+            $scope.f.success = data.success;
+            $scope.f.results = data.result;
+            $scope.f.errors = data.errors;
+        });
+    };
+    $scope.WFile = function($files,$e){
+        if($files) {
+            $scope.fileName = $files[0].name;
+            $scope.file = $files;
+        }
+    };
+    $scope.orderDetails = function(order){
+        $scope.theorder = order;
+        jQuery('#orderModal').modal('show');
+    };
 });
 app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
     $scope.alertM = { show: false, client : false, allEmpty: false };
@@ -234,10 +340,15 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
         }
     };
     $scope.addTH = function(type){
-        if( type=='tour' && $scope.addedTour ){
-            $scope.reservations.tours = $scope.reservations.tours.concat({tour:$scope.addedTour, reservation_type : 'tour'});
-        }else if( type=='hotel' && $scope.addedHotel ){
-            $scope.reservations.hotels = $scope.reservations.hotels.concat({hotel:$scope.addedHotel, reservation_type : 'hotel'});
+        if( ! angular.equals( {} , $scope.client ) ){
+            if( type=='tour' && $scope.addedTour ){
+                $scope.reservations.tours = $scope.reservations.tours.concat({tour:$scope.addedTour, reservation_type : 'tour' , client : $scope.client });
+            }else if( type=='hotel' && $scope.addedHotel ){
+                $scope.reservations.hotels = $scope.reservations.hotels.concat({hotel:$scope.addedHotel, reservation_type : 'hotel' , client : $scope.client });
+            }
+        }else{
+            $scope.alertM.show = true;
+            $scope.alertM.client = true;
         }
     };
     $scope.removeTH = function(index,type){

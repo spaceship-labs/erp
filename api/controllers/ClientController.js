@@ -22,6 +22,15 @@ module.exports = {
         });
 
     },
+    find : function(req,res){
+        var params = req.params.all();
+        delete params.id;
+        if(params.name) params.name = new RegExp(params.name,"i");
+        Client_.find(params).exec(function(err,clients){
+            if(err) res.json('err');
+            res.json(clients);
+        });
+    },
 
     add : function(req,res){
         Common.view(res.view,{

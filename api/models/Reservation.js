@@ -35,6 +35,12 @@ module.exports = {
 			model : 'hotel' }
 		,transfer : {
 			model : 'transfer' }
+		,arrival_date : 'date'
+		,arrival_time : 'date'
+		,arrivalpickup_time : 'date'
+		,departure_date : 'date'
+		,departure_time : 'date'
+		,departurepickup_time : 'date'
 	}
 	, attrs_labels : {
 		//transfer reservations

@@ -67,7 +67,7 @@ var jsFilesToInject = [
 	"/bower_components/ng-file-upload/angular-file-upload.js",
 	"/bower_components/chosen/chosen.jquery.min.js",
 	"/bower_components/angular-ui-bootstrap-bower/ui-bootstrap.min.js",
-	"/bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls.js",
+	"/bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls.min.js",
 	//"/bower_components/jquery-migrate/jquery-migrate.js",
 	"/bower_components/jquery-ui/ui/minified/jquery-ui.min.js",
 	"/bower_components/jquery-form/jquery.form.js",

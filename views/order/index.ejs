@@ -1,78 +1,43 @@
 <script type='text/javascript'>
-	window.orders = <%- JSON.stringify(orders) %>;
 	window.content = <%- JSON.stringify(_content) %>;
-    //console.log(user);
 </script>
-<div ng-controller='orderCTL' >
+<div ng-controller='orderCTL' class='ng-cloak' ng-cloak >
 	<div class='row'>
-		<div class = "textbutton col-sm-12 col-sm-12 col-xs-12">
+		<div class = "textbutton col-sm-12 col-md-12 col-xs-12">
 			<p style="display:inline-block;"><a href="/order/neworder" class='btn btn-primary'><i class = "fa fa-plus"></i> <%= __('order-crear')%></a></p>
             <input type="text" placeholder="Buscar" class="form-control pull-right search" ng-model="searchText" />
-			<br /><br />
+			<br />
 		</div>
 	</div>
-	<div class="widgetcontent custom-table nopadding ng-cloak">
-        <table class="table table-striped">
-            <tr class='hide-sm'>
-                <th> <%= __('order-id')%> </th>
-                <th> <%= __('order-usuario')%> </th>
-                <th> <%= __('order-empresa')%> </th>
-                <th> <%= __('order-llegada')%> </th>
-                <th> <%= __('order-salida')%> </th>
-                <th> <%= __('order-cliente')%> </th>
-                <th> <%= __('order-hotel')%> </th>
-                <th> <%= __('order-aeropuerto')%> </th>
-                <th> <%= __('order-tipo')%> </th>
-                <th> <%= __('order-origen')%> </th>
-                <th> <%= __('order-estado')%> </th>
-                <th> <%= __('order-pago')%> </th>
-                <th> <%= __('order-fecha')%> </th>
-                <th> <%= __('order-total')%> </th>
-                <th> <%= __('order-editar')%> </th>
-                <% if (req.user.hasPermission(req.res.locals.selected_company.id,'orders_d')) {%>
-                    <th> <%= __('order-borrar')%> </th>
-                <% } %>
-            </tr>
-            <tr ng-repeat='order in orders | filter:searchText'>
-                <td class='show-sm th'>
-                    <a class='pull-right btn' ng-click="isHiden[$index]=!isHiden[$index]"><i class='fa fa-{{isHiden[$index]?"plus":"minus"}}'></i> {{isHiden[$index]?'Expandir':'Cerrar'}}</a>
-                    <span>Reserva para <strong ng-bind='order.company.name'></strong>, 
-                    creada por <strong ng-bind="order.user.name + ' ' + order.user.last_name"></strong>,
-                    Para <strong ng-bind="order.client.name + ' ' + order.client.last_name"></strong>
-                    </span>
-                </td>
-                <td ng-class='isHiden[$index]?"hide-row":""' data-title="<%= __('order-id')%>" ng-bind="order.id"></td>
-                <td ng-class='isHiden[$index]?"hide-row":""' data-title="<%= __('order-usuario')%>" ng-bind="order.user.name + ' ' + order.user.last_name"></td>
-                <td ng-class='isHiden[$index]?"hide-row":""' data-title="<%= __('order-empresa')%>" ng-bind="order.company.name"></td>
-                <td ng-class='isHiden[$index]?"hide-row":""' data-title='<%= __('order-llegada')%>'><ul>
-                    <li>Vuelo: {{ order.transfer.arrival_fly  || '---' }}</li>
-                    <li>Fecha: {{ formatDate(order.transfer.arrival_date) || '---' }} </li>
-                    <li>Hora: {{ formatTime(order.transfer.arrival_time) || '---' }} </li>
-                </ul></td>
-                <td ng-class='isHiden[$index]?"hide-row":""' data-title='<%= __('order-salida')%>'><ul>
-                    <li>Vuelo: {{ order.transfer.departure_fly  || '---' }}</li>
-                    <li>Fecha: {{ formatDate(order.transfer.departure_date) || '---' }} </li>
-                    <li>Hora: {{ formatTime(order.transfer.departure_time) || '---' }} </li>
-                </ul></td>
-                <td ng-class='isHiden[$index]?"hide-row":""' data-title='<%= __('order-cliente')%>'>{{(order.client.name + ' ' + order.client.last_name) || "---" }}</td>
-                <td ng-class='isHiden[$index]?"hide-row":""' data-title='<%= __('order-hotel')%>'>{{order.transfer.hotel || "---" }}</td>
-                <td ng-class='isHiden[$index]?"hide-row":""' data-title='<%= __('order-aeropuerto')%>'>{{order.transfer.airport || "---" }}</td>
-                <td ng-class='isHiden[$index]?"hide-row":""' data-title='<%= __('order-tipo')%>'>{{order.transfer.type || "---" }}</td>
-                <td ng-class='isHiden[$index]?"hide-row":""' data-title='<%= __('order-origen')%>'>{{order.transfer.origin || "---" }}</td>
-                <td ng-class='isHiden[$index]?"hide-row":""' data-title='<%= __('order-estado')%>'>{{order.transfer.state || "---" }}</td>
-                <td ng-class='isHiden[$index]?"hide-row":""' data-title='<%= __('order-pago')%>'>{{order.transfer.payment_method || "---" }}</td>
-                <td ng-class='isHiden[$index]?"hide-row":""' data-title="Fecha">{{formatDate(order.createdAt)}}</td>
-                <td ng-class='isHiden[$index]?"hide-row":""' data-title="Total"><span  ng-bind="order.transfer.fee"></span></td>
-                <% if (req.user.hasPermission(req.res.locals.selected_company.id,'orders_e')) {%>
-                    <td ng-class='isHiden[$index]?"hide-row":""' data-title="Editar"><a href="/order/edit/{{order.id}}"><span class="table-icon fa fa-edit"></span></a></td>
-                <% } %>
-                <% if (req.user.hasPermission(req.res.locals.selected_company.id,'orders_d')) {%>
-                    <td ng-class='isHiden[$index]?"hide-row":""' data-title="Cancelar"><a href="/order/edit/{{order.id}}"><span class="table-icon fa fa-trash-o"></span></a></td>
-                <% } %>
-            </tr>
-        </table>
+    <br>
+    <!--<input type="text" ng-model="myModel" placeholder="Autocomplete" typeahead="item as item.name for item in getClients($viewValue)" typeahead-loading="loadingLocations" class="form-control">
+    <br>-->
+    <div class='row pagination-row'>
+        <div class='col-md-4'>
+            <span class='dropdown'>
+                <a class="btn btn-primary" data-toggle="modal" data-target="#uploadCVS"><i class="fa fa-upload"></i> Importar CVS</a>
+                <a dropdown-toggle class='btn btn-primary'><i class='fa fa-filter'></i> Filtros</a>
+                <ul role='menu' class='dropdown-menu'>
+                    <li ng-repeat="f in filtersArray">
+                        <a ng-click="openFilter(f)" ng-class='!f.active?"inactive":""'>{{f.label}}</a>
+                    </li>
+                </ul>
+            </span>
+            <a ng-click='resetFilter()' class='btn btn-primary'><i class='fa fa-refresh'></i> Reset</a>
+        </div>
+        <div class='col-md-8'>
+            <div class='viewsIcons'>
+                <a ng-click="theView='table'" class='pull-right icon {{theView=="table"?"on":""}}'><i class="fa fa-table"></i></a>
+                <a ng-click="theView='list'" class='pull-right icon {{theView=="list"?"on":""}}'><i class="fa fa-th-list"></i></a>
+            </div>
+            <pagination total-items="totalOrders" items-per-page='20' ng-model="currentPage" max-size="8" class="pagination-sm pull-right" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="pageChanged()"></pagination>
+        </div>
     </div>
+    <%- partial('partial/filters') -%> 
+    <br>
+    <%- partial('partial/rViews') -%>
 	<div class="clearfix"></div>
+    <%- partial('partial/cvsForm') -%>
 
 </div>
 

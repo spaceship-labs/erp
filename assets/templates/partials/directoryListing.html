@@ -6,7 +6,7 @@
 		</li>
 	</ul>
 	<p ng-if="buttonText != ''"><button class="btn btn-primary" data-toggle="modal" data-target="#myModal"> <span class = "fa fa-plus"></span>{{buttonText}}</button></p>-->
-	<div class = "alphabets-nav row">	
+	<div class = "alphabets-nav row">
 		<div class = "alphabet-container col-md-10 col-sm-10 col-xs-12">
 			<ul class="alphabets">
 				<li ng-repeat="a in alphabet">
@@ -19,12 +19,19 @@
 			<p ng-if="buttonText != ''"><button class="btn btn-primary" data-toggle="modal" data-target="#myModal"> <span class = "fa fa-plus"></span> {{buttonText}}</button></p>
 		</div>
 	</div>
+	<div class='pagination-row row' ng-if="getUrl">
+		<div class='viewsIcons'>
+            <a ng-click="setView('table')" class='pull-right icon {{myView=="table"?"on":""}}'><i class="fa fa-table"></i></a>
+            <a ng-click="setView('list')" class='pull-right icon {{myView=="list"?"on":""}}'><i class="fa fa-th-list"></i></a>
+        </div>
+        <pagination total-items="totalItems" items-per-page='30' ng-model="dlPage" max-size="8" class="pagination-sm pull-right" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="pageChanged(dlPage)"></pagination>
+	</div>
 
 	<div id="cargando-elementos" class="ng-cloak">
 		<img src="/images/loaders/images-cm.gif">
     </div>
 
-	<div class="peoplelist ng-cloak">
+	<div class="peoplelist ng-cloak" ng-hide="myView!='list'">
 		<div class="row-fluid">
 			<div class="span6 widgetbox" ng-repeat='object in objects | filter:objectFilter' ng-cloak class="ng-cloak">
 				<div class="headtitle">         
@@ -46,6 +53,18 @@
 				</div>
 			</div>
 		</div>
+	</div>
+	<div class='widgetcontent custom-table nopadding ng-cloak' ng-hide="myView!='table'">
+		<table class="table table-striped">
+			<tr ng-if="objects.length>0">
+				<th>Name</th>
+				<th ng-repeat='(key,val) in info(objects[0])'>{{key}} </th>
+			</tr>
+			<tr ng-repeat="o in objects">
+				<td data-title="Name">{{o.name}}</td>
+				<td ng-repeat='(key,val) in info(o)' data-title="{{key}}">{{val}}</td>
+			</tr>
+		</table>
 	</div>
 </div>
 

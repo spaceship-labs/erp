@@ -14,10 +14,8 @@ module.exports = {
 
 		company	: { model : 'Company'  },
 		address	: { type: 'string' },
-
         rfc     : { type : 'string' },
-
-        user : { model : 'User'  },
+        user : { model : 'User'  },  //usuario que crea este usuario
 
         source : {
             type : 'string',
@@ -25,11 +23,11 @@ module.exports = {
             defaultsTo : 'internal'
         },
         comments : { type : 'string' },
-        sales : {
+        sales   : {
             collection : "Sale",
             via : "client"
         },
-        quotes : {
+        quotes  : {
             collection : "SaleQuote",
             via : "client"
         },

@@ -1,0 +1,166 @@
+<div ng-if="theView=='table'" class='row'><div class='col-md-12'>
+   <div class="widgetcontent custom-table nopadding ng-cloak">
+    <table class="table table-striped">
+        <tr class='hide-sm'>
+            <th> <%= __('order-id')%> </th>
+            <th> <%= __('order-usuario')%> </th>
+            <th> <%= __('order-cliente')%> </th>
+            <th> <%= __('order-fecha')%> </th>
+            <th> <%= __('order-total')%> </th>
+            <th> Traslados </th>
+            <th> Tours </th>
+            <th> Hoteles </th>
+            <th> Ver más </th>
+            <th> <%= __('order-editar')%> </th>
+            <% if (req.user.hasPermission(req.res.locals.selected_company.id,'orders_d')) {%>
+                <th> <%= __('order-borrar')%> </th>
+            <% } %>
+        </tr>
+        <tr ng-repeat='order in orders | filter:searchText'>
+            <td class='show-sm th'>
+                <a class='pull-right btn' ng-click="isHiden[$index]=!isHiden[$index]"><i class='fa fa-{{isHiden[$index]?"plus":"minus"}}'></i> {{isHiden[$index]?'Expandir':'Cerrar'}}</a>
+                <span>Reserva para <strong ng-bind='order.company.name'></strong>, 
+                creada por <strong ng-bind="order.user.name + ' ' + order.user.last_name"></strong>,
+                Para <strong ng-bind="order.client.name + ' ' + order.client.last_name"></strong>
+                </span>
+            </td>
+            <td ng-class='isHiden[$index]?"hide-row":""' data-title="<%= __('order-id')%>" ng-bind="order.id"></td>
+            <td ng-class='isHiden[$index]?"hide-row":""' data-title="<%= __('order-usuario')%>" ng-bind="order.user.name + ' ' + order.user.last_name + ', ' + order.company.name"><</td>
+            <!--<td ng-class='isHiden[$index]?"hide-row":""' data-title="<%= __('order-empresa')%>" ng-bind="order.company.name"></td>-->
+            <td ng-class='isHiden[$index]?"hide-row":""' data-title='<%= __('order-cliente')%>'>{{(order.client.name + ' ' + order.client.last_name) || "---" }}</td>
+            <td ng-class='isHiden[$index]?"hide-row":""' data-title="Fecha">{{formatDate(order.createdAt)}}</td>
+            <td ng-class='isHiden[$index]?"hide-row":""' data-title="Total"><span  ng-bind="order.transfer.fee"></span></td>
+            <td> {{order.transfer?'1':0}} </td>
+            <td> {{order.tours.length}} </td>
+            <td> {{order.hotels.length}} </td>
+            <td ng-class='isHiden[$index]?"hide-row":""'><a href='#' ng-click="orderDetails(order)" ><i class='fa fa-eye'></i></a></td>
+            <% if (req.user.hasPermission(req.res.locals.selected_company.id,'orders_e')) {%>
+                <td ng-class='isHiden[$index]?"hide-row":""' data-title="Editar"><a href="/order/edit/{{order.id}}"><span class="table-icon fa fa-edit"></span></a></td>
+            <% } %>
+            <% if (req.user.hasPermission(req.res.locals.selected_company.id,'orders_d')) {%>
+                <td ng-class='isHiden[$index]?"hide-row":""' data-title="Cancelar"><a href="/order/edit/{{order.id}}"><span class="table-icon fa fa-trash-o"></span></a></td>
+            <% } %>
+        </tr>
+    </table>
+    </div>
+</div></div>
+<div class='cardsContainer' ng-if="theView=='list'" class='row'><div class='col-md-12'>
+    <div class='card' ng-repeat='order in orders | filter:searchText'>
+        <h4>Orden de compra</h4>
+        <div class='row cont-hl'>
+            <div class='col-md-12'>
+                <p><strong><%= __('order-id')%> : </strong> {{order.id}} </p>
+                <p><strong><%= __('order-fecha')%> : </strong> {{formatDate(order.createdAt)}} </p>
+            <!--</div><div class='col-md-6'>-->
+                <p><strong><%= __('order-usuario')%> : </strong> {{order.user.name + ' ' + order.user.last_name}} , para <strong>Agencia : </strong> {{order.company.name}} </p>
+                <p><strong><%= __('order-cliente')%> : </strong> {{(order.client.name + ' ' + order.client.last_name) || "---" }} </p>
+            </div>
+            <div class='actions'>
+                <a href="/order/edit/{{order.id}}"><span class="table-icon fa fa-edit"></span></a>
+                <a href="/order/edit/{{order.id}}"><span class="table-icon fa fa-trash-o"></span></a>
+            </div>
+        </div>
+        <h4 ng-if="order.transfer">Reserva de traslado</h4>
+        <div ng-if="order.transfer" class='row cont-hl'>
+            <div class='col-md-3'>
+                <p><strong>Datos</strong></p>
+                <p><strong><%= __('order-hotel')%></strong> : {{order.transfer.hotel || "---" }} </p>
+                <p><strong><%= __('order-aeropuerto')%></strong> : {{order.transfer.airport || "---" }} </p>
+                <p><strong>Total</strong> : {{order.transfer.fee}} </p>
+            </div>
+            <div class='col-md-3'>
+                <p><strong>Estado</strong></p>
+                <p><strong><%= __('order-tipo')%></strong> : {{order.transfer.type || "---" }}</p>
+                <p><strong><%= __('order-origen')%></strong> : {{order.transfer.origin || "---" }}</p>
+                <p><strong><%= __('order-estado')%></strong> : {{order.transfer.state || "---" }}</p>
+                <p><strong><%= __('order-pago')%></strong> : {{order.transfer.payment_method || "---" }}</p>
+            </div>
+            <div class='col-md-3'>
+                <p><strong><%= __('order-llegada')%></strong></p>
+                <p><strong>Vuelo</strong> : {{ order.transfer.arrival_fly  || '---' }}</p>
+                <p><strong>Fecha</strong> : {{ formatDate(order.transfer.arrival_date) || '---' }} </p>
+                <p><strong>Hora</strong> : {{ formatTime(order.transfer.arrival_time) || '---' }} </p>
+            </div>
+            <div class='col-md-3'>
+                <p><strong><%= __('order-salida')%></strong></p>
+                <p><strong>Vuelo</strong> : {{ order.transfer.departure_fly  || '---' }}</p>
+                <p><strong>Fecha</strong> : {{ formatDate(order.transfer.departure_date) || '---' }} </p>
+                <p><strong>Hora</strong> : {{ formatTime(order.transfer.departure_time) || '---' }} </p>
+            </div>
+        </div>
+        <h4 ng-if="order.tours.length">Reservas de Tours</h4>
+        <ul ng-if="order.tours.length" class='small-item'>
+            <li ng-repeat="t in order.tours">
+                <p>{{t.tour | json}} , {{formatDate(t.startDate)}}</p>
+                <p>Adultos: {{t.adultNumber}} <span ng-if="t.childrenNumber">, Menores: {{t.childrenNumber}}</span> , Precio: {{t.fee}}</span></p>
+            </li>
+        </ul>
+        <h4 ng-if="order.hotels.length">Reservas de Hoteles</h4>
+        <ul ng-if="order.hotels.length" class='small-item'>
+            <li ng-repeat="t in order.hotels">
+                <p>{{t.hotel | json}} , {{formatDate(t.startDate)}} - {{formatDate(t.endDate)}} </p>
+                <p>Cuartos: {{t.roomsNumber}} ( {{t.roomType}} ), Adultos: {{t.adultNumber}} <span ng-if="t.childrenNumber">, Menores: {{t.childrenNumber}}</span> , Precio: {{t.fee}}</span></p>
+            </li>
+        </ul>
+    </div>
+</div></div>
+<div class="modal fade invoiceModal" id="orderModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title ng-binding">Orden de compra</h4>
+            </div>
+            <div class='modal-data'>
+            <p><strong><%= __('order-id')%> : </strong> {{theorder.id}} </p>
+            <p><strong><%= __('order-fecha')%> : </strong> {{formatDate(theorder.createdAt)}} </p>
+            <p><strong><%= __('order-usuario')%> : </strong> {{theorder.user.name + ' ' + theorder.user.last_name}} , para <strong>Agencia : </strong> {{theorder.company.name}} </p>
+            <p><strong><%= __('order-cliente')%> : </strong> {{(theorder.client.name + ' ' + theorder.client.last_name) || "---" }} </p>
+            <h4 ng-if="theorder.transfer">Reserva de traslado</h4>
+            <div ng-if="theorder.transfer">
+                <p><strong><%= __('order-hotel')%></strong> : {{theorder.transfer.hotel || "---" }} </p>
+                <p><strong><%= __('order-aeropuerto')%></strong> : {{theorder.transfer.airport || "---" }} </p>
+                <div class='row'>
+                    <div class='col-md-6 col-sm-6'>
+                        <p><strong><%= __('order-tipo')%></strong> : {{theorder.transfer.type || "---" }}</p>
+                        <p><strong><%= __('order-origen')%></strong> : {{theorder.transfer.origin || "---" }}</p>
+                    </div>
+                    <div class='col-md-6 col-sm-6'>
+                        <p><strong><%= __('order-estado')%></strong> : {{theorder.transfer.state || "---" }}</p>
+                        <p><strong><%= __('order-pago')%></strong> : {{theorder.transfer.payment_method || "---" }}</p>
+                    </div>
+                </div>
+                <div class='row'>
+                    <div class='col-md-6 col-sm-6'>
+                        <p><strong><%= __('order-llegada')%></strong></p>
+                        <p><strong>Vuelo</strong> : {{ theorder.transfer.arrival_fly  || '---' }}</p>
+                        <p><strong>Fecha</strong> : {{ formatDate(theorder.transfer.arrival_date) || '---' }} </p>
+                        <p><strong>Hora</strong> : {{ formatTime(theorder.transfer.arrival_time) || '---' }} </p>
+                    </div>
+                    <div class='col-md-6 col-sm-6'>
+                        <p><strong><%= __('order-salida')%></strong></p>
+                        <p><strong>Vuelo</strong> : {{ theorder.transfer.departure_fly  || '---' }}</p>
+                        <p><strong>Fecha</strong> : {{ formatDate(theorder.transfer.departure_date) || '---' }} </p>
+                        <p><strong>Hora</strong> : {{ formatTime(theorder.transfer.departure_time) || '---' }} </p>
+                    </div>
+                </div>
+                <p><strong>Total</strong> : {{theorder.transfer.fee}} </p>
+            </div>
+            <h4 ng-if="theorder.tours.length">Reservas de Tours</h4>
+            <ul ng-if="theorder.tours.length" class='small-item'>
+                <li ng-repeat="t in theorder.tours">
+                    <p>{{t.tour | json}} , {{formatDate(t.startDate)}}</p>
+                    <p>Adultos: {{t.adultNumber}} <span ng-if="t.childrenNumber">, Menores: {{t.childrenNumber}}</span> , Precio: {{t.fee}}</span></p>
+                </li>
+            </ul>
+            <h4 ng-if="theorder.hotels.length">Reservas de Hoteles</h4>
+            <ul ng-if="theorder.hotels.length" class='small-item'>
+                <li ng-repeat="t in theorder.hotels">
+                    <p>{{t.hotel | json}} , {{formatDate(t.startDate)}} - {{formatDate(t.endDate)}} </p>
+                    <p>Cuartos: {{t.roomsNumber}} ( {{t.roomType}} ), Adultos: {{t.adultNumber}} <span ng-if="t.childrenNumber">, Menores: {{t.childrenNumber}}</span> , Precio: {{t.fee}}</span></p>
+                </li>
+            </ul>
+            </div>
+        </div>
+    </div>
+</div>

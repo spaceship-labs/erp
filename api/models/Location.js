@@ -16,7 +16,15 @@ module.exports = {
   		collection : 'location',
   		via : 'id',
       dominant : true
-  	}
+  	},
+    airports : {
+      collection : 'airport'
+      ,via : 'location'
+    },
+    hotels : {
+      collection : 'hotel'
+      ,via : 'location'
+    }
   }
   , attrs_labels : {
     name : { es : 'Nombre' , en : 'Name' }

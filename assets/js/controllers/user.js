@@ -57,7 +57,8 @@ app.controller('userEditCTL',function($scope,$http,_){
     var emptyRole = { name : 'Ninguno',permissions : [] ,id : '0' };
     for(var i in $scope.user.accessList){
         var acl = $scope.user.accessList[i];
-        if (acl.company == $scope.company.id) {
+        //if (acl.company == $scope.company.id) {
+        if (acl.company == $scope.user.default_company.id) {
             $scope.user.acl = acl;
             $scope.user.permissions = acl.permissions;
             $scope.isAdmin = acl.isAdmin;
@@ -83,7 +84,8 @@ app.controller('userEditCTL',function($scope,$http,_){
             ,permissions: $scope.user.role.id ? $scope.user.role.permissions:$scope.user.permissions
             ,admin:$scope.isAdmin
             ,rep:$scope.isRep
-            ,company : $scope.company.id
+            //,company : $scope.company.id
+            ,company : $scope.user.default_company
             ,role : $scope.user.role.id
         },{}).success(function(data){
             $scope.saveClassPermissions = 'fa-save';
