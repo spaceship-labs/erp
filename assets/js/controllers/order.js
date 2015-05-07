@@ -226,7 +226,7 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
         }
     }
     var reservationTours = function(){
-        var params = { items : $scope.reservations.tours , order : $scope.order };
+        var params = { items : $scope.reservations.tours , order : $scope.order.id };
         $http.post('/order/createReservationTour',params,{}).success(function(result) {
             if( $scope.reservations.hotels.length>0 )
                 reservationHotels();
@@ -235,7 +235,7 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
         });
     }
     var reservationHotels = function(){
-        var params = { items : $scope.reservations.hotels , order : $scope.order };
+        var params = { items : $scope.reservations.hotels , order : $scope.order.id };
         $http.post('/order/createReservationTour',params,{}).success(function(result) {
             $window.location =  "/order/edit/" + $scope.order.id;
         });
