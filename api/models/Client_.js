@@ -10,10 +10,20 @@ module.exports = {
 	attributes: {
 		name	: { type: 'string',required : true },
 		phone	: { type: 'string' },
+        email : 'string',
+
 		company	: { model : 'Company'  },
 		address	: { type: 'string' },
-        rfc     : { type : 'string' , required : true },
-        user : { model : 'User' , required : true },
+
+        rfc     : { type : 'string' },
+
+        user : { model : 'User'  },
+
+        source : {
+            type : 'string',
+            enum : ['internal','external'],
+            defaultsTo : 'internal'
+        },
         comments : { type : 'string' },
         sales : {
             collection : "Sale",
@@ -30,6 +40,10 @@ module.exports = {
         product_discounts : {
             collection : "Product_discount",
             via : "client"
+        },
+        messages : {
+            collection : 'Client_message',
+            via : 'client'
         },
         discount : {
             type : 'float'

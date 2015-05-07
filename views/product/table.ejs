@@ -1,16 +1,16 @@
 <table class="table table-striped">
     <tr>
         <th>Nombre</th>
-        <th>Direccion</th>
-        <th>Telefono</th>
-        <th>RFC</th>
+        <th>Cetegoria</th>
+        <th>Descripcion</th>
+        <th>Precio</th>
         <th>Accion</th>
     </tr>
      	<tr ng-repeat='product in products | filter:searchText'>
 			<td  data-title="Nombre"><a href="#" ng-href='/product/edit/{{product.id}}' ng-bind='product.name'></a></td>
+            <td ng-bind='product.product_type.name' data-title="Cetegoria"></td>
 			<td ng-bind='product.description' data-title="Descripcion"></td>
-			<td ng-bind='product.product_type.name' data-title="Tipo"></td>
-			<td ng-bind='product.internalReference' data-title="Referencia"></td>
+			<td data-title="Precio">{{product.prices[0].cost + (1 + (product.prices[0].margin/100))}}</td>
 			<td data-title="Editar"><a ng-href='/product/edit/{{product.id}}' ><span class="table-icon fa fa-edit"></span></a></td>
 		</tr>
 </table>

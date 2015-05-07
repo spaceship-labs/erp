@@ -12,7 +12,7 @@ module.exports = {
 		var select_company = req.session.select_company || req.user.select_company;
 		Product_type.find().exec(function(err,product_types){
 			if(err) throw err;
-			Product.find({company:select_company}).populate("product_type").exec(function(err,products){
+			Product.find({company:select_company}).populate("product_type").populate('prices').exec(function(err,products){
 				if(err) throw err;
 				Common.view(res.view,{
 					page:{

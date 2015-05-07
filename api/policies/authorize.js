@@ -38,13 +38,13 @@ module.exports = function(req, res, next) {
   } else {
     Company.find().exec(function(err, companies){
       if (companies.length > 0) {
-        res.redirect('/entrar'); 
+        res.redirect('/entrar');
       } else {
-        res.redirect('/setup'); 
+        res.redirect('/setup');
       }
     });
   }
-  
+
   //TODO cambiar a funcion asincrona que reciba callback
   function getPermissionByControllerAction(company,user,controller,action) {
     var auxLastPermission = true;

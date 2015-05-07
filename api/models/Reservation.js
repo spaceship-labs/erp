@@ -5,8 +5,11 @@
 * @docs        :: http://sailsjs.org/#!documentation/models
 */
 /* campos default : _id, createdAt, updatedAt	
-fee : 'float'
-		,state : { type:'string', enum : ['pending','liquidated','canceled'] }
+        fee : 'float',
+		state : {
+		    type:'string',
+		    enum : ['pending','liquidated','canceled']
+		}
 		,payment_method : { type:'string', enum : ['creditcard','paypal','cash'] }
 		,origin : { type:'string', enum : ['hotel','airport'] }
 		,type : { type:'string', enum : ['round_trip','one_way'] }
@@ -70,7 +73,7 @@ module.exports = {
         ,en : 'Reservations'
     }
 	,afterCreate: function(val,cb){
-		//Notifications.after(Reservation,val,'create');
+		Notifications.after(Reservation,val,'create');
 		cb();
 	},afterUpdate: function(val,cb){
 		console.log('afterUpdate: reservation');

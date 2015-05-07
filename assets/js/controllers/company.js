@@ -60,6 +60,7 @@ app.controller('companyEditCTL',function($scope,$http){
             $scope.$apply();
         });
     };
+
     $scope.addApp = function(app){
         io.socket.post('/company/addApp',{company:$scope.company.id,app:app.name},function(company){
             $scope.company = company;

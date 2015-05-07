@@ -36,6 +36,9 @@ module.exports = {
         },
         internalReference : {
             type : 'string'
+        },
+        getPrice : function() {
+            return this.cost + (1 + (this.margin/100));
         }
     }
 
