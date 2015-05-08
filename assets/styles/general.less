@@ -15,6 +15,7 @@ body.loginpage{background: @login-background;overflow: hidden;}
 	transition: all 0.2s ease-out 0s;
 }
 .btn-primary:hover{background: darken(@primary,10%);border-color: darken(@primary,10%);}
+.secondary{background: @secondaryBG;color: @secondaryTC;}
 .btn-big{padding: 8px 46px;font-size: 15px;}
 .btn-big + .btn-big{margin-right: 10px;}
 .btn-big.pull-right + .btn-big.pull-right{margin-left: 10px;}
@@ -40,15 +41,22 @@ body.loginpage{background: @login-background;overflow: hidden;}
 .viewsIcons .icon + .icon{margin-left: 10px;border-right: 0;}
 .viewsIcons .icon:hover,
 .viewsIcons .icon.on{color: @primary;}
-.cardsContainer .card{padding: 5px;background: #F3F3F3;border:1px solid #ddd;margin-bottom:5px;position: relative;border-radius: 8px;}
-.cardsContainer .card .actions{position: absolute;right: 0;top: 0;font-size: 20px;background: @primary;padding: 7px 15px;border-top-right-radius: 8px;}
-.cardsContainer .card .actions a{color: white;}
-.cardsContainer .card h4{padding:5px 10px;font-size: 19px;}
-.cardsContainer .card .small-item{list-style: none;padding: 0 15px;}
-.cardsContainer .card .cont-hl{margin-left: 15px;border-left: 4px solid #DADADA;}
+.cardsContainer .card{padding: 10px 0;background: #F3F3F3;border:1px solid #ddd;margin-bottom:5px;position: relative;border-radius: 8px;}
+.cardsContainer .card .actions{position: absolute;right: 0;top: 0;font-size: 20px;background: @primary;}
+.cardsContainer .card .actions a{color: #D5D5D5;background: #A5A5A5;padding: 6px 7px 5px;float: right;border-right: 1px solid;}
+.cardsContainer .card .actions a:hover{color: white;}
+.cardsContainer .card h4{padding:5px 10px;font-size: 19px;background: @primary;color: white;position: relative;padding-left: 40px;}
+.cardsContainer .card h4.secondary{background: @secondaryBG;color:@secondaryTC;}
+.cardsContainer .card h4 .icon{position: absolute;left: 0;top: 0;padding: 6px 8px 5px;color: @secondaryTC;background: @secondaryBG;}
+.cardsContainer .card .small-item{list-style: none;}
+.cardsContainer .card ul li{border: 1px solid lightgray;border-top: 0;border-left: 0;}
+.cardsContainer .card ul li p{padding: 4px;}
+.cardsContainer .card ul li .icon{float: left;padding: 5px;font-size: 19px;margin-right: 5px;background: @primary;color: white;}
+.cardsContainer .card .cont-hl{}
 .invoiceModal .modal-data h4{font-weight: bold;margin: 5px 0;padding-bottom: 5px;border-bottom: 1px solid #e3e3e3;text-transform: uppercase;}
 .invoiceModal ul{list-style: none;}
 .invoiceModal .modal-data{padding: 15px;}
+.font-uppercase{text-transform: uppercase;}
 /*Header*/
 .header .logo a{background:transparent url(@header-logo) no-repeat center;display:block;}
 .headmenu > li{}
