@@ -6,16 +6,23 @@
  */
 
 module.exports = {
-	
-
-
-  /**
-   * `TourCategoryController.index()`
-   */
   index: function (req, res) {
-    return res.json({
-      todo: 'index() is not implemented yet!'
-    });
+    TourCategory.find().sort('name').exec(function(e,tourcategories){
+		Common.view(res.view,{
+			tourcategories:tourcategories,
+			page:{
+				name:'Tour Categories'
+				,icon:'fa fa-folder'
+				,controller : 'tourcategories.js'
+			},
+			breadcrumb : [
+				{label : 'tourcategories'}
+			]
+		},req);
+	});
+  }
+  ,edit : function(req,res){
+  	
   }
 };
 
