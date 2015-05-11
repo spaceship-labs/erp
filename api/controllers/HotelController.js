@@ -85,7 +85,7 @@ module.exports = {
 	},
     edit : function(req,res){
     	if( req.params.id ){
-	    	Hotel.findOne(req.params.id).populate('rooms').populate('location').exec(function(e,hotel){
+	    	Hotel.findOne(req.params.id).populate('rooms').exec(function(e,hotel){
 	    		if(e) throw(e);
 	    		hotel = formatHotel(hotel);
 	    		Location.find().sort('name').exec(function(e,locations){

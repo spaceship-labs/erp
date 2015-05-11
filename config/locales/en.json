@@ -22,6 +22,7 @@
   "gral_msglines":"List of lines with errors",
   "gral_msgloading":"Loading , please wait this action can take alot of time to finish",
   "gral_msgsuccess":"successfully file upload",
+  "gral_and":"and",
 
 "admin-mensaje":"Message",
 "admin-user-actualizado":"The user has been successfully updated ",
@@ -156,6 +157,7 @@
   "order-salida":"Departure",
   "order-cliente":"Client",
   "order-hotel":"Hotel",
+  "order-tour":"Tour",
   "order-aeropuerto":"Airport",
   "order-tipo":"Type",
   "order-origen":"Origin",
@@ -221,6 +223,10 @@
   ,"order_pending" : "Pending"
   ,"order_liquidated" : "Liquidated"
   ,"order_canceled" : "Canceled"
+  ,"order_reservs" : "Reservations"
+  ,"order_tours" : "Tour(s)"
+  ,"order_hotels" : "Hotel(s)"
+  ,"order_reserv_type" : "Reservation type"
 
   ,"packageitem-":"",
 

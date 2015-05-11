@@ -74,7 +74,7 @@
                 var changeMethod = $scope.onchanges[field.on_Change];
                 if(changeMethod){
                     var $this = $scope.object[field.handle];
-                    changeMethod($this);
+                    changeMethod($scope.object);
                 }
             }
         }

@@ -19,6 +19,10 @@ module.exports = {
 			model:'cupon',
 			via:'tours',
 		},
+		/*categories : {
+			collection : 'tourcategory'
+			,via:'tour'
+		},*/
 		fee : 'decimal',
 		fee_child : 'decimal'
 		,provider : {
@@ -31,6 +35,7 @@ module.exports = {
 		,name_ru : { es : 'Nombre Ruso' , en : 'Name Russian' }
 		,name_pt : { es : 'Nombre Portugués' , en : 'Name Portuguese' }
 		,location : { es : 'Ciudad' , en : 'City' }
+		,categories : { es : 'Categorías' , en : 'Categories' }
 		,fee : { es : 'Tarifa' , en : 'Rate' }
 		,fee_child : { es : 'Tarífa menores' , en : 'Fee child' }
 		,pax : { es : 'Personas' , en : 'People' }

@@ -21,6 +21,17 @@ module.exports = {
 			},req);
 		});
 	},
+	find : function(req,res){
+		var params = req.params.all();
+		delete params.id;
+        if(params.name) params.name = new RegExp(params.name,"i");
+        Transfer.find(params).exec(function(err,transfers){
+            if(err) res.json('err');
+            Transfer.count(params).exec(function(e,count){
+            	res.json({ results : transfers , count : count });
+            });
+        });
+	},
 	create : function(req,res){
 		var reads = [
 			function(cb){

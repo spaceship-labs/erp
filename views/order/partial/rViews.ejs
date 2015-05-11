@@ -46,24 +46,25 @@
 </div></div>
 <div class='cardsContainer' ng-if="theView=='list'" class='row'><div class='col-md-12'>
     <div class='card' ng-repeat='order in orders | filter:searchText'>
-        <div class='row cont-hl'>
+        <div class='row '>
             <div class='col-md-4'>
                 <h4><a class='icon'><i class='fa fa-tag'></i></a><%= __('order_title')%></h4>
-                <p><strong><%= __('order-id')%> : </strong> {{order.id}} </p>
-                <p><strong><%= __('order-fecha')%> : </strong> {{formatDate(order.createdAt)}} </p>
-            <!--</div><div class='col-md-6'>-->
-                <p><strong><%= __('order-usuario')%> : </strong> {{order.user.name + ' ' + order.user.last_name}} , <%= __('order_for')%> <strong><%= __('order_agency')%> : </strong> {{order.company.name}} </p>
-                <p><strong><%= __('order-cliente')%> : </strong> {{(order.client.name + ' ' + order.client.last_name) || "---" }} </p>
+                <div class='content-border'>
+                    <p><strong><%= __('order-id')%> : </strong> {{order.id}} </p>
+                    <p><strong><%= __('order-fecha')%> : </strong> {{formatDate(order.createdAt)}} </p>
+                    <p><strong><%= __('order-usuario')%> : </strong> {{order.user.name + ' ' + order.user.last_name}} , <%= __('order_for')%> <strong><%= __('order_agency')%> : </strong> {{order.company.name}} </p>
+                    <p><strong><%= __('order-cliente')%> : </strong> {{(order.client.name + ' ' + order.client.last_name) || "---" }} </p>
+                </div>
             </div>
             <div class='col-md-8'>
-                <h4 ng-if="order.transfer">
+                <h4>
                     <a class='icon'><i class='fa fa-plane'></i></a><%= __('order-reservar-tras')%>
                     <span class='actions'>
                         <a href="/order/edit/{{order.id}}"><span class="table-icon fa fa-edit"></span></a>
                         <a href="/order/edit/{{order.id}}"><span class="table-icon fa fa-trash-o"></span></a>
                     </span>
                 </h4>
-                <div ng-if="order.transfer" class='row cont-hl'>
+                <div ng-if="order.transfer" class='row content-border'>
                     <div class='col-md-3'>
                         <p class='font-uppercase'><strong><%= __('gral_data')%></strong></p>
                         <p><strong><%= __('order-hotel')%></strong> : {{order.transfer.hotel || "---" }} </p>
@@ -93,7 +94,12 @@
             </div>
         </div>
         <div class='row'><div class='col-md-12'>
-            <h4 class='secondary' ng-if="order.tours.length || order.hotels.length"><%= __('order-reservar-tour')%></h4>
+            <h4 class='secondary' ng-if="order.tours.length || order.hotels.length">
+                <%= __('order_reservs')%>: 
+                <span ng-if="order.tours.length">{{order.tours.length}} <%= __('order_tours')%></span> 
+                <span ng-if="order.tours.length && order.hotels.length"><%= __('gral_and')%> </span>
+                <span ng-if="order.hotels.length">{{order.hotels.length}} <%= __('order_hotels')%></span> 
+            </h4>
             <ul class='small-item'>
                 <li ng-repeat="t in order.tours">
                     <span class='icon fa fa-compass'></span>
@@ -127,58 +133,64 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title ng-binding"><%= __('order_title')%></h4>
+                <h4 class="modal-title ng-binding"><span class='icon fa fa-tag'></span><%= __('order_title')%></h4>
             </div>
             <div class='modal-data'>
-            <p><strong><%= __('order-id')%> : </strong> {{theorder.id}} </p>
-            <p><strong><%= __('order-fecha')%> : </strong> {{formatDate(theorder.createdAt)}} </p>
-            <p><strong><%= __('order-usuario')%> : </strong> {{theorder.user.name + ' ' + theorder.user.last_name}} , para <strong>Agencia : </strong> {{theorder.company.name}} </p>
-            <p><strong><%= __('order-cliente')%> : </strong> {{(theorder.client.name + ' ' + theorder.client.last_name) || "---" }} </p>
-            <h4 ng-if="theorder.transfer"><%= __('order-reservar-tras')%></h4>
-            <div ng-if="theorder.transfer">
+                <p class='text-center'>
+                    <strong><%= __('order-id')%> : </strong> {{theorder.id}} 
+                    <strong><%= __('order-fecha')%> : </strong> {{formatDate(theorder.createdAt)}} 
+                    <strong><%= __('order-usuario')%> : </strong> {{theorder.user.name + ' ' + theorder.user.last_name}} 
+                </p><p class='text-center'>
+                    <strong>Agencia : </strong> {{theorder.company.name}} 
+                    <strong><%= __('order-cliente')%> : </strong> {{(theorder.client.name + ' ' + theorder.client.last_name) || "---" }}
+                </p>
+            </div>
+            <h4 ng-if="theorder.transfer"><i class='icon fa fa-plane'></i><%= __('order-reservar-tras')%></h4>
+            <div class='modal-data' ng-if="theorder.transfer">
                 <p><strong><%= __('order-hotel')%></strong> : {{theorder.transfer.hotel || "---" }} </p>
                 <p><strong><%= __('order-aeropuerto')%></strong> : {{theorder.transfer.airport || "---" }} </p>
+                <br>
                 <div class='row'>
                     <div class='col-md-6 col-sm-6'>
                         <p><strong><%= __('order-tipo')%></strong> : {{theorder.transfer.type || "---" }}</p>
                         <p><strong><%= __('order-origen')%></strong> : {{theorder.transfer.origin || "---" }}</p>
-                    </div>
-                    <div class='col-md-6 col-sm-6'>
-                        <p><strong><%= __('order-estado')%></strong> : {{theorder.transfer.state || "---" }}</p>
-                        <p><strong><%= __('order-pago')%></strong> : {{theorder.transfer.payment_method || "---" }}</p>
-                    </div>
-                </div>
-                <div class='row'>
-                    <div class='col-md-6 col-sm-6'>
-                        <p><strong><%= __('order-llegada')%></strong></p>
+                        <p class='text-undertopline'><strong><%= __('order-llegada')%></strong></p>
                         <p><strong><%= __('order-vuelo-llegada')%></strong> : {{ theorder.transfer.arrival_fly  || '---' }}</p>
                         <p><strong><%= __('order-llegada2')%></strong> : {{ formatDate(theorder.transfer.arrival_date) || '---' }} </p>
                         <p><strong><%= __('order-hora')%></strong> : {{ formatTime(theorder.transfer.arrival_time) || '---' }} </p>
                     </div>
                     <div class='col-md-6 col-sm-6'>
-                        <p><strong><%= __('order-salida')%></strong></p>
+                        <p><strong><%= __('order-estado')%></strong> : {{theorder.transfer.state || "---" }}</p>
+                        <p><strong><%= __('order-pago')%></strong> : {{theorder.transfer.payment_method || "---" }}</p>
+                        <p class='text-undertopline'><strong><%= __('order-salida')%></strong></p>
                         <p><strong><%= __('order-vuelo-salida')%></strong> : {{ theorder.transfer.departure_fly  || '---' }}</p>
                         <p><strong><%= __('order-fecha-salida')%></strong> : {{ formatDate(theorder.transfer.departure_date) || '---' }} </p>
                         <p><strong><%= __('order-hora-salida')%></strong> : {{ formatTime(theorder.transfer.departure_time) || '---' }} </p>
                     </div>
                 </div>
-                <p><strong><%= __('order-total')%></strong> : {{theorder.transfer.fee}} </p>
             </div>
-            <h4 ng-if="theorder.tours.length"><%= __('order-reservar-tour')%></h4>
-            <ul ng-if="theorder.tours.length" class='small-item'>
-                <li ng-repeat="t in theorder.tours">
-                    <p>{{t.tour | json}} , {{formatDate(t.startDate)}}</p>
-                    <p><%= __('order-adultos')%>: {{t.adultNumber}} <span ng-if="t.childrenNumber">, <%= __('order-menores')%>: {{t.childrenNumber}}</span> , <%= __('order-precio')%>: {{t.fee}}</span></p>
-                </li>
-            </ul>
-            <h4 ng-if="theorder.hotels.length"><%= __('order-reservar-hotel')%></h4>
-            <ul ng-if="theorder.hotels.length" class='small-item'>
-                <li ng-repeat="t in theorder.hotels">
-                    <p>{{t.hotel | json}} , {{formatDate(t.startDate)}} - {{formatDate(t.endDate)}} </p>
-                    <p><%= __('order-cuartos')%>: {{t.roomsNumber}} ( {{t.roomType}} ), <%= __('order-adultos')%>: {{t.adultNumber}} <span ng-if="t.childrenNumber">, <%= __('order-menores')%>: {{t.childrenNumber}}</span> , <%= __('order-precio')%>: {{t.fee}}</span></p>
-                </li>
-            </ul>
+            <h4 ng-if="theorder.tours.length"><i class='icon fa fa-compass'></i><%= __('order-reservar-tour')%></h4>
+            <div class='modal-data' ng-if="theorder.tours.length">
+                <ul ng-if="theorder.tours.length" class='small-item'>
+                    <li ng-repeat="t in theorder.tours">
+                        <p><strong>Tour:</strong> {{t.tour | json}}</p>
+                        <p><strong><%= __('order-adultos')%>:</strong> {{t.adultNumber}} <span ng-if="t.childrenNumber"> <strong><%= __('order-menores')%>:</strong> {{t.childrenNumber}}</span></p>
+                        <p><strong>Fecha:</strong> {{formatDate(t.startDate)}} <strong><%= __('order-precio')%>:</strong> {{t.fee}}</span></p>
+                    </li>
+                </ul>
             </div>
+            <h4 ng-if="theorder.hotels.length"><i class='icon fa fa-building-o'></i><%= __('order-reservar-hotel')%></h4>
+            <div class='modal-data' ng-if="theorder.hotels.length">
+                <ul class='small-item'>
+                    <li ng-repeat="t in theorder.hotels">
+                        <p><strong>Hotel:</strong> {{t.hotel | json}}</p>
+                        <p><strong>Checkin: </strong>{{formatDate(t.startDate)}} <strong>Checkout: </strong>{{formatDate(t.endDate)}}</p>
+                        <p><strong><%= __('order-cuartos')%>:<strong> {{t.roomsNumber}} ( {{t.roomType}} ) <strong><%= __('order-adultos')%>:</strong> {{t.adultNumber}}</p>
+                        <p><span ng-if="t.childrenNumber"><strong><%= __('order-menores')%>:</strong> {{t.childrenNumber}}</span> <strong><%= __('order-precio')%>:</strong> {{t.fee}}</span></p>
+                    </li>
+                </ul>
+            </div>
+            <h4><strong><%= __('order-total')%></strong> : {{theorder.transfer.fee}}</h4>
         </div>
     </div>
 </div>

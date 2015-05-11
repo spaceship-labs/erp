@@ -21,9 +21,15 @@ app.controller('orderCTL',function($scope,$http,$window,$upload,$rootScope){
                 }).then(function(response){ return response.data.results; });
             }
         }
-        ,{ label : $rootScope.translates.airport , value : 'aurport' , type : 'autocomplete' , field : 'airport', model_ : 'airport' , action : 
+        ,{ label : $rootScope.translates.airport , value : 'airport' , type : 'autocomplete' , field : 'airport', model_ : 'airport' , action : 
             function(term){
                 return $http.get('/airport/find', { params: { 'name': term , 'limit': 10 , 'sort' : 'name asc' }
+                }).then(function(response){ return response.data.results; });
+            }
+        }
+        ,{ label : $rootScope.translates.transfer , value : 'transfer' , type : 'autocomplete' , field : 'transfer', model_ : 'transfer' , action : 
+            function(term){
+                return $http.get('/transfer/find', { params: { 'name': term , 'limit': 10 , 'sort' : 'name asc' }
                 }).then(function(response){ return response.data.results; });
             }
         }
@@ -35,6 +41,7 @@ app.controller('orderCTL',function($scope,$http,$window,$upload,$rootScope){
         }
         ,{ label : $rootScope.translates.transfer_type , value : 'type' , type : 'select' , field : 'type' , options : [{ value : $rootScope.translates.d_all , key : 'all' },{value:$rootScope.translates.one_way,key:'one_way'},{value:$rootScope.translates.round_trip,key:'round_trip'}] }
         ,{ label : $rootScope.translates.payment_state , value : 'payment_state' , type : 'select' , field : 'state' , options : [{ value : $rootScope.translates.d_all , key : 'all' },{value:$rootScope.translates.pending,key:'pending'},{value:$rootScope.translates.liquidated,key:'liquidated'},{value:$rootScope.translates.canceled,key:'canceled'}] }
+        ,{ label : $rootScope.translates.order_reserv_type , value : 'reservation_type' , type : 'select' , field : 'reservation_type' , options : [{ value : $rootScope.translates.hotel , key : 'hotel' },{ value : $rootScope.translates.tour , key:'tour' },{ value : $rootScope.translates.transfer , key:'transfer' } ]}
     ];
     $scope.setIC = function(val){ $scope.isCollapsedFilter = val; }
     $scope.removeFilter = function(f){

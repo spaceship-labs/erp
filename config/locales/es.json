@@ -22,6 +22,7 @@
   "gral_msglines":"Lista de lineas que causaron error",
   "gral_msgloading":"Cargando, favor de esperar esto puede tardar un momento",
   "gral_msgsuccess":"Archivo cargado exitosamente",
+  "gral_and":"y",
 
 "admin-mensaje":"Mensaje",
 "admin-user-actualizado":"El usuario se ha actualizado exitosamente",
@@ -156,6 +157,7 @@
   "order-salida":"Salida",
   "order-cliente":"Cliente",
   "order-hotel":"Hotel",
+  "order-tour":"Tour",
   "order-aeropuerto":"Aeropuerto",
   "order-tipo":"Tipo",
   "order-origen":"Origen",
@@ -224,6 +226,10 @@
   ,"order_pending" : "Pendiente"
   ,"order_liquidated" : "Liquidado"
   ,"order_canceled" : "Cancelado"
+  ,"order_reservs" : "Reservaciones"
+  ,"order_tours" : "Tour(s)"
+  ,"order_hotels" : "Hotel(s)"
+  ,"order_reserv_type" : "Tipo de reservación"
 
   ,"packageitem-":"",
 

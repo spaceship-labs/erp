@@ -512,7 +512,33 @@ module.exports.content = {
 			handle : 'recommendations_pt',
 		},
 	],
-	location : [
+	tourcategory : [
+		{
+			label : 'Nombre'
+			,label_en : 'Name'
+			,type : 'text'
+			,handle : 'name'
+		}
+		,{
+			label : 'Nombre inglés'
+			,label_en : 'English name'
+			,type : 'text'
+			,handle : 'name_en'
+		}
+		,{
+			label : 'Nombre Ruso'
+			,label_en : 'Russian name'
+			,type : 'text'
+			,handle : 'name_ru'
+		}
+		,{
+			label : 'Nombre Portugués'
+			,label_en : 'Portuguese name'
+			,type : 'text'
+			,handle : 'name_pt'
+		}
+	]
+	,location : [
 		{
 			label : 'Nombre',
 			label_en : 'Name',
