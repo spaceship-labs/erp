@@ -35,12 +35,62 @@ module.exports = {
 			model : 'hotel' }
 		,transfer : {
 			model : 'transfer' }
-		,arrival_date : 'date'
-		,arrival_time : 'date'
-		,arrivalpickup_time : 'date'
-		,departure_date : 'date'
-		,departure_time : 'date'
-		,departurepickup_time : 'date'
+
+        ,state : {
+            type:'string',
+            enum : ['pending','liquidated','canceled']
+        }
+        ,payment_method : {
+            type:'string',
+            enum : ['creditcard','paypal','cash']
+        }
+        ,origin : {
+            type:'string',
+            enum : ['hotel','airport']
+        }
+        ,type : {
+            type:'string',
+            enum : ['round_trip','one_way']
+        }
+        ,reservation_type : {
+            type:'string',
+            enum : ['tour','hotel','transfer']
+        }
+
+        ,fee : {
+            type : 'float',
+            required : true
+        }//total
+
+        ,fee_kids : 'float'
+        ,fee_adults : 'float'
+        ,fee_special : 'float'
+
+        ,coupon : {
+            model : 'CuponSingle'
+        }
+
+        ,pax : 'integer'
+        ,kidPax : 'integer'
+
+        ,arrival_date : 'date'
+        ,arrival_fly : 'string'
+        ,arrival_time : 'datetime'
+        ,arrivalpickup_time : 'datetime'
+        ,departure_date : 'date'
+        ,departure_fly : 'string'
+        ,departure_time : 'datetime'
+        ,departurepickup_time : 'datetime'
+        ,startDate : 'date'
+        ,endDate : 'date'
+        ,autorization_code : 'string'
+
+        //hotel
+        ,roomType : {
+            model : 'RoomType'
+        }
+        ,roomsNumber : 'integer'
+
 	}
 	, attrs_labels : {
 		//transfer reservations
@@ -63,15 +113,14 @@ module.exports = {
 		,departure_fly : { es : 'Vuelo de salida' , en : 'Departure fly' }
 		,departure_time : { es : 'Hora de salida' , en : 'Departure time' }
 		,departurepickup_time : { es : 'Salida (pickupt time)' , en : 'Departure pickup time' }
-		//tour reservation
-		,adultNumber : { es : 'Número de personas' , en : 'People number' }
-		,childrenNumber : { es : 'Número de niños' , en : 'Children number' }
-		//hotel reservation
+		//tour and hotel reservation
+		,kidsPax : { es : 'Número de niños' , en : 'Children number' }
 		,startDate : { es : 'Fecha de llegada' , en : 'Arrival date' }
 		,endDate : { es : 'Fecha de salida' , en : 'Departure date' }
+        //hotel reservation
 		,roomType : { es : 'Tipo de cuarto' , en : 'Room type' }
 		,roomsNumber : { es : 'Número de cuartos' , en : 'Rooms number' }
-		,fee_special : { es : 'Precio especial' , en : 'Special fee' }
+        ,fee_special : { es : 'Precio especial' , en : 'Special fee' }
 	}
 	,migrate : "safe"
 	,labels : {

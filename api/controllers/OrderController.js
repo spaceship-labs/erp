@@ -148,10 +148,10 @@ module.exports = {
   },
   createReservationTour : function(req,res){
     var params = req.params.all();
-    Order.findOne(params.order).exec(function(e,theorder){
+    Order.findOne({id : params.order.id }).exec(function(e,theorder){
       if(e) return res.json(e);
       async.mapSeries( params.items, function(item,cb) {
-        item.order = params.order;
+        item.order = params.order.id;
         item.company = req.session.select_company || req.user.select_company;
         item.user = req.user.id;
         delete item.id;
@@ -161,9 +161,11 @@ module.exports = {
           cb(err,item);
         });
       },function(err,results){
-        theorder.save(function(err_o){
+          if (err) {
+              console.log(err);
+              return res.json(err);
+          }
           return res.json(results);
-        });
       });
     });
   },
@@ -184,29 +186,31 @@ module.exports = {
   },
   edit : function(req,res){
     Order.findOne( req.params.id ).populate('reservations').populate('claims').populate('lostandfounds').exec(function(err,order){
-      Reservation.find({ 'order' : req.params.id })
-        .populate('hotel').populate('tour').populate('airport').populate('client').exec(function(err,reservations){
+      Reservation.find({ order : req.params.id }).populate('hotel').populate('tour').populate('airport').populate('client').exec(function(err,reservations){
+              //console.log(reservations[0]);
         Client_.find().sort('name').exec(function(e,clients_){ 
-          Client_.findOne(order.client).populate('contacts').exec(function(e,theclient){ 
-          Transfer.find().sort('name').exec(function(e,transfers){ Hotel.find().sort('name').populate('location').populate('rooms').exec(function(e,hotels){
-            order.reservations = reservations || [];
-            Common.view(res.view,{
-              order : order, 
-              clients_ : clients_ ,
-              theclient : theclient ,
-              hotels : hotels , 
-              transfers : transfers ,
-              page:{
-                name:req.__('sc_reservations')
-                ,icon:'fa fa-car'
-                ,controller : 'order.js'
-              },
-              breadcrumb : [
-                { label : req.__('sc_reservations') , url : '/order/' } , 
-                { label : order.id }
-              ]
-            },req);
-          }); }); // transfer / hotel 
+          Client_.findOne({ id : order.client}).populate('contacts').exec(function(e,theclient){
+              //console.log(theclient);
+              Transfer.find().sort('name').exec(function(e,transfers){
+                  Hotel.find().sort('name').populate('location').populate('rooms').exec(function(e,hotels){
+                    order.reservations = reservations || [];
+                    Common.view(res.view,{
+                      order : order,
+                      clients_ : clients_ ,
+                      theclient : theclient ,
+                      hotels : hotels ,
+                      transfers : transfers ,
+                      page:{
+                        name:req.__('sc_reservations')
+                        ,icon:'fa fa-car'
+                        ,controller : 'order.js'
+                      },
+                      breadcrumb : [
+                        { label : req.__('sc_reservations') , url : '/order/' } ,
+                        { label : order.id }
+                      ]
+                    },req);
+              }); }); // transfer / hotel
         }); }); // client
       });//reservation
     });
@@ -277,7 +281,7 @@ module.exports = {
             var lineList = fs.readFileSync(dirSave + dateString +".csv").toString().split('\n');
             lineList.shift();
             //var schemaKeyList = ["hotel","airport","fee","transfer","autorization_code","state","payment_method","pax","origin","type","arrival_date","arrival_fly","arrival_time","arrivalpickup_time","client","departure_date","departure_fly","departure_time","departurepickup_time"];
-            var schemaKeyList = ["referencia","Client","Email","Phone","Pax","Precio Web Total","Total","Moneda","Descuento (%)","Cupon","Agencia","Precio Agencia","Moneda","Agencia diferencia","Usuario","Flight Number(arrival)","Arrival Date","Arrival time","Hotel","Region","Flight Number(departure)","Pickup Date Departure","Pickup Time Departure","Departure Date","Departure Time","Amount of Services","Service type","Metodo de pago","Airport","Service Type","Reservation Date","Status","CuponID","Cupon Token","Cupon Nombre","Usuario de instancia","Tour"];
+            //var schemaKeyList = ["referencia","Client","Email","Phone","Pax","Precio Web Total","Total","Moneda","Descuento (%)","Cupon","Agencia","Precio Agencia","Moneda","Agencia diferencia","Usuario","Flight Number(arrival)","Arrival Date","Arrival time","Hotel","Region","Flight Number(departure)","Pickup Date Departure","Pickup Time Departure","Departure Date","Departure Time","Amount of Services","Service type","Metodo de pago","Airport","Service Type","Reservation Date","Status","CuponID","Cupon Token","Cupon Nombre","Usuario de instancia","Tour"];
             var schemaKeyList = ['service','client','pax','arrival_date','arrival_fly','arrival_time','Hotel','transfer','departure_date','departure_fly','departure_time','note','agency','Airport'];
             async.mapSeries(lineList,function(line,callback) {
                 var reservation = {};

@@ -6,7 +6,7 @@
 	window.content = <%- JSON.stringify(_content) %>;
     window.userID = <%- JSON.stringify(req.user.id) %>;
     window.theclient = <%- JSON.stringify(theclient) %>;
-    console.log(order);
+    console.log(window.theclient);
     //console.log(theclient.contacts[0]);console.log(order);console.log(hotels);
 </script>
 <div ng-controller='orderEditCTL' class="editar-reservacion ng-cloak">
@@ -15,7 +15,7 @@
             <div 
                 form-helper 
                 fields='content.client' 
-                object = 'transfer.client'
+                object = 'theclient'
                 action='/clientes/actualizar' 
                 form-title='Datos del cliente'
                 >
