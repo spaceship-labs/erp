@@ -1,0 +1,29 @@
+<script type='text/javascript'>
+    window.tourcategory = <%- JSON.stringify(tourcategory) %>;
+</script>
+<div ng-controller='tourcategoryEditCTL' class="editar-transfer ng-cloak">
+    <div profile-image 
+        object='tourcategory' 
+        update-method='/tourcategory/updateIcon' 
+        delete-method='/tourcategory/destroyIcon' 
+        image-attr='icon' 
+        dir='tourcategories'>
+    </div> 
+    <div class='row-fluid'>
+        <div class="span12">
+            <div form-helper 
+                fields='content.tourcategory' 
+                object='tourcategory' 
+                action='/tourcategory/update' 
+                form-title='<%= __('transfer-info')%>'
+                >
+            </div> 
+        </div>
+    </div>
+    <br/>
+    <div delete-button url='/tourcategory' redirect-url='/tourcategory' object='tourcategory' user='user'></div>
+    <br/>
+</div>
+<div id="cargando-elementos" class="ng-cloak">
+    <img src="/images/loaders/images-cm.gif">
+</div>

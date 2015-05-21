@@ -12,10 +12,10 @@ module.exports = {
   	,name_ru : 'String'
   	,name_pt : 'String'
   	,icon : 'String'
-  	/*,tour : {
+  	,tours : {
   		collection : 'tour'
-  		,via: 'category'
-  	}*/
+  		,via: 'categories'
+  	}
   }
 };
 

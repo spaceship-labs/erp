@@ -364,6 +364,13 @@ module.exports.content = {
 			object : 'providers'
 		},
 		{
+			label : 'Categorías',
+			label_en : 'Categories',
+			type : 'multi-select',
+			handle : 'categories',
+			object : 'tourcategories'
+		},
+		{
 			label : 'Ubicación',
 			label_en : 'Location',
 			type : 'select',

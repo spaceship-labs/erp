@@ -1,0 +1,49 @@
+<script type='text/javascript'>
+	window.tourcategories = <%- JSON.stringify(tourcategories) %>;
+	window.content = <%- JSON.stringify(_content) %>;
+</script>
+<div ng-controller="tourcategoryCTL">
+	<p><button class="btn btn-primary" data-toggle="modal" data-target="#myModal"><i class='fa fa-plus'></i>Nueva categoría </button></p>
+	<br/>
+	<div class='ng-directory-listing ng-cloak' ng-cloak><div class="peoplelist">
+		<div class="row-fluid">
+			<div class="span6 widgetbox" ng-repeat='object in tourcategories' ng-cloak class="ng-cloak">
+				<div class="headtitle">         
+					<h4 class="widgettitle">{{object.name}}
+						<li><a ng-href="/tourcategory/edit/{{object.id}}"><%= __('transfer-editar')%></a></li><li><a ng-href="/tourcategory/edit/{{object.id}}"><span class = "fa fa-pencil"></span></a></li>
+					</h4>
+				</div>
+				<div class="widgetcontent" >
+					<div class="thumb pull-right">
+						<img src="http://placehold.it/80x80" alt="{{object.name}}" />
+					</div>
+					<div class="peopleinfo" ng-cloak>
+						<ul>
+							<li><span><%= __('transfer-nombre')%> </span> <span ng-bind="object.name"></span></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div></div>
+	<div class="clearfix"></div>
+	<div class="modal fade" id="myModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div 
+					form-helper 
+			        fields='content.tourcategory' 
+			        form-footer='Agregar'
+			        form-save = 'createCategory'
+			        object = 'tourcategory'
+			        form-title='Tour Category'
+			       	modal='true'
+			        >
+			    </div>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="cargando-elementos" class="ng-cloak">
+	<img src="/images/loaders/images-cm.gif">
+</div>

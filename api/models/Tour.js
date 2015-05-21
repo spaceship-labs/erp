@@ -19,10 +19,10 @@ module.exports = {
 			model:'cupon',
 			via:'tours',
 		},
-		/*categories : {
+		categories : {
 			collection : 'tourcategory'
-			,via:'tour'
-		},*/
+			,via:'tours'
+		},
 		fee : 'decimal',
 		fee_child : 'decimal'
 		,provider : {

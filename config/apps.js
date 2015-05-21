@@ -260,6 +260,16 @@ module.exports.apps = [
                 action : 'index'
             },
             {
+                label : 'Categorías de Tours',
+                label_en : 'Tours Categories',
+                icon : 'fa-folder',
+                url : '/tourcategory/',
+                handle : 'tourcategory',
+                showInMenu : true,
+                controller : 'tourcategory',
+                action : 'index'
+            },
+            {
                 label : 'Traslados',
                 label_en : 'Transfers',
                 icon : 'fa-road',
