@@ -25,4 +25,13 @@ app.controller('tourproviderEditCTL',function($scope,$http){
     $scope.user = user;
     $scope.content = content;
     $scope.company = company;
+    $scope.currencies = currencies;
+    $scope.saveTour = function(data,tour){
+        angular.extend(data, { id : tour.id });
+        $scope.saveClass = 'fa-upload';
+        $http({method: 'POST',url:'/tour/save',params:data}).success(function(t){
+            $scope.saveClass = 'fa-save';
+            tour = t;
+        });
+    };
 });

@@ -1,6 +1,6 @@
 /**
  * Connections
- * 
+ *
  * `Connections` are like "saved settings" for your adapters.  What's the difference between
  * a connection and an adapter, you might ask?  An adapter (e.g. `sails-mysql`) is generic--
  * it needs some additional information to work (e.g. your database host, password, user, etc.) 
@@ -55,14 +55,6 @@ module.exports.connections = {
     user      : '',
     password  : '',
     database  : 'spaceerp'
-  },
-  testing_mongodb: {
-    adapter   : 'sails-mongo',
-    host      : 'localhost',
-    port      : 27017,
-    user      : '',
-    password  : '',
-    database  : 'testspaceerp'
   },
 
   // PostgreSQL is another officially supported relational database. 

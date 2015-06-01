@@ -80,6 +80,7 @@
   "emp-codigo-postal":"Postal Code",
   "emp-moneda-pri":"Main Currency ",
   "emp-monedas":"Coins",
+  "emp-monedas_c":"Book currency",
   "emp-guardar":"Save",
   "emp-resetear":"Reset",
   "emp-impuestos":"Taxation",
@@ -227,6 +228,12 @@
   ,"order_tours" : "Tour(s)"
   ,"order_hotels" : "Hotel(s)"
   ,"order_reserv_type" : "Reservation type"
+  ,"order_a_airline" : "Arrival airline"
+  ,"order_d_airline" : "Departure airline"
+  ,"order_service_type" : "Service Type"
+  ,"order_room" : "Hotel room"
+  ,"order_currency" : "Currency"
+  ,"" : ""
 
   ,"packageitem-":"",
 

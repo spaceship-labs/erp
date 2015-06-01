@@ -28,11 +28,27 @@ module.exports = {
 			});
 		});
 	},
-	create : function(req,res){
+	find : function(req,res){
+		var params = req.params.all();
+		var skip = params.skip || 0;
+		delete params.id;
+		delete params.skip;
+        if(params.name) params.name = new RegExp(params.name,"i");
+        Tour.find(params).skip(skip).exec(function(err,tours){
+        	if(err) res.json('err');
+        	Tour.count(params).exec(function(e,count){
+        		if(e) res.json('err');
+            	res.json({ results : tours , count : count });
+        	});
+        });
+	}
+	,create : function(req,res){
 		var form = req.params.all();
 		form.days = [true,true,true,true,true,true,true];
 		form.name_pt = form.name_es = form.name_en = form.name_ru = form.name;
 		form.req = req;
+		form.fee_base = form.fee || 0;
+		form.feeChild_base = form.feeChild || 0;
 		Tour.create(form).exec(function(err,tour){
 			if(err) return res.json({text:err});
 			Tour.find({}).sort('name').exec(function(e,tours){

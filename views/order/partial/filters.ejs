@@ -1,4 +1,4 @@
-<div class='col-md-12 active-filters tag-container'>
+<div class='col-md-12 active-filters tag-container ng-cloak' ng-cloak>
     <span class='multi-tag' ng-repeat='f in filters'>
         {{f.label}}: 
         <span ng-if='f.type=="date"' ng-bind="formatDate(f.model.from) + ' to ' + formatDate(f.model.to)"></span>

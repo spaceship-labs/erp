@@ -80,6 +80,7 @@
   "emp-codigo-postal":"Código Postal",
   "emp-moneda-pri":"Moneda Principal",
   "emp-monedas":"Monedas",
+  "emp-monedas_c":"Tipo de cambio contable",
   "emp-guardar":"Guardar",
   "emp-resetear":"Resetear",
   "emp-impuestos":"Impuestos",
@@ -230,6 +231,12 @@
   ,"order_tours" : "Tour(s)"
   ,"order_hotels" : "Hotel(s)"
   ,"order_reserv_type" : "Tipo de reservación"
+  ,"order_a_airline" : "Aerolinea de llegada"
+  ,"order_d_airline" : "Aerolinea de salida"
+  ,"order_service_type" : "Tipo de servicio"
+  ,"order_room" : "Cuarto de hotel"
+  ,"order_currency" : "Moneda"
+  ,"" : ""
 
   ,"packageitem-":"",
 

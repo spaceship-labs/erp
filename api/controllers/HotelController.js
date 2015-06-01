@@ -40,13 +40,13 @@ module.exports = {
 	},
 	find : function(req,res){
 		var params = req.params.all();
-		var skip = params.skip || 30;
+		var skip = params.skip || 0;
 		//console.log(params);
 		delete params.id;
 		delete params.skip;
 		params.company = req.session.select_company;
         if(params.name) params.name = new RegExp(params.name,"i");
-        Hotel.find(params).skip(skip).exec(function(err,hotels){
+        Hotel.find(params).skip(skip).populateAll().exec(function(err,hotels){
         	if(err) res.json('err');
         	Hotel.count(params).exec(function(e,count){
         		if(e) res.json('err');
@@ -188,6 +188,7 @@ module.exports = {
 	},
 	addRoom : function(req,res){
 		var form = req.params.all();
+		delete form.id;
 		var hotel = form.hotel;
 		Room.create(form).exec(function(e,r){
 			if(e) throw(e);

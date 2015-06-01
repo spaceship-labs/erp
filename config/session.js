@@ -36,11 +36,11 @@ module.exports.session = {
   *                                                                          *
   ***************************************************************************/
 
-  host: 'localhost',
-  port: 6379,
-  db: 0,
-  pass: '',
-  prefix: 'sess:',
+//  host: 'localhost',
+//  port: 6379,
+//  db: 0,
+//  pass: '',
+//  prefix: 'sess:',
 
   // In production, uncomment the following lines to set up a shared redis session store
   // that can be shared across multiple Sails.js servers

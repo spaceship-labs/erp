@@ -6,18 +6,17 @@
 */
 
 module.exports = {
-
 	attributes: {
-    name : {
-      type : 'string',
-      required: true
-    }
+		name : {
+		  type : 'string',
+		  required: true
+		}
 		,icon:'json'
 		,description:'string'
 		,address:'string'
 		,zipcode:'string'
 		,app:'array'
-		,base_currency:{
+		,base_currency:{ //tipo de cambio de venta
 			model : 'currency'
 		}
 		,currency_comission:'float'
@@ -38,21 +37,29 @@ module.exports = {
 			dominant: true
 		}
 		,apps : 'array'
-      ,terms : 'string'
-      ,document_footer : 'string'
-      ,taxes : {
-        collection : 'Company_tax',
-        via : 'company'
-      }
-		,addApps : function(apps,cb){		
-			if (Array.isArray(apps)){
-				//if(this.apps){
-					var cApps = this.apps || [];
-					apps.forEach(function(app){
-						if(cApps.indexOf(app) < 0) 
-							cApps.push(app);
-					});
-				//}
+		,terms : 'string'
+		,document_footer : 'string'
+		,taxes : {
+			collection : 'Company_tax',
+			via : 'company'
+		}
+		,exchange_rate_sale : 'float'
+		,exchange_rate_book : 'float'
+		,prepaid : 'float' /*Para guardar el historial aquí mismo?*/
+		,credit : 'float' /*Para guardar el historial aquí mismo?*/
+		//productos pertenecientes a las agencias
+		,products : {
+			collection : 'companyproduct'
+			, via : 'agency'
+		}
+		,adminCompany : 'boolean'
+		,addApps : function(apps,cb){
+			if(Array.isArray(apps)){
+                var cApps = this.apps || [];
+                apps.forEach(function(app){
+                    if(cApps.indexOf(app) < 0)
+                        cApps.push(app);
+                });
 				this.apps = cApps;
 				this.save(cb);
 			} else {

@@ -28,7 +28,7 @@ module.exports.apps = [
             {
                 label : 'Monedas',
                 label_en : 'Currencies',
-                icon : 'fa-money',
+                icon : 'fa-usd',
                 url : '/admin/currencies',
                 handle : 'currencies',
                 showInMenu : true,

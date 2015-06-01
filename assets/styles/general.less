@@ -1,7 +1,6 @@
 body{min-width: 290px;background:url(@left-bar) repeat-y 0 0;}
 .header{background:@header-background;}
 strong{font-weight: bold;}
-/*.row .row{max-width: 100%;margin: 0}*/
 .show-sm{display: none!important;}
 
 /*Login page*/
@@ -19,6 +18,14 @@ body.loginpage{background: @login-background;overflow: hidden;}
 .btn-big{padding: 8px 46px;font-size: 15px;}
 .btn-big + .btn-big{margin-right: 10px;}
 .btn-big.pull-right + .btn-big.pull-right{margin-left: 10px;}
+
+/*Gral*/
+.text-list{list-style: none;}
+.text-list li:before{content: '•';color: @secondaryBG;margin-right: 10px;}
+.secondTittle{font-weight: bold;padding: 5px 0;margin-bottom: 10px;border-bottom: 1px solid lightgrey;}
+.autocomplete{margin-bottom: 10px;}
+.outerLabel{padding: 9px 0;}
+.outerSelect{padding: 5px 2px;}
 
 /*fee selector*/
 .fee-selector .tabs .tab.selected{border: 1px solid gray;border-bottom: 0 none;border-top-right-radius: 5px;border-top-left-radius: 5px;}

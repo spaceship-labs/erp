@@ -14,14 +14,24 @@ module.exports = {
   	,location : {
   		model : 'location'
   	}
+    ,base_currency:{
+      model : 'currency'
+    }
+    ,exchange_rate : 'integer'
   	,tours : {
   		collection : 'tour'
   		, via : 'provider'
   	}
+    ,fee : 'float' /*Precio público*/
+    ,feeChild : 'float' /*Precio público*/
+    ,fee_base : 'float' /*Precio contable*/
+    ,feeChild_base : 'float' /*Precio contable*/
+    ,commission_agency : 'integer'
+    ,commission_sales : 'integer'
   }
   ,labels : {
-        es : 'Proveedores de Tours'
-        ,en : 'Tours Providers'
-    }
+    es : 'Proveedores de Tours'
+    ,en : 'Tours Providers'
+  }
 };
 

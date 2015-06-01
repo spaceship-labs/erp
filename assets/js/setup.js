@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function($) {
   $('#wizard-form').parsley();
 
   $('#wizard-form').steps({

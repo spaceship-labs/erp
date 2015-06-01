@@ -81,7 +81,8 @@ module.exports = {
             model : 'Client_contact'
         },
         is_approved : {
-            type : 'boolean'
+            type : 'boolean',
+            defaultsTo : false
         },
         approved_reason : {
             type : 'string',
@@ -90,6 +91,9 @@ module.exports = {
         },
         approved_date : {
             type : 'date'
+        },
+        approved_by : {
+            model : 'User'
         },
         payment_conditions : {
             type : 'string'

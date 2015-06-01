@@ -25,7 +25,8 @@ module.exports = {
         var params = req.params.all();
         delete params.id;
         if(params.name) params.name = new RegExp(params.name,"i");
-        if( req.user.isAdmin ){
+        console.log(req.user);
+        if( req.user.isAdmin || req.user.company.adminCompany ){
             Company.find(params).exec(function(err,companies){
                 res.json(companies);
             });
@@ -35,17 +36,27 @@ module.exports = {
             });
         }
     }
+    , setasdefault : function(req,res){
+        if( req.user.isAdmin ){
+            var params = { adminCompany : true };
+            Company.update({ id : req.user.default_company },params).exec(function(err,c){
+                res.json(c);
+            });
+        }
+    }
 	, edit: function(req,res){
 		var id = req.params.id;
-		Company.findOne({id:id}).populate('users').populate('hotels').populate('taxes').exec(function(err,company){
+        sails.controllers.admin.currenciesJson(req,res,function(currencies){
+		Company.findOne({id:id}).populate('users').populate('hotels').populate('taxes').populate('currencies').exec(function(err,company){
 			if(err) throw err;
             //console.log(company.taxes);
 			User.find().exec(function(err,users){
                 Hotel.find().exec(function(err,hotels){
     				Common.view(res.view,{
-    					company:company || {}
+    					mycompany:company || {}
                         ,users:users || []
                         ,hotels:hotels || []
+                        ,currencies:currencies || []
     					,apps: sails.config.apps
     					,page:{
     						name:req.__('sc_companies')
@@ -59,7 +70,8 @@ module.exports = {
     				},req);
                 });
 			});
-		});
+        }); //END company find
+		}); //END currencies
 	}
 	, editAjax: function(req,res){
 		Common.editAjax(req,res,update);

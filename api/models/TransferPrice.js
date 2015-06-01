@@ -8,26 +8,15 @@
 module.exports = {
   attributes: {
   	name : 'string',
-  	zone1 : {
-  		model 	: 'zone'
-  	},
-    zone2 : {
-      model   : 'zone'
-    },
-  	company : {
-  		model 	: 'company'
-  	},
-  	transfer : {
-  		model 	: 'transfer'
-  	},
-  	airport : {
-  		model 	: 'airport'
-  	},
-    location : {
-      model   : 'location'
-    },
-    location2 : {
-      model   : 'location'
-    }
+  	zone1 : { model 	: 'zone' },
+    zone2 : { model   : 'zone' },
+  	company : { model 	: 'company' },
+  	transfer : { model 	: 'transfer' },
+  	airport : { model 	: 'airport' },
+    location : { model   : 'location' },
+    location2 : { model   : 'location' }
+    ,distance : 'string'
+    ,gasoline : 'string'
+    ,time : 'integer'
   }
 };

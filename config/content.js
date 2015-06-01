@@ -207,6 +207,12 @@ module.exports.content = {
 			handle : 'fee',
 		},
 		{
+			label : 'Tarifa base(menores)',
+			label_en : 'Base rate(children)',
+			type : 'money',
+			handle : 'feeChild',
+		},
+		{
 			label : 'Tarifa por temporadas',
 			label_en : 'Season rate',
 			type : 'checkbox',
@@ -398,12 +404,12 @@ module.exports.content = {
 		},
 	],
 	tourLenguajes : [
-		{
+		/*{
 			label : 'Nombre Español',
 			label_en : 'Spanish name',
 			type : 'text',
 			handle : 'name_es',
-		},
+		},*/
 		{
 			label : 'Nombre Inglés',
 			label_en : 'English name',
@@ -641,7 +647,7 @@ module.exports.content = {
 			required: false,
 			handle 	: 'name_en'
 		},
-		{
+		/*{
 			label 	: 'Precio viaje sencillo',
 			label_en : 'One Way',
 			type 	: 'text',
@@ -654,6 +660,13 @@ module.exports.content = {
 			type 	: 'text',
 			required: true,
 			handle 	: 'roundTrip'
+		},*/
+		{
+			label 	: 'Precio por hora',
+			label_en : 'Price by hour',
+			type 	: 'text',
+			required: true,
+			handle 	: 'priceByHr'
 		},
 		{
 			label 	: 'URL ',
@@ -680,6 +693,18 @@ module.exports.content = {
 			label_en : 'English description',
 			type 	: 'textarea',
 			handle 	: 'description_en'
+		},
+		{
+			label 	: 'Descripción Portugués',
+			label_en : 'Portuguese description',
+			type 	: 'textarea',
+			handle 	: 'description_pt'
+		},
+		{
+			label 	: 'Descripción Ruso',
+			label_en : 'Russian description',
+			type 	: 'textarea',
+			handle 	: 'description_ru'
 		}
 	],
 	airport : [
@@ -816,6 +841,24 @@ module.exports.content = {
             label_en : 'Signature',
             handle : 'footer',
             type : 'textarea-editor'
+        }
+        ,{
+        	label : 'Tipo de cambio de venta'
+        	,label_en : 'Sale exchange rate'
+        	,handle : 'exchange_rate_sale'
+        	,type : 'text'
+        }
+        ,{
+        	label : 'Prepago'
+        	,label_en : 'Prepaid'
+        	,handle : 'prepaid'
+        	,type : 'money'
+        }
+        ,{
+        	label : 'Crédito'
+        	,label_en : 'Credit'
+        	,handle : 'credit'
+        	,type : 'money'
         }
 	],
     user : [
@@ -1549,6 +1592,19 @@ module.exports.content = {
 			,label_en : 'Credit'
 			,type : 'checkbox'
 			,handle : 'isCredit'
+		}
+		,{
+			label : 'Tipo de cambio'
+			,label_en : 'Exchange rate'
+			,type : 'text'
+			,handle : 'exchange_rate'
+		}
+		,{
+			label : 'Moneda base'
+			,label_en : 'Base currency'
+			,type : 'select'
+			,object : 'currencies'
+			,handle : 'base_currency'
 		}
 	]
 };

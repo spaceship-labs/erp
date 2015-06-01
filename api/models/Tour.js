@@ -8,26 +8,28 @@
 module.exports = {
 	attributes: {
 		location : {
-			model : 'location',
-		},
-		days : 'array',
-		seasonScheme : {
+			model : 'location' }
+		,days : 'array'
+		,seasonScheme : {
 			model:'seasonScheme',
-			via:'tours',
-		},
-		cupons : {
+			via:'tours' }
+		,cupons : {
 			model:'cupon',
-			via:'tours',
-		},
-		categories : {
+			via:'tours' }
+		,categories : {
 			collection : 'tourcategory'
-			,via:'tours'
-		},
-		fee : 'decimal',
-		fee_child : 'decimal'
+			,via:'tours' }
+		,fee : 'decimal' // precio de venta
+		,feeChild : 'decimal' //precio de venta
+		,fee_base : 'decimal' //precios de proveedor
+		,feeChild_base : 'decimal' //precios de proveedor
+		,commission_agency_base : 'integer'
+		,commission_user_base : 'integer'
 		,provider : {
-			model : 'tourprovider'
-		}
+			model : 'tourprovider' }
+		,agencies : {
+			collection : 'companyproduct'
+			, via : 'tour' }
 	}
 	, attrs_labels : {
 		name : { es : 'Nombre' , en : 'Name' }
@@ -63,10 +65,7 @@ module.exports = {
 		,recommendations_ru : { es : 'Recomendaciones Ruso' , en : 'Russian recommendations' }
 		,recommendations_pt : { es : 'Recomendaciones Portugués' , en : 'Portugués recommendations' }
 	}
-	,labels : {
-        es : 'Tours'
-        ,en : 'Tours'
-    }
+	,labels : { es : 'Tours', en : 'Tours' }
   	,afterCreate: function(val,cb){
 		Notifications.after(Tour,val,'create');
 		cb()

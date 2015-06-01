@@ -1,6 +1,8 @@
 <script type='text/javascript'>
     window.provider = <%- JSON.stringify(provider) %>;
     window.locations = <%- JSON.stringify(locations) %>;
+    window.currencies = <%- JSON.stringify(currencies) %>;
+    //console.log(company);
 </script>
 <div ng-controller='tourproviderEditCTL' class="ng-cloak">
     <div class='row'>
@@ -11,7 +13,7 @@
                 action='/tourprovider/update' 
                 form-title='<%= __('tour-info')%>'
                 currency='company.base_currency'
-                objects='{locations:locations}'
+                objects='{locations:locations,currencies:currencies}'
                 ></div>
         </div>
     </div>
@@ -22,18 +24,74 @@
                 <table class='table table-striped'>
                     <tr class='hide-sm'>
                         <th>Nombre</th>
-                        <th>Precio</th>
-                        <th>Personas</th>
-                        <th>Ciudad</th>
+                        <th>Precio <br> Público</th>
+                        <th>Precio adulto<br> base</th>
+                        <th>Precio menor<br> base</th>
+                        <th>Comisión <br> Agencia</th>
+                        <th>Comisión <br> Vendedores</th>
+                        <th>Visible <br> en web</th>
+                        <th>Editar</th>
                     </tr>
                     <tr ng-repeat="t in provider.tours">
                         <td data-title="Nombre" ng-bind="t.name"></td>
-                        <td data-title="Precio" ng-bind="t.fee"></td>
-                        <td data-title="Personas" ng-bind="t.pax"></td>
-                        <td data-title="Ciudad" ng-bind="t.location"></td>
+                        <td data-title="Precio base" >
+                            <p> Adultos: {{t.fee}} </p>
+                            <p> Menores: {{t.feeChild}} </p>
+                        </td>
+                        <td>
+                            <span 
+                                editable-text='t.fee_base'
+                                e-name='fee_base'
+                                e-form='rowform'
+                            >{{t.fee_base || 0 }}</span>
+                        </td>
+                        <td>
+                            <span 
+                                editable-text='t.feeChild_base'
+                                e-name='feeChild_base'
+                                e-form='rowform'
+                            >{{t.feeChild_base || 0 }}</span>
+                        </td>
+                        <td data-title="Comisión agencia">
+                            <span 
+                                editable-text='t.commission_agency'
+                                e-name='commission_agency'
+                                e-form='rowform'
+                            >{{t.commission_agency || 0 }} %</span>
+                        </td>
+                        <td data-title="Comisión vendedor">
+                            <span 
+                                editable-text='t.commission_sales'
+                                e-name='commission_sales'
+                                e-form='rowform'
+                            >{{t.commission_sales || 0 }} %</span>
+                        </td>
+                        <td data-title="Visible en web">
+                            <span 
+                                editable-checkbox='t.visible'
+                                e-name='visible'
+                                e-form='rowform'
+                            ><i class="active-i fa {{t.visible?'active fa-check-square-o':'fa-square-o'}}"></i></span>
+                        </td>
+                        <td>
+                            <form editable-form name="rowform" onbeforesave="saveTour($data,t)" ng-show="rowform.$visible" class="form-buttons form-inline" >
+                              <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary"><%= __('tranferprice-guardar')%></button>
+                              <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default"><%= __('tranferprice-cancelar')%></button>
+                            </form>
+                            <div class="buttons" ng-show="!rowform.$visible">
+                              <button class="btn btn-primary" ng-click="rowform.$show()"><%= __('tranferprice-editar')%></button>
+                            </div>
+                        </td>
                     </tr>
                 </table>
             </div>
+            <p>Los campos agregados al tour son para manejo de contabilidad</p>
+            <ul class='text-list'>
+                <li>Precios público: precios con los que se vende</li>
+                <li>Precios base: precios que da el proveedor</li>
+                <li>Comisión agencia: Porcentaje de ganancia que da el proveedor a la agencia principal</li>
+                <li>Comisión vendedores: Porcentaje de ganancia que da la agencia principal a sus vendedores</li>
+            </ul>
         </div>
     </div>
     <br/>

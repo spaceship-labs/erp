@@ -29,6 +29,7 @@ module.exports = {
 		};
 		delete form.id;
 		form.active = true;
+		form.adminCompany = true;
 		var currencies = Array.isArray(form.currencies) ? form.currencies : [form.currencies];
 		if(currencies.indexOf(form.base_currency)==-1)
 			currencies.push(form.base_currency);

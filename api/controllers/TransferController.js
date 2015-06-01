@@ -31,8 +31,8 @@ module.exports = {
             	res.json({ results : transfers , count : count });
             });
         });
-	},
-	create : function(req,res){
+	}
+	,create : function(req,res){
 		var reads = [
 			function(cb){
 				var form = req.params.all();

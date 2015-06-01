@@ -1,17 +1,22 @@
 <script type='text/javascript'>
-    window.company = <%- JSON.stringify(company) %>;
+    window.mycompany = <%- JSON.stringify(mycompany) %>;
     window.apps = <%- JSON.stringify(apps) %>;
     window.users = <%- JSON.stringify(users) %>;
     window.hotels = <%- JSON.stringify(hotels) %>;
+    window.currencies = <%- JSON.stringify(mycompany.currencies || []) %>;
+    //console.log(window.currencies);
 </script>
-<div class='row-fluid' ng-controller='companyEditCTL'>
+<div ng-controller='companyEditCTL'>
+<div class='row-fluid'>
     <div class="col-md-6">
         <div form-helper
              fields='content.company'
-             object='company'
+             object='mycompany'
              action='/company/update'
+             objects = '{currencies:currencies}'
+             currency = 'company.base_currency'
              form-title='<%= __("gral_companyInfo") %>'
-             restrict="base_currency,apps"
+             restrict="apps"
                 >
         </div>
     </div><!--span8-->
@@ -47,7 +52,7 @@
     			<p style="margin: 8px 0"><%= __('emp-actualizar') %></p>
     	</div>
         
-        <div profile-image object='company' update-method='/company/updateIcon' delete-method='/company/destroyIcon' image-attr='icon' dir='companies'></div>    
+        <div profile-image object='mycompany' update-method='/company/updateIcon' delete-method='/company/destroyIcon' image-attr='icon' dir='companies'></div>    
             
         <% if (req.user.isSuperAdmin()) {%>
         <div class="widgetbox tags">
@@ -61,7 +66,7 @@
         		    </ul>
                     <hr>
                     <form method="post" ng-submit='addApp(selectedApp)' ng-if="missingApps.length > 0">
-                        <input type='hidden' value='<%-company.id%>' name='company' />
+                        <input type='hidden' value='<%-mycompany.id%>' name='company' />
                         <p>
                             <select ng-model="selectedApp" name="app" ng-options="app.label for app in missingApps" chosen="selectedApps">
                             </select>
@@ -75,44 +80,44 @@
         <div class="widgetbox tags">
                 <h4 class="widgettitle"><%= __('emp-usuarios') %></h4>
                 <div class="widgetcontent">
-                    <ul class="taglist" ng-repeat='user in company.users'>
+                    <ul class="taglist" ng-repeat='user in mycompany.users'>
                         <li><a>
                                 <i ng-bind='user.name'></i>
                                 <span class="close" ng-click='removeUser(user)'>×</span>
                             </a></li>
                     </ul>
                     <hr>
-                    <form ng-submit='addUser(selectedUser)' ng-if="company.users.length != users.length">
-                        <input type='hidden' value='<%-company.id%>' name='company' />
+                    <form ng-submit='addUser(selectedUser)' ng-if="mycompany.users.length != users.length">
+                        <input type='hidden' value='<%-mycompany.id%>' name='company' />
                         <p>
                             <select ng-options="user.name for user in users | filter:filterUsers" ng-model="selectedUser" name="" chosen></select>
                             <button ng-if="selectedUser" class="btn btn-primary ng-scope"><%= __('emp-agregar-usuario') %></button>
                         </p>
                         <p><a href="/users/new_user/" style="display:block;margin-top:10px"><%= __('emp-agregar-usuarios') %></a></p>
                     </form>
-                    <p ng-if="company.users.length == users.length"><%= __('emp-todos-usuarios') %></p>
+                    <p ng-if="mycompany.users.length == users.length"><%= __('emp-todos-usuarios') %></p>
                 </div>
         </div>
 
         <div class="widgetbox tags">
                 <h4 class="widgettitle"><%= __('emp-hoteles') %></h4>
                 <div class="widgetcontent">
-                    <ul class="taglist" ng-repeat='hotel in company.hotels'>
+                    <ul class="taglist" ng-repeat='hotel in mycompany.hotels'>
                         <li><a>
                                 <i ng-bind='hotel.name'></i>
                                 <span class="close" ng-click='removeHotel(hotel)'>×</span>
                             </a></li>
                     </ul>
                     <hr>
-                    <form ng-submit='addHotel(selectedHotel)' ng-if="company.hotels.length != hotels.length">
-                        <input type='hidden' value='<%-company.id%>' name='company' />
+                    <form ng-submit='addHotel(selectedHotel)' ng-if="mycompany.hotels.length != hotels.length">
+                        <input type='hidden' value='<%-mycompany.id%>' name='company' />
                         <p>
                             <select ng-options="hotel.name for hotel in hotels | filter:filterHotels" ng-model="selectedHotel" name="" chosen></select>
                             <button ng-if="selectedHotel" class="btn btn-primary ng-scope"><%= __('emp-agregar-hotel') %></button>
                         </p>
                         <p><a href="/hotels/new_hotel/" style="display:block;margin-top:10px"><%= __('emp-agregar-hoteles') %></a></p>
                     </form>
-                    <p ng-if="company.hotels.length == hotels.length"><%= __('emp-todos-hoteles') %></p>
+                    <p ng-if="mycompany.hotels.length == hotels.length"><%= __('emp-todos-hoteles') %></p>
                 </div>
         </div>
         <% } %>
@@ -129,11 +134,147 @@
                             >
                     </div>
                 </div>
-                <div ng-show='company.taxes.length'>
-                    <div table-helper objects='company.taxes' columns='content.company_tax' edit-route="/company/edit_tax" delete-route="/company/delete_tax"></div>
+                <div ng-show='mycompany.taxes.length'>
+                    <div table-helper objects='mycompany.taxes' columns='content.company_tax' edit-route="/company/edit_tax" delete-route="/company/delete_tax"></div>
                 </div>
             </div>
         </div>
             
     </div><!--span4-->
+</div><!--row end-->
+<div class='row'>
+    <div class='col-md-12'>
+        <div class="widgetbox">
+            <h4 class='widgettitle'>Productos</h4>
+            <div class='widgetcontent custom-table'>
+                <h4 class='secondTittle'>Tours <a ng-click="isCollapseObj['toursCollapse']=!isCollapseObj['toursCollapse']" class='pull-right'><i class="fa fa-{{isCollapseObj['toursCollapse']?'plus':'minus'}}"></i></a></h4>
+                <div class='autocomplete'>
+                    <input type="text" placeholder="Tours" class="form-control" 
+                        ng-model="toursPrices" 
+                        typeahead="tour as tour.name for tour in getTours($viewValue)" 
+                        typeahead-on-select="acOnSelect($item, $model, $label,'tour','tours')" >
+                </div>
+                <div class='collapsable' collapse="isCollapseObj['toursCollapse']">
+                <table class='table table-striped'>
+                    <tr class='hide-sm'>
+                        <th>Nombre</th>
+                        <th>Precio <br> Público</th>
+                        <th>Precio <br> base</th>
+                        <th>Comisión <br> Agencia</th>
+                        <th>Precio</th>
+                        <th>Precio <br> menores</th>
+                        <th>Editar</th>
+                        <th>Eliminar</th>
+                    </tr>
+                    <tr ng-repeat="t in tours">
+                        <td data-title="Nombre" ng-bind="t.tour.name"></td>
+                        <td data-title="Precio base" >
+                            <p> Adultos: {{t.tour.fee}} </p>
+                            <p> Menores: {{t.tour.feeChild}} </p>
+                        </td>
+                        <td>
+                            <p> Adultos: {{t.tour.fee_base || 0 }}</p>
+                            <p> Menores: {{t.tour.feeChild_base || 0 }}</p>
+                        </td>
+                        <td>
+                            <span 
+                                editable-text='t.commission_agency'
+                                e-name='commission_agency'
+                                e-form='rowform'
+                            >{{t.commission_agency || 0 }} %</span>
+                        </td>
+                        <td>
+                            <span 
+                                editable-text='t.fee'
+                                e-name='fee'
+                                e-form='rowform'
+                            >{{t.fee || 0 }}</span>
+                        </td>
+                        <td>
+                            <span 
+                                editable-text='t.feeChild'
+                                e-name='feeChild'
+                                e-form='rowform'
+                            >{{t.feeChild || 0 }}</span>
+                        </td>
+                        <td>
+                            <form editable-form name="rowform" onbeforesave="savePrice($data,t)" ng-show="rowform.$visible" class="form-buttons form-inline" >
+                              <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary"><%= __('tranferprice-guardar')%></button>
+                              <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default"><%= __('tranferprice-cancelar')%></button>
+                            </form>
+                            <div class="buttons" ng-show="!rowform.$visible">
+                              <button class="btn btn-primary" ng-click="rowform.$show()"><%= __('tranferprice-editar')%></button>
+                            </div>
+                        </td>
+                        <td><a style="cursor:pointer" class='fa fa-trash-o' ng-click='removeProduct(t)'></a></td>
+                    </tr>
+                </table>
+            </div><!-- collapse end -->
+            </div><!-- widgetcontent -->
+            <div class='widgetcontent custom-table'>
+                <h4 class='secondTittle'>Servicios de traslado</h4>
+                <div class='autocomplete'>
+                    <input type="text" placeholder="Traslados" class="form-control" 
+                        ng-model="servicePrices" 
+                        typeahead="obj as obj.name for obj in getTransfers($viewValue)" 
+                        typeahead-on-select="acOnSelect($item, $model, $label,'transfer','transfers')" >
+                </div>
+                <div ng-repeat="service in transfers">
+                    <h4 class='secondTittle'>
+                        {{service[0].transfer.name}}
+                        <a 
+                            ng-click="isCollapseObj[service[0].transfer.id]=!isCollapseObj[service[0].transfer.id]" 
+                            class='pull-right'>
+                            <i class="fa fa-{{isCollapseObj[service[0].transfer.id]?'minus':'plus'}}"></i>
+                        </a>
+                    </h4>
+                    <div class='collapsable' collapse="!isCollapseObj[service[0].transfer.id]">
+                    <table class='table table-striped'>
+                        <tr class='hide-sm'>
+                            <th>Zona</th>
+                            <th>Zona</th>
+                            <th>Sencillo</th>
+                            <th>Redondo</th>
+                            <th>Activo</th>
+                            <th>Editar</th>
+                        </tr>
+                        <tr ng-repeat='price in service'>
+                            <td>{{price.zone1.name}}</td>
+                            <td>{{price.zone1.name}}</td>
+                            <td><span 
+                                editable-text='price.one_way'
+                                e-name='one_way'
+                                e-form='rowform'
+                            >{{price.one_way || 0 }}</span></td>
+                            <td><span 
+                                editable-text='price.round_trip'
+                                e-name='round_trip'
+                                e-form='rowform'
+                            >{{price.round_trip || 0 }}</span></td>
+                            <td><span 
+                                editable-checkbox='price.active'
+                                e-name='active'
+                                e-form='rowform'
+                            ><i class="active-i fa {{price.active?'active fa-check-square-o':'fa-square-o'}}"></i></span></td>
+                            <td>
+                                <form editable-form name="rowform" onbeforesave="saveTransferPrice($data,price.id)" ng-show="rowform.$visible" class="form-buttons form-inline" >
+                                  <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
+                                    <%= __('tranferprice-guardar')%>
+                                  </button>
+                                  <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default">
+                                    <%= __('tranferprice-cancelar')%>
+                                  </button>
+                                </form>
+                                <div class="buttons" ng-show="!rowform.$visible">
+                                  <button class="btn btn-primary" ng-click="rowform.$show()"><%= __('tranferprice-editar')%></button>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div><!-- collapse end -->
+                </div>
+            </div><!-- widgetcontent -->
+        </div>
+    </div>
+</div><!--row end-->
 </div>

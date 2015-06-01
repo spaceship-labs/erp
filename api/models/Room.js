@@ -8,15 +8,20 @@
 module.exports = {
 
 	attributes: {	
-		hotel : {
-			model : 'hotel',
-		},
+		hotel : { model : 'hotel' },
 		views : {
 			collection : 'hotelRoomView',
 			via : 'rooms'
 		},
-		fees : 'json',
-
+		fees : 'json'
+		,fee : 'decimal' // precio de venta
+		,feeChild : 'decimal' //precio de venta
+		,fee_base : 'decimal' //precios de proveedor
+		,fee_child_base : 'decimal' //precios de proveedor
+		,agencies : {
+			collection : 'companyproduct'
+			, via : 'room'
+		}
 	}
 	, attrs_labels : {
 		name_es : { es : 'Nombre' , en : 'Name' }

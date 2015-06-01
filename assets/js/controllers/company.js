@@ -27,22 +27,26 @@ app.controller('companyCTL',function($scope,$http,$rootScope){
 
 app.controller('companyEditCTL',function($scope,$http){
     $scope.company = company;
+    $scope.mycompany = mycompany;
     $scope.content = content;
     $scope.allApps = apps;
     $scope.users = users;
     $scope.hotels = hotels;
+    $scope.tours = [];
+    $scope.transfers = {};
+    $scope.currencies = currencies;
     $scope.missingApps = [];
     $scope.selectedApps = [];
     $scope.showTaxForm = false;
     $scope.newTaxClass = 'fa-plus';
+    $scope.isCollapseObj = {};
     //$scope.companies = companies;
-
     var updateApps = function(){
         $scope.missingApps = [];
         $scope.selectedApps = [];
-        if($scope.company.apps){
+        if($scope.mycompany.apps){
             angular.forEach($scope.allApps,function(app){
-                if ($scope.company.apps.indexOf(app.name) == -1) {
+                if ($scope.mycompany.apps.indexOf(app.name) == -1) {
                     $scope.missingApps.push(app);
                 } else {
                     $scope.selectedApps.push(app);
@@ -52,91 +56,141 @@ app.controller('companyEditCTL',function($scope,$http){
             $scope.missingApps = $scope.allApps;
         }
     };
-
     $scope.removeApp = function(app){
-        io.socket.post('/company/removeApp',{company:$scope.company.id,app:app.name},function(company){
-            $scope.company = company;
+        io.socket.post('/company/removeApp',{company:$scope.mycompany.id,app:app.name},function(company){
+            $scope.mycompany = company;
             updateApps();
             $scope.$apply();
         });
     };
     $scope.addApp = function(app){
-        io.socket.post('/company/addApp',{company:$scope.company.id,app:app.name},function(company){
-            $scope.company = company;
+        io.socket.post('/company/addApp',{company:$scope.mycompany.id,app:app.name},function(company){
+            $scope.mycompany = company;
             updateApps();
             $scope.$apply();
         });
     };
-
     updateApps();
-
     $scope.removeUser = function(user){
-        io.socket.post('/company/removeUser',{company:company.id,user:user.id},function(result){
+        io.socket.post('/company/removeUser',{company:$scope.mycompany.id,user:user.id},function(result){
             var indexU = $scope.company.users.indexOf(user);
-            $scope.company.users.splice(indexU,1);
+            $scope.mycompany.users.splice(indexU,1);
             $scope.$apply();
         });
     };
     $scope.addUser = function(user){
-        io.socket.post('/company/addUser',{company:$scope.company.id,user:user.id},function(result){
-            $scope.company.users.push(user);
+        io.socket.post('/company/addUser',{company:$scope.mycompany.id,user:user.id},function(result){
+            $scope.mycompany.users.push(user);
             $scope.$apply();
         });
     };
-
     $scope.removeHotel = function(hotel){
-        io.socket.post('/company/removeHotel',{company:company.id,hotel:hotel.id},function(result){
-            var indexU = $scope.company.hotels.indexOf(hotel);
-            $scope.company.hotels.splice(indexU,1);
+        io.socket.post('/company/removeHotel',{company:$scope.mycompany.id,hotel:hotel.id},function(result){
+            var indexU = $scope.mycompany.hotels.indexOf(hotel);
+            $scope.mycompany.hotels.splice(indexU,1);
             $scope.$apply();
         });
     };
     $scope.addHotel = function(hotel){
-        io.socket.post('/company/addHotel',{company:$scope.company.id,hotel:hotel.id},function(result){
-            if($scope.company.hotels === undefined) {
-                $scope.company.hotels = [];
+        io.socket.post('/company/addHotel',{company:$scope.mycompany.id,hotel:hotel.id},function(result){
+            if($scope.mycompany.hotels === undefined) {
+                $scope.mycompany.hotels = [];
             }
-            $scope.company.hotels.push(hotel);
+            $scope.mycompany.hotels.push(hotel);
             $scope.$apply();
         });
     };
-
     $scope.filterUsers = function(user) {
         var found = false;
-        angular.forEach($scope.company.users,function(suser){
+        angular.forEach($scope.mycompany.users,function(suser){
             if (user.id == suser.id) {
                 found = true;
             }
         });
         return !found;
     };
-
     $scope.filterHotels = function(hotel) {
         var found = false;
-        angular.forEach($scope.company.hotels,function(shotel){
+        angular.forEach($scope.mycompany.hotels,function(shotel){
             if (hotel.id == shotel.id) {
                 found = true;
             }
         });
         return !found;
     };
-
     $scope.toggleNewTax = function(){
         $scope.showTaxForm = !$scope.showTaxForm;
         $scope.newTaxClass = $scope.showTaxForm ? 'fa-minus' : 'fa-plus';
     };
-
     $scope.addTax = function(){
-        $scope.tax.company = $scope.company.id;
+        $scope.tax.company = $scope.mycompany.id;
         $scope.showTaxForm = false;
         $http({method: 'POST', url: '/company/add_tax',data:$scope.tax}).success(function(result){
-            $scope.company.taxes.push($scope.tax);
+            $scope.mycompany.taxes.push($scope.tax);
             $scope.tax = {};
             $scope.newTaxClass = 'fa-plus';
         });
     };
+    $scope.getTours = function(val) {
+        return $http.get('/tour/find', { params: { name: val } }).then(function(response){
+            return response.data.results.map(function(item){ return item; });
+        });
+    };
+    $scope.acOnSelect = function($item, $model, $label,type,spVar){
+        addProduct($item,type,spVar);
+    };
+    var addProduct = function(product,type,spVar){
+        var form = { 
+            agency : $scope.mycompany.id, product_type : type
+            ,commission_agency : 0, fee : 0, feeChild : 0 };
+        form[type] = product.id;
+        $http({method: 'POST', url: '/companyproduct/addproducttocompany',data:form}).success(function(result){
+            console.log(result);
+            if( type == 'transfer' )
+                angular.extend($scope.transfers,result)
+            else
+                $scope[spVar].push(result);
+        });
+    };
+    var getProducts = function(type,spVar,skip){
+        var params = {
+            product_type : type
+            , agency : $scope.mycompany.id
+        };
+        $http({method: 'POST', url: '/companyproduct/find',data:params}).success(function(result){
+            $scope[spVar] = result;
+            console.log('products: ' + type);
+            console.log(result);
+        });
+    };
+    getProducts('tour','tours',0);
+    getProducts('transfer','transfers',0);
+    $scope.savePrice = function(data,price){
+        data.fee = data.fee==0&&data.commission_agency!=0?(price.tour.fee-(price.tour.fee*(data.commission_agency/100))):data.fee;
+        data.feeChild = data.feeChild==0&&data.commission_agency!=0?(price.tour.feeChild-(price.tour.feeChild*(data.commission_agency/100))):data.feeChild;
+        angular.extend(data, { id : price.id });
+        $http({method: 'POST',url:'/companyproduct/update',params:data}).success(function(t){
+            t = t[0];
+            price.fee = t.fee;
+            price.feeChild = t.feeChild;
+            price.commission_agency = t.commission_agency;
+        });
+    };
+    $scope.removeProduct = function(price){
+        var data = { id : price.id };
+        $http({method: 'POST',url:'/companyproduct/removeproduct',params:data}).success(function(t){
+            index = $scope.tours.map(function(e) { return e.id; }).indexOf(price.id);
+            $scope.tours.splice(index,1);
+        });
+    };
+    $scope.getTransfers = function(val){
+        return $http.get('/transfer/find', { params: { name: val } }).then(function(response){
+            return response.data.results.map(function(item){ return item; });
+        });
+    };
+    $scope.saveTransferPrice = function(data,price){
+        angular.extend(data, { id : price });
+        return $http.post('/transferprice/updatePrice', data);
+    };
 
 });
-
-
-

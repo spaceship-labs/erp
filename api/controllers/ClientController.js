@@ -9,7 +9,7 @@ module.exports = {
 
     index : function(req,res){
         var select_company = req.session.select_company || req.user.select_company;
-        Client_.find({ company : select_company }).populateAll().exec(function (err,clients){
+        Client_.find().populateAll().exec(function (err,clients){
             Common.view(res.view,{
                 page:{
                     icon:'fa fa-users'

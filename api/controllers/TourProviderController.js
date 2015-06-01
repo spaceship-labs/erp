@@ -28,19 +28,22 @@ module.exports = {
 		TourProvider.findOne(req.params.id).populate('tours').exec(function(e,provider){
 			if(e) throw(e);
 			Location.find().exec(function(e,locations){
-				Common.view(res.view,{
-					provider:provider
-					,locations:locations
-					,page:{
-						name : "Proveedores de Tours",
-						icon:'fa fa-compass',
-						controller : 'tourprovider.js'
-					}
-					,breadcrumb : [
-						{label : 'Proveedores' , url : '/tourprovider/'}
-						,{ label : provider.name }
-					]
-				},req);
+				sails.controllers.admin.currenciesJson(req,res,function(currencies){
+					Common.view(res.view,{
+						provider:provider
+						,locations:locations
+						,currencies : currencies
+						,page:{
+							name : "Proveedores de Tours",
+							icon:'fa fa-compass',
+							controller : 'tourprovider.js'
+						}
+						,breadcrumb : [
+							{label : 'Proveedores' , url : '/tourprovider/'}
+							,{ label : provider.name }
+						]
+					},req);
+				});
 			});
 		});
 	}
