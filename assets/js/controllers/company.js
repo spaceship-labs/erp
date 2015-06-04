@@ -34,12 +34,14 @@ app.controller('companyEditCTL',function($scope,$http){
     $scope.hotels = hotels;
     $scope.tours = [];
     $scope.transfers = {};
+    $scope.hotels = {};
     $scope.currencies = currencies;
     $scope.missingApps = [];
     $scope.selectedApps = [];
     $scope.showTaxForm = false;
     $scope.newTaxClass = 'fa-plus';
     $scope.isCollapseObj = {};
+    $scope.locations = [];
     //$scope.companies = companies;
     var updateApps = function(){
         $scope.missingApps = [];
@@ -144,6 +146,8 @@ app.controller('companyEditCTL',function($scope,$http){
             agency : $scope.mycompany.id, product_type : type
             ,commission_agency : 0, fee : 0, feeChild : 0 };
         form[type] = product.id;
+        if( type == 'transfer' )
+            form.location = $scope.thelocation;
         $http({method: 'POST', url: '/companyproduct/addproducttocompany',data:form}).success(function(result){
             console.log(result);
             if( type == 'transfer' )
@@ -152,19 +156,22 @@ app.controller('companyEditCTL',function($scope,$http){
                 $scope[spVar].push(result);
         });
     };
-    var getProducts = function(type,spVar,skip){
+    $scope.getProducts = function(type,spVar,skip){
         var params = {
             product_type : type
-            , agency : $scope.mycompany.id
+            ,agency : $scope.mycompany.id
         };
+        if( type == 'transfer' )
+            params.location = $scope.thelocation;
         $http({method: 'POST', url: '/companyproduct/find',data:params}).success(function(result){
             $scope[spVar] = result;
             console.log('products: ' + type);
             console.log(result);
         });
     };
-    getProducts('tour','tours',0);
-    getProducts('transfer','transfers',0);
+    $scope.getProducts('tour','tours',0);
+    //$scope.getProducts('transfer','transfers',0);
+    $scope.getProducts('hotel','hotels',0);
     $scope.savePrice = function(data,price){
         data.fee = data.fee==0&&data.commission_agency!=0?(price.tour.fee-(price.tour.fee*(data.commission_agency/100))):data.fee;
         data.feeChild = data.feeChild==0&&data.commission_agency!=0?(price.tour.feeChild-(price.tour.feeChild*(data.commission_agency/100))):data.feeChild;
@@ -192,5 +199,35 @@ app.controller('companyEditCTL',function($scope,$http){
         angular.extend(data, { id : price });
         return $http.post('/transferprice/updatePrice', data);
     };
-
+    $scope.getHotels = function(val){
+        return $htçtp.get('/hotel/find', { params: { name: val } }).then(function(response){
+            return response.data.results.map(function(item){ return item; });
+        });
+    };
+    $scope.getCities = function(val){
+        return $http.get('/location/customfind', { params: { name: val } }).then(function(response){
+            return response.data.results.map(function(item){ return item; });
+        });
+    };
+    $scope.updateTourPrices = function(){
+        var params = $scope.tourF;
+        if(params.tlocation) params.tlocation = params.tlocation.id;
+        $http({method: 'POST',url:'/companyproduct/updatetourbyfilter',params:params}).success(function(results){
+            console.log('results update by filters');
+            console.log(results);
+        });
+    };
+    $scope.getLocations = function(){
+        $http({method: 'POST',url:'/location/customfind',params:{}}).success(function(results){
+            console.log('results get locations');
+            console.log(results);
+            $scope.locations = results.results;
+            for(var x in $scope.locations)
+                if( $scope.locations[x].url_title == 'cancun' ) $scope.thelocation = $scope.locations[x].id;
+            if( ! $scope.thelocation )
+                $scope.thelocation = $scope.locations[0];
+            $scope.getProducts('transfer','transfers',0);
+        });
+    }
+    $scope.getLocations();
 });

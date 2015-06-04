@@ -27,6 +27,7 @@
 				<thead><tr class='sortable'>
 					<th><a href='' class='sortable-item' ng-click="sortByField('zone1')"><%= __('tranferprice-zona')%> <i class='fa fa-sort-asc'></i></a></th>
 					<th><a href='' class='sortable-item' ng-click="sortByField('zone2')"><%= __('tranferprice-zona')%> <i class='fa fa-sort-asc'></i></a></th>
+					<th>Comisión vendedor</th>
 					<th><%= __('tranferprice-sencillo')%></th>
 					<th><%= __('tranferprice-redondo')%></th>
 					<th><a href='' class='sortable-item' ng-click="sortByField('active')"><%= __('tranferprice-activo')%> <i class='fa fa-sort-asc'></i></a></th>
@@ -51,6 +52,12 @@
 							<span>({{price.location.name}})</span>
 						</span>
 					</td>
+					<td><span ng-if="price.company.id==company.id"
+                            editable-text='price.commission_user'
+                            e-name='commission_user'
+                            e-form='rowform'
+                            >{{price.commission_user || 0 }} %</span>
+                    </td>
 					<td>
 						<span 
 							editable-text='price.one_way'

@@ -1,6 +1,6 @@
 body{min-width: 290px}
 strong{font-weight: bold;}
-.row .row{max-width: 100%;margin: 0}
+.row.nomargin{max-width: 100%;margin: 0}
 /*
 ==============================================================================
 :: Errors

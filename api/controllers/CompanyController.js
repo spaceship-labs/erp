@@ -23,9 +23,9 @@ module.exports = {
 	}
     , find : function(req,res){
         var params = req.params.all();
-        delete params.id;
+        if( typeof params.id == 'undefined' ) delete params.id;
         if(params.name) params.name = new RegExp(params.name,"i");
-        console.log(req.user);
+        //console.log(req.user);
         if( req.user.isAdmin || req.user.company.adminCompany ){
             Company.find(params).exec(function(err,companies){
                 res.json(companies);

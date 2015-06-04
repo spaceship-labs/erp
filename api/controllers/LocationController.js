@@ -21,6 +21,20 @@ module.exports = {
 			},req);
 		});
 	},
+	customfind : function(req,res){
+		var params = req.params.all();
+		var skip = params.skip || 0;
+		if( typeof params.id == 'undefined' ) delete params.id;
+		delete params.skip;
+        if(params.name) params.name = new RegExp(params.name,"i");
+        Location.find(params).skip(skip).exec(function(err,ls){
+        	if(err) res.json('err');
+        	Location.count(params).exec(function(e,count){
+        		if(e) res.json('err');
+            	res.json({ results : ls , count : count });
+        	});
+        });
+	},
 	edit : function(req,res){
 		Location.findOne(req.params.id).populate('zones').populate('locations').exec(function(e,location){
 			if(e) return res.redirect("/location/");

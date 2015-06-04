@@ -1,0 +1,78 @@
+<div class='widgetcontent custom-table'>
+    <h4 class='secondTittle'>Hoteles</h4>
+    <div class='autocomplete'>
+        <input type="text" placeholder="Hoteles" class="form-control" 
+            ng-model="hotels" 
+            typeahead="obj as obj.name for obj in getHotels($viewValue)" 
+            typeahead-on-select="acOnSelect($item, $model, $label,'hotel','hotels')" >
+    </div>
+    <div ng-repeat="service in transfers">
+        <h4 class='secondTittle'>
+            {{service[0].transfer.name}}
+            <a 
+                ng-click="isCollapseObj[service[0].transfer.id]=!isCollapseObj[service[0].transfer.id]" 
+                class='pull-right'>
+                <i class="fa fa-{{isCollapseObj[service[0].transfer.id]?'minus':'plus'}}"></i>
+            </a>
+        </h4>
+        <div class='collapsable' collapse="!isCollapseObj[service[0].transfer.id]">
+        <table class='table table-striped'>
+            <tr class='hide-sm'>
+                <th>Zona</th>
+                <th>Zona</th>
+                <th>Comisión <br> agencia</th>
+                <th ng-if="price.company.id==company.id">Comisión <br> vendedor</th>
+                <th>Sencillo</th>
+                <th>Redondo</th>
+                <th>Activo</th>
+                <th>Editar</th>
+            </tr>
+            <tr ng-repeat='price in service'>
+                <td>{{price.zone1.name}}</td>
+                <td>{{price.zone1.name}}</td>
+                <td>
+                <span 
+                    editable-text='price.commission_agency'
+                    e-name='commission_agency'
+                    e-form='rowform'
+                    >{{price.commission_agency || 0 }} %</span>
+                </td>
+                <span ng-if="price.company.id==company.id"
+                    editable-text='price.commission_user'
+                    e-name='commission_user'
+                    e-form='rowform'
+                    >{{price.commission_user || 0 }} %</span>
+                </td>
+                <td><span 
+                    editable-text='price.one_way'
+                    e-name='one_way'
+                    e-form='rowform'
+                >{{price.one_way || 0 }}</span></td>
+                <td><span 
+                    editable-text='price.round_trip'
+                    e-name='round_trip'
+                    e-form='rowform'
+                >{{price.round_trip || 0 }}</span></td>
+                <td><span 
+                    editable-checkbox='price.active'
+                    e-name='active'
+                    e-form='rowform'
+                ><i class="active-i fa {{price.active?'active fa-check-square-o':'fa-square-o'}}"></i></span></td>
+                <td>
+                    <form editable-form name="rowform" onbeforesave="saveTransferPrice($data,price.id)" ng-show="rowform.$visible" class="form-buttons form-inline" >
+                      <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
+                        <%= __('tranferprice-guardar')%>
+                      </button>
+                      <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default">
+                        <%= __('tranferprice-cancelar')%>
+                      </button>
+                    </form>
+                    <div class="buttons" ng-show="!rowform.$visible">
+                      <button class="btn btn-primary" ng-click="rowform.$show()"><%= __('tranferprice-editar')%></button>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div><!-- collapse end -->
+    </div>
+</div><!-- widgetcontent -->

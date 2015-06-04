@@ -32,13 +32,13 @@ app.controller('tourEditCTL',function($scope,$http,$window){
     $scope.providers = providers;
     $scope.tour = tour;
     $scope.user = user;
-    io.socket.get('/tour/find/'+tour.id,function(data,jwres){
+    /*io.socket.get('/tour/find/'+tour.id,function(data,jwres){
         $scope.tour = data;
 	    $scope.tour.seasonScheme = data.seasonScheme && data.seasonScheme.id || null;
         $scope.tour.location = data.location && data.location.id || null;
 	    $scope.tour.provider = data.provider && data.provider.id || null;
         $scope.$apply();
-    });
+    });*/
 	$scope.content = content;
     $scope.company = company;
     $scope.saveClass = 'fa-save';

@@ -24,7 +24,7 @@ module.exports = {
     },
     find : function(req,res){
         var params = req.params.all();
-        delete params.id;
+        if( typeof params.id == 'undefined' ) delete params.id;
         if(params.name) params.name = new RegExp(params.name,"i");
         Client_.find(params).exec(function(err,clients){
             if(err) res.json('err');

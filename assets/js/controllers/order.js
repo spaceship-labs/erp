@@ -364,7 +364,11 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
         console.log('get transfers');
         console.log($scope.transfer);
         if( $scope.transfer.hotel.zone.id && $scope.transfer.airport.zone ){
-            var params = { zone1 : $scope.transfer.hotel.zone.id , zone2 : $scope.transfer.airport.zone };
+            var params = { 
+                zone1 : $scope.transfer.hotel.zone.id
+                ,zone2 : $scope.transfer.airport.zone 
+                ,company : $scope.thecompany
+            };
             console.log(params);
             $http({method: 'POST', url: '/order/getAvailableTransfers',params:params}).success(function (result){
                 //console.log('prices');console.log(result);

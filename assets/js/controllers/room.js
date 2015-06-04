@@ -32,10 +32,10 @@ app.controller('roomEditCTL',function($scope,$upload,$http,$window){
     //if($scope.room.fees) $scope.room.fees = JSON.parse($scope.room.fees);
     $scope.saveFees = function(fees,cb){
         var object = {id:room.id,fees:$scope.room.fees};
-        console.log($scope.room.fees);
+        //console.log($scope.room.fees);
           $http({method: 'POST', url: '/room/update',params:object}).success(function (room){
             $scope.room.fees = room.fees;
-            cb();   
+            cb();
         });    
     };
 });

@@ -32,7 +32,7 @@ module.exports = {
         if( req.user.companies[c].id )
           c_.push( sails.models['company'].mongo.objectId(req.user.companies[c].id) );
       }
-      console.log('companies');console.log(c_);
+      //console.log('companies');console.log(c_);
       fields.company = { "$in" : c_ };
     }
     Reservation.native(function(e,reservation){
@@ -213,8 +213,9 @@ module.exports = {
   getAvailableTransfers : function(req,res){
     var params = req.params.all();
     if( params.zone1 && params.zone2 ){
+      var company = params.company?params.company:(req.session.select_company || req.user.select_company);
       TransferPrice.find({ 
-        company : req.user.default_company,
+        company : company,
         active : true, 
         "$or":[ 
           { "$and" : [{'zone1' : params.zone1, 'zone2' : params.zone2}] } , 
