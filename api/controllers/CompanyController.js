@@ -57,7 +57,7 @@ module.exports = {
                         ,users:users || []
                         ,hotels:hotels || []
                         //,currencies:currencies || []
-                        , []
+                        ,currencies : []
     					,apps: sails.config.apps
     					,page:{
     						name:req.__('sc_companies')
