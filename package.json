@@ -39,6 +39,10 @@
     "sails-mongo": "0.10.5",
     "underscore.string": "^3.0.3"
   },
+  "engines":{
+     "node":"0.10.x",
+     "npm":"1.4.x"
+  },
   "scripts": {
     "start": "node app.js",
     "debug": "node debug app.js",
