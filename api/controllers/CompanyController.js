@@ -46,7 +46,7 @@ module.exports = {
     }
 	, edit: function(req,res){
 		var id = req.params.id;
-        sails.controllers.admin.currenciesJson(req,res,function(currencies){
+        //sails.controllers.admin.currenciesJson(req,res,function(currencies){
 		Company.findOne({id:id}).populate('users').populate('hotels').populate('taxes').populate('currencies').exec(function(err,company){
 			if(err) throw err;
             //console.log(company.taxes);
@@ -71,7 +71,7 @@ module.exports = {
                 });
 			});
         }); //END company find
-		}); //END currencies
+		//}); //END currencies
 	}
 	, editAjax: function(req,res){
 		Common.editAjax(req,res,update);
