@@ -213,8 +213,8 @@ app.controller('companyEditCTL',function($scope,$http){
         var params = $scope.tourF;
         if(params.tlocation) params.tlocation = params.tlocation.id;
         $http({method: 'POST',url:'/companyproduct/updatetourbyfilter',params:params}).success(function(results){
-            console.log('results update by filters');
-            console.log(results);
+            //console.log('results update by filters');console.log(results);
+            $scope.getProducts('tour','tours',0);
         });
     };
     $scope.getLocations = function(){

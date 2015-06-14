@@ -48,6 +48,9 @@ module.exports = {
 			return res.json(cp);
 		});
 	}
+	,updatetrnaspricebyfilter : function(req,res){
+		var params = req.params.all();
+	}
 	,updatetourbyfilter : function(req,res){
 		var params = req.params.all();
 		var fields = {};
@@ -59,7 +62,7 @@ module.exports = {
 			}
 			if( params.childBase && params.childBase != '' ){
 				fields.feeChild = {};
-				fields.feeChild[ params.adultBaseSign?'<':'>' ] = parseFloat(params.childBase);
+				fields.feeChild[ params.childBase?'<':'>' ] = parseFloat(params.childBase);
 			}
 			if( params.tlocation )
 				fields.location = params.tlocation;
@@ -68,14 +71,10 @@ module.exports = {
 				var toursIDs = [];
 				for(var x in findTours ) toursIDs.push( findTours[x].tour );
 				fields.id = toursIDs;
-				console.log('tour find fields');
-				console.log(fields);
 				Tour.find(fields).exec(function(t_err,tours){
 					if(t_err) return res.json(t_err);
 					var toursIDs = [];
 					for(var x in tours ) toursIDs.push( tours[x].id );
-					console.log('company product find ids');
-					console.log(toursIDs);
 					CompanyProduct.find({ tour : toursIDs }).populateAll().exec(function(cp_err,cps){
 					  async.mapSeries( cps, function(item,callback) {
 					  	item.tour.fee = parseInt(item.tour.fee) || 0;
@@ -85,16 +84,11 @@ module.exports = {
 					      ,fee :  item.tour.fee - ( item.tour.fee * ( commission / 100 ) ) 
 					      ,feeChild :  item.tour.feeChild - ( item.tour.feeChild * ( commission / 100 ) )
 					    };
-					    console.log('updates');
-					    console.log(fieldsToUpdate);
 					    CompanyProduct.update({ id:item.id } , fieldsToUpdate ).exec(function(cpu_err,cpUpdated){
 					      callback(cpu_err,cpUpdated);
 					    });
 					  },function(err,results){
-					    if (err) {
-					        console.log(err);
-					        return res.json(err);
-					    }
+					    if (err) return res.json(err);
 					    return res.json(results);
 					  });
 					});

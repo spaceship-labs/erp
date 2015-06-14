@@ -19,10 +19,10 @@ module.exports = {
 		,categories : {
 			collection : 'tourcategory'
 			,via:'tours' }
-		,fee : 'decimal' // precio de venta
-		,feeChild : 'decimal' //precio de venta
-		,fee_base : 'decimal' //precios de proveedor
-		,feeChild_base : 'decimal' //precios de proveedor
+		,fee : 'float' // precio de venta
+		,feeChild : 'float' //precio de venta
+		,fee_base : 'float' //precios de proveedor
+		,feeChild_base : 'float' //precios de proveedor
 		,commission_agency_base : 'integer'
 		,commission_user_base : 'integer'
 		,provider : {
@@ -31,6 +31,7 @@ module.exports = {
 			collection : 'companyproduct'
 			, via : 'tour' }
 	}
+	, migrate : 'alter'
 	, attrs_labels : {
 		name : { es : 'Nombre' , en : 'Name' }
 		,name_en : { es : 'Nombre Inglés' , en : 'Name English' }

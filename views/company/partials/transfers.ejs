@@ -2,7 +2,58 @@
     <h4 class='secondTittle'>
         Servicios de traslado
         <select class='' ng-change="getProducts('transfer','transfers',0)" ng-model="thelocation" ng-options=" obj.id as obj.name for obj in locations " ></select>
+        <a ng-click="isCollapseObj['transferCollapseFilter']=!isCollapseObj['transferCollapseFilter']" class="pull-right fa fa-filter"></a>
     </h4>
+    <div collapse="!isCollapseObj['transferCollapseFilter']">
+        <form class='form stdform stdform2 stdform3' ng-submit="updateTransferPrices()">
+            <div class='row'>
+                <div class='col-md-6'>
+                    <p>
+                        <span>Zona</span>
+                        <input type="text" placeholder="Elige una zona" class="form-control" 
+                            ng-model="transF.zone" 
+                            typeahead="obj as obj.name for obj in getZones($viewValue)" ></p>
+                    </p>
+                </div>
+            </div>
+            <div class='row'>
+                <div class='col-md-6'>
+                    <p>
+                        <span>One way (adulto)</span>
+                        <span class='input-group'>
+                        <a class="input-group-addon" ng-click="transF.adult_ow_Sign=!transF.adult_ow_Sign" >{{(transF.adult_ow_Sign?'<':'>')}}</a>
+                        <input type="text" placeholder="One way (adult)" class="form-control" ng-model="transF.one_way" >
+                    </span></p>
+                </div>
+                <div class='col-md-6'>
+                    <p>
+                        <span>Round trip (adulto)</span>
+                        <span class='input-group'>
+                        <a class="input-group-addon" ng-click="transF.adult_rt_Sign=!transF.adult_rt_Sign" >{{(transF.adult_rt_Sign?'<':'>')}}</a>
+                        <input type="text" placeholder="Round trip (adult)" class="form-control" ng-model="transF.round_trip" >
+                    </span></p>
+                </div>
+            </div>
+            <div class='row'>
+                <div class='col-md-6'>
+                    <p>
+                        <span>One way (menor)</span>
+                        <span class='input-group'>
+                        <a class="input-group-addon" ng-click="transF.adult_owc_Sign=!transF.adult_owc_Sign" >{{(transF.adult_owc_Sign?'<':'>')}}</a>
+                        <input type="text" placeholder="One way (child)" class="form-control" ng-model="transF.one_way_child" >
+                    </span></p>
+                </div>
+                <div class='col-md-6'>
+                    <p>
+                        <span>Round trip (menor)</span>
+                        <span class='input-group'>
+                        <a class="input-group-addon" ng-click="transF.adult_rtc_Sign=!transF.adult_rtc_Sign" >{{(transF.adult_rtc_Sign?'<':'>')}}</a>
+                        <input type="text" placeholder="Round trip (child)" class="form-control" ng-model="transF.round_trip_child" >
+                    </span></p>
+                </div>
+            </div>
+        </form>
+    </div>
     <div class='autocomplete'>
         <input type="text" placeholder="Traslados" class="form-control" 
             ng-model="servicePrices" 
