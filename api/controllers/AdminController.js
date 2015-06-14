@@ -55,8 +55,10 @@ module.exports = {
 							return c.id;
 						}).indexOf(current.id)!=-1 || comp.base_currency.id==current.id){
 							if(current.id!=comp.base_currency.id){	
-								var change = mon(1).from(comp.base_currency.currency_code).to(current.currency_code).toFixed(6)
-								, comission = comp.currency_comission && (change*(1+comp.currency_comission/100));
+								console.log(current,comp.base_currency);
+								var change = mon(1).from(comp.base_currency.currency_code).to(current.currency_code).toFixed(6);
+								console.log(change);
+								var comission = comp.currency_comission && (change*(1+comp.currency_comission/100));
 								data[current.name] = {
 									change: change
 									,name:current.name+" ("+current.currency_code+")"
