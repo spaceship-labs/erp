@@ -1,5 +1,7 @@
-var fs = require('fs')
-, im = require('imagemagick');
+var fs = require('fs'),
+im = require('imagemagick'),
+adapterPkgCloud = require('skipper-pkgcloud');
+
 //Names and Saves a File returns de filename
 module.exports.saveFiles = function(req,opts,cb){
 	var dirSave = __dirname+'/../../assets/uploads/'+opts.dir+'/';
@@ -14,7 +16,23 @@ module.exports.saveFiles = function(req,opts,cb){
 		//async.map($files, function(file, async_cb) {
 			//console.log('file');
 			//console.log(file);
-			req.file('file').upload({saveAs:makeFileName,dirname:dirSave,onProgress:(req.onProgress && req.onProgress.fileProgress || null),maxBytes:52428800},function(e,files){
+		var uploadOptions = {	
+			saveAs:makeFileName,
+			dirname:dirSave,
+			onProgress:(req.onProgress && req.onProgress.fileProgress || null),
+			maxBytes:52428800		
+		};
+		if(process.env.CLOUDUSERNAME){
+			uploadOptions.adapter = adapterPkgCloud;
+			uploadOptions.username = process.env.CLOUDUSERNAME;
+			uploadOptions.apiKey = process.env.CLOUDAPIKEY;
+			uploadOptions.region = process.env.CLOUDREGION;
+			uploadOptions.container = process.env.CLOUDCONTAINER;
+			uploadOptions.dirname = '/uploads/' + opts.dir + '/';
+		}
+		req.file('file').upload(
+			uploadOptions,
+			function(e,files){
 				if(e) return cb(e,files);
 				files.forEach(function(file){
 					var filename = file.fd.split('/');
