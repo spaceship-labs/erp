@@ -1,0 +1,18 @@
+<script type='text/javascript'>
+	window.hview = <%- JSON.stringify(hview) %>;
+	window.content = <%- JSON.stringify(_content) %>;
+</script>
+<div ng-controller='hroomviewEditCTL'>
+    <div class='row-fluid'>
+        <div class="span12">        
+            <div form-helper 
+                fields='content.hotelRoomView' 
+                object='hview' 
+                action='/hotelroomview/update' 
+                form-title='<%= __('machine-info') %>'
+                >
+            </div> 
+        </div>
+    </div>
+    <br/>
+</div>

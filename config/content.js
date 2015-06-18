@@ -1607,4 +1607,34 @@ module.exports.content = {
 			,handle : 'base_currency'
 		}
 	]
+	, airline : [
+		{
+			label : 'Nombre'
+			,label_en : 'Name'
+			,type : 'text'
+			,handle : 'name'
+			,required : true
+		}
+		,{
+			label : 'Nombre en Inglès'
+			,label_en : 'English name'
+			,type : 'text'
+			,handle : 'name_en'
+			,required : true
+		}
+		,{
+			label : 'Nombre Portugués'
+			,label_en : 'Portuguese name'
+			,type : 'text'
+			,handle : 'name_pt'
+			,required : true
+		}
+		,{
+			label : 'Nombre Ruso'
+			,label_en : 'Russian name'
+			,type : 'text'
+			,handle : 'name_ru'
+			,required : true
+		}
+	]
 };
