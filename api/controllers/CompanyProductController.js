@@ -8,8 +8,8 @@ module.exports = {
 	addproducttocompany : function(req,res){
 		var form = req.params.all();
 		delete form.id;
-		var location = params.location || false;
-		delete params.location;
+		var location = form.location || false;
+		delete form.location;
 		//if(form.product_type=='room') formatRooms(form.rooms);
 		CompanyProduct.create(form).exec(function(err,cp){
 			if(err) res.json( false );
