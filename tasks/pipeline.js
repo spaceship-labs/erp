@@ -130,3 +130,6 @@ module.exports.jsFilesToInject = jsFilesToInject.map(function(path) {
 module.exports.templateFilesToInject = templateFilesToInject.map(function(path) {
 	return 'assets/' + path;
 });
+
+module.exports.cssFileToInjectFakeProd = ['assets/styles/default.css']; 
+module.exports.jsFileToInjectFakeProd = ['assets/bower_components/jquery/dist/jquery.min.js'];
