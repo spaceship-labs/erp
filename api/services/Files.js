@@ -1,6 +1,9 @@
 var fs = require('fs'),
 im = require('imagemagick'),
-adapterPkgCloud = require('skipper-pkgcloud');
+adapterPkgCloud = require('skipper-pkgcloud'),
+async = require('async'),
+gm = require('gm'),//crops con streams.
+gmIm = gm.subClass({imageMagick:true});
 
 //Names and Saves a File returns de filename
 module.exports.saveFiles = function(req,opts,cb){
@@ -23,12 +26,21 @@ module.exports.saveFiles = function(req,opts,cb){
 			maxBytes:52428800		
 		};
 		if(process.env.CLOUDUSERNAME){
+			console.log("using cloud");
 			uploadOptions.adapter = adapterPkgCloud;
 			uploadOptions.username = process.env.CLOUDUSERNAME;
 			uploadOptions.apiKey = process.env.CLOUDAPIKEY;
 			uploadOptions.region = process.env.CLOUDREGION;
 			uploadOptions.container = process.env.CLOUDCONTAINER;
 			uploadOptions.dirname = '/uploads/' + opts.dir + '/';
+			if(opts.avatar)
+				uploadOptions.after = function(stream, filename, next){
+					//console.log(stream);
+                    opts.srcData = stream;
+                    opts.filename = filename;
+                    Files.makeCropsStreams(uploadOptions, opts, next);
+					//next();
+				};
 		}
 		req.file('file').upload(
 			uploadOptions,
@@ -85,7 +97,7 @@ var makeFileName = function(_stream,cb){
 module.exports.makeCrops = function(req,opts,cb){
 	var async = require('async');
 	var sizes = sails.config.images[opts.profile];
-	opts.dirSave = __dirname+'/../../assets/uploads/'+opts.dir+'/';
+	opts.dirSave = opts.dirSave || __dirname+'/../../assets/uploads/'+opts.dir+'/';
 	opts.dirPublic = __dirname+'/../../.tmp/public/uploads/'+opts.dir+'/';
 	async.mapSeries(sizes,function(size,callback){
         //console.log(size);
@@ -128,3 +140,20 @@ module.exports.removeFile = function(opts,cb){
 	async.map(routes,fs.unlink,cb);
 }
 
+//streams rackspace.
+module.exports.makeCropsStreams = function(uploadOptions, opts, cb){
+    var sizes = sails.config.images[opts.profile];
+    var adapter = adapterPkgCloud(uploadOptions);
+    opts.dirSave = '/uploads/'+opts.dir+'/';
+
+    async.each(sizes,function(size, next){ 
+    	var wh = size.split('x');
+        gmIm(opts.srcData)
+        .resize(wh[0], wh[1])
+        .stream(function(err, stdout, stderr){
+            if(err) return next(err);
+            stdout.pipe(adapter.uploadStream({dirSave:opts.dirSave, name: size+opts.filename }, next));
+        });
+
+    }, cb);
+};

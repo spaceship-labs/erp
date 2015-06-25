@@ -30,7 +30,18 @@ module.exports.models = {
     updateAvatar : function(req,opts,cb){
       var async = require('async');
       object = this;
-      opts.file = object.icon;
+      opts.file = object.icon; 
+      if(process.env.CLOUDUSERNAME){
+        opts.avatar = true;
+        opts.filename = object.icon.filename;
+        Files.saveFiles(req,opts,function(err,files){
+            if(err) return cb(err);
+            object.icon = files[0];
+            object.save(cb);
+        });
+        return;
+      }
+
       async.waterfall([
         function(callback){
             //console.log('save files');
@@ -57,32 +68,32 @@ module.exports.models = {
       object.icon = null;
       object.save(cb);
     },
-  	addFiles : function(req,opts,cb){
-  		var async = require('async');
-      object = this;
-  		objectFiles = object.files ? object.files : [];
-		  req.onProgress = getOnProgress(req);
-  		Files.saveFiles(req,opts,function(e,files){
-        //console.log('files');console.log(files);console.log('files END');
-  			if(e) return cb(e,files);
-        object.files = objectFiles;
-        async.mapSeries(files,function(file,async_callback){
-          var callback = req.onProgress.nextElement(files,async_callback);
-          objectFiles.push(file);
-          opts.filename = file.filename;
-          if(file.typebase == 'image')
-            Files.makeCrops(req,opts,callback);
-          else
-            callback(null,file);
-        },function(e,crops){
-          if(e) return cb(e,crops);
-          //console.log('objectFiles');console.log(objectFiles);console.log('objectFiles END');
-          object.files = objectFiles;
-          object.save(cb);
-          return objectFiles;
-        });  			
-  		});
-  	},
+    addFiles : function(req,opts,cb){
+        var async = require('async');
+        object = this;
+        objectFiles = object.files ? object.files : [];
+        req.onProgress = getOnProgress(req);
+        Files.saveFiles(req,opts,function(e,files){
+            //console.log('files');console.log(files);console.log('files END');
+            if(e) return cb(e,files);
+            object.files = objectFiles;
+            async.mapSeries(files,function(file,async_callback){
+                var callback = req.onProgress.nextElement(files,async_callback);
+                objectFiles.push(file);
+                opts.filename = file.filename;
+                if(file.typebase == 'image')
+                    Files.makeCrops(req,opts,callback);
+                else
+                    callback(null,file);
+            },function(e,crops){
+                if(e) return cb(e,crops);
+                //console.log('objectFiles');console.log(objectFiles);console.log('objectFiles END');
+                object.files = objectFiles;
+                object.save(cb);
+                return objectFiles;
+            });  			
+        });
+    },
     removeFiles : function(req,opts,cb){
       var async = require('async');
       var object = this;      
