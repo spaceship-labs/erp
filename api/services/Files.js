@@ -35,11 +35,9 @@ module.exports.saveFiles = function(req,opts,cb){
 			uploadOptions.dirname = '/uploads/' + opts.dir + '/';
 			if(opts.avatar)
 				uploadOptions.after = function(stream, filename, next){
-					//console.log(stream);
-                    opts.srcData = stream;
-                    opts.filename = filename;
-                    Files.makeCropsStreams(uploadOptions, opts, next);
-					//next();
+					opts.srcData = stream;
+					opts.filename = filename;
+					Files.makeCropsStreams(uploadOptions, opts, next);
 				};
 		}
 		req.file('file').upload(
@@ -156,4 +154,34 @@ module.exports.makeCropsStreams = function(uploadOptions, opts, cb){
         });
 
     }, cb);
+};
+
+module.exports.containerCloudLink = null;
+module.exports.getContainerLink = function(next){
+    //run in bootstrap
+    //or '' if not setting
+    if(module.exports.containerCloudLink){ 
+        if(next) return next(null, containerCloudLink);
+        return containerCloudLink
+    }
+
+    if(process.env.CLOUDUSERNAME){
+        console.log("using cloud to get link");
+        var uploadOptions = {};
+        uploadOptions.username = process.env.CLOUDUSERNAME;
+        uploadOptions.apiKey = process.env.CLOUDAPIKEY;
+        uploadOptions.region = process.env.CLOUDREGION;
+        uploadOptions.container = process.env.CLOUDCONTAINER;
+        var adapter = adapterPkgCloud(uploadOptions);
+        adapter.getContainerLink(function(err, link){
+            module.exports.containerCloudLink = link || '';
+            console.log("Link", module.exports.containerCloudLink);
+            if(next) return next(err, module.exports.containerCloudLink);
+        });
+	}else{
+        module.exports.containerCloudLink = '';
+        if(next) return next(null, module.exports.containerCloudLink);
+        return module.exports.containerCloudLink;
+    }
+
 };
