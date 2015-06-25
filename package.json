@@ -38,7 +38,7 @@
     "sails": "~0.10.5",
     "sails-disk": "~0.10.0",
     "sails-mongo": "0.10.5",
-    "skipper-pkgcloud": "0.0.1",
+    "skipper-pkgcloud": "0.0.3",
     "underscore.string": "^3.0.3"
   },
   "engines": {
