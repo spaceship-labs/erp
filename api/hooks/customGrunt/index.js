@@ -30,8 +30,6 @@ module.exports = function (sails) {
       sails.log.verbose('Loading app Gruntfile...');
 
       // Start task depending on environment
-      sails.config = sails.config || {};
-      sails.config.environment =  process.env.NODE_ENV  || 'development';
       if(sails.config.environment === 'production' ){
         return this.runTask('prod', cb);
       }
