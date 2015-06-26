@@ -33,11 +33,14 @@ module.exports.models = {
       opts.file = object.icon; 
       if(process.env.CLOUDUSERNAME){
         opts.avatar = true;
-        opts.filename = object.icon.filename;
+        opts.filename = object.icon?object.icon.filename : null;
         Files.saveFiles(req,opts,function(err,files){
             if(err) return cb(err);
             object.icon = files[0];
             object.save(cb);
+	    if(opts.file) 
+	    	Files.removeFile(opts,function(err){
+	    	});
         });
         return;
       }
@@ -54,7 +57,7 @@ module.exports.models = {
           Files.makeCrops(req,opts,callback)
         },
         function(crops,callback){
-          //console.log('remove');
+          console.log('remove',opts.file);
           if(opts.file) Files.removeFile(opts,callback);
           else callback(null,crops);
         },

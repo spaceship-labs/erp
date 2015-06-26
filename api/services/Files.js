@@ -25,8 +25,8 @@ module.exports.saveFiles = function(req,opts,cb){
 			onProgress:(req.onProgress && req.onProgress.fileProgress || null),
 			maxBytes:52428800		
 		};
+
 		if(process.env.CLOUDUSERNAME){
-			console.log("using cloud");
 			uploadOptions.adapter = adapterPkgCloud;
 			uploadOptions.username = process.env.CLOUDUSERNAME;
 			uploadOptions.apiKey = process.env.CLOUDAPIKEY;
@@ -129,13 +129,21 @@ module.exports.makeCrop = function(size,opts,cb){
 }
 //Deletes a File and Crops if profile is specified;
 module.exports.removeFile = function(opts,cb){
-	var dirSave = __dirname+'/../../assets/uploads/'+opts.dir+'/';
+	var adapter = getAdapterConfig();
+	var dirSave = adapter?'/uploads/'+opts.dir+'/' : __dirname+'/../../assets/uploads/'+opts.dir+'/';
 	var sizes = opts.profile ? sails.config.images[opts.profile] : [];
 	var filename = opts.file.filename;
 	var async = require('async');
 	var routes = [dirSave+filename];
+
+	
 	if(opts.file.typebase == 'image') sizes.forEach(function(size){routes.push(dirSave+size+filename);});
-	async.map(routes,fs.unlink,cb);
+	
+	if(adapter){
+		async.each(routes, adapter.rm, cb);
+	}else{
+		async.map(routes,fs.unlink,cb);
+	}
 }
 
 //streams rackspace.
@@ -165,17 +173,11 @@ module.exports.getContainerLink = function(next){
         return containerCloudLink
     }
 
-    if(process.env.CLOUDUSERNAME){
-        console.log("using cloud to get link");
-        var uploadOptions = {};
-        uploadOptions.username = process.env.CLOUDUSERNAME;
-        uploadOptions.apiKey = process.env.CLOUDAPIKEY;
-        uploadOptions.region = process.env.CLOUDREGION;
-        uploadOptions.container = process.env.CLOUDCONTAINER;
-        var adapter = adapterPkgCloud(uploadOptions);
+
+    var adapter = getAdapterConfig();
+    if(adapter){
         adapter.getContainerLink(function(err, link){
             module.exports.containerCloudLink = link || '';
-            console.log("Link", module.exports.containerCloudLink);
             if(next) return next(err, module.exports.containerCloudLink);
         });
     }else{
@@ -185,3 +187,15 @@ module.exports.getContainerLink = function(next){
     }
 
 };
+
+function getAdapterConfig(){
+    if(process.env.CLOUDUSERNAME){
+        var uploadOptions = {};
+        uploadOptions.username = process.env.CLOUDUSERNAME;
+        uploadOptions.apiKey = process.env.CLOUDAPIKEY;
+        uploadOptions.region = process.env.CLOUDREGION;
+        uploadOptions.container = process.env.CLOUDCONTAINER;
+	return adapterPkgCloud(uploadOptions);
+    }
+    return false;
+}
