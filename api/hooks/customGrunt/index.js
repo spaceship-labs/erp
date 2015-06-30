@@ -30,7 +30,7 @@ module.exports = function (sails) {
       sails.log.verbose('Loading app Gruntfile...');
 
       // Start task depending on environment
-      if(sails.config.environment === 'production'){
+      if(sails.config.environment === 'production' ){
         return this.runTask('prod', cb);
       }
 

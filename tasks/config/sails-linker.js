@@ -57,6 +57,22 @@ module.exports = function(grunt) {
 			}
 		},
 
+		prodJsFake: {
+			options: {
+				startTag: '<!--SCRIPTS-->',
+				endTag: '<!--SCRIPTS END-->',
+				fileRef:function(f){
+					return '<script src="/min/production.js?v='+Date.now()+'"></script>';
+				},
+				appRoot: '.tmp/public'
+			},
+			files: {
+				'.tmp/public/**/*.html': require('../pipeline').jsFileToInjectFakeProd,
+				'views/**/*.html': require('../pipeline').jsFileToInjectFakeProd,
+				'views/**/*.ejs': require('../pipeline').jsFileToInjectFakeProd
+			}
+		},
+
 		prodJsRelative: {
 			options: {
 				startTag: '<!--SCRIPTS-->',
@@ -114,6 +130,22 @@ module.exports = function(grunt) {
 				'.tmp/public/index.html': ['.tmp/public/min/production.css'],
 				'views/**/*.html': ['.tmp/public/min/production.css'],
 				'views/**/*.ejs': ['.tmp/public/min/production.css']
+			}
+		},
+
+		prodStylesFake: {
+			options: {
+				startTag: '<!--STYLES-->',
+				endTag: '<!--STYLES END-->',
+				fileRef:function(f){
+					return '<link rel="stylesheet" href="/min/production.css?v='+Date.now()+'">';
+				},
+				appRoot: '.tmp/public'
+			},
+			files: {
+				'.tmp/public/index.html': require('../pipeline').cssFileToInjectFakeProd,
+				'views/**/*.html': require('../pipeline').cssFileToInjectFakeProd,
+				'views/**/*.ejs': require('../pipeline').cssFileToInjectFakeProd
 			}
 		},
 

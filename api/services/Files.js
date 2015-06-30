@@ -1,5 +1,10 @@
-var fs = require('fs')
-, im = require('imagemagick');
+var fs = require('fs'),
+im = require('imagemagick'),
+adapterPkgCloud = require('skipper-pkgcloud'),
+async = require('async'),
+gm = require('gm'),//crops con streams.
+gmIm = gm.subClass({imageMagick:true});
+
 //Names and Saves a File returns de filename
 module.exports.saveFiles = function(req,opts,cb){
 	var dirSave = __dirname+'/../../assets/uploads/'+opts.dir+'/';
@@ -14,7 +19,30 @@ module.exports.saveFiles = function(req,opts,cb){
 		//async.map($files, function(file, async_cb) {
 			//console.log('file');
 			//console.log(file);
-			req.file('file').upload({saveAs:makeFileName,dirname:dirSave,onProgress:(req.onProgress && req.onProgress.fileProgress || null),maxBytes:52428800},function(e,files){
+		var uploadOptions = {	
+			saveAs:makeFileName,
+			dirname:dirSave,
+			onProgress:(req.onProgress && req.onProgress.fileProgress || null),
+			maxBytes:52428800		
+		};
+
+		if(process.env.CLOUDUSERNAME){
+			uploadOptions.adapter = adapterPkgCloud;
+			uploadOptions.username = process.env.CLOUDUSERNAME;
+			uploadOptions.apiKey = process.env.CLOUDAPIKEY;
+			uploadOptions.region = process.env.CLOUDREGION;
+			uploadOptions.container = process.env.CLOUDCONTAINER;
+			uploadOptions.dirname = '/uploads/' + opts.dir + '/';
+			if(opts.avatar)
+				uploadOptions.after = function(stream, filename, next){
+					opts.srcData = stream;
+					opts.filename = filename;
+					Files.makeCropsStreams(uploadOptions, opts, next);
+				};
+		}
+		req.file('file').upload(
+			uploadOptions,
+			function(e,files){
 				if(e) return cb(e,files);
 				files.forEach(function(file){
 					var filename = file.fd.split('/');
@@ -67,7 +95,7 @@ var makeFileName = function(_stream,cb){
 module.exports.makeCrops = function(req,opts,cb){
 	var async = require('async');
 	var sizes = sails.config.images[opts.profile];
-	opts.dirSave = __dirname+'/../../assets/uploads/'+opts.dir+'/';
+	opts.dirSave = opts.dirSave || __dirname+'/../../assets/uploads/'+opts.dir+'/';
 	opts.dirPublic = __dirname+'/../../.tmp/public/uploads/'+opts.dir+'/';
 	async.mapSeries(sizes,function(size,callback){
         //console.log(size);
@@ -101,12 +129,73 @@ module.exports.makeCrop = function(size,opts,cb){
 }
 //Deletes a File and Crops if profile is specified;
 module.exports.removeFile = function(opts,cb){
-	var dirSave = __dirname+'/../../assets/uploads/'+opts.dir+'/';
+	var adapter = getAdapterConfig();
+	var dirSave = adapter?'/uploads/'+opts.dir+'/' : __dirname+'/../../assets/uploads/'+opts.dir+'/';
 	var sizes = opts.profile ? sails.config.images[opts.profile] : [];
 	var filename = opts.file.filename;
 	var async = require('async');
 	var routes = [dirSave+filename];
+
+	
 	if(opts.file.typebase == 'image') sizes.forEach(function(size){routes.push(dirSave+size+filename);});
-	async.map(routes,fs.unlink,cb);
+	
+	if(adapter){
+		async.each(routes, adapter.rm, cb);
+	}else{
+		async.map(routes,fs.unlink,cb);
+	}
 }
 
+//streams rackspace.
+module.exports.makeCropsStreams = function(uploadOptions, opts, cb){
+    var sizes = sails.config.images[opts.profile];
+    var adapter = adapterPkgCloud(uploadOptions);
+    opts.dirSave = '/uploads/'+opts.dir+'/';
+
+    async.each(sizes,function(size, next){ 
+    	var wh = size.split('x');
+        gmIm(opts.srcData)
+        .resize(wh[0], wh[1])
+        .stream(function(err, stdout, stderr){
+            if(err) return next(err);
+            stdout.pipe(adapter.uploadStream({dirSave:opts.dirSave, name: size+opts.filename }, next));
+        });
+
+    }, cb);
+};
+
+module.exports.containerCloudLink = null;
+module.exports.getContainerLink = function(next){
+    //run in bootstrap
+    //or '' if not setting
+    if(module.exports.containerCloudLink){ 
+        if(next) return next(null, containerCloudLink);
+        return containerCloudLink
+    }
+
+
+    var adapter = getAdapterConfig();
+    if(adapter){
+        adapter.getContainerLink(function(err, link){
+            module.exports.containerCloudLink = link || '';
+            if(next) return next(err, module.exports.containerCloudLink);
+        });
+    }else{
+        module.exports.containerCloudLink = '';
+        if(next) return next(null, module.exports.containerCloudLink);
+        return module.exports.containerCloudLink;
+    }
+
+};
+
+function getAdapterConfig(){
+    if(process.env.CLOUDUSERNAME){
+        var uploadOptions = {};
+        uploadOptions.username = process.env.CLOUDUSERNAME;
+        uploadOptions.apiKey = process.env.CLOUDAPIKEY;
+        uploadOptions.region = process.env.CLOUDREGION;
+        uploadOptions.container = process.env.CLOUDCONTAINER;
+	return adapterPkgCloud(uploadOptions);
+    }
+    return false;
+}

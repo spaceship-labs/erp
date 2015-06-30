@@ -15,4 +15,6 @@ module.exports.bootstrap = function (cb) {
 	CronJobs && CronJobs.init();
 
 	cb();
+
+    Files.getContainerLink();
 };
