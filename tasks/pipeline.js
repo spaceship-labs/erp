@@ -55,9 +55,9 @@ var jsFilesToInject = [
 
 	// Dependencies like sails.io.js, jQuery, or Angular
 	// are brought in here
-	'/js/dependencies/**/*.js',
 	'/bower_components/jquery/jquery.min.js',
-    '/bower_components/jquery/dist/jquery.min.js',
+	'/bower_components/jquery/dist/jquery.min.js',
+	'/js/dependencies/**/*.js',
     "/bower_components/modernizr/modernizr.js",
     "/bower_components/jquery-browser-detection/src/browser-detection.js",
 	"/bower_components/bootstrap/dist/js/bootstrap.js",
