@@ -849,6 +849,12 @@ module.exports.content = {
         	,type : 'text'
         }
         ,{
+        	label : 'Tipo de cambio contable'
+        	,label_en : 'Book exchange rate'
+        	,handle : 'exchange_rate_book'
+        	,type : 'text'
+        }
+        ,{
         	label : 'Prepago'
         	,label_en : 'Prepaid'
         	,handle : 'prepaid'
@@ -1616,7 +1622,7 @@ module.exports.content = {
 			,required : true
 		}
 		,{
-			label : 'Nombre en Inglès'
+			label : 'Nombre en Inglés'
 			,label_en : 'English name'
 			,type : 'text'
 			,handle : 'name_en'

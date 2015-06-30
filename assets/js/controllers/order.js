@@ -273,6 +273,8 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
             params.reservation_type = 'transfer';
             params.client = $scope.client;
             params.transfer = $scope.transfer.transfer.transfer.id;
+            params.transferprice = $scope.transfer.transfer.id;
+            console.log($scope.transfer.transfer);
             $http.post('/order/createReservation',params,{}).success(function(result) {
                 //Guardando los tours en caso de existir
                 if( $scope.reservations.tours.length>0 )
@@ -361,8 +363,7 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
     }
     //obtiene los servicios que están disponibles dependiendo de las zonas que se elijan 
     $scope.getTransfers = function(){
-        console.log('get transfers');
-        console.log($scope.transfer);
+        //console.log('get transfers');console.log($scope.transfer);
         if( $scope.transfer.hotel.zone.id && $scope.transfer.airport.zone ){
             var params = { 
                 zone1 : $scope.transfer.hotel.zone.id
@@ -373,8 +374,8 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
             $http({method: 'POST', url: '/order/getAvailableTransfers',params:params}).success(function (result){
                 //console.log('prices');console.log(result);
                 $scope.transfers = result;
-                //console.log('transfers available');
-                //console.log(result);
+                console.log('transfers available');
+                console.log(result);
             });
         }
     };
@@ -489,6 +490,11 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
     $scope.getClients = function(val){
         return $http.get('/client/find', { params: { name: val } }).then(function(response){
             return response.data.map(function(item){ return item; });
+        });
+    };
+    $scope.getAirlines = function(val){
+        return $http.get('/airline/find', { params: { name: val } }).then(function(response){
+            return response.data.results.map(function(item){ return item; });
         });
     };
 });

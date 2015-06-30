@@ -1,10 +1,14 @@
 <script type='text/javascript'>
 	window.airlines = <%- JSON.stringify(airlines) %>;
 </script>
-<div ng-controller='hroomviewCTL'>
+<div ng-controller='airlineCTL'>
 	<p><button class="btn btn-primary" data-toggle="modal" data-target="#myModal"><i class='fa fa-plus'></i><%= __('airlines') %> </button></p>
 	<br/>
-	<div table-helper inline-edit="/airline/update/" objects='airlines' columns='content.airline' route='airline'></div>
+	<div table-helper 
+		inline-edit="/airline/update/" 
+		objects='airlines' 
+		columns='content.airline' 
+		route='airline'></div>
 	<div class="clearfix"></div>
 	<div class="modal fade" id="myModal">
 		<div class="modal-dialog">
@@ -15,7 +19,7 @@
 			        form-footer='<%= __('order-agregar') %>'
 			        form-save = 'createAirline'
 			        object = 'airline'
-			        form-title='<%= __('Add airline') %>'
+			        form-title='<%= __('add-airline') %>'
 			       	modal='true'
 			        >
 			    </div>

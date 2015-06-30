@@ -236,6 +236,9 @@
   ,"order_service_type" : "Tipo de servicio"
   ,"order_room" : "Cuarto de hotel"
   ,"order_currency" : "Moneda"
+  ,"order-airline" : "Aerolínea"
+  ,"add-airline" : "Agregar aerolínea"
+  ,"airlines" : "Aerolineas"
   ,"" : ""
 
   ,"packageitem-":"",

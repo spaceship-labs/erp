@@ -171,6 +171,16 @@ module.exports.apps = [
                 action : 'index'
             },
             {
+                label : 'Aerolineas',
+                label_en : 'Airlines',
+                icon : 'fa-plane',
+                url : '/airline/',
+                handle : 'airline',
+                showInMenu : true,
+                controller : 'airline',
+                action : 'index'
+            },
+            {
                 label : 'Temporadas',
                 label_en : 'Seasons',
                 icon : 'fa-sun-o',

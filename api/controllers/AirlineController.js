@@ -15,13 +15,24 @@ module.exports = {
 					name:req.__('airlines')
 					,description: req.__('airlines')
 					,icon:'fa fa-plane'
-					,controller : 'Airline.js'
+					,controller : 'airline.js'
 				},
 				breadcrumb : [
 					{label : req.__('airlines')}
 				]
 			},req);
 		});
+	},
+	find : function(req,res){
+		var params = req.params.all();
+		delete params.id;
+        if(params.name) params.name = new RegExp(params.name,"i");
+        Airline.find(params).exec(function(err,airlines){
+            if(err) res.json('err');
+            Airline.count(params).exec(function(e,count){
+            	res.json({ results : airlines , count : count });
+            });
+        });
 	},
 	edit : function(req,res){
 		Airline.findOne(req.params.id).exec(function(e,airline){

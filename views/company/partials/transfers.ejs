@@ -78,6 +78,8 @@
                 <th ng-if="price.company.id==company.id">Comisión <br> vendedor</th>
                 <th>Sencillo</th>
                 <th>Redondo</th>
+                <th>Sencillo<br> child</th>
+                <th>Redondo<br> child</th>
                 <th>Activo</th>
                 <th>Editar</th>
             </tr>
@@ -104,6 +106,16 @@
                 >{{price.one_way || 0 }}</span></td>
                 <td><span 
                     editable-text='price.round_trip'
+                    e-name='round_trip'
+                    e-form='rowform'
+                >{{price.round_trip || 0 }}</span></td>
+                <td><span 
+                    editable-text='price.one_way_child'
+                    e-name='one_way'
+                    e-form='rowform'
+                >{{price.one_way || 0 }}</span></td>
+                <td><span 
+                    editable-text='price.round_trip_child'
                     e-name='round_trip'
                     e-form='rowform'
                 >{{price.round_trip || 0 }}</span></td>

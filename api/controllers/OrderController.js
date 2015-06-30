@@ -114,6 +114,44 @@ module.exports = {
     });
   },
   createReservation : function(req,res){
+    var params = req.params.all();
+    params.hotel = params.hotel.id;
+    params.state = params.state.handle;
+    params.payment_method = params.payment_method.handle;
+    params.airport = params.airport.id;
+    params.client = params.client.id;
+    params.user = req.user.id;
+    delete params.id;
+    Order.findOne(params.order).exec(function(e,theorder){
+      if(e) return res.json(e);
+      params.company = theorder.company?theorder.company:(req.session.select_company || req.user.select_company);
+      Company.findOne({adminCompany:true}).exec(function(c_err,mainCompany){
+        if(c_err) res.json(false);
+        TransferPrice.findOne(params.transferprice).populate('transfer').exec(function(tp_err,transferprice){
+          if(tp_err) res.json(false);
+          console.log('Fee: ' + params.fee);
+          params.fee = transferprice[params.type] * Math.ceil( params.pax / transferprice.transfer.max_pax );
+          params.fee_adults = transferprice.one_way;
+          params.fee_adults_rt = transferprice.round_trip;
+          params.fee_kids = transferprice.one_way_child;
+          params.fee_kids_rt = transferprice.round_trip_child;
+          params.commission_sales = transferprice.commission_user || 0;
+          params.commission_agency = transferprice.commission_agency || 0;
+          params.exchange_rate_sale = mainCompany.exchange_rate_sale;
+          params.exchange_rate_book = mainCompany.exchange_rate_book;
+          Reservation.create(params).exec(function(err,reservation){
+            if(err) return res.json(err);
+            theorder.reservations.push(reservation.id);
+            theorder.save(function(err_o){
+              //console.log('reservations');console.log(theorder);
+              return res.json(reservation);
+            });
+          });
+        });
+      });
+    });
+  },
+  createReservation2 : function(req,res){
   	//var requided = ['hotel','airport','transfer','state','payment_method','pax','fee','origin','type','fee'];
   	var params = req.params.all();
   	params.hotel = params.hotel.id;
@@ -126,15 +164,18 @@ module.exports = {
     Order.findOne(params.order).exec(function(e,theorder){
       if(e) return res.json(e);
       params.company = theorder.company?theorder.company:(req.session.select_company || req.user.select_company);
-      Reservation.create(params).exec(function(err,reservation){
-        if(err) return res.json(err);
-        theorder.reservations.push(reservation.id);
-        //console.log('reservations');console.log(theorder);
-        theorder.save(function(err_o){
+      //CompanyProduct.findOne({ product_type : 'transfer' , agency : params.company , transfer : params.transfer }).populate('transfer').exec(function(cp_err,product){
+        Reservation.create(params).exec(function(err,reservation){
+          if(err) return res.json(err);
+          //antes de guardar la orden, hay que generar el objeto que guardará las comisiones
+          theorder.reservations.push(reservation.id);
           //console.log('reservations');console.log(theorder);
-          return res.json(reservation);
+          theorder.save(function(err_o){
+            //console.log('reservations');console.log(theorder);
+            return res.json(reservation);
+          });
         });
-      });
+      //});
     });
   },
   createReservationTour : function(req,res){
@@ -214,19 +255,7 @@ module.exports = {
     var params = req.params.all();
     if( params.zone1 && params.zone2 ){
       var company = params.company?params.company:(req.session.select_company || req.user.select_company);
-      TransferPrice.find({ 
-        company : company,
-        active : true, 
-        "$or":[ 
-          { "$and" : [{'zone1' : params.zone1, 'zone2' : params.zone2}] } , 
-          { "$and" : [{'zone1' : params.zone2, 'zone2' : params.zone1}] } 
-        ] 
-      }).populate('transfer').exec(function(err,prices){
-        if(prices)
-          return res.json(prices);
-        else
-          return res.json(false);
-      });
+      customGetAvailableTransfers(company,params,res);
     }else{
       return res.json(false);
     }
@@ -332,6 +361,48 @@ module.exports = {
     });
   }
 };
+function customGetAvailableTransfers(company,params,res){
+  console.log('company');
+  console.log(company);
+  if(company.adminCompany){
+    TransferPrice.find({ 
+      company : company.id
+      ,active : true
+      ,"$or":[ 
+        { "$and" : [{'zone1' : params.zone1, 'zone2' : params.zone2}] } , 
+        { "$and" : [{'zone1' : params.zone2, 'zone2' : params.zone1}] } 
+      ] 
+    }).populate('transfer').exec(function(err,prices){
+      console.log('prices admin');
+      console.log(prices);
+      if(prices)
+        return res.json(prices);
+      else
+        return res.json(false);
+    });
+  }else{
+    CompanyProduct.find({company : company,product_type:'transfer'}).exec(function(cp_err,products){
+      var productsArray = [];
+      for(var x in products) productsArray.push( products[x].transfer );
+      TransferPrice.find({ 
+        company : company.id
+        ,active : true
+        ,transfer : productsArray
+        ,"$or":[ 
+          { "$and" : [{'zone1' : params.zone1, 'zone2' : params.zone2}] } , 
+          { "$and" : [{'zone1' : params.zone2, 'zone2' : params.zone1}] } 
+        ] 
+      }).populate('transfer').exec(function(err,prices){
+        console.log('prices NO admin');
+        console.log(prices);
+        if(prices)
+          return res.json(prices);
+        else
+          return res.json(false);
+      });
+    });
+  }
+}
 /*
   'service','client','pax','arrival_date','arrival_fly','arrival_time','Hotel','transfer',
   'departure_date','departure_fly','departure_time','note','agency','Airport';

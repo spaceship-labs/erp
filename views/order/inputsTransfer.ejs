@@ -22,6 +22,16 @@
                 <span class='field'><select ng-change='updatePriceTransfer()' ng-options='obj as obj.name for obj in airports track by obj.id' ng-model='transfer.airport' ></select></span>
             </p>
             <p>
+                <label><%= __('order-airline')%></label>
+                <span class='field'>
+                    <input type="text" class="form-control" 
+                        placeholder="<%= __('order-airline')%>"
+                        ng-model="transfer.airline" 
+                        typeahead-editable='true'
+                        typeahead="obj as obj.name for obj in getAirlines($viewValue)" >
+                </span>
+            </p>
+            <p>
                 <label><%= __('order-servicio')%></label>
                 <span class='field'><select ng-change="updatePriceTransfer()" ng-options='obj as obj.transfer.name for obj in transfers track by obj.id' ng-model='transfer.transfer' ></select></span>
             </p>

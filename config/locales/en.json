@@ -214,7 +214,7 @@
   ,"order_tv_rt" : "Round trip"
   ,"order_tv_ow" : "One way"
   ,"order_transfer" : "Transfer"
-  ,"order_title" : "Purchase Order"
+  ,"order_title" : "Purchase Order" 
   ,"order_for" : "for"
   ,"order_agency" : "Agency"
   ,"order_createdby" : "Created by"
@@ -233,6 +233,9 @@
   ,"order_service_type" : "Service Type"
   ,"order_room" : "Hotel room"
   ,"order_currency" : "Currency"
+  ,"order-airline" : "Airline"
+  ,"add-airline" : "Add airline"
+  ,"airlines" : "Airlines"
   ,"" : ""
 
   ,"packageitem-":"",
