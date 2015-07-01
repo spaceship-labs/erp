@@ -92,9 +92,9 @@ var jsFilesToInject = [
 	"/bower_components/jquery-steps/jquery.steps.min.js",
     "/bower_components/parsleyjs/dist/parsley.js",
 	"/js/themejs/*.js",                                            
-	"/js/*.js",                                                    
+	"/js/{app.js,custom.js,shared.js}",//ignore setup.js 
 	'/js/directives/*.js',                                         
-	//'/js/controllers/*.js',                                      
+	'/js/controllers/*.js',                                      
 ];                                                                     
                                                                        
                                                                        
