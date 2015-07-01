@@ -7,11 +7,14 @@
 </script>
 <div ng-controller='orderNewCTL' >
     <div class='row'>
-        <div class='col-md-12'>
+        <div class='col-sm-12 col-md-6 col-lg-6'>
             <label class='outerLabel'>Agencia: </label>
-            <select class='outerSelect' ng-model='thecompany' ng-options="obj.id as obj.name for obj in companies" ></select>
-            <a class="btn btn-primary btn-big pull-right" ng-click="saveAll()"><i class='fa fa-save'></i> <%= __('order-reservar')%> </a>
-            <a class='btn btn-primary btn-big pull-right' ng-click="resetForm()" ><i class='fa fa-eraser'></i> Limpiar campos</a>
+            <select class='outerSelect' ng-model='thecompany' ng-options="obj as obj.name for obj in companies" ></select>
+        </div>
+        <div class='col-sm-12 col-md-6 col-lg-6'>
+            <a class="btn btn-primary pull-right full-sm" ng-click="saveAll()"><i class='fa fa-save'></i> <%= __('order-reservar')%> </a>
+            <a class='btn btn-primary pull-right full-sm' ng-click="resetForm()" ><i class='fa fa-eraser'></i> Limpiar campos</a>
+            <div class='clear'></div>
         </div>
     </div><br>
 	<div class='row stdform stdform2'>
@@ -87,7 +90,14 @@
             <div collapse="!isCtour">
                 <div class='row'>
                     <div class='col-md-10'>
-                        <p><select chosen ng-options='obj as obj.name for obj in allTours' ng-model='addedTour' ></select></p>
+                        <p>
+                            <input type="text" class="form-control" 
+                                placeholder="Tours"
+                                ng-model="addedTour" 
+                                typeahead-editable='true'
+                                typeahead="obj as obj.name for obj in getTours($viewValue)" >
+                            <!--<select chosen ng-options='obj as obj.name for obj in allTours' ng-model='addedTour' ></select>-->
+                        </p>
                     </div>
                     <div class='col-md-2'>
                         <a ng-click='addTH("tour")' class='btn-primary btn pull-right'><%= __('order-agregar')%></a>

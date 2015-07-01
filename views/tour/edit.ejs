@@ -1,10 +1,11 @@
 <script type='text/javascript'>
     window.tour = <%- JSON.stringify(tour) %>;
+    window.tourcategories = <%- JSON.stringify(tourcategories) %>;
     window.schemes = <%- JSON.stringify(schemes) %>;
     window.providers = <%- JSON.stringify(providers) %>;
     window.locations = <%- JSON.stringify(locations) %>;
     window.content = <%- JSON.stringify(_content) %>;
-    //console.log(tour);
+    console.log(tourcategoriess);
 </script>
 <div ng-controller='tourEditCTL' class="editar-tour ng-cloak">
     <div class="span4 profile-left profileEdit">
@@ -40,7 +41,7 @@
             action='/tour/save' 
             form-title='<%= __('tour-info')%>'
             currency='company.base_currency'
-            objects='{schemes:schemes,locations:locations,providers:providers}'
+            objects='{schemes:schemes,locations:locations,providers:providers,tourcategories:tourcategories}'
             >
         </div> 
     </div> 

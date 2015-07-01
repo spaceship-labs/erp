@@ -32,6 +32,8 @@ app.controller('tourEditCTL',function($scope,$http,$window){
     $scope.providers = providers;
     $scope.tour = tour;
     $scope.user = user;
+    $scope.tourcategories = tourcategories;
+    console.log(tourcategories);
     /*io.socket.get('/tour/find/'+tour.id,function(data,jwres){
         $scope.tour = data;
 	    $scope.tour.seasonScheme = data.seasonScheme && data.seasonScheme.id || null;

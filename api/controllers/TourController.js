@@ -42,6 +42,9 @@ module.exports = {
         	});
         });
 	}
+	,findProducts : function(req,res){
+		var params
+	}
 	,create : function(req,res){
 		var form = req.params.all();
 		form.days = [true,true,true,true,true,true,true];
@@ -59,7 +62,7 @@ module.exports = {
 		});
 	},
 	edit : function(req,res){
-		Tour.findOne(req.params.id).exec(function(e,tour){
+		Tour.findOne(req.params.id).populate('categories').exec(function(e,tour){ TourCategory.find().exec(function(tc_err,tourcategories){
 			if(e) return res.redirect("/tour/");
 			Location.find({}).sort('name').exec(function(e,locations){
 	    		SeasonScheme.find().sort('name').exec(function(e,schemes){ TourProvider.find().exec(function(e,providers){
@@ -70,6 +73,7 @@ module.exports = {
 						locations:locations,
 						schemes:schemes,
 						providers : providers,
+						tourcategories : tourcategories,
 						page:{
 							saveButton : true,
 							name:tour.name,
@@ -83,7 +87,7 @@ module.exports = {
 					},req);				
 				}); });
 			});
-		});
+		}); }); //tour and tour categorys
 	},
 	updateIcon: function(req,res){
     	form = req.params.all();

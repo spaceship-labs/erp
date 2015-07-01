@@ -364,7 +364,7 @@ module.exports = {
 function customGetAvailableTransfers(company,params,res){
   console.log('company');
   console.log(company);
-  if(company.adminCompany){
+  if(company.adminCompany && company.adminCompany==true){
     TransferPrice.find({ 
       company : company.id
       ,active : true
@@ -381,7 +381,7 @@ function customGetAvailableTransfers(company,params,res){
         return res.json(false);
     });
   }else{
-    CompanyProduct.find({company : company,product_type:'transfer'}).exec(function(cp_err,products){
+    CompanyProduct.find({company : company.id,product_type:'transfer'}).exec(function(cp_err,products){
       var productsArray = [];
       for(var x in products) productsArray.push( products[x].transfer );
       TransferPrice.find({ 

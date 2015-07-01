@@ -2,7 +2,7 @@
     <div class='span12'>
         <div class='headtitle'>
             <div class='btn-group'>
-                <a class="btn btn-primary pull-right" ng-click="removeTour($index,'tour')"><i class='fa fa-times'></i><%= __('order-eliminar')%> </a>
+                <a class="btn btn-primary pull-right" ng-click="removeTH($index,'tour')"><i class='fa fa-times'></i><%= __('order-eliminar')%> </a>
             </div>
             <h4 class="widgettitle"><span><%= __('order-reservar-tour')%><span ng-bind="item.tour.name"></span></span></h4>
         </div>
@@ -23,6 +23,36 @@
             <p>
                 <label><%= __('order-menores')%> Menores</label>
                 <span class='field'><select ng-change="updateTourPrice(item)" ng-options='obj for obj in [0,1,2,3,4,5,6,7,8,9,10]' ng-model='item.kidPax' ></select></span>
+            </p>
+            <p>
+                <label><%= __('order-hotel')%></label>
+                <span class='field'>
+                    <input type="text" class="form-control" 
+                        placeholder="<%= __('order-hotel')%>"
+                        ng-model="item.hotel" 
+                        typeahead-editable='true'
+                        typeahead="obj as obj.name for obj in getHotels($viewValue)" >
+                </span>
+            </p>
+            <p>
+                <label><%= __('order_room')%> </label>
+                <span class='field'><input type='text' ng-model="item.room" name='room' /></span>
+            </p>
+            <p>
+                <label><%= __('order-pago')%></label>
+                <span class='field'>
+                    <select ng-options='obj as obj.name for obj in hrevPayment' ng-model='item.payment_method' ></select>
+                </span>
+            </p>
+            <p>
+                <label>Lugar de salida</label>
+                <span class='field'>
+                    <input type='text' ng-model='item.departurePlace' >
+                </span>
+            </p>
+            <p>
+                <label><%= __('order-hora-salida')%></label>
+                <span class='field'><timepicker ng-model="item.departureTime" hour-step="1" minute-step="1" show-meridian="ismeridian"></timepicker></span>
             </p>
             <p>
                 <label><%= __('order-precio')%></label>

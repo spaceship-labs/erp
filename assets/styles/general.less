@@ -16,8 +16,10 @@ body.loginpage{background: @login-background;overflow: hidden;}
 .btn-primary:hover{background: darken(@primary,10%);border-color: darken(@primary,10%);}
 .secondary{background: @secondaryBG;color: @secondaryTC;}
 .btn-big{padding: 8px 46px;font-size: 15px;}
-.btn-big + .btn-big{margin-right: 10px;}
-.btn-big.pull-right + .btn-big.pull-right{margin-left: 10px;}
+.btn-primary + .btn-primary{margin-right: 10px;}
+.pull-right + .pull-right{margin-right: 10px;}
+.btn-primary.pull-right + .btn-primary.pull-right{margin-left: 10px;}
+.pull-right.full-sm{width: 45%;}
 
 /*Gral*/
 .text-list{list-style: none;}
@@ -402,6 +404,9 @@ color: #fff;
 	.commentlist .comment-info .comment-updates{ padding: 0px;}
 	.commentlist .panel-heading{ }
 	.commentlist .btn.toogle{top: 0px; right: 0px; width: 100%; position: relative;}
+	.full-sm{width: 100%!important;margin: 0!important;}
+	.full-sm + .full-sm,
+	.btn-primary.pull-right.full-sm + .btn-primary.pull-right.full-sm{margin:0;margin-top: 10px!important;}
 
 }
 

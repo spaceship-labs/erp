@@ -161,19 +161,25 @@ app.controller('orderCTL',function($scope,$http,$window,$upload,$rootScope){
 app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
     $scope.company = company;
     $scope.companies = [];
-    $scope.thecompany = $scope.company.id;
+    console.log(company);
+    $scope.thecompany = $scope.company;
     $scope.alertM = { show: false, client : false, allEmpty: false };
     $scope.clients_ = clients_;
     $scope.hotels = hotels;
     console.log($scope.hotels);
-    $scope.allTours = allTours;
+    //$scope.allTours = allTours;
     $scope.transfers = transfers; // transfers disponibles
     $scope.client = '';
     $scope.airports = [];
     $scope.content = content;
     $scope.order = false;
     $scope.hrevState = [{ handle : 'pending' , name : 'Pendiente' } , { handle : 'liquidated' , name : 'Liquidado' }, { handle : 'canceled' , name : 'Cancelado' }];
-    $scope.hrevPayment = [ { handle : 'creditcard' , name : 'Tarjeta de crédito' }, { handle : 'paypal' , name : 'Paypal' }];
+    $scope.hrevPayment = [ 
+        { handle : 'creditcard' , name : 'Tarjeta de crédito' }
+        ,{ handle : 'paypal' , name : 'Paypal' }
+        ,{ handle : 'cash' , name : 'Efectivo' }
+        ,{ handle : 'prepaid' , name : 'Prepago' }
+    ];
     $scope.service_types = [ {value:'C',label:'Colectivo'}, {value:'P',label:'Privadp'}, {value:'D',label:'Directo'} ];
     //Variables de control del front
     $scope.open = [false,false]; //abre/cierra los datepickers
@@ -222,7 +228,7 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
                 }
                 var params = { 
                     client:$scope.client 
-                    ,company : $scope.thecompany
+                    ,company : $scope.thecompany.id
                 };
                 $http.post('/order/createOrder',params,{}).success(function(order) {
                     //console.log('order');console.log(order);
@@ -371,7 +377,9 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
                 ,company : $scope.thecompany
             };
             console.log(params);
-            $http({method: 'POST', url: '/order/getAvailableTransfers',params:params}).success(function (result){
+            //$http({method: 'POST', url: '/order/getAvailableTransfers',params:params}).success(function (result){
+            $http.post('/order/getAvailableTransfers', params , {})
+            .success(function (result){
                 //console.log('prices');console.log(result);
                 $scope.transfers = result;
                 console.log('transfers available');
@@ -497,6 +505,12 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
             return response.data.results.map(function(item){ return item; });
         });
     };
+    $scope.getTours = function(val){
+        var url = $scope.thecompany.adminCompany?'/tour/find':'/tour/findProducts/';
+        return $http.get( url , { params: { name: val } } ).then(function(response){
+            return response.data.results.map(function(item){ return item; });
+        });
+    };
 });
 app.controller('orderEditCTL',function($scope,$http,$window){
     $scope.content = content;
@@ -526,8 +540,6 @@ app.controller('orderEditCTL',function($scope,$http,$window){
         }
         for(var x in $scope.reservations.hotels){
             $http({method: 'GET', url: '/hotel/'+$scope.reservations.hotels[x].hotel.id}).success(function (result){
-//                console.log('get hotel result');
-//                console.log($scope.reservations.hotels[x]);
                 $scope.reservations.hotels[x].hotel.rooms = result.rooms;
                 $scope.getPriceHotel($scope.reservations.hotels[x]);
             });

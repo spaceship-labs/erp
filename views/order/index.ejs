@@ -5,21 +5,15 @@
     <div id="cargando-elementos" class='ng-cloak' ng-cloak><img src="/images/loaders/images-cm.gif"></div>
     <div class='ng-cloak' ng-cloak>
 	<div class='row'>
-		<div class = "textbutton col-sm-12 col-md-12 col-xs-12">
+		<div class="textbutton col-sm-6 col-md-6 col-xs-12">
 			<p style="display:inline-block;">
                 <a href="/order/neworder" class='btn btn-primary'><i class = "fa fa-plus"></i> <%= __('order-crear')%></a>
                 <a class="btn btn-primary" data-toggle="modal" data-target="#uploadCVS"><i class="fa fa-upload"></i> <%= __('gral_importcvs')%></a>
             </p>
-            <input type="text" placeholder="Buscar" class="form-control pull-right search" ng-model="searchText" />
-			<br />
+            <!-- <input type="text" placeholder="Buscar" class="form-control pull-right search" ng-model="searchText" /> -->
 		</div>
-	</div>
-    <br>
-    <!--<input type="text" ng-model="myModel" placeholder="Autocomplete" typeahead="item as item.name for item in getClients($viewValue)" typeahead-loading="loadingLocations" class="form-control">
-    <br>-->
-    <div class='row pagination-row'>
-        <div class='col-md-4'>
-            <span class='dropdown'>
+        <div class="textbutton col-sm-6 col-md-6 col-xs-12">
+            <span class='dropdown pull-right full-sm'>
                 <a dropdown-toggle class='btn btn-primary'><i class='fa fa-filter'></i> <%= __('gral_filters')%></a>
                 <ul role='menu' class='dropdown-menu'>
                     <li ng-repeat="f in filtersArray">
@@ -27,7 +21,23 @@
                     </li>
                 </ul>
             </span>
-            <a ng-click='resetFilter()' class='btn btn-primary'><i class='fa fa-refresh'></i> <%= __('gral_reset')%></a>
+            <a ng-click='resetFilter()' class='btn btn-primary pull-right full-sm'><i class='fa fa-refresh'></i> <%= __('gral_reset')%></a>
+        </div>
+	</div>
+    <br>
+    <!--<input type="text" ng-model="myModel" placeholder="Autocomplete" typeahead="item as item.name for item in getClients($viewValue)" typeahead-loading="loadingLocations" class="form-control">
+    <br>-->
+    <div class='row pagination-row'>
+        <div class='col-md-4'>
+            <!--<span class='dropdown'>
+                <a dropdown-toggle class='btn btn-primary'><i class='fa fa-filter'></i> <%= __('gral_filters')%></a>
+                <ul role='menu' class='dropdown-menu'>
+                    <li ng-repeat="f in filtersArray">
+                        <a ng-click="openFilter(f)" ng-class='!f.active?"inactive":""'>{{f.label}}</a>
+                    </li>
+                </ul>
+            </span>
+            <a ng-click='resetFilter()' class='btn btn-primary'><i class='fa fa-refresh'></i> <%= __('gral_reset')%></a>-->
         </div>
         <div class='col-md-8'>
             <div class='viewsIcons'>
