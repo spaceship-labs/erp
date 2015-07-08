@@ -84,6 +84,12 @@
                 </span>
             </p>
             <p>
+                <label>Moneda</label>
+                <span class='field'>
+                    <select ng-options="c as c.name for c in thecompany.currencies" name='currency' ng-model='transfer.currency' ng-change='updatePriceTransfer()' ></select>
+                </span>
+            </p>
+            <p>
                 <label><%= __('order-tarifa')%></label>
                 <span class='field'><input type='text' ng-model="transfer.fee" name='fee' /></span>
             </p>

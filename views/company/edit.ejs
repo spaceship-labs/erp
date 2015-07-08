@@ -21,6 +21,30 @@
         </div>
     </div><!--span8-->
     <div class="col-md-6">
+        <!-- Currencies -->
+        <div class="widgetbox">
+            <h4 class="widgettitle">Tipos de cambio</h4>
+            <div class='widgetcontent'>
+                <form class='form stdform stdform2' method='post' ng-submit='updateExchangeRates()'>
+                    <div ng-repeat='c in mycompany.currencies'>
+                        <p></p>
+                        <p>
+                            <label>{{c.name}} (público)</label>
+                            <span class='field'>
+                                <input type='text' name='er_{{c.name}}' ng-model="exchangerates[c.id].sales" >
+                            </span>
+                        </p>
+                        <p>
+                            <label>{{c.name}} (contable)</label>
+                            <span class='field'>
+                                <input type='text' name='er_{{c.name}}' ng-model="exchangerates[c.id].book" >
+                            </span>
+                        </p>
+                    </div>
+                    <button type='submit' class="btn btn-primary">Actualizar</button>
+                </form>
+            </div>
+        </div> <!-- currencies end -->
         <div class="widgetbox">
             <h4 class="widgettitle"><%= __('emp-archivos') %></h4>
             <div class="widgetcontent">
@@ -99,27 +123,27 @@
                 </div>
         </div>
 
-        <div class="widgetbox tags">
-                <h4 class="widgettitle"><%= __('emp-hoteles') %></h4>
-                <div class="widgetcontent">
-                    <ul class="taglist" ng-repeat='hotel in mycompany.hotels'>
-                        <li><a>
-                                <i ng-bind='hotel.name'></i>
-                                <span class="close" ng-click='removeHotel(hotel)'>×</span>
-                            </a></li>
-                    </ul>
-                    <hr>
-                    <form ng-submit='addHotel(selectedHotel)' ng-if="mycompany.hotels.length != hotels.length">
-                        <input type='hidden' value='<%-mycompany.id%>' name='company' />
-                        <p>
-                            <select ng-options="hotel.name for hotel in hotels | filter:filterHotels" ng-model="selectedHotel" name="" chosen></select>
-                            <button ng-if="selectedHotel" class="btn btn-primary ng-scope"><%= __('emp-agregar-hotel') %></button>
-                        </p>
-                        <p><a href="/hotels/new_hotel/" style="display:block;margin-top:10px"><%= __('emp-agregar-hoteles') %></a></p>
-                    </form>
-                    <p ng-if="mycompany.hotels.length == hotels.length"><%= __('emp-todos-hoteles') %></p>
-                </div>
-        </div>
+        <!--<div class="widgetbox tags">
+            <h4 class="widgettitle"><%= __('emp-hoteles') %></h4>
+            <div class="widgetcontent">
+                <ul class="taglist" ng-repeat='hotel in mycompany.hotels'>
+                    <li><a>
+                            <i ng-bind='hotel.name'></i>
+                            <span class="close" ng-click='removeHotel(hotel)'>×</span>
+                        </a></li>
+                </ul>
+                <hr>
+                <form ng-submit='addHotel(selectedHotel)' ng-if="mycompany.hotels.length != hotels.length">
+                    <input type='hidden' value='<%-mycompany.id%>' name='company' />
+                    <p>
+                        <select ng-options="hotel.name for hotel in hotels | filter:filterHotels" ng-model="selectedHotel" name="" chosen></select>
+                        <button ng-if="selectedHotel" class="btn btn-primary ng-scope"><%= __('emp-agregar-hotel') %></button>
+                    </p>
+                    <p><a href="/hotels/new_hotel/" style="display:block;margin-top:10px"><%= __('emp-agregar-hoteles') %></a></p>
+                </form>
+                <p ng-if="mycompany.hotels.length == hotels.length"><%= __('emp-todos-hoteles') %></p>
+            </div>
+        </div>-->
         <% } %>
 
         <div class="widgetbox">
@@ -142,6 +166,7 @@
             
     </div><!--span4-->
 </div><!--row end-->
+<% if (!mycompany.adminCompany) {%>
 <div class='row'>
     <div class='col-md-12'>
         <div class="widgetbox">
@@ -158,4 +183,5 @@
         </div>
     </div>
 </div><!--row end-->
+<% } %>
 </div>

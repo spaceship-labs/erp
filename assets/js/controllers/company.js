@@ -42,7 +42,16 @@ app.controller('companyEditCTL',function($scope,$http){
     $scope.newTaxClass = 'fa-plus';
     $scope.isCollapseObj = {};
     $scope.locations = [];
+    $scope.exchangerates = $scope.mycompany.exchange_rates || {};
+    console.log(mycompany);
     //$scope.companies = companies;
+    $scope.updateExchangeRates = function(){
+        console.log($scope.exchangerates);
+        var params = { id : $scope.mycompany.id , exchange_rates : $scope.exchangerates };
+        $http({method: 'POST', url: '/company/update_exchangerates',data:params}).success(function(result){
+            console.log(result);
+        });
+    }
     var updateApps = function(){
         $scope.missingApps = [];
         $scope.selectedApps = [];

@@ -182,6 +182,14 @@ module.exports = {
            return res.json(company[0]);
         });
     }
+    ,update_exchangerates : function(req,res){
+        var params = req.params.all();
+        var exchange_rates = params.exchange_rates
+        Company.update({id:params.id},{exchange_rates:exchange_rates}).exec(function(err,company){
+            if(err) return res.serverError(err);
+            return res.json(company[0].exchange_rates);
+        });
+    }
     ,change : function(req,res) {
         var company = req.param('id');
         Company.findOne(company).populate('currencies').populate('base_currency').exec(function(e,scompany){

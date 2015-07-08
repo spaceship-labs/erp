@@ -41,7 +41,7 @@
             <p>
                 <label><%= __('order-pago')%></label>
                 <span class='field'>
-                    <select ng-options='obj as obj.name for obj in hrevPayment' ng-model='item.payment_method' ></select>
+                    <select ng-options='obj.handle as obj.name for obj in hrevPayment' ng-model='item.payment_method' ></select>
                 </span>
             </p>
             <p>
@@ -55,9 +55,26 @@
                 <span class='field'><timepicker ng-model="item.departureTime" hour-step="1" minute-step="1" show-meridian="ismeridian"></timepicker></span>
             </p>
             <p>
+                <label>Moneda</label>
+                <span class='field'>
+                    <select ng-options="c as c.name for c in thecompany.currencies" name='currency' ng-model='item.currency' ng-change='updateTourPrice(item)' ></select>
+                </span>
+            </p>
+            <p>
                 <label><%= __('order-precio')%></label>
                 <span class='field'><input type='text' ng-model="item.fee"></span>
             </p>
         </div>
+        <div ng-show='item.flag_priceupdated' class='centeralign'><div class='widgetcontent' >
+            <p>En caso de que los precios hayan cambiado seleccionar el botón.</p>
+            <span>
+                <button type="button" class="btn btn-primary" ng-model="item.usePrice" btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">Usar precios nuevos</button>
+            </span>
+            <br><br>
+            <p>En caso de que los tipos de cambio hayan cambiado seleccionar el botón.</p>
+            <span>
+                <button type="button" class="btn btn-primary" ng-model="item.useER" btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">Usar Tipo de cambio nuevo</button>
+            </span>
+        </div></div>
     </div>
 </div>

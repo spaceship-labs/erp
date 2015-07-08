@@ -35,6 +35,8 @@ module.exports = {
 			model : 'hotel' }
 		,transfer : {
 			model : 'transfer' }
+        ,transferprice : {
+            model : 'transferprice' }
         ,state : {
             type:'string',
             enum : ['pending','liquidated','canceled']
@@ -62,7 +64,9 @@ module.exports = {
         }//total
 
         ,fee_kids : 'float'
+        ,fee_kids_rt : 'float'
         ,fee_adults : 'float'
+        ,fee_adults_rt : 'float'
         ,fee_special : 'float'
 
         ,coupon : {

@@ -842,7 +842,7 @@ module.exports.content = {
             handle : 'footer',
             type : 'textarea-editor'
         }
-        ,{
+        /*,{
         	label : 'Tipo de cambio de venta'
         	,label_en : 'Sale exchange rate'
         	,handle : 'exchange_rate_sale'
@@ -853,7 +853,7 @@ module.exports.content = {
         	,label_en : 'Book exchange rate'
         	,handle : 'exchange_rate_book'
         	,type : 'text'
-        }
+        }*/
         ,{
         	label : 'Prepago'
         	,label_en : 'Prepaid'

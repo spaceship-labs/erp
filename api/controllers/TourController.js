@@ -33,6 +33,8 @@ module.exports = {
 		var skip = params.skip || 0;
 		if( typeof params.id == 'undefined' ) delete params.id;
 		delete params.skip;
+		delete params.company;
+		delete params.adminCompany;
         if(params.name) params.name = new RegExp(params.name,"i");
         Tour.find(params).skip(skip).exec(function(err,tours){
         	if(err) res.json('err');
@@ -43,7 +45,34 @@ module.exports = {
         });
 	}
 	,findProducts : function(req,res){
-		var params
+		var params = req.params.all();
+		//console.log(params);
+		var company = params.company?params.company:(req.session.select_company.id || req.user.select_company.id);
+		delete params.company;
+		var adminCompany = params.adminCompany || 'false';
+		delete params.adminCompany;
+		if( typeof params.id == 'undefined' ) delete params.id;
+        if(params.name) params.name = new RegExp(params.name,"i");
+        Tour.find(params).limit(15).exec(function(err,tours){
+        	if(err) res.json('err');
+        	if(adminCompany=='false'){
+        		var ids = [];
+	        	for(x in tours) ids.push( tours[x].id );
+	        	CompanyProduct.find({
+	        		product_type : 'tour'
+	        		,agency : company
+	        		,tour : ids
+	        	}).limit(15).populate('tour').exec(function(cp_err,cproducts){
+	        		if(cp_err) res.json('err');
+	        		res.json({ results : cproducts , count : 0 });
+	        	});
+        	}else{
+        		Tour.count(params).exec(function(e,count){
+	        		if(e) res.json('err');
+	            	res.json({ results : tours , count : count });
+	        	});
+        	}
+        });
 	}
 	,create : function(req,res){
 		var form = req.params.all();

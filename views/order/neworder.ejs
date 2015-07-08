@@ -95,8 +95,14 @@
                                 placeholder="Tours"
                                 ng-model="addedTour" 
                                 typeahead-editable='true'
+                                typeahead="obj as ( thecompany.adminCompany?obj.name:obj.tour.name ) for obj in getTours($viewValue)" >
+                            <!--<input type="text" class="form-control" 
+                                ng-if="thecompany.adminCompany"
+                                placeholder="Tours"
+                                ng-model="addedTour" 
+                                typeahead-editable='true'
                                 typeahead="obj as obj.name for obj in getTours($viewValue)" >
-                            <!--<select chosen ng-options='obj as obj.name for obj in allTours' ng-model='addedTour' ></select>-->
+                            <select chosen ng-options='obj as obj.name for obj in allTours' ng-model='addedTour' ></select>-->
                         </p>
                     </div>
                     <div class='col-md-2'>

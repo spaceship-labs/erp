@@ -56,12 +56,12 @@ module.exports = {
   neworder : function(req,res){
     var select_company = req.session.select_company || req.user.select_company;
     //console.log('select_company');console.log(select_company);
-  	Client_.find({company:select_company}).sort('name').exec(function(e,clients_){ Hotel.find().sort('name').populate('location').populate('zone').populate('rooms').exec(function(e,hotels){ Tour.find().sort('name').exec(function(e,allTours){
+  	//Client_.find({company:select_company}).sort('name').exec(function(e,clients_){ Hotel.find().sort('name').populate('location').populate('zone').populate('rooms').exec(function(e,hotels){ Tour.find().sort('name').exec(function(e,allTours){
   			Common.view(res.view,{
-  				clients_ : clients_ ,
+  				clients_ : [] ,
   				hotels:[] ,
   				transfers : [] ,
-          allTours : allTours ,
+          allTours : [] ,
   				page:{
   					name:req.__('sc_reservations')
   					,icon:'fa fa-car'		
@@ -71,8 +71,7 @@ module.exports = {
   					{label : req.__('sc_reservations')}
   				]
   			},req);
-  		});
-    }); });
+    //}); }); });
   },
   getorder : function(req,res){
     //console.log(req.user);
@@ -121,16 +120,20 @@ module.exports = {
     params.airport = params.airport.id;
     params.client = params.client.id;
     params.user = req.user.id;
+    params.currency = params.currency.id;
     delete params.id;
-    Order.findOne(params.order).exec(function(e,theorder){
+    Order.findOne(params.order).populate('company').exec(function(e,theorder){
       if(e) return res.json(e);
       params.company = theorder.company?theorder.company:(req.session.select_company || req.user.select_company);
       Company.findOne({adminCompany:true}).exec(function(c_err,mainCompany){
         if(c_err) res.json(false);
         TransferPrice.findOne(params.transferprice).populate('transfer').exec(function(tp_err,transferprice){
           if(tp_err) res.json(false);
-          console.log('Fee: ' + params.fee);
+          //console.log('Fee: ' + params.fee);
           params.fee = transferprice[params.type] * Math.ceil( params.pax / transferprice.transfer.max_pax );
+          if( params.currency != theorder.company.base_currency )
+            params.fee *= theorder.company.exchange_rates[params.currency].sales;
+          //console.log('Fee2: ' + params.fee);console.log(transferprice);
           params.fee_adults = transferprice.one_way;
           params.fee_adults_rt = transferprice.round_trip;
           params.fee_kids = transferprice.one_way_child;
@@ -139,7 +142,10 @@ module.exports = {
           params.commission_agency = transferprice.commission_agency || 0;
           params.exchange_rate_sale = mainCompany.exchange_rate_sale;
           params.exchange_rate_book = mainCompany.exchange_rate_book;
+          params.exchange_rates = mainCompany.exchange_rates;
+          //console.log(params);
           Reservation.create(params).exec(function(err,reservation){
+            console.log(err);
             if(err) return res.json(err);
             theorder.reservations.push(reservation.id);
             theorder.save(function(err_o){
@@ -180,18 +186,66 @@ module.exports = {
   },
   createReservationTour : function(req,res){
     var params = req.params.all();
-    Order.findOne({id : params.order.id }).exec(function(e,theorder){
+    Order.findOne({id : params.order }).populate('company').exec(function(e,theorder){
       if(e) return res.json(e);
+      //console.log(params.items);return res.json(false);
       async.mapSeries( params.items, function(item,cb) {
-        item.order = params.order.id;
-        item.company = theorder.company?theorder.company:(req.session.select_company || req.user.select_company);
+        item.order = theorder.id;
+        item.company = theorder.company.id;
         item.user = req.user.id;
         delete item.id;
-        Reservation.create(item).exec(function(err,r){
-          item.id = r.id; 
-          //theorder.reservations.push(r.id);
-          cb(err,item);
-        });
+        if( item.reservation_type == 'tour' ){
+          if( theorder.company.adminCompany ){
+            //en este caso llega un tour sólo es agregar los campos faltantes
+            Tour.findOne(item.tour.id).populate('provider').exec(function(t_err,tour){
+              if(t_err) cb(t_err,item);
+              item.fee_adults = tour.fee;
+              item.fee_adults_base = tour.fee_base;
+              item.fee_kids = tour.feeChild;
+              item.fee_kids_base = tour.feeChild_base;
+              item.commission_agency = tour.commission_agency;
+              item.commission_sales = tour.commission_sales;
+              item.exchange_rate_sale = theorder.company.exchange_rate_sale;
+              item.exchange_rate_book = theorder.company.exchange_rate_book;
+              item.exchange_rate_provider = tour.provider.exchange_rate;
+              item.exchange_rates = theorder.company.exchange_rates;
+              item.tour = item.tour.id;
+              //console.log(item);
+              Reservation.create(item).exec(function(err,r){
+                if(err) cb(err,item);
+                //console.log(err);console.log(r);
+                item.id = r.id; 
+                cb(err,item);
+              });
+            });
+          }else{
+            //en este caso llega un companyProduct agregar los campos faltantes y cambiar el tour
+            CompanyProduct.findOne(item.tour.id).exec(function(cp_err,companyproduct){
+              Tour.findOne(companyproduct.tour).populate('provider').exec(function(t_err,tour){
+                if(t_err) cb(t_err,item);
+                item.fee_adults = tour.fee;
+                item.fee_adults_base = tour.fee_base;
+                item.fee_kids = tour.feeChild;
+                item.fee_kids_base = tour.feeChild_base;
+                item.commission_agency = tour.commission_agency;
+                item.commission_sales = tour.commission_sales;
+                item.exchange_rate_sale = theorder.company.exchange_rate_sale;
+                item.exchange_rate_book = theorder.company.exchange_rate_book;
+                item.exchange_rate_provider = tour.provider.exchange_rate;
+                item.tour = tour.id;
+                Reservation.create(item).exec(function(err,r){
+                  item.id = r.id; 
+                  cb(err,item);
+                });
+              });
+            });
+          }
+        }else{
+          Reservation.create(item).exec(function(err,r){
+            item.id = r.id; 
+            cb(err,item);
+          });
+        }
       },function(err,results){
           if (err) {
               console.log(err);
@@ -209,6 +263,9 @@ module.exports = {
       var id = item.id;
       item.hotel = item.hotel.id;
       delete item.id;
+      delete item.flag_priceupdated;
+      delete item.usePrice;
+      delete item.useER;
       Reservation.update({id:id},item,function(err,r){
         cb(err,r);
       });
@@ -217,8 +274,11 @@ module.exports = {
     });
   },
   edit : function(req,res){
-    Order.findOne( req.params.id ).populate('reservations').populate('claims').populate('lostandfounds').exec(function(err,order){
-      Reservation.find({ order : req.params.id }).populate('hotel').populate('tour').populate('airport').populate('client').exec(function(err,reservations){
+    Order.findOne( req.params.id ).populate('reservations').populate('claims').populate('lostandfounds').exec(function(err,order){ Company.findOne(order.company).populate('currencies').populate('base_currency').exec(function(c_err,ordercompany){
+      Reservation.find({ order : req.params.id })
+      .populate('hotel').populate('tour').populate('airport').populate('client')
+      .populate('currency').populate('transfer').populate('transferprice')
+      .exec(function(err,reservations){
               //console.log(reservations[0]);
         Client_.find().sort('name').exec(function(e,clients_){ 
           Client_.findOne({ id : order.client}).populate('contacts').exec(function(e,theclient){
@@ -232,6 +292,7 @@ module.exports = {
                       theclient : theclient ,
                       hotels : hotels ,
                       transfers : transfers ,
+                      ordercompany : ordercompany ,
                       page:{
                         name:req.__('sc_reservations')
                         ,icon:'fa fa-car'
@@ -245,7 +306,7 @@ module.exports = {
               }); }); // transfer / hotel
         }); }); // client
       });//reservation
-    });
+    }); }); //order and company
   },
   /*
   * Obitien los transfers disponibles dependiendo de si está activo el precio
@@ -362,9 +423,8 @@ module.exports = {
   }
 };
 function customGetAvailableTransfers(company,params,res){
-  console.log('company');
-  console.log(company);
-  if(company.adminCompany && company.adminCompany==true){
+  //console.log('company');console.log(company);
+  if(company.adminCompany){
     TransferPrice.find({ 
       company : company.id
       ,active : true
@@ -373,8 +433,7 @@ function customGetAvailableTransfers(company,params,res){
         { "$and" : [{'zone1' : params.zone2, 'zone2' : params.zone1}] } 
       ] 
     }).populate('transfer').exec(function(err,prices){
-      console.log('prices admin');
-      console.log(prices);
+      //console.log('prices admin');console.log(prices);
       if(prices)
         return res.json(prices);
       else
@@ -393,8 +452,7 @@ function customGetAvailableTransfers(company,params,res){
           { "$and" : [{'zone1' : params.zone2, 'zone2' : params.zone1}] } 
         ] 
       }).populate('transfer').exec(function(err,prices){
-        console.log('prices NO admin');
-        console.log(prices);
+        //console.log('prices NO admin');console.log(prices);
         if(prices)
           return res.json(prices);
         else

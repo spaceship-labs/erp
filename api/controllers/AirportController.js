@@ -27,7 +27,9 @@ module.exports = {
 	},
 	find : function(req,res){
 		var params = req.params.all();
-		delete params.id;
+		if( ! params.byId )
+			delete params.id;
+		delete params.byId;
         if(params.name) params.name = new RegExp(params.name,"i");
         Airport.find(params).exec(function(err,airports){
             if(err) res.json('err');

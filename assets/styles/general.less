@@ -13,6 +13,7 @@ body.loginpage{background: @login-background;overflow: hidden;}
 	-webkit-transition: all 0.2s ease-out 0s;
 	transition: all 0.2s ease-out 0s;
 }
+html .btn-primary.active,
 .btn-primary:hover{background: darken(@primary,10%);border-color: darken(@primary,10%);}
 .secondary{background: @secondaryBG;color: @secondaryTC;}
 .btn-big{padding: 8px 46px;font-size: 15px;}
@@ -20,6 +21,7 @@ body.loginpage{background: @login-background;overflow: hidden;}
 .pull-right + .pull-right{margin-right: 10px;}
 .btn-primary.pull-right + .btn-primary.pull-right{margin-left: 10px;}
 .pull-right.full-sm{width: 45%;}
+html .full-width{width: 100%;}
 
 /*Gral*/
 .text-list{list-style: none;}
@@ -359,6 +361,8 @@ color: #fff;
 	.custom-table td,
 	.custom-table tr {
 	display: block;
+	width: 100%;
+	max-width: none!important;
 	}
 	
 	/* Hide table headers (but not display: none;, for accessibility) */

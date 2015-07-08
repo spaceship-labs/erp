@@ -9,7 +9,7 @@ module.exports.view = function(view,data,req){
 	data._content.socketUrl = sails.config.socketsUrl;
 	data._content.lang = req.getLocale();
 	//data.socketUrl = sails.config.socketsUrl;
-	Company.findOne(data.selected_company).populate('base_currency').exec(function(e,company){
+	Company.findOne(data.selected_company).populate('base_currency').populate('currencies').exec(function(e,company){
         if (e) console.log(e);
 		data.selected_company = company;
 		view(data);
