@@ -1,5 +1,6 @@
 var Import = require('../../api/services/Import'),
-should = require('should');
+    should = require('should'),
+    mockery = require('mockery');
 
 describe('Import', function(){
 
@@ -10,6 +11,7 @@ describe('Import', function(){
         };
         global.Airport = {
             create:function(data){
+
                 if(data.push){
                     for(var i=0; i<data.length; i++)
                         data[i].id = 'uidstring';
@@ -207,7 +209,7 @@ describe('Import', function(){
     describe('normalizeFields', function(){
         var airport;
         before(function(){
-            airport = {Nombre: 'Ada Travel', ciudad: 'Cancun' };
+            airport = {Nombre: 'Ada Travel', Location: 'Cancun' };
         });
 
         it('should replace fields with label', function(done){
@@ -216,7 +218,7 @@ describe('Import', function(){
                 normalize.name.should.equal('Ada Travel');
                 normalize.location.should.equal('Cancun');
                 normalize.should.not.have.property('Nombre');
-                normalize.should.not.have.property('ciudad');
+                normalize.should.not.have.property('Location');
                 done();
             });
         });
@@ -301,6 +303,199 @@ describe('Import', function(){
             });
         });
     
+    });
+
+    describe('files', function(){
+
+        var files,
+        values;
+        before(function(){
+            mockery.enable({
+                warnOnReplace: false,
+                warnOnUnregistered: false,
+                useCleanCache: true
+            });
+
+            var pyspreadsheet = {
+                SpreadsheetReader:{
+                    read: function(file, done){
+                        done(null, { 
+                            sheets: [{
+                                name: 'hoja1',
+                                rows: [
+                                    
+                                    [{
+                                        address: 'a1',
+                                        value: 'Name',
+                                    },{
+                                        address: 'b1',
+                                        value: 'Zone'
+                                    }, {
+                                        address: 'c1',
+                                        value: 'Location'
+                                    }],
+                                    [{
+                                        address: 'a2',
+                                        value: 'Airport 1',
+                                    },{
+                                        address: 'b2',
+                                        value: 'alguna zona 2'
+                                    },{
+                                        address: 'c2',
+                                        value: 'cancun'
+                                    }],
+                                    [{
+                                        address: 'a3',
+                                        value: 'air 3',
+                                    },{
+                                        address: 'b3',
+                                        value: 'other 3'
+                                    },{
+                                        address: 'b2',
+                                        value: 'chetumal'
+                                    }]
+                                ]
+                            }, {
+                                name: 'hoja2',
+                                rows:[
+                                    [{
+                                        address: 'a1',
+                                        value:'Name'
+                                    },{
+                                        address: 'b1',
+                                        value: 'Zone'
+                                    }],
+                                    [{
+                                        address: 'a2',
+                                        value: 'Air 1'
+                                    },{
+                                        address: 'b2',
+                                        value: 'zone 2'
+                                    }]
+                                ]
+                            }]
+                        });
+                    }
+                }
+            };
+            mockery.registerMock('pyspreadsheet', pyspreadsheet);
+            files = require('../../api/services/Import').files;
+            values = [];
+            values.push([['Name','Zone', 'Location'], ['Airport 1', 'alguna zona 2', 'cancun'], ['air 3', 'other 3', 'chetumal']]);//hoja 1
+            values.push([['Name', 'Zone'], ['Air 1', 'zone 2']]);//hoja 2
+        });
+
+        after(function(){
+            mockery.disable();
+        });
+    
+        describe('xlsx2Json',function(){
+            
+            it('should return json from xlsx object', function(done){
+                
+                files.xlsx2Json('file.xlsx', function(err, json){
+
+                    json.should.be.an.instanceOf(Object);
+                    json.should.have.property('sheets').and.be.an.instanceOf(Array);
+                    json.sheets.forEach(function(sheet, i){
+                        sheet.should.have.property('name');
+                        sheet.should.have.property('values');
+                        sheet.values.should.be.eql(values[i]);
+                    });
+                    done();
+
+                });
+            
+            });
+
+        });
+
+        describe('array2Model', function(){
+            var json; 
+            before(function(){
+                json = {
+                    sheets:[
+                        {
+                            name: 'airports',
+                            values: [
+                                ['name','zone'], 
+                                ['Airport 1', 'alguna zona 2'],
+                                ['Airport 2', 'other zone'],
+                                ['other airport', 'last zone']
+                            ]
+                        }
+                    ]
+                }            
+            });
+            
+            it('should return json like model', function(done){
+                var sheet = json.sheets[0];
+                files.array2Model(sheet, function(err, modelFormat){
+                    var names = ['Airport 1', 'Airport 2', 'other airport'],
+                    zones = ['alguna zona 2', 'other zone', 'last zone'];
+                    modelFormat.length.should.equal(3);
+                    modelFormat.forEach(function(air, i){
+                        air.should.have.property('name');
+                        air.should.have.property('name').and.be.equal(names[i]);
+                        air.should.have.property('zone').and.be.equal(zones[i]);
+                    });
+                    done();
+                });
+            
+            });
+
+            it('should return json like model only with values, if null ignore', function(done){
+                var values = [[null, null, null]].concat(json.sheets[0].values);
+                files.array2Model(values, function(err, modelFormat){
+                    var names = ['Airport 1', 'Airport 2', 'other airport'],
+                    zones = ['alguna zona 2', 'other zone', 'last zone'];
+                    modelFormat.length.should.equal(3);
+                    modelFormat.forEach(function(air, i){
+                        air.should.have.property('name');
+                        air.should.have.property('name').and.be.equal(names[i]);
+                        air.should.have.property('zone').and.be.equal(zones[i]);
+                    });
+                    done();
+                });                
+            });
+
+            it('should return error', function(done){
+                files.array2Model(null, function(err){
+                    err.should.be.an.instanceOf(Error);
+                    done();
+                });
+            });
+
+        });
+
+        describe('xlsx2model', function(){
+            
+            it('should return object model from xlsx', function(done){
+                files.xlsx2model('file.xlsx', function(err, objs){
+                    objs.should.be.an.instanceOf(Array);
+                    objs.length.should.equal(2);
+                    objs[0].length.should.equal(2);
+                    objs[1].length.should.equal(1);
+                    done();
+                });
+            });
+        
+        });
+
+        describe('fromXlsx', function(){
+            
+            it('if xlsx content a valid format should create with values', function(done){
+                files.fromXlsx('file.xlsx', 1 , 'airport', function(err, newAirports){
+                    newAirports.should.be.an.instanceOf(Array);
+                    newAirports.forEach(function(air){
+                        air.id.should.equal('uidstring');
+                    });
+                    done();
+                });
+            
+            });
+        
+        });
     });
 
 });

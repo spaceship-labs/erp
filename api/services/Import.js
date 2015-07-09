@@ -1,7 +1,7 @@
-var async = require('async');
+var async = require('async'),
+    spreadSheet = require('pyspreadsheet').SpreadsheetReader;
 
 function iterDatas(data, model, fnIter, done){
-
     var datas = data.push ? data: [data],
     modelToLowerCase = model.toLowerCase(),
     content = sails.config.content[modelToLowerCase];
@@ -39,7 +39,6 @@ module.exports.import2Model = function(data, model, done){
 };
 
 function ifContentValid(single, item, next){
-
     if(item.required && !single[item.handle]){
         return next(new Error('Field '+item.handle+' is required'));
     }
@@ -98,15 +97,20 @@ module.exports.replaceFieldsWithCollection = function(data, model, done){
 
 var normalizeFieldsOptions = ['label', 'label_en'];
 function normalizeFields(single, item, next){ 
-
+    for(var key in single){
+        keyLowerCase = key.toLowerCase();
+        if(key != keyLowerCase){
+            single[keyLowerCase] = single[key];
+            delete single[key];
+        }
+    }
     if(single[item.handle] == undefined){
         for(var i=0; i < normalizeFieldsOptions.length; i++){
-            var fieldName = item[normalizeFieldsOptions[i]];
-            fieldName = single[fieldName] ? fieldName : fieldName.toLowerCase();
+            var fieldName = item[normalizeFieldsOptions[i]].toLowerCase(),
             value = single[fieldName] || single[fieldName.toLowerCase()];
             if(value){
-                single[item.handle] = value;
                 delete single[fieldName];
+                single[item.handle] = value;
                 break;
             }
         }
@@ -127,8 +131,78 @@ module.exports.normalizeFields = function(data, model, done){
 var steps = [ normalizeFields, ifContentValid, replaceFieldsWithCollection ]
 module.exports.checkAndImport = function(data, model, done){
 
-    itersDatas(data, model, steps, function(err, data){
-       module.exports.import2Model(data, model, done); 
+    itersDatas(data, model, steps, function(err, dataTransform){
+        if(err) return done(err);
+        module.exports.import2Model(dataTransform, model, done); 
     });
 
 };
+
+//docs.
+var files = {};
+
+files.xlsx2Json = function(src, done){
+    spreadSheet.read('test.xlsx', function(err, book){
+        if(err) return done(err);
+        var bookFormat = { sheets: [] };
+        book.sheets.forEach(function(sheet){
+            var sheetFormat = {};
+            sheetFormat.name = sheet.name;
+            sheetFormat.values = []
+            sheet.rows.forEach(function(row){
+                sheetFormat.values.push(row.map(function(cell){
+                    return cell.value;
+                }));
+            });
+            bookFormat.sheets.push(sheetFormat);
+        });
+        done(null, bookFormat);
+    });
+    
+};
+
+files.array2Model = function(sheet, done){
+    
+    var models = [],
+        head = [],
+        list = (sheet && sheet.push) ? sheet : (sheet && sheet.values || false);
+
+    if(!list)
+        return done(new Error('No data found'));
+    list.forEach(function(val){
+        if(!head.length && val[0]){//name of fields.
+            head = val; 
+        }else if(head.length){
+            var obj = {};
+            head.forEach(function(h,i){
+                obj[h] = val[i];
+            });
+            models.push(obj);
+        }
+    });
+    done(null, models);
+};
+
+files.xlsx2model = function(src, done){
+    files.xlsx2Json(src, function(err, book){
+        async.map(book.sheets, files.array2Model, done);
+    });
+};
+
+files.fromXlsx = function(src, sheet, model, done){
+    if(!parseInt(sheet)){ 
+        //optional sheet number, default 1.
+        var tmp = model;
+        model = sheet;
+        sheet = 1;
+        done = tmp;
+    }
+    sheet--;
+    files.xlsx2model(src, function(err, datas){
+        if(err) return done(err);
+        var data = datas[0];
+        module.exports.checkAndImport(data, model, done);
+    });
+}
+
+module.exports.files = files;
