@@ -48,6 +48,8 @@
   },
   "scripts": {
     "start": "node app.js",
+    "karma": "./node_modules/karma/bin/karma start karma.conf.js",
+    "testkarma": "./node_modules/karma/bin/karma start karma.conf.js --single-run",
     "debug": "node debug app.js",
     "postinstall": "./node_modules/bower/bin/bower install"
   },
@@ -60,7 +62,17 @@
   "license": "",
   "devDependencies": {
     "barrels": "^1.4.0",
+    "chai": "^3.0.0",
+    "karma": "^0.12.37",
+    "karma-chai": "^0.1.0",
+    "karma-chrome-launcher": "^0.2.0",
+    "karma-firefox-launcher": "^0.1.6",
+    "karma-junit-reporter": "^0.3.0",
+    "karma-mocha": "^0.2.0",
+    "karma-ng-html2js-preprocessor": "^0.1.2",
+    "mocha": "^2.2.5",
     "mockery": "^1.4.0",
+    "ng-html2js": "^2.0.0",
     "should": "^5.1.0",
     "supertest": "^0.15.0"
   }
