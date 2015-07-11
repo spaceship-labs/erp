@@ -323,6 +323,22 @@ describe('Import', function(){
                             sheets: [{
                                 name: 'hoja1',
                                 rows: [
+
+                                    [{
+                                        address:'a0',
+                                        value: null,
+                                    },{
+                                        address:'b0',
+                                        value: null,                                    
+                                    },{
+                                        address:'c0',
+                                        value: null,                                    
+                                    },{
+                                        address:'d0',
+                                        value: null,
+                                    
+                                    }
+                                    ],
                                     
                                     [{
                                         address: 'a1',

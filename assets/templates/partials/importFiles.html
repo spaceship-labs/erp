@@ -1,1 +1,23 @@
-<h1>lidless, wreathed in flame {{ 1 + 1 }} times</h1>
+<div class='upload'>
+    <button ng-file-select="upload($files)"  >subir archivo</button>
+</div>
+<div ng-if='sheets'>
+    <div class='sheets' ng-repeat='sheet in sheets'>
+        <div class='panel panel-default'>
+            <div ng-click='show($index)' class="panel-heading sheet-name">{{ sheet.name  }}</div>
+            <div class='panel-body' ng-show='selected == $index'>
+                <a ng-click='import(sheet)' >Importar</a>
+                <table class='table table-responsive table-condensed table-striped'>
+                    <tr>
+                        <th  ng-repeat='label in sheet.values[0]'><strong>{{ label }}</strong></th>
+                    </tr>
+                    <tr ng-repeat='value in sheet.values.slice(1)' class='rows'>
+                        <td ng-repeat='val in value track by $index'>
+                            <span class='cell' >{{ sheet.values.slice(1)[$parent.$index][$index]  }}</span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -142,14 +142,24 @@ module.exports.checkAndImport = function(data, model, done){
 var files = {};
 
 files.xlsx2Json = function(src, done){
-    spreadSheet.read('test.xlsx', function(err, book){
+    spreadSheet.read(src, function(err, book){
         if(err) return done(err);
         var bookFormat = { sheets: [] };
         book.sheets.forEach(function(sheet){
             var sheetFormat = {};
             sheetFormat.name = sheet.name;
             sheetFormat.values = []
-            sheet.rows.forEach(function(row){
+            sheet.rows.forEach(function(row,i){
+                var isRowEmpty = true;
+                for(var r=0;r < row.length; r++){
+                    if(row[r].value != null){
+                        isRowEmpty = false;
+                        break;
+                    }
+                }
+                if(isRowEmpty)
+                    return;
+
                 sheetFormat.values.push(row.map(function(cell){
                     return cell.value;
                 }));

@@ -14,6 +14,10 @@ module.exports = function(config){
         'assets/templates/partials/*.html': 'ng-html2js'
     },
 
+    ngHtml2JsPreprocessor: {
+        stripPrefix: 'assets',
+    },
+
     autoWatch : true,
 
     frameworks: ['mocha', 'chai'],
