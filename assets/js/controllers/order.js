@@ -5,8 +5,10 @@ app.controller('orderCTL',function($scope,$http,$window,$upload,$rootScope){
     $scope.currentPage = 1;
     $scope.filters = {};
     $scope.theView = 'table';
+    $scope.theReport = false;
     $scope.filtersArray = [
-         { label : $rootScope.translates.arrival_date , value : 'arrival' , type : 'date' , field : 'arrival_date' , options : { to : new Date() } }
+        { label : 'Folio' , value : 'folio' , type : 'number' , field : 'folio' }
+        ,{ label : $rootScope.translates.arrival_date , value : 'arrival' , type : 'date' , field : 'arrival_date' , options : { to : new Date() } }
         ,{ label : $rootScope.translates.departure_date , value : 'departure' , type : 'date' , field : 'departure_date' , options : { to : new Date() } }
         ,{ label : $rootScope.translates.reservation_date , value : 'reserve' , type : 'date' , field : 'createdAt' , options : { to : new Date() } }
         ,{ label : $rootScope.translates.client , value : 'client' , type : 'autocomplete' , field : 'client' , model_ : 'client_' , action : 
@@ -72,7 +74,7 @@ app.controller('orderCTL',function($scope,$http,$window,$upload,$rootScope){
         var fx = {};
         var f = $scope.filters;
         var params = { fields : f , skip : skip };
-        //console.log(f);
+        console.log(f);
         $http.post('/order/customFind',params,{}).success(function(result) {
             if(result){
                 $scope.orders = result.orders;
@@ -81,6 +83,20 @@ app.controller('orderCTL',function($scope,$http,$window,$upload,$rootScope){
             }
         });
     };
+    $scope.SelectReport = function(type){
+        $scope.theReport = false;
+        var params = { type : type , fields : $scope.filters };
+        console.log('report params');
+        console.log(params);
+        $http.post('/order/reportcustom',params,{}).success(function(result){
+            console.log('report');
+            console.log(result);
+            $scope.theReport = result;
+            $scope.theReport.type = type;
+            $scope.theReport.template = "/template/find/" + type + ".html";
+            jQuery('#reportsModal').modal('show');
+        });
+    }
     sendFilterFx(0);
     $scope.formatDate = function(date){
         var d = new Date(date);
@@ -109,6 +125,7 @@ app.controller('orderCTL',function($scope,$http,$window,$upload,$rootScope){
             }
             $scope.orders[x].transfer = transfer;
         }
+        console.log(orders);
     };
 
     $scope.getTotalOrder = function(order){
@@ -180,7 +197,7 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
         ,{ handle : 'cash' , name : 'Efectivo' }
         ,{ handle : 'prepaid' , name : 'Prepago' }
     ];
-    $scope.service_types = [ {value:'C',label:'Colectivo'}, {value:'P',label:'Privadp'}, {value:'D',label:'Directo'} ];
+    $scope.service_types = [ {value:'C',label:'Colectivo'}, {value:'P',label:'Privado'}, {value:'D',label:'Directo'} ];
     //Variables de control del front
     $scope.open = [false,false]; //abre/cierra los datepickers
     $scope.dtfa = [true,true]; //habilita / inhabilita las cajas de fecha 0:arrival 1:departure
@@ -231,8 +248,8 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
                     ,company : $scope.thecompany.id
                 };
                 $http.post('/order/createOrder',params,{}).success(function(order) {
-                    //console.log('order');console.log(order);
-                    if(order){
+                    console.log('order');console.log(order);
+                    if(order && order.id){
                         $scope.order = order;
                         //ver si existe transfer
                         if( ! angular.equals( {} , $scope.transfer ) ){
@@ -542,9 +559,10 @@ app.controller('orderEditCTL',function($scope,$http,$window){
         ,{ handle : 'cash' , name : 'Efectivo' }
         ,{ handle : 'prepaid' , name : 'Prepago' }
     ];
-    $scope.service_types = [ {value:'C',label:'Colectivo'}, {value:'P',label:'Privadp'}, {value:'D',label:'Directo'} ];
+    $scope.service_types = [ {value:'C',label:'Colectivo'}, {value:'P',label:'Privado'}, {value:'D',label:'Directo'} ];
     $scope.reservations = { tours : [] , hotels : [] };
     $scope.flag_priceupdated = false;
+    console.log($scope.order);
     $scope.formatReservations = function(){
         //console.log($scope.order);
         for(var x in $scope.order.reservations){

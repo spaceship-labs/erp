@@ -19,6 +19,24 @@ module.exports = {
   		]
   	},req);
   },
+  reportcustom : function(req,res){
+    var params = req.params.all();
+    if( params.type ){
+      var fields = formatFilterFields(params.fields);
+      if( ! req.user.isAdmin ){
+        var c_ = [];
+        for(c in req.user.companies ){
+          if( req.user.companies[c].id )
+            c_.push( sails.models['company'].mongo.objectId(req.user.companies[c].id) );
+        }
+        //console.log('companies');console.log(c_);
+        fields.company = { "$in" : c_ };
+      }
+      Reports.getReport(params.type,fields,function(results,err){
+        res.json({ results : results , err : err });
+      });
+    }
+  },
   /*Esta será la función que obtenga las ordenes*/
   customFind : function(req,res){
     var params = req.params.all();
@@ -35,6 +53,7 @@ module.exports = {
       //console.log('companies');console.log(c_);
       fields.company = { "$in" : c_ };
     }
+    //console.log(fields);
     Reservation.native(function(e,reservation){
       reservation.aggregate([ { $sort : { createdAt : -1 } },{ $match : fields },{ $group : { _id : "$order" } },{ $skip : skip } , { $limit : limit }
       ],function(err,reservations){
@@ -108,7 +127,7 @@ module.exports = {
     //console.log(params);
     Order.create(params).exec(function(err,order){
         //console.log(err);
-        if(err) return res.json(false);
+        if(err) return res.json(err);
         return res.json(order);
     });
   },
@@ -143,6 +162,7 @@ module.exports = {
           params.exchange_rate_sale = mainCompany.exchange_rate_sale;
           params.exchange_rate_book = mainCompany.exchange_rate_book;
           params.exchange_rates = mainCompany.exchange_rates;
+          params.folio = theorder.folio;
           //console.log(params);
           Reservation.create(params).exec(function(err,reservation){
             console.log(err);
@@ -210,6 +230,7 @@ module.exports = {
               item.exchange_rate_provider = tour.provider.exchange_rate;
               item.exchange_rates = theorder.company.exchange_rates;
               item.tour = item.tour.id;
+              item.folio = theorder.folio;
               //console.log(item);
               Reservation.create(item).exec(function(err,r){
                 if(err) cb(err,item);
@@ -541,8 +562,11 @@ function formatFilterFields(f){
           fx[ f[x].field ] = sails.models[f[x].model_].mongo.objectId(f[x].model.item.id);
         else
           fx[ f[x].field ] = f[x].model.item.id;
-      }else if( f[x].type == 'select' ){
-        fx[ f[x].field ] = f[x].model.item;
+      }else if( f[x].type == 'select' || f[x].type == 'text' || f[x].type == 'number' ){
+        if( f[x].model_ && sails.models[f[x].model_] )
+          fx[ f[x].field ] = sails.models[f[x].model_].mongo.objectId(f[x].model.item)
+        else
+          fx[ f[x].field ] = f[x].type=='number'?parseInt(f[x].model.item):f[x].model.item;
       }
     }
   }

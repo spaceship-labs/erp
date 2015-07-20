@@ -19,8 +19,9 @@ html .btn-primary.active,
 .btn-big{padding: 8px 46px;font-size: 15px;}
 .btn-primary + .btn-primary{margin-right: 10px;}
 .pull-right + .pull-right{margin-right: 10px;}
+.pull-right.full-sm + .pull-right.full-sm{margin-right: 2%;}
 .btn-primary.pull-right + .btn-primary.pull-right{margin-left: 10px;}
-.pull-right.full-sm{width: 45%;}
+.pull-right.full-sm{width: 49%;}
 html .full-width{width: 100%;}
 
 /*Gral*/
@@ -43,6 +44,12 @@ html .full-width{width: 100%;}
 
 .results.errorslist{list-style: none;padding: 20px;}
 .results.errorslist li:first-child{font-weight: bold;font-size: 16px;line-height: 24px;}
+
+/*Reports*/
+.reportContent{padding: 15px;}
+.reportContent .amountdue ul{float: left;list-style: none;text-align: left;}
+.reportContent .amountdue ul li{border-bottom: 1px solid #ddd;}
+.reportContent .amountdue ul li .listTitle{display: inline-block;width: 80px;}
 
 /*Reservations*/
 .pagination-row{}
@@ -176,6 +183,7 @@ html .btn-primary , .btn-primary:focus, .btn-primary:active, .btn-primary.active
 .custom-table table th:last-child:after{content: "";background: @primary;height: 100%;position: absolute;right: -1px;top: 0;width: 1px}
 .custom-table table th,.custom-table table td{font-size: 12px;padding: 6px;max-width: 400px;}
 .custom-table table td.th,
+.custom-table table tr.underlight td,
 .custom-table table th{background: @login-background!important;border: none!important;color: #fff;font-size: 13px;}
 .custom-table table .table-icon{color: @login-background;font-size: 15px}
 .custom-table table .actions .table-icon {margin-left: 5px}

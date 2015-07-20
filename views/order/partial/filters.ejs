@@ -13,6 +13,7 @@
         <h4 class='widgettitle'>{{f.label}}</h4>
         <div class='row'>
             <div class='col-md-5'>
+                <input ng-if='f.type == "text" || f.type == "number"' type='text' ng-model="f.model.item" placeholder="{{f.label}}">
                 <datepicker ng-if='f.type == "date"' ng-model="f.model.from" show-weeks="true" class="well well-sm"></datepicker>
                 <select ng-if="f.type=='select'" ng-model="f.model.item" ng-options="obj.key as obj.value for obj in f.options" placeholder="{{f.label}}"></select>
                 <select ng-if="f.type=='select-object'" ng-model="f.model.item" ng-options="obj as obj.name for obj in f.options" placeholder="{{f.label}}"></select>

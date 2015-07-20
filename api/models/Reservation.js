@@ -43,7 +43,7 @@ module.exports = {
         }
         ,payment_method : {
             type:'string',
-            enum : ['creditcard','paypal','cash']
+            enum : ['creditcard','paypal','cash','prepaid']
         }
         ,origin : {
             type:'string',

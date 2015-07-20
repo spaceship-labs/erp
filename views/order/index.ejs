@@ -1,16 +1,22 @@
 <script type='text/javascript'>
 	window.content = <%- JSON.stringify(_content) %>;
 </script>
-<div ng-controller='orderCTL' >
+<div ng-controller='orderCTL' class='order-index'>
     <div id="cargando-elementos" class='ng-cloak' ng-cloak><img src="/images/loaders/images-cm.gif"></div>
     <div class='ng-cloak' ng-cloak>
 	<div class='row'>
 		<div class="textbutton col-sm-6 col-md-6 col-xs-12">
-			<p style="display:inline-block;">
-                <a href="/order/neworder" class='btn btn-primary'><i class = "fa fa-plus"></i> <%= __('order-crear')%></a>
-                <a class="btn btn-primary" data-toggle="modal" data-target="#uploadCVS"><i class="fa fa-upload"></i> <%= __('gral_importcvs')%></a>
-            </p>
-            <!-- <input type="text" placeholder="Buscar" class="form-control pull-right search" ng-model="searchText" /> -->
+			<span class='dropdown pull-right full-sm'>
+                <a dropdown-toggle class='btn btn-primary full-width'><i class='fa fa-files-o'></i> Reportes</a>
+                <ul role='menu' class='dropdown-menu'>
+                    <li>
+                        <a ng-click="SelectReport('tours_gral')">Reporte Tours (Gral.)</a>
+                        <a ng-click="SelectReport('tours_by_agency')">Reporte Tours (by Agency)</a>
+                        <a ng-click="SelectReport('tours_by_user')">Reporte Tours (by User)</a>
+                    </li>
+                </ul>
+            </span>
+            <div class='clear'></div>
 		</div>
         <div class="textbutton col-sm-6 col-md-6 col-xs-12">
             <span class='dropdown pull-right full-sm'>
@@ -24,20 +30,16 @@
             <a ng-click='resetFilter()' class='btn btn-primary pull-right full-sm'><i class='fa fa-refresh'></i> <%= __('gral_reset')%></a>
         </div>
 	</div>
-    <br>
+    <%- partial('partial/filters') -%> 
     <!--<input type="text" ng-model="myModel" placeholder="Autocomplete" typeahead="item as item.name for item in getClients($viewValue)" typeahead-loading="loadingLocations" class="form-control">
     <br>-->
     <div class='row pagination-row'>
         <div class='col-md-4'>
-            <!--<span class='dropdown'>
-                <a dropdown-toggle class='btn btn-primary'><i class='fa fa-filter'></i> <%= __('gral_filters')%></a>
-                <ul role='menu' class='dropdown-menu'>
-                    <li ng-repeat="f in filtersArray">
-                        <a ng-click="openFilter(f)" ng-class='!f.active?"inactive":""'>{{f.label}}</a>
-                    </li>
-                </ul>
-            </span>
-            <a ng-click='resetFilter()' class='btn btn-primary'><i class='fa fa-refresh'></i> <%= __('gral_reset')%></a>-->
+            <p style="display:inline-block;">
+                <a href="/order/neworder" class='btn btn-primary'><i class = "fa fa-plus"></i> <%= __('order-crear')%></a>
+                <a class="btn btn-primary" data-toggle="modal" data-target="#uploadCVS"><i class="fa fa-upload"></i> <%= __('gral_importcvs')%></a>
+            </p>
+            <!-- <input type="text" placeholder="Buscar" class="form-control pull-right search" ng-model="searchText" /> -->
         </div>
         <div class='col-md-8'>
             <div class='viewsIcons'>
@@ -47,10 +49,16 @@
             <pagination total-items="totalOrders" items-per-page='20' ng-model="currentPage" max-size="8" class="pagination-sm pull-right" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="pageChanged()"></pagination>
         </div>
     </div>
-    <%- partial('partial/filters') -%> 
     <br>
     <%- partial('partial/rViews') -%>
 	<div class="clearfix"></div>
     <%- partial('partial/cvsForm') -%>
+    </div>
+    <div class="modal fade" id="reportsModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <report-generator object="theReport"></report-generator>
+            </div>
+        </div>
     </div>
 </div>
