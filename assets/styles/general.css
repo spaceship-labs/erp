@@ -2364,3 +2364,26 @@ select {width: 220px;border: 1px solid #cccccc;background-color: #ffffff;}
 .accordion-toggle {
 	cursor: pointer;
 }
+
+#importmodal .modal-dialog{
+    width: initial;
+    min-width:600px;
+}
+
+.import-button{
+    margin: 10px auto;
+}  
+
+.upload .import-button{
+    display: block;
+    padding: 14px;
+}
+
+.sheets th strong{
+    color: black;
+}
+
+.sheets .import-action{
+    float: right;
+    margin-bottom: 8px;
+}

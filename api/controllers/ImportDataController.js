@@ -6,24 +6,30 @@
  */
 
 module.exports = {
-    index: function(req, res){
-        console.log('index');
-        res.ok({yl:1});
-    },
     upload: function(req, res){
         var form = req.params.all(),
             dir = 'tmpImport',
             dirSave = __dirname+'/../../assets/uploads/'+dir+'/';
         Files.saveFiles(req, {dir: dir}, function(err, files){
-            console.log('err', err);
             if(err && !files.length) return res.ok({ success:false, error: err.message });
-            console.log('upload correcto', files);
             Import.files.xlsx2Json(dirSave + files[0].filename, function(err, book){
-                console.log('xlsx err', err);
                 if(err) return res.ok({ success:false, error: err.message});
                 res.ok({success: true, sheets:book.sheets});
             });
         });
+    },
+    importJson: function(req, res){
+        var form = req.params.all(),
+            company = req.session.select_company || req.user.select_company;
+        //console.log(form);
+        Import.files.array2Model(form.values, {company: company} ,function(err, objs){
+            Import.checkAndImport(objs, form.model, function(err, creates){
+                console.log(err, creates);
+                if(err) return res.ok({success:false, error:err.message});
+                res.ok({success: true, creates: creates});
+            });
+        });
+        //res.ok({a:1})
     }
 };
 

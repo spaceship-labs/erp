@@ -1,5 +1,6 @@
 var async = require('async'),
-    spreadSheet = require('pyspreadsheet').SpreadsheetReader;
+    spreadSheet = require('pyspreadsheet').SpreadsheetReader,
+    util = require('util');
 
 function iterDatas(data, model, fnIter, done){
     var datas = data.push ? data: [data],
@@ -171,11 +172,16 @@ files.xlsx2Json = function(src, done){
     
 };
 
-files.array2Model = function(sheet, done){
+files.array2Model = function(sheet, objBase, done){
     
     var models = [],
         head = [],
         list = (sheet && sheet.push) ? sheet : (sheet && sheet.values || false);
+
+    if(!done){
+        done = objBase;
+        objBase = {};
+    }
 
     if(!list)
         return done(new Error('No data found'));
@@ -183,7 +189,7 @@ files.array2Model = function(sheet, done){
         if(!head.length && val[0]){//name of fields.
             head = val; 
         }else if(head.length){
-            var obj = {};
+            var obj = util._extend({}, objBase);
             head.forEach(function(h,i){
                 obj[h] = val[i];
             });

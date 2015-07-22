@@ -17,6 +17,8 @@
 		</div>
 		<div class = "textbutton col-sm-2 col-sm-2 col-xs-12">
 			<p ng-if="buttonText != ''"><button class="btn btn-primary" data-toggle="modal" data-target="#myModal"> <span class = "fa fa-plus"></span> {{buttonText}}</button></p>
+            <br />    
+			<p ng-if="buttonTextImport" class="import-button"><button class="btn btn-primary" data-toggle="modal" data-target="#importmodal"><span class="fa fa-plus"></span>{{buttonTextImport}}</button></p>
 		</div>
 	</div>
 	<div class='pagination-row row' ng-if="getUrl">
@@ -69,4 +71,14 @@
 		</table>
 	</div>
 </div>
-
+<div class="modal fade" id="importmodal" ng-if="typeImport">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Importar {{typeImport}}</h4>
+            </div>
+            <div import-files import-type='{{typeImport}}' url='{{editUrl}}'></div>
+        </div>
+    </div>
+</div>

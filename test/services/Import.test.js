@@ -460,6 +460,22 @@ describe('Import', function(){
             
             });
 
+            it('should add extra value [optional]', function(done){
+                var sheet = json.sheets[0];
+                files.array2Model(sheet,{company:'idcompany'}, function(err, modelFormat){
+                    var names = ['Airport 1', 'Airport 2', 'other airport'],
+                    zones = ['alguna zona 2', 'other zone', 'last zone'];
+                    modelFormat.length.should.equal(3);
+                    modelFormat.forEach(function(air, i){
+                        air.should.have.property('name');
+                        air.should.have.property('name').and.be.equal(names[i]);
+                        air.should.have.property('zone').and.be.equal(zones[i]);
+                        air.should.have.property('company').and.be.equal('idcompany');
+                    });
+                    done();
+                });
+            });
+
             it('should return json like model only with values, if null ignore', function(done){
                 var values = [[null, null, null]].concat(json.sheets[0].values);
                 files.array2Model(values, function(err, modelFormat){

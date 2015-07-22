@@ -14,7 +14,7 @@ describe('importFiles', function(){
 
     var template, responseSheets;
     beforeEach(function(){
-        template = $compile("<div import-files> </div>")($scope);
+        template = $compile("<div import-files import-type='hotel'></div>")($scope);
         $scope.$digest();
         responseSheets = {
             sheets: [
@@ -27,6 +27,7 @@ describe('importFiles', function(){
                 }
             ]	
         };
+
     });
 
     describe('file upload', function(){
@@ -43,7 +44,8 @@ describe('importFiles', function(){
     describe('showData', function(){
         
         beforeEach(function(){
-            $scope.showData(responseSheets);
+            //$scope.showData(responseSheets); if not params
+            template.isolateScope().showData(responseSheets)
             $scope.$digest();
         });
 
