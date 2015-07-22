@@ -62,7 +62,7 @@
   },
   "resolutions": {
     "jquery": "~2.x",
-    "angular": "1.4.2"
+    "angular": "1.4.3"
   },
   "devDependencies": {
     "jquery-steps": "~1.1.0",
