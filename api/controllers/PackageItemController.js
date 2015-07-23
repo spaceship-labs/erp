@@ -39,6 +39,17 @@ module.exports = {
     			res.json(item);
     		});
     	});
-  	}
+  	},
+  updateIcon: function(req,res){
+    form = req.params.all();
+    PackageItem.updateAvatar(req,{
+      dir : 'packageitem',
+      profile: 'avatar',
+      id : form.id,
+    },function(e,pi){
+      if(e) console.log(e);
+      res.json(pi);
+    });
+  }
 };
 

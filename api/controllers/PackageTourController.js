@@ -59,6 +59,17 @@ module.exports = {
         res.json(package_t);
       });
     });
+  },
+  updateIcon: function(req,res){
+    form = req.params.all();
+    PackageTour.updateAvatar(req,{
+      dir : 'packagetour',
+      profile: 'avatar',
+      id : form.id,
+    },function(e,pt){
+      if(e) console.log(e);
+      res.json(pt);
+    });
   }
 };
 function groupItems(items){

@@ -5,6 +5,11 @@
 </script>
 <div ng-controller='packageItemEditCTL'>
     <div class='row-fluid'>
+        <div class='span4'>
+            <div profile-image object='item' update-method='/packageitem/updateIcon' delete-method='/packageitem/destroyIcon' image-attr='icon' dir='packageitem' ></div>
+        </div>
+    </div>
+    <div class='row-fluid'>
         <div class="span12"> 
             <div form-helper 
                 fields='content.packageDay' 

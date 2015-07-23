@@ -1063,34 +1063,22 @@ module.exports.content = {
     		type : 'text'
     	},
     	{
+    		label : 'Número de días',
+    		label_en : 'Days number',
+    		handle : 'numer_days',
+    		type : 'text'
+    	},
+    	{
+    		label : 'Número de noches',
+    		label_en : 'Night number',
+    		handle : 'numer_night',
+    		type : 'text'
+    	},
+    	{
 			label : "Visible en web"
 			,label_en : "Visible on web"
 			,type : 'checkbox'
 			,handle : 'visible'
-		},
-    	{
-    		label : 'Servicios Español (separar por enter)',
-    		label_en : 'Spanish services (separate with enter)',
-    		handle : 'services_es',
-    		type : 'textarea'
-    	},
-    	{
-    		label : 'Servicios Inglés (separar por enter)',
-    		label_en : 'English services (separate with enter)',
-    		handle : 'services_en',
-    		type : 'textarea'
-    	},
-    	{
-            label : 'Servicios Ruso (separar por enter)',
-            label_en : 'Russian services (separate with enter)',
-            type : 'textarea',
-            handle : 'services_ru',
-        },
-		{
-			label : 'Servicios Portugués (separar por enter)',
-			label_en : 'Portuguese services (separate with enter)',
-			type : 'textarea',
-			handle : 'services_pt',
 		},
     	{
     		label : 'Descripción Español',
@@ -1116,6 +1104,54 @@ module.exports.content = {
     		handle : 'description_pt',
     		type : 'textarea'
     	},
+    	{
+    		label : 'Incluye Español (separar por enter)',
+    		label_en : 'Spanish includes (separate with enter)',
+    		handle : 'includes_es',
+    		type : 'textarea'
+    	},
+    	{
+    		label : 'Incluye Inglés (separar por enter)',
+    		label_en : 'English includes (separate with enter)',
+    		handle : 'includes_en',
+    		type : 'textarea'
+    	},
+    	{
+            label : 'Incluye Ruso (separar por enter)',
+            label_en : 'Russian includes (separate with enter)',
+            type : 'textarea',
+            handle : 'includes_ru',
+        },
+		{
+			label : 'Incluye Portugués (separar por enter)',
+			label_en : 'Portuguese includes (separate with enter)',
+			type : 'textarea',
+			handle : 'includes_pt',
+		},
+		{
+            label : 'No incluye Español (separar por enter)',
+            label_en : "Spanish Don't include (separate with enter)",
+            type : 'textarea',
+            handle : 'does_not_include_es',
+        },
+        {
+            label : 'No incluye Inglés (separar por enter)',
+            label_en : "English Don't include (separate with enter)",
+            type : 'textarea',
+            handle : 'does_not_include_en',
+        },
+        {
+            label : 'No incluye Ruso (separar por enter)',
+            label_en : "Russian Don't include (separate with enter)",
+            type : 'textarea',
+            handle : 'does_not_include_ru',
+        },
+        {
+            label : 'No incluye Portugués (separar por enter)',
+            label_en : "Portuguese Don't include (separate with enter)",
+            type : 'textarea',
+            handle : 'does_not_include_pt',
+        },
     ],
     packageHotel : [
     	{
@@ -1184,12 +1220,10 @@ module.exports.content = {
     		object : 'daysnumber'
     	},
     	{
-    		label : 'Ciudad',
-    		label_en : 'City',
-    		handle : 'location',
-    		type : 'select',
-    		required : true,
-    		object : 'locations'
+    		label : 'Lugares',
+    		label_en : 'Places',
+    		handle : 'locations',
+    		type : 'text'
     	},
     	{
     		label : 'Nombre Español',
