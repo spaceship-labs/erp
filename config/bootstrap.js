@@ -8,13 +8,30 @@
  * http://sailsjs.org/#documentation
  */
 
+var killable = require('killable'),
+    server,
+    http = require('http'),
+    port = process.env.PORT || 1337;
+
 module.exports.bootstrap = function (cb) {
 
   // It's very important to trigger this callack method when you are finished 
   // with the bootstrap!  (otherwise your server will never lift, since it's waiting on the bootstrap)
-	CronJobs && CronJobs.init();
+    CronJobs && CronJobs.init();
 
-	cb();
+    //cb();
+    server.kill(function(err){
+        console.log('shutdown temporal server!');
+        cb();
+    });
 
     Files.getContainerLink();
 };
+
+server = http.createServer(function(req, res){
+    res.end('loading ERP... ');
+}).listen(port, function(){
+    console.log('Run temporal server: ', port);
+});
+
+killable(server);
