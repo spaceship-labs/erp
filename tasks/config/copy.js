@@ -35,10 +35,11 @@ module.exports = function(grunt) {
 			}]
 		},
 		theme:{
-			nonull: true,
 			files: [{
 				src: 'assets/styles/custom/'+erpTheme+'.less',
-				dest: 'assets/styles/custom/select.less'
+				dest: 'assets/styles/custom/select.less',
+
+				nonull: true
 			}]
 		}
 	});
