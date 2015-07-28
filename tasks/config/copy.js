@@ -15,6 +15,8 @@
  */
 module.exports = function(grunt) {
 
+	console.log('theme', process.env.ERPTHEME);
+	var erpTheme = process.env.ERPTHEME || 'default';
 	grunt.config.set('copy', {
 		dev: {
 			files: [{
@@ -30,6 +32,13 @@ module.exports = function(grunt) {
 				cwd: '.tmp/public',
 				src: ['**/*'],
 				dest: 'www'
+			}]
+		},
+		theme:{
+			nonull: true,
+			files: [{
+				src: 'assets/styles/custom/'+erpTheme+'.less',
+				dest: 'assets/styles/custom/select.less'
 			}]
 		}
 	});
