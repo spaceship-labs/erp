@@ -11,7 +11,7 @@ function iterDatas(data, model, fnIter, done){
 
     async.eachSeries(datas, function(single, nextSingle){
         async.each(content, function(item, next){
-            fnIter(single, item, next);
+            fnIter(single, item, next, model);
         }, nextSingle);
     }, done);
 
@@ -21,7 +21,7 @@ function itersDatas(data, model, fnIters, done){
     //para que no se recorra lo mismo por cada paso.
     iterDatas(data, model, function(single, item, next){
         async.eachSeries(fnIters, function(fn, fnDone){
-            fn(single, item, fnDone);
+            fn(single, item, fnDone, model);
         }, next);
     
     }, function(err){
@@ -56,10 +56,17 @@ module.exports.ifContentValid = function(data, model, done){
 
 };
 
-function replaceFieldsWithCollection(single, item, next){
- 
+function replaceFieldsWithCollection(single, item, next, modelBase){ 
     if(item.object && single[item.handle]){
-        var model = sails.models[item.handle];
+        var model = sails.models[item.handle],
+        attr = sails.models[modelBase] && sails.models[modelBase].attributes;
+        if(!model){
+            if(attr && attr[item.handle]){
+                model = sails.models[attr[item.handle].model];
+            }else{
+                next(new Error('No model found'));
+            }
+        }
         model.findOne({
             or: [
                 { name: single[item.handle] },

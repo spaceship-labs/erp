@@ -47,6 +47,13 @@ describe('Import', function(){
         sails.models.airport = Airport; //sails alias
         sails.models.zone = Zone;
         sails.models.location = Zone;
+        sails.models.company = Zone;
+        sails.models.currency = Zone;
+
+        sails.models.company.attributes = {
+            base_currency: { model: 'currency' } 
+        };
+
         sails.config.content = {
             airport: [ { label: 'Nombre',
                         label_en: 'Name',
@@ -73,12 +80,36 @@ describe('Import', function(){
                       { label: 'Texto del Voucher Inglés',
                         label_en: 'English Voucher text',
                         type: 'textarea',
-                        handle: 'voucher_text_en' } ]
+                        handle: 'voucher_text_en' } ],
+            company : [		
+                {
+                    label : 'Nombre',
+                    label_en : 'Name',
+                    handle : 'name',
+                    type : 'text',
+                    required : true,
+                },
+                {
+                    label : 'Direccion',
+                    label_en : 'Address',
+                    handle : 'address',
+                    type : 'text',
+                    required : true,
+                },
+                {
+                    label : 'Moneda Base',
+                    label_en : 'Base currency',
+                    type : 'select',
+                    handle : 'base_currency',
+                    object : 'currencies',
+                    required : true,
+                },
+			]
         };
-
     });
 
-    var airport;
+    var airport,
+        company;
     before(function(){
         airport = {
             name: 'Ada Travel',
@@ -87,7 +118,12 @@ describe('Import', function(){
             voucher_text_es: 'un texto',
             voucher_text_en: 'English text',
         };
-    
+   
+        company = {
+            name: 'Company 1',
+            direccion: 'cancun q.roo',
+            base_currency: 'MX'
+        };
     });
 
     describe('import2Model', function(){
@@ -204,6 +240,16 @@ describe('Import', function(){
                 done();
             }); 
         });
+
+        it('if field is a relatiship findOrCreate, if not exist sails.models[collection] find in sails.models[c].attributes', 
+        function(done){
+            Import.replaceFieldsWithCollection(company, 'company', function(err, newCompany){
+                should.not.exist(err);
+                newCompany.base_currency.should.be.equal('uidstring');
+                done();
+            }); 
+        });
+
     });
 
     describe('normalizeFields', function(){

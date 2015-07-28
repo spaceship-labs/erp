@@ -21,7 +21,6 @@ module.exports.bootstrap = function (cb) {
 
     //cb();
     server.kill(function(err){
-        console.log('shutdown temporal server!');
         cb();
     });
 
@@ -31,7 +30,6 @@ module.exports.bootstrap = function (cb) {
 server = http.createServer(function(req, res){
     res.end('loading ERP... ');
 }).listen(port, function(){
-    console.log('Run temporal server: ', port);
 });
 
 killable(server);
