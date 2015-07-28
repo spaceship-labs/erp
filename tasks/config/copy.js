@@ -14,8 +14,6 @@
  * 		https://github.com/gruntjs/grunt-contrib-copy
  */
 module.exports = function(grunt) {
-
-	console.log('theme', process.env.ERPTHEME);
 	var erpTheme = process.env.ERPTHEME || 'default';
 	grunt.config.set('copy', {
 		dev: {
