@@ -104,6 +104,7 @@ module.exports.replaceFieldsWithCollection = function(data, model, done){
 
 
 var normalizeFieldsOptions = ['label', 'label_en'];
+var normalizeFieldsAlias = ['name', 'name_en', 'name_pt', 'name_ru'];
 function normalizeFields(single, item, next){ 
     for(var key in single){
         keyLowerCase = key.toLowerCase();
@@ -122,6 +123,9 @@ function normalizeFields(single, item, next){
                 break;
             }
         }
+    }
+    if(item.required && !single[item.handle] && normalizeFieldsAlias.indexOf(item.handle) != -1){
+	single[item.handle] = single.name;
     }
     next();
 

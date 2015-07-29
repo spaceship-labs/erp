@@ -53,6 +53,24 @@ describe('Import', function(){
         sails.models.company.attributes = {
             base_currency: { model: 'currency' } 
         };
+    });
+
+    var airport,
+        company;
+    beforeEach(function(){
+        airport = {
+            name: 'Ada Travel',
+            location: 'nuevo location',
+            zone: 'nueva zona',
+            voucher_text_es: 'un texto',
+            voucher_text_en: 'English text',
+        };
+   
+        company = {
+            name: 'Company 1',
+            direccion: 'cancun q.roo',
+            base_currency: 'MX'
+        };
 
         sails.config.content = {
             airport: [ { label: 'Nombre',
@@ -106,24 +124,7 @@ describe('Import', function(){
                 },
 			]
         };
-    });
 
-    var airport,
-        company;
-    before(function(){
-        airport = {
-            name: 'Ada Travel',
-            location: 'nuevo location',
-    		zone: 'nueva zona',
-            voucher_text_es: 'un texto',
-            voucher_text_en: 'English text',
-        };
-   
-        company = {
-            name: 'Company 1',
-            direccion: 'cancun q.roo',
-            base_currency: 'MX'
-        };
     });
 
     describe('import2Model', function(){
@@ -254,7 +255,7 @@ describe('Import', function(){
 
     describe('normalizeFields', function(){
         var airport;
-        before(function(){
+        beforeEach(function(){
             airport = {Nombre: 'Ada Travel', Location: 'Cancun' };
         });
 
@@ -282,6 +283,46 @@ describe('Import', function(){
                 done();
             });
         });
+
+        it('should not return err if name is set but not name_en/name_pt etc.. [alias]', function(done){
+            sails.config.content.airport.push(
+                      { label: 'Name_en',
+                        label_en: 'Name_en',
+                        type: 'text',
+                        handle: 'name_en',
+                        required: true
+                         }
+            );
+            Import.normalizeFields(airport, 'airport', function(err, air, model){
+                should.not.exist(err);
+                air.name.should.equal('Ada Travel');
+                air.name_en.should.equal('Ada Travel');
+                air.location.should.equal('Cancun');
+                done();
+            });
+	
+        });
+
+        it('should not return err if name is and alias not replace.', function(done){
+            sails.config.content.airport.push(
+                      { label: 'Name_en',
+                        label_en: 'Name_en',
+                        type: 'text',
+                        handle: 'name_en',
+                        required: true
+                         }
+            );
+            airport['Name_en'] = 'other';
+            Import.normalizeFields(airport, 'airport', function(err, air, model){
+                should.not.exist(err);
+                air.name.should.equal('Ada Travel');
+                air.name_en.should.equal('other');
+                air.location.should.equal('Cancun');
+                done();
+            });
+	
+        });
+
 
         it('should replace fields with label (array)', function(done){
             var airports = [airport, airport];
