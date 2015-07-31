@@ -246,7 +246,7 @@
   "packagetour-info":"Informacion básica",
   "packagetour-hoteles":"Hoteles",
   "packagetour-dias":"Días del tour",
-  "packagetour-agregar":"Agregar paquete",
+  "packagetour-agregar":"Agregar circuito",
 
   "price-info":"Informacion básica",
   "price-nuevo-precio":"Nuevo precio",
@@ -428,7 +428,7 @@
   ,"sc_hRoomv_descedit" : "Edición de la vista"
   ,"sc_location" : "Ciudades"
   ,"sc_reservations" : "Reservas"
-  ,"sc_packages" : "Paquetes"
+  ,"sc_packages" : "Circuitos"
   ,"sc_tour" : "Tours"
   ,"sc_transfer" : "Traslados"
   ,"sc_users" : "Usuarios"

@@ -212,6 +212,25 @@ module.exports.apps = [
             },
         ],
     },
+    /* Circuitos */
+    {
+        name    : 'circuits',
+        label   : 'Circuitos',
+        label_en : 'Circuits',
+        icon    : 'fa-dropbox',
+        actions   : [
+            {
+                label : 'Circuitos',
+                label_en : 'Circuits',
+                icon : 'fa-dropbox',
+                url : '/packagetour/',
+                handle : 'packagetour',
+                showInMenu : true,
+                controller : 'packagetour',
+                action : 'index'
+            }
+        ]
+    },
     /* locations */
     {
         name    : 'locations',
@@ -287,16 +306,6 @@ module.exports.apps = [
                 handle : 'transfer',
                 showInMenu : true,
                 controller : 'transfer',
-                action : 'index'
-            },
-            {
-                label : 'Paquetes',
-                label_en : 'Packages',
-                icon : 'fa-dropbox',
-                url : '/packagetour/',
-                handle : 'packagetour',
-                showInMenu : true,
-                controller : 'packagetour',
                 action : 'index'
             },
             {

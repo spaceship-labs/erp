@@ -243,7 +243,7 @@
   "packagetour-info":"Basic Information",
   "packagetour-hoteles":"Hotels",
   "packagetour-dias":"Tour days",
-  "packagetour-agregar":"Add Package",
+  "packagetour-agregar":"Add circuit",
 
   "price-info":"Basic Information",
   "price-nuevo-precio":"New Price",
@@ -423,7 +423,7 @@
   ,"sc_hRoomv_descedit" : "View edit"
   ,"sc_location" : "Locations"
   ,"sc_reservations" : "Reservations"
-  ,"sc_packages" : "Packages"
+  ,"sc_packages" : "Circuits"
   ,"sc_tour" : "Tours"
   ,"sc_transfer" : "Transfers"
   ,"sc_users" : "Users"

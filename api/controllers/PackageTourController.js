@@ -14,7 +14,7 @@ module.exports = {
         packages : packages,
         page:{
           name:req.__('sc_packages')
-          ,description: 'Administracion de contenido paquetes de tours'
+          ,description: 'Administracion de contenido circuitos'
           ,icon:'fa fa-dropbox'
           ,controller : 'packagetour.js'
         },
