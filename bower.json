@@ -62,10 +62,11 @@
   },
   "resolutions": {
     "jquery": "~2.x",
-    "angular": "1.4.x"
+    "angular": "1.4.3"
   },
   "devDependencies": {
     "jquery-steps": "~1.1.0",
-    "sweetalert": "~0.5.0"
+    "sweetalert": "~0.5.0",
+    "angular-mocks": "~1.4.2"
   }
 }

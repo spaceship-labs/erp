@@ -3,6 +3,7 @@
 </script>
 <div ng-controller='airlineCTL'>
 	<p><button class="btn btn-primary" data-toggle="modal" data-target="#myModal"><i class='fa fa-plus'></i><%= __('airlines') %> </button></p>
+	<p  class="import-button"><button class="btn btn-primary" data-toggle="modal" data-target="#importmodal"><span class="fa fa-plus"></span><%=__('import')%></button></p>
 	<br/>
 	<div table-helper 
 		inline-edit="/airline/update/" 
@@ -24,6 +25,16 @@
 			        >
 			    </div>
 			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="importmodal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title"><%= __('import') %></h4>
+				</div>
+			<div import-files import-type='airline' ></div>
 		</div>
 	</div>
 </div>

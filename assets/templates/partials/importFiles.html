@@ -1,0 +1,39 @@
+<div class='upload' ng-if="!sheets">
+    <div ng-show='error' class="alert alert-block">
+        <p>{{error}}</p>
+    </div>
+    <button class="import-button"  ng-file-select="upload($files)"  >subir archivo</button>
+</div>
+<div ng-if='sheets'>
+    <div class='sheets' ng-repeat='sheet in sheets'>
+        <div class='panel panel-default'>
+            <div ng-click='show($index)' class="panel-heading sheet-name">{{ sheet.name  }}</div>
+            <div class='panel-body' ng-show='selected == $index'>
+            <div ng-show='error' class="alert alert-block">
+                <p>{{error}}</p>
+            </div>
+            <p class='import-action' ng-click='import(sheet, $index)' ng-if="!imports[$index]"><button class="btn btn-primary"> <span class = "fa fa-plus"></span>Importar</button></p>
+                <table class='table table-responsive table-condensed table-striped'>
+                    <tr>
+                        <th  ng-repeat='label in sheet.values[0]'><strong>{{ label }}</strong></th>
+                    </tr>
+                    <tr ng-repeat='value in sheet.values.slice(1)' class='rows'  ng-if="!sheet.import">
+                        <td ng-repeat='val in value track by $index'>
+                            <span class='cell' >{{ sheet.values.slice(1)[$parent.$index][$index]  }}</span>
+                        </td>
+                    </tr>
+
+                    <tr ng-repeat='value in sheet.values.slice(1)' class='rows'  ng-if="sheet.import">
+                        <td ng-repeat='val in value track by $index'>
+                            <span class='cell' >
+                                <a target="_blank" ng-href="{{ url }}{{ sheet.values.slice(1)[$parent.$index][value.length-1] }}">
+                                    {{ sheet.values.slice(1)[$parent.$index][$index] }} 
+                                </a>
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

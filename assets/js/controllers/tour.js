@@ -44,7 +44,7 @@ app.controller('tourEditCTL',function($scope,$http,$window){
 	$scope.content = content;
     $scope.company = company;
     $scope.saveClass = 'fa-save';
-    var save = function(){
+    $scope.save = function(){
         $scope.saveClass = 'fa-upload';
         var form = {id:$scope.tour.id,days:$scope.tour.days};
         $http({method: 'POST',url:'/tour/save',params:form}).success(function(tour){
