@@ -326,8 +326,8 @@ module.exports.content = {
 	],
 	tour : [
 		{
-			label : 'Nombre',
-			label_en : 'Name',
+			label : 'Nombre Español',
+			label_en : 'Spanish name',
 			type : 'text',
 			handle : 'name',
 			required : true,

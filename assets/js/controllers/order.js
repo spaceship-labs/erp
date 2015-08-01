@@ -183,7 +183,7 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
     $scope.alertM = { show: false, client : false, allEmpty: false };
     //$scope.clients_ = clients_;
     $scope.hotels = hotels;
-    console.log($scope.hotels);
+    //console.log($scope.hotels);
     //$scope.allTours = allTours;
     $scope.transfers = transfers; // transfers disponibles
     $scope.client = '';
@@ -248,7 +248,7 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
                     ,company : $scope.thecompany.id
                 };
                 $http.post('/order/createOrder',params,{}).success(function(order) {
-                    console.log('order');console.log(order);
+                    //console.log('order');console.log(order);
                     if(order && order.id){
                         $scope.order = order;
                         //ver si existe transfer
@@ -364,6 +364,7 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
     }
     //Obtiene el precio cada que se hace una modificación elegida
     $scope.updatePriceTransfer = function(){
+        console.log($scope.transfer)
         if(!$scope.transfer.currency)
             $scope.transfer.currency = $scope.thecompany.base_currency;
         var transfer = $scope.transfer;
@@ -398,7 +399,8 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
                 ,zone2 : $scope.transfer.airport.zone 
                 ,company : $scope.thecompany
             };
-            //console.log(params);
+            console.log('transfers params');
+            console.log(params);
             //$http({method: 'POST', url: '/order/getAvailableTransfers',params:params}).success(function (result){
             $http.post('/order/getAvailableTransfers', params , {}).success(function (result){
                 console.log('prices');console.log(result);
@@ -409,12 +411,11 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
     };
     $scope.addTH = function(type){
         if( typeof $scope.client != 'string' && ! angular.equals( {} , $scope.client ) ){
-            console.log('addedTour');
-            console.log($scope.addedTour);
+            //console.log('addedTour');console.log($scope.addedTour);
             if( type=='tour' && $scope.addedTour ){
-                console.log('tours');
+                //console.log('tours');
                 $scope.reservations.tours = $scope.reservations.tours.concat({tour:$scope.addedTour, reservation_type : 'tour' , client : $scope.client });
-                console.log($scope.reservations.tours);
+                //console.log($scope.reservations.tours);
             }else if( type=='hotel' && $scope.addedHotel ){
                 $scope.reservations.hotels = $scope.reservations.hotels.concat({hotel:$scope.addedHotel, reservation_type : 'hotel' , client : $scope.client });
             }
@@ -506,8 +507,7 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
     };
     var getCompanies = function(){
         $http.post('/company/find',{},{}).success(function(result) {
-            console.log('get companies');
-            console.log(result);
+            //console.log('get companies');console.log(result);
             $scope.companies = result;
         });
         //$scope.companies
@@ -515,7 +515,7 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
     getCompanies();
     $scope.getHotels = function(val){
         return $http.get('/hotel/find', { params: { name: val } }).then(function(response){
-            console.log(response);
+            //console.log(response);
             return response.data.results.map(function(item){ return item; });
         });
     };

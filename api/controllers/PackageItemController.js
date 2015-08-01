@@ -9,12 +9,12 @@ module.exports = {
 	edit : function(req,res){
 	    PackageItem.findOne(req.params.id).populate('package_').exec(function(e,item){
 	    	Location.find().sort('name').exec(function(e,locations){
-		    	Location.findOne(item.location).exec(function(e,location_){
+		    	//Location.findOne(item.location).exec(function(e,location_){
 			      if(e) return res.redirect("/packagetour/");
 			      Common.view(res.view,{
 			        item:item,
 			        locations : locations, 
-			        location_ : location_,
+			        location_ : false,
 			        page:{
 			          name : item.package_.name ,
 			          icon : 'fa fa-dropbox' ,
@@ -26,7 +26,7 @@ module.exports = {
 			          { label : item.name_es }
 			        ]
 			      },req); 
-			    });
+			    //});
 		    });
 	    });
   	},

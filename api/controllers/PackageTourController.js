@@ -70,7 +70,15 @@ module.exports = {
       if(e) console.log(e);
       res.json(pt);
     });
-  }
+  },
+  destroy : function(req,res){
+    PackageItem.destroy({ package_ : req.params.id }).exec(function(){
+      PackageTour.destroy({ id : req.params.id }).exec(function(e,r){
+        if(e) throw(e);
+        res.json(r);
+      });
+    });
+  },
 };
 function groupItems(items){
   result = _.groupBy(items, function(item){ return item.type; });

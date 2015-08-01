@@ -172,6 +172,8 @@ app.controller('companyEditCTL',function($scope,$http){
         };
         if( type == 'transfer' )
             params.location = $scope.thelocation;
+        console.log('companyproduct');
+        console.log(params);
         $http({method: 'POST', url: '/companyproduct/find',data:params}).success(function(result){
             $scope[spVar] = result;
             console.log('products: ' + type);
@@ -182,8 +184,8 @@ app.controller('companyEditCTL',function($scope,$http){
     //$scope.getProducts('transfer','transfers',0);
     $scope.getProducts('hotel','hotels',0);
     $scope.savePrice = function(data,price){
-        data.fee = data.fee==0&&data.commission_agency!=0?(price.tour.fee-(price.tour.fee*(data.commission_agency/100))):data.fee;
-        data.feeChild = data.feeChild==0&&data.commission_agency!=0?(price.tour.feeChild-(price.tour.feeChild*(data.commission_agency/100))):data.feeChild;
+        //data.fee = data.fee==0&&data.commission_agency!=0?(price.tour.fee-(price.tour.fee*(data.commission_agency/100))):data.fee;
+        //data.feeChild = data.feeChild==0&&data.commission_agency!=0?(price.tour.feeChild-(price.tour.feeChild*(data.commission_agency/100))):data.feeChild;
         angular.extend(data, { id : price.id });
         $http({method: 'POST',url:'/companyproduct/update',params:data}).success(function(t){
             t = t[0];

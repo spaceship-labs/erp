@@ -461,7 +461,7 @@ function customGetAvailableTransfers(company,params,res){
         return res.json(false);
     });
   }else{
-    CompanyProduct.find({company : company.id,product_type:'transfer'}).exec(function(cp_err,products){
+    CompanyProduct.find({agency : company.id,product_type:'transfer'}).exec(function(cp_err,products){
       var productsArray = [];
       for(var x in products) productsArray.push( products[x].transfer );
       TransferPrice.find({ 

@@ -11,6 +11,7 @@ app.controller('packageCTL',function($scope,$http){
 });
 app.controller('packageEditCTL',function($scope,$http,$rootScope){
 	$scope.package_t = package_t;
+	$scope.user = user;
 	$scope.items = items;
 	$scope.themarkers = {}
 	$scope.thehotels = {}
