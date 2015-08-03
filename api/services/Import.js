@@ -40,7 +40,7 @@ module.exports.import2Model = function(data, model, done){
 };
 
 function ifContentValid(single, item, next){
-    if(item.required && !single[item.handle]){
+    if(item.required && single[item.handle] != '' && !single[item.handle]){
         return next(new Error('Field '+item.handle+' is required'));
     }
     return next(); 
@@ -125,7 +125,10 @@ function normalizeFields(single, item, next){
         }
     }
     if(item.required && !single[item.handle] && normalizeFieldsAlias.indexOf(item.handle) != -1){
-	single[item.handle] = single.name;
+        single[item.handle] = single.name;
+    }
+    if(item.required && (item.default || item.default == '') && !single[item.handle]){ 
+        single[item.handle] = item.default;
     }
     next();
 

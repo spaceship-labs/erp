@@ -323,6 +323,28 @@ describe('Import', function(){
 	
         });
 
+        it('should use default if exist', function(done){
+            sails.config.content.airport.push(
+                {
+                    label : 'Moneda Base',
+                    label_en : 'Base currency',
+                    type : 'select',
+                    handle : 'base_currency',
+                    object : 'currencies',
+                    required : true,
+                    default:'Pesos'
+                }
+            );
+            Import.normalizeFields(airport, 'airport', function(err, air, model){
+                should.not.exist(err);
+                air.name.should.equal('Ada Travel');
+                air.base_currency.should.equal('Pesos');
+                air.location.should.equal('Cancun');
+                done();
+            });
+	
+        });
+
 
         it('should replace fields with label (array)', function(done){
             var airports = [airport, airport];

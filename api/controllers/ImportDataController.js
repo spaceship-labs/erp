@@ -20,9 +20,15 @@ module.exports = {
     },
     importJson: function(req, res){
         var form = req.params.all(),
-            company = req.session.select_company || req.user.select_company;
+        add = {};
+        if(form.model == 'company'){
+            add.active = true; 
+            add.users = [req.user.id];
+        }else{
+            add.company = req.session.select_company || req.user.select_company;
+        }
         //console.log(form);
-        Import.files.array2Model(form.values, {company: company} ,function(err, objs){
+        Import.files.array2Model(form.values, add, function(err, objs){
             Import.checkAndImport(objs, form.model, function(err, creates){
                 console.log(err, creates);
                 if(err) return res.ok({success:false, error:err.message});
