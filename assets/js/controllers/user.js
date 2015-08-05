@@ -53,12 +53,13 @@ app.controller('userEditCTL',function($scope,$http,_){
     ];
     $scope.saveClassPermissions = 'fa-save';
     $scope.saveClassPassword = 'fa-save';
+    console.log(user);
 
     var emptyRole = { name : 'Ninguno',permissions : [] ,id : '0' };
     for(var i in $scope.user.accessList){
         var acl = $scope.user.accessList[i];
         //if (acl.company == $scope.company.id) {
-        if (acl.company == $scope.user.default_company.id) {
+        if (acl.company == $scope.user.default_company) {
             $scope.user.acl = acl;
             $scope.user.permissions = acl.permissions;
             $scope.isAdmin = acl.isAdmin;
