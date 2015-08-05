@@ -106,10 +106,11 @@ module.exports = {
     });
   },
 	createClient : function(req,res){
-      var form = Common.formValidate(req.params.all(),['name','address','phone','rfc']);
+      var form = Common.formValidate(req.params.all(),['name','address','phone','email']);
       if(form){
           form.user = req.user.id;
-          form.company = req.session.select_company || req.user.select_company;
+          if(!form.company)
+            form.company = req.user.select_company || req.session.select_company;
           Client_.create(form).exec(function(err,client_){
               if(err) return res.json(false);
               return res.json(client_);

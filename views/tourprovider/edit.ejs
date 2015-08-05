@@ -16,8 +16,17 @@
                 objects='{locations:locations,currencies:currencies}'
                 ></div>
         </div>
+        <div class="col-md-6">
+            <p><button class="btn btn-primary ng-binding" data-toggle="modal" data-target="#myModal"> <span class="fa fa-plus"></span> Tour nuevo</button></p>
+        </div>
     </div>
-    <div class='row' ng-if="provider.tours">
+    <div class='autocomplete'>
+        <input type="text" placeholder="Agregar tour" class="form-control" 
+            ng-model="thetour" 
+            typeahead="tour as tour.name for tour in getTours($viewValue)" 
+            typeahead-on-select="addTour($item, $model, $label)" >
+    </div>
+    <div class='row' ng-show="provider.tours">
         <div class="col-md-12">
             <div class="widgetcontent custom-table nopadding ng-cloak">
                 <h4 class='widgettitle'>Tours</h4>
@@ -35,22 +44,22 @@
                     <tr ng-repeat="t in provider.tours">
                         <td data-title="Nombre" ng-bind="t.name"></td>
                         <td data-title="Precio base" >
-                            <p> Adultos: {{t.fee}} </p>
-                            <p> Menores: {{t.feeChild}} </p>
+                            <p> Adultos: {{t.fee}} {{company.base_currency.currency_code}}</p>
+                            <p> Menores: {{t.feeChild}} {{company.base_currency.currency_code}}</p>
                         </td>
                         <td>
                             <span 
                                 editable-text='t.fee_base'
                                 e-name='fee_base'
                                 e-form='rowform'
-                            >{{t.fee_base || 0 }}</span>
+                            >{{t.fee_base || 0 }} {{company.base_currency.currency_code}}</span>
                         </td>
                         <td>
                             <span 
                                 editable-text='t.feeChild_base'
                                 e-name='feeChild_base'
                                 e-form='rowform'
-                            >{{t.feeChild_base || 0 }}</span>
+                            >{{t.feeChild_base || 0 }} {{company.base_currency.currency_code}}</span>
                         </td>
                         <td data-title="Comisión agencia">
                             <span 
@@ -98,6 +107,24 @@
     <div class='clear'></div>
     <div delete-button url='/tourprovider' redirect-url='/tourprovider' object='provider' user='user'></div>
     <br/>
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div 
+                    form-helper 
+                    fields='content.tourforproviders' 
+                    form-footer='<%= __('order-agregar')%>'
+                    form-save = 'createTour'
+                    object = 'tour'
+                    form-title='<%= __('tour-agregar')%>'
+                    modal='true'
+                    objects='{locations:locations}'
+                    currency='company.base_currency'
+                    >
+                </div>  
+            </div>
+        </div>
+    </div>
 </div>
 <div id="cargando-elementos" class="ng-cloak">
     <img src="/images/loaders/images-cm.gif">

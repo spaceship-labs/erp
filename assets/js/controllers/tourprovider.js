@@ -34,4 +34,26 @@ app.controller('tourproviderEditCTL',function($scope,$http){
             tour = t;
         });
     };
+    $scope.createTour = function(newtour){
+        newtour.provider = $scope.provider.id;
+        $http({method: 'POST', url: '/tour/create',params:newtour}).success(function (result){
+            jQuery('#myModal').modal('hide');
+            $scope.provider.tours.push(result.thetour);
+        });    
+    };
+    $scope.getTours = function(term){
+        return $http.get('/tour/find', { params: { 'name': term , provider : 'null' , 'limit': 10 , 'sort' : 'name asc' }
+        }).then(function(response){ 
+            console.log('tours');
+            console.log(response);
+            return response.data.results.map(function(item){ return item; });
+        });
+    };
+    $scope.addTour = function(t){
+        var params = t;
+        params.provider = $scope.provider.id;
+        $http.get('/tour/update', { params: params }).then(function(response){ 
+            $scope.provider.tours.push(response);
+        });
+    }
 });

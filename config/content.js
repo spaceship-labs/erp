@@ -106,52 +106,68 @@ module.exports.content = {
 			handle : 'description_pt',
 		},
 		{
-			label : 'Servicios Español (separar por enter)',
-			label_en : 'Spanish services (separete with enter)',
+			label : 'Servicios Español',
+			label_en : 'Spanish services',
 			type : 'textarea',
 			handle : 'services_es',	
+			message : "Separar por enter, cada línea es un elemento de lista",
+			message_en : "Separate with enter, each line is an list element",
 		},
 		{
-			label : 'Servicios Inglés (separar por enter)',
-			label_en : 'English services (separete with enter)',
+			label : 'Servicios Inglés',
+			label_en : 'English services',
 			type : 'textarea',
 			handle : 'services_en',	
+			message : "Separar por enter, cada línea es un elemento de lista",
+			message_en : "Separate with enter, each line is an list element",
 		},
 		{
-			label : 'Servicios Ruso (separar por enter)',
-			label_en : 'Russian services (separete with enter)',
+			label : 'Servicios Ruso',
+			label_en : 'Russian services',
 			type : 'textarea',
 			handle : 'services_ru',	
+			message : "Separar por enter, cada línea es un elemento de lista",
+			message_en : "Separate with enter, each line is an list element",
 		},
 		{
-			label : 'Servicios Portugués (separar por enter)',
-			label_en : 'Portuguese services (separete with enter)',
+			label : 'Servicios Portugués',
+			label_en : 'Portuguese services',
 			type : 'textarea',
 			handle : 'services_pt',	
+			message : "Separar por enter, cada línea es un elemento de lista",
+			message_en : "Separate with enter, each line is an list element",
 		},
 		{
-			label : 'Servicios con costo Español (separar por enter)',
-			label_en : 'Spanish cost service (separete with enter)',
+			label : 'Servicios con costo Español',
+			label_en : 'Spanish cost service',
 			type : 'textarea',
-			handle : 'payed_services_es',	
+			handle : 'payed_services_es',
+			message : "Separar por enter, cada línea es un elemento de lista",
+			message_en : "Separate with enter, each line is an list element",
 		},
 		{
-			label : 'Servicios con costo Inglés (separar por enter)',
-			label_en : 'English cost service (separete with enter)',
+			label : 'Servicios con costo Inglés',
+			label_en : 'English cost service',
 			type : 'textarea',
-			handle : 'payed_services_en',	
+			handle : 'payed_services_en',
+			message : "Separar por enter, cada línea es un elemento de lista",
+			message_en : "Separate with enter, each line is an list element",
 		},
 		{
-			label : 'Servicios con costo Ruso (separar por enter)',
-			label_en : 'Russian cost services (separete with enter)',
+			label : 'Servicios con costo Ruso',
+			label_en : 'Russian cost services',
 			type : 'textarea',
-			handle : 'payed_services_ru',	
+			handle : 'payed_services_ru',
+			message : "Separar por enter, cada línea es un elemento de lista",
+			message_en : "Separate with enter, each line is an list element",
 		},
 		{
-			label : 'Servicios con costo Portugués (separar por enter)',
-			label_en : 'Portuguese cost service (separete with enter)',
+			label : 'Servicios con costo Portugués',
+			label_en : 'Portuguese cost service',
 			type : 'textarea',
-			handle : 'payed_services_pt',	
+			handle : 'payed_services_pt',
+			message : "Separar por enter, cada línea es un elemento de lista",
+			message_en : "Separate with enter, each line is an list element",
 		}
 	],
 	room : [
@@ -245,28 +261,36 @@ module.exports.content = {
 			handle : 'description_pt',
 		},
 		{
-			label : 'Servicios Español (separar por enter)',
-			label_en : 'Spanish services (separete with enter)',
+			label : 'Servicios Español',
+			label_en : 'Spanish services',
 			type : 'textarea',
 			handle : 'services_es',
+			message : "Separar por enter, cada línea es un elemento de lista",
+			message_en : "Separate with enter, each line is an list element",
 		},
 		{
-			label : 'Servicios Inglés (separar por enter)',
-			label_en : 'English services (separete with enter)',
+			label : 'Servicios Inglés',
+			label_en : 'English services',
 			type : 'textarea',
 			handle : 'services_en',
+			message : "Separar por enter, cada línea es un elemento de lista",
+			message_en : "Separate with enter, each line is an list element",
 		},
         {
-            label : 'Servicios Ruso (separar por enter)',
-            label_en : 'Russian services (separete with enter)',
+            label : 'Servicios Ruso',
+            label_en : 'Russian services',
             type : 'textarea',
             handle : 'services_ru',
+            message : "Separar por enter, cada línea es un elemento de lista",
+			message_en : "Separate with enter, each line is an list element",
         },
 		{
-			label : 'Servicios Portugués (separar por enter)',
-			label_en : 'Portuguese services (separete with enter)',
+			label : 'Servicios Portugués',
+			label_en : 'Portuguese services',
 			type : 'textarea',
 			handle : 'services_pt',
+			message : "Separar por enter, cada línea es un elemento de lista",
+			message_en : "Separate with enter, each line is an list element",
 		},
 
 	/*	{
@@ -350,12 +374,12 @@ module.exports.content = {
 			type : 'money',
 			handle : 'feeChild',
 		},
-		{
+		/*{
 			label : 'Horario General',
 			label_en : 'General schedule',
 			type : 'text',
 			handle : 'schedule',
-		},
+		},*/
 		{
 			label : 'Duración',
 			label_en : 'Duration',
@@ -395,6 +419,71 @@ module.exports.content = {
 			type : 'select',
 			handle : 'seasonScheme',
 			object : 'schemes',
+		},
+		{
+			label : 'Traslado incluido',
+			label : 'Transfer included',
+			type : 'checkbox',
+			handle : 'haveTranslate'
+		},
+	],
+	tourforproviders : [
+		{
+			label : 'Nombre Español',
+			label_en : 'Spanish name',
+			type : 'text',
+			handle : 'name',
+			required : true,
+		},
+		{
+			label : 'Máximo de clientes',
+			label_en : 'Client max number',
+			type : 'text',
+			handle : 'pax',
+		},
+		{
+			label : 'Tarifa adultos',
+			label_en : 'Adult rate',
+			type : 'money',
+			handle : 'fee',
+		},
+		{
+			label : 'Tarifa niños',
+			label_en : 'Children rate',
+			type : 'money',
+			handle : 'feeChild',
+		},
+		{
+			label : 'Horario General',
+			label_en : 'General schedule',
+			type : 'text',
+			handle : 'schedule',
+		},
+		{
+			label : 'Duración',
+			label_en : 'Duration',
+			type : 'text',
+			handle : 'duration',
+		},
+		{
+			label : 'Categorías',
+			label_en : 'Categories',
+			type : 'multi-select',
+			handle : 'categories',
+			object : 'tourcategories'
+		},
+		{
+			label : 'Ubicación',
+			label_en : 'Location',
+			type : 'select',
+			handle : 'location',
+			object : 'locations'
+		},
+		{
+			label : "Visible en web"
+			,label_en : "Visible on web"
+			,type : 'checkbox'
+			,handle : 'visible'
 		},
 		{
 			label : 'Traslado incluido',
@@ -457,72 +546,96 @@ module.exports.content = {
 			label_en : 'Spanish includes',
 			type : 'textarea',
 			handle : 'includes_es',
+			message : "Separar por enter, cada línea es un elemento de lista",
+			message_en : "Separate with enter, each line is an list element",
 		},
 		{
 			label : 'Incluye Inglés',
 			label_en : 'English includes',
 			type : 'textarea',
 			handle : 'includes_en',
+			message : "Separar por enter, cada línea es un elemento de lista",
+			message_en : "Separate with enter, each line is an list element",
 		},
 		{
 			label : 'Incluye Ruso',
 			label_en : 'Russian includes',
 			type : 'textarea',
 			handle : 'includes_ru',
+			message : "Separar por enter, cada línea es un elemento de lista",
+			message_en : "Separate with enter, each line is an list element",
 		},
 		{
 			label : 'Incluye Portugués',
 			label_en : 'Portuguese includes',
 			type : 'textarea',
 			handle : 'includes_pt',
+			message : "Separar por enter, cada línea es un elemento de lista",
+			message_en : "Separate with enter, each line is an list element",
 		},
 		{
 			label : 'No incluye Español',
 			label_en : "Don't include Spanish",
 			type : 'textarea',
 			handle : 'does_not_include_es',
+			message : "Separar por enter, cada línea es un elemento de lista",
+			message_en : "Separate with enter, each line is an list element",
 		},
 		{
 			label : 'No incluye Inglés',
 			label_en : "Don't include English",
 			type : 'textarea',
 			handle : 'does_not_include_en',
+			message : "Separar por enter, cada línea es un elemento de lista",
+			message_en : "Separate with enter, each line is an list element",
 		},
 		{
 			label : 'No incluye Rúso',
 			label_en : "Don't include Russian",
 			type : 'textarea',
 			handle : 'does_not_include_ru',
+			message : "Separar por enter, cada línea es un elemento de lista",
+			message_en : "Separate with enter, each line is an list element",
 		},
 		{
 			label : 'No incluye Portugués',
 			label_en : "Don't include Portuguese",
 			type : 'textarea',
 			handle : 'does_not_include_pt',
+			message : "Separar por enter, cada línea es un elemento de lista",
+			message_en : "Separate with enter, each line is an list element",
 		},
 		{
 			label : 'Recomendaciones Español',
 			label_en : 'Recommendations Spanish',
 			type : 'textarea',
 			handle : 'recommendations_es',
+			message : "Separar por enter, cada línea es un elemento de lista",
+			message_en : "Separate with enter, each line is an list element",
 		},
 		{
 			label : 'Recomendaciones Inglés',
 			label_en : 'Recommendations English',
 			type : 'textarea',
 			handle : 'recommendations_en',
+			message : "Separar por enter, cada línea es un elemento de lista",
+			message_en : "Separate with enter, each line is an list element",
 		},
 		{
 			label : 'Recomendaciones Ruso',
 			label_en : 'Recommendations Russian',
 			type : 'textarea',
 			handle : 'recommendations_ru',
+			message : "Separar por enter, cada línea es un elemento de lista",
+			message_en : "Separate with enter, each line is an list element",
 		},
 		{
 			label : 'Recomendaciones Portugués',
 			label_en : 'Recommendations Portuguese',
 			type : 'textarea',
 			handle : 'recommendations_pt',
+			message : "Separar por enter, cada línea es un elemento de lista",
+			message_en : "Separate with enter, each line is an list element",
 		},
 	],
 	tourcategory : [
@@ -902,7 +1015,60 @@ module.exports.content = {
             type : 'checkbox'
         }
     ],
-    client : [
+    clientForOrders : [
+    	{
+            label : 'Nombre',
+            label_en : 'Name',
+            handle : 'name',
+            type : 'text',
+            required : true
+        },
+        {
+            label : 'Direccion',
+            label_en : 'Address',
+            handle : 'address',
+            type : 'text'
+        },
+        {
+            label : 'Teléfono',
+            label_en : 'Phone',
+            handle : 'phone',
+            type : 'text',
+            required : true
+        },
+        {
+            label : 'E-mail',
+            label_en : 'Email',
+            handle : 'email',
+            type : 'text',
+            required : true
+        },
+        {
+            label : 'Ciudad',
+            label_en : 'City',
+            handle : 'city',
+            type : 'text'
+        },
+        {
+            label : 'Estado',
+            label_en : 'State',
+            handle : 'state',
+            type : 'text'
+        },
+        {
+            label : 'Pais',
+            label_en : 'Country',
+            handle : 'country',
+            type : 'text'
+        },
+        {
+            label : 'Comentarios',
+            label_en : 'Comments',
+            handle : 'comments',
+            type : 'textarea'
+        }
+    ]
+    ,client : [
         {
             label : 'Nombre',
             label_en : 'Name',
@@ -1105,52 +1271,68 @@ module.exports.content = {
     		type : 'textarea'
     	},
     	{
-    		label : 'Incluye Español (separar por enter)',
-    		label_en : 'Spanish includes (separate with enter)',
+    		label : 'Incluye Español',
+    		label_en : 'Spanish includes',
     		handle : 'includes_es',
-    		type : 'textarea'
+    		type : 'textarea',
+    		message : "Separar por enter, cada línea es un elemento de lista",
+			message_en : "Separate with enter, each line is an list element",
     	},
     	{
-    		label : 'Incluye Inglés (separar por enter)',
-    		label_en : 'English includes (separate with enter)',
+    		label : 'Incluye Inglés',
+    		label_en : 'English includes',
     		handle : 'includes_en',
-    		type : 'textarea'
+    		type : 'textarea',
+    		message : "Separar por enter, cada línea es un elemento de lista",
+			message_en : "Separate with enter, each line is an list element",
     	},
     	{
-            label : 'Incluye Ruso (separar por enter)',
-            label_en : 'Russian includes (separate with enter)',
+            label : 'Incluye Ruso',
+            label_en : 'Russian includes',
             type : 'textarea',
             handle : 'includes_ru',
+            message : "Separar por enter, cada línea es un elemento de lista",
+			message_en : "Separate with enter, each line is an list element",
         },
 		{
-			label : 'Incluye Portugués (separar por enter)',
-			label_en : 'Portuguese includes (separate with enter)',
+			label : 'Incluye Portugués',
+			label_en : 'Portuguese includes',
 			type : 'textarea',
 			handle : 'includes_pt',
+			message : "Separar por enter, cada línea es un elemento de lista",
+			message_en : "Separate with enter, each line is an list element",
 		},
 		{
-            label : 'No incluye Español (separar por enter)',
-            label_en : "Spanish Don't include (separate with enter)",
+            label : 'No incluye Español',
+            label_en : "Spanish Don't include",
             type : 'textarea',
             handle : 'does_not_include_es',
+            message : "Separar por enter, cada línea es un elemento de lista",
+			message_en : "Separate with enter, each line is an list element",
         },
         {
-            label : 'No incluye Inglés (separar por enter)',
-            label_en : "English Don't include (separate with enter)",
+            label : 'No incluye Inglés',
+            label_en : "English Don't include",
             type : 'textarea',
             handle : 'does_not_include_en',
+            message : "Separar por enter, cada línea es un elemento de lista",
+			message_en : "Separate with enter, each line is an list element",
         },
         {
-            label : 'No incluye Ruso (separar por enter)',
-            label_en : "Russian Don't include (separate with enter)",
+            label : 'No incluye Ruso',
+            label_en : "Russian Don't include",
             type : 'textarea',
             handle : 'does_not_include_ru',
+            message : "Separar por enter, cada línea es un elemento de lista",
+			message_en : "Separate with enter, each line is an list element",
         },
         {
-            label : 'No incluye Portugués (separar por enter)',
-            label_en : "Portuguese Don't include (separate with enter)",
+            label : 'No incluye Portugués',
+            label_en : "Portuguese Don't include",
             type : 'textarea',
             handle : 'does_not_include_pt',
+            message : "Separar por enter, cada línea es un elemento de lista",
+			message_en : "Separate with enter, each line is an list element",
         },
     ],
     packageHotel : [

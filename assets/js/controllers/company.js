@@ -23,8 +23,6 @@ app.controller('companyCTL',function($scope,$http,$rootScope){
         });    
     };
 });
-
-
 app.controller('companyEditCTL',function($scope,$http){
     $scope.company = company;
     $scope.mycompany = mycompany;
@@ -44,6 +42,7 @@ app.controller('companyEditCTL',function($scope,$http){
     $scope.locations = [];
     $scope.exchangerates = $scope.mycompany.exchange_rates || {};
     console.log(mycompany);
+    $scope.actualCurrency = $scope.mycompany.base_currency || $scope.company.base_currency;
     //$scope.companies = companies;
     $scope.updateExchangeRates = function(){
         console.log($scope.exchangerates);

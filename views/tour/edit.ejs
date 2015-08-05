@@ -29,7 +29,20 @@
                     <button class="btn btn-default" ng-class='{"active":tour.days[5]}' ng-click='tour.days[5] = !tour.days[5]' >S</button>
                     <button class="btn btn-default" ng-class='{"active":tour.days[6]}' ng-click='tour.days[6] = !tour.days[6]' >D</button>
                 </div>
-                <p class='small'><%= __('tour-selecion')%></p>
+                <p class='small'><%= __('tour-selection')%></p>
+            </div>
+        </div>
+        <div class="widgetbox">
+            <div class="headtitle">          
+                <h4 class="widgettitle">Horarios <span ng-click='save()'  class='fa icon' ng-class='saveClass'></span></h4>
+            </div>
+            <div class="widgetcontent">
+                <div ng-repeat="sc in tour.schedules" class='row timepicker-container'>
+                    <div class='col-md-5 col-xs-5'>De: <timepicker class='timepicker' ng-model="sc.from" hour-step="1" minute-step="1" show-meridian="ismeridian"></timepicker></div>
+                    <div class='col-md-5 col-xs-5'>a: <timepicker class='timepicker' ng-model="sc.to" hour-step="1" minute-step="1" show-meridian="ismeridian"></timepicker></div>
+                    <div class='col-md-2 col-xs-2'><p><a ng-click="deleteSchedule($index)" class='btn btn-primary custom-delete'>x</a></p></div>
+                </div>
+                <p><a class='btn btn-primary' ng-click='addSchedule()'>Agregar horario</a></p>
             </div>
         </div>
     </div>

@@ -10,6 +10,7 @@ module.exports = {
 		location : {
 			model : 'location' }
 		,days : 'array'
+		,schedules : 'array'
 		,seasonScheme : {
 			model:'seasonScheme',
 			via:'tours' }

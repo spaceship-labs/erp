@@ -47,7 +47,7 @@ module.exports = {
 	, edit: function(req,res){
 		var id = req.params.id;
         //sails.controllers.admin.currenciesJson(req,res,function(currencies){
-		Company.findOne({id:id}).populate('users').populate('hotels').populate('taxes').populate('currencies').exec(function(err,company){
+		Company.findOne({id:id}).populate('base_currency').populate('users').populate('hotels').populate('taxes').populate('currencies').exec(function(err,company){
 			if(err) throw err;
             //console.log(company.taxes);
 			User.find().exec(function(err,users){

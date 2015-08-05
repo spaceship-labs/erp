@@ -6,7 +6,7 @@
 	<h4 ng-if='formTitle && !modal' class="widgettitle">{{formTitle}} <span ng-click='save()' class='fa icon' ng-class='saveClass'></span></h4>
 	<form ng-class='formClass' class="form stdform stdform2" name="form">
 		<p ng-repeat='field  in fields | filter:formFilter'>
-	        <label>{{field[label]}} <span ng-if='field.required'>*</span><span ng-if='field.type == "money"' >({{currency.currency_code}})</span></label>
+	        <label>{{field[label]}} <span class='formmessage' ng-if="field[msg]" ng-bind="field[msg]"></span> <span ng-if='field.required'>*</span><span ng-if='field.type == "money"' >({{currency.currency_code}})</span></label>
 	        <span class="field">
 	            <textarea 
 	            	ng-if='field.type == "textarea"' 
@@ -52,6 +52,7 @@
 				</span>
 				
 				<datepicker ng-if='field.type == "date"' ng-model="object[field.handle]" show-weeks="true" class="well well-sm"></datepicker>
+				<timepicker ng-if='field.type == "time"' ng-model="object[field.handle]" hour-step="1" minute-step="1" show-meridian="ismeridian"></timepicker>
 
 				<span ng-if='field.type == "multi-select"'>
 					<span class='multi-tag' ng-repeat='obj in object[field.handle]'> {{obj.name}} <a href='' ng-click='removeRel(field,obj)'> x </a></span>

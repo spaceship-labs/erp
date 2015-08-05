@@ -217,6 +217,7 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
     //Crea un cliente en caso de que sea uno nuevo
     $scope.createClient = function(newClient){
         //$http({method: 'POST', url: '/order/createClient',params:newClient}).success(function (client_){
+        newClient.company = $scope.thecompany.id;
         $http.post('/order/createClient',newClient,{}).success(function(client_) {
             /*if(clients_){
                 $scope.clients_ = $scope.clients_.concat(client_);
@@ -520,7 +521,7 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
         });
     };
     $scope.getClients = function(val){
-        return $http.get('/client/find', { params: { name: val } }).then(function(response){
+        return $http.get('/client/find', { params: { name: val , company : $scope.thecompany.id } }).then(function(response){
             return response.data.map(function(item){ return item; });
         });
     };

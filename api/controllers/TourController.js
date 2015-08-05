@@ -36,6 +36,7 @@ module.exports = {
 		delete params.company;
 		delete params.adminCompany;
         if(params.name) params.name = new RegExp(params.name,"i");
+        if( params.provider == 'null' ) params.provider = null;
         Tour.find(params).skip(skip).exec(function(err,tours){
         	if(err) res.json('err');
         	Tour.count(params).exec(function(e,count){
@@ -53,6 +54,10 @@ module.exports = {
 		delete params.adminCompany;
 		if( typeof params.id == 'undefined' ) delete params.id;
         if(params.name) params.name = new RegExp(params.name,"i");
+        /*if(params.notProvider){
+        	params.provider = { '!' : params.notProvider };
+        	delete params.notProvider;
+        }*/
         Tour.find(params).limit(15).exec(function(err,tours){
         	if(err) res.json('err');
         	if(adminCompany=='false'){

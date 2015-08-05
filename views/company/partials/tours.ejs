@@ -59,12 +59,12 @@
         <tr ng-repeat="t in tours">
             <td data-title="Nombre" ng-bind="t.tour.name"></td>
             <td data-title="Precio base" >
-                <p> Adultos: {{t.tour.fee}} </p>
-                <p> Menores: {{t.tour.feeChild}} </p>
+                <p> Adultos: {{t.tour.fee}} {{actualCurrency.currency_code}}</p>
+                <p> Menores: {{t.tour.feeChild}} {{actualCurrency.currency_code}}</p>
             </td>
             <td>
-                <p> Adultos: {{t.tour.fee_base || 0 }}</p>
-                <p> Menores: {{t.tour.feeChild_base || 0 }}</p>
+                <p> Adultos: {{t.tour.fee_base || 0 }} {{actualCurrency.currency_code}}</p>
+                <p> Menores: {{t.tour.feeChild_base || 0 }} {{actualCurrency.currency_code}}</p>
             </td>
             <td>
                 <span 
@@ -78,14 +78,14 @@
                     editable-text='t.fee'
                     e-name='fee'
                     e-form='rowform'
-                >{{t.fee || 0 }}</span>
+                >{{t.fee || 0 }} {{actualCurrency.currency_code}}</span>
             </td>
             <td>
                 <span 
                     editable-text='t.feeChild'
                     e-name='feeChild'
                     e-form='rowform'
-                >{{t.feeChild || 0 }}</span>
+                >{{t.feeChild || 0 }} {{actualCurrency.currency_code}}</span>
             </td>
             <td>
                 <form editable-form name="rowform" onbeforesave="savePrice($data,t)" ng-show="rowform.$visible" class="form-buttons form-inline" >

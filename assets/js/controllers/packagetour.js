@@ -41,6 +41,8 @@ app.controller('packageEditCTL',function($scope,$http,$rootScope){
     			$scope.themarkers[i + x] = $scope.items.day[i].markers[x];
     		}
     	}
+    }else{
+    	$scope.items.day = [];
     }
     if($scope.items.hotel && $scope.items.hotel.length>0){
     	for(var i=0;i<$scope.items.hotel.length;i++){
@@ -48,6 +50,8 @@ app.controller('packageEditCTL',function($scope,$http,$rootScope){
     			$scope.thehotels[i + x] = $scope.items.hotel[i].markers[x];
     		}
     	}
+    }else{
+    	$scope.items.hotel = [];
     }
     $scope.center = {
         lat : 21.1667,
@@ -60,13 +64,15 @@ app.controller('packageEditCTL',function($scope,$http,$rootScope){
 		//console.log($scope.isCollapsed);
 		//console.log($scope.collapsableClass);
 	}
-	$scope.addDay = function(newDay){
+	$scope.addDay = function(newDay,cb){
 		$http({method: 'POST', url: '/packageitem/create',params:newDay}).success(function (day){
 			if(day.type=='day')
             	$scope.items.day.push(day);
             else
             	$scope.items.hotel.push(day);
-            $scope.aply();
+            //$scope.aply();
+            newDay = {};
+            cb();
         });
 	}
 	$scope.updateDays = function(){

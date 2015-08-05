@@ -12,6 +12,7 @@
         $scope.processFields = $scope.processFields || true;
         $scope.pfx = $scope.$parent;
         $scope.label = $rootScope.lang=='es'?'label':'label_en';
+        $scope.msg = $rootScope.lang=='es'?'message':'message_en';
         $scope.translates = $rootScope.translates;
 
         $scope.getSaveStatusClass = function(){
@@ -58,13 +59,16 @@
                     console.log(submitObject);
                     $scope.form.$setPristine();
                     $scope.saveClass = 'fa-check';
+                    $scope.object = {};
 
                 });
             }else{
                 $http({method:'POST',url:$scope.action,data:submitObject}).success(function (obj){
                     //$scope.object = object; //Se comento por error en casos donde varios formHelpers dependen de un mismo objeto.
+                    console.log(submitObject);
                     $scope.form.$setPristine();
                     $scope.saveClass = 'fa-check';
+                    $scope.object = {};
                 });
             }
             
