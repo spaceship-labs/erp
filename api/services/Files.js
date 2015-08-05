@@ -178,6 +178,7 @@ module.exports.getContainerLink = function(next){
     if(adapter){
         adapter.getContainerLink(function(err, link){
             module.exports.containerCloudLink = link || '';
+            console.log('LINK',module.exports.containerCloudLink )
             if(next) return next(err, module.exports.containerCloudLink);
         });
     }else{
@@ -195,7 +196,16 @@ function getAdapterConfig(){
         uploadOptions.apiKey = process.env.CLOUDAPIKEY;
         uploadOptions.region = process.env.CLOUDREGION;
         uploadOptions.container = process.env.CLOUDCONTAINER;
-	return adapterPkgCloud(uploadOptions);
+        return adapterPkgCloud(uploadOptions);
     }
     return false;
 }
+
+module.exports.middleware = function(req, res, next){
+    if(req.url.indexOf('/uploads/') != 0 || Files.containerCloudLink == ''){
+        next();
+    }else{
+        console.log('rackspace')
+        res.redirect(301, module.exports.containerCloudLink + req.url);
+    }
+};

@@ -21,7 +21,7 @@ module.exports = {
     importJson: function(req, res){
         var form = req.params.all(),
         add = {
-            // req: req tarda demasiado si se quiere que se loguee en el panel (notificacion) por obvias razones.
+             //req: req// tarda demasiado si se quiere que se loguee en el panel (notificacion) por obvias razones.
         };
         if(form.model == 'company'){
             add.active = true; 

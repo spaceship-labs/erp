@@ -168,7 +168,9 @@ module.exports = {
     			dir : 'hotels/gallery',
     			profile: 'gallery'
     		},function(e,hotel){
-    			if(e) throw(e);
+    			if(e){
+                    return res.json({success:false});
+                };
     			res.json(formatHotel(hotel));
     		});
     	});

@@ -50,6 +50,7 @@ module.exports = {
 			app.use(passport.initialize());
 			app.use(passport.session());
 			app.use(timeout('60s'));
+			app.use(Files.middleware);
 		}
 
 	}
