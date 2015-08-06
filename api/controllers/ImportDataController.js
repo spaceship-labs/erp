@@ -10,7 +10,7 @@ module.exports = {
         var form = req.params.all(),
             dir = 'tmpImport',
             dirSave = __dirname+'/../../assets/uploads/'+dir+'/';
-        Files.saveFiles(req, {dir: dir}, function(err, files){
+        Files.saveFiles(req, {dir: dir, disableCloud: true }, function(err, files){
             if(err && !files.length) return res.ok({ success:false, error: err.message });
             Import.files.xlsx2Json(dirSave + files[0].filename, function(err, book){
                 if(err) return res.ok({ success:false, error: err.message});

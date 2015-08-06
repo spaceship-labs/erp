@@ -32,7 +32,7 @@ module.exports.saveFiles = function(req,opts,cb){
 			maxBytes:52428800		
 		};
 
-		if(process.env.CLOUDUSERNAME){
+		if(process.env.CLOUDUSERNAME && !opts.disableCloud){
 			uploadOptions.adapter = adapterPkgCloud;
 			uploadOptions.username = process.env.CLOUDUSERNAME;
 			uploadOptions.apiKey = process.env.CLOUDAPIKEY;
