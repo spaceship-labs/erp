@@ -3,7 +3,13 @@ im = require('imagemagick'),
 adapterPkgCloud = require('skipper-pkgcloud'),
 async = require('async'),
 gm = require('gm'),//crops con streams.
-gmIm = gm.subClass({imageMagick:true});
+gmIm = gm.subClass({imageMagick:true}),
+mime  = require('mime'),
+fileTypes2Crop = {
+    'image/jpeg':true,
+    'image/png': true,
+    'image/gif': true
+};
 
 //Names and Saves a File returns de filename
 module.exports.saveFiles = function(req,opts,cb){
@@ -35,6 +41,10 @@ module.exports.saveFiles = function(req,opts,cb){
 			uploadOptions.dirname = '/uploads/' + opts.dir + '/';
 			if(opts.avatar)
 				uploadOptions.after = function(stream, filename, next){
+					var lookup = mime.lookup(filename);
+					if(!fileTypes2Crop[lookup])
+						return next();
+
 					opts.srcData = stream;
 					opts.filename = filename;
 					Files.makeCropsStreams(uploadOptions, opts, next);
@@ -151,6 +161,7 @@ module.exports.makeCropsStreams = function(uploadOptions, opts, cb){
     var sizes = sails.config.images[opts.profile];
     var adapter = adapterPkgCloud(uploadOptions);
     opts.dirSave = '/uploads/'+opts.dir+'/';
+    if(!sizes) return cb();
 
     async.each(sizes,function(size, next){ 
     	var wh = size.split('x');
@@ -178,7 +189,7 @@ module.exports.getContainerLink = function(next){
     if(adapter){
         adapter.getContainerLink(function(err, link){
             module.exports.containerCloudLink = link || '';
-            console.log('LINK',module.exports.containerCloudLink )
+            //console.log('LINK',module.exports.containerCloudLink )
             if(next) return next(err, module.exports.containerCloudLink);
         });
     }else{
@@ -205,7 +216,6 @@ module.exports.middleware = function(req, res, next){
     if(req.url.indexOf('/uploads/') != 0 || Files.containerCloudLink == ''){
         next();
     }else{
-        console.log('rackspace')
         res.redirect(301, module.exports.containerCloudLink + req.url);
     }
 };

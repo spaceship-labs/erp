@@ -6,6 +6,9 @@
  * in each of your models.
  */
 
+
+var async = require('async');
+
 module.exports.models = {
  
   // Your app's default connection.
@@ -28,8 +31,8 @@ module.exports.models = {
   },
   attributes : {
     updateAvatar : function(req,opts,cb){
-      var async = require('async');
-      object = this;
+      //var async = require('async');
+      var object = this;
       opts.file = object.icon; 
       if(process.env.CLOUDUSERNAME){
         opts.avatar = true;
@@ -38,8 +41,8 @@ module.exports.models = {
             if(err) return cb(err);
             object.icon = files[0];
             object.save(cb);
-	    if(opts.file) 
-	    	Files.removeFile(opts,function(err){
+            if(opts.file) 
+                Files.removeFile(opts,function(err){
 	    	});
         });
         return;
@@ -72,10 +75,12 @@ module.exports.models = {
       object.save(cb);
     },
     addFiles : function(req,opts,cb){
-        var async = require('async');
-        object = this;
+        var object = this,
         objectFiles = object.files ? object.files : [];
         req.onProgress = getOnProgress(req);
+        if(process.env.CLOUDUSERNAME){
+            opts.avatar = true;
+        }
         Files.saveFiles(req,opts,function(e,files){
             //console.log('files');console.log(files);console.log('files END');
             if(e) return cb(e,files);
@@ -84,7 +89,7 @@ module.exports.models = {
                 var callback = req.onProgress.nextElement(files,async_callback);
                 objectFiles.push(file);
                 opts.filename = file.filename;
-                if(file.typebase == 'image')
+                if(file.typebase == 'image' && !opts.avatar)
                     Files.makeCrops(req,opts,callback);
                 else
                     callback(null,file);
@@ -98,7 +103,7 @@ module.exports.models = {
         });
     },
     removeFiles : function(req,opts,cb){
-      var async = require('async');
+      //var async = require('async');
       var object = this;      
       var files = opts.files ? opts.files : [];
       files = Array.isArray(files) ? files : [files];
