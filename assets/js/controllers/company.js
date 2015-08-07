@@ -9,8 +9,10 @@ app.controller('companyCTL',function($scope,$http,$rootScope){
     $scope.getInfo = function(company){
         var r = {};
         r[$rootScope.translates.c_adress] = company.address;
-        r["Apps"] = company.apps.join(', ');
-        r[$rootScope.translates.c_baseCurrency] = company.base_currency;
+        if(company.apps){
+            r["Apps"] = company.apps.join(', ');
+            r[$rootScope.translates.c_baseCurrency] = company.base_currency;
+        }
         return r;
     };
 
@@ -157,7 +159,7 @@ app.controller('companyEditCTL',function($scope,$http){
         if( type == 'transfer' )
             form.location = $scope.thelocation;
         $http({method: 'POST', url: '/companyproduct/addproducttocompany',data:form}).success(function(result){
-            console.log(result);
+            //console.log(result);
             if( type == 'transfer' )
                 angular.extend($scope.transfers,result)
             else
@@ -175,8 +177,8 @@ app.controller('companyEditCTL',function($scope,$http){
         console.log(params);
         $http({method: 'POST', url: '/companyproduct/find',data:params}).success(function(result){
             $scope[spVar] = result;
-            console.log('products: ' + type);
-            console.log(result);
+            //console.log('products: ' + type);
+            //console.log(result);
         });
     };
     $scope.getProducts('tour','tours',0);

@@ -1,5 +1,5 @@
 <div class='row-fluid'>
-    <div class='span6'>
+    <div class='span12'>
         <h4 class="widgettitle"><%= __('order-info')%></h4>
         <div class='widgetcontent nopadding'>
             <p>
@@ -31,76 +31,54 @@
                         typeahead="obj as obj.name for obj in getAirlines($viewValue)" >
                 </span>
             </p>
-            <div class='row'>
-                <div class='col-sm-12 col-xs-6'>
-                    <p>
-                        <label><%= __('order-servicio')%></label>
-                        <span class='field'><select ng-change="updatePriceTransfer()" ng-options='obj as obj.transfer.name for obj in transfers track by obj.id' ng-model='transfer.transfer' ></select></span>
-                    </p>
-                </div>
-                <div class='col-sm-12 col-xs-6'>
-                    <p>
-                        <label><%= __('order_service_type')%></label>
-                        <span class='field'><select ng-options='obj.value as obj.label for obj in service_types ' ng-model='transfer.service_type' ></select></span>
-                    </p>
-                </div>
-            </div>
-            <div class='row'>
-                <div class='col-sm-12 col-xs-6'>
-                    <p>
-                        <label><%= __('order-estado')%></label>
-                        <span class='field'><select ng-options='obj as obj.name for obj in hrevState' ng-model='transfer.state' ></select></span>
-                    </p>
-                </div>
-                <div class='col-sm-12 col-xs-6'>
-                    <p>
-                        <label><%= __('order-pago')%></label>
-                        <span class='field'><select ng-options='obj as obj.name for obj in hrevPayment' ng-model='transfer.payment_method' ></select></span>
-                    </p>
-                </div>
-            </div>
+            <p>
+                <label><%= __('order-servicio')%></label>
+                <span class='field'><select ng-change="updatePriceTransfer()" ng-options='obj as obj.transfer.name for obj in transfers track by obj.id' ng-model='transfer.transfer' ></select></span>
+            </p>
+            <p>
+                <label><%= __('order_service_type')%></label>
+                <span class='field'><select ng-options='obj.value as obj.label for obj in service_types ' ng-model='transfer.service_type' ></select></span>
+            </p>
+
+            <p>
+                <label><%= __('order-estado')%></label>
+                <span class='field'><select ng-options='obj as obj.name for obj in hrevState' ng-model='transfer.state' ></select></span>
+            </p>
+            <p>
+                <label><%= __('order-pago')%></label>
+                <span class='field'><select ng-options='obj as obj.name for obj in hrevPayment' ng-model='transfer.payment_method' ></select></span>
+            </p>
             <p ng-show="transfer.payment_method.handle=='creditcard'">
                 <label><%= __('order-autorizacion')%></label>
                 <span class='field'><input type='text' name='autorization_code' ng-model="transfer.autorization_code" /></span>
             </p>
-        </div>
-    </div>
-    <div class='span6'>
-        <h4 class="widgettitle"><%= __('order-info')%></h4>
-        <div class='widgetcontent nopadding'>
             <p>
                 <label><%= __('order-pax')%></label>
                 <span class='field'><select ng-change="updatePriceTransfer()" ng-options='obj for obj in pax' ng-model='transfer.pax' ></select></span>
                 <!--<input type='text' name='pax' ng-model="transfer.pax" />-->
             </p>
-            <div class='row'>
-                <div class='col-sm-12 col-xs-6'>
-                    <p>
-                        <label><%= __('order-origen')%></label>
-                        <span class='field'>
-                            <span class="radio">
-                                <input ng-change='updateDatesFormat()' ng-model="transfer.origin" type="radio" name="origin" value="hotel" checked> Hotel
-                            </span>
-                            <span class="radio">
-                                <input ng-change='updateDatesFormat()' ng-model="transfer.origin" type="radio" name="origin" value="airport"> Aeropuerto
-                            </span>
-                        </span>
-                    </p>
-                </div>
-                <div class='col-sm-12 col-xs-6'>
-                    <p>
-                        <label><%= __('order-tipo-viaje')%> </label>
-                        <span class='field'>
-                            <span class="radio">
-                                <input ng-change='updatePriceTransfer()' ng-model="transfer.type" type="radio" name="transtype" value="round_trip"> <%= __('order_tv_rt')%>
-                            </span>
-                            <span class="radio">
-                                <input ng-change='updatePriceTransfer()' ng-model="transfer.type" type="radio" name="transtype" value="one_way" checked> <%= __('order_tv_ow')%>
-                            </span>
-                        </span>
-                    </p>
-                </div>
-            </div>
+            <p>
+                <label><%= __('order-origen')%></label>
+                <span class='field'>
+                    <span class="radio">
+                        <input ng-change='updateDatesFormat()' ng-model="transfer.origin" type="radio" name="origin" value="hotel" checked> Hotel
+                    </span>
+                    <span class="radio">
+                        <input ng-change='updateDatesFormat()' ng-model="transfer.origin" type="radio" name="origin" value="airport"> Aeropuerto
+                    </span>
+                </span>
+            </p>
+            <p>
+                <label><%= __('order-tipo-viaje')%> </label>
+                <span class='field'>
+                    <span class="radio">
+                        <input ng-change='updatePriceTransfer()' ng-model="transfer.type" type="radio" name="transtype" value="round_trip"> <%= __('order_tv_rt')%>
+                    </span>
+                    <span class="radio">
+                        <input ng-change='updatePriceTransfer()' ng-model="transfer.type" type="radio" name="transtype" value="one_way" checked> <%= __('order_tv_ow')%>
+                    </span>
+                </span>
+            </p>
             <p>
                 <label>Moneda</label>
                 <span class='field'>
@@ -125,7 +103,7 @@
     </div>
 </div>
 <div class='row-fluid'>
-    <div class='span6 dtfa-container {{dtfa[0]?"":"disabled"}}'>
+    <div class='span12 dtfa-container {{dtfa[0]?"":"disabled"}}'>
         <h4 class="widgettitle"><%= __('order-vuelof-llegada')%></h4>
         <div class='widgetcontent nopadding'>
             <p>
@@ -157,7 +135,9 @@
             </p>-->
         </div>
     </div>
-    <div class='span6 dtfa-container {{dtfa[1]?"":"disabled"}}'>
+</div>
+<div class='row-fluid'>
+    <div class='span12 dtfa-container {{dtfa[1]?"":"disabled"}}'>
         <h4 class="widgettitle"><%= __('order-vuelof-salida')%></h4>
         <div class='widgetcontent nopadding'>
             <p>
@@ -179,20 +159,21 @@
                 <label><%= __('order-vuelo-salida')%> </label>
                 <span class='field'><input ng-model="transfer.departure_fly" type='text' name='departure_fly' /></span>
             </p>
-            <div class='row'>
-                <div class='col-sm-12 col-xs-6'>
-                    <p>
-                        <label><%= __('order-hora-salida')%></label>
-                        <span class='field'><timepicker ng-model="transfer.departure_time" ng-change="getpickuptime()" hour-step="1" minute-step="1" show-meridian="ismeridian"></timepicker></span>
-                    </p>
-                </div>
-                <div class='col-sm-12 col-xs-6'>
-                    <p>
-                        <label><%= __('order-pickup')%></label>
-                        <span class='field'><timepicker ng-model="transfer.departurepickup_time" hour-step="1" minute-step="1" show-meridian="ismeridian"></timepicker></span>
-                    </p>
-                </div>
-            </div>
+            <p>
+                <label><%= __('order-hora-salida')%></label>
+                <span class='field'><timepicker ng-model="transfer.departure_time" ng-change="getpickuptime()" hour-step="1" minute-step="1" show-meridian="ismeridian"></timepicker></span>
+            </p>
+            <p>
+                <label><%= __('order-pickup')%></label>
+                <span class='field'><timepicker ng-model="transfer.departurepickup_time" hour-step="1" minute-step="1" show-meridian="ismeridian"></timepicker></span>
+            </p>
+            <p>
+                            <label></label>
+                            <span class='field'>
+                                <a ng-click="setSteps('prev',false)" class='btn btn-primary' >Anterior</a>
+                                <a ng-click="setSteps('next',false)" class='btn btn-primary' >Siguiente</a>
+                            </span>
+                        </p>
         </div>
     </div>
 </div>

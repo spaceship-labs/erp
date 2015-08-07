@@ -176,9 +176,15 @@ app.controller('orderCTL',function($scope,$http,$window,$upload,$rootScope){
     };
 });
 app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
+    $scope.steps = 1;
+    $scope.setSteps = function(action,set){
+        if(set)
+            $scope.steps = set;
+        else
+            $scope.steps += action=='next'?1:-1;
+    };
     $scope.company = company;
     $scope.companies = [];
-    console.log(company);
     $scope.thecompany = $scope.company;
     $scope.alertM = { show: false, client : false, allEmpty: false };
     //$scope.clients_ = clients_;

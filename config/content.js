@@ -915,6 +915,7 @@ module.exports.content = {
 			handle : 'address',
 			type : 'text',
 			required : true,
+			default: '',
 		},
 		{
 			label : 'Código Postal',
@@ -929,6 +930,7 @@ module.exports.content = {
 			handle : 'base_currency',
 			object : 'currencies',
 			required : true,
+			default:'Pesos'
 		},
 		{
 			label : 'Aplicaciones',

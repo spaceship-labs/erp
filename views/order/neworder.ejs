@@ -17,132 +17,150 @@
             <div class='clear'></div>
         </div>
     </div><br>
-	<div class='row stdform stdform2'>
-        <div class='{{USClient?"col-md-12":"col-md-6"}}'><div class="widgetbox personal-information">
-            <div class='headtitle'>
-                <div class='btn-group'><button class="btn btn-primary pull-right" data-toggle="modal" data-target="#myModal"><i class='fa fa-plus'></i> <%= __('order-nuevo-cliente')%></button></div>
-                <h4 class="widgettitle"><%= __('order-cliente')%></h4>
-            </div>
-            <div class='widgetcontent nopadding'>
-                <p>
-                    <label><%= __('order-selecc')%></label>
-                    <span class='field'>
-                        <!--<select chosen ng-options='obj as obj.name for obj in clients_' ng-model='client' ></select>-->
-                        <input type="text" class="form-control" 
-                        placeholder="<%= __('order-selecc')%>"
-                        ng-model="client" 
-                        typeahead-editable='true'
-                        typeahead="obj as obj.name for obj in getClients($viewValue)" >
-                    </span>
-                </p>
-                <p>
-                    <label><%= __('order_userClient') %></label>
-                    <span class='field'><input type='checkbox' ng-model='USClient' ></span>
-                </p>
-            </div>
-        </div></div>
-        <div class='col-md-6' ng-hide='USClient'>
-            <div class='headtitle'>
-                <div class='btn-group'><a ng-click="saveContact()" class="btn btn-primary pull-right"><i class='fa fa-save'></i> <%= __('order_create') %></a></div>
-                <h4 class="widgettitle"><%= __('order_createContact') %></h4>
-            </div>
-            <div class='widgetcontent nopadding'>
-                <p>
-                    <label><%= __('order_name') %></label>
-                    <span class='field'><input type='text' ng-model="contact.name"></span>
-                </p>
-                <p>
-                    <label><%= __('order_mail') %></label>
-                    <span class='field'><input type='text' ng-model="contact.email"></span>
-                </p>
-                <p>
-                    <label><%= __('order_phone') %></label>
-                    <span class='field'><input type='text' ng-model="contact.phone"></span>
-                </p>
-            </div>
-        </div>
-    </div>
-    <!-- Transfer section -->
     <div class='row'>
-        <form class='stdform stdform2 col-md-12' action='' name='' method='post'>
-            <div class='headtitle'>
-                <div class='btn-group'>
-                    <a class="btn btn-primary pull-right" ng-click="isCtransfer = !isCtransfer"><i class='fa {{isCtransfer?"fa-plus":"fa-minus"}}'></i></a>
-                    <a class="btn btn-primary pull-right" ng-click="saveAll()"><i class='fa fa-save'></i> <%= __('order-reservar')%> </a>
-                </div>
-                <h4 class="widgettitle"><%= __('order-reservar-tras')%> </h4>
-            </div>
-            <div collapse="isCtransfer">
-                <%- partial('inputsTransfer') -%> 
-            </div>
-        	<div class="clearfix"></div>
-        </form>
-    </div>
-    <!-- Tours section -->
-    <div class='row'>
-        <form class='stdform stdform2 col-md-6' action='' name='tours' method='post'>
-            <div class='headtitle'>
-                <div class='btn-group'>
-                    <a class="btn btn-primary pull-right" ng-click="isCtour = !isCtour"><i class='fa {{!isCtour?"fa-plus":"fa-minus"}}'></i></a>
-                </div>
-                <h4 class="widgettitle"><%= __('order-reservar-tour')%></h4>
-            </div>
-            <div collapse="!isCtour">
-                <div class='row'>
-                    <div class='col-md-10'>
+        <div class='col-md-8'>
+        	<div class='row stdform stdform2'>
+                <div class='col-md-12'><div class="widgetbox personal-information">
+                    <div class='headtitle'>
+                        <div class='btn-group'><button class="btn btn-primary pull-right" data-toggle="modal" data-target="#myModal"><i class='fa fa-plus'></i> <%= __('order-nuevo-cliente')%></button></div>
+                        <h4 class="widgettitle"><%= __('order-cliente')%></h4>
+                    </div>
+                    <div class='widgetcontent nopadding'><div collapse="!(steps==1?true:false)">
                         <p>
-                            <input type="text" class="form-control" 
-                                placeholder="Tours"
-                                ng-model="addedTour" 
+                            <label><%= __('order-selecc')%></label>
+                            <span class='field'>
+                                <!--<select chosen ng-options='obj as obj.name for obj in clients_' ng-model='client' ></select>-->
+                                <input type="text" class="form-control" 
+                                placeholder="<%= __('order-selecc')%>"
+                                ng-model="client" 
                                 typeahead-editable='true'
-                                typeahead="obj as ( thecompany.adminCompany?obj.name:obj.tour.name ) for obj in getTours($viewValue)" >
-                            <!--<input type="text" class="form-control" 
-                                ng-if="thecompany.adminCompany"
-                                placeholder="Tours"
-                                ng-model="addedTour" 
-                                typeahead-editable='true'
-                                typeahead="obj as obj.name for obj in getTours($viewValue)" >
-                            <select chosen ng-options='obj as obj.name for obj in allTours' ng-model='addedTour' ></select>-->
+                                typeahead="obj as obj.name for obj in getClients($viewValue)" >
+                            </span>
+                        </p>
+                        <p>
+                            <label><%= __('order_userClient') %></label>
+                            <span class='field'><input type='checkbox' ng-model='USClient' ></span>
+                        </p>
+                        <p>
+                            <label></label>
+                            <span class='field'><a ng-click="setSteps('next',false)" class='btn btn-primary' >Siguiente</a></span>
+                        </p>
+                    </div></div>
+                </div></div>
+                <!--<div class='col-md-6' ng-hide='USClient'>
+                    <div class='headtitle'>
+                        <div class='btn-group'><a ng-click="saveContact()" class="btn btn-primary pull-right"><i class='fa fa-save'></i> <%= __('order_create') %></a></div>
+                        <h4 class="widgettitle"><%= __('order_createContact') %></h4>
+                    </div>
+                    <div class='widgetcontent nopadding'>
+                        <p>
+                            <label><%= __('order_name') %></label>
+                            <span class='field'><input type='text' ng-model="contact.name"></span>
+                        </p>
+                        <p>
+                            <label><%= __('order_mail') %></label>
+                            <span class='field'><input type='text' ng-model="contact.email"></span>
+                        </p>
+                        <p>
+                            <label><%= __('order_phone') %></label>
+                            <span class='field'><input type='text' ng-model="contact.phone"></span>
                         </p>
                     </div>
-                    <div class='col-md-2'>
-                        <a ng-click='addTH("tour")' class='btn-primary btn pull-right'><%= __('order-agregar')%></a>
+                </div>-->
+            </div>
+            <!-- Transfer section -->
+            <div class='row'>
+                <form class='stdform stdform2 col-md-12' action='' name='' method='post'>
+                    <div class='headtitle'>
+                        <div class='btn-group'>
+                            <a class="btn btn-primary pull-right" ng-click="isCtransfer = !isCtransfer"><i class='fa {{!isCtransfer?"fa-plus":"fa-minus"}}'></i></a>
+                            <!--<a class="btn btn-primary pull-right" ng-click="saveAll()"><i class='fa fa-save'></i> <%= __('order-reservar')%> </a>-->
+                        </div>
+                        <h4 class="widgettitle"><%= __('order-reservar-tras')%> </h4>
                     </div>
-                </div><br >
-                <div class='isCtourContainer'>
-                    <div ng-repeat='item in reservations.tours'>
-                        <%- partial('inputsTour') -%> 
+                    <div collapse="!(steps==2?true:false)">
+                        <%- partial('inputsTransfer') -%> 
                     </div>
+                	<div class="clearfix"></div>
+                </form>
+            </div>
+            <!-- Tours section -->
+            <div class='row'>
+                <form class='stdform stdform2 col-md-12' action='' name='tours' method='post'>
+                    <div class='headtitle'>
+                        <div class='btn-group'>
+                            <a class="btn btn-primary pull-right" ng-click="isCtour = !isCtour"><i class='fa {{!isCtour?"fa-plus":"fa-minus"}}'></i></a>
+                        </div>
+                        <h4 class="widgettitle"><%= __('order-reservar-tour')%></h4>
+                    </div>
+                    <div collapse="!isCtour">
+                        <div class='row'>
+                            <div class='col-md-10'>
+                                <p>
+                                    <input type="text" class="form-control" 
+                                        placeholder="Tours"
+                                        ng-model="addedTour" 
+                                        typeahead-editable='true'
+                                        typeahead="obj as ( thecompany.adminCompany?obj.name:obj.tour.name ) for obj in getTours($viewValue)" >
+                                    <!--<input type="text" class="form-control" 
+                                        ng-if="thecompany.adminCompany"
+                                        placeholder="Tours"
+                                        ng-model="addedTour" 
+                                        typeahead-editable='true'
+                                        typeahead="obj as obj.name for obj in getTours($viewValue)" >
+                                    <select chosen ng-options='obj as obj.name for obj in allTours' ng-model='addedTour' ></select>-->
+                                </p>
+                            </div>
+                            <div class='col-md-2'>
+                                <a ng-click='addTH("tour")' class='btn-primary btn pull-right'><%= __('order-agregar')%></a>
+                            </div>
+                        </div><br >
+                        <div class='isCtourContainer'>
+                            <div ng-repeat='item in reservations.tours'>
+                                <%- partial('inputsTour') -%> 
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </form>
+            </div>
+            <div class='row'>
+            <!-- Hotel section -->
+                <form class='stdform stdform2 col-md-12' action='' name='' method='post'>
+                    <div class='headtitle'>
+                        <div class='btn-group'>
+                            <a class="btn btn-primary pull-right" ng-click="isChotel = !isChotel"><i class='fa {{!isChotel?"fa-plus":"fa-minus"}}'></i></a>
+                        </div>
+                        <h4 class="widgettitle"><%= __('order-reservar-hotel')%></h4>
+                    </div>
+                    <div collapse="!isChotel">
+                        <div class='row'>
+                            <div class='col-md-10'>
+                                <p><select chosen ng-options='obj as obj.name for obj in hotels' ng-model='addedHotel' ></select></p>
+                            </div>
+                            <div class='col-md-2'>
+                                <a ng-click='addTH("hotel")' class='btn-primary btn pull-right'><%= __('order-agregar')%></a>
+                            </div>
+                        </div><br >
+                        <div class='isCHotelContainer'>
+                            <div ng-repeat='item in reservations.hotels'>
+                                <%- partial('inputsHotel') -%> 
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </form>
+            </div>
+        </div>
+        <div class='col-md-4'>
+            <div class='widgetbox'>
+                <h4 class="widgettitle">Información de pago</h4>
+                <div class="widgetcontent">
+                    aquí va la columna de precios
                 </div>
             </div>
-            <div class="clearfix"></div>
-        </form>
-        <!-- Hotel section -->
-        <form class='stdform stdform2 col-md-6' action='' name='' method='post'>
-            <div class='headtitle'>
-                <div class='btn-group'>
-                    <a class="btn btn-primary pull-right" ng-click="isChotel = !isChotel"><i class='fa {{!isChotel?"fa-plus":"fa-minus"}}'></i></a>
-                </div>
-                <h4 class="widgettitle"><%= __('order-reservar-hotel')%></h4>
-            </div>
-            <div collapse="!isChotel">
-                <div class='row'>
-                    <div class='col-md-10'>
-                        <p><select chosen ng-options='obj as obj.name for obj in hotels' ng-model='addedHotel' ></select></p>
-                    </div>
-                    <div class='col-md-2'>
-                        <a ng-click='addTH("hotel")' class='btn-primary btn pull-right'><%= __('order-agregar')%></a>
-                    </div>
-                </div><br >
-                <div class='isCHotelContainer'>
-                    <div ng-repeat='item in reservations.hotels'>
-                        <%- partial('inputsHotel') -%> 
-                    </div>
-                </div>
-            </div>
-            <div class="clearfix"></div>
-        </form>
-    </div>
+        </div>
+    </div><!-- Termina row reservas y columna de precios -->
     <div class='row'>
         <div class='col-md-12'>
             <a class="btn btn-primary btn-big pull-right full-sm" ng-click="saveAll()"><i class='fa fa-save'></i> <%= __('order-reservar')%> </a>
