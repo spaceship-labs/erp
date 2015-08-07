@@ -175,7 +175,7 @@ module.exports.makeCropsStreams = function(uploadOptions, opts, cb){
     }, cb);
 };
 
-module.exports.containerCloudLink = null;
+module.exports.containerCloudLink = '';
 module.exports.getContainerLink = function(next){
     //run in bootstrap
     //or '' if not setting

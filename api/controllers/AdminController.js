@@ -36,6 +36,9 @@ module.exports = {
 			Exchange_rates.find({
 				$query:{},orderby:{updatedAt:-1}
 			}).exec(function(err,Ex){
+				if(err || !Ex.length){
+					return res.json({"error":"No app_id for exchange rates"});
+				}
 				for(var i=0;i<Ex.length;i++){
 					var cId = Ex[i].companyId;
 					if(!cId || cId==select_company){
@@ -55,9 +58,9 @@ module.exports = {
 							return c.id;
 						}).indexOf(current.id)!=-1 || comp.base_currency.id==current.id){
 							if(current.id!=comp.base_currency.id){	
-								console.log(current,comp.base_currency);
+								//console.log(current,comp.base_currency);
 								var change = mon(1).from(comp.base_currency.currency_code).to(current.currency_code).toFixed(6);
-								console.log(change);
+								//console.log(change);
 								var comission = comp.currency_comission && (change*(1+comp.currency_comission/100));
 								data[current.name] = {
 									change: change

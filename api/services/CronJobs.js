@@ -1,5 +1,6 @@
 var cron = require('cron').CronJob;
 module.exports.init = function(){
+	ExchangeRates.getOneData();//if not data get...
 	var cronJobs = [
 		{
 			fn: function(d){
