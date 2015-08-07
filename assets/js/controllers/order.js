@@ -182,7 +182,18 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
             $scope.steps = set;
         else
             $scope.steps += action=='next'?1:-1;
+        $scope.steps = $scope.steps>4||$scope.steps<1?1:$scope.steps;
     };
+    $scope.theTotal = 0;
+    var updateTotal = function(){
+        var total = 0;
+        total += $scope.transfer.fee;
+        for(var x in $scope.reservations.tours)
+            total += $scope.reservations.tours[x].fee;
+        for(var x in $scope.reservations.hotels)
+            total += $scope.reservations.hotels[x].fee;
+        $scope.theTotal = total;
+    }
     $scope.company = company;
     $scope.companies = [];
     $scope.thecompany = $scope.company;
@@ -368,6 +379,7 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
         item.fee += item.tour.feeChild&&item.kidPax?item.tour.feeChild*item.kidPax:0;
         if( item.currency && $scope.thecompany.base_currency.id != item.currency.id )
             item.fee *= $scope.thecompany.exchange_rates[item.currency.id].sales;
+        updateTotal();
     }
     //Obtiene el precio cada que se hace una modificación elegida
     $scope.updatePriceTransfer = function(){
@@ -389,6 +401,7 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
             transfer.arrivalpickup_time = getpickuptime(transfer,'arrival');
         if( transfer.departure_time )
             transfer.departurepickup_time = getpickuptime(transfer,'departure');
+        updateTotal();
     };
     $scope.getpickuptime = function(){
         var transfer = $scope.transfer;

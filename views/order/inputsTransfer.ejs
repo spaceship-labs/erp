@@ -1,7 +1,7 @@
 <div class='row-fluid'>
     <div class='span12'>
-        <h4 class="widgettitle"><%= __('order-info')%></h4>
         <div class='widgetcontent nopadding'>
+            <h4 class="widgettitle"><%= __('order-info')%></h4>
             <p>
                 <label><%= __('order-hotel')%></label>
                 <span class='field'>
@@ -99,81 +99,73 @@
             <!--<p>
                 <label><%= __('order_currency')%></label>
             </p>-->
-        </div>
-    </div>
-</div>
-<div class='row-fluid'>
-    <div class='span12 dtfa-container {{dtfa[0]?"":"disabled"}}'>
-        <h4 class="widgettitle"><%= __('order-vuelof-llegada')%></h4>
-        <div class='widgetcontent nopadding'>
-            <p>
-                <label><%= __('order-llegada')%></label>
-                <span class='field'>
-                    <span class='input-group calendar-container'>
-                        <input is-open="open[0]" ng-model='transfer.arrival_date' id="arrival-date" datepicker-popup ng-change='getpickuptime()' />
-                        <span class="input-group-btn">
-                            <button type="button" class="btn btn-default" ng-click="open($event,0)"><i class="fa fa-calendar"></i></button>
-                        </span>
-                    </span>
-                </span>
-            </p>
-            <p>
-                <label><%= __('order_a_airline')%> </label>
-                <span class='field'><input ng-model="transfer.arrival_airline" type='text' name='arrival_airline' /></span>
-            </p>
-            <p>
-                <label><%= __('order-vuelo-llegada')%></label>
-                <span class='field'><input ng-model="transfer.arrival_fly" type='text' name='arrival_fly' /></span>
-            </p>
-            <p>
-                <label><%= __('order-hora')%></label>
-                <span class='field'><timepicker ng-model="transfer.arrival_time" ng-change="getpickuptime()" hour-step="1" minute-step="1" show-meridian="ismeridian"></timepicker></span>
-            </p>
-            <!--<p>
-                <label><%= __('order-pickup')%></label>
-                <span class='field'><timepicker ng-model="transfer.arrivalpickup_time" ng-change="" hour-step="1" minute-step="1" show-meridian="ismeridian"></timepicker></span>
-            </p>-->
-        </div>
-    </div>
-</div>
-<div class='row-fluid'>
-    <div class='span12 dtfa-container {{dtfa[1]?"":"disabled"}}'>
-        <h4 class="widgettitle"><%= __('order-vuelof-salida')%></h4>
-        <div class='widgetcontent nopadding'>
-            <p>
-                <label><%= __('order-fecha-salida')%></label>
-                <span class='field'>
-                    <span class='input-group calendar-container'>
-                        <input is-open="open[1]" ng-model='transfer.departure_date' datepicker-popup ng-change='getpickuptime()' />
-                        <span class="input-group-btn">
-                            <button type="button" class="btn btn-default" ng-click="open($event,1)"><i class="fa fa-calendar"></i></button>
-                        </span>
-                    </span>
-                </span>
-            </p>
-            <p>
-                <label><%= __('order_d_airline')%> </label>
-                <span class='field'><input ng-model="transfer.departure_airline" type='text' name='departure_airline' /></span>
-            </p>
-            <p>
-                <label><%= __('order-vuelo-salida')%> </label>
-                <span class='field'><input ng-model="transfer.departure_fly" type='text' name='departure_fly' /></span>
-            </p>
-            <p>
-                <label><%= __('order-hora-salida')%></label>
-                <span class='field'><timepicker ng-model="transfer.departure_time" ng-change="getpickuptime()" hour-step="1" minute-step="1" show-meridian="ismeridian"></timepicker></span>
-            </p>
-            <p>
-                <label><%= __('order-pickup')%></label>
-                <span class='field'><timepicker ng-model="transfer.departurepickup_time" hour-step="1" minute-step="1" show-meridian="ismeridian"></timepicker></span>
-            </p>
-            <p>
-                            <label></label>
-                            <span class='field'>
-                                <a ng-click="setSteps('prev',false)" class='btn btn-primary' >Anterior</a>
-                                <a ng-click="setSteps('next',false)" class='btn btn-primary' >Siguiente</a>
+            <div class=' dtfa-container {{dtfa[0]?"":"disabled"}}' ng-show='dtfa[0]?true:false'>
+                <h4 class="widgettitle"><%= __('order-vuelof-llegada')%></h4>
+                <p>
+                    <label><%= __('order-llegada')%></label>
+                    <span class='field'>
+                        <span class='input-group calendar-container'>
+                            <input is-open="open[0]" ng-model='transfer.arrival_date' id="arrival-date" datepicker-popup ng-change='getpickuptime()' />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-click="open($event,0)"><i class="fa fa-calendar"></i></button>
                             </span>
-                        </p>
+                        </span>
+                    </span>
+                </p>
+                <p>
+                    <label><%= __('order_a_airline')%> </label>
+                    <span class='field'><input ng-model="transfer.arrival_airline" type='text' name='arrival_airline' /></span>
+                </p>
+                <p>
+                    <label><%= __('order-vuelo-llegada')%></label>
+                    <span class='field'><input ng-model="transfer.arrival_fly" type='text' name='arrival_fly' /></span>
+                </p>
+                <p>
+                    <label><%= __('order-hora')%></label>
+                    <span class='field'><timepicker ng-model="transfer.arrival_time" ng-change="getpickuptime()" hour-step="1" minute-step="1" show-meridian="ismeridian"></timepicker></span>
+                </p>
+                <!--<p>
+                    <label><%= __('order-pickup')%></label>
+                    <span class='field'><timepicker ng-model="transfer.arrivalpickup_time" ng-change="" hour-step="1" minute-step="1" show-meridian="ismeridian"></timepicker></span>
+                </p>-->
+            </div>
+            <div class='dtfa-container {{dtfa[1]?"":"disabled"}}' ng-show='dtfa[1]?true:false'>
+                <h4 class="widgettitle"><%= __('order-vuelof-salida')%></h4>
+                <p>
+                    <label><%= __('order-fecha-salida')%></label>
+                    <span class='field'>
+                        <span class='input-group calendar-container'>
+                            <input is-open="open[1]" ng-model='transfer.departure_date' datepicker-popup ng-change='getpickuptime()' />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-click="open($event,1)"><i class="fa fa-calendar"></i></button>
+                            </span>
+                        </span>
+                    </span>
+                </p>
+                <p>
+                    <label><%= __('order_d_airline')%> </label>
+                    <span class='field'><input ng-model="transfer.departure_airline" type='text' name='departure_airline' /></span>
+                </p>
+                <p>
+                    <label><%= __('order-vuelo-salida')%> </label>
+                    <span class='field'><input ng-model="transfer.departure_fly" type='text' name='departure_fly' /></span>
+                </p>
+                <p>
+                    <label><%= __('order-hora-salida')%></label>
+                    <span class='field'><timepicker ng-model="transfer.departure_time" ng-change="getpickuptime()" hour-step="1" minute-step="1" show-meridian="ismeridian"></timepicker></span>
+                </p>
+                <p>
+                    <label><%= __('order-pickup')%></label>
+                    <span class='field'><timepicker ng-model="transfer.departurepickup_time" hour-step="1" minute-step="1" show-meridian="ismeridian"></timepicker></span>
+                </p>
+            </div>
+            <p>
+                <label></label>
+                <span class='field'>
+                    <a ng-click="setSteps('prev',false)" class='btn btn-primary' >Anterior</a>
+                    <a ng-click="setSteps('next',false)" class='btn btn-primary' >Siguiente</a>
+                </span>
+            </p>
         </div>
     </div>
 </div>

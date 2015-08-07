@@ -1026,12 +1026,6 @@ module.exports.content = {
             required : true
         },
         {
-            label : 'Direccion',
-            label_en : 'Address',
-            handle : 'address',
-            type : 'text'
-        },
-        {
             label : 'Teléfono',
             label_en : 'Phone',
             handle : 'phone',
@@ -1045,30 +1039,6 @@ module.exports.content = {
             type : 'text',
             required : true
         },
-        {
-            label : 'Ciudad',
-            label_en : 'City',
-            handle : 'city',
-            type : 'text'
-        },
-        {
-            label : 'Estado',
-            label_en : 'State',
-            handle : 'state',
-            type : 'text'
-        },
-        {
-            label : 'Pais',
-            label_en : 'Country',
-            handle : 'country',
-            type : 'text'
-        },
-        {
-            label : 'Comentarios',
-            label_en : 'Comments',
-            handle : 'comments',
-            type : 'textarea'
-        }
     ]
     ,client : [
         {
