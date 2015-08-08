@@ -45,34 +45,32 @@ module.exports = {
         }
     }
 	, edit: function(req,res){
-		var id = req.params.id;
-        //sails.controllers.admin.currenciesJson(req,res,function(currencies){
-		Company.findOne({id:id}).populate('users').populate('hotels').populate('taxes').populate('currencies').exec(function(err,company){
-			if(err) throw err;
-            //console.log(company.taxes);
-			User.find().exec(function(err,users){
-                Hotel.find().exec(function(err,hotels){
-    				Common.view(res.view,{
-    					mycompany:company || {}
-                        ,users:users || []
-                        ,hotels:hotels || []
-                        //,currencies:currencies || []
-                        ,currencies : []
-    					,apps: sails.config.apps
-    					,page:{
-    						name:req.__('sc_companies')
-    						,icon:'fa fa-building'		
-    						,controller : 'company.js'		
-    					},
-                        breadcrumb : [
-                            {label : req.__('sc_companies'), url : '/company/'},
-                            {label : company.name}
-                        ],
-    				},req);
+        var id = req.params.id;
+        Currency.find().exec(function(err, currencies){
+            Company.findOne({id:id}).populate('users').populate('hotels').populate('taxes').populate('currencies').exec(function(err,company){
+                //if(err) throw err;
+                User.find().exec(function(err,users){
+                    Hotel.find().exec(function(err,hotels){
+                        Common.view(res.view,{
+                            mycompany:company || {}
+                            ,users:users || []
+                            ,hotels:hotels || []
+                            ,currencies : currencies || []
+                            ,apps: sails.config.apps
+                            ,page:{
+                                name:req.__('sc_companies')
+                                ,icon:'fa fa-building'
+                                ,controller : 'company.js'		
+                            },
+                            breadcrumb : [
+                                {label : req.__('sc_companies'), url : '/company/'},
+                                {label : company.name}
+                            ],
+                        },req);
+                    });
                 });
-			});
-        }); //END company find
-		//}); //END currencies
+            }); //END company find
+        });
 	}
 	, editAjax: function(req,res){
 		Common.editAjax(req,res,update);

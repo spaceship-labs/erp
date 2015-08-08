@@ -443,4 +443,6 @@
   ,"cupon_editInstancia":"Edit cupon: "
   ,"":""
   ,"import":"Import"
+  , "company-currencies":"Selected currencies"
+  , "company-currencies-select": "Select new currency"
 }

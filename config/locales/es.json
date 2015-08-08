@@ -448,5 +448,7 @@
   ,"cupon_editInstancia":"Editar cupon de "
   ,"":""
   ,"import":"Importar"
+  , "company-currencies":"Monedas seleccionadas"
+  , "company-currencies-select": "Seleccionar nueva moneda"
 
 }
