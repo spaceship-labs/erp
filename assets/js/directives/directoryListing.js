@@ -24,18 +24,23 @@
                 var name = obj.name;
                 return name.match(regex);
             }
-        }
+        };
+
+        var objectDefaultsLength = $scope.objects && $scope.objects.length || 0;
+        var objectDefaultsFilterByName = $scope.objects && $scope.objects.slice() || [];
+
         var getMore = function(skip){
             var params = { 'skip':skip , 'limit': 30 , 'sort' : 'name asc' };
             if($scope.filter_by == 'date'){
                 params.sort = 'createdAt desc';
             }
+                
             $http.get($scope.getUrl, { params: params  }).then(function(response){ 
                 if(response.data.results && response.data.count){
                     $scope.objects = response.data.results;
                     $scope.totalItems = response.data.count;
                 }else{
-                    $scope.totalItems = $scope.objects.length
+                    $scope.totalItems = objectDefaultsLength;
                     $scope.objects = response.data;
                 }
             });
@@ -56,11 +61,20 @@
                 });
             $scope.currentLetter = $scope.alphabetIndex[0];
         });
+
+        $scope.$watch('filter_by',function(newV, oldV){
+            if(newV == 'name'){
+                $scope.objects = objectDefaultsFilterByName;
+                $scope.totalItems = 4;
+            }else if(oldV == 'name' && $scope.getUrl){
+                getMore(0);
+            }
+        });
+
         $scope.info = function(object){
             return $scope.getInfo()(object);
         };
 
-        console.log($rootScope.translates);
 	};
 	controller.$inject = ['$scope','$rootScope','$http'];
     var directive = function () {
