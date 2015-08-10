@@ -6,9 +6,20 @@
 		</li>
 	</ul>
 	<p ng-if="buttonText != ''"><button class="btn btn-primary" data-toggle="modal" data-target="#myModal"> <span class = "fa fa-plus"></span>{{buttonText}}</button></p>-->
+    
+    <div class="row filter_type">
+	    <p><label for="currency_select" ng-cloak>{{ translates.filter_by }}</label></p>
+	    <p>
+            <select ng-model="filter_by">
+		        <option value="date">{{ translates.filter_by_date }}</option>
+		        <option value="name">{{ translates.filter_by_name }}</option>
+	        </select>
+        </p>
+    </div>
+    
 	<div class = "alphabets-nav row nomargin">
 		<div class = "alphabet-container col-md-10 col-sm-10 col-xs-12">
-			<ul class="alphabets">
+			<ul class="alphabets"  ng-if="filter_by == 'name'">
 				<li ng-repeat="a in alphabet">
 					<span ng-if="alphabetIndex.indexOf(a)!=-1" ng-click="selectLetter(a)" ng-bind='a' ></span>
 					<p ng-if="alphabetIndex.indexOf(a)==-1" ng-bind='a'></p>
@@ -35,7 +46,7 @@
 
 	<div class="peoplelist ng-cloak" ng-hide="myView!='list'">
 		<div class="row-fluid">
-			<div class="span6 widgetbox" ng-repeat='object in objects | filter:objectFilter' ng-cloak class="ng-cloak">
+			<div class="span6 widgetbox directory_list_object" ng-repeat='object in objects | filter:objectFilter' ng-cloak class="ng-cloak">
 				<div class="headtitle">         
 					<h4 class="widgettitle">
 						<a class='text-limit'>{{object.name}}</a>

@@ -445,4 +445,7 @@
   ,"import":"Import"
   , "company-currencies":"Selected currencies"
   , "company-currencies-select": "Select new currency"
+  , "filter":"Filter by"
+  , "filter_date": "Date"
+  , "filter_name": "Name"
 }

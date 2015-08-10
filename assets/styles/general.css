@@ -2387,3 +2387,12 @@ select {width: 220px;border: 1px solid #cccccc;background-color: #ffffff;}
     float: right;
     margin-bottom: 8px;
 }
+
+.directory_list_object:nth-child(2n+1){
+    clear:both;
+}
+
+.ng-directory-listing .filter_type{
+    margin: 1px;
+    margin-bottom:6px;
+}
