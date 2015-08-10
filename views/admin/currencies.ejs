@@ -59,6 +59,7 @@ window.preload = [];
 
 		</form>
 		<hr>
+		<!--
 		<form method="post" action="/admin/editAjax" accept-charset="utf-8" class="commonForm">
 			<div class="currency_wrap" ng-if="allCurrencies.length">
 				<p><label for="currency_select"><%= __('admin-monedas') %></label></p>
@@ -86,6 +87,24 @@ window.preload = [];
 			</ul>
 			<p class="stdformbutton" ng-if="allCurrencies.length"><button class="btn btn-primary"><%= __('admin-agregar-moneda') %></button></p>
 		</form>
+		-->
+			<p><label for="currency_select"><%= __('company-currencies') %></label></p>
+			<ul class="list-nostyle list-inline removeCurrency">
+				<li ng-repeat="i in company.currencies">
+					<span class="btn"> 
+						<a ng-click="remove_currency(i.id)" class="fa fa-times"></a>
+						<span ng-bind="i.currency_code"></span>
+					</span>
+				</li>
+			</ul>
+			<div class="currency_wrap">
+				<p><label for="currency_select"><%= __('company-currencies-select') %></label></p>
+				<p><select ng-model="select_currency">
+					<option ng-repeat="i in allCurrencies" ng-if="currencies_id.indexOf(i.id) == -1" value="{{i.id}}" ng-cloak>{{i.name+" ("+i.currency_code+")"}}</option>
+
+				</select></p>
+			</div>
+			<p class="stdformbutton"><button class="btn btn-primary" ng-click="add_currency()"><%= __('admin-agregar-moneda') %></button></p>
 	</div>	
 </div></div><!--span4-->                
 </div>

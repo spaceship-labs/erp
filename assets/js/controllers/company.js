@@ -240,15 +240,24 @@ app.controller('companyEditCTL',function($scope,$http){
     $scope.add_currency = function(){
         if($scope.select_currency){
             var url = '/company/' + $scope.mycompany.id + '/currencies/' + $scope.select_currency;
-            $http({method: 'POST',url: url}).success(function(company){
-                console.log('res', company); 
-                if(company && company.currencies){
-                    $scope.currencies = company.currencies;
-                    $scope.currencies_id = company.currencies.map(function(c){
-                                            return c.id;
-                                        });
-                }
-            }); 
+            $http({method: 'POST', url: url}).success(cbUpdateCurrencies); 
         }
     };
+
+    $scope.remove_currency = function(id){
+        if(id){
+            var url = '/company/' + $scope.mycompany.id + '/currencies/' + id;
+            $http({method: 'delete', url: url }).success(cbUpdateCurrencies);
+        }
+    };
+
+    function cbUpdateCurrencies(company){
+        if(company && company.currencies){
+            $scope.currencies = company.currencies;
+            $scope.currencies_id = company.currencies.map(function(c){
+                                    return c.id;
+                                });
+        }
+    
+    }
 });

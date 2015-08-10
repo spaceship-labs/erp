@@ -60,15 +60,9 @@
             <div class="widgetcontent">
 			<p><label for="currency_select"><%= __('company-currencies') %></label></p>
 			<ul class="list-nostyle list-inline removeCurrency">
-				<li ng-if="currencyCode">
-					<span class="btn"> 
-						<a href="{{currencyCode}}" class="fa fa-remove"></a>
-						<span ng-bind="currencyCode"></span>
-					</span>
-				</li>
 				<li ng-repeat="i in currencies">
 					<span class="btn"> 
-						<a href="{{i.currency_code}}" class="fa fa-remove"></a>
+						<a ng-click="remove_currency(i.id)" class="fa fa-times"></a>
 						<span ng-bind="i.currency_code"></span>
 					</span>
 				</li>

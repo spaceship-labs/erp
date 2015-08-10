@@ -46,9 +46,11 @@ module.exports = {
     }
 	, edit: function(req,res){
         var id = req.params.id;
+	if(!id) return res.notFound();
         Currency.find().exec(function(err, currencies){
             Company.findOne({id:id}).populate('users').populate('hotels').populate('taxes').populate('currencies').exec(function(err,company){
                 //if(err) throw err;
+		if(err || !company) return res.notFound();
                 User.find().exec(function(err,users){
                     Hotel.find().exec(function(err,hotels){
                         Common.view(res.view,{

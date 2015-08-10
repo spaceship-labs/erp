@@ -11,17 +11,21 @@ module.exports = {
 		Common.editAjax(req,res,update);
 	}
 	
-	, currencies: function(req,res){
-		sails.controllers.admin.currenciesJson(req,res,function(data){
-			data = {
-				page:{
-					name:'Monedas'
-					,icon:'fa fa-money'				
-				}
-				,preload:data
-			};
-			Common.view(res.view,data,req);		
+	, currencies: function(req,res){	
+		Currency.find().exec(function(err, currencies){
+			sails.controllers.admin.currenciesJson(req,res,function(datas){
+				datas['allCurrencies'] = currencies;
+				var data = {
+					page:{
+						name:'Monedas'
+						,icon:'fa fa-money'				
+					}
+					,preload:datas
+				};
+				Common.view(res.view,data,req);		
+			});		
 		});
+
 	}
 
 	, currenciesJson: function(req,res,cb){
@@ -84,7 +88,7 @@ module.exports = {
 						,currencyCode:current_code||false
 						,comissionVal:comp.currency_comission
 						,allCurrencies:noSelect||[]
-					
+						,company: comp
 					};
 					if(cb) return cb(tmp)
 					res.json(tmp);
