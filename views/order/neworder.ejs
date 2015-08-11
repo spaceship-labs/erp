@@ -13,7 +13,7 @@
         </div>
         <div class='col-sm-12 col-md-6 col-lg-6'>
             <a class="btn btn-primary pull-right full-sm" ng-click="saveAll()"><i class='fa fa-save'></i> <%= __('order-reservar')%> </a>
-            <a class='btn btn-primary pull-right full-sm' ng-click="resetForm()" ><i class='fa fa-eraser'></i> Limpiar campos</a>
+            <a class='btn btn-primary pull-right full-sm' ng-click="resetForm(false)" ><i class='fa fa-eraser'></i> Limpiar campos</a>
             <div class='clear'></div>
         </div>
     </div><br>
@@ -23,16 +23,17 @@
                 <div class='col-md-12'><div class="widgetbox personal-information">
                     <div class='headtitle'>
                         <div class='btn-group'>
-                            <a class="btn btn-primary pull-right" ng-click="setSteps('next',false)"><i class='fa fa-arrow-right'></i></a>
-                            <a class="btn btn-primary pull-right" ng-click="setSteps('',1)"><i class='fa fa-circle-thin'></i></a>
+                            <a class="btn btn-primary pull-right" ng-click="resetForm('client')"><i class='fa fa-eraser'></i></a>
+                            <a class="btn btn-primary pull-right" ng-click="setSteps('',1)"><i class='fa fa-{{client.id?"check":"circle-thin"}}'></i></a>
+                            <a class='btn btn-primary pull-right' ng-click="searchClient = !searchClient"><i class='fa fa-search'></i></a>
                         </div>
-                        <h4 class="widgettitle"><%= __('order-cliente')%></h4>
+                        <h4 class="widgettitle"><a class='expand' ng-click="setSteps('',1)"><i class='fa fa-user'></i> <%= __('order-cliente')%></a></h4>
                     </div>
                     <div class='widgetcontent nopadding'><div collapse="!(steps==1?true:false)">
-                        <p class='order-controls'>
+                        <!--<p class='order-controls'>
                             <span><a class='' ng-click="searchClient = !searchClient"><i class='fa fa-search'></i> Buscar existente</a></span>
                             <span><a class='' data-toggle="modal" data-target="#myModal"><i class='fa fa-plus'></i>  <%= __('order-nuevo-cliente')%></a></span>
-                        </p>
+                        </p>-->
                         <div ng-show="searchClient"><p>
                             <label><%= __('order-selecc')%></label>
                             <span class='field'>
@@ -41,20 +42,69 @@
                                 placeholder="<%= __('order-selecc')%>"
                                 ng-model="client" 
                                 typeahead-editable='true'
+                                typeahead-on-select="client_flag = true"
                                 typeahead="obj as obj.name for obj in getClients($viewValue)" >
                             </span>
                         </p></div>
+                        <form class='form stdform stdform2 nopadding'>
+                            <p>
+                                <label>Nombre*</label>
+                                <span class='field'><input type='text' name="name" ng-model="client.name" ng-required="true"></span>
+                            </p>
+                            <p>
+                                <label>Teléfono*</label>
+                                <span class='field'><input type='text' name="phone" ng-model="client.phone" ng-required="true"></span>
+                            </p>
+                            <p>
+                                <label>E-mail*</label>
+                                <span class='field'><input type='text' name="email" ng-model="client.email" ng-required="true"></span>
+                            </p>
+                        </form>
+                        <p class='order-controls'>
+                            <a class='btn btn-primary pull-right' ng-click="createUpdateClient()" ng-bind="client_flag?'Actualizar':'Crear'"></a>
+                            <span class='clear'></span>
+                        </p>
+                        <h4 class='widgettitle'>Datos generales</h4>
+                        <form class='form stdform stdform2 nopadding'>
+                            <p>
+                                <label>Hotel</label>
+                                <span class='field'>
+                                    <input type="text" class="form-control" 
+                                        placeholder="<%= __('order-hotel')%>"
+                                        ng-model="generalFields.hotel"
+                                        typeahead-editable='true'
+                                        typeahead="obj as obj.name for obj in getHotels($viewValue)" >
+                                </span>
+                            </p>
+                            <p>
+                                <label>Número de cuarto de hotel</label>
+                                <span class='field'>
+                                    <input type='text' ng-model="generalFields.hotelroom" />
+                                </span>
+                            </p>
+                            <p>
+                                <label>Fecha de llegada</label>
+                                <span class='field'>
+                                    <span class='input-group calendar-container'><input is-open="open[2]" ng-model='generalFields.arrival_date' id="arrival-date" datepicker-popup/>
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="open($event,2)"><i class="fa fa-calendar"></i></button>
+                                    </span></span>
+                                </span>
+                            </p>
+                            <p>
+                                <label>Vuelo de llegada</label>
+                                <span class='field'>
+                                    <input type='text' ng-model="generalFields.arrival_fly" />
+                                </span>
+                            </p>
+                        </form>
                         <!--<p>
                             <label><%= __('order_userClient') %></label>
                             <span class='field'><input type='checkbox' ng-model='USClient' ></span>
                         </p>-->
-                        <div class='InfoContainer' ng-hide="!client">
-                            <p><strong>Nombre</strong> : <span ng-bind="client.name"></span></p>
-                            <p><strong>Correo</strong> : <span ng-bind="client.email"></span></p>
-                            <p><strong>Teléfono</strong> : <span ng-bind="client.phone"></span></p>
-                        </div>
                         <p class='order-controls'>
-                            <a ng-click="setSteps('next',false)" class='btn btn-primary' >Siguiente</a>
+                            <a class='btn btn-primary pull-right' ng-click="setSteps('next',false)" >Siguiente</a>
+                            <span class='clear'></span>
                         </p>
                     </div></div>
                 </div></div>
@@ -81,61 +131,69 @@
             </div>
             <!-- Transfer section -->
             <div class='row'>
-                <form class='stdform stdform2 col-md-12' action='' name='' method='post'>
+                <form class='stdform stdform2 col-md-12 widgetbox' action='' name='' method='post'>
                     <div class='headtitle'>
                         <div class='btn-group'>
-                            <a class="btn btn-primary pull-right" ng-click="setSteps('next',false)"><i class='fa fa-arrow-right'></i></a>
-                            <a class="btn btn-primary pull-right" ng-click="setSteps('',2)"><i class='fa fa-circle-thin'></i></a>
-                            <a class="btn btn-primary pull-right" ng-click="setSteps('prev',false)"><i class='fa fa-arrow-left'></i></a>
-                            <!--<a class="btn btn-primary pull-right" ng-click="saveAll()"><i class='fa fa-save'></i> <%= __('order-reservar')%> </a>-->
+                            <a class="btn btn-primary pull-right" ng-click="resetForm('transfer')"><i class='fa fa-eraser'></i></a>
+                            <a class="btn btn-primary pull-right" ng-click="setSteps('',2)"><i class='fa fa-{{transfer.fee?"check":"circle-thin"}}'></i></a>
                         </div>
-                        <h4 class="widgettitle"><%= __('order-reservar-tras')%> </h4>
+                        <h4 class="widgettitle"><a class='expand' ng-click="setSteps('',2)"><i class='fa fa-car'></i> <%= __('order-reservar-tras')%></a></h4>
                     </div>
-                    <div collapse="!(steps==2?true:false)">
+                    <div class='widgetcontent nopadding'><div class='collapseCustom' collapse="!(steps==2?true:false)">
                         <%- partial('inputsTransfer') -%> 
-                    </div>
+                    </div></div>
                 	<div class="clearfix"></div>
                 </form>
             </div>
             <!-- Tours section -->
             <div class='row'>
-                <form class='stdform stdform2 col-md-12' action='' name='tours' method='post'>
+                <form class='stdform col-md-12' action='' name='tours' method='post'>
                     <div class='headtitle'>
                         <div class='btn-group'>
-                            <a class="btn btn-primary pull-right" ng-click="setSteps('next',false)"><i class='fa fa-arrow-right'></i></a>
-                            <a class="btn btn-primary pull-right" ng-click="setSteps('',3)"><i class='fa fa-circle-thin'></i></a>
-                            <a class="btn btn-primary pull-right" ng-click="setSteps('prev',false)"><i class='fa fa-arrow-left'></i></a>
+                            <a class="btn btn-primary pull-right" ng-click="resetForm('tour')"><i class='fa fa-eraser'></i></a>
+                            <a class="btn btn-primary pull-right" ng-click="setSteps('',3)"><i class='fa fa-{{reservations.tours.length&&reservations.tours[0].fee?"check":"circle-thin"}}'></i></a>
                         </div>
-                        <h4 class="widgettitle"><%= __('order-reservar-tour')%></h4>
+                        <h4 class="widgettitle"><a class='expand' ng-click="setSteps('',3)"><i class='fa fa-compass'></i> <%= __('order-reservar-tour')%></a></h4>
                     </div>
                     <div collapse="!(steps==3?true:false)">
                         <div class='row'>
-                            <div class='col-md-10'>
-                                <p>
+                            <div class='col-md-12 peoplelist orderTourList'>
+                                <div class='peopleinfo'><ul>
+                                    <li ng-repeat="t in allTours.results">
+                                        <div class='thumb'>
+                                            <img ng-if='t.icon' ng-src="/uploads/tours/50x50{{t.icon.filename}}">
+                                            <img ng-if='!t.icon' ng-src="http://placehold.it/50x50">
+                                        </div>
+                                        <div class='info'>
+                                            <p><strong><a ng-bind="t.name"></a></strong>, adultos $<span ng-bind="t.fee"></span> , niños $<span ng-bind="t.feeChild"></span></p>
+                                            <p>{{t.description_es | limitTo : 180}}</p>
+                                        </div>
+                                        <div class='pull-right actions'>
+                                            <a ng-click="addTH('tour',t)"><i class='fa fa-plus'></i> Agregar</a>
+                                            <a ng-click="view('tour',t)"><i class='fa fa-eye'></i> Ver más</a>
+                                        </div>
+                                        <div class='clear'></div>
+                                    </li>
+                                </ul></div>
+                                <div><pagination total-items="allTours.count" ng-model="toursCurrentPage" max-size="7" class="pagination-sm" items-per-page='5' ng-change="getAllTours()"></pagination></div>
+                                <!--<p>
                                     <input type="text" class="form-control" 
                                         placeholder="Tours"
                                         ng-model="addedTour" 
                                         typeahead-editable='true'
                                         typeahead="obj as ( thecompany.adminCompany?obj.name:obj.tour.name ) for obj in getTours($viewValue)" >
-                                    <!--<input type="text" class="form-control" 
-                                        ng-if="thecompany.adminCompany"
-                                        placeholder="Tours"
-                                        ng-model="addedTour" 
-                                        typeahead-editable='true'
-                                        typeahead="obj as obj.name for obj in getTours($viewValue)" >
-                                    <select chosen ng-options='obj as obj.name for obj in allTours' ng-model='addedTour' ></select>-->
-                                </p>
+                                </p>-->
                             </div>
-                            <div class='col-md-2'>
+                            <!--<div class='col-md-2'>
                                 <a ng-click='addTH("tour")' class='btn-primary btn pull-right'><%= __('order-agregar')%></a>
-                            </div>
+                            </div>-->
                         </div><br >
-                        <div class='isCtourContainer'>
+                        <div class='stdform2 isCtourContainer'>
                             <div ng-repeat='item in reservations.tours'>
                                 <%- partial('inputsTour') -%> 
                                 <div class='headtitle'>
-                                    <a ng-click="setSteps('prev',false)" class='btn btn-primary' >Anterior</a>
-                                    <a ng-click="setSteps('next',false)" class='btn btn-primary' >Siguiente</a>
+                                    <a ng-click="setSteps('next',false)" class='btn btn-primary pull-right' >Siguiente</a>
+                                    <span class='clear'></span>
                                 </div>
                             </div>
                         </div>
@@ -148,10 +206,10 @@
                 <form class='stdform stdform2 col-md-12' action='' name='' method='post'>
                     <div class='headtitle'>
                         <div class='btn-group'>
+                            <a class="btn btn-primary pull-right" ng-click="resetForm('hotel')"><i class='fa fa-eraser'></i></a>
                             <a class="btn btn-primary pull-right" ng-click="setSteps('',4)"><i class='fa fa-circle-thin'></i></a>
-                            <a class="btn btn-primary pull-right" ng-click="setSteps('prev',false)"><i class='fa fa-arrow-left'></i></a>
                         </div>
-                        <h4 class="widgettitle"><%= __('order-reservar-hotel')%></h4>
+                        <h4 class="widgettitle"><a class='expand' ng-click="setSteps('',4)"><i class='fa fa-building'></i> <%= __('order-reservar-hotel')%></a></h4>
                     </div>
                     <div collapse="!(steps==4?true:false)">
                         <div class='row'>
@@ -159,7 +217,7 @@
                                 <p><select chosen ng-options='obj as obj.name for obj in hotels' ng-model='addedHotel' ></select></p>
                             </div>
                             <div class='col-md-2'>
-                                <a ng-click='addTH("hotel")' class='btn-primary btn pull-right'><%= __('order-agregar')%></a>
+                                <a ng-click='addTH("hotel",false)' class='btn-primary btn pull-right'><%= __('order-agregar')%></a>
                             </div>
                         </div><br >
                         <div class='isCHotelContainer'>
@@ -180,6 +238,20 @@
             <div class='widgetbox'>
                 <h4 class="widgettitle">Información de pago</h4>
                 <div class="widgetcontent paymentInformation">
+                    <p>
+                        <label><%= __('order-pago')%></label>
+                        <span class='field'><select ng-options='obj as obj.name for obj in hrevPayment' ng-model='generalFields.payment_method' ></select></span>
+                    </p>
+                    <p ng-show="generalFields.payment_method.handle=='creditcard'">
+                        <label><%= __('order-autorizacion')%></label>
+                        <span class='field'><input type='text' name='autorization_code' ng-model="generalFields.autorization_code" /></span>
+                    </p>
+                    <p>
+                        <label>Moneda</label>
+                        <span class='field'>
+                            <select ng-options="c as c.name for c in thecompany.currencies" name='currency' ng-model='generalFields.currency' ng-change='updatePriceTransfer()' ></select>
+                        </span>
+                    </p>
                     <div ng-show="!transfer.fee && reservations.tours.length==0 && reservations.hotels.length==0">
                         <h4>No hay reservas activas</h4>
                     </div>
@@ -205,7 +277,7 @@
     <div class='row'>
         <div class='col-md-12'>
             <a class="btn btn-primary btn-big pull-right full-sm" ng-click="saveAll()"><i class='fa fa-save'></i> <%= __('order-reservar')%> </a>
-            <a class='btn btn-primary btn-big pull-right full-sm' ng-click="resetForm()" ><i class='fa fa-eraser'></i> Limpiar campos</a>
+            <a class='btn btn-primary btn-big pull-right full-sm' ng-click="resetForm(false)" ><i class='fa fa-eraser'></i> Limpiar campos</a>
         </div>
     </div>
     <div class="modal fade" id="myModal">

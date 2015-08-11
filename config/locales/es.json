@@ -162,7 +162,7 @@
   "order-aeropuerto":"Aeropuerto",
   "order-tipo":"Tipo",
   "order-origen":"Origen",
-  "order-estado":"Estado",
+  "order-estado":"Estado del pago",
   "order-fecha":"Fecha",
   "order-total":"Total",
   "order-editar":"Editar",
@@ -234,7 +234,7 @@
   ,"order_a_airline" : "Aerolinea de llegada"
   ,"order_d_airline" : "Aerolinea de salida"
   ,"order_service_type" : "Tipo de servicio"
-  ,"order_room" : "Cuarto de hotel"
+  ,"order_room" : "Número de cuarto de hotel"
   ,"order_currency" : "Moneda"
   ,"order-airline" : "Aerolínea"
   ,"add-airline" : "Agregar aerolínea"

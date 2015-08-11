@@ -31,13 +31,15 @@ module.exports = {
 	find : function(req,res){
 		var params = req.params.all();
 		var skip = params.skip || 0;
+		var limit = params.limit || 200;
 		if( typeof params.id == 'undefined' ) delete params.id;
 		delete params.skip;
+		delete params.limit;
 		delete params.company;
 		delete params.adminCompany;
         if(params.name) params.name = new RegExp(params.name,"i");
         if( params.provider == 'null' ) params.provider = null;
-        Tour.find(params).skip(skip).exec(function(err,tours){
+        Tour.find(params).skip(skip).limit(limit).exec(function(err,tours){
         	if(err) res.json('err');
         	Tour.count(params).exec(function(e,count){
         		if(e) res.json('err');
@@ -48,6 +50,10 @@ module.exports = {
 	,findProducts : function(req,res){
 		var params = req.params.all();
 		//console.log(params);
+		var skip = params.skip || 0;
+		var limit = params.limit || 200;
+		delete params.skip;
+		delete params.limit;
 		var company = params.company?params.company:(req.session.select_company.id || req.user.select_company.id);
 		delete params.company;
 		var adminCompany = params.adminCompany || 'false';
@@ -58,7 +64,7 @@ module.exports = {
         	params.provider = { '!' : params.notProvider };
         	delete params.notProvider;
         }*/
-        Tour.find(params).limit(15).exec(function(err,tours){
+        Tour.find(params).exec(function(err,tours){
         	if(err) res.json('err');
         	if(adminCompany=='false'){
         		var ids = [];
@@ -67,9 +73,11 @@ module.exports = {
 	        		product_type : 'tour'
 	        		,agency : company
 	        		,tour : ids
-	        	}).limit(15).populate('tour').exec(function(cp_err,cproducts){
+	        	}).skip(skip).limit(limit).populate('tour').exec(function(cp_err,cproducts){
 	        		if(cp_err) res.json('err');
-	        		res.json({ results : cproducts , count : 0 });
+	        		CompanyProduct.count({product_type : 'tour',agency : company,tour : ids}).exec(function(cp_err,count){
+	        			res.json({ results : cproducts , count : count });
+	        		});
 	        	});
         	}else{
         		Tour.count(params).exec(function(e,count){

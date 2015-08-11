@@ -172,7 +172,7 @@
   "order-pago":"Payment method ",
   "order-autorizacion":"Authorization code ",
   "order-pax":"PAX",
-  "order-origen2":"Trip origen ",
+  "order-origen2":"Trip origin ",
   "order-viaje":"Trip type ",
   "order-tarifa":"Rate",
   "order-round":"Round trip",
@@ -231,7 +231,7 @@
   ,"order_a_airline" : "Arrival airline"
   ,"order_d_airline" : "Departure airline"
   ,"order_service_type" : "Service Type"
-  ,"order_room" : "Hotel room"
+  ,"order_room" : "Hotel room number"
   ,"order_currency" : "Currency"
   ,"order-airline" : "Airline"
   ,"add-airline" : "Add airline"

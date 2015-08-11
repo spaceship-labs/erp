@@ -117,6 +117,15 @@ module.exports = {
           });
       }
   },
+  updateClient: function(req,res){
+        var form = Common.formValidate(req.params.all(),['id','name','phone','email']);
+        if(form){
+            Client_.update({id:form.id},form).exec(function(err,client_){
+                if(err) return res.json({client:false ,text:'Ocurrio un error.'});
+                res.json({client: client_ ,text:'Cliente actualizado.'});
+            });
+        }
+    },
   createOrder : function(req,res){
     var params = req.params.all();
     params.user = req.user.id;
@@ -136,7 +145,7 @@ module.exports = {
     var params = req.params.all();
     params.hotel = params.hotel.id;
     params.state = params.state.handle;
-    params.payment_method = params.payment_method.handle;
+    params.payment_method = params.payment_method ? params.payment_method.handle : 'creditcard';
     params.airport = params.airport.id;
     params.client = params.client.id;
     params.user = req.user.id;
@@ -214,6 +223,9 @@ module.exports = {
         item.order = theorder.id;
         item.company = theorder.company.id;
         item.user = req.user.id;
+        item.payment_method = item.payment_method?item.payment_method.handle:params.generalFields.payment_method.handle;
+        item.currency = item.currency?item.currency.id:params.generalFields.currency.id;
+        item.autorization_code = item.autorization_code || params.generalFields.autorization_code;
         delete item.id;
         if( item.reservation_type == 'tour' ){
           if( theorder.company.adminCompany ){

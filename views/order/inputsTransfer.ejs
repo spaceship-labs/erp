@@ -1,171 +1,148 @@
-<div class='row-fluid'>
-    <div class='span12'>
-        <div class='widgetcontent nopadding'>
-            <h4 class="widgettitle"><%= __('order-info')%></h4>
-            <p>
-                <label><%= __('order-hotel')%></label>
-                <span class='field'>
-                    <input type="text" class="form-control" 
-                        placeholder="<%= __('order-hotel')%>"
-                        ng-model="transfer.hotel" 
-                        typeahead-editable='true'
-                        typeahead="obj as obj.name for obj in getHotels($viewValue)" 
-                        typeahead-on-select="getAirports()" >
-                </span>
-            </p>
-            <p>
-                <label><%= __('order_room')%> </label>
-                <span class='field'><input type='text' ng-model="transfer.room" name='room' /></span>
-            </p>
-            <p>
-                <label><%= __('order-aeropuerto')%></label>
-                <span class='field'><select ng-change='updatePriceTransfer()' ng-options='obj as obj.name for obj in airports track by obj.id' ng-model='transfer.airport' ></select></span>
-            </p>
-            <p>
-                <label><%= __('order-airline')%></label>
-                <span class='field'>
-                    <input type="text" class="form-control" 
-                        placeholder="<%= __('order-airline')%>"
-                        ng-model="transfer.airline" 
-                        typeahead-editable='true'
-                        typeahead="obj as obj.name for obj in getAirlines($viewValue)" >
-                </span>
-            </p>
-            <p>
-                <label><%= __('order-servicio')%></label>
-                <span class='field'><select ng-change="updatePriceTransfer()" ng-options='obj as obj.transfer.name for obj in transfers track by obj.id' ng-model='transfer.transfer' ></select></span>
-            </p>
-            <p>
-                <label><%= __('order_service_type')%></label>
-                <span class='field'><select ng-options='obj.value as obj.label for obj in service_types ' ng-model='transfer.service_type' ></select></span>
-            </p>
 
-            <p>
-                <label><%= __('order-estado')%></label>
-                <span class='field'><select ng-options='obj as obj.name for obj in hrevState' ng-model='transfer.state' ></select></span>
-            </p>
-            <p>
-                <label><%= __('order-pago')%></label>
-                <span class='field'><select ng-options='obj as obj.name for obj in hrevPayment' ng-model='transfer.payment_method' ></select></span>
-            </p>
-            <p ng-show="transfer.payment_method.handle=='creditcard'">
-                <label><%= __('order-autorizacion')%></label>
-                <span class='field'><input type='text' name='autorization_code' ng-model="transfer.autorization_code" /></span>
-            </p>
-            <p>
-                <label><%= __('order-pax')%></label>
-                <span class='field'><select ng-change="updatePriceTransfer()" ng-options='obj for obj in pax' ng-model='transfer.pax' ></select></span>
-                <!--<input type='text' name='pax' ng-model="transfer.pax" />-->
-            </p>
-            <p>
-                <label><%= __('order-origen')%></label>
-                <span class='field'>
-                    <span class="radio">
-                        <input ng-change='updateDatesFormat()' ng-model="transfer.origin" type="radio" name="origin" value="hotel" checked> Hotel
-                    </span>
-                    <span class="radio">
-                        <input ng-change='updateDatesFormat()' ng-model="transfer.origin" type="radio" name="origin" value="airport"> Aeropuerto
+    <p>
+        <label><%= __('order-hotel')%></label>
+        <span class='field'>
+            <input type="text" class="form-control" 
+                placeholder="<%= __('order-hotel')%>"
+                ng-model="transfer.hotel" 
+                typeahead-editable='true'
+                typeahead="obj as obj.name for obj in getHotels($viewValue)" 
+                typeahead-on-select="getAirports()" >
+        </span>
+    </p>
+    <p>
+        <label><%= __('order_room')%> </label>
+        <span class='field'><input type='text' ng-model="transfer.room" name='room' /></span>
+    </p>
+    <p>
+        <label><%= __('order-aeropuerto')%></label>
+        <span class='field'><select ng-change='updatePriceTransfer()' ng-options='obj as obj.name for obj in airports track by obj.id' ng-model='transfer.airport' ></select></span>
+    </p>
+    <p>
+        <label><%= __('order-airline')%></label>
+        <span class='field'>
+            <input type="text" class="form-control" 
+                placeholder="<%= __('order-airline')%>"
+                ng-model="transfer.airline" 
+                typeahead-editable='true'
+                typeahead="obj as obj.name for obj in getAirlines($viewValue)" >
+        </span>
+    </p>
+    <p>
+        <label><%= __('order-servicio')%></label>
+        <span class='field'><select ng-change="updatePriceTransfer()" ng-options='obj as obj.transfer.name for obj in transfers track by obj.id' ng-model='transfer.transfer' ></select></span>
+    </p>
+    <p>
+        <label><%= __('order_service_type')%></label>
+        <span class='field'><select ng-options='obj.value as obj.label for obj in service_types ' ng-model='transfer.service_type' ></select></span>
+    </p>
+
+    <p>
+        <label><%= __('order-estado')%></label>
+        <span class='field'><select ng-options='obj as obj.name for obj in hrevState' ng-model='transfer.state' ></select></span>
+    </p>
+    <p>
+        <label><%= __('order-pax')%></label>
+        <span class='field'><select ng-change="updatePriceTransfer()" ng-options='obj for obj in pax' ng-model='transfer.pax' ></select></span>
+        <!--<input type='text' name='pax' ng-model="transfer.pax" />-->
+    </p>
+    <p>
+        <label><%= __('order-origen2')%></label>
+        <span class='field'>
+            <span class="radio">
+                <input ng-change='updateDatesFormat()' ng-model="transfer.origin" type="radio" name="origin" value="hotel" checked> Hotel
+            </span>
+            <span class="radio">
+                <input ng-change='updateDatesFormat()' ng-model="transfer.origin" type="radio" name="origin" value="airport"> Aeropuerto
+            </span>
+        </span>
+    </p>
+    <p>
+        <label><%= __('order-tipo-viaje')%> </label>
+        <span class='field'>
+            <span class="radio">
+                <input ng-change='updatePriceTransfer()' ng-model="transfer.type" type="radio" name="transtype" value="round_trip"> <%= __('order_tv_rt')%>
+            </span>
+            <span class="radio">
+                <input ng-change='updatePriceTransfer()' ng-model="transfer.type" type="radio" name="transtype" value="one_way" checked> <%= __('order_tv_ow')%>
+            </span>
+        </span>
+    </p>
+    <p>
+        <label><%= __('order-tarifa')%></label>
+        <span class='field'>
+            <span>{{transfer.fee || 0}}</span>
+            <!--<input type='text' ng-model="transfer.fee" name='fee' />-->
+        </span>
+    </p>
+    <p>
+        <label>Precio especial</label>
+        <span class='field'><input type='text' ng-model="transfer.fee_special" name='fee_special' /></span>
+    </p>
+    <!--<p>
+        <label><%= __('order_currency')%></label>
+    </p>-->
+    <div class=' dtfa-container {{dtfa[0]?"":"disabled"}}' ng-show='dtfa[0]?true:false'>
+        <h4 class="widgettitle"><%= __('order-vuelof-llegada')%></h4>
+        <p>
+            <label><%= __('order-llegada')%></label>
+            <span class='field'>
+                <span class='input-group calendar-container'>
+                    <input is-open="open[0]" ng-model='transfer.arrival_date' id="arrival-date" datepicker-popup ng-change='getpickuptime()' />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="open($event,0)"><i class="fa fa-calendar"></i></button>
                     </span>
                 </span>
-            </p>
-            <p>
-                <label><%= __('order-tipo-viaje')%> </label>
-                <span class='field'>
-                    <span class="radio">
-                        <input ng-change='updatePriceTransfer()' ng-model="transfer.type" type="radio" name="transtype" value="round_trip"> <%= __('order_tv_rt')%>
-                    </span>
-                    <span class="radio">
-                        <input ng-change='updatePriceTransfer()' ng-model="transfer.type" type="radio" name="transtype" value="one_way" checked> <%= __('order_tv_ow')%>
-                    </span>
-                </span>
-            </p>
-            <p>
-                <label>Moneda</label>
-                <span class='field'>
-                    <select ng-options="c as c.name for c in thecompany.currencies" name='currency' ng-model='transfer.currency' ng-change='updatePriceTransfer()' ></select>
-                </span>
-            </p>
-            <p>
-                <label><%= __('order-tarifa')%></label>
-                <span class='field'>
-                    <span>{{transfer.fee || 0}}</span>
-                    <!--<input type='text' ng-model="transfer.fee" name='fee' />-->
-                </span>
-            </p>
-            <p>
-                <label>Precio especial</label>
-                <span class='field'><input type='text' ng-model="transfer.fee_special" name='fee_special' /></span>
-            </p>
-            <!--<p>
-                <label><%= __('order_currency')%></label>
-            </p>-->
-            <div class=' dtfa-container {{dtfa[0]?"":"disabled"}}' ng-show='dtfa[0]?true:false'>
-                <h4 class="widgettitle"><%= __('order-vuelof-llegada')%></h4>
-                <p>
-                    <label><%= __('order-llegada')%></label>
-                    <span class='field'>
-                        <span class='input-group calendar-container'>
-                            <input is-open="open[0]" ng-model='transfer.arrival_date' id="arrival-date" datepicker-popup ng-change='getpickuptime()' />
-                            <span class="input-group-btn">
-                                <button type="button" class="btn btn-default" ng-click="open($event,0)"><i class="fa fa-calendar"></i></button>
-                            </span>
-                        </span>
-                    </span>
-                </p>
-                <p>
-                    <label><%= __('order_a_airline')%> </label>
-                    <span class='field'><input ng-model="transfer.arrival_airline" type='text' name='arrival_airline' /></span>
-                </p>
-                <p>
-                    <label><%= __('order-vuelo-llegada')%></label>
-                    <span class='field'><input ng-model="transfer.arrival_fly" type='text' name='arrival_fly' /></span>
-                </p>
-                <p>
-                    <label><%= __('order-hora')%></label>
-                    <span class='field'><timepicker ng-model="transfer.arrival_time" ng-change="getpickuptime()" hour-step="1" minute-step="1" show-meridian="ismeridian"></timepicker></span>
-                </p>
-                <!--<p>
-                    <label><%= __('order-pickup')%></label>
-                    <span class='field'><timepicker ng-model="transfer.arrivalpickup_time" ng-change="" hour-step="1" minute-step="1" show-meridian="ismeridian"></timepicker></span>
-                </p>-->
-            </div>
-            <div class='dtfa-container {{dtfa[1]?"":"disabled"}}' ng-show='dtfa[1]?true:false'>
-                <h4 class="widgettitle"><%= __('order-vuelof-salida')%></h4>
-                <p>
-                    <label><%= __('order-fecha-salida')%></label>
-                    <span class='field'>
-                        <span class='input-group calendar-container'>
-                            <input is-open="open[1]" ng-model='transfer.departure_date' datepicker-popup ng-change='getpickuptime()' />
-                            <span class="input-group-btn">
-                                <button type="button" class="btn btn-default" ng-click="open($event,1)"><i class="fa fa-calendar"></i></button>
-                            </span>
-                        </span>
-                    </span>
-                </p>
-                <p>
-                    <label><%= __('order_d_airline')%> </label>
-                    <span class='field'><input ng-model="transfer.departure_airline" type='text' name='departure_airline' /></span>
-                </p>
-                <p>
-                    <label><%= __('order-vuelo-salida')%> </label>
-                    <span class='field'><input ng-model="transfer.departure_fly" type='text' name='departure_fly' /></span>
-                </p>
-                <p>
-                    <label><%= __('order-hora-salida')%></label>
-                    <span class='field'><timepicker ng-model="transfer.departure_time" ng-change="getpickuptime()" hour-step="1" minute-step="1" show-meridian="ismeridian"></timepicker></span>
-                </p>
-                <p>
-                    <label><%= __('order-pickup')%></label>
-                    <span class='field'><timepicker ng-model="transfer.departurepickup_time" hour-step="1" minute-step="1" show-meridian="ismeridian"></timepicker></span>
-                </p>
-            </div>
-            <p>
-                <label></label>
-                <span class='field'>
-                    <a ng-click="setSteps('prev',false)" class='btn btn-primary' >Anterior</a>
-                    <a ng-click="setSteps('next',false)" class='btn btn-primary' >Siguiente</a>
-                </span>
-            </p>
-        </div>
+            </span>
+        </p>
+        <p>
+            <label><%= __('order_a_airline')%> </label>
+            <span class='field'><input ng-model="transfer.arrival_airline" type='text' name='arrival_airline' /></span>
+        </p>
+        <p>
+            <label><%= __('order-vuelo-llegada')%></label>
+            <span class='field'><input ng-model="transfer.arrival_fly" type='text' name='arrival_fly' /></span>
+        </p>
+        <p>
+            <label><%= __('order-hora')%></label>
+            <span class='field'><timepicker ng-model="transfer.arrival_time" ng-change="getpickuptime()" hour-step="1" minute-step="1" show-meridian="ismeridian"></timepicker></span>
+        </p>
+        <!--<p>
+            <label><%= __('order-pickup')%></label>
+            <span class='field'><timepicker ng-model="transfer.arrivalpickup_time" ng-change="" hour-step="1" minute-step="1" show-meridian="ismeridian"></timepicker></span>
+        </p>-->
     </div>
-</div>
+    <div class='dtfa-container {{dtfa[1]?"":"disabled"}}' ng-show='dtfa[1]?true:false'>
+        <h4 class="widgettitle"><%= __('order-vuelof-salida')%></h4>
+        <p>
+            <label><%= __('order-fecha-salida')%></label>
+            <span class='field'>
+                <span class='input-group calendar-container'>
+                    <input is-open="open[1]" ng-model='transfer.departure_date' datepicker-popup ng-change='getpickuptime()' />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="open($event,1)"><i class="fa fa-calendar"></i></button>
+                    </span>
+                </span>
+            </span>
+        </p>
+        <p>
+            <label><%= __('order_d_airline')%> </label>
+            <span class='field'><input ng-model="transfer.departure_airline" type='text' name='departure_airline' /></span>
+        </p>
+        <p>
+            <label><%= __('order-vuelo-salida')%> </label>
+            <span class='field'><input ng-model="transfer.departure_fly" type='text' name='departure_fly' /></span>
+        </p>
+        <p>
+            <label><%= __('order-hora-salida')%></label>
+            <span class='field'><timepicker ng-model="transfer.departure_time" ng-change="getpickuptime()" hour-step="1" minute-step="1" show-meridian="ismeridian"></timepicker></span>
+        </p>
+        <p>
+            <label><%= __('order-pickup')%></label>
+            <span class='field'><timepicker ng-model="transfer.departurepickup_time" hour-step="1" minute-step="1" show-meridian="ismeridian"></timepicker></span>
+        </p>
+    </div>
+    <p class='order-controls'>
+        <a ng-click="setSteps('next',false)" class='btn btn-primary pull-right' >Siguiente</a>
+        <span class='clear'></span>
+    </p>
