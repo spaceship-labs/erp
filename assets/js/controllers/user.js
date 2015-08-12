@@ -37,7 +37,12 @@ app.controller('userCTL',function($scope,$http,$rootScope){
     }
 });
 
-app.controller('userEditCTL',function($scope,$http,_){
+app.factory('userRolesFactory', function(){
+    var roles = window.roles && window.roles.slice() || [];
+    return roles;
+})
+
+app.controller('userEditCTL',function($scope,$http,_, userRolesFactory){
     $scope._ = _;
     $scope.content = content;
     $scope.user = user;
@@ -45,8 +50,7 @@ app.controller('userEditCTL',function($scope,$http,_){
     $scope.apps = apps;
     $scope.submited_pass_form = false;
     $scope.company = company;
-    $scope.user_roles = [];
-    angular.copy(roles,$scope.user_roles);
+    $scope.user_roles = userRolesFactory;
     $scope.permissions = [];
     $scope.hiddenFields = [
         { key : 'userId',value : $scope.user.id }
@@ -152,13 +156,22 @@ app.controller('userEditCTL',function($scope,$http,_){
         $scope.updateAccestList();
         $scope.updateCompany();
     });
+
+
+    $scope.$watch(function(){
+        return userRolesFactory.length;
+    }, function(newV, oldV){
+        if(newV != oldV){
+            $scope.user.role = $scope.user_roles[0];
+        }
+    });
 });
 
-app.controller('userRoleCTL',function($scope,$http,_) {
+app.controller('userRoleCTL',function($scope,$http,_, userRolesFactory) {
     $scope.user = user;
     $scope.apps = apps;
     $scope.company = company;
-    $scope.roles = roles;
+    $scope.roles = userRolesFactory;
 
     $scope._ = _;
     $scope.selected_role = { permissions : [] };
@@ -175,7 +188,7 @@ app.controller('userRoleCTL',function($scope,$http,_) {
             alt.text(data.text).parent().show();
             if (data.success) {
                 if ($scope.isNew) {
-                    $scope.roles.push(data.role);
+                    $scope.roles.unshift(data.role);
                     //$scope.user_roles.push(data.role);
                 }
             }

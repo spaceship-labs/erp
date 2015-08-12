@@ -77,7 +77,7 @@ module.exports = {
 		if(id){
 			User.findOne(id).populate('accessList').populate('companies').exec(function(err,user){
                 UserRole.find().exec(function(err,roles) {
-                    if(err) return null;
+                    if(err || !user) return res.notFound();
                     user.avatar2 = user.icon ? '/uploads/users/177x171'+user.icon : 'http://placehold.it/177x171';
                     user.active = user.active?true:false;
                     delete user.password;
