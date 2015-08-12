@@ -228,12 +228,12 @@ module.exports = {
         var isRep = req.param('rep') || false;
         var role = req.param('role');
 
-        User.findOne({id : user_id}).populateAll().exec(function(err,user){
+        User.findOne({id : user_id}).populate('accessList').exec(function(err,user){
             if (err) {
                 console.log(err);
                 res.serverError();
             }
-            user.createAccessList(company,permissions,isAdmin,isRep,role,function(){
+            user.createAccessList(company,permissions,isAdmin,isRep,role,function(err){
                 res.json({success:true,text:'permisos actualizados'});
             });
         });

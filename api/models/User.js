@@ -51,6 +51,7 @@ module.exports = {
 			this.save(cb);
 		}
 		,createAccessList : function(company,permissions,isAdmin,isRep,role,cb) {
+		
             var user = this;
             var acl = user.hasCompanyAccess(company);
             if (user.accessList && acl) {
@@ -59,7 +60,8 @@ module.exports = {
                 acl.permissions = permissions;
                 acl.role = role;
                 acl.company = company;
-                user.save(cb);
+		UserACL.update({id: acl.id}, acl).exec(cb);
+                //user.save(cb);
             } else {
                 var newAcl = {
                     company : company,

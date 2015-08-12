@@ -58,14 +58,13 @@ app.controller('userEditCTL',function($scope,$http,_){
     for(var i in $scope.user.accessList){
         var acl = $scope.user.accessList[i];
         //if (acl.company == $scope.company.id) {
-        if (acl.company == $scope.user.default_company.id) {
+        if (acl.company == $scope.user.default_company) {
             $scope.user.acl = acl;
             $scope.user.permissions = acl.permissions;
             $scope.isAdmin = acl.isAdmin;
             $scope.isRep = acl.isRep;
 
             emptyRole = { name : 'Ninguno',permissions : acl.permissions,id : '0' };
-
             if (acl.role) {
                 $scope.user.role = _.findWhere($scope.user_roles,{ id : acl.role } );
             }
