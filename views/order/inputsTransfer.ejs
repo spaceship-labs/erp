@@ -42,7 +42,7 @@
         <span class='field'><select ng-options='obj as obj.name for obj in hrevState' ng-model='transfer.state' ></select></span>
     </p>
     <p>
-        <label><%= __('order-pax')%></label>
+        <label>Número de personas</label>
         <span class='field'><select ng-change="updatePriceTransfer()" ng-options='obj for obj in pax' ng-model='transfer.pax' ></select></span>
         <!--<input type='text' name='pax' ng-model="transfer.pax" />-->
     </p>
@@ -143,6 +143,6 @@
         </p>
     </div>
     <p class='order-controls'>
-        <a ng-click="setSteps('next',false)" class='btn btn-primary pull-right' >Siguiente</a>
+        <a ng-click="setSteps('prev',false)" class='btn btn-primary pull-right' >Anterior</a>
         <span class='clear'></span>
     </p>

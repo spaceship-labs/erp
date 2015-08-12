@@ -26,12 +26,11 @@ module.exports = {
         var params = req.params.all();
         if( typeof params.id == 'undefined' ) delete params.id;
         if(params.name) params.name = new RegExp(params.name,"i");
-        Client_.find(params).exec(function(err,clients){
+        Client_.find(params).populate('contacts').exec(function(err,clients){
             if(err) res.json('err');
             res.json(clients);
         });
     },
-
     add : function(req,res){
         Common.view(res.view,{
             page:{
@@ -41,9 +40,6 @@ module.exports = {
             }
         },req);
     },
-
-
-
     edit : function(req,res){
         var id = req.param('id');
         var company = req.session.select_company || req.user.select_company;
@@ -67,7 +63,6 @@ module.exports = {
         } else
             res.notFound();
     },
-
     update: function(req,res){
         var form = Common.formValidate(req.params.all(),['id','name','address','phone','rfc','comments','city','state','country']);
         if(form){
@@ -77,7 +72,6 @@ module.exports = {
             });
         }
     },
-
     create : function(req,res){
         var form = Common.formValidate(req.params.all(),['name','address','phone','rfc','comments','email','city','state','country']);
         if(form){
@@ -111,12 +105,11 @@ module.exports = {
     add_contact2 : function(req,res){
         var form = Common.formValidate(req.params.all(),['name','phone','email','client']);
         if(form){
-            //console.log(form);
             Client_contact.create(form).exec(function(err,contact) {
                 if (err) return res.json({text : err});
                 Client_contact.find({ client : contact.client }).exec(function(err,contacts) {
                     if (err) return res.json({text : err});
-                    res.json({text:'Contacto creado.', contacts:contacts});
+                    res.json({ text:'Contacto creado.' , contact : contact , contacts : contacts });
                 });
             });
         }
@@ -220,7 +213,9 @@ module.exports = {
         if(form){
             Client_contact.update({ id : contact_id },form).exec(function(err,contact) {
                 if (err) return res.json({text : err});
-                res.json({text:'Contacto actualizado.', contact:contact});
+                Client_contact.find({ client : contact.client }).exec(function(err,contacts) {
+                    res.json({ text:'Contacto actualizado.' , contact : contact , contacts : contacts });
+                });
             });
         }
     }

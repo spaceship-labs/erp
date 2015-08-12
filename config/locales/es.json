@@ -154,7 +154,7 @@
   "order-id":"Id",
   "order-usuario":"Usuario",
   "order-empresa":"Empresa",
-  "order-llegada":"Llegada",
+  "order-llegada":"Fecha de Llegada",
   "order-salida":"Salida",
   "order-cliente":"Cliente",
   "order-hotel":"Hotel",

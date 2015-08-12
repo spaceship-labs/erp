@@ -48,7 +48,7 @@
                         </p></div>
                         <form class='form stdform stdform2 nopadding'>
                             <p>
-                                <label>Nombre*</label>
+                                <label>Nombre completo*</label>
                                 <span class='field'><input type='text' name="name" ng-model="client.name" ng-required="true"></span>
                             </p>
                             <p>
@@ -129,20 +129,37 @@
                     </div>
                 </div>-->
             </div>
-            <!-- Transfer section -->
+            <!-- Hotel section -->
             <div class='row'>
-                <form class='stdform stdform2 col-md-12 widgetbox' action='' name='' method='post'>
+                <form class='stdform stdform2 col-md-12' action='' name='' method='post'>
                     <div class='headtitle'>
                         <div class='btn-group'>
-                            <a class="btn btn-primary pull-right" ng-click="resetForm('transfer')"><i class='fa fa-eraser'></i></a>
-                            <a class="btn btn-primary pull-right" ng-click="setSteps('',2)"><i class='fa fa-{{transfer.fee?"check":"circle-thin"}}'></i></a>
+                            <a class="btn btn-primary pull-right" ng-click="resetForm('hotel')"><i class='fa fa-eraser'></i></a>
+                            <a class="btn btn-primary pull-right" ng-click="setSteps('',2)"><i class='fa fa-circle-thin'></i></a>
                         </div>
-                        <h4 class="widgettitle"><a class='expand' ng-click="setSteps('',2)"><i class='fa fa-car'></i> <%= __('order-reservar-tras')%></a></h4>
+                        <h4 class="widgettitle"><a class='expand' ng-click="setSteps('',2)"><i class='fa fa-building'></i> <%= __('order-reservar-hotel')%></a></h4>
                     </div>
-                    <div class='widgetcontent nopadding'><div class='collapseCustom' collapse="!(steps==2?true:false)">
-                        <%- partial('inputsTransfer') -%> 
-                    </div></div>
-                	<div class="clearfix"></div>
+                    <div collapse="!(steps==2?true:false)">
+                        <div class='row'>
+                            <div class='col-md-10'>
+                                <p><select chosen ng-options='obj as obj.name for obj in hotels' ng-model='addedHotel' ></select></p>
+                            </div>
+                            <div class='col-md-2'>
+                                <a ng-click='addTH("hotel",false)' class='btn-primary btn pull-right'><%= __('order-agregar')%></a>
+                            </div>
+                        </div><br >
+                        <div class='isCHotelContainer'>
+                            <div ng-repeat='item in reservations.hotels'>
+                                <%- partial('inputsHotel') -%> 
+                            </div>
+                        </div>
+                        <div class='headtitle'>
+                            <a ng-click="setSteps('next',false)" class='btn btn-primary pull-right' >Siguiente</a>
+                            <a ng-click="setSteps('prev',false)" class='btn btn-primary pull-right' >Anterior</a>
+                            <span class='clear'></span>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
                 </form>
             </div>
             <!-- Tours section -->
@@ -184,52 +201,35 @@
                                         typeahead="obj as ( thecompany.adminCompany?obj.name:obj.tour.name ) for obj in getTours($viewValue)" >
                                 </p>-->
                             </div>
-                            <!--<div class='col-md-2'>
-                                <a ng-click='addTH("tour")' class='btn-primary btn pull-right'><%= __('order-agregar')%></a>
-                            </div>-->
                         </div><br >
                         <div class='stdform2 isCtourContainer'>
                             <div ng-repeat='item in reservations.tours'>
                                 <%- partial('inputsTour') -%> 
-                                <div class='headtitle'>
-                                    <a ng-click="setSteps('next',false)" class='btn btn-primary pull-right' >Siguiente</a>
-                                    <span class='clear'></span>
-                                </div>
                             </div>
+                        </div>
+                        <div class='headtitle'>
+                            <a ng-click="setSteps('next',false)" class='btn btn-primary pull-right' >Siguiente</a>
+                            <a ng-click="setSteps('prev',false)" class='btn btn-primary pull-right' >Anterior</a>
+                            <span class='clear'></span>
                         </div>
                     </div>
                     <div class="clearfix"></div>
                 </form>
             </div>
+            <!-- Transfer section -->
             <div class='row'>
-            <!-- Hotel section -->
-                <form class='stdform stdform2 col-md-12' action='' name='' method='post'>
+                <form class='stdform stdform2 col-md-12 widgetbox' action='' name='' method='post'>
                     <div class='headtitle'>
                         <div class='btn-group'>
-                            <a class="btn btn-primary pull-right" ng-click="resetForm('hotel')"><i class='fa fa-eraser'></i></a>
-                            <a class="btn btn-primary pull-right" ng-click="setSteps('',4)"><i class='fa fa-circle-thin'></i></a>
+                            <a class="btn btn-primary pull-right" ng-click="resetForm('transfer')"><i class='fa fa-eraser'></i></a>
+                            <a class="btn btn-primary pull-right" ng-click="setSteps('',4)"><i class='fa fa-{{transfer.fee?"check":"circle-thin"}}'></i></a>
+                            <a class="btn btn-primary pull-right" ng-click="setTheItemForContacts(transfer,'transfer',false)" data-toggle="modal" data-target="#myModal"><i class='fa fa-user'></i> Clientes</a>
                         </div>
-                        <h4 class="widgettitle"><a class='expand' ng-click="setSteps('',4)"><i class='fa fa-building'></i> <%= __('order-reservar-hotel')%></a></h4>
+                        <h4 class="widgettitle"><a class='expand' ng-click="setSteps('',4)"><i class='fa fa-car'></i> <%= __('order-reservar-tras')%></a></h4>
                     </div>
-                    <div collapse="!(steps==4?true:false)">
-                        <div class='row'>
-                            <div class='col-md-10'>
-                                <p><select chosen ng-options='obj as obj.name for obj in hotels' ng-model='addedHotel' ></select></p>
-                            </div>
-                            <div class='col-md-2'>
-                                <a ng-click='addTH("hotel",false)' class='btn-primary btn pull-right'><%= __('order-agregar')%></a>
-                            </div>
-                        </div><br >
-                        <div class='isCHotelContainer'>
-                            <div ng-repeat='item in reservations.hotels'>
-                                <%- partial('inputsHotel') -%> 
-                                <div class='headtitle'>
-                                    <a ng-click="setSteps('prev',false)" class='btn btn-primary' >Anterior</a>
-                                    <a ng-click="setSteps('next',false)" class='btn btn-primary' >Siguiente</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <div class='widgetcontent nopadding'><div class='collapseCustom' collapse="!(steps==4?true:false)">
+                        <%- partial('inputsTransfer') -%> 
+                    </div></div>
                     <div class="clearfix"></div>
                 </form>
             </div>
@@ -281,9 +281,73 @@
         </div>
     </div>
     <div class="modal fade" id="myModal">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div 
+                <div class='widgetbox'>
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title">Clientes para las reservas <a ng-click="openContactForm(false,'create')"><i class='fa fa-plus'></i> Nuevo cliente</a></h4>
+                    </div>
+                    <div collapse="!modalCollapse">
+                        <form class='stdform stdform2'>
+                            <p>
+                                <label><%= __('order_name') %></label>
+                                <span class='field'><input type='text' ng-model="contact.name"></span>
+                            </p>
+                            <p>
+                                <label><%= __('order_mail') %></label>
+                                <span class='field'><input type='text' ng-model="contact.email"></span>
+                            </p>
+                            <p>
+                                <label><%= __('order_phone') %></label>
+                                <span class='field'><input type='text' ng-model="contact.phone"></span>
+                            </p>
+                            <p class='order-controls'>
+                                <a ng-hide="contactFlag!='create'" class='btn btn-primary pull-right' ng-click="createUpdateContact()">Crear</a>
+                                <a ng-hide="contactFlag!='update'" class='btn btn-primary pull-right' ng-click="createUpdateContact()">Actualizar</a>
+                                <a class='btn btn-primary reset pull-right' ng-click="cancelContactForm()">Cancelar</a>
+                                <span class='clear'></span>
+                            </p>
+                        </form>
+                    </div>
+                    <div class='widgetcontent'><div class='row'>
+                        <div class='col-md-6'>
+                            <h4 class='widgettitle'>Clientes de esta reserva</h4>
+                            <div class='widgetcontent'>
+                                <ul>
+                                    <li ng-repeat="c in client.contacts">
+                                        <a>{{c.name}}</a>
+                                        <span class='icons pull-right'>
+                                            <a ng-click="openContactForm(c,'update')"><i class='fa fa-pencil'></i></a>
+                                            <a ng-click="addContactToItem($index)"><i class='fa fa-plus'></i></a>
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class='col-md-6'>
+                            <h4 class='widgettitle'>Clientes de este item</h4>
+                            <div class='widgetcontent'>
+                                <ul>
+                                    <li ng-repeat="c in theIFC.contacts">
+                                        <a>{{client.contacts[c].name}}</a>
+                                        <span class='icons pull-right'>
+                                            <a ng-click="removeContactFromItem(c)"><i class='fa fa-minus'></i></a>
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div></div>
+                    <div class='stdform2'>
+                        <p class="stdformbutton">
+                            <button type="button" class="btn btn-primary pull-right" ng-click="saveContactForm()">Guardar</button>
+                            <button type="button" class="btn btn-primary pull-right" ng-click="cancelContactForm()" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+                            <span class='clear'></span>
+                        </p>
+                    </div>
+                </div>
+                <!--<div 
                     form-helper 
                     fields='content.clientForOrders' 
                     form-footer='Agregar'
@@ -292,7 +356,7 @@
                     form-title='Agregar Cliente'
                     modal='true'
                     >
-                </div>  
+                </div>-->
             </div>
         </div>
     </div>

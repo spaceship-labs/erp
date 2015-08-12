@@ -149,11 +149,11 @@ module.exports = {
     params.airport = params.airport.id;
     params.client = params.client.id;
     params.user = req.user.id;
-    params.currency = params.currency.id;
     delete params.id;
     Order.findOne(params.order).populate('company').exec(function(e,theorder){
       if(e) return res.json(e);
       params.company = theorder.company?theorder.company:(req.session.select_company || req.user.select_company);
+      params.currency = params.currency?params.currency.id:params.company.base_currency;
       Company.findOne({adminCompany:true}).exec(function(c_err,mainCompany){
         if(c_err) res.json(false);
         TransferPrice.findOne(params.transferprice).populate('transfer').exec(function(tp_err,transferprice){
@@ -224,7 +224,7 @@ module.exports = {
         item.company = theorder.company.id;
         item.user = req.user.id;
         item.payment_method = item.payment_method?item.payment_method.handle:params.generalFields.payment_method.handle;
-        item.currency = item.currency?item.currency.id:params.generalFields.currency.id;
+        item.currency = item.currency?item.currency.id:(params.generalFields.currency?params.generalFields.currency.id:theorder.company.base_currency);
         item.autorization_code = item.autorization_code || params.generalFields.autorization_code;
         delete item.id;
         if( item.reservation_type == 'tour' ){
