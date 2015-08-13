@@ -240,7 +240,7 @@ module.exports = {
               item.commission_sales = tour.commission_sales;
               item.exchange_rate_sale = theorder.company.exchange_rate_sale;
               item.exchange_rate_book = theorder.company.exchange_rate_book;
-              item.exchange_rate_provider = tour.provider.exchange_rate;
+              item.exchange_rate_provider = tour.provider?tour.provider.exchange_rate:0;
               item.exchange_rates = theorder.company.exchange_rates;
               item.tour = item.tour.id;
               item.folio = theorder.folio;
@@ -265,7 +265,7 @@ module.exports = {
                 item.commission_sales = tour.commission_sales;
                 item.exchange_rate_sale = theorder.company.exchange_rate_sale;
                 item.exchange_rate_book = theorder.company.exchange_rate_book;
-                item.exchange_rate_provider = tour.provider.exchange_rate;
+                item.exchange_rate_provider = tour.provider?tour.provider.exchange_rate:0;
                 item.tour = tour.id;
                 Reservation.create(item).exec(function(err,r){
                   item.id = r.id; 
