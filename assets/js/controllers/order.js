@@ -299,7 +299,7 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
         //crear una orden
         if( typeof $scope.client != 'string' && ! angular.equals( {} , $scope.client ) ){
             if( ! angular.equals( {} , $scope.transfer ) || ! angular.equals( {} , $scope.reservations.tours ) || ! angular.equals( {} , $scope.reservations.hotels ) ){
-                if( ! angular.equals( {} , $scope.transfer ) ) {
+                if( $scope.transfer != false && !angular.equals( {} , $scope.transfer ) ) {
                     var arrivalDate = new Date($scope.transfer.arrival_date);
                     var departureDate = new Date($scope.transfer.departure_date);
                     if (arrivalDate > departureDate) {
@@ -317,7 +317,7 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
                     if(order && order.id){
                         $scope.order = order;
                         //ver si existe transfer
-                        if( ! angular.equals( {} , $scope.transfer ) ){
+                        if( $scope.transfer != false && ! angular.equals( {} , $scope.transfer ) ){
                             $scope.reservationTransfer();
                         }else if( $scope.reservations.tours.length>0 ){
                             //crea los tours existentes

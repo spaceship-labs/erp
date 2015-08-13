@@ -223,7 +223,7 @@ module.exports = {
         item.order = theorder.id;
         item.company = theorder.company.id;
         item.user = req.user.id;
-        item.payment_method = item.payment_method?item.payment_method.handle:params.generalFields.payment_method.handle;
+        item.payment_method = item.payment_method?item.payment_method.handle:(params.generalFields.payment_method?params.generalFields.payment_method.handle:'creditcard');
         item.currency = item.currency?item.currency.id:(params.generalFields.currency?params.generalFields.currency.id:theorder.company.base_currency);
         item.autorization_code = item.autorization_code || params.generalFields.autorization_code;
         delete item.id;
