@@ -9,7 +9,7 @@
     <div class='row'>
         <div class='col-sm-12 col-md-6 col-lg-6'>
             <label class='outerLabel'>Agencia: </label>
-            <select class='outerSelect' ng-model='thecompany' ng-options="obj as obj.name for obj in companies" ></select>
+            <select class='outerSelect' ng-change="getAllTours()" ng-model='thecompany' ng-options="obj as obj.name for obj in companies" ></select>
         </div>
         <div class='col-sm-12 col-md-6 col-lg-6'>
             <a class="btn btn-primary pull-right full-sm" ng-click="saveAll()"><i class='fa fa-save'></i> <%= __('order-reservar')%> </a>
@@ -24,10 +24,10 @@
                     <div class='headtitle'>
                         <div class='btn-group'>
                             <a class="btn btn-primary pull-right" ng-click="resetForm('client')"><i class='fa fa-eraser'></i></a>
-                            <a class="btn btn-primary pull-right" ng-click="setSteps('',1)"><i class='fa fa-{{client.id?"check":"circle-thin"}}'></i></a>
+                            <a class="btn btn-primary pull-right"><i class='fa fa-{{client.id?"check":"circle-thin"}}'></i></a>
                             <a class='btn btn-primary pull-right' ng-click="searchClient = !searchClient"><i class='fa fa-search'></i></a>
                         </div>
-                        <h4 class="widgettitle"><a class='expand' ng-click="setSteps('',1)"><i class='fa fa-user'></i> <%= __('order-cliente')%></a></h4>
+                        <a class='expand' ng-click="setSteps('',1)"><h4 class="widgettitle"><i class='fa fa-user'></i> <%= __('order-cliente')%></h4></a>
                     </div>
                     <div class='widgetcontent nopadding'><div collapse="!(steps==1?true:false)">
                         <!--<p class='order-controls'>
@@ -108,26 +108,6 @@
                         </p>
                     </div></div>
                 </div></div>
-                <!--<div class='col-md-6' ng-hide='USClient'>
-                    <div class='headtitle'>
-                        <div class='btn-group'><a ng-click="saveContact()" class="btn btn-primary pull-right"><i class='fa fa-save'></i> <%= __('order_create') %></a></div>
-                        <h4 class="widgettitle"><%= __('order_createContact') %></h4>
-                    </div>
-                    <div class='widgetcontent nopadding'>
-                        <p>
-                            <label><%= __('order_name') %></label>
-                            <span class='field'><input type='text' ng-model="contact.name"></span>
-                        </p>
-                        <p>
-                            <label><%= __('order_mail') %></label>
-                            <span class='field'><input type='text' ng-model="contact.email"></span>
-                        </p>
-                        <p>
-                            <label><%= __('order_phone') %></label>
-                            <span class='field'><input type='text' ng-model="contact.phone"></span>
-                        </p>
-                    </div>
-                </div>-->
             </div>
             <!-- Hotel section -->
             <div class='row'>
@@ -135,9 +115,9 @@
                     <div class='headtitle'>
                         <div class='btn-group'>
                             <a class="btn btn-primary pull-right" ng-click="resetForm('hotel')"><i class='fa fa-eraser'></i></a>
-                            <a class="btn btn-primary pull-right" ng-click="setSteps('',2)"><i class='fa fa-circle-thin'></i></a>
+                            <a class="btn btn-primary pull-right"><i class='fa fa-circle-thin'></i></a>
                         </div>
-                        <h4 class="widgettitle"><a class='expand' ng-click="setSteps('',2)"><i class='fa fa-building'></i> <%= __('order-reservar-hotel')%></a></h4>
+                        <a class='expand' ng-click="setSteps('',2)"><h4 class="widgettitle"><i class='fa fa-building'></i> <%= __('order-reservar-hotel')%></h4></a>
                     </div>
                     <div collapse="!(steps==2?true:false)">
                         <div class='row'>
@@ -168,9 +148,9 @@
                     <div class='headtitle'>
                         <div class='btn-group'>
                             <a class="btn btn-primary pull-right" ng-click="resetForm('tour')"><i class='fa fa-eraser'></i></a>
-                            <a class="btn btn-primary pull-right" ng-click="setSteps('',3)"><i class='fa fa-{{reservations.tours.length&&reservations.tours[0].fee?"check":"circle-thin"}}'></i></a>
+                            <a class="btn btn-primary pull-right"><i class='fa fa-{{reservations.tours.length&&reservations.tours[0].fee?"check":"circle-thin"}}'></i></a>
                         </div>
-                        <h4 class="widgettitle"><a class='expand' ng-click="setSteps('',3)"><i class='fa fa-compass'></i> <%= __('order-reservar-tour')%></a></h4>
+                        <a class='expand' ng-click="setSteps('',3)"><h4 class="widgettitle"><i class='fa fa-compass'></i> <%= __('order-reservar-tour')%></h4></a>
                     </div>
                     <div collapse="!(steps==3?true:false)">
                         <div class='row'>
@@ -222,10 +202,10 @@
                     <div class='headtitle'>
                         <div class='btn-group'>
                             <a class="btn btn-primary pull-right" ng-click="resetForm('transfer')"><i class='fa fa-eraser'></i></a>
-                            <a class="btn btn-primary pull-right" ng-click="setSteps('',4)"><i class='fa fa-{{transfer.fee?"check":"circle-thin"}}'></i></a>
+                            <a class="btn btn-primary pull-right"><i class='fa fa-{{transfer.fee?"check":"circle-thin"}}'></i></a>
                             <a class="btn btn-primary pull-right" ng-click="setTheItemForContacts(transfer,'transfer',false)" data-toggle="modal" data-target="#myModal"><i class='fa fa-user'></i> Clientes</a>
                         </div>
-                        <h4 class="widgettitle"><a class='expand' ng-click="setSteps('',4)"><i class='fa fa-car'></i> <%= __('order-reservar-tras')%></a></h4>
+                        <a class='expand' ng-click="setSteps('',4)"><h4 class="widgettitle"><i class='fa fa-car'></i> <%= __('order-reservar-tras')%></h4></a>
                     </div>
                     <div class='widgetcontent nopadding'><div class='collapseCustom' collapse="!(steps==4?true:false)">
                         <%- partial('inputsTransfer') -%> 
@@ -310,7 +290,7 @@
                             </p>
                         </form>
                     </div>
-                    <div class='widgetcontent'><div class='row'>
+                    <div class='widgetcontent noborder'><div class='row'>
                         <div class='col-md-6'>
                             <h4 class='widgettitle'>Clientes de esta reserva</h4>
                             <div class='widgetcontent'>

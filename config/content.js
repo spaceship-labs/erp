@@ -408,8 +408,8 @@ module.exports.content = {
 			object : 'locations'
 		},
 		{
-			label : "Visible en web"
-			,label_en : "Visible on web"
+			label : "¿Es visible en web?"
+			,label_en : "It's visible on web?"
 			,type : 'checkbox'
 			,handle : 'visible'
 		},
@@ -421,8 +421,8 @@ module.exports.content = {
 			object : 'schemes',
 		},
 		{
-			label : 'Traslado incluido',
-			label : 'Transfer included',
+			label : '¿El traslado está incluido?',
+			label_en : 'The transfer is included?',
 			type : 'checkbox',
 			handle : 'haveTranslate'
 		},
@@ -782,8 +782,8 @@ module.exports.content = {
 			handle 	: 'priceByHr'
 		},
 		{
-			label 	: 'URL ',
-			label_en : 'URL',
+			label 	: 'Título URL',
+			label_en : 'URL title',
 			type 	: 'text',
 			required: false,
 			handle 	: 'url_title'
@@ -974,12 +974,16 @@ module.exports.content = {
         	,label_en : 'Prepaid'
         	,handle : 'prepaid'
         	,type : 'money'
+        	,message : 'Monto de prepago que se da a la agencia'
+        	,message_en : ''
         }
         ,{
         	label : 'Crédito'
         	,label_en : 'Credit'
         	,handle : 'credit'
         	,type : 'money'
+        	,message : 'Monto de creédito que se da a la agencia'
+        	,message_en : ''
         }
 	],
     user : [
@@ -1213,8 +1217,8 @@ module.exports.content = {
     		type : 'text'
     	},
     	{
-			label : "Visible en web"
-			,label_en : "Visible on web"
+			label : "¿Es visible en web?"
+			,label_en : "It's Visible on web?"
 			,type : 'checkbox'
 			,handle : 'visible'
 		},
@@ -1782,8 +1786,8 @@ module.exports.content = {
 			,handle : 'country'
 		}
 		,{
-			label : 'Crédito'
-			,label_en : 'Credit'
+			label : '¿Proporciona crédito?'
+			,label_en : 'Credit admited?'
 			,type : 'checkbox'
 			,handle : 'isCredit'
 		}

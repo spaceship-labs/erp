@@ -64,7 +64,7 @@
                         <a href="/order/edit/{{order.id}}"><span class="table-icon fa fa-trash-o"></span></a>
                     </span>
                 </h4>
-                <div ng-if="order.transfer" class='row content-border'>
+                <div ng-if="order.transfer" class='content-border'><div class='row'>
                     <div class='col-md-3'>
                         <p class='font-uppercase'><strong><%= __('gral_data')%></strong></p>
                         <p><strong><%= __('order-hotel')%></strong> : {{order.transfer.hotel || "---" }} </p>
@@ -90,7 +90,7 @@
                         <p><strong><%= __('order-fecha-salida')%></strong> : {{ formatDate(order.transfer.departure_date) || '---' }} </p>
                         <p><strong><%= __('order-hora-salida')%></strong> : {{ formatTime(order.transfer.departure_time) || '---' }} </p>
                     </div>
-                </div>
+                </div></div>
             </div>
         </div>
         <div class='row'><div class='col-md-12'>

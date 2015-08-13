@@ -75,8 +75,10 @@ module.exports = {
 	        		,tour : ids
 	        	}).skip(skip).limit(limit).populate('tour').exec(function(cp_err,cproducts){
 	        		if(cp_err) res.json('err');
+	        		var results = [];
+	        		for(var x in cproducts) results.push(cproducts[x].tour);
 	        		CompanyProduct.count({product_type : 'tour',agency : company,tour : ids}).exec(function(cp_err,count){
-	        			res.json({ results : cproducts , count : count });
+	        			res.json({ results : results , count : count });
 	        		});
 	        	});
         	}else{
