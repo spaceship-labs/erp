@@ -284,7 +284,8 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
             /*if(clients_){
                 $scope.clients_ = $scope.clients_.concat(client_);
             }*/
-            $scope.client = client_.client[0];
+            console.log(client_);
+            $scope.client = client_;
             $scope.client_flag = true;
             //jQuery('#myModal').modal('hide');
         });
