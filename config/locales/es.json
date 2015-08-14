@@ -340,6 +340,10 @@
   "user-permiso":"permisos",
   "user-escoger":"escojer",
   "user-cerrar":"Cerrar",
+  "user-rol-entrar":"Entrar",
+  "user-rol-crear":"Crear",
+  "user-rol-editar":"Editar",
+  "user-rol-borrar":"Borrar",
 
   "zone-actualizado":"zona actualizada",
   "zone-info":"Informacion básica",
@@ -448,5 +452,9 @@
   ,"cupon_editInstancia":"Editar cupon de "
   ,"":""
   ,"import":"Importar"
-
+  , "company-currencies":"Monedas seleccionadas"
+  , "company-currencies-select": "Seleccionar nueva moneda"
+  , "filter":"Filtrar por"
+  , "filter_date": "Fecha"
+  , "filter_name": "Nombre"
 }

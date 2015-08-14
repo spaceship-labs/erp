@@ -3,7 +3,6 @@
 	window.currencies = <%-JSON.stringify(currencies) %>;
     window.user = <%- JSON.stringify(current_user) %>;
     window.selected_company = <%- JSON.stringify(selected_company) %>;
-    console.log(companies);
 </script>
 
 <div class="wrap_createCompany row-fluid" ng-controller="companyCTL">
@@ -14,6 +13,7 @@
 		 edit-url='/company/edit/' 
 		 get-info='getInfo' 
 		 button-text='<%= __('emp-nueva-emp') %>'
+		get-url="/company/find/"
 		button-text-import='<%= __('import') %>' 
 		type-import='company'
 		 >

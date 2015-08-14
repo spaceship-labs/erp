@@ -1,8 +1,10 @@
 var oxr = require('open-exchange-rates');
 
 module.exports.getCurrencies = function(cb){
-	console.log(sails.config.exchangeRates);
-	if(sails.config.exchangeRates){
+	sails.config.exchangeRates = sails.config.exchangeRates || {
+									app_id: process.env.EXCHANGE_RATES
+								};
+	if(sails.config.exchangeRates && sails.config.exchangeRates.app_id){
 		oxr.set(sails.config.exchangeRates);
 		oxr.latest(function(err){
 			if(err)	return cb && cb(err);
@@ -21,5 +23,16 @@ module.exports.getCurrencies = function(cb){
 				});
 			});
 		});
+	}else{
+		sails.log.warn("No app_id for exchange rates");
 	}
 }
+
+module.exports.getOneData = function(cb){
+	Exchange_rates.count(function(err, n){
+		if(n > 0)
+			return cb && cb(err, n);
+
+		module.exports.getCurrencies();
+	});
+};

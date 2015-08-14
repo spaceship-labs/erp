@@ -337,6 +337,11 @@
   "user-permiso":"Permission",
   "user-escoger":"Choose",
   "user-cerrar":"Close",
+  "user-rol-entrar":"Enter",
+  "user-rol-crear":"Create",
+  "user-rol-editar":"Edit",
+  "user-rol-borrar":"Delete",
+
 
   "zone-actualizado":"Zone has been successfully updated",
   "zone-info":"Basic Information",
@@ -443,4 +448,9 @@
   ,"cupon_editInstancia":"Edit cupon: "
   ,"":""
   ,"import":"Import"
+  , "company-currencies":"Selected currencies"
+  , "company-currencies-select": "Select new currency"
+  , "filter":"Filter by"
+  , "filter_date": "Date"
+  , "filter_name": "Name"
 }

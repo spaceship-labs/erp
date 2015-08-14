@@ -571,14 +571,20 @@ function formatFilterFields(f){
         fx['$and'] = [from,to];
         //console.log('from');console.log(from);console.log('to');console.log(to);
       }else if( f[x].type == 'autocomplete' ){
-        if(sails.models[f[x].model_]) 
-          fx[ f[x].field ] = sails.models[f[x].model_].mongo.objectId(f[x].model.item.id);
-        else
+        if(sails.models[f[x].model_]){
+          if( f[x].special_field && f[x].special_field == 'provider' ){
+            var newitem = [];
+            for(var sp in f[x].model.item )
+              newitem.push( sails.models[f[x].model_].mongo.objectId( f[x].model.item[sp] ) );
+            fx[ f[x].field ] = { '$in' : newitem};
+          }else
+            fx[ f[x].field ] = sails.models[f[x].model_].mongo.objectId(f[x].model.item.id);
+        }else
           fx[ f[x].field ] = f[x].model.item.id;
       }else if( f[x].type == 'select' || f[x].type == 'text' || f[x].type == 'number' ){
-        if( f[x].model_ && sails.models[f[x].model_] )
-          fx[ f[x].field ] = sails.models[f[x].model_].mongo.objectId(f[x].model.item)
-        else
+        if( f[x].model_ && sails.models[f[x].model_] ){
+            fx[ f[x].field ] = sails.models[f[x].model_].mongo.objectId(f[x].model.item);
+        }else
           fx[ f[x].field ] = f[x].type=='number'?parseInt(f[x].model.item):f[x].model.item;
       }
     }

@@ -3,7 +3,13 @@ im = require('imagemagick'),
 adapterPkgCloud = require('skipper-pkgcloud'),
 async = require('async'),
 gm = require('gm'),//crops con streams.
-gmIm = gm.subClass({imageMagick:true});
+gmIm = gm.subClass({imageMagick:true}),
+mime  = require('mime'),
+fileTypes2Crop = {
+    'image/jpeg':true,
+    'image/png': true,
+    'image/gif': true
+};
 
 //Names and Saves a File returns de filename
 module.exports.saveFiles = function(req,opts,cb){
@@ -26,7 +32,7 @@ module.exports.saveFiles = function(req,opts,cb){
 			maxBytes:52428800		
 		};
 
-		if(process.env.CLOUDUSERNAME){
+		if(process.env.CLOUDUSERNAME && !opts.disableCloud){
 			uploadOptions.adapter = adapterPkgCloud;
 			uploadOptions.username = process.env.CLOUDUSERNAME;
 			uploadOptions.apiKey = process.env.CLOUDAPIKEY;
@@ -35,6 +41,10 @@ module.exports.saveFiles = function(req,opts,cb){
 			uploadOptions.dirname = '/uploads/' + opts.dir + '/';
 			if(opts.avatar)
 				uploadOptions.after = function(stream, filename, next){
+					var lookup = mime.lookup(filename);
+					if(!fileTypes2Crop[lookup])
+						return next();
+
 					opts.srcData = stream;
 					opts.filename = filename;
 					Files.makeCropsStreams(uploadOptions, opts, next);
@@ -151,6 +161,7 @@ module.exports.makeCropsStreams = function(uploadOptions, opts, cb){
     var sizes = sails.config.images[opts.profile];
     var adapter = adapterPkgCloud(uploadOptions);
     opts.dirSave = '/uploads/'+opts.dir+'/';
+    if(!sizes) return cb();
 
     async.each(sizes,function(size, next){ 
     	var wh = size.split('x');
@@ -164,7 +175,7 @@ module.exports.makeCropsStreams = function(uploadOptions, opts, cb){
     }, cb);
 };
 
-module.exports.containerCloudLink = null;
+module.exports.containerCloudLink = '';
 module.exports.getContainerLink = function(next){
     //run in bootstrap
     //or '' if not setting
@@ -178,6 +189,7 @@ module.exports.getContainerLink = function(next){
     if(adapter){
         adapter.getContainerLink(function(err, link){
             module.exports.containerCloudLink = link || '';
+            //console.log('LINK',module.exports.containerCloudLink )
             if(next) return next(err, module.exports.containerCloudLink);
         });
     }else{
@@ -195,7 +207,15 @@ function getAdapterConfig(){
         uploadOptions.apiKey = process.env.CLOUDAPIKEY;
         uploadOptions.region = process.env.CLOUDREGION;
         uploadOptions.container = process.env.CLOUDCONTAINER;
-	return adapterPkgCloud(uploadOptions);
+        return adapterPkgCloud(uploadOptions);
     }
     return false;
 }
+
+module.exports.middleware = function(req, res, next){
+    if(req.url.indexOf('/uploads/') != 0 || Files.containerCloudLink == ''){
+        next();
+    }else{
+        res.redirect(301, module.exports.containerCloudLink + req.url);
+    }
+};

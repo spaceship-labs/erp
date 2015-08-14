@@ -35,7 +35,7 @@ app.controller('companyEditCTL',function($scope,$http,$timeout){
     $scope.tours = [];
     $scope.transfers = {};
     $scope.hotels = {};
-    $scope.currencies = currencies;
+    $scope.currencies = currencies || [];
     $scope.missingApps = [];
     $scope.selectedApps = [];
     $scope.showTaxForm = false;
@@ -67,6 +67,10 @@ app.controller('companyEditCTL',function($scope,$http,$timeout){
             $scope.messages[section].show = false;
         }
     }
+    $scope.admin_currencies = window.admin_currencies;
+    $scope.currencies_id = window.currencies.map(function(c){
+                                    return c.id;
+                                });
     //$scope.companies = companies;
     $scope.updateExchangeRates = function(){
         console.log($scope.exchangerates);
@@ -273,4 +277,28 @@ app.controller('companyEditCTL',function($scope,$http,$timeout){
         });
     }
     $scope.getLocations();
+
+    $scope.add_currency = function(){
+        if($scope.select_currency){
+            var url = '/company/' + $scope.mycompany.id + '/currencies/' + $scope.select_currency;
+            $http({method: 'POST', url: url}).success(cbUpdateCurrencies); 
+        }
+    };
+
+    $scope.remove_currency = function(id){
+        if(id){
+            var url = '/company/' + $scope.mycompany.id + '/currencies/' + id;
+            $http({method: 'delete', url: url }).success(cbUpdateCurrencies);
+        }
+    };
+
+    function cbUpdateCurrencies(company){
+        if(company && company.currencies){
+            $scope.currencies = company.currencies;
+            $scope.currencies_id = company.currencies.map(function(c){
+                                    return c.id;
+                                });
+        }
+    
+    }
 });

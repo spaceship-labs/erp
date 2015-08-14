@@ -2,6 +2,7 @@
 	var controller = function($scope,$rootScope,$http){
         $scope.translates = $rootScope.translates;
         $scope.alphabet = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']; 
+        $scope.filter_by = 'date'
         $scope.alphabetIndex = [];
         $scope.totalItems = 0;
         //$scope.dlPage = 1;
@@ -13,7 +14,9 @@
             $scope.alphabetIndex.push(object.name[0].toUpperCase());
         });
         $scope.currentLetter = $scope.alphabetIndex[0];
-        $scope.objectFilter = function(obj){        
+        $scope.objectFilter = function(obj){
+            if($scope.filter_by != 'name')
+                return true;
             if($scope.currentLetter && !$scope.searchInput){
                 return $scope.currentLetter == obj.name[0].toUpperCase();
             }else{
@@ -21,11 +24,25 @@
                 var name = obj.name;
                 return name.match(regex);
             }
-        }
+        };
+
+        var objectDefaultsLength = $scope.objects && $scope.objects.length || 0;
+        var objectDefaultsFilterByName = $scope.objects && $scope.objects.slice() || [];
+
         var getMore = function(skip){
-            $http.get($scope.getUrl, { params: { 'skip':skip , 'limit': 30 , 'sort' : 'name asc' } }).then(function(response){ 
-                $scope.objects = response.data.results;
-                $scope.totalItems = response.data.count;
+            var params = { 'skip':skip , 'limit': 30 , 'sort' : 'name asc' };
+            if($scope.filter_by == 'date'){
+                params.sort = 'createdAt desc';
+            }
+                
+            $http.get($scope.getUrl, { params: params  }).then(function(response){ 
+                if(response.data.results && response.data.count){
+                    $scope.objects = response.data.results;
+                    $scope.totalItems = response.data.count;
+                }else{
+                    $scope.totalItems = objectDefaultsLength;
+                    $scope.objects = response.data;
+                }
             });
         };
         if( $scope.getUrl ) getMore(0);
@@ -38,14 +55,26 @@
         };
         $scope.$watch('objects',function(){
             $scope.alphabetIndex = [];
-            $scope.objects.forEach(function(object){
-                $scope.alphabetIndex.push(object.name[0].toUpperCase());
-            });
+            if($scope.objects)
+                $scope.objects.forEach(function(object){
+                    $scope.alphabetIndex.push(object.name[0].toUpperCase());
+                });
             $scope.currentLetter = $scope.alphabetIndex[0];
         });
+
+        $scope.$watch('filter_by',function(newV, oldV){
+            if(newV == 'name'){
+                $scope.objects = objectDefaultsFilterByName;
+                $scope.totalItems = 4;
+            }else if(oldV == 'name' && $scope.getUrl){
+                getMore(0);
+            }
+        });
+
         $scope.info = function(object){
             return $scope.getInfo()(object);
         };
+
 	};
 	controller.$inject = ['$scope','$rootScope','$http'];
     var directive = function () {

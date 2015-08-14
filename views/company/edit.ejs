@@ -4,6 +4,7 @@
     window.users = <%- JSON.stringify(users) %>;
     window.hotels = <%- JSON.stringify(hotels) %>;
     window.currencies = <%- JSON.stringify(mycompany.currencies || []) %>;
+    window.admin_currencies = <%- JSON.stringify(currencies) %>;
     //console.log(window.currencies);
 </script>
 <div ng-controller='companyEditCTL'>
@@ -77,6 +78,31 @@
     	</div>
         
         <div profile-image object='mycompany' update-method='/company/updateIcon' delete-method='/company/destroyIcon' image-attr='icon' dir='companies'></div>    
+
+        <div class="widgetbox">
+            <h4 class="widgettitle"><%= __('admin-conf-moneda') %></h4>
+            <div class="widgetcontent">
+			<p><label for="currency_select"><%= __('company-currencies') %></label></p>
+			<ul class="list-nostyle list-inline removeCurrency">
+				<li ng-repeat="i in currencies">
+					<span class="btn"> 
+						<a ng-click="remove_currency(i.id)" class="fa fa-times"></a>
+						<span ng-bind="i.currency_code"></span>
+					</span>
+				</li>
+			</ul>
+			<div class="currency_wrap">
+				<p><label for="currency_select"><%= __('company-currencies-select') %></label></p>
+				<p><select ng-model="select_currency">
+					<option ng-repeat="i in admin_currencies" ng-if="currencies_id.indexOf(i.id) == -1" value="{{i.id}}" ng-cloak>{{i.name+" ("+i.currency_code+")"}}</option>
+
+				</select></p>
+			</div>
+			<p class="stdformbutton"><button class="btn btn-primary" ng-click="add_currency()"><%= __('admin-agregar-moneda') %></button></p>
+
+
+            </div>
+        </div>
             
         <% if (req.user.isSuperAdmin()) {%>
         <div class="widgetbox tags">
@@ -124,25 +150,25 @@
         </div>
 
         <!--<div class="widgetbox tags">
-            <h4 class="widgettitle"><%= __('emp-hoteles') %></h4>
-            <div class="widgetcontent">
-                <ul class="taglist" ng-repeat='hotel in mycompany.hotels'>
-                    <li><a>
-                            <i ng-bind='hotel.name'></i>
-                            <span class="close" ng-click='removeHotel(hotel)'>×</span>
-                        </a></li>
-                </ul>
-                <hr>
-                <form ng-submit='addHotel(selectedHotel)' ng-if="mycompany.hotels.length != hotels.length">
-                    <input type='hidden' value='<%-mycompany.id%>' name='company' />
-                    <p>
-                        <select ng-options="hotel.name for hotel in hotels | filter:filterHotels" ng-model="selectedHotel" name="" chosen></select>
-                        <button ng-if="selectedHotel" class="btn btn-primary ng-scope"><%= __('emp-agregar-hotel') %></button>
-                    </p>
-                    <p><a href="/hotels/new_hotel/" style="display:block;margin-top:10px"><%= __('emp-agregar-hoteles') %></a></p>
-                </form>
-                <p ng-if="mycompany.hotels.length == hotels.length"><%= __('emp-todos-hoteles') %></p>
-            </div>
+                <h4 class="widgettitle"><%= __('emp-hoteles') %></h4>
+                <div class="widgetcontent"  ng-if="mycompany.hotels.length">
+                    <ul class="taglist" ng-repeat='hotel in mycompany.hotels'>
+                        <li><a>
+                                <i ng-bind='hotel.name'></i>
+                                <span class="close" ng-click='removeHotel(hotel)'>×</span>
+                            </a></li>
+                    </ul>
+                    <hr>
+                    <form ng-submit='addHotel(selectedHotel)' ng-if="mycompany.hotels.length != hotels.length">
+                        <input type='hidden' value='<%-mycompany.id%>' name='company' />
+                        <p>
+                            <select ng-options="hotel.name for hotel in hotels | filter:filterHotels" ng-model="selectedHotel" name="" chosen></select>
+                            <button ng-if="selectedHotel" class="btn btn-primary ng-scope"><%= __('emp-agregar-hotel') %></button>
+                        </p>
+                        <p><a href="/hotels/new_hotel/" style="display:block;margin-top:10px"><%= __('emp-agregar-hoteles') %></a></p>
+                    </form>
+                    <p ng-if="mycompany.hotels.length == hotels.length"><%= __('emp-todos-hoteles') %></p>
+                </div>
         </div>-->
         <% } %>
 

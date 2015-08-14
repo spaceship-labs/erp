@@ -77,7 +77,7 @@ module.exports = {
 		if(id){
 			User.findOne(id).populate('accessList').populate('companies').exec(function(err,user){
                 UserRole.find().exec(function(err,roles) {
-                    if(err) return null;
+                    if(err || !user) return res.notFound();
                     user.avatar2 = user.icon ? '/uploads/users/177x171'+user.icon : 'http://placehold.it/177x171';
                     user.active = user.active?true:false;
                     delete user.password;
@@ -228,12 +228,12 @@ module.exports = {
         var isRep = req.param('rep') || false;
         var role = req.param('role');
 
-        User.findOne({id : user_id}).populateAll().exec(function(err,user){
+        User.findOne({id : user_id}).populate('accessList').exec(function(err,user){
             if (err) {
                 console.log(err);
                 res.serverError();
             }
-            user.createAccessList(company,permissions,isAdmin,isRep,role,function(){
+            user.createAccessList(company,permissions,isAdmin,isRep,role,function(err){
                 res.json({success:true,text:'permisos actualizados'});
             });
         });

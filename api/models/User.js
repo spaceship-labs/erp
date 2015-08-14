@@ -69,6 +69,7 @@ module.exports = {
             return permissions;
         }
 		,createAccessList : function(company,permissions,isAdmin,isRep,role,cb) {
+		
             var user = this;
             var acl = user.hasCompanyAccess(company);
             if (user.accessList && acl) {
@@ -81,7 +82,8 @@ module.exports = {
                 }
                 acl.role = role;
                 acl.company = company;
-                user.save(cb);
+		UserACL.update({id: acl.id}, acl).exec(cb);
+                //user.save(cb);
             } else {
                 if(isAdmin){
                     permissions = user.generateAllPermissions();

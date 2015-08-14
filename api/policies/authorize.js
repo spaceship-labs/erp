@@ -23,6 +23,11 @@ module.exports = function(req, res, next) {
     if(req.method == 'DELETE'){
       var params = req.params.all();
       //todo si tienes password checar y dar permiso si no no
+      //TODO aquí hay un bucle de redirreccionamiento, pongo solo un whitelist que necesito.
+      if(req.options.controller == 'company' && req.options.action == 'remove' && req.options.alias == 'currencies'){
+        return next();
+      }
+
       User.findOne(req.user.id).populate('accessList').exec(function(err, u) {
         if (err) { return res.redirect('/') }
         if (!u) { return res.redirect('/') }

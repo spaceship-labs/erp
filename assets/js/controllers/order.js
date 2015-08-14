@@ -23,6 +23,18 @@ app.controller('orderCTL',function($scope,$http,$window,$upload,$rootScope){
                 }).then(function(response){ return response.data.results; });
             }
         }
+        ,{ label : "Tour" , value : 'tour' , type : 'autocomplete' , field : 'tour' , model_ : 'tour' , action : 
+            function(term){
+                return $http.get('/tour/find', { params: { 'name': term , 'limit': 10 , 'sort' : 'name asc' }
+                }).then(function(response){ return response.data.results; });
+            }
+        }
+        ,{ label : "Proveedores de tours" , value : 'tourprovider' , type : 'autocomplete' , field : 'tour' , model_ : 'tour', special_field : 'provider' , action : 
+            function(term){
+                return $http.get('/tourprovider/find', { params: { 'name': term , 'limit': 10 , 'sort' : 'name asc' }
+                }).then(function(response){ return response.data.results; });
+            }
+        }
         ,{ label : $rootScope.translates.airport , value : 'airport' , type : 'autocomplete' , field : 'airport', model_ : 'airport' , action : 
             function(term){
                 return $http.get('/airport/find', { params: { 'name': term , 'limit': 10 , 'sort' : 'name asc' }
@@ -73,6 +85,14 @@ app.controller('orderCTL',function($scope,$http,$window,$upload,$rootScope){
     var sendFilterFx = function(skip){
         var fx = {};
         var f = $scope.filters;
+        for( var x in f ){
+            if( f[x].special_field && f[x].special_field == 'provider' ){
+                var t = f[x].model.item.tours;
+                f[x].model.item = [];
+                for(var y in t) f[x].model.item.push( t[y].id );
+            }
+            console.log(f[x]);
+        }
         var params = { fields : f , skip : skip };
         console.log(f);
         $http.post('/order/customFind',params,{}).success(function(result) {
@@ -125,7 +145,7 @@ app.controller('orderCTL',function($scope,$http,$window,$upload,$rootScope){
             }
             $scope.orders[x].transfer = transfer;
         }
-        console.log(orders);
+        //console.log(orders);
     };
 
     $scope.getTotalOrder = function(order){
@@ -213,7 +233,7 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
                 $scope.reservations.tours[x].room = $scope.generalFields.hotelroom;
             }
         }
-    }
+    };
     $scope.theTotal = 0;
     var updateTotal = function(){
         var total = 0;

@@ -1,3 +1,3 @@
-module.exports.cache = {
-    maxAge: 31557600000
-};
+module.exports.http = {
+    cache: 31557600000,
+}

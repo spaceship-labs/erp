@@ -43,7 +43,7 @@ app.controller('switchLangCTL',function($scope, $window){
     }
 });
 
-app.controller('currencyCTL',function($scope){
+app.controller('currencyCTL',function($scope, $http){
 	if(window.preload)
 		for(var i=0;i<preload.length;i++){
 			$scope[preload[i]] = window[preload[i]];
@@ -70,18 +70,35 @@ app.controller('currencyCTL',function($scope){
 		
 	};
 
-	$('.removeCurrency').on("click","a",function(e){
-		e.preventDefault();
-		
-		$.post('/admin/editAjax',{
-			method:"removeCurrency"
-			,currency:$(this).attr('href')
-			,userId:true
-		}
-		, updateContent
-		);
-	});
 	//updateContent();
+
+    $scope.currencies_id = window.company.currencies.map(function(c){
+                            return c.id;
+                        });
+
+    $scope.remove_currency = function(id){
+        if(id){
+            var url = '/company/' + $scope.company.id + '/currencies/' + id;
+            $http({method: 'delete', url: url }).success(cbUpdateCurrencies);
+        }
+    };
+
+    $scope.add_currency = function(){
+        if($scope.select_currency){
+            var url = '/company/' + $scope.company.id + '/currencies/' + $scope.select_currency;
+            $http({method: 'POST', url: url}).success(cbUpdateCurrencies); 
+        }
+    };
+
+    function cbUpdateCurrencies(company){
+        if(company && company.currencies){
+            $scope.company.currencies = company.currencies;
+            $scope.currencies_id = company.currencies.map(function(c){
+                                    return c.id;
+                                });
+        }
+    
+    }
 });
 
 app.controller('noticeCTL',function($scope){
