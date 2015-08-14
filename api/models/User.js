@@ -50,6 +50,24 @@ module.exports = {
 			this.password = bcrypt.hashSync(val,bcrypt.genSaltSync(10));
 			this.save(cb);
 		}
+        ,generateAllPermissions : function(){
+            var apps = sails.config.apps;
+            var permissions = [];
+            //console.log(apps);
+            for(var x in apps){
+                for(var y in apps[x].actions) {
+                    if(apps[x].actions[y].handle){
+                        console.log(apps[x].actions[y].handle);
+                        permissions.push({key:apps[x].actions[y].handle,value:true});
+                        permissions.push({key:apps[x].actions[y].handle+'_c',value:true});
+                        permissions.push({key:apps[x].actions[y].handle+'_e',value:true});
+                        permissions.push({key:apps[x].actions[y].handle+'_d',value:true});
+                    }
+                };
+            }
+            //console.log(permissions);
+            return permissions;
+        }
 		,createAccessList : function(company,permissions,isAdmin,isRep,role,cb) {
 		
             var user = this;
@@ -57,12 +75,19 @@ module.exports = {
             if (user.accessList && acl) {
                 acl.isAdmin = isAdmin;
                 acl.isRep = isRep;
-                acl.permissions = permissions;
+                if(acl.isAdmin){
+                    acl.permissions = user.generateAllPermissions();
+                }else{
+                    acl.permissions = permissions;
+                }
                 acl.role = role;
                 acl.company = company;
 		UserACL.update({id: acl.id}, acl).exec(cb);
                 //user.save(cb);
             } else {
+                if(isAdmin){
+                    permissions = user.generateAllPermissions();
+                }
                 var newAcl = {
                     company : company,
                     user : user.id,

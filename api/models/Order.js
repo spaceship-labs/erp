@@ -7,12 +7,13 @@
 /* campos default : _id, createdAt, updatedAt	*/
 module.exports = {
 	attributes: {
-		folio : {
-			type: 'integer'
-    		,autoIncrement: true
-    		,unique: true
-		}
-		,reservation_method : {
+		/*folio: {
+		    type: 'integer',
+		    autoIncrement: true,
+		    required: true,
+		    unique: true
+	  	},*/
+		reservation_method : {
 		    type: 'string'
 		    ,enum: ['intern', 'api', 'rep', 'agencyApi'] ,required : true }
 		,client : {
@@ -35,6 +36,7 @@ module.exports = {
 	,migrate : "safe"
 	,afterCreate: function(val,cb){
 		Notifications.after(Order,val,'create');
+		Common.orderCustomAI(val);
 		cb();
 	},afterUpdate: function(val,cb){
 		//Notifications.after(Order,val,'update');

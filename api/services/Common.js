@@ -9,13 +9,12 @@ module.exports.view = function(view,data,req){
 	data._content.socketUrl = sails.config.socketsUrl;
 	data._content.lang = req.getLocale();
 	//data.socketUrl = sails.config.socketsUrl;
-	Company.findOne(data.selected_company).populate('base_currency').exec(function(e,company){
+	Company.findOne(data.selected_company).populate('base_currency').populate('currencies').exec(function(e,company){
         if (e) console.log(e);
 		data.selected_company = company;
 		view(data);
 	});
 };
-
 module.exports.renderMenu = function(req){
 	var menu = "";
     var selected_company = req.res.locals.selected_company;
@@ -238,3 +237,21 @@ function equals(a,b){
     return a==b;
 }
 module.exports.equals = equals;
+
+module.exports.orderCustomAI = function(val){
+	Counter.native(function(err, counter){
+	    counter.findAndModify(
+	        { name: 'folio' }
+	        ,[]
+	        ,{ $inc: { seq : 1} }
+	        ,{}
+	        ,function (err, object) {
+	           if(err) console.log(err);
+	           console.log(object);
+	           Order.update({ id:val.id },{ folio:object.seq},function(o_err,order){
+	           	val.folio = order.folio;
+	           });
+	        }
+	    );
+	})
+};

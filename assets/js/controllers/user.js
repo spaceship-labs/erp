@@ -57,6 +57,7 @@ app.controller('userEditCTL',function($scope,$http,_, userRolesFactory){
     ];
     $scope.saveClassPermissions = 'fa-save';
     $scope.saveClassPassword = 'fa-save';
+    console.log(user);
 
     var emptyRole = { name : 'Ninguno',permissions : [] ,id : '0' };
     for(var i in $scope.user.accessList){

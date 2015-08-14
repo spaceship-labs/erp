@@ -1,7 +1,7 @@
 <script type='text/javascript'>
     //Definición de lenguajes para la directivas
     app.run(function($rootScope){
-        $rootScope.lang = content.lang;
+        $rootScope.lang = content.lang || 'en';
         $rootScope.translates = {};
         $rootScope.translates.d_reset = '<%= __("d_reset") %>';
         $rootScope.translates.d_dom = '<%= __("d_dom") %>';

@@ -1,0 +1,26 @@
+<div class='widgetbox'>
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		<h4 ng-bind="object.results.title" class="modal-title"></h4>
+	</div>
+	<div class='reportContent'>
+		<div class='widgetcontent custom-table nopadding'>
+			<table class='table table-striped'>
+				<tr>
+					<th ng-repeat="h in object.results.headers" ng-bind="h.label"></th>
+				</tr>
+				<tr ng-repeat="r in object.results.rows" ng-class="r.type=='c'?'underlight':''">
+					<td ng-repeat="h in object.results.headers" ng-bind="r[h.handle]"></td>
+				</tr>
+			</table>
+		</div>
+		<div class='amountdue'>
+			<ul>
+				<li><span class='listTitle'>Subtotal: </span><span ng-bind="object.results.totals.subtotal"></span></li>
+				<li><span class='listTitle'>IVA: </span><span ng-bind="object.results.totals.iva"></span></li>
+				<li><span class='listTitle'>Pax: </span><span ng-bind="object.results.totals.pax"></span></li>
+			</ul>
+			<h1><span>Total: </span> <a ng-bind='object.results.totals.total'></a></h1>
+		</div>
+	</div>
+</div>

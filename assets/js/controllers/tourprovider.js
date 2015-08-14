@@ -26,12 +26,43 @@ app.controller('tourproviderEditCTL',function($scope,$http){
     $scope.content = content;
     $scope.company = company;
     $scope.currencies = currencies;
-    $scope.saveTour = function(data,tour){
-        angular.extend(data, { id : tour.id });
-        $scope.saveClass = 'fa-upload';
-        $http({method: 'POST',url:'/tour/save',params:data}).success(function(t){
-            $scope.saveClass = 'fa-save';
-            tour = t;
+    $scope.saveTour = function(data,tour,index){
+        var aux = parseFloat(data.commission_agency);
+        if( !isNaN(aux) ){
+            angular.extend(data, { id : tour.id });
+            data.fee_base = (tour.fee-(tour.fee*(data.commission_agency/100)));
+            data.feeChild_base = (tour.feeChild-(tour.feeChild*(data.commission_agency/100)));
+            console.log(data);
+            $scope.saveClass = 'fa-upload';
+            $http({method: 'POST',url:'/tour/update',params:data}).success(function(t){
+                $scope.saveClass = 'fa-save';
+                console.log(t);
+                $scope.provider.tours[index] = t;
+            });
+        }else{
+            console.log('error, valor no válido');
+        }
+    };
+    $scope.createTour = function(newtour){
+        newtour.provider = $scope.provider.id;
+        $http({method: 'POST', url: '/tour/create',params:newtour}).success(function (result){
+            jQuery('#myModal').modal('hide');
+            $scope.provider.tours.push(result.thetour);
+        });    
+    };
+    $scope.getTours = function(term){
+        return $http.get('/tour/find', { params: { 'name': term , provider : 'null' , 'limit': 10 , 'sort' : 'name asc' }
+        }).then(function(response){ 
+            console.log('tours');
+            console.log(response);
+            return response.data.results.map(function(item){ return item; });
         });
     };
+    $scope.addTour = function(t){
+        var params = t;
+        params.provider = $scope.provider.id;
+        $http.get('/tour/update', { params: params }).then(function(response){ 
+            $scope.provider.tours.push(response);
+        });
+    }
 });

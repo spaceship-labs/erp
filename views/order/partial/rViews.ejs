@@ -2,7 +2,7 @@
    <div class="widgetcontent custom-table nopadding ng-cloak">
     <table class="table table-striped">
         <tr class='hide-sm'>
-            <th> <%= __('order-id')%> </th>
+            <th> Folio </th><!-- <%= __('order-id')%> -->
             <th> <%= __('order-usuario')%> </th>
             <th> <%= __('order-cliente')%> </th>
             <th> <%= __('order-fecha')%> </th>
@@ -24,7 +24,7 @@
                 <%= __('order_for')%> <strong ng-bind="order.client.name + ' ' + order.client.last_name"></strong>
                 </span>
             </td>
-            <td ng-class='isHiden[$index]?"hide-row":""' data-title="<%= __('order-id')%>" ng-bind="order.id"></td>
+            <td ng-class='isHiden[$index]?"hide-row":""' data-title="<%= __('order-id')%>" ng-bind="order.folio"></td>
             <td ng-class='isHiden[$index]?"hide-row":""' data-title="<%= __('order-usuario')%>" ng-bind="order.user.name + ' ' + order.user.last_name + ', ' + order.company.name"><</td>
             <!--<td ng-class='isHiden[$index]?"hide-row":""' data-title="<%= __('order-empresa')%>" ng-bind="order.company.name"></td>-->
             <td ng-class='isHiden[$index]?"hide-row":""' data-title='<%= __('order-cliente')%>'>{{(order.client.name + ' ' + order.client.last_name) || "---" }}</td>
@@ -64,7 +64,7 @@
                         <a href="/order/edit/{{order.id}}"><span class="table-icon fa fa-trash-o"></span></a>
                     </span>
                 </h4>
-                <div ng-if="order.transfer" class='row content-border'>
+                <div ng-if="order.transfer" class='content-border'><div class='row'>
                     <div class='col-md-3'>
                         <p class='font-uppercase'><strong><%= __('gral_data')%></strong></p>
                         <p><strong><%= __('order-hotel')%></strong> : {{order.transfer.hotel || "---" }} </p>
@@ -90,7 +90,7 @@
                         <p><strong><%= __('order-fecha-salida')%></strong> : {{ formatDate(order.transfer.departure_date) || '---' }} </p>
                         <p><strong><%= __('order-hora-salida')%></strong> : {{ formatTime(order.transfer.departure_time) || '---' }} </p>
                     </div>
-                </div>
+                </div></div>
             </div>
         </div>
         <div class='row'><div class='col-md-12'>

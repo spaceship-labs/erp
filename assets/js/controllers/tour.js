@@ -31,7 +31,12 @@ app.controller('tourEditCTL',function($scope,$http,$window){
     $scope.locations = locations;
     $scope.providers = providers;
     $scope.tour = tour;
+    $scope.tour.schedules = $scope.tour.schedules || [];
+    for(var x in $scope.tour.schedules)
+        $scope.tour.schedules[x] = JSON.parse($scope.tour.schedules[x]);
     $scope.user = user;
+    $scope.tourcategories = tourcategories;
+    console.log(tourcategories);
     /*io.socket.get('/tour/find/'+tour.id,function(data,jwres){
         $scope.tour = data;
 	    $scope.tour.seasonScheme = data.seasonScheme && data.seasonScheme.id || null;
@@ -42,9 +47,9 @@ app.controller('tourEditCTL',function($scope,$http,$window){
 	$scope.content = content;
     $scope.company = company;
     $scope.saveClass = 'fa-save';
-    var save = function(){
+    $scope.save = function(){
         $scope.saveClass = 'fa-upload';
-        var form = {id:$scope.tour.id,days:$scope.tour.days};
+        var form = {id:$scope.tour.id,days:$scope.tour.days, schedules : $scope.tour.schedules };
         $http({method: 'POST',url:'/tour/save',params:form}).success(function(tour){
             $scope.tour.days = tour.days;
             $scope.saveClass = 'fa-save';
@@ -53,4 +58,11 @@ app.controller('tourEditCTL',function($scope,$http,$window){
     $scope.$on('SAVE_ALL', function () {
         save();
     });
+    $scope.addSchedule = function(){
+        var aux = { from : '' , to : '' };
+        $scope.tour.schedules.push(aux);
+    };
+    $scope.deleteSchedule = function(index){
+        $scope.tour.schedules.splice(index,1);
+    };
 });

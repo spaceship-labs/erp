@@ -154,7 +154,7 @@
   "order-id":"Id",
   "order-usuario":"Usuario",
   "order-empresa":"Empresa",
-  "order-llegada":"Llegada",
+  "order-llegada":"Fecha de Llegada",
   "order-salida":"Salida",
   "order-cliente":"Cliente",
   "order-hotel":"Hotel",
@@ -162,7 +162,7 @@
   "order-aeropuerto":"Aeropuerto",
   "order-tipo":"Tipo",
   "order-origen":"Origen",
-  "order-estado":"Estado",
+  "order-estado":"Estado del pago",
   "order-fecha":"Fecha",
   "order-total":"Total",
   "order-editar":"Editar",
@@ -234,7 +234,7 @@
   ,"order_a_airline" : "Aerolinea de llegada"
   ,"order_d_airline" : "Aerolinea de salida"
   ,"order_service_type" : "Tipo de servicio"
-  ,"order_room" : "Cuarto de hotel"
+  ,"order_room" : "Número de cuarto de hotel"
   ,"order_currency" : "Moneda"
   ,"order-airline" : "Aerolínea"
   ,"add-airline" : "Agregar aerolínea"
@@ -246,7 +246,7 @@
   "packagetour-info":"Informacion básica",
   "packagetour-hoteles":"Hoteles",
   "packagetour-dias":"Días del tour",
-  "packagetour-agregar":"Agregar paquete",
+  "packagetour-agregar":"Agregar circuito",
 
   "price-info":"Informacion básica",
   "price-nuevo-precio":"Nuevo precio",
@@ -434,7 +434,7 @@
   ,"sc_hRoomv_descedit" : "Edición de la vista"
   ,"sc_location" : "Ciudades"
   ,"sc_reservations" : "Reservas"
-  ,"sc_packages" : "Paquetes"
+  ,"sc_packages" : "Circuitos"
   ,"sc_tour" : "Tours"
   ,"sc_transfer" : "Traslados"
   ,"sc_users" : "Usuarios"

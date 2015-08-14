@@ -7,18 +7,26 @@
 	</ul>
 	<p ng-if="buttonText != ''"><button class="btn btn-primary" data-toggle="modal" data-target="#myModal"> <span class = "fa fa-plus"></span>{{buttonText}}</button></p>-->
     
-    <div class="row filter_type">
-	    <p><label for="currency_select" ng-cloak>{{ translates.filter_by }}</label></p>
-	    <p>
-            <select ng-model="filter_by">
-		        <option value="date">{{ translates.filter_by_date }}</option>
-		        <option value="name">{{ translates.filter_by_name }}</option>
-	        </select>
-        </p>
+    <div class="row">
+    	<div class='col-md-6'>
+    		<p><label for="currency_select" ng-cloak>{{ translates.filter_by }}</label></p>
+		    <p>
+	            <select ng-model="filter_by">
+			        <option value="date">{{ translates.filter_by_date }}</option>
+			        <option value="name">{{ translates.filter_by_name }}</option>
+		        </select>
+	        </p>
+    	</div>
+    	<div class='col-md-6'>
+    		<div class = "textbutton">
+				<button ng-if="buttonText != ''" class="btn btn-primary pull-right" data-toggle="modal" data-target="#myModal"> <span class = "fa fa-plus"></span> {{buttonText}}</button>
+				<button ng-if="buttonTextImport" class="btn btn-primary pull-right" data-toggle="modal" data-target="#importmodal"><span class="fa fa-plus"></span>{{buttonTextImport}}</button>
+			</div>
+    	</div>
     </div>
     
 	<div class = "alphabets-nav row nomargin">
-		<div class = "alphabet-container col-md-10 col-sm-10 col-xs-12">
+		<div class = "alphabet-container col-md-12 col-sm-12 col-xs-12">
 			<ul class="alphabets"  ng-if="filter_by == 'name'">
 				<li ng-repeat="a in alphabet">
 					<span ng-if="alphabetIndex.indexOf(a)!=-1" ng-click="selectLetter(a)" ng-bind='a' ></span>
@@ -26,18 +34,15 @@
 				</li>
 			</ul><div class='clear'></div>
 		</div>
-		<div class = "textbutton col-sm-2 col-sm-2 col-xs-12">
-			<p ng-if="buttonText != ''"><button class="btn btn-primary" data-toggle="modal" data-target="#myModal"> <span class = "fa fa-plus"></span> {{buttonText}}</button></p>
-            <br />    
-			<p ng-if="buttonTextImport" class="import-button"><button class="btn btn-primary" data-toggle="modal" data-target="#importmodal"><span class="fa fa-plus"></span>{{buttonTextImport}}</button></p>
-		</div>
 	</div>
 	<div class='pagination-row row' ng-if="getUrl">
-		<div class='viewsIcons'>
-            <a ng-click="setView('table')" class='pull-right icon {{myView=="table"?"on":""}}'><i class="fa fa-table"></i></a>
-            <a ng-click="setView('list')" class='pull-right icon {{myView=="list"?"on":""}}'><i class="fa fa-th-list"></i></a>
+		<div class='col-md-12'>
+			<div class='viewsIcons'>
+	            <a ng-click="setView('table')" class='pull-right icon {{myView=="table"?"on":""}}'><i class="fa fa-table"></i></a>
+	            <a ng-click="setView('list')" class='pull-right icon {{myView=="list"?"on":""}}'><i class="fa fa-th-list"></i></a>
+	        </div>
+	        <pagination total-items="totalItems" items-per-page='30' ng-model="dlPage" max-size="8" class="pagination-sm pull-right" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="pageChanged(dlPage)"></pagination>
         </div>
-        <pagination total-items="totalItems" items-per-page='30' ng-model="dlPage" max-size="8" class="pagination-sm pull-right" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="pageChanged(dlPage)"></pagination>
 	</div>
 
 	<div id="cargando-elementos" class="ng-cloak">

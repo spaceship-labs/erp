@@ -45,6 +45,7 @@ module.exports = {
 		}
 		,exchange_rate_sale : 'float'
 		,exchange_rate_book : 'float'
+		,exchange_rates : 'json'
 		,prepaid : 'float' /*Para guardar el historial aquí mismo?*/
 		,credit : 'float' /*Para guardar el historial aquí mismo?*/
 		//productos pertenecientes a las agencias

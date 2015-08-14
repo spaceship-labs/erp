@@ -3,6 +3,7 @@
 	window.content = <%- JSON.stringify(_content) %>;
 </script>
 <div ng-controller='packageCTL' >
+	<!--<div directory-listing objects='packages' searchInput='searchInput' dir='packagetour' edit-url='/packagetour/edit/' get-info='getInfo' button-text='NUEVO PAQUETE' ></div>-->
 	<div directory-listing objects='packages' searchInput='searchInput' dir='packages' edit-url='/packagetour/edit/' get-info='getInfo' button-text='NUEVO PAQUETE' get-url="/packagetour/find/"  ></div> 
 	<div class="clearfix"></div>
 	<div class="modal fade" id="myModal">

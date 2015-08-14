@@ -14,7 +14,7 @@ module.exports = {
         packages : packages,
         page:{
           name:req.__('sc_packages')
-          ,description: 'Administracion de contenido paquetes de tours'
+          ,description: 'Administracion de contenido circuitos'
           ,icon:'fa fa-dropbox'
           ,controller : 'packagetour.js'
         },
@@ -59,7 +59,26 @@ module.exports = {
         res.json(package_t);
       });
     });
-  }
+  },
+  updateIcon: function(req,res){
+    form = req.params.all();
+    PackageTour.updateAvatar(req,{
+      dir : 'packagetour',
+      profile: 'avatar',
+      id : form.id,
+    },function(e,pt){
+      if(e) console.log(e);
+      res.json(pt);
+    });
+  },
+  destroy : function(req,res){
+    PackageItem.destroy({ package_ : req.params.id }).exec(function(){
+      PackageTour.destroy({ id : req.params.id }).exec(function(e,r){
+        if(e) throw(e);
+        res.json(r);
+      });
+    });
+  },
 };
 function groupItems(items){
   result = _.groupBy(items, function(item){ return item.type; });

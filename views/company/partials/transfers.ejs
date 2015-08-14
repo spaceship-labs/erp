@@ -60,6 +60,9 @@
             typeahead="obj as obj.name for obj in getTransfers($viewValue)" 
             typeahead-on-select="acOnSelect($item, $model, $label,'transfer','transfers')" >
     </div>
+    <div class='custom_inline_messages' ng-class="messages.transfer.alertType" ng-hide="!messages.transfer.show">
+        <p><span ng-bind="messages.transfer.m"></span> <strong ng-bind="messages.transfer.item_name"></strong></p>
+    </div>
     <div ng-repeat="service in transfers">
         <h4 class='secondTittle'>
             {{service[0].transfer.name}}
@@ -76,10 +79,10 @@
                 <th>Zona</th>
                 <th>Comisión <br> agencia</th>
                 <th ng-if="price.company.id==company.id">Comisión <br> vendedor</th>
-                <th>Sencillo</th>
-                <th>Redondo</th>
-                <th>Sencillo<br> child</th>
-                <th>Redondo<br> child</th>
+                <th>Sencillo <br> adultos</th>
+                <th>Redondo <br> adultos</th>
+                <th>Sencillo<br> menores</th>
+                <th>Redondo<br> menores</th>
                 <th>Activo</th>
                 <th>Editar</th>
             </tr>
@@ -103,22 +106,22 @@
                     editable-text='price.one_way'
                     e-name='one_way'
                     e-form='rowform'
-                >{{price.one_way || 0 }}</span></td>
+                >{{price.one_way || 0 }} {{actualCurrency.currency_code}}</span></td>
                 <td><span 
                     editable-text='price.round_trip'
                     e-name='round_trip'
                     e-form='rowform'
-                >{{price.round_trip || 0 }}</span></td>
+                >{{price.round_trip || 0 }} {{actualCurrency.currency_code}}</span></td>
                 <td><span 
                     editable-text='price.one_way_child'
                     e-name='one_way'
                     e-form='rowform'
-                >{{price.one_way || 0 }}</span></td>
+                >{{price.one_way || 0 }} {{actualCurrency.currency_code}}</span></td>
                 <td><span 
                     editable-text='price.round_trip_child'
                     e-name='round_trip'
                     e-form='rowform'
-                >{{price.round_trip || 0 }}</span></td>
+                >{{price.round_trip || 0 }} {{actualCurrency.currency_code}}</span></td>
                 <td><span 
                     editable-checkbox='price.active'
                     e-name='active'

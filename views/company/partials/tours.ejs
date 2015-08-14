@@ -44,6 +44,9 @@
             typeahead="tour as tour.name for tour in getTours($viewValue)" 
             typeahead-on-select="acOnSelect($item, $model, $label,'tour','tours')" >
     </div>
+    <div class='custom_inline_messages' ng-class="messages.tour.alertType" ng-hide="!messages.tour.show">
+        <p><span ng-bind="messages.tour.m"></span> <strong ng-bind="messages.tour.item_name"></strong></p>
+    </div>
     <div class='collapsable' collapse="isCollapseObj['toursCollapse']">
     <table class='table table-striped'>
         <tr class='hide-sm'>
@@ -51,7 +54,7 @@
             <th>Precio <br> Público</th>
             <th>Precio <br> base</th>
             <th>Comisión <br> Agencia</th>
-            <th>Precio</th>
+            <th>Precio <br> adultos</th>
             <th>Precio <br> menores</th>
             <th>Editar</th>
             <th>Eliminar</th>
@@ -59,12 +62,12 @@
         <tr ng-repeat="t in tours">
             <td data-title="Nombre" ng-bind="t.tour.name"></td>
             <td data-title="Precio base" >
-                <p> Adultos: {{t.tour.fee}} </p>
-                <p> Menores: {{t.tour.feeChild}} </p>
+                <p> Adultos: {{t.tour.fee}} {{actualCurrency.currency_code}}</p>
+                <p> Menores: {{t.tour.feeChild}} {{actualCurrency.currency_code}}</p>
             </td>
             <td>
-                <p> Adultos: {{t.tour.fee_base || 0 }}</p>
-                <p> Menores: {{t.tour.feeChild_base || 0 }}</p>
+                <p> Adultos: {{t.tour.fee_base || 0 }} {{actualCurrency.currency_code}}</p>
+                <p> Menores: {{t.tour.feeChild_base || 0 }} {{actualCurrency.currency_code}}</p>
             </td>
             <td>
                 <span 
@@ -78,14 +81,14 @@
                     editable-text='t.fee'
                     e-name='fee'
                     e-form='rowform'
-                >{{t.fee || 0 }}</span>
+                >{{t.fee || 0 }} {{actualCurrency.currency_code}}</span>
             </td>
             <td>
                 <span 
                     editable-text='t.feeChild'
                     e-name='feeChild'
                     e-form='rowform'
-                >{{t.feeChild || 0 }}</span>
+                >{{t.feeChild || 0 }} {{actualCurrency.currency_code}}</span>
             </td>
             <td>
                 <form editable-form name="rowform" onbeforesave="savePrice($data,t)" ng-show="rowform.$visible" class="form-buttons form-inline" >
@@ -96,7 +99,7 @@
                   <button class="btn btn-primary" ng-click="rowform.$show()"><%= __('tranferprice-editar')%></button>
                 </div>
             </td>
-            <td><a style="cursor:pointer" class='fa fa-trash-o' ng-click='removeProduct(t)'></a></td>
+            <td><a style="cursor:pointer" class='fa fa-trash-o' ng-click='removeProduct(t,"tour")'></a></td>
         </tr>
     </table>
     </div><!-- collapse end -->

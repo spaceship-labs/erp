@@ -10,6 +10,7 @@ module.exports = {
 		location : {
 			model : 'location' }
 		,days : 'array'
+		,schedules : 'array'
 		,seasonScheme : {
 			model:'seasonScheme',
 			via:'tours' }
@@ -23,6 +24,8 @@ module.exports = {
 		,feeChild : 'float' //precio de venta
 		,fee_base : 'float' //precios de proveedor
 		,feeChild_base : 'float' //precios de proveedor
+		,commission_agency : 'float'
+		,commission_sales : 'float'
 		,commission_agency_base : 'integer'
 		,commission_user_base : 'integer'
 		,provider : {

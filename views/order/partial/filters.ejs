@@ -1,4 +1,4 @@
-<div class='col-md-12 active-filters tag-container ng-cloak' ng-cloak>
+<div class='row'><div class='col-md-12 active-filters tag-container ng-cloak' ng-cloak>
     <span class='multi-tag' ng-repeat='f in filters'>
         {{f.label}}: 
         <span ng-if='f.type=="date"' ng-bind="formatDate(f.model.from) + ' to ' + formatDate(f.model.to)"></span>
@@ -7,12 +7,13 @@
         <a ng-click="removeFilter(f)">x</a>
     </span>
     <div class='clear'></div>
-</div>
-<div class='col-md-12 filters-form' collapse="!isCollapsedFilter">
+</div></div>
+<div class='row'><div class='col-md-12 filters-form' collapse="!isCollapsedFilter">
     <form ng-repeat='f in filtersArray' class='stdform widgetcontent nopadding' ng-show="f.open">
         <h4 class='widgettitle'>{{f.label}}</h4>
         <div class='row'>
             <div class='col-md-5'>
+                <input ng-if='f.type == "text" || f.type == "number"' type='text' ng-model="f.model.item" placeholder="{{f.label}}">
                 <datepicker ng-if='f.type == "date"' ng-model="f.model.from" show-weeks="true" class="well well-sm"></datepicker>
                 <select ng-if="f.type=='select'" ng-model="f.model.item" ng-options="obj.key as obj.value for obj in f.options" placeholder="{{f.label}}"></select>
                 <select ng-if="f.type=='select-object'" ng-model="f.model.item" ng-options="obj as obj.name for obj in f.options" placeholder="{{f.label}}"></select>
@@ -21,10 +22,10 @@
             <div class='col-md-5' ng-if='f.type=="date"'>
                 <datepicker ng-if='f.type == "date"' ng-init="f.model.to = f.options.to" ng-model="f.model.to" show-weeks="true" class="well well-sm"></datepicker>
             </div>
-            <div class='col-md-2'>
+            <div ng-class='f.type=="date"?"col-md-2":"col-md-5"'>
                 <button ng-click="sendFilter(f)" class="btn btn-primary"><%= __('gral_filter')%></button>
                 <button ng-click="setIC(false)" class="btn btn-primary"><%= __('gral_cancel')%></button>
             </div>
         </div>
     </form>
-</div>
+</div></div>

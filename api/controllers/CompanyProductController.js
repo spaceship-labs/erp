@@ -15,7 +15,7 @@ module.exports = {
 			if(err) res.json( false );
 			CompanyProduct.findOne(cp.id).populateAll().exec(function(err,cp){
 				if(cp.product_type == 'transfer')
-					getTransferPrices(cp,res,true,location);
+					getTransferPrices(cp,res,true,location,form.agency);
 				else
 					res.json( cp );
 			});
@@ -36,7 +36,7 @@ module.exports = {
 		CompanyProduct.find(params).populateAll().skip(skip).exec(function(err,cp){
 			if(err) res.json( err );
 			if(params.product_type == 'transfer')
-				getTransferPrices(cp,res,false,location);
+				getTransferPrices(cp,res,false,location,params.agency);
 			else
 				res.json( cp );
 		});
@@ -104,14 +104,14 @@ module.exports = {
 		})
 	}
 };
-var getTransferPrices = function(pricesA,res,single,location){
+var getTransferPrices = function(pricesA,res,single,location,agency){
 	if(pricesA){
 		var ids = [];
 		if(single)
 			ids.push(pricesA.transfer.id);
 		else
 			for(x in pricesA) ids.push( pricesA[x].transfer.id );
-		TransferPrice.find({ transfer : ids , location : location }).populateAll().exec(function(err,prices){
+		TransferPrice.find({ transfer : ids , location : location , company : agency }).populateAll().exec(function(err,prices){
 			//console.log(prices);
 			result = _.groupBy(prices, function(price){ return price.transfer.id; });
 			res.json(result);

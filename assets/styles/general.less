@@ -13,11 +13,21 @@ body.loginpage{background: @login-background;overflow: hidden;}
 	-webkit-transition: all 0.2s ease-out 0s;
 	transition: all 0.2s ease-out 0s;
 }
+html .btn-primary.active,
 .btn-primary:hover{background: darken(@primary,10%);border-color: darken(@primary,10%);}
 .secondary{background: @secondaryBG;color: @secondaryTC;}
 .btn-big{padding: 8px 46px;font-size: 15px;}
-.btn-big + .btn-big{margin-right: 10px;}
-.btn-big.pull-right + .btn-big.pull-right{margin-left: 10px;}
+.btn-primary + .btn-primary{margin-right: 10px;}
+.pull-right + .pull-right{margin-right: 10px;}
+.pull-right.full-sm + .pull-right.full-sm{margin-right: 2%;}
+/*.btn-primary.pull-right + .btn-primary.pull-right{margin-left: 10px;}*/
+.pull-right.full-sm{width: 49%;}
+html .full-width{width: 100%;}
+
+/*Timepicker custom*/
+.timepicker-container .timepicker .btn{padding: 0 12px;}
+.timepicker-container .timepicker input{margin: 0;}
+.timepicker-container .custom-delete{margin-top: 42px;}
 
 /*Gral*/
 .text-list{list-style: none;}
@@ -27,6 +37,36 @@ body.loginpage{background: @login-background;overflow: hidden;}
 .outerLabel{padding: 9px 0;}
 .outerSelect{padding: 5px 2px;}
 .stdform3 p{margin-bottom: 10px;}
+.stdform .formmessage{display: block;font-style: italic;color: gray;}
+.form-buttons .btn{width:100%;}
+.order-controls{padding: 5px;}
+.InfoContainer{padding: 20px;}
+.InfoContainer p{background-color: transparent;}
+.paymentInformation h4{margin-bottom: 10px;}
+.paymentInformation p{padding: 5px 0;}
+.paymentInformation p + p{border-top: 1px solid lightgray;}
+.paymentInformation .field,
+.paymentInformation label{display: block;margin: 5px 0;}
+.paymentInformation select{width: 100%;padding: 7px;}
+.collapseCustom{width: 100%;margin: 0;}
+.headtitle .expand{display: block;text-decoration: none;cursor: pointer;}
+.peoplelist.orderTourList{margin: 0;}
+.peoplelist.orderTourList .thumb img{width: 50px;margin-right: -57px;}
+.peoplelist.orderTourList .peopleinfo{margin: 0;}
+.peoplelist.orderTourList .peopleinfo li{padding: 6px 0;}
+.peoplelist.orderTourList .peopleinfo li .info{float: left;width: 100%;padding-left: 60px;padding-right: 90px;margin-right: -90px;}
+.peoplelist.orderTourList .peopleinfo li p{margin: 0;}
+.peoplelist.orderTourList .peopleinfo li + li{border-top: 1px solid gray;}
+.peoplelist.orderTourList .peopleinfo .actions{width: 80px;}
+.peoplelist.orderTourList .peopleinfo .actions a{display: block;cursor: pointer;}
+.widgetcontent.noborder{border: 0 none;}
+.modal-content .widgetcontent ul{list-style: none;}
+.modal-content .widgetcontent ul li{padding: 5px;}
+.modal-content .widgetcontent ul li + li{border-top: 1px solid lightgray;}
+.modal-content .widgetcontent ul li .icons a{margin-left: 5px;cursor: pointer;}
+.stdform .ng-invalid-required.ng-touched{outline: red solid 1px;}
+.custom_inline_messages{margin: 10px 0;padding: 10px;border: 1px solid green;}
+.custom_inline_messages.error{border: 1px solid red;}
 
 /*fee selector*/
 .fee-selector .tabs .tab.selected{border: 1px solid gray;border-bottom: 0 none;border-top-right-radius: 5px;border-top-left-radius: 5px;}
@@ -40,6 +80,12 @@ body.loginpage{background: @login-background;overflow: hidden;}
 .results.errorslist{list-style: none;padding: 20px;}
 .results.errorslist li:first-child{font-weight: bold;font-size: 16px;line-height: 24px;}
 
+/*Reports*/
+.reportContent{padding: 15px;}
+.reportContent .amountdue ul{float: left;list-style: none;text-align: left;}
+.reportContent .amountdue ul li{border-bottom: 1px solid #ddd;}
+.reportContent .amountdue ul li .listTitle{display: inline-block;width: 80px;}
+
 /*Reservations*/
 .pagination-row{}
 .pagination-row .pagination{margin: 0;}
@@ -49,9 +95,9 @@ body.loginpage{background: @login-background;overflow: hidden;}
 .viewsIcons .icon + .icon{margin-left: 10px;border-right: 0;}
 .viewsIcons .icon:hover,
 .viewsIcons .icon.on{color: @primary;}
-.cardsContainer .card{padding: 10px 0;background: #F3F3F3;border:1px solid #ddd;margin-bottom:5px;position: relative;border-radius: 8px;}
+.cardsContainer .card{padding: 10px;background: #F3F3F3;border:1px solid #ddd;margin-bottom:5px;position: relative;border-radius: 8px;}
 .cardsContainer .card .content-border{border: 1px solid #ddd;border-top: 0;padding: 10px;}
-.cardsContainer .card .col-md-8 .content-border{padding: 10px 0;}
+.cardsContainer .card .col-md-8 .content-border{padding: 10px;}
 .cardsContainer .card .actions{position: absolute;right: 0;top: 0;font-size: 20px;background: @primary;}
 .cardsContainer .card .actions a{color: #D5D5D5;background: #A5A5A5;padding: 6px 7px 5px;float: right;border-right: 1px solid;}
 .cardsContainer .card .actions a:hover{color: white;}
@@ -145,7 +191,7 @@ body.loginpage{background: @login-background;overflow: hidden;}
 .widgettitle span{font-size: 16px}
 .widgettitle a{color: #fff!important;text-decoration: underline;text-transform: none!important;}
 .widgettitle a span{font-size: 16px;vertical-align: initial;}
-.widgetcontent{border: 2px solid @primary;}
+.widgetcontent{border: 2px solid @primary;width: 100%;}
 .widgetcontent.custom-table{border: 2px solid @primary;overflow: auto;}
 .ng-directory-listing .peoplelist  .widgettitle a.text-limit,
 .widgettitle .text-limit{overflow: hidden;text-overflow: ellipsis;white-space: nowrap;padding-right: 85px;margin-right: -85px;float: left;text-transform: uppercase!important;width: 100%;}
@@ -172,11 +218,15 @@ html .btn-primary , .btn-primary:focus, .btn-primary:active, .btn-primary.active
 .custom-table table th:last-child:after{content: "";background: @primary;height: 100%;position: absolute;right: -1px;top: 0;width: 1px}
 .custom-table table th,.custom-table table td{font-size: 12px;padding: 6px;max-width: 400px;}
 .custom-table table td.th,
+.custom-table table tr.underlight td,
 .custom-table table th{background: @login-background!important;border: none!important;color: #fff;font-size: 13px;}
 .custom-table table .table-icon{color: @login-background;font-size: 15px}
 .custom-table table .actions .table-icon {margin-left: 5px}
 .custom-table table td a{color: #333333;}
+/*
+No se donde usan esto, lo comento por ahora att Erick (:
 .custom-table table td:nth-child(2){text-decoration: underline;}
+*/
 .custom-table table.table-striped > tbody > tr:nth-child(odd) > td{background: #D9D8D8}
 .table .price-row .active-i{color: lightgray}
 .table .price-row .active-i.active{color: green;}
@@ -340,6 +390,10 @@ color: #fff;
 
 }
 
+@media screen and (min-width: 992px){
+	.modal-lg {width: 900px;}
+}
+
 @media only screen and (max-width: 768px) {
 	.ng-directory-listing .alphabets li{width: 7.5%;text-align: center;}
 	#chart-container{padding: 0}
@@ -357,6 +411,8 @@ color: #fff;
 	.custom-table td,
 	.custom-table tr {
 	display: block;
+	width: 100%;
+	max-width: none!important;
 	}
 	
 	/* Hide table headers (but not display: none;, for accessibility) */
@@ -402,6 +458,9 @@ color: #fff;
 	.commentlist .comment-info .comment-updates{ padding: 0px;}
 	.commentlist .panel-heading{ }
 	.commentlist .btn.toogle{top: 0px; right: 0px; width: 100%; position: relative;}
+	.full-sm{width: 100%!important;margin: 0!important;}
+	.full-sm + .full-sm,
+	.btn-primary.pull-right.full-sm + .btn-primary.pull-right.full-sm{margin:0;margin-top: 10px!important;}
 
 }
 
