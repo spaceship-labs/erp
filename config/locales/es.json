@@ -320,7 +320,7 @@
   "user-misma":"* Estas usando la misma contraseña",
   "user-requerido":"* campo requerido",
   "user-minimo":"*MIni 6 caracteres",
-  "user-vuelve":"Error repite la contraseña",
+  "user-vuelve":"Repite la contraseña",
   "user-error":"* Passwords do not match ",
   "user-mostrar":"Mostrar caracteres ",
   "user-nuevo":"Nuevo usuario",
@@ -344,6 +344,8 @@
   "user-rol-crear":"Crear",
   "user-rol-editar":"Editar",
   "user-rol-borrar":"Borrar",
+  "user-error-equal":"Contraseñas no coinciden",
+  "user-campo-pw":"Ingresa la contraseña actual",
 
   "zone-actualizado":"zona actualizada",
   "zone-info":"Informacion básica",

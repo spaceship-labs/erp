@@ -116,10 +116,12 @@ app.controller('userEditCTL',function($scope,$http,_, userRolesFactory){
         },{}).success(showResponse);
     };
 
+    $scope.errorEqualPassword = false;
     $scope.updatePassword = function(){
         $scope.saveClassPassword = 'fa-upload';
         $scope.submited_pass_form = true;
         if ($scope.old_password && $scope.new_password && $scope.new_password == $scope.new_password_v && $scope.new_password != $scope.old_password) {
+            $scope.errorEqualPassword = false;
             $http.post('/user/updatePassword/',{
                 userId:$scope.user.id
                 ,old_password:$scope.old_password
@@ -127,8 +129,11 @@ app.controller('userEditCTL',function($scope,$http,_, userRolesFactory){
             },{}).success(function(data){
                 $scope.saveClassPassword = 'fa-save';
                 showResponse(data);
+		console.log('data', data);
             });
-        }
+        }else{
+            $scope.errorEqualPassword = true;
+	}
     };
 
     $scope.filterApp = function(app){
