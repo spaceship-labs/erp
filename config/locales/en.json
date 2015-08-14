@@ -337,6 +337,11 @@
   "user-permiso":"Permission",
   "user-escoger":"Choose",
   "user-cerrar":"Close",
+  "user-rol-entrar":"Enter",
+  "user-rol-crear":"Create",
+  "user-rol-editar":"Edit",
+  "user-rol-borrar":"Delete",
+
 
   "zone-actualizado":"Zone has been successfully updated",
   "zone-info":"Basic Information",

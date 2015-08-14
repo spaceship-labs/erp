@@ -340,6 +340,10 @@
   "user-permiso":"permisos",
   "user-escoger":"escojer",
   "user-cerrar":"Cerrar",
+  "user-rol-entrar":"Entrar",
+  "user-rol-crear":"Crear",
+  "user-rol-editar":"Editar",
+  "user-rol-borrar":"Borrar",
 
   "zone-actualizado":"zona actualizada",
   "zone-info":"Informacion básica",
