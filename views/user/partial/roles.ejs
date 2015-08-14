@@ -79,7 +79,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal"><%= __('user-cerrar')%></button>
                     <input type="submit" class="btn btn-default" value='Guardar' btn-radio="false" ng-model="isNew" ng-if="selected_role.id"/>
-                    <input type="submit" class="btn btn-primary" value='Crear' btn-radio="true" ng-model="isNew" />
+                    <input type="submit" class="btn btn-primary" ng-show="show_create_button" value='Crear' btn-radio="true" ng-model="isNew" />
                 </div>
             </form>
         </div><!-- /.modal-content -->

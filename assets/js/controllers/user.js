@@ -40,9 +40,14 @@ app.controller('userCTL',function($scope,$http,$rootScope){
 app.factory('userRolesFactory', function(){
     var roles = window.roles && window.roles.slice() || [];
     return roles;
-})
+});
 
-app.controller('userEditCTL',function($scope,$http,_, userRolesFactory){
+app.factory('userRoleToEditFactory', function(){
+    var role = {};
+    return role;
+});
+
+app.controller('userEditCTL',function($scope,$http,_, userRolesFactory, userRoleToEditFactory){
     $scope._ = _;
     $scope.content = content;
     $scope.user = user;
@@ -57,7 +62,6 @@ app.controller('userEditCTL',function($scope,$http,_, userRolesFactory){
     ];
     $scope.saveClassPermissions = 'fa-save';
     $scope.saveClassPassword = 'fa-save';
-    console.log(user);
 
     var emptyRole = { name : 'Ninguno',permissions : [] ,id : '0' };
     for(var i in $scope.user.accessList){
@@ -79,6 +83,8 @@ app.controller('userEditCTL',function($scope,$http,_, userRolesFactory){
         $scope.user.role = emptyRole;
     }
     $scope.user_roles.push(emptyRole);
+
+    userRoleToEditFactory.user = $scope.user;
 
     $scope.updateAccestList = function(){
         //console.log($scope.user);
@@ -130,11 +136,10 @@ app.controller('userEditCTL',function($scope,$http,_, userRolesFactory){
             },{}).success(function(data){
                 $scope.saveClassPassword = 'fa-save';
                 showResponse(data);
-		console.log('data', data);
             });
         }else{
             $scope.errorEqualPassword = true;
-	}
+        }
     };
 
     $scope.filterApp = function(app){
@@ -173,7 +178,7 @@ app.controller('userEditCTL',function($scope,$http,_, userRolesFactory){
     });
 });
 
-app.controller('userRoleCTL',function($scope,$http,_, userRolesFactory) {
+app.controller('userRoleCTL',function($scope,$http,_, userRolesFactory, userRoleToEditFactory) {
     $scope.user = user;
     $scope.apps = apps;
     $scope.company = company;
@@ -230,4 +235,18 @@ app.controller('userRoleCTL',function($scope,$http,_, userRolesFactory) {
             $scope.getRolePermission(ac.handle + type).value = model;
         }
     };
+
+    $scope.$watch(function(){
+        return userRoleToEditFactory.user.role.name;
+    }, function(n, old){
+    	console.log('w', n, old)
+        if(!n || n != old || n == 'Ninguno'){
+            $scope.selected_role = { permissions: [], name:( n == 'Ninguno'?'':n )};
+            $scope.show_create_button = true;
+        }else{
+            $scope.selected_role =  userRoleToEditFactory.user.role && 
+                                userRoleToEditFactory.user.role.name != 'Ninguno' &&
+                                userRoleToEditFactory.user.role || { permissions : [] };
+        }
+    });
 });
