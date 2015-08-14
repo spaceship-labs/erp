@@ -192,7 +192,7 @@ app.controller('userRoleCTL',function($scope,$http,_, userRolesFactory) {
                     //$scope.user_roles.push(data.role);
                 }
             }
-            //jQuery('#userRoleModal').modal('hide');
+            jQuery('#userRoleModal').modal('hide');
         });
     };
 
@@ -217,4 +217,11 @@ app.controller('userRoleCTL',function($scope,$http,_, userRolesFactory) {
         }
         return false;
     }
+
+    $scope.selectAllRole = function(actions, type, model){
+        for(var i=0; i < actions.length; i++){
+            var ac = actions[i];
+            $scope.getRolePermission(ac.handle + type).value = model;
+        }
+    };
 });

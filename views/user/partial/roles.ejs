@@ -18,9 +18,9 @@
                             </p>
 
                             <p>
-                                <label><%= __('user-nombre')%></label>
+                                <label><%= __('user-nombre')%> *</label>
                                 <span class="field">
-                                    <input type="text" ng-model="selected_role.name"/>
+                                    <input type="text" required ng-model="selected_role.name"/>
                                 </span>
                             </p>
 
@@ -33,10 +33,22 @@
                                                 <th><%= __('user-permiso')%></th>
                                                 <!--<th><%= __('user-escoger')%></th>-->
 
-                                                <th>Entrar</th>
-                                                <th>Crear</th>
-                                                <th>Editar</th>
-                                                <th>Borrar</th>
+                                                <th>
+							<input type="checkbox" ng-model="permissionsAllRole" ng-click="selectAllRole(app.actions, '', permissionsAllRole)"/>
+							Entrar
+						</th>
+                                                <th>
+							<input type="checkbox" ng-model="permissionsAllRoleC" ng-click="selectAllRole(app.actions, '_c', permissionsAllRoleC)"/>
+							Crear
+						</th>
+                                                <th>
+							<input type="checkbox" ng-model="permissionsAllRoleE" ng-click="selectAllRole(app.actions, '_e', permissionsAllRoleE)"/>
+							Editar
+						</th>
+                                                <th>
+							<input type="checkbox" ng-model="permissionsAllRoleD" ng-click="selectAllRole(app.actions, '_d', permissionsAllRoleD)"/>
+							Borrar
+						</th>
                                             </tr>
                                             </thead>
                                             <tbody>
