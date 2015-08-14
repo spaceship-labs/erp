@@ -25,7 +25,7 @@ app.controller('companyCTL',function($scope,$http,$rootScope){
         });    
     };
 });
-app.controller('companyEditCTL',function($scope,$http){
+app.controller('companyEditCTL',function($scope,$http,$timeout){
     $scope.company = company;
     $scope.mycompany = mycompany;
     $scope.content = content;
@@ -45,6 +45,28 @@ app.controller('companyEditCTL',function($scope,$http){
     $scope.exchangerates = $scope.mycompany.exchange_rates || {};
     console.log(mycompany);
     $scope.actualCurrency = $scope.mycompany.base_currency || $scope.company.base_currency;
+    $scope.messages = {
+        tour : { show : false , m : '' , message_add : "Nuevo Tour agregado al catálogo: " , message_rm : 'Tour eliminado del catálogo: ' , item_name : '' , type : 'success' }
+        ,transfer : { show : false , m : '' , message_add : "Nuevo Servicio agregado al catálogo: " , message_rm : 'Servicio eliminado del catálogo: ' , item_name : '' , type : 'success' }
+        ,hotel : { show : false , m : '' , message_add : "Nuevo Hotel agregado al catálogo: " , message_rm : 'Hotel eliminado del catálogo: ' , item_name : '' , type : 'success' }
+
+    };
+    var setMessage = function(section,action,name,alertType,show){
+        if(show){
+            $scope.messages[section].m = action=='add'?$scope.messages[section].message_add:$scope.messages[section].message_rm;
+            $scope.messages[section].item_name = name;
+            $scope.messages[section].alertType = alertType;
+            $scope.messages.tour.show = false;
+            $scope.messages.transfer.show = false;
+            $scope.messages.hotel.show = false;
+            $scope.messages[section].show = true;
+            $timeout(function(){
+                setMessage(section,false,false,false,false);
+            }, 5000);
+        }else{
+            $scope.messages[section].show = false;
+        }
+    }
     //$scope.companies = companies;
     $scope.updateExchangeRates = function(){
         console.log($scope.exchangerates);
@@ -160,10 +182,17 @@ app.controller('companyEditCTL',function($scope,$http){
             form.location = $scope.thelocation;
         $http({method: 'POST', url: '/companyproduct/addproducttocompany',data:form}).success(function(result){
             //console.log(result);
-            if( type == 'transfer' )
+            var name = '';
+            if( type == 'transfer' ){
                 angular.extend($scope.transfers,result)
-            else
+                name = product.name;
+            }else{
                 $scope[spVar].push(result);
+                name = result[type].name;
+            }
+            console.log(product);
+            console.log(result);
+            setMessage(type,'add',name,'success',true);
         });
     };
     $scope.getProducts = function(type,spVar,skip){
@@ -195,11 +224,13 @@ app.controller('companyEditCTL',function($scope,$http){
             price.commission_agency = t.commission_agency;
         });
     };
-    $scope.removeProduct = function(price){
+    $scope.removeProduct = function(price,type){
         var data = { id : price.id };
+        var price_aux = price[type].name;
         $http({method: 'POST',url:'/companyproduct/removeproduct',params:data}).success(function(t){
             index = $scope.tours.map(function(e) { return e.id; }).indexOf(price.id);
             $scope.tours.splice(index,1);
+            setMessage(type,'remove',price_aux,'error',true);
         });
     };
     $scope.getTransfers = function(val){

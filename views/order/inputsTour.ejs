@@ -11,7 +11,7 @@
             <p>
                 <label><%= __('order-fecha')%></label>
                 <span class='field'><span class='input-group calendar-container'>
-                    <input ng-change="validateDates()" is-open="open[item.tour.id+$index]" ng-model='item.startDate' datepicker-popup />
+                    <input ng-change="validateDates()" is-open="open[item.tour.id+$index]" ng-model='item.startDate' datepicker-popup required />
                     <span class="input-group-btn">
                         <button type="button" class="btn btn-default" ng-click="open($event,item.tour.id+$index)"><i class="fa fa-calendar"></i></button>
                     </span>
@@ -20,7 +20,7 @@
             <p>
                 <label><%= __('order-adultos')%></label>
                 <span class='field'>
-                    <select ng-change="updateTourPrice(item)" ng-options='obj for obj in [1,2,3,4,5,6,7,8,9,10]' ng-model='item.pax' ></select>
+                    <select ng-change="updateTourPrice(item)" ng-options='obj for obj in [1,2,3,4,5,6,7,8,9,10]' ng-model='item.pax' required></select>
                     <a ng-if="transfer.contacts" ng-click="setTheItemForContacts(item,'tour',false)" data-toggle="modal" data-target="#myModal">Ver contactos</a>
                 </span>
             </p>
@@ -50,11 +50,18 @@
             </p>
             <p>
                 <label><%= __('order-hora-salida')%></label>
-                <span class='field'><timepicker ng-model="item.departureTime" hour-step="1" minute-step="1" show-meridian="ismeridian"></timepicker></span>
+                <span class='field'>
+                    <select ng-options="( obj.from + ' - ' + obj.to) for obj in item.tour.schedules" ng-model="item.departureTime" required></select>
+                    <!--<timepicker ng-model="item.departureTime" hour-step="1" minute-step="1" show-meridian="ismeridian"></timepicker>-->
+                </span>
             </p>
             <p>
                 <label><%= __('order-precio')%></label>
                 <span class='field'><input type='text' ng-model="item.fee"></span>
+            </p>
+            <p class='order-controls'>
+                <a class='btn btn-primary' ng-click="validateItem(item,'tour')">Guardar</a>
+                <span class='clear'></span>
             </p>
         </div>
         <div ng-show='item.flag_priceupdated' class='centeralign'><div class='widgetcontent' >

@@ -178,13 +178,19 @@ app.controller('orderCTL',function($scope,$http,$window,$upload,$rootScope){
 app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
     $scope.steps = 1;
     $scope.setSteps = function(action,set){
-        if(set)
-            $scope.steps = $scope.steps!=set?set:0;
-        else
-            $scope.steps += action=='next'?1:-1;
-        $scope.steps = $scope.steps>4||$scope.steps<1?1:$scope.steps;
-        if($scope.steps==2 && !$scope.transfer) updateReservationsGeneralFields('transfer');
-        if($scope.steps==3 && $scope.reservations.tours.length>0) updateReservationsGeneralFields('tour');
+        if( $scope.client && $scope.client.id ){
+            if(set)
+                $scope.steps = $scope.steps!=set?set:0;
+            else
+                $scope.steps += action=='next'?1:-1;
+            $scope.steps = $scope.steps>5||$scope.steps<1?1:$scope.steps;
+            if($scope.steps==2 && !$scope.transfer) updateReservationsGeneralFields('transfer');
+            if($scope.steps==3 && $scope.reservations.tours.length>0) updateReservationsGeneralFields('tour');
+        }else{
+            $scope.steps = 1;
+            $scope.alertMessage.show = true;
+            $scope.alertMessage.message = "El usuario debe de ser creado o seleccionado antes de continuar al siguiente paso.";
+        }
     };
     var updateReservationsGeneralFields = function(type){
         if(type == 'transfer'){
@@ -222,6 +228,7 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
     $scope.companies = [];
     $scope.thecompany = $scope.company;
     $scope.alertM = { show: false, client : false, allEmpty: false };
+    $scope.alertMessage = { show : false , title : '' , message : '' , type : 'alert' };
     //$scope.clients_ = clients_;
     $scope.hotels = hotels;
     //console.log($scope.hotels);
@@ -490,6 +497,15 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
             //console.log('addedTour');console.log($scope.addedTour);
             if( type=='tour' && item ){
                 //console.log('tours');
+                for(var x in item.schedules){
+                    var aux = false;
+                    item.schedules[x] = JSON.parse(item.schedules[x]);
+                    aux = new Date(item.schedules[x].from);
+                    item.schedules[x].from = aux.getHours() + ':' + (aux.getMinutes()==0?'00':aux.getMinutes());
+                    aux = new Date(item.schedules[x].to);
+                    item.schedules[x].to = aux.getHours() + ':' + (aux.getMinutes()==0?'00':aux.getMinutes());
+                }
+                console.log(item);
                 $scope.reservations.tours = $scope.reservations.tours.concat({tour:item, reservation_type : 'tour' , client : $scope.client });
             }else if( type=='hotel' && $scope.addedHotel ){
                 $scope.reservations.hotels = $scope.reservations.hotels.concat({hotel:$scope.addedHotel, reservation_type : 'hotel' , client : $scope.client });
@@ -607,6 +623,7 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
         var skip = $scope.toursCurrentPage?($scope.toursCurrentPage-1) * 5 : 0;
         var url = $scope.thecompany.adminCompany?'/tour/find':'/tour/findProducts/';
         var params = { skip : skip, limit : 5 , company : $scope.thecompany.id , adminCompany : $scope.thecompany.adminCompany||false };
+        if($scope.searchTours!='') params.name = $scope.searchTours;
         $http.get( url , { params: params } ).then(function(response){
             //console.log(response.data);
             $scope.allTours = response.data;
@@ -658,7 +675,7 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
         $scope.theIFC = false;
         console.log($scope.transfer);
         console.log($scope.reservations.tours);
-    }
+    };
     $scope.createUpdateContact = function(){
         if($scope.client && $scope.contact.name && $scope.contact.email && $scope.contact.phone ){
             var action = $scope.contactFlag=='create'?"/client/add_contact2":"/client/update_contact2";
@@ -681,10 +698,23 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
             if( $scope.theIFC.contacts.indexOf(index) < 0 )
                 $scope.theIFC.contacts.push(index);
         }
-    }
+    };
     $scope.removeContactFromItem = function(item){
         $scope.theIFC.contacts.splice( $scope.theIFC.contacts.indexOf(item) , 1 );
-    }
+    };
+    $scope.validateItem = function(item,type){
+        if(type=='tour')
+            validateTour(item);
+    };
+    var validateTour = function(item){
+        if( item.startDate && ( item.pax || item.kidPax ) && item.fee && item.departureTime )
+            item.saved = true;
+        else{
+            item.saved = false;
+            $scope.alertMessage.show = true;
+            $scope.alertMessage.message = 'Campos inválidos, revisar el tour antes de continuar.';
+        }
+    };
 });
 app.controller('orderEditCTL',function($scope,$http,$window){
     $scope.content = content;

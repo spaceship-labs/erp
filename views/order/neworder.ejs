@@ -64,10 +64,10 @@
                             <a class='btn btn-primary pull-right' ng-click="createUpdateClient()" ng-bind="client_flag?'Actualizar':'Crear'"></a>
                             <span class='clear'></span>
                         </p>
-                        <h4 class='widgettitle'>Datos generales</h4>
+                        <h4 class='widgettitle'>Datos adicionales de contacto</h4>
                         <form class='form stdform stdform2 nopadding'>
                             <p>
-                                <label>Hotel</label>
+                                <label>Hotel de alojamiento</label>
                                 <span class='field'>
                                     <input type="text" class="form-control" 
                                         placeholder="<%= __('order-hotel')%>"
@@ -135,6 +135,7 @@
                         </div>
                         <div class='headtitle'>
                             <a ng-click="setSteps('next',false)" class='btn btn-primary pull-right' >Siguiente</a>
+                            <a ng-click="reservations.hotels=[];setSteps('next',false)" class='btn btn-primary pull-right' >Omitir</a>
                             <a ng-click="setSteps('prev',false)" class='btn btn-primary pull-right' >Anterior</a>
                             <span class='clear'></span>
                         </div>
@@ -155,6 +156,10 @@
                     <div collapse="!(steps==3?true:false)">
                         <div class='row'>
                             <div class='col-md-12 peoplelist orderTourList'>
+                                <input type="text" class="form-control" 
+                                        placeholder="Buscar Tours"
+                                        ng-model="searchTours"
+                                        ng-change="getAllTours()" >
                                 <div class='peopleinfo'><ul>
                                     <li ng-repeat="t in allTours.results">
                                         <div class='thumb'>
@@ -182,13 +187,34 @@
                                 </p>-->
                             </div>
                         </div><br >
-                        <div class='stdform2 isCtourContainer'>
-                            <div ng-repeat='item in reservations.tours'>
+                        <div class='isCtourContainer'>
+                            <div class='stdform2' ng-repeat='item in reservations.tours' ng-hide="item.saved">
                                 <%- partial('inputsTour') -%> 
                             </div>
+                            <div ng-hide="reservations.tours.length==0" class="peoplelist orderTourList"><div class='peopleinfo'><ul>
+                                <li>Tours agregados a la reserva</li>
+                                <li ng-repeat='item in reservations.tours'>
+                                    <div class='thumb'>
+                                        <img ng-if='item.tour.icon' ng-src="/uploads/tours/50x50{{item.tour.icon.filename}}">
+                                        <img ng-if='!item.tour.icon' ng-src="http://placehold.it/50x50">
+                                    </div>
+                                    <div class='info'>
+                                        <p><span ng-bind="item.tour.name"></span></p>
+                                        <p><span ng-if="item.pax">{{item.pax}} adultos</span> </p>
+                                        <p><span ng-if="item.kidPax">{{item.kidPax}} menores</span> </p>
+                                        <p>Total: $<span ng-bind="item.fee"></span></p>
+                                    </div>
+                                    <span class='pull-right actions' ng-hide="!item.saved">
+                                        <a ng-click="item.saved=false;" ><i class='fa fa-pencil'></i> Editar</a>
+                                        <a ng-click="removeTH($index,'tour')" ><i class='fa fa-times'></i> Eliminar</a>
+                                    </span>
+                                    <div class='clear'></div>
+                                </li>
+                            </ul></div></div>
                         </div>
-                        <div class='headtitle'>
+                        <div class='stdform2 headtitle'>
                             <a ng-click="setSteps('next',false)" class='btn btn-primary pull-right' >Siguiente</a>
+                            <a ng-click="reservations.tours=[];setSteps('next',false)" class='btn btn-primary pull-right' >Omitir</a>
                             <a ng-click="setSteps('prev',false)" class='btn btn-primary pull-right' >Anterior</a>
                             <span class='clear'></span>
                         </div>
@@ -327,22 +353,16 @@
                         </p>
                     </div>
                 </div>
-                <!--<div 
-                    form-helper 
-                    fields='content.clientForOrders' 
-                    form-footer='Agregar'
-                    form-save = 'createClient'
-                    object = 'client_c'
-                    form-title='Agregar Cliente'
-                    modal='true'
-                    >
-                </div>-->
             </div>
         </div>
     </div>
-    <div id='popup_overlay' class='ng-hide ng-cloak' ng-hide="!alertM.show"></div>
-    <div id='popup_container' class='alert-warning ng-hide ng-cloak' ng-hide="!alertM.show">
+    <div id='popup_overlay' class='ng-hide ng-cloak' ng-hide="!alertM.show&&!alertMessage.show"></div>
+    <div id='popup_container' class='alert-warning ng-hide ng-cloak' ng-hide="!alertM.show&&!alertMessage.show">
         <h1 id="popup_title" ><%= __('order_error') %></h1>
+        <div id="popup_content" class="alert" ng-show="alertMessage.show" >
+            <div id="popup_message" ng-bind="alertMessage.message"></div>
+            <div id="popup_panel"><a ng-click="alertMessage.show=false;" id="popup_ok" style="display: block;width: 150px;margin: 0 auto;">OK</a></div>
+        </div>
         <div id="popup_content" class="alert" ng-show="alertM.show&&alertM.client">
             <div id="popup_message"><%= __('order_errC') %></div>
             <div id="popup_panel"><a ng-click="alertM.show=false;alertM.client=false;" id="popup_ok" style="display: block;width: 150px;margin: 0 auto;">OK</a></div>

@@ -148,8 +148,8 @@ module.exports = {
     	var form = req.params.all();
     	var id = form.id;
 		form.req = req;
-		form.fee_base = parseFloat(form.fee) || 0;
-		form.feeChild_base = parseFloat(form.feeChild) || 0;
+		form.fee_base = form.fee_base?form.fee_base:(parseFloat(form.fee) || 0);
+		form.feeChild_base = form.feeChild_base?form.feeChild_base:(parseFloat(form.feeChild) || 0);
     	if(form.days){
     		var new_days = [];
     		form.days.forEach(function(day){
