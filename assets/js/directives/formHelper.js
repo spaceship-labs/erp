@@ -1,5 +1,5 @@
 (function () {
-	var controller = function($scope,$http,$rootScope){
+	var controller = function($scope,$http,$rootScope,$upload){
 		$scope.saveClass = 'fa-check';//check
         var ad = 1;
         $scope.ad = 1;
@@ -68,7 +68,7 @@
                     console.log(submitObject);
                     $scope.form.$setPristine();
                     $scope.saveClass = 'fa-check';
-                    $scope.object = {};
+                    //$scope.object = {};
                 });
             }
             
@@ -107,25 +107,51 @@
             });
         }
 
+        $scope.uploadFiles = function($files, field, addMethod){
+            var name = $files[0].name,
+            fieldHandle = field.handle;
+            if(name && $scope.addMethod && fieldHandle){
+                $scope.upload = $upload.upload({
+                    url: $scope.addMethod,
+                    data: {id: $scope.object.id, field: fieldHandle, filename: name},
+                    file: $files,
+                }).progress(function(){})
+                .success(function(data, status, headers, config) {
+                    console.log('res', data);
+                    if(data.success)
+                        $scope.object[fieldHandle] = data[fieldHandle];
+                }).error(function(err){
+                    //console.log('err', err);
+                });        
+            }
+        };
+
+
+
+
+
+
 	};
-	controller.$inject = ['$scope','$http','$rootScope'];
+	controller.$inject = ['$scope','$http','$rootScope','$upload'];
     var directive = function () {
         return {
-        	controller : controller,
-        	scope : {
-        		object : '=',
-                onchanges : '=',
-                fields : '=',
-                action : '@',
-                formTitle : '@',
-                formFooter : '@',
-                modal : '@',
-                formSave : '&',
-                objects : '=',
-                currency : '=',
-                restrict : '@',
-                hiddenFields : '=',
-                customvalidation : '@'
+            controller : controller,
+                scope : {
+                    object : '=',
+                    onchanges : '=',
+                    fields : '=',
+                    action : '@',
+                    formTitle : '@',
+                    formFooter : '@',
+                    modal : '@',
+                    formSave : '&',
+                    objects : '=',
+                    currency : '=',
+                    restrict : '@',
+                    hiddenFields : '=',
+                    customvalidation : '@',
+                    addMethod : '@',
+                    dir : '@'
         	},
         	templateUrl : '/template/find/formHelper.html'
         };

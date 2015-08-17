@@ -5,6 +5,8 @@
  * @docs        :: http://sailsjs.org/#!documentation/controllers
  */
 
+var async = require('async'),
+anchor = require('anchor');
 module.exports = {
 	index: function(req,res){
 		Currency.find().exec(function(err,currencies){
@@ -242,7 +244,43 @@ module.exports = {
                 res.json(tax);
             });
         }
-    }
+    },
+    addFiles : function(req,res){
+        var form = req.params.all(),
+        invalid = anchor(form).to({
+                        type:{
+                            id: 'string',
+                            field: 'string',
+                            filename: 'string'
+                        }
+                    });
+        if(invalid)
+            return res.json(invalid);
+
+        Company.findOne({id:form.id}).exec(function(e,company){
+            if(e) return res.json({success: false});
+                company.addFiles(req,{
+                    dir : 'company/files',
+                    profile: 'gallery'
+                },function(e,comp){
+                    if(e || !company || !company.files || !company.files.length) return res.json({success:false});
+                    async.detect(company.files.reverse(), function(file, next){
+                    next(file.name.trim() == form.filename.trim());
+                }, function(file){
+                    if(!file) return res.json({success:false});
+                    var newField = {};
+                    newField[form.field] = file;
+                    Company.update({id:company.id}, newField).exec(function(err, companyUpdate){
+                        if(err || !companyUpdate.length) return res.json({success:false});
+                        var json = {};
+                        json[form.field] = companyUpdate[0][form.field];
+                        json.success = true;
+                        res.json(json);
+                    });
+                });
+            });
+        });
+    },
 };
 
 var update = {

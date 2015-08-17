@@ -5,6 +5,7 @@
   "description": "erp",
   "keywords": [],
   "dependencies": {
+    "anchor": "^0.10.5",
     "async": "^0.9.0",
     "bcrypt": "^0.7.8",
     "bower": "^1.4.1",
