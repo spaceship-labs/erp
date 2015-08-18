@@ -29,13 +29,17 @@ module.exports.renderMenu = function(req){
             //console.log('req.options.controller');console.log(req.options.controller);
             active_class = contains ? 'selected' : '';
             expand_menu = contains ? 'display:block' : '';
-            menu += "<li class='dropdown " + active_class + "'><a href='' class='"+active_class+"'><span class='fa "+app.icon+"'></span>"+app[label]+"</a><ul style="+expand_menu+">";
-            _.each(app.actions,function(view){
-            	var acClass = req.options.controller==view.controller?'selected':'';
-                if (req.user.hasPermission(selected_company.id,view.handle) && view.showInMenu)
-                    menu += "<li class='"+acClass+"'><a href='"+view.url+"'><span class='fa "+view.icon+"'></span> "+view[label]+"</a></li>";
-            });
-            menu += "</ul></li>";
+            if(app.notDropdown){
+            	menu += "<li><a href='"+app.url+"' class='"+active_class+"'><span class='fa "+app.icon+"'></span> "+app[label]+"</a></li>"
+            }else{
+            	menu += "<li class='dropdown " + active_class + "'><a href='' class='"+active_class+"'><span class='fa "+app.icon+"'></span>"+app[label]+"</a><ul style="+expand_menu+">";
+	            _.each(app.actions,function(view){
+	            	var acClass = req.options.controller==view.controller?'selected':'';
+	                if (req.user.hasPermission(selected_company.id,view.handle) && view.showInMenu)
+	                    menu += "<li class='"+acClass+"'><a href='"+view.url+"'><span class='fa "+view.icon+"'></span> "+view[label]+"</a></li>";
+	            });
+	            menu += "</ul></li>";
+            }
         }
     });
 	return menu;

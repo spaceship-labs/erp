@@ -288,7 +288,7 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
             }else if(type=='transfer')
                 $scope.transfer = false;
             else if(type=='tour')
-                $scope.reservations.tour = [];
+                $scope.reservations.tours = [];
             else if(type=='hotel')
                 $scope.reservations.hotels = [];
         }else{
@@ -519,7 +519,7 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
                 //console.log('tours');
                 for(var x in item.schedules){
                     var aux = false;
-                    item.schedules[x] = JSON.parse(item.schedules[x]);
+                    item.schedules[x] = typeof item.schedules[x] == 'string'?JSON.parse(item.schedules[x]):item.schedules[x];
                     aux = new Date(item.schedules[x].from);
                     item.schedules[x].from = aux.getHours() + ':' + (aux.getMinutes()==0?'00':aux.getMinutes());
                     aux = new Date(item.schedules[x].to);
@@ -735,6 +735,14 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
             $scope.alertMessage.message = 'Campos inválidos, revisar el tour antes de continuar.';
         }
     };
+    $scope.openTH = function(type,item){
+        $scope.theIFC = item;
+        $scope.theIFC.description = item.description_es.split("\n");
+        $scope.theIFC.includes = item.includes_es.split("\n");
+        $scope.theIFC.noincludes = item.does_not_include_es.split("\n");
+        $scope.theIFC.recommendations = item.recommendations_es.split("\n");
+        console.log($scope.theIFC);
+    }
 });
 app.controller('orderEditCTL',function($scope,$http,$window){
     $scope.content = content;

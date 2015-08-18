@@ -130,7 +130,10 @@ module.exports.apps = [
         label : 'Clientes',
         label_en : 'Clients',
         icon : 'fa-users',
-        actions : [
+        url: '/clientes/',
+        handle: 'clientes',
+        notDropdown : true
+        /*actions : [
             {
                 label: 'Buscar',
                 label_en : 'Search',
@@ -141,26 +144,26 @@ module.exports.apps = [
                 controller : 'client',
                 action : 'index'
             }
-        ]
+        ]*/
     },
     /* hotels */
     {
         name : 'hotels',
-        label : 'Hoteles/Aeropuertos',
-        label_en : 'Hotels/Airports',
+        label : 'Ciudades y Hoteles',
+        label_en : 'Cities and Hotels',
         icon : 'fa-building',
         actions : [
             {
-                label : 'Hoteles',
-                label_en : 'Hotels',
-                icon : 'fa-building-o',
-                url : '/hotel/',
-                handle : 'hoteles',
+                label   : 'Ciudades',
+                label_en : 'Cities',
+                icon    : 'fa-flag',
+                url : '/location/',
+                handle : 'ciudades',
                 showInMenu : true,
-                controller : 'hotel',
+                controller : 'location',
                 action : 'index'
-            },
-            {
+            }
+            ,{
                 label : 'Aeropuertos',
                 label_en : 'Airports',
                 icon : 'fa-plane',
@@ -169,18 +172,18 @@ module.exports.apps = [
                 showInMenu : true,
                 controller : 'airport',
                 action : 'index'
-            },
-            {
-                label : 'Aerolineas',
-                label_en : 'Airlines',
-                icon : 'fa-plane',
-                url : '/airline/',
-                handle : 'airline',
+            }
+            ,{
+                label : 'Hoteles',
+                label_en : 'Hotels',
+                icon : 'fa-building-o',
+                url : '/hotel/',
+                handle : 'hoteles',
                 showInMenu : true,
-                controller : 'airline',
+                controller : 'hotel',
                 action : 'index'
-            },
-            {
+            }
+            ,{
                 label : 'Temporadas',
                 label_en : 'Seasons',
                 icon : 'fa-sun-o',
@@ -189,8 +192,18 @@ module.exports.apps = [
                 showInMenu : true,
                 controller : 'seasonScheme',
                 action : 'index'
-            },
-            {
+            }
+            ,{
+                label : 'Aerolineas',
+                label_en : 'Airlines',
+                icon : 'fa-plane',
+                url : '/airline/',
+                handle : 'airline',
+                showInMenu : true,
+                controller : 'airline',
+                action : 'index'
+            }
+            ,{
                 label : 'Vistas de cuarto',
                 label_en : 'Rooms views',
                 icon : 'fa-eye',
@@ -199,8 +212,8 @@ module.exports.apps = [
                 showInMenu : true,
                 controller : 'hotelroomview',
                 action : 'index'
-            },
-            {
+            }
+            ,{
                 label : 'Esquemas de alimentación',
                 label_en : 'Food schemes',
                 icon : 'fa-cutlery',
@@ -209,8 +222,8 @@ module.exports.apps = [
                 showInMenu : true,
                 controller : 'foodscheme',
                 action : 'index'
-            },
-        ],
+            }
+        ]
     },
     /* Circuitos */
     {
@@ -218,7 +231,12 @@ module.exports.apps = [
         label   : 'Circuitos',
         label_en : 'Circuits',
         icon    : 'fa-dropbox',
-        actions   : [
+        url : '/packagetour/',
+        handle : 'packagetour',
+        controller : 'packagetour',
+        action : 'index',
+        notDropdown : true
+        /*actions   : [
             {
                 label : 'Circuitos',
                 label_en : 'Circuits',
@@ -229,27 +247,7 @@ module.exports.apps = [
                 controller : 'packagetour',
                 action : 'index'
             }
-        ]
-    },
-    /* locations */
-    {
-        name    : 'locations',
-        label   : 'Ciudades',
-        label_en : 'Cities',
-        icon    : 'fa-flag',
-        actions   : [
-            {
-                label   : 'Ciudades',
-                label_en : 'Cities',
-                icon    : 'fa-flag',
-                url : '/location/',
-                handle : 'ciudades',
-                showInMenu : true,
-                controller : 'location',
-                action : 'index'
-
-            }
-        ]
+        ]*/
     },
     /* transfers */
     {
@@ -259,26 +257,6 @@ module.exports.apps = [
         icon : 'fa-clipboard',
         actions : [
             {
-                label : 'Reservaciones',
-                label_en : 'Reservations',
-                icon : 'fa-car',
-                url : '/order/',
-                handle : 'orders',
-                showInMenu : true,
-                controller : 'order',
-                action : 'index'
-            },
-            {
-                label : 'Tours',
-                label_en : 'Tours',
-                icon : 'fa-compass',
-                url : '/tour/',
-                handle : 'tours',
-                showInMenu : true,
-                controller : 'tour',
-                action : 'index'
-            },
-            {
                 label : 'Proveedores de Tours',
                 label_en : 'Tours Providers',
                 icon : 'fa-compass',
@@ -287,8 +265,8 @@ module.exports.apps = [
                 showInMenu : true,
                 controller : 'tourprovider',
                 action : 'index'
-            },
-            {
+            }
+            ,{
                 label : 'Categorías de Tours',
                 label_en : 'Tours Categories',
                 icon : 'fa-folder',
@@ -297,8 +275,18 @@ module.exports.apps = [
                 showInMenu : true,
                 controller : 'tourcategory',
                 action : 'index'
-            },
-            {
+            }
+            ,{
+                label : 'Tours',
+                label_en : 'Tours',
+                icon : 'fa-compass',
+                url : '/tour/',
+                handle : 'tours',
+                showInMenu : true,
+                controller : 'tour',
+                action : 'index'
+            }
+            ,{
                 label : 'Traslados',
                 label_en : 'Transfers',
                 icon : 'fa-road',
@@ -307,8 +295,18 @@ module.exports.apps = [
                 showInMenu : true,
                 controller : 'transfer',
                 action : 'index'
-            },
-            {
+            }
+            /*,{
+                label : 'Reservaciones',
+                label_en : 'Reservations',
+                icon : 'fa-car',
+                url : '/order/',
+                handle : 'orders',
+                showInMenu : true,
+                controller : 'order',
+                action : 'index'
+            }*/
+            ,{
                 label : 'Cupones',
                 label_en : 'Cupons',
                 icon : 'fa-ticket',
@@ -317,8 +315,8 @@ module.exports.apps = [
                 ,handle : 'cupon'
                 ,controller : 'cupon'
                 ,action : 'index'
-            },
-            {
+            }
+            ,{
                 label : 'Instancias cupones',
                 label_en : 'Cupon instances',
                 icon : 'fa-ticket',
@@ -327,6 +325,24 @@ module.exports.apps = [
                 ,handle : 'cuponSingle'
                 ,controller : 'cuponSingle'
                 ,action : 'index'
+            }
+        ]
+    }
+    ,{
+        name : 'reservations'
+        ,label : 'Reservaciones'
+        ,label_en : 'Reservations'
+        ,icon : 'fa-car'
+        ,actions : [
+            {
+                label : 'Todas',
+                label_en : 'All',
+                icon : 'fa-car',
+                url : '/order/',
+                handle : 'orders',
+                showInMenu : true,
+                controller : 'order',
+                action : 'index'
             }
         ]
     }

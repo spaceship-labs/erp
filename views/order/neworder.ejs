@@ -136,7 +136,7 @@
                         <div class='headtitle'>
                             <a ng-click="setSteps('next',false)" class='btn btn-primary pull-right' >Siguiente</a>
                             <a ng-click="reservations.hotels=[];setSteps('next',false)" class='btn btn-primary pull-right' >Omitir</a>
-                            <a ng-click="setSteps('prev',false)" class='btn btn-primary pull-right' >Anterior</a>
+                            <a ng-hide="" ng-click="setSteps('prev',false)" class='btn btn-primary pull-right' >Anterior</a>
                             <span class='clear'></span>
                         </div>
                     </div>
@@ -172,7 +172,7 @@
                                         </div>
                                         <div class='pull-right actions'>
                                             <a ng-click="addTH('tour',t)"><i class='fa fa-plus'></i> Agregar</a>
-                                            <a ng-click="view('tour',t)"><i class='fa fa-eye'></i> Ver más</a>
+                                            <a ng-click="openTH('tour',t)" data-toggle="modal" data-target="#myModal2"><i class='fa fa-eye'></i> Ver más</a>
                                         </div>
                                         <div class='clear'></div>
                                     </li>
@@ -289,68 +289,41 @@
     <div class="modal fade" id="myModal">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class='widgetbox'>
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        <h4 class="modal-title">Clientes para las reservas <a ng-click="openContactForm(false,'create')"><i class='fa fa-plus'></i> Nuevo cliente</a></h4>
+                <%- partial('partial/contacts_modal') -%> 
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="myModal2">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class='custom-layout layout-flex'>
+                    <div class='custom-flex flex3 lateral-container'>
+                        <h3 class='uppercase' ng-if="theIFC.includes"><span class='fa fa-check'></span> Incluye</h3>
+                        <ul ng-if="theIFC.includes">
+                            <li ng-repeat="item in theIFC.includes" ng-bind="item"></li>
+                        </ul>
+                        <h3 class='uppercase' ng-if="theIFC.noincludes"><span class='fa fa-times'></span> No incluye</h3>
+                        <ul ng-if="theIFC.noincludes">
+                            <li ng-repeat="item in theIFC.noincludes" ng-bind="item"></li>
+                        </ul>
+                        <h3 class='uppercase' ng-if="theIFC.duration"><span class='fa fa-clock-o'></span> Duración</h3>
+                        <ul ng-if="theIFC.duration"><li ng-bind="theIFC.duration"></li></ul>
                     </div>
-                    <div collapse="!modalCollapse">
-                        <form class='stdform stdform2'>
+                    <div class='custom-flex flex7 principal-container'>
+                        <img ng-if="theIFC.icon" ng-src="/uploads/tours/593x331{{theIFC.icon.filename}}">
+                        <div class='text-container'>
+                            <h2 ng-bind="theIFC.name"></h2>
+                            <p ng-repeat="item in theIFC.description track by $index" ng-bind="item"></p>
+                            <br>
+                            <h3 ng-if="theIFC.recommendations"><span class='fa fa-thumbs-up'></span>Recomendaciones</h3>
+                            <ul ng-if="theIFC.recommendations">
+                                <li ng-repeat="item in theIFC.recommendations" ng-bind="item"></li>
+                            </ul>
                             <p>
-                                <label><%= __('order_name') %></label>
-                                <span class='field'><input type='text' ng-model="contact.name"></span>
+                                <a class='btn btn-primary' ng-click="addTH('tour',theIFC)" data-dismiss="modal" aria-hidden="true">Reservar</a>
+                                <button type='reset' class='btn reset' data-dismiss="modal" aria-hidden="true">Cerrar</button>
                             </p>
-                            <p>
-                                <label><%= __('order_mail') %></label>
-                                <span class='field'><input type='text' ng-model="contact.email"></span>
-                            </p>
-                            <p>
-                                <label><%= __('order_phone') %></label>
-                                <span class='field'><input type='text' ng-model="contact.phone"></span>
-                            </p>
-                            <p class='order-controls'>
-                                <a ng-hide="contactFlag!='create'" class='btn btn-primary pull-right' ng-click="createUpdateContact()">Crear</a>
-                                <a ng-hide="contactFlag!='update'" class='btn btn-primary pull-right' ng-click="createUpdateContact()">Actualizar</a>
-                                <a class='btn btn-primary reset pull-right' ng-click="cancelContactForm()">Cancelar</a>
-                                <span class='clear'></span>
-                            </p>
-                        </form>
-                    </div>
-                    <div class='widgetcontent noborder'><div class='row'>
-                        <div class='col-md-6'>
-                            <h4 class='widgettitle'>Clientes de esta reserva</h4>
-                            <div class='widgetcontent'>
-                                <ul>
-                                    <li ng-repeat="c in client.contacts">
-                                        <a>{{c.name}}</a>
-                                        <span class='icons pull-right'>
-                                            <a ng-click="openContactForm(c,'update')"><i class='fa fa-pencil'></i></a>
-                                            <a ng-click="addContactToItem($index)"><i class='fa fa-plus'></i></a>
-                                        </span>
-                                    </li>
-                                </ul>
-                            </div>
                         </div>
-                        <div class='col-md-6'>
-                            <h4 class='widgettitle'>Clientes de este item</h4>
-                            <div class='widgetcontent'>
-                                <ul>
-                                    <li ng-repeat="c in theIFC.contacts">
-                                        <a>{{client.contacts[c].name}}</a>
-                                        <span class='icons pull-right'>
-                                            <a ng-click="removeContactFromItem(c)"><i class='fa fa-minus'></i></a>
-                                        </span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div></div>
-                    <div class='stdform2'>
-                        <p class="stdformbutton">
-                            <button type="button" class="btn btn-primary pull-right" ng-click="saveContactForm()">Guardar</button>
-                            <button type="button" class="btn btn-primary pull-right" ng-click="cancelContactForm()" data-dismiss="modal" aria-hidden="true">Cerrar</button>
-                            <span class='clear'></span>
-                        </p>
                     </div>
                 </div>
             </div>

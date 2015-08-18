@@ -29,6 +29,24 @@ html .full-width{width: 100%;}
 .timepicker-container .timepicker input{margin: 0;}
 .timepicker-container .custom-delete{margin-top: 42px;}
 
+/*Custom FLEX*/
+.custom-layout{display: -webkit-flex;display: -moz-flex;display: -ms-flexbox;display: flex;}
+.layout-flex{webkit-flex-direction: row;-ms-flex-direction: row;flex-direction: row;}
+.custom-flex{box-sizing: border-box;-webkit-flex: 1;-ms-flex: 1;flex: 1;}
+.flex3{webkit-flex: 0 0 30%;-ms-flex: 0 0 30%;flex: 0 0 30%;}
+.flex7{webkit-flex: 0 0 70%;-ms-flex: 0 0 70%;flex: 0 0 70%;}
+.custom-layout .flex3{max-width: 30%;}
+.custom-layout .flex7{max-width: 70%;}
+
+.modal-content .lateral-container{background: @header-background;}
+.modal-content .lateral-container h3{color: white;padding: 25px 25px 0;}
+.modal-content .lateral-container ul{padding: 25px;list-style-type: disc;color: white;list-style-position: inside;border-bottom: 1px solid;}
+.modal-content .principal-container img{width: 100%;}
+.modal-content .principal-container h2{color: @primary;text-align: center;margin-bottom: 15px;}
+.modal-content .principal-container h3{color: @primary;}
+.modal-content .principal-container .text-container{padding: 30px;}
+.modal-content .principal-container ul{list-style-position: inside;}
+
 /*Gral*/
 .text-list{list-style: none;}
 .text-list li:before{content: '•';color: @secondaryBG;margin-right: 10px;}
