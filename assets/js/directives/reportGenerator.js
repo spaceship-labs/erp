@@ -3,6 +3,7 @@
         $scope.object = $scope.object || {};
         $scope.label = $rootScope.lang=='es'?'label':'label_en';
         $scope.translates = $rootScope.translates;
+        console.log($scope.object);
 	};
 	controller.$inject = ['$scope','$http','$rootScope'];
     var directive = function () {

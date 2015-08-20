@@ -150,7 +150,7 @@ app.controller('orderCTL',function($scope,$http,$window,$upload,$rootScope){
 
     $scope.getTotalOrder = function(order){
         var total = 0;
-        if (order.reservations) {
+        if (order && order.reservations) {
             total = order.reservations.reduce(function(sum,reservation){
                 return sum + reservation.fee;
             },0);
@@ -196,6 +196,35 @@ app.controller('orderCTL',function($scope,$http,$window,$upload,$rootScope){
     };
 });
 app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
+    var customTimer;
+    $scope.PIwidth = jQuery('body').scrollTop() > 250?jQuery('.paymentInformation').parent().width() + 'px':'auto';
+    $scope.fixedItem = jQuery('body').scrollTop() > 250?true:false;
+    $scope.customCart = jQuery( window ).width() <= 992?true:false;
+    jQuery( window ).scroll(function(){
+        clearTimeout(customTimer);
+        customTimer = setTimeout(function(){ 
+            console.log( jQuery('body').scrollTop() );
+            if( jQuery('body').scrollTop() > 250 ){
+                $scope.PIwidth = jQuery('.paymentInformation').parent().width() + 'px';
+                $scope.fixedItem = true;
+            }else{
+                $scope.fixedItem = false;
+                $scope.PIwidth = 'auto';
+            }
+            console.log($scope.fixedItem + '  --  ' + $scope.PIwidth);
+            $scope.$apply();
+        }, 100);
+    });
+    jQuery( window ).resize(function(){
+        clearTimeout(customTimer);
+        customTimer = setTimeout(function(){ 
+            $scope.customCartShow = jQuery( window ).width() > 992?true:false;
+            $scope.customCart = jQuery( window ).width() <= 992?true:false;
+            $scope.PIwidth = jQuery('body').scrollTop() > 250?jQuery('.paymentInformation').parent().width() + 'px':'auto';
+            $scope.fixedItem = jQuery('body').scrollTop() > 250?true:false;
+            $scope.$apply();
+        }, 100);
+    });
     $scope.steps = 1;
     $scope.setSteps = function(action,set){
         if( $scope.client && $scope.client.id ){
@@ -745,6 +774,35 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
     }
 });
 app.controller('orderEditCTL',function($scope,$http,$window){
+    var customTimer;
+    $scope.PIwidth = jQuery('body').scrollTop() > 250?jQuery('.paymentInformation').parent().width() + 'px':'auto';
+    $scope.fixedItem = jQuery('body').scrollTop() > 250?true:false;
+    $scope.customCart = jQuery( window ).width() <= 992?true:false;
+    jQuery( window ).scroll(function(){
+        clearTimeout(customTimer);
+        customTimer = setTimeout(function(){ 
+            console.log( jQuery('body').scrollTop() );
+            if( jQuery('body').scrollTop() > 250 ){
+                $scope.PIwidth = jQuery('.paymentInformation').parent().width() + 'px';
+                $scope.fixedItem = true;
+            }else{
+                $scope.fixedItem = false;
+                $scope.PIwidth = 'auto';
+            }
+            console.log($scope.fixedItem + '  --  ' + $scope.PIwidth);
+            $scope.$apply();
+        }, 100);
+    });
+    jQuery( window ).resize(function(){
+        clearTimeout(customTimer);
+        customTimer = setTimeout(function(){ 
+            $scope.customCartShow = jQuery( window ).width() > 992?true:false;
+            $scope.customCart = jQuery( window ).width() <= 992?true:false;
+            $scope.PIwidth = jQuery('body').scrollTop() > 250?jQuery('.paymentInformation').parent().width() + 'px':'auto';
+            $scope.fixedItem = jQuery('body').scrollTop() > 250?true:false;
+            $scope.$apply();
+        }, 100);
+    });
     $scope.content = content;
     $scope.order = order;
     $scope.thecompany = ordercompany;

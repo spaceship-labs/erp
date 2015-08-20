@@ -47,6 +47,14 @@ html .full-width{width: 100%;}
 .modal-content .principal-container .text-container{padding: 30px;}
 .modal-content .principal-container ul{list-style-position: inside;}
 
+/*Cart custom*/
+.paymentInformation{
+	-webkit-transition: all .2s;
+    transition: all .2s;}
+.paymentInformation .widgettitle{background: @cart-bg;border-bottom: 1px solid;}
+.paymentInformation .widgetcontent{border-color: @cart-borders;background: @cart-bg;color: white;}
+.paymentInformation.fixedItem{position: fixed;top: 20px;right: 20px;}
+
 /*Gral*/
 .text-list{list-style: none;}
 .text-list li:before{content: '•';color: @secondaryBG;margin-right: 10px;}
@@ -85,6 +93,7 @@ html .full-width{width: 100%;}
 .stdform .ng-invalid-required.ng-touched{outline: red solid 1px;}
 .custom_inline_messages{margin: 10px 0;padding: 10px;border: 1px solid green;}
 .custom_inline_messages.error{border: 1px solid red;}
+.cursorPointer{cursor: pointer;}
 
 /*fee selector*/
 .fee-selector .tabs .tab.selected{border: 1px solid gray;border-bottom: 0 none;border-top-right-radius: 5px;border-top-left-radius: 5px;}
@@ -406,6 +415,9 @@ color: #fff;
 @media only screen and  (max-width: 1280px){
 	.widgettitle a.pull-right{display: block;float: none!important;padding-top: 2px}
 
+}
+@media only screen and  (max-width: 992px){
+	.paymentInformation.fixedItem{top: 0px;right: 0px;width: 100%!important;}
 }
 
 @media screen and (min-width: 992px){

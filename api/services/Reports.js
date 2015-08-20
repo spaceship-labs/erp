@@ -67,6 +67,7 @@ module.exports.tours_gral = function(fields,cb){
 				results.totals.iva += fee * mainIVA;
 				results.totals.pax += (reservations[x].pax||0) + (reservations[x].kidPax||0);
 			}
+			results.reportType = '';
 			cb(results,false);
 		});//Reservation END
 	});//Reservation count END
@@ -114,6 +115,7 @@ module.exports.tours_by_agency = function(fields,cb){
 				results.totals.iva += fee * mainIVA;
 				results.totals.pax += (reservations[x].pax||0) + (reservations[x].kidPax||0);
 			}
+			results.reportType = '';
 			cb(results,false);
 		});//Reservation END
 	});//Reservation count END
@@ -143,27 +145,31 @@ module.exports.tours_by_user = function(fields,cb){
 			}
 			for(var x in reservations){
 				if( typeof results.rows[ '0_' + reservations[x].user.id ] == 'undefined' ) 
-					results.rows[ '0_' + reservations[x].user.id ] = { user : reservations[x].user.name , tour : '' , pax : 0 , vsi : 0 , iva : 0 , vn : 0 , type : 'c' };
-				if( typeof results.rows[ reservations[x].tour.id ] == 'undefined' )
-					results.rows[ reservations[x].tour.id ] = { user : '' , tour : reservations[x].tour.name , pax : 0 , vsi : 0 , iva : 0 , vn : 0 }
+					results.rows[ '0_' + reservations[x].user.id ] = { user : reservations[x].user.name , tour : '' , pax : 0 , vsi : 0 , iva : 0 , vn : 0 , type : 'c' , cm : 0 , rows2 : {} };
+				if( typeof results.rows[ '0_' + reservations[x].user.id ].rows2[ reservations[x].tour.id ] == 'undefined' )
+					results.rows[ '0_' + reservations[x].user.id ].rows2[ reservations[x].tour.id ] = { user : '' , tour : reservations[x].tour.name , pax : 0 , vsi : 0 , iva : 0 , vn : 0 , cm: 0 }
 				//Aquí se iran calculando/guardando los totales 
 				var fee = (reservations[x].pax*reservations[x].fee_adults || 0) + (reservations[x].kidPax*reservations[x].fee_kids || 0);
-				results.rows[ reservations[x].tour.id ].pax += (reservations[x].pax||0) + (reservations[x].kidPax||0); // total de pax
+				var base_fee = (reservations[x].pax*reservations[x].fee_adults_base || 0) + (reservations[x].kidPax*reservations[x].fee_kids_base || 0);
+				results.rows[ '0_' + reservations[x].user.id ].rows2[ reservations[x].tour.id ].pax += (reservations[x].pax||0) + (reservations[x].kidPax||0); // total de pax
 				results.rows[ '0_' + reservations[x].user.id ].pax += (reservations[x].pax||0) + (reservations[x].kidPax||0); // total de pax
-				results.rows[ reservations[x].tour.id ].vsi += fee - (fee * mainIVA); //total ventas sin iva
+				results.rows[ '0_' + reservations[x].user.id ].rows2[ reservations[x].tour.id ].vsi += fee - (fee * mainIVA); //total ventas sin iva
 				results.rows[ '0_' + reservations[x].user.id ].vsi += fee - (fee * mainIVA); //total ventas sin iva
-				results.rows[ reservations[x].tour.id ].iva += fee * mainIVA; //total de iva
+				results.rows[ '0_' + reservations[x].user.id ].rows2[ reservations[x].tour.id ].iva += fee * mainIVA; //total de iva
 				results.rows[ '0_' + reservations[x].user.id ].iva += fee * mainIVA; //total de iva
-				results.rows[ reservations[x].tour.id ].vn += fee; //total ventas netas
+				results.rows[ '0_' + reservations[x].user.id ].rows2[ reservations[x].tour.id ].vn += fee; //total ventas netas commission_sales
 				results.rows[ '0_' + reservations[x].user.id ].vn += fee; //total ventas netas
-				results.rows[ reservations[x].tour.id ].cm += (parseFloat(reservations[x].tour.commission_sales)/100) *fee; //total comisión por tour
-				results.rows[ '0_' + reservations[x].user.id ].cm += (parseFloat(reservations[x].tour.commission_sales)/100) *fee; //total comisión por tour
+				results.rows[ '0_' + reservations[x].user.id ].rows2[ reservations[x].tour.id ].cm += (parseFloat(reservations[x].commission_sales)/100) * base_fee; //total comisión por tour
+				results.rows[ '0_' + reservations[x].user.id ].cm += (parseFloat(reservations[x].commission_sales)/100) * base_fee; //total comisión por tour
+				console.log( base_fee );
+				console.log( reservations[x].commission_sales );
 
 				results.totals.total += fee;
 				results.totals.subtotal += fee - (fee * mainIVA);
 				results.totals.iva += fee * mainIVA;
 				results.totals.pax += (reservations[x].pax||0) + (reservations[x].kidPax||0);
 			}
+			results.reportType = 'bygroup';
 			cb(results,false);
 		});//Reservation END
 	});//Reservation count END

@@ -79,9 +79,11 @@
             </form>
         </div><!-- Termina Col 8 (reservaciones) -->
         <div class='col-md-4'>
-            <div class='widgetbox'>
-                <h4 class="widgettitle">Información de pago</h4>
-                <div class="widgetcontent paymentInformation">
+            <div class="widgetbox paymentInformation {{fixedItem?'fixedItem':''}}" style="width:{{PIwidth}}">
+                <a class='cursorPointer' ng-click="customCart=!customCart">
+                    <h5 class="widgettitle">Resumen de reservación <i ng-hide="customCartShow" ng-bind="', $' + theTotal"></i></h5>
+                </a>
+                <div collapse="customCart"><div class="widgetcontent paymentInformation">
                     <div ng-show="!transfer.fee && reservations.tours.length==0 && reservations.hotels.length==0">
                         <h4>No hay reservas activas</h4>
                     </div>
@@ -100,7 +102,7 @@
                         <hr>
                         <h4>TOTAL : $<span ng-bind="theTotal"></span></h4>
                     </div>
-                </div>
+                </div></div>
             </div>
         </div>
     </div>
