@@ -61,7 +61,7 @@
                             </p>
                         </form>
                         <p class='order-controls'>
-                            <a class='btn btn-primary pull-right' ng-click="createUpdateClient()" ng-bind="client_flag?'Actualizar':'Crear'"></a>
+                            <a class='btn btn-primary secondary pull-right' ng-click="createUpdateClient()" ng-bind="client_flag?'Actualizar':'Crear'"></a>
                             <span class='clear'></span>
                         </p>
                         <h4 class='widgettitle'>Datos adicionales de contacto</h4>
@@ -103,7 +103,7 @@
                             <span class='field'><input type='checkbox' ng-model='USClient' ></span>
                         </p>-->
                         <p class='order-controls'>
-                            <a class='btn btn-primary pull-right' ng-click="setSteps('next',false)" >Siguiente</a>
+                            <a class='btn btn-primary secondary pull-right' ng-click="setSteps('next',false)" >Siguiente</a>
                             <span class='clear'></span>
                         </p>
                     </div></div>
@@ -125,7 +125,7 @@
                                 <p><select chosen ng-options='obj as obj.name for obj in hotels' ng-model='addedHotel' ></select></p>
                             </div>
                             <div class='col-md-2'>
-                                <a ng-click='addTH("hotel",false)' class='btn-primary btn pull-right'><%= __('order-agregar')%></a>
+                                <a ng-click='addTH("hotel",false)' class='btn-primary secondary btn pull-right'><%= __('order-agregar')%></a>
                             </div>
                         </div><br >
                         <div class='isCHotelContainer'>
@@ -134,9 +134,9 @@
                             </div>
                         </div>
                         <div class='headtitle'>
-                            <a ng-click="setSteps('next',false)" class='btn btn-primary pull-right' >Siguiente</a>
-                            <a ng-click="reservations.hotels=[];setSteps('next',false)" class='btn btn-primary pull-right' >Omitir</a>
-                            <a ng-hide="" ng-click="setSteps('prev',false)" class='btn btn-primary pull-right' >Anterior</a>
+                            <a ng-click="setSteps('next',false)" class='btn btn-primary secondary pull-right' >Siguiente</a>
+                            <a ng-click="reservations.hotels=[];setSteps('next',false)" class='btn btn-primary secondary pull-right' >Omitir</a>
+                            <a ng-hide="" ng-click="setSteps('prev',false)" class='btn btn-primary secondary pull-right' >Anterior</a>
                             <span class='clear'></span>
                         </div>
                     </div>
@@ -149,7 +149,7 @@
                     <div class='headtitle'>
                         <div class='btn-group'>
                             <a class="btn btn-primary pull-right" ng-click="resetForm('tour')"><i class='fa fa-eraser'></i></a>
-                            <a class="btn btn-primary pull-right"><i class='fa fa-{{reservations.tours.length&&reservations.tours[0].fee?"check":"circle-thin"}}'></i></a>
+                            <a class="btn btn-primary pull-right" ng-hide="!(reservations.tours.length&&reservations.tours[0].fee)"><i class='fa fa-{{reservations.tours.length&&reservations.tours[0].fee?"check":"circle-thin"}}'></i></a>
                         </div>
                         <a class='expand' ng-click="setSteps('',3)"><h4 class="widgettitle"><i class='fa fa-compass'></i> <%= __('order-reservar-tour')%></h4></a>
                     </div>
@@ -213,9 +213,9 @@
                             </ul></div></div>
                         </div>
                         <div class='stdform2 headtitle'>
-                            <a ng-click="setSteps('next',false)" class='btn btn-primary pull-right' >Siguiente</a>
-                            <a ng-click="reservations.tours=[];setSteps('next',false)" class='btn btn-primary pull-right' >Omitir</a>
-                            <a ng-click="setSteps('prev',false)" class='btn btn-primary pull-right' >Anterior</a>
+                            <a ng-click="setSteps('next',false)" class='btn btn-primary secondary pull-right' >Siguiente</a>
+                            <a ng-click="reservations.tours=[];setSteps('next',false)" class='btn btn-primary secondary pull-right' >Omitir</a>
+                            <a ng-click="setSteps('prev',false)" class='btn btn-primary secondary pull-right' >Anterior</a>
                             <span class='clear'></span>
                         </div>
                     </div>
@@ -228,7 +228,7 @@
                     <div class='headtitle'>
                         <div class='btn-group'>
                             <a class="btn btn-primary pull-right" ng-click="resetForm('transfer')"><i class='fa fa-eraser'></i></a>
-                            <a class="btn btn-primary pull-right"><i class='fa fa-{{transfer.fee?"check":"circle-thin"}}'></i></a>
+                            <a class="btn btn-primary pull-right" ng-hide="!transfer.fee"><i class='fa fa-{{transfer.fee?"check":"circle-thin"}}'></i></a>
                             <a class="btn btn-primary pull-right" ng-click="setTheItemForContacts(transfer,'transfer',false)" data-toggle="modal" data-target="#myModal"><i class='fa fa-user'></i> Clientes</a>
                         </div>
                         <a class='expand' ng-click="setSteps('',4)"><h4 class="widgettitle"><i class='fa fa-car'></i> <%= __('order-reservar-tras')%></h4></a>
