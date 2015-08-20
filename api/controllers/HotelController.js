@@ -44,7 +44,10 @@ module.exports = {
 		//console.log(params);
 		if( typeof params.id == 'undefined' ) delete params.id;
 		delete params.skip;
-		params.company = req.session.select_company;
+		delete params.limit;
+		delete params.company;
+		delete params.adminCompany;
+		//params.company = req.session.select_company;
         if(params.name) params.name = new RegExp(params.name,"i");
         Hotel.find(params).skip(skip).populateAll().exec(function(err,hotels){
         	if(err) res.json('err');

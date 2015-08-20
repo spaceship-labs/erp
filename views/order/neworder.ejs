@@ -24,7 +24,7 @@
                     <div class='headtitle'>
                         <div class='btn-group'>
                             <a class="btn btn-primary pull-right" ng-click="resetForm('client')"><i class='fa fa-eraser'></i></a>
-                            <a class="btn btn-primary pull-right"><i class='fa fa-{{client.id?"check":"circle-thin"}}'></i></a>
+                            <a class="btn btn-primary pull-right" ng-hide="!client.id"><i class='fa fa-{{client.id?"check":"circle-thin"}}'></i></a>
                             <a class='btn btn-primary pull-right' ng-click="searchClient = !searchClient"><i class='fa fa-search'></i></a>
                         </div>
                         <a class='expand' ng-click="setSteps('',1)"><h4 class="widgettitle"><i class='fa fa-user'></i> <%= __('order-cliente')%></h4></a>
@@ -121,13 +121,46 @@
                     </div>
                     <div collapse="!(steps==2?true:false)">
                         <div class='row'>
+                            <div class='col-md-12 peoplelist orderTourList'>
+                                <input type="text" class="form-control" 
+                                        placeholder="Buscar Hoteles"
+                                        ng-model="searchHotels"
+                                        ng-change="getAllHotels()" >
+                                <div class='peopleinfo'><ul>
+                                    <li ng-repeat="t in allHotels.results">
+                                        <div class='thumb'>
+                                            <img ng-if='t.icon' ng-src="/uploads/hotels/50x50{{t.icon.filename}}">
+                                            <img ng-if='!t.icon' ng-src="http://placehold.it/50x50">
+                                        </div>
+                                        <div class='info'>
+                                            <p><strong><a ng-bind="t.name"></a></strong>, adultos $<span ng-bind="t.fee"></span> , niños $<span ng-bind="t.feeChild"></span></p>
+                                            <p>{{t.description_es | limitTo : 180}}</p>
+                                        </div>
+                                        <div class='pull-right actions'>
+                                            <a ng-click="addTH('hotel',t)"><i class='fa fa-plus'></i> Agregar</a>
+                                            <a ng-click="openTH('hotel',t)" data-toggle="modal" data-target="#myModal2"><i class='fa fa-eye'></i> Ver más</a>
+                                        </div>
+                                        <div class='clear'></div>
+                                    </li>
+                                </ul></div>
+                                <div><pagination total-items="allHotels.count" ng-model="hotelsCurrentPage" max-size="7" class="pagination-sm" items-per-page='5' ng-change="getAllHotels()"></pagination></div>
+                                <!--<p>
+                                    <input type="text" class="form-control" 
+                                        placeholder="Tours"
+                                        ng-model="addedTour" 
+                                        typeahead-editable='true'
+                                        typeahead="obj as ( thecompany.adminCompany?obj.name:obj.tour.name ) for obj in getTours($viewValue)" >
+                                </p>-->
+                            </div>
+                        </div><br >
+                        <!--<div class='row'>
                             <div class='col-md-10'>
                                 <p><select chosen ng-options='obj as obj.name for obj in hotels' ng-model='addedHotel' ></select></p>
                             </div>
                             <div class='col-md-2'>
-                                <a ng-click='addTH("hotel",false)' class='btn-primary secondary btn pull-right'><%= __('order-agregar')%></a>
+                                <a ng-hide="!addedHotel" ng-click='addTH("hotel",false)' class='btn-primary secondary btn pull-right'><%= __('order-agregar')%></a>
                             </div>
-                        </div><br >
+                        </div><br >-->
                         <div class='isCHotelContainer'>
                             <div ng-repeat='item in reservations.hotels'>
                                 <%- partial('inputsHotel') -%> 
