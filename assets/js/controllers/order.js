@@ -268,9 +268,9 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
         var total = 0;
         total += $scope.transfer.fee||0;
         for(var x in $scope.reservations.tours)
-            total += $scope.reservations.tours[x].fee;
+            total += $scope.reservations.tours[x].fee || 0;
         for(var x in $scope.reservations.hotels)
-            total += $scope.reservations.hotels[x].fee;
+            total += $scope.reservations.hotels[x].fee || 0;
         $scope.theTotal = total;
     }
     $scope.company = company;
@@ -375,14 +375,14 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
                     if(order && order.id){
                         $scope.order = order;
                         //ver si existe transfer
-                        if( $scope.transfer != false && ! angular.equals( {} , $scope.transfer ) ){
+                        if( $scope.transfer != false && ! angular.equals( {} , $scope.transfer ) && $scope.transfer.fee ){
                             $scope.reservationTransfer();
                         }else if( $scope.reservations.tours.length>0 ){
                             //crea los tours existentes
                             reservationTours();
                         }else if( $scope.reservations.hotels.length>0 ){
                             //Crea los hoteles existentes
-                            $scope.reservationHotels();
+                            reservationHotels();
                         }
                     }else{
                         console.log('ERROR');
@@ -404,13 +404,13 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
         var params = { items : $scope.reservations.tours , order : $scope.order.id , generalFields : $scope.generalFields };
         $http.post('/order/createReservationTour',params,{}).success(function(result) {
             if( $scope.reservations.hotels.length>0 )
-                $scope.reservationHotels();
+                reservationHotels();
             else
                 $window.location =  "/order/edit/" + $scope.order.id;
         });
     };
     var reservationHotels = function(){
-        var params = { items : $scope.reservations.hotels , order : $scope.order.id };
+        var params = { items : $scope.reservations.hotels , order : $scope.order.id , generalFields : $scope.generalFields };
         $http.post('/order/createReservationTour',params,{}).success(function(result) {
             $window.location =  "/order/edit/" + $scope.order.id;
         });
@@ -434,7 +434,7 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
                 if( $scope.reservations.tours.length>0 )
                     reservationTours();
                 else if( $scope.reservations.hotels.length>0 )
-                    $scope.reservationHotels();
+                    reservationHotels();
                 else
                     $window.location =  "/order/edit/" + $scope.order.id;
             });
@@ -471,6 +471,13 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
         if( item.roomType ){
             $http.get('/room/'+item.roomType).success(function(room){
                 $scope.getPaxHotel(item,room.pax);
+                var daysNumber = 1;
+                if( item.startDate && item.endDate ){
+                    var start = moment(item.startDate);
+                    var end = moment(item.endDate);
+                    daysNumber = end.diff(start,'days');
+                    //console.log(daysNumber);
+                }
                 if( item.hotel.seasonScheme && item.roomType && room.seasonal == 'true' ){
                   var params = {
                     seasonScheme : item.hotel.seasonScheme, room : item.roomType ,
@@ -479,9 +486,13 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
                   $http.post('/hotel/getprice',params,{}).success(function(price) {
                     item.fee = item.roomsNumber*((price && price != '0')?price:room.fee);
                     item.fee = parseFloat(item.fee.replace('"',''));
+                    item.fee *= daysNumber;
+                    updateTotal();
                   });
                 }else{
                   item.fee = item.roomsNumber*(room.fee?parseFloat(room.fee.replace('"','')):0);
+                  item.fee *= daysNumber;
+                  updateTotal();
                 }
             });
         }
@@ -769,6 +780,8 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
             validateTour(item,index);
         if(type=='transfer')
             validateTransfer(item);
+        if(type=='hotel')
+            validateHotel(item,index);
     };
     var validateTransfer = function(item){
         if( item.fee ){
@@ -794,7 +807,20 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
         }else{
             item.saved = false;
             $scope.alertMessage.show = true;
-            $scope.alertMessage.message = 'Campos inválidos, revisar el tour antes de continuar.';
+            $scope.alertMessage.message = 'Campos inválidos, revisar el Tour antes de continuar.';
+        }
+    };
+    var validateHotel = function(item,index){
+        if( item.startDate && item.pax && item.fee && item.endDate && item.roomType && item.roomsNumber ){
+            if( typeof item.saved == 'undefined' ){
+                jQuery('#myModal').modal('show');
+                $scope.setTheItemForContacts(item,'hotel',index);
+            }
+            item.saved = true;
+        }else{
+            item.saved = false;
+            $scope.alertMessage.show = true;
+            $scope.alertMessage.message = 'Campos inválidos, revisar el Hotel antes de continuar.';
         }
     };
     $scope.openTH = function(type,item){
@@ -824,7 +850,7 @@ app.controller('orderEditCTL',function($scope,$http,$window){
             }
             //console.log($scope.fixedItem + '  --  ' + $scope.PIwidth);
             $scope.$apply();
-        }, 100);
+        }, 0);
     });
     jQuery( window ).resize(function(){
         clearTimeout(customTimer);
@@ -853,6 +879,8 @@ app.controller('orderEditCTL',function($scope,$http,$window){
     $scope.validateItem = function(item,type){
         if(type=='tour')
             validateTour(item);
+        if(type=='hotel')
+            validateHotel(item);
     };
     var validateTour = function(item){
         if( item.startDate && ( item.pax || item.kidPax ) && item.fee && item.departureTime )
@@ -861,6 +889,15 @@ app.controller('orderEditCTL',function($scope,$http,$window){
             item.saved = false;
             //$scope.alertMessage.show = true;
             //$scope.alertMessage.message = 'Campos inválidos, revisar el tour antes de continuar.';
+        }
+    };
+    var validateHotel = function(item){
+        if( item.startDate && item.pax && item.fee && item.endDate && item.roomType && item.roomsNumber ){
+            item.saved = true;
+        }else{
+            item.saved = false;
+            //$scope.alertMessage.show = true;
+            //$scope.alertMessage.message = 'Campos inválidos, revisar el Hotel antes de continuar.';
         }
     };
     $scope.addTH = function(type,item){
@@ -1112,6 +1149,13 @@ app.controller('orderEditCTL',function($scope,$http,$window){
         if( item.roomType ){
             $http.get('/room/'+item.roomType).success(function(room){
                 $scope.getPaxHotel(item,room.pax);
+                var daysNumber = 1;
+                if( item.startDate && item.endDate ){
+                    var start = moment(item.startDate);
+                    var end = moment(item.endDate);
+                    daysNumber = end.diff(start,'days');
+                    //console.log(daysNumber);
+                }
                 if( item.hotel.seasonScheme && item.roomType && room.seasonal == 'true' ){
                   var params = {
                     seasonScheme : item.hotel.seasonScheme, room : item.roomType ,
@@ -1120,9 +1164,11 @@ app.controller('orderEditCTL',function($scope,$http,$window){
                   $http.post('/hotel/getprice',params,{}).success(function(price) {
                     item.fee = item.roomsNumber*((price && price != '0')?price:room.fee);
                     item.fee = parseFloat(item.fee.replace('"',''));
+                    item.fee *= daysNumber;
                   });
                 }else{
                   item.fee = item.roomsNumber*(room.fee?parseFloat(room.fee.replace('"','')):0);
+                  item.fee *= daysNumber;
                 }
             });
         }
