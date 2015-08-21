@@ -273,6 +273,20 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
             total += $scope.reservations.hotels[x].fee || 0;
         $scope.theTotal = total;
     }
+    $scope.getMinPrice = function(item,type){
+        if( item.rooms ){
+            var aux = 0;
+            for( var x in item.rooms ){
+                if( type == 'adult' )
+                    aux = parseFloat(item.rooms[x].fee)<aux||aux==0?parseFloat(item.rooms[x].fee):aux;
+                if( type == 'child' )
+                    aux = parseFloat(item.rooms[x].feeChild)<aux||aux==0?parseFloat(item.rooms[x].feeChild):aux;
+            }
+            return aux;
+        }else{
+            return '0';
+        }
+    }
     $scope.company = company;
     $scope.companies = [];
     $scope.thecompany = $scope.company;

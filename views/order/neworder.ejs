@@ -133,7 +133,7 @@
                                             <img ng-if='!t.icon' ng-src="http://placehold.it/50x50">
                                         </div>
                                         <div class='info'>
-                                            <p><strong><a ng-bind="t.name"></a></strong>, adultos $<span ng-bind="t.fee"></span> , niños $<span ng-bind="t.feeChild"></span></p>
+                                            <p><strong><a ng-bind="t.name"></a></strong>, adultos desde $<span ng-bind="getMinPrice(t,'adult')"></span> , niños desde $<span ng-bind="getMinPrice(t,'child')"></span></p>
                                             <p>{{t.description_es | limitTo : 180}}</p>
                                         </div>
                                         <div class='pull-right actions'>
