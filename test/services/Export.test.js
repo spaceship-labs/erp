@@ -71,6 +71,26 @@ describe('Export', function(){
 		
         });
 
+        it('should ignore functions', function(done){
+            company_uvc3.inspect = function(){};
+            Export.normalizeFields(company_uvc3, function(err, data){
+                data[0].should.be.eql(['name']);
+                data[1].should.be.eql(['UVC3']);
+                done();
+            });
+        
+        });
+
+        it('should formated date', function(done){
+	    company_uvc3.createdAt = new Date(1439842626042); 
+	    company_uvc3.updatedAt = new Date(1424130832604);
+            Export.normalizeFields(company_uvc3, function(err, data){
+		data[1].should.be.eql(['UVC3', '17/08/2015:3:17:06 pm', '16/02/2015:5:53:52 pm']);
+                done();
+            });
+        
+        });
+
         it('should return a formated Array', function(done){
             var companyWithArray = {
                 name: 'Test',
@@ -97,9 +117,9 @@ describe('Export', function(){
         });
     });
 
-    describe('model2csv', function(){
+    describe('list2csv', function(){
         it('should parse model to csv format', function(done){
-            Export.model2csv(company_uvc, function(err, data){
+            Export.list2csv(company_uvc, function(err, data){
                 data.should.be.an.instanceOf(String);
                 data.should.equal('base_currency,address,name\n54e282e455803f8a75ff9cfe,Cancún,UVC\n');
                 done();
@@ -107,11 +127,12 @@ describe('Export', function(){
         }); 
 
         it('should parse model to csv format with spaces and orderly', function(done){
-            Export.model2csv([company_uvc, company_uvc2, company_uvc3], function(err, data){
+            Export.list2csv([company_uvc, company_uvc2, company_uvc3], function(err, data){
                 data.should.be.an.instanceOf(String);
                 data.should.equal('base_currency,address,name\n54e282e455803f8a75ff9cfe,Cancún,UVC\n54e282e455803f8a75ff9cfc,,UVC2\n,,UVC3\n');
                 done();
             });
         }); 
     });
+
 });

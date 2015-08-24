@@ -1,5 +1,6 @@
 var Export = exports = module.exports = {},
     async = require('async'),
+    moment = require('moment'),
     csv = require('csv');
 
 var objToString = ({}).toString;
@@ -25,11 +26,16 @@ function normalizeFields(fields, vals, item, prefix, done){
         done = prefix;
         prefix = '';
     }
-    async.eachSeries(Object.keys(item), function(field, nextField){
+    var keys = Object.keys(item.toObject ? item.toObject() : item );
+    async.each(keys, function(field, nextField){
         var fieldName = prefix + field,
             index = fields.indexOf(fieldName),
             val = item[field],
             valType = getType(val);
+
+        if(valType == 'function'){
+            return nextField();
+        }
 
         if(index == -1 && valType != 'object'){
             fields.push(fieldName); 
@@ -37,18 +43,19 @@ function normalizeFields(fields, vals, item, prefix, done){
         }
 
         if(valType == 'object'){
-            normalizeFields(fields, vals, val, field + '/', function(err){
+            return normalizeFields(fields, vals, val, field + '/', function(err){
                 nextField();
-            });
-            
-        }else if(valType == 'array'){
-            var json = JSON.stringify(val);
+            }); 
+        }else if(valType == 'array'){ //if length...
+            var json = val.length ? JSON.stringify(val) : '';
             vals[index] = json.replace(/,/g,'|');
-            nextField();
+        }else if(valType == 'date'){
+            vals[index] = moment(val).format('D/MM/YYYY:h:mm:ss a');
         }else{
             vals[index] = val;
-            nextField();
         }
+
+        nextField();
     }, 
     done);
 
@@ -74,12 +81,42 @@ Export.normalizeFields = function(data, done){
         });
 };
 
-Export.model2csv = function(model, done){
+Export.list2csv = function(model, done){
     model = model.push && model || [model];
 
     Export.normalizeFields(model, function(err, list){
         csv.stringify(list, function(err, data){ 
            done(err, data);
         });
+    });
+};
+
+
+var filters = ['where', 'limit', 'sort'];
+//Export.filter({model:'user', sort:{createdAt:'desc'}, fieldNames:['name']}, console.log)
+Export.filter = function(opts, done){
+    opts = opts || {};
+    opts.fields = opts.fieldNames ? {fields: opts.fieldNames} : {}; //{fields:['name']}}
+    var model = sails.models[opts.model];
+    if(!model){
+        return done(new Error('No model found'));
+    }
+
+    var defer = model.find({}, opts.fields);
+    async.eachSeries(filters, function(filt, next){
+        if(opts[filt] && defer[filt])
+            defer = defer[filt](opts[filt]);
+        next();
+    }, function(err){
+        if(err) return done(err);
+        if(Object.keys(opts.fields).length && !opts.limit){
+            // if filter fields limit is required
+            model.count(function(err, count){
+                if(err) return done(err);
+                defer.limit(count).exec(done);
+            });    
+        }else{
+            defer.exec(done);
+        }
     });
 };

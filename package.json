@@ -55,7 +55,10 @@
     "karma": "./node_modules/karma/bin/karma start karma.conf.js",
     "testkarma": "./node_modules/karma/bin/karma start karma.conf.js --single-run",
     "debug": "node debug app.js",
-    "postinstall": "./node_modules/bower/bin/bower install"
+    "postinstall": "./node_modules/bower/bin/bower install",
+    "testmocha": "mocha test/**/*.test.js",
+    "test": "npm run testmocha && npm run testkarma",
+    "pretest": "rm -rf .tmp"
   },
   "main": "app.js",
   "repository": {

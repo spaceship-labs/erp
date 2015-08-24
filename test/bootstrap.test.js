@@ -8,15 +8,16 @@ before(function(done) {
       level: 'error'
     },
     adapters: {
-      mongo: {
+      testingdb: {
         module: 'sails-mongo',
-        host: 'localhost',
-        database: 'asdas',
+	url: process.env.TESTDBURL,
+        host: process.env.TESTHOST || 'localhost',
+        database: process.env.TESTDB || 'testdb'
       }
     },
     models: {
       migrate: 'drop',
-      connection: 'testing_mongodb'
+      connection: 'testingdb'
     }
   }, function(err, sails) {
     app = sails;
