@@ -1,6 +1,6 @@
 var Export = exports = module.exports = {},
     async = require('async'),
-    moment = require('moment'),
+    moment = require('moment-timezone'),
     csv = require('csv');
 
 var objToString = ({}).toString;
@@ -50,7 +50,7 @@ function normalizeFields(fields, vals, item, prefix, done){
             var json = val.length ? JSON.stringify(val) : '';
             vals[index] = json.replace(/,/g,'|');
         }else if(valType == 'date'){
-            vals[index] = moment(val).format('D/MM/YYYY:h:mm:ss a');
+            vals[index] = moment(val).tz('America/Mexico_City').format('D/MM/YYYY:h:mm:ss a');
         }else{
             vals[index] = val;
         }
