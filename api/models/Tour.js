@@ -11,6 +11,7 @@ module.exports = {
 			model : 'location' }
 		,days : 'array'
 		,schedules : 'array'
+		,departurePoints : 'json'
 		,seasonScheme : {
 			model:'seasonScheme',
 			via:'tours' }

@@ -1,0 +1,49 @@
+<div class="widgetbox paymentInformation {{fixedItem?'fixedItem':''}}" style="width:{{PIwidth}}">
+    <a class='cursorPointer' ng-click="customCart=!customCart">
+        <h5 class="widgettitle">Resumen de reservación <i ng-hide="customCartShow" ng-bind="', $' + theTotal"></i></h5>
+    </a>
+    <div collapse="customCart"><div class="widgetcontent ">
+        <div ng-show="!transfer.fee && reservations.tours.length==0 && reservations.hotels.length==0">
+            <h4>No hay reservas activas</h4>
+        </div>
+        <div ng-show="transfer.fee || reservations.tours.length || reservations.hotels.length">
+            <div ng-if="transfer.fee">
+                <h4><strong>Reserva de traslado</strong></h4>
+                <p>
+                    <span ng-bind="transfer.transfer.transfer.name"></span> 
+                    <span ng-bind="transfer.type=='round_trip'?' (Viaje redondo)':' (Viaje sencillo)'"></span> 
+                    <span ng-bind="' para ' + transfer.pax + ' personas'"></span> 
+                    <span class='inblock' ng-hide="( transfer.type=='one_way'&&transfer.origin=='hotel' ) || !transfer.arrival_date" ng-bind="'Fecha de llegada: ' + formatDate(transfer.arrival_date)"></span>
+                    <span class='inblock' ng-hide="( transfer.type=='one_way'&&transfer.origin=='airport' ) || !transfer.departure_date" ng-bind="'Fecha de Salida: ' + formatDate(transfer.departure_date)"></span>
+                    <span class='price' ng-bind="'$'+transfer.fee+' '+(generalFields.currency?generalFields.currency.currency_code:thecompany.base_currency.currency_code)"></span></p>
+            </div>
+            <div ng-if="reservations.tours.length">
+                <h4><strong>Reserva de tours</strong></h4>
+                <p ng-repeat="t in reservations.tours">
+                    <strong><span ng-bind="t.tour.name"></span></strong>
+                    <span ng-hide="!t.pax" ng-bind="', '+t.pax + ' adulto(s)'"></span> 
+                    <span ng-hide="!t.kidPax" ng-bind="', '+t.kidPax + ' menor(es)'"></span> 
+                    <span class='inblock'>
+                        <span ng-hide="!t.startDate" ng-bind="'Para el día '+formatDate(t.startDate)"></span>
+                        <span ng-hide="!t.departureTime" ng-bind="' en el horario de '+t.departureTime.from+' - '+t.departureTime.to"></span>
+                    </span> 
+                    <span class='price' ng-bind="'$'+((t.fee + f.feeKids)||0)+' '+(generalFields.currency?generalFields.currency.currency_code:thecompany.base_currency.currency_code)"></span></p>
+            </div>
+            <div ng-if="reservations.hotels.length">
+                <h4><strong>Reserva de hoteles</strong></h4>
+                <p ng-repeat="t in reservations.hotels">
+                    <span ng-bind="t.hotel.name"></span> 
+                    <span ng-hide="!t.pax" ng-bind="', '+t.pax + ' adulto(s)'"></span> 
+                    <span ng-hide="!t.kidPax" ng-bind="', '+t.kidPax + ' menor(es)'"></span> 
+                    <span class='inblock'>
+                        <span ng-hide="!t.startDate&&!t.endDate" ng-bind="getDiffDates(t.startDate,t.endDate)+' noches'"></span>
+                        <span ng-hide="!t.startDate" ng-bind="', de '+formatDate(t.startDate)" ></span>
+                        <span ng-hide="!t.endDate" ng-bind="' hasta '+formatDate(t.endDate)" ></span>
+                    </span>
+                    <span class='price' ng-bind="'$'+((t.fee + f.feeKids)||0)+' '+(generalFields.currency?generalFields.currency.currency_code:thecompany.base_currency.currency_code)"></span></p>
+            </div>
+            <hr>
+            <h4>TOTAL : $<span ng-bind="theTotal"></span></h4>
+        </div>
+    </div></div>
+</div>

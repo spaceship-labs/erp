@@ -28,14 +28,14 @@
                 <label><%= __('order-menores')%> Menores</label>
                 <span class='field'><select ng-change="updateTourPrice(item)" ng-options='obj for obj in [0,1,2,3,4,5,6,7,8,9,10]' ng-model='item.kidPax' ></select></span>
             </p>
-            <p>
+            <p ng-init="setHotelHere(item)">
                 <label><%= __('order-hotel')%></label>
                 <span class='field'>
                     <input type="text" class="form-control" 
                         placeholder="<%= __('order-hotel')%>"
                         ng-model="item.hotel" 
                         typeahead-editable='true'
-                        typeahead="obj as obj.name for obj in getHotels($viewValue)" >
+                        typeahead="obj as obj.name for obj in getHotels($viewValue) | filter:$viewValue" >
                 </span>
             </p>
             <p>
@@ -45,7 +45,8 @@
             <p>
                 <label>Lugar de salida del tour</label>
                 <span class='field'>
-                    <input type='text' ng-model='item.departurePlace' >
+                    <!--<input type='text' ng-model='item.departurePlace' >-->
+                    <select ng-options="( obj.name + ' - ' + obj.time ) for obj in item.tour.departurePoints" ng-model="item.departureTime" required></select>
                 </span>
             </p>
             <p>

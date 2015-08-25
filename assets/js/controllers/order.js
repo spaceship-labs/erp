@@ -233,7 +233,12 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
             else
                 $scope.steps += action=='next'?1:-1;
             $scope.steps = $scope.steps>5||$scope.steps<1?1:$scope.steps;
-            if($scope.steps==2 && !$scope.transfer) updateReservationsGeneralFields('transfer');
+            if($scope.steps==4 && !$scope.transfer){
+                updateReservationsGeneralFields('transfer');
+                $scope.setHotelHere($scope.transfer);
+                if($scope.transfer&&$scope.transfer.hotel&&!$scope.transfer.airport)
+                    $scope.getAirports();
+            }
             if($scope.steps==3 && $scope.reservations.tours.length>0) updateReservationsGeneralFields('tour');
         }else{
             $scope.steps = 1;
@@ -474,11 +479,13 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
     }
     //Obtener el número máximo de personas para un cuarto
     $scope.getPaxHotel = function(item,pax){
-        var i, res = [] , max = 10;
+        var i, res = [] , max = 10, resChildren = [];
         if( pax ) max = pax;
         max = max * item.roomsNumber;
         for (i = 1; i <= max ; i++) res.push(i);
-        item.hotel.maxApax = res; item.hotel.maxCpax = res;
+        for (i = 0; i <= ( max - (item.pax||0) ) ; i++) resChildren.push(i);
+        item.hotel.maxApax = res; 
+        item.hotel.maxCpax = resChildren;
     };
     //obtener el precio del hotel dependiendo de la las fechas, por la temporada
     $scope.getPriceHotel = function(item){
@@ -487,9 +494,10 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
                 $scope.getPaxHotel(item,room.pax);
                 var daysNumber = 1;
                 if( item.startDate && item.endDate ){
-                    var start = moment(item.startDate);
+                    /*var start = moment(item.startDate);
                     var end = moment(item.endDate);
-                    daysNumber = end.diff(start,'days');
+                    daysNumber = end.diff(start,'days');*/
+                    daysNumber = $scope.getDiffDates(item.startDate,item.endDate);
                     //console.log(daysNumber);
                 }
                 if( item.hotel.seasonScheme && item.roomType && room.seasonal == 'true' ){
@@ -567,6 +575,11 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
             });
         }
     };
+    $scope.setHotelHere = function(item){
+        if( $scope.reservations.hotels[0] ){
+            item.hotel = $scope.reservations.hotels[0].hotel;
+        }
+    }
     $scope.addTH = function(type,item){
         if( typeof $scope.client != 'string' && ! angular.equals( {} , $scope.client ) && item ){
             //console.log('addedTour');console.log($scope.addedTour);
@@ -580,8 +593,16 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
                     aux = new Date(item.schedules[x].to);
                     item.schedules[x].to = aux.getHours() + ':' + (aux.getMinutes()==0?'00':aux.getMinutes());
                 }
+                for(var x in item.departurePoints){
+                    var aux = false;
+                    item.departurePoints[x] = typeof item.departurePoints[x] == 'string'?JSON.parse(item.departurePoints[x]):item.departurePoints[x];
+                    aux = new Date(item.departurePoints[x].time);
+                    item.departurePoints[x].time = aux.getHours() + ':' + (aux.getMinutes()==0?'00':aux.getMinutes());
+                }
                 //console.log(item);
-                $scope.reservations.tours = $scope.reservations.tours.concat({tour:item, reservation_type : 'tour' , client : $scope.client });
+                var auxTour = { tour : item, reservation_type : 'tour' , client : $scope.client };
+                $scope.reservations.tours = $scope.reservations.tours.concat(auxTour);
+                console.log($scope.reservations.tours);
             }else if( type=='hotel'){
                 $scope.reservations.hotels = $scope.reservations.hotels.concat({hotel:item, reservation_type : 'hotel' , client : $scope.client });
             }
@@ -735,8 +756,9 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
         $scope.theIFC.contacts = $scope.theIFC.contacts || [];
         $scope.theIFC.theType = type;
         $scope.theIFC.indexT = index;
-        console.log('IFC');
-        console.log($scope.theIFC);
+        //console.log('IFC');console.log($scope.theIFC);
+        var x = $scope.theIFC.pax-$scope.theIFC.contacts.length;
+        $scope.theIFCArray = getRange(x);
     }
     $scope.contactFlag = 'create';
     $scope.theIFC = false;
@@ -763,13 +785,22 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
         console.log($scope.transfer);
         console.log($scope.reservations.tours);
     };
-    $scope.createUpdateContact = function(){
-        if($scope.client && $scope.contact.name && $scope.contact.email && $scope.contact.phone ){
-            var action = $scope.contactFlag=='create'?"/client/add_contact2":"/client/update_contact2";
-            if($scope.contactFlag=='create') $scope.contact.client = $scope.client.id;
-            $http.post(action,$scope.contact,{}).success(function(result) {
+    $scope.createUpdateContact2 = function(contact_item,type,index){
+        if($scope.client && contact_item && contact_item.name ){
+            var action = type=='create'?"/client/add_contact2":"/client/update_contact2";
+            contact_item.client = $scope.client.id;
+            console.log(contact_item);
+            $http.post(action,contact_item,{}).success(function(result) {
+                console.log(result);
                 $scope.client.contacts = result.contacts;
-                $scope.cancelContactForm();
+                for(var x in $scope.client.contacts){
+                    if( $scope.client.contacts[x].id == result.contact.id ){ 
+                        console.log( 'index de contacto de cliente: ' + index );
+                        $scope.theIFCArray.splice( index , 1 );
+                        $scope.addContactToItem(x);
+                    }
+                }
+                //$scope.cancelContactForm();
                 //console.log(result);
             });
         }else{
@@ -844,6 +875,26 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
         $scope.theIFC.noincludes = item.does_not_include_es.split("\n");
         $scope.theIFC.recommendations = item.recommendations_es.split("\n");
         console.log($scope.theIFC);
+    };
+    var getRange = function(number){
+        console.log('getrange: ' + number);
+        var result = [];
+        if( number && number>0 )
+            for( x = 0; x < number; x++ )
+                result.push(x);
+        return result;
+    };
+    $scope.formatDate = function(date){
+        return moment(date).format('L');
+    }
+    $scope.getDiffDates = function(start,end){
+        var result = '';
+        if(start && end){
+            var start = moment(start);
+            var end = moment(end);
+            result = end.diff(start,'days');
+        }
+        return result;
     }
 });
 app.controller('orderEditCTL',function($scope,$http,$window){
@@ -1207,6 +1258,18 @@ app.controller('orderEditCTL',function($scope,$http,$window){
         console.log(item);
     }
     $scope.theIFC = false;
+    $scope.formatDate = function(date){
+        return moment(date).format('L');
+    }
+    $scope.getDiffDates = function(start,end){
+        var result = '';
+        if(start && end){
+            var start = moment(start);
+            var end = moment(end);
+            result = end.diff(start,'days');
+        }
+        return result;
+    }
 });
 /*
     Calcula el tiempo de pickup dependiendo del origen

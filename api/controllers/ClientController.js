@@ -103,7 +103,7 @@ module.exports = {
         }
     },
     add_contact2 : function(req,res){
-        var form = Common.formValidate(req.params.all(),['name','phone','email','client']);
+        var form = Common.formValidate(req.params.all(),['name','client']);
         if(form){
             Client_contact.create(form).exec(function(err,contact) {
                 if (err) return res.json({text : err});
@@ -207,7 +207,7 @@ module.exports = {
         }
     },
     update_contact2 : function(req,res){
-        var form = Common.formValidate(req.params.all(),['id','name','phone','email','client']);
+        var form = Common.formValidate(req.params.all(),['id','name','client']);
         var contact_id = form.id;
         delete form.id;
         if(form){

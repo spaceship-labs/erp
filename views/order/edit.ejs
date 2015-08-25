@@ -169,32 +169,7 @@
             </div>
         </div><!-- Termina Col 8 (reservaciones) -->
         <div class='col-md-4'>
-            <div class="widgetbox paymentInformation {{fixedItem?'fixedItem':''}}" style="width:{{PIwidth}}">
-                <a class='cursorPointer' ng-click="customCart=!customCart">
-                    <h5 class="widgettitle">Resumen de reservación <i ng-hide="customCartShow" ng-bind="', $' + theTotal"></i></h5>
-                </a>
-                <div collapse="customCart"><div class="widgetcontent paymentInformation">
-                    <div ng-show="!transfer.fee && reservations.tours.length==0 && reservations.hotels.length==0">
-                        <h4>No hay reservas activas</h4>
-                    </div>
-                    <div ng-show="transfer.fee || reservations.tours.length || reservations.hotels.length">
-                        <div ng-if="transfer.fee">
-                            <h4><strong>Reserva de traslado</strong></h4>
-                            <p><span ng-bind="transfer.transfer.name"></span> - $<span ng-bind="transfer.fee"></span></p>
-                        </div>
-                        <div ng-if="reservations.tours.length">
-                            <h4><strong>Reserva de tours</strong></h4>
-                            <p ng-repeat="t in reservations.tours"><span ng-bind="t.tour.name"></span> - $<span ng-bind="t.fee + f.feeKids"></span></p>
-                        </div>
-                        <div ng-if="reservations.hotels.length">
-                            <h4><strong>Reserva de hoteles</strong></h4>
-                            <p ng-repeat="t in reservations.hotels"><span ng-bind="t.hotel.name"></span> - $<span ng-bind="(t.fee + f.feeKids)||0"></span></p>
-                        </div>
-                        <hr>
-                        <h4>TOTAL : $<span ng-bind="theTotal"></span></h4>
-                    </div>
-                </div></div>
-            </div>
+            <%- partial('partial/order_resume') -%> 
         </div>
     </div>
     <div><a class="btn btn-primary" ng-click="saveAll()"><i class='fa fa-save'></i> <%= __('order-guardar-todo')%></a></div>

@@ -1,9 +1,9 @@
 <div class='widgetbox'>
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h4 class="modal-title">Clientes para las reservas <a ng-click="openContactForm(false,'create')"><i class='fa fa-plus'></i> Nuevo cliente</a></h4>
+        <h4 class="modal-title">Clientes para las reservas <!--<a ng-click="openContactForm(false,'create')"><i class='fa fa-plus'></i> Nuevo cliente</a>--></h4>
     </div>
-    <div collapse="!modalCollapse">
+    <!--<div collapse="!modalCollapse">
         <form class='stdform stdform2'>
             <p>
                 <label><%= __('order_name') %></label>
@@ -18,14 +18,34 @@
                 <span class='field'><input type='text' ng-model="contact.phone"></span>
             </p>
             <p class='order-controls'>
-                <a ng-hide="contactFlag!='create'" class='btn btn-primary pull-right' ng-click="createUpdateContact()">Crear</a>
-                <a ng-hide="contactFlag!='update'" class='btn btn-primary pull-right' ng-click="createUpdateContact()">Actualizar</a>
+                <a ng-hide="contactFlag!='create'" class='btn btn-primary pull-right' ng-click="contactFlag='create';createUpdateContact2()">Crear</a>
+                <a ng-hide="contactFlag!='update'" class='btn btn-primary pull-right' ng-click="contactFlag='update';createUpdateContact2()">Actualizar</a>
                 <a class='btn btn-primary reset pull-right' ng-click="cancelContactForm()">Cancelar</a>
                 <span class='clear'></span>
             </p>
         </form>
-    </div>
+    </div>-->
     <div class='widgetcontent noborder'><div class='row'>
+        <div class='col-md-6'>
+            <h4 class='widgettitle'>Clientes de este item</h4>
+            <div class='widgetcontent'>
+                <ul>
+                    <li ng-repeat="c in theIFC.contacts">
+                        <a>{{client.contacts[c].name}}</a>
+                        <span class='icons pull-right'>
+                            <a ng-click="removeContactFromItem(c)"><i class='fa fa-minus'></i></a>
+                        </span>
+                    </li>
+                    <li ng-repeat="x in theIFCArray track by x">
+                        <p>
+                            <input type='text' ng-model="tempContact.name" name='name' placeholder="Nombre">
+                            <input type='text' ng-model="tempContact.email" name='mail' placeholder="Email">
+                        </p>
+                        <p><button type='submit' class='btn btn-primary' ng-click="createUpdateContact2(tempContact,'create',$index)">Guardar</button></p>
+                    </li>
+                </ul>
+            </div>
+        </div>
         <div class='col-md-6'>
             <h4 class='widgettitle'>Clientes de esta reserva</h4>
             <div class='widgetcontent'>
@@ -35,19 +55,6 @@
                         <span class='icons pull-right'>
                             <a ng-click="openContactForm(c,'update')"><i class='fa fa-pencil'></i></a>
                             <a ng-click="addContactToItem($index)"><i class='fa fa-plus'></i></a>
-                        </span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class='col-md-6'>
-            <h4 class='widgettitle'>Clientes de este item</h4>
-            <div class='widgetcontent'>
-                <ul>
-                    <li ng-repeat="c in theIFC.contacts">
-                        <a>{{client.contacts[c].name}}</a>
-                        <span class='icons pull-right'>
-                            <a ng-click="removeContactFromItem(c)"><i class='fa fa-minus'></i></a>
                         </span>
                     </li>
                 </ul>

@@ -65,4 +65,19 @@ app.controller('tourEditCTL',function($scope,$http,$window){
     $scope.deleteSchedule = function(index){
         $scope.tour.schedules.splice(index,1);
     };
+    $scope.updateMarkers = function(markers,cb){
+        //console.log($scope.item);
+        //console.log(markers);
+        var data = { id : $scope.tour.id , departurePoints : markers };
+        //console.log(data);
+        $http({method: 'POST', url: '/tour/update',params:data}).success(function (item){
+            $scope.tour = item;
+            cb(null,item);
+        });
+    };
+    $scope.center = {
+        lat : 21.1667,
+        lng : -86.8333,
+        zoom : 6
+    };
 });
