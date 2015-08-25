@@ -1,0 +1,56 @@
+<div>
+    <label for="">
+        Exportar todo: 
+        <input type="checkbox" ng-model="allElements">
+    </label>
+    <br> 
+    <label ng-show="allElements == false">
+        Numero de elementos a exportar: 
+        <input type="number" name="quantity" min="1" ng-model="limit">
+    </label>
+    <button ng-click="download()" class="btn btn-primary pull-right"> <span class="fa fa-plus"></span>exportar</button>
+    <br>
+    <p>
+        <label>Ordenar por:</label>
+        <span class="field">
+            <select ng-model="sortField" ng-options="field.handle for field in fields">
+            </select>
+        </span>
+        <span class="field">
+            <select ng-model="sort">
+                <option value="desc">Descendente</option>
+                <option value="asc">Ascendente</option>
+            </select>
+        </span>
+    </p>
+</div>
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Campos</th>
+                <td>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" ng-model="allbox" ng-change="changeAllbox()"/>
+                        </label>
+                    </div>
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="field in fields">
+            <td>
+                <label ng-bind='field.label' for="{{field.handle}}"></label>
+            </td>
+            <td>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox"  id="{{field.handle}}" ng-model="selectFields[field.handle]" ng-checked="allbox"/>
+                    </label>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
