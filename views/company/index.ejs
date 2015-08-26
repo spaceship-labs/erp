@@ -15,7 +15,11 @@
 		 button-text='<%= __('emp-nueva-emp') %>'
 		get-url="/company/find/"
 		button-text-import='<%= __('import') %>' 
+		button-text-export='<%= __('export') %>' 
 		type-import='company'
+		type-export='company'
+		type-export-text='<%= __("sc_companies") %>'
+		lang='<%=req.session.lang || "en"%>'
 		 >
 	</div>
 	<div class="modal fade" id="myModal">

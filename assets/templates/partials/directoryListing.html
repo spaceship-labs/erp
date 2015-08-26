@@ -21,6 +21,7 @@
     		<div class = "textbutton">
 				<button ng-if="buttonText != ''" class="btn btn-primary pull-right" data-toggle="modal" data-target="#myModal"> <span class = "fa fa-plus"></span> {{buttonText}}</button>
 				<button ng-if="buttonTextImport" class="btn btn-primary pull-right" data-toggle="modal" data-target="#importmodal"><span class="fa fa-plus"></span>{{buttonTextImport}}</button>
+				<button ng-if="buttonTextExport" class="btn btn-primary pull-right" data-toggle="modal" data-target="#exportmodal"><span class="fa fa-plus"></span>{{buttonTextExport}}</button>
 			</div>
     	</div>
     </div>
@@ -92,9 +93,20 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Importar {{typeImport}}</h4>
+                <h4 class="modal-title">{{buttonTextImport}} {{typeImport}}</h4>
             </div>
             <div import-files import-type='{{typeImport}}' url='{{editUrl}}'></div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="exportmodal" ng-if="typeExport">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">{{buttonTextExport}} {{typeExportText}}</h4>
+            </div>
+            <div export-file export-type='{{typeExport}}' lang='{{lang}}'></div>
         </div>
     </div>
 </div>

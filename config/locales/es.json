@@ -459,4 +459,12 @@
   , "filter":"Filtrar por"
   , "filter_date": "Fecha"
   , "filter_name": "Nombre"
+  , "export": "Exportar"
+  , "fields": "Campos"
+  , "fields-sort-desc": "Descendente"
+  , "fields-sort-asc": "Ascendente"
+  , "fields-sort-by": "Ordenar por"
+  , "filter-by": "Filtrar por"
+  , "filter-by-none": "No filtrar"
+
 }

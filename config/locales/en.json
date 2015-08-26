@@ -454,4 +454,11 @@
   , "filter":"Filter by"
   , "filter_date": "Date"
   , "filter_name": "Name"
+  , "export": "Export"
+  , "fields": "Fields"
+  , "fields-sort-desc": "descending"
+  , "fields-sort-asc": "ascending"
+  , "fields-sort-by": "Sort by"
+  , "filter-by": "Filter by"
+  , "filter-by-none": "Not filter"
 }

@@ -33,6 +33,11 @@ module.exports = {
             }
         }
 
+        if(form.filterField && form.filter){
+            form.where = {};
+            form.where[form.filterField] = form.filter;
+        }
+
         var name = form.model + '-' + moment().tz('America/Mexico_City').format('D-MM-YYYY') + '.csv';
         Export.filter(form, function(err, list){
             if(err) return res.json(err);
