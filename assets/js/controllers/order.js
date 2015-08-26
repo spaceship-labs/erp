@@ -620,11 +620,11 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
     };
     $scope.validateDates = function(){
         $scope.customMessages = {
-            Tta : { show : false , type : 'alert' , message : '$rootScope.translate.c_ordermessg1' },
-            Ttd : { show : false , type : 'alert' , message : '$rootScope.translate.c_ordermessg2' },
-            TH  : { show : false , type : 'alert' , message : '$rootScope.translate.c_ordermessg3' }
+            Tta : { show : false , type : 'alert' , message : $rootScope.translates.c_ordermessg1 },
+            Ttd : { show : false , type : 'alert' , message : $rootScope.translates.c_ordermessg2 },
+            TH  : { show : false , type : 'alert' , message : $rootScope.translates.c_ordermessg3 }
         };
-        if( ! angular.equals( {} , $scope.transfer ) ){
+        if( $scope.transfer && ! angular.equals( {} , $scope.transfer ) ){
             validateTt();
             validateTH();
         }
