@@ -1046,9 +1046,27 @@ app.controller('orderEditCTL',function($scope,$http,$window){
             var reserve = $scope.order.reservations[x];
             if( reserve.reservation_type == 'transfer' )
                 $scope.transfer = reserve;
-            else if( reserve.reservation_type == 'tour' )
+            else if( reserve.reservation_type == 'tour' ){
+                for(var x in reserve.tour.schedules){
+                    var aux = false;
+                    reserve.tour.schedules[x] = typeof reserve.tour.schedules[x] == 'string'?JSON.parse(reserve.tour.schedules[x]):reserve.tour.schedules[x];
+                    aux = new Date(reserve.tour.schedules[x].from);
+                    reserve.tour.schedules[x].from = aux.getHours() + ':' + (aux.getMinutes()==0?'00':aux.getMinutes());
+                    aux = new Date(reserve.tour.schedules[x].to);
+                    reserve.tour.schedules[x].to = aux.getHours() + ':' + (aux.getMinutes()==0?'00':aux.getMinutes());
+                }
+                for(var x in reserve.tour.departurePoints){
+                    var aux = false;
+                    reserve.tour.departurePoints[x] = typeof reserve.tour.departurePoints[x] == 'string'?JSON.parse(reserve.tour.departurePoints[x]):reserve.tour.departurePoints[x];
+                    aux = new Date(reserve.tour.departurePoints[x].time);
+                    reserve.tour.departurePoints[x].time = aux.getHours() + ':' + (aux.getMinutes()==0?'00':aux.getMinutes());
+                }
+                console.log('tour');
+                console.log(reserve);
+                console.log(reserve.departureTime);
+                console.log(reserve.departurePlace);
                 $scope.reservations.tours.push(reserve);
-            else if( reserve.reservation_type == 'hotel' )
+            }else if( reserve.reservation_type == 'hotel' )
                 $scope.reservations.hotels.push(reserve);
         }
         for(var x in $scope.reservations.hotels){

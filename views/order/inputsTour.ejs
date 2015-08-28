@@ -35,7 +35,7 @@
                         placeholder="<%= __('order-hotel')%>"
                         ng-model="item.hotel" 
                         typeahead-editable='true'
-                        typeahead="obj as obj.name for obj in getHotels($viewValue) | filter:$viewValue" >
+                        typeahead="obj as obj.name for obj in getHotels($viewValue)" >
                 </span>
             </p>
             <p>
@@ -46,13 +46,13 @@
                 <label>Lugar de salida del tour</label>
                 <span class='field'>
                     <!--<input type='text' ng-model='item.departurePlace' >-->
-                    <select ng-options="( obj.name + ' - ' + obj.time ) for obj in item.tour.departurePoints" ng-model="item.departureTime" required></select>
+                    <select ng-options="obj as ( obj.name + ' - ' + obj.time ) for obj in item.tour.departurePoints" ng-model="item.departurePlace" required></select>
                 </span>
             </p>
             <p>
                 <label><%= __('order-hora-salida')%></label>
                 <span class='field'>
-                    <select ng-options="( obj.from + ' - ' + obj.to) for obj in item.tour.schedules" ng-model="item.departureTime" required></select>
+                    <select ng-options="obj as ( obj.from + ' - ' + obj.to) for obj in item.tour.schedules" ng-model="item.departureTime" required></select>
                     <!--<timepicker ng-model="item.departureTime" hour-step="1" minute-step="1" show-meridian="ismeridian"></timepicker>-->
                 </span>
             </p>
