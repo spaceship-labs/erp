@@ -1044,9 +1044,10 @@ app.controller('orderEditCTL',function($scope,$http,$window){
         //console.log($scope.order);
         for(var x in $scope.order.reservations){
             var reserve = $scope.order.reservations[x];
-            if( reserve.reservation_type == 'transfer' )
+            if( reserve.reservation_type == 'transfer' ){
                 $scope.transfer = reserve;
-            else if( reserve.reservation_type == 'tour' ){
+                $scope.getTransfers();
+            }else if( reserve.reservation_type == 'tour' ){
                 for(var x in reserve.tour.schedules){
                     var aux = false;
                     reserve.tour.schedules[x] = typeof reserve.tour.schedules[x] == 'string'?JSON.parse(reserve.tour.schedules[x]):reserve.tour.schedules[x];
@@ -1095,7 +1096,11 @@ app.controller('orderEditCTL',function($scope,$http,$window){
     $scope.getAirports = function(){
         if( $scope.transfer ){
             var params = { byId : true , 'id' : ($scope.transfer.hotel.location.id || $scope.transfer.hotel.location) };
-            $http({method: 'POST', url: '/airport/getAirport',params:params}).success(function (result){ $scope.airports = result; });
+            $http({method: 'POST', url: '/airport/getAirport',params:params}).success(function (result){ 
+                $scope.airports = result;
+                $scope.transfer.airport = $scope.airports[0];
+                $scope.getTransfers(); 
+            });
         }
     }
     $scope.updateTourPrice = function(item){
@@ -1127,9 +1132,9 @@ app.controller('orderEditCTL',function($scope,$http,$window){
             var transfer = $scope.transfer;
             //console.log('update price');
             if( transfer.hotel && transfer.airport && transfer.type ){
-                var mult = transfer.pax ? ( Math.ceil( transfer.pax / transfer.transfer.max_pax ) ):1;
+                var mult = transfer.pax ? ( Math.ceil( transfer.pax / transfer.transferprice.transfer.max_pax ) ):1;
                 //console.log( 'mult: ' + mult + ' price: ' + transfer.transfer[transfer.type] );
-                if( !transfer.usePrice && transfer.hotel.zone == $scope.transfer_bk.hotel.zone && transfer.airport.zone == $scope.transfer_bk.airport.zone ){
+                if( !transfer.usePrice && $scope.transfer_bk.hotel && transfer.hotel.zone == $scope.transfer_bk.hotel.zone && transfer.airport.zone == $scope.transfer_bk.airport.zone ){
                     $scope.transfer.fee = parseFloat( transfer.type=='one_way'?transfer.fee_adults:transfer.fee_adults_rt ) * mult;
                     console.log('usar precios guardados');
                 }else{
@@ -1140,7 +1145,7 @@ app.controller('orderEditCTL',function($scope,$http,$window){
                     $scope.transfer.fee_kids_rt = transfer.transferprice.round_trip_child;
                     console.log('usar precios nuevos');
                 }
-                if( $scope.thecompany.base_currency.id != transfer.currency.id ){
+                if( transfer.currency && $scope.thecompany.base_currency.id != transfer.currency.id ){
                     if( $scope.transfer.useER ){
                         $scope.transfer.fee *= $scope.thecompany.exchange_rates[transfer.currency.id].sales;
                         $scope.transfer.exchange_rates = $scope.thecompany.exchange_rates;
@@ -1167,7 +1172,7 @@ app.controller('orderEditCTL',function($scope,$http,$window){
         console.log($scope.transfer);
         if( $scope.transfer && $scope.transfer.hotel.zone && $scope.transfer.airport.zone ){
             var params = { 
-                zone1 : $scope.transfer.hotel.zone , 
+                zone1 : ($scope.transfer.hotel.zone.id?$scope.transfer.hotel.zone.id:$scope.transfer.hotel.zone) , 
                 zone2 : $scope.transfer.airport.zone ,
                 company : $scope.thecompany
             };

@@ -32,6 +32,7 @@
         <label><%= __('order-servicio')%> </label>
         <span class='field'><select ng-change='updatePriceTransfer()' ng-options='obj as obj.transfer.name for obj in transfers track by obj.id' ng-model='transfer.transferprice' ></select></span>
     </p>
+    <p>{{transfer.transferprice}}</p>
     <p>
         <label><%= __('order_service_type')%></label>
         <span class='field'><select ng-options='obj.value as obj.label for obj in service_types ' ng-model='transfer.service_type' ></select></span>
