@@ -43,6 +43,15 @@
 	            	ng-options="obj for obj in objects[field.object]"
 	            	class='form-control' >
 	            </select>
+		    <span ng-if="field.type == 'file'">
+		    	<a ng-if="object[field.handle]" 
+			ng-href="/uploads/{{dir}}/{{object[field.handle].filename}}"
+			target="_blank">	
+			    	{{object[field.handle] && object[field.handle].name || ''}}
+			</a>
+		    </span>
+		    <span ng-if="field.type == 'file'"  ng-file-select="uploadFiles($files, field)" accept="*" class='fa fa-folder-open'></span>
+
 
 
 				<span ng-if='field.type == "money"' class="input-group">

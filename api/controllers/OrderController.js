@@ -296,7 +296,12 @@ module.exports = {
     async.mapSeries( items, function(item,cb) {
       //item.req = req;
       var id = item.id;
-      item.hotel = item.hotel.id;
+      if( item.hotel )
+        item.hotel = item.hotel.id;
+      if( item.tour )
+        item.tour = item.tour.id;
+      if( item.client )
+        item.client = item.client.id;
       delete item.id;
       delete item.flag_priceupdated;
       delete item.usePrice;
@@ -305,6 +310,7 @@ module.exports = {
         cb(err,r);
       });
     },function(err,results){
+      if(err) return res.json(err);
       return res.json(results);
     });
   },

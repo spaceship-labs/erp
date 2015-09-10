@@ -88,7 +88,11 @@
                 getInfo : '&',
                 buttonText : '@',
                 buttonTextImport : '@',
+                buttonTextExport : '@',
                 typeImport : '@',
+                typeExport : '@',
+                typeExportText : '@',
+		lang: '@',
                 getUrl : '@' // para la paginación del alfabeto, en caso de no tenerlo tampoco afecta
         	},
         	templateUrl : '/template/find/directoryListing.html'

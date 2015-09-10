@@ -984,7 +984,13 @@ module.exports.content = {
         	,type : 'money'
         	,message : 'Monto de creédito que se da a la agencia'
         	,message_en : ''
-        }
+        },
+	{
+		label : 'Contrato',
+		label_en : 'contract',
+		handle : 'contract',
+		type : 'file',
+	},
 	],
     user : [
         {

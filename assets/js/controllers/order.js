@@ -814,7 +814,6 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
     console.log($scope.client);
     //Set vars for tempContact
     $scope.setTheItemForContacts = function(item,type,index){
-        console.log($scope.client);
         $scope.theIFC = item?item:{};
         $scope.theIFC.contacts = item.contacts || [];
         $scope.theIFC.theType = type;
@@ -840,35 +839,28 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
     $scope.saveContactForm = function(){
         //primero guardar todos los contactos,
         var aux = [];
-        console.log($scope.tempContacts);
         for(var x in $scope.tempContacts){
             if( $scope.tempContacts[x].name && $scope.tempContacts[x].email && $scope.tempContacts[x].name != '' && $scope.tempContacts[x].email != '' ){
                 $scope.tempContacts[x].client = $scope.client.id;
                 aux.push($scope.tempContacts[x]);
             }
         }
-        console.log(aux);
         if( aux.length > 0 ){
             $http.post('/client/add_contact2',{contacts:aux},{}).success(function(result){
                 //aquí vamos a manejar los contactos una vez que hayan sido agregados
                 //result debe de ser el arreglo de contactos
-                console.log(result);//contactos, debe de ser un arreglo de clientes
                 var newContacts = result.contact;
                 $scope.client.contacts = result.contacts;
                 newContacts = _.pluck(newContacts,'id');
                 for(var x in result.contacts){
                     if( newContacts.indexOf( result.contacts[x].id ) >= 0 ){
                         //add this contact to list
-                        console.log('Agregar' + newContacts.indexOf( result.contacts[x].id ) +' este id: ' + result.contacts[x].id );
                         $scope.addContactToItem( result.contacts[x].id );
                     }
                 }
-                console.log($scope.theIFC.contacts);
                 //limpiar los campos de los contactos agregados
                 var x = $scope.theIFC.pax - $scope.theIFC.contacts.length;
                 $scope.theIFCArray = false;
-                console.log("Rangos Números contacto");
-                console.log( x + ' - ' + $scope.theIFC.contacts.length );
                 $scope.theIFCArray = getRange(x);
                 //Agregar los contactos a su item correspondiente y cerrar el popup
                 if( $scope.theIFC.theType=='transfer' ){
@@ -880,8 +872,7 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
                 $scope.contact = false;
                 $scope.modalCollapse = false;
                 $scope.theIFC = false;
-                console.log($scope.transfer);
-                console.log($scope.reservations.tours);
+                //console.log($scope.transfer);console.log($scope.reservations.tours);
             });
         }
     };
@@ -1146,7 +1137,7 @@ app.controller('orderEditCTL',function($scope,$http,$window){
         $http.get( url , { params: params } ).then(function(response){
             //console.log(response.data);
             $scope.allTours = response.data;
-            console.log($scope.allTours);
+            //console.log($scope.allTours);
         });
     };
     $scope.getAllTours();
@@ -1289,14 +1280,14 @@ app.controller('orderEditCTL',function($scope,$http,$window){
     };
     //obtiene los servicios que están disponibles dependiendo de las zonas que se elijan 
     $scope.getTransfers = function(){
-        console.log($scope.transfer);
+        //console.log($scope.transfer);
         if( $scope.transfer && $scope.transfer.hotel && $scope.transfer.hotel.zone && $scope.transfer.airport && $scope.transfer.airport.zone ){
             var params = { 
                 zone1 : ($scope.transfer.hotel.zone.id?$scope.transfer.hotel.zone.id:$scope.transfer.hotel.zone) , 
                 zone2 : $scope.transfer.airport.zone ,
                 company : $scope.thecompany
             };
-            console.log(params);
+            //console.log(params);
             //$http({method: 'POST', url: '/order/getAvailableTransfers',params:params}).success(function (result){
             $http.post('/order/getAvailableTransfers', params , {}).success(function (result){
                 console.log('prices');console.log(result);

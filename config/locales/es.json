@@ -320,7 +320,7 @@
   "user-misma":"* Estas usando la misma contraseña",
   "user-requerido":"* campo requerido",
   "user-minimo":"*MIni 6 caracteres",
-  "user-vuelve":"Error repite la contraseña",
+  "user-vuelve":"Repite la contraseña",
   "user-error":"* Passwords do not match ",
   "user-mostrar":"Mostrar caracteres ",
   "user-nuevo":"Nuevo usuario",
@@ -344,6 +344,8 @@
   "user-rol-crear":"Crear",
   "user-rol-editar":"Editar",
   "user-rol-borrar":"Borrar",
+  "user-error-equal":"Contraseñas no coinciden",
+  "user-campo-pw":"Ingresa la contraseña actual",
 
   "zone-actualizado":"zona actualizada",
   "zone-info":"Informacion básica",
@@ -365,7 +367,7 @@
   ,"d_user" : "Usuario"
   ,"d_deletePlaceH" : "Ingrese su contraseña para eliminar este documento..."
   ,"d_edit" : "Editar"
-  ,"d_fileManager" : "DMINISTRADOR DE ARCHIVOS (MAX 1MB)"
+  ,"d_fileManager" : "ADMINISTRADOR DE ARCHIVOS (MAX 1MB)"
   ,"d_fmselectall" : "Seleccionar Todo"
   ,"d_min" : "Minimizar"
   ,"d_max" : "Maximizar"
@@ -457,4 +459,12 @@
   , "filter":"Filtrar por"
   , "filter_date": "Fecha"
   , "filter_name": "Nombre"
+  , "export": "Exportar"
+  , "fields": "Campos"
+  , "fields-sort-desc": "Descendente"
+  , "fields-sort-asc": "Ascendente"
+  , "fields-sort-by": "Ordenar por"
+  , "filter-by": "Filtrar por"
+  , "filter-by-none": "No filtrar"
+
 }

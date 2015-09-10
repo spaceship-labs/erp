@@ -317,7 +317,7 @@
   "user-misma":"* Using the same password",
   "user-requerido":"* required field",
   "user-minimo":"*Miminum 6 characters of length",
-  "user-vuelve":"Repeat password error",
+  "user-vuelve":"Repeat password",
   "user-error":"* Passwords do not match ",
   "user-mostrar":"Show characters ",
   "user-nuevo":"New User",
@@ -341,7 +341,8 @@
   "user-rol-crear":"Create",
   "user-rol-editar":"Edit",
   "user-rol-borrar":"Delete",
-
+  "user-error-equal":"Passwords do not match",
+  "user-campo-pw":"Enter the current password",
 
   "zone-actualizado":"Zone has been successfully updated",
   "zone-info":"Basic Information",
@@ -453,4 +454,11 @@
   , "filter":"Filter by"
   , "filter_date": "Date"
   , "filter_name": "Name"
+  , "export": "Export"
+  , "fields": "Fields"
+  , "fields-sort-desc": "descending"
+  , "fields-sort-asc": "ascending"
+  , "fields-sort-by": "Sort by"
+  , "filter-by": "Filter by"
+  , "filter-by-none": "Not filter"
 }

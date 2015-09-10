@@ -13,7 +13,7 @@ describe('SessionController', function() {
           .post('/session/auth')
           .send({ username: 'admin@admin.com', password: 'admin123' })
           .expect(302)
-          .expect('Location', '/')
+          .expect('Location', '/home/index')
           .end(done);
     });
   });

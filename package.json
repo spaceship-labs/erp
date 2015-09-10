@@ -5,12 +5,14 @@
   "description": "erp",
   "keywords": [],
   "dependencies": {
+    "anchor": "^0.10.5",
     "async": "^0.9.0",
     "bcrypt": "^0.7.8",
     "bower": "^1.4.1",
     "connect-redis": "1.4.5",
     "connect-timeout": "^1.5.0",
     "cron": "^1.0.4",
+    "csv": "^0.4.6",
     "ejs": "~0.8.4",
     "gm": "^1.18.1",
     "grunt": "0.4.2",
@@ -31,6 +33,7 @@
     "mathjs": "^0.25.0",
     "mime": "^1.3.4",
     "moment": "^2.6.0",
+    "moment-timezone": "^0.4.0",
     "money": "^0.1.3",
     "node-geocoder": "^2.13.2",
     "open-exchange-rates": "^0.2.0",
@@ -53,7 +56,10 @@
     "karma": "./node_modules/karma/bin/karma start karma.conf.js",
     "testkarma": "./node_modules/karma/bin/karma start karma.conf.js --single-run",
     "debug": "node debug app.js",
-    "postinstall": "./node_modules/bower/bin/bower install"
+    "postinstall": "./node_modules/bower/bin/bower install",
+    "testmocha": "mocha test/**/*.test.js",
+    "test": "npm run testmocha && npm run testkarma",
+    "pretest": "rm -rf .tmp"
   },
   "main": "app.js",
   "repository": {
