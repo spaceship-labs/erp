@@ -21,6 +21,8 @@ module.exports = {
                     return res.json(reservation);
                 });
             });
+        }else{
+            return res.json(false);
         }
     },
     statsCategoriesInDay : function(req,res){

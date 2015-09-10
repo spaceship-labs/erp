@@ -31,9 +31,10 @@ app.controller('tourEditCTL',function($scope,$http,$window){
     $scope.locations = locations;
     $scope.providers = providers;
     $scope.tour = tour;
+    console.log(tour);
     $scope.tour.schedules = $scope.tour.schedules || [];
     for(var x in $scope.tour.schedules)
-        $scope.tour.schedules[x] = JSON.parse($scope.tour.schedules[x]);
+        $scope.tour.schedules[x] = typeof $scope.tour.schedules[x] == 'string'?JSON.parse($scope.tour.schedules[x]):$scope.tour.schedules[x];
     $scope.user = user;
     $scope.tourcategories = tourcategories;
     console.log(tourcategories);

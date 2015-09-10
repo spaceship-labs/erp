@@ -19,12 +19,16 @@ html .btn-primary.active,
 .btn-primary.secondary:hover{background: darken(@secondaryBG,10%);color: @secondaryTC;border-color:darken(@secondaryBG,10%);}
 .secondary{background: @secondaryBG;color: @secondaryTC;}
 .btn-big{padding: 8px 46px;font-size: 15px;}
-.btn-primary + .btn-primary{margin-right: 10px;}
-.pull-right + .pull-right{margin-right: 10px;}
+.btn-primary + .btn-primary{margin-left: 10px;}
+.pull-right + .pull-right{margin-right: 10px;margin-left: 0px;}
 .pull-right.full-sm + .pull-right.full-sm{margin-right: 2%;}
 /*.btn-primary.pull-right + .btn-primary.pull-right{margin-left: 10px;}*/
 .pull-right.full-sm{width: 49%;}
 html .full-width{width: 100%;}
+
+/*Messages Custom*/
+#popup_container.alert-successCustom #popup_title{background: @secondaryBG;}
+#popup_container.alert-successCustom #popup_content{border-color:@secondaryBG; }
 
 /*Timepicker custom*/
 .timepicker-container .timepicker .btn{padding: 0 12px;}
@@ -50,6 +54,7 @@ table.compact-timepicker tr td{padding: 0;border:0 none;}
 .modal-content .principal-container h3{color: @primary;}
 .modal-content .principal-container .text-container{padding: 30px;}
 .modal-content .principal-container ul{list-style-position: inside;}
+.modal-content .principal-container ul img{float: left;width: 60px;margin: 0 7px 5px 0;}
 .modal-content input[type='text']{padding: 5px;margin-bottom: 5px;}
 
 /*Cart custom*/
@@ -61,6 +66,7 @@ table.compact-timepicker tr td{padding: 0;border:0 none;}
 .paymentInformation.fixedItem{position: fixed;top: 20px;right: 20px;}
 .paymentInformation .price{display: block;text-align: right;font-size: 16px;}
 .paymentInformation .inblock{display: block;}
+.inlineMessage{display: block;padding: 10px 20px;text-align: center;background: @cart-bg!important;color: white;}
 
 /*Gral*/
 .text-list{list-style: none;}

@@ -30,18 +30,18 @@
             <h4 class='widgettitle'>Clientes de este item</h4>
             <div class='widgetcontent'>
                 <ul>
-                    <li ng-repeat="c in theIFC.contacts">
-                        <a>{{client.contacts[c].name}}</a>
+                    <li ng-repeat="c in theIFC.contacts" ng-init="auxClient = getClientByID(c)">
+                        <a>{{auxClient.name}}</a>
                         <span class='icons pull-right'>
                             <a ng-click="removeContactFromItem(c)"><i class='fa fa-minus'></i></a>
                         </span>
                     </li>
-                    <li ng-repeat="x in theIFCArray track by x">
+                    <li ng-repeat="x in theIFCArray track by x" >
                         <p>
-                            <input type='text' ng-model="tempContact.name" name='name' placeholder="Nombre">
-                            <input type='text' ng-model="tempContact.email" name='mail' placeholder="Email">
+                            <input type='text' ng-model="tempContacts[x].name" name='name' placeholder="Nombre">
+                            <input type='text' ng-model="tempContacts[x].email" name='mail' placeholder="Email">
                         </p>
-                        <p><button type='submit' class='btn btn-primary' ng-click="createUpdateContact2(tempContact,'create',$index)">Guardar</button></p>
+                        <!--<p><button type='submit' class='btn btn-primary' ng-click="createUpdateContact2(tempContact,'create',$index)">Guardar</button></p>-->
                     </li>
                 </ul>
             </div>
@@ -54,7 +54,7 @@
                         <a>{{c.name}}</a>
                         <span class='icons pull-right'>
                             <a ng-click="openContactForm(c,'update')"><i class='fa fa-pencil'></i></a>
-                            <a ng-click="addContactToItem($index)"><i class='fa fa-plus'></i></a>
+                            <a ng-click="addContactToItem(c.id)"><i class='fa fa-plus'></i></a>
                         </span>
                     </li>
                 </ul>
@@ -63,7 +63,7 @@
     </div></div>
     <div class='stdform2'>
         <p class="stdformbutton">
-            <button type="button" class="btn btn-primary pull-right" ng-click="saveContactForm()">Guardar</button>
+            <button type="button" class="btn btn-primary pull-right" ng-click="saveContactForm()" data-dismiss="modal" aria-hidden="true">Guardar</button>
             <button type="button" class="btn btn-primary pull-right" ng-click="cancelContactForm()" data-dismiss="modal" aria-hidden="true">Cerrar</button>
             <span class='clear'></span>
         </p>

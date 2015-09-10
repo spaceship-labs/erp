@@ -116,12 +116,13 @@
                         <div class='btn-group'>
                             <a class="btn btn-primary pull-right" ng-click="resetForm('hotel')"><i class='fa fa-eraser'></i></a>
                             <a class="btn btn-primary pull-right" ng-hide="!(reservations.hotels.length&&reservations.hotels[0].fee)"><i class='fa fa-check'></i></a>
+                            <a class="btn btn-primary pull-right" ng-hide="!collapseList.hotel" ng-click="collapseList.hotel=!collapseList.hotel"><i class='fa fa-plus'></i></a>
                         </div>
                         <a class='expand' ng-click="setSteps('',2)"><h4 class="widgettitle"><i class='fa fa-building'></i> <%= __('order-reservar-hotel')%></h4></a>
                     </div>
                     <div collapse="!(steps==2?true:false)">
                         <div class='row'>
-                            <div class='col-md-12 peoplelist orderTourList'>
+                            <div class='col-md-12 peoplelist orderTourList'><div collapse="collapseList.hotel">
                                 <input type="text" class="form-control" 
                                         placeholder="Buscar Hoteles"
                                         ng-model="searchHotels"
@@ -151,7 +152,7 @@
                                         typeahead-editable='true'
                                         typeahead="obj as ( thecompany.adminCompany?obj.name:obj.tour.name ) for obj in getTours($viewValue)" >
                                 </p>-->
-                            </div>
+                            </div></div>
                         </div><br >
                         <div class='isCHotelContainer'>
                             <div class='stdform2' ng-repeat='item in reservations.hotels' ng-hide="item.saved">
@@ -195,12 +196,13 @@
                         <div class='btn-group'>
                             <a class="btn btn-primary pull-right" ng-click="resetForm('tour')"><i class='fa fa-eraser'></i></a>
                             <a class="btn btn-primary pull-right" ng-hide="!(reservations.tours.length&&reservations.tours[0].fee)"><i class='fa fa-check'></i></a>
+                            <a class="btn btn-primary pull-right" ng-hide="!collapseList.tour" ng-click="collapseList.tour=!collapseList.tour"><i class='fa fa-plus'></i></a>
                         </div>
                         <a class='expand' ng-click="setSteps('',3)"><h4 class="widgettitle"><i class='fa fa-compass'></i> <%= __('order-reservar-tour')%></h4></a>
                     </div>
                     <div collapse="!(steps==3?true:false)">
                         <div class='row'>
-                            <div class='col-md-12 peoplelist orderTourList'>
+                            <div class='col-md-12 peoplelist orderTourList'><div collapse="collapseList.tour">
                                 <input type="text" class="form-control" 
                                         placeholder="Buscar Tours"
                                         ng-model="searchTours"
@@ -230,7 +232,7 @@
                                         typeahead-editable='true'
                                         typeahead="obj as ( thecompany.adminCompany?obj.name:obj.tour.name ) for obj in getTours($viewValue)" >
                                 </p>-->
-                            </div>
+                            </div></div>
                         </div><br >
                         <div class='isCtourContainer'>
                             <div class='stdform2' ng-repeat='item in reservations.tours' ng-hide="item.saved">
@@ -328,29 +330,51 @@
             <div class="modal-content">
                 <div class='custom-layout layout-flex'>
                     <div class='custom-flex flex3 lateral-container'>
-                        <h3 class='uppercase' ng-if="theIFC.includes"><span class='fa fa-check'></span> Incluye</h3>
-                        <ul ng-if="theIFC.includes">
+                        <h3 class='uppercase' ng-hide="!theIFC.includes"><span class='fa fa-check'></span> Incluye</h3>
+                        <ul ng-hide="!theIFC.includes">
                             <li ng-repeat="item in theIFC.includes" ng-bind="item"></li>
                         </ul>
-                        <h3 class='uppercase' ng-if="theIFC.noincludes"><span class='fa fa-times'></span> No incluye</h3>
-                        <ul ng-if="theIFC.noincludes">
+                        <h3 class='uppercase' ng-hide="!theIFC.noincludes"><span class='fa fa-times'></span> No incluye</h3>
+                        <ul ng-hide="!theIFC.noincludes">
                             <li ng-repeat="item in theIFC.noincludes" ng-bind="item"></li>
                         </ul>
-                        <h3 class='uppercase' ng-if="theIFC.duration"><span class='fa fa-clock-o'></span> Duración</h3>
-                        <ul ng-if="theIFC.duration"><li ng-bind="theIFC.duration"></li></ul>
+                        <h3 class='uppercase' ng-hide="!theIFC.services"><span class='fa fa-check'></span> Servicios</h3>
+                        <ul ng-hide="!theIFC.services">
+                            <li ng-repeat="item in theIFC.services" ng-bind="item"></li>
+                        </ul>
+                        <h3 class='uppercase' ng-hide="!theIFC.payed_services"><span class='fa fa-money'></span> Servicios con costo</h3>
+                        <ul ng-hide="!theIFC.payed_services">
+                            <li ng-repeat="item in theIFC.payed_services" ng-bind="item"></li>
+                        </ul>
+                        <h3 class='uppercase' ng-hide="!theIFC.duration"><span class='fa fa-clock-o'></span> Duración</h3>
+                        <ul ng-hide="!theIFC.duration"><li ng-bind="theIFC.duration"></li></ul>
                     </div>
                     <div class='custom-flex flex7 principal-container'>
-                        <img ng-if="theIFC.icon" ng-src="/uploads/tours/593x331{{theIFC.icon.filename}}">
+                        <img ng-if="theIFC.icon" ng-src="/uploads/{{theIFC.folder}}/593x331{{theIFC.icon.filename}}">
                         <div class='text-container'>
                             <h2 ng-bind="theIFC.name"></h2>
                             <p ng-repeat="item in theIFC.description track by $index" ng-bind="item"></p>
                             <br>
-                            <h3 ng-if="theIFC.recommendations"><span class='fa fa-thumbs-up'></span>Recomendaciones</h3>
-                            <ul ng-if="theIFC.recommendations">
+                            <div ng-hide="!theIFC.rooms">
+                                <h2>Cuartos</h2>
+                                <ul>
+                                    <li ng-repeat="room in theIFC.rooms">
+                                        <img ng-if="room.icon" ng-src="/uploads/rooms/80x80{{room.icon.filename}}">
+                                        <img ng-if="!room.icon" ng-src="http://placehold.it/60x60">
+                                        <p><strong ng-bind="room.name_es"></strong></p>
+                                        <p>Hasta <span ng-bind="room.pax"></span> personas. Desde $ <span ng-bind="room.fee"></span> (adultos), $<span ng-bind="room.feeChild"></span> (menores). </p>
+                                        <p ng-repeat='desc in room.description' ng-bind="desc"></p>
+                                        <div class='clear'></div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <h3 ng-hide="!theIFC.recommendations"><span class='fa fa-thumbs-up'></span>Recomendaciones</h3>
+                            <ul ng-hide="!theIFC.recommendations">
                                 <li ng-repeat="item in theIFC.recommendations" ng-bind="item"></li>
                             </ul>
+                            <br>
                             <p>
-                                <a class='btn btn-primary' ng-click="addTH('tour',theIFC)" data-dismiss="modal" aria-hidden="true">Reservar</a>
+                                <a class='btn btn-primary' ng-click="addTH(theIFC.type,theIFC)" data-dismiss="modal" aria-hidden="true">Reservar</a>
                                 <button type='reset' class='btn reset' data-dismiss="modal" aria-hidden="true">Cerrar</button>
                             </p>
                         </div>
@@ -360,11 +384,13 @@
         </div>
     </div>
     <div id='popup_overlay' class='ng-hide ng-cloak' ng-hide="!alertM.show&&!alertMessage.show"></div>
-    <div id='popup_container' class='alert-warning ng-hide ng-cloak' ng-hide="!alertM.show&&!alertMessage.show">
-        <h1 id="popup_title" ><%= __('order_error') %></h1>
+    <div id='popup_container' class='alert-warning ng-hide ng-cloak' ng-class="alertMessage.classType" ng-hide="!alertM.show&&!alertMessage.show">
+        <h1 id="popup_title">{{alertMessage.title || 'Error en la orden'}}</h1>
         <div id="popup_content" class="alert" ng-show="alertMessage.show" >
             <div id="popup_message" ng-bind="alertMessage.message"></div>
-            <div id="popup_panel"><a ng-click="alertMessage.show=false;" id="popup_ok" style="display: block;width: 150px;margin: 0 auto;">OK</a></div>
+            <div id="popup_panel">
+                <a ng-repeat="b in alertMessage.buttons" ng-click="b.action()" id="" class='btn btn-primary' ng-bind="b.label"></a>
+            </div>
         </div>
         <div id="popup_content" class="alert" ng-show="alertM.show&&alertM.client">
             <div id="popup_message"><%= __('order_errC') %></div>

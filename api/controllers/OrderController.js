@@ -309,6 +309,7 @@ module.exports = {
     });
   },
   edit : function(req,res){
+    console.log( req.params.all() );
     Order.findOne( req.params.id ).populate('reservations').populate('claims').populate('lostandfounds').exec(function(err,order){ Company.findOne(order.company).populate('currencies').populate('base_currency').exec(function(c_err,ordercompany){
       Reservation.find({ order : req.params.id })
       .populate('hotel').populate('tour').populate('airport').populate('client')
@@ -594,51 +595,9 @@ function formatFilterFields(f){
 }
 //En este caso necesito obtener los tours, hoteles, aeropuertos, transfers
 var customOrdersFormat = function(ids,callback){
-  /*async.series({
-    orders : function(cb) {
-      Order.find().where({ id : ids }).populate('client').populate('reservations').populate('user').populate('company').exec(cb)
-    },
-    items_reservations : function(cb, results) {
-      var tours = [], hotels = [], transfers = [], airports = [];
-      for( var x in results.orders ){
-        for( var y in results.orders[x].reservations ){
-          if( results.orders[x].reservations[y].tour && !tours[results.orders[x].reservations[y].tour] ) tours.push(results.orders[x].reservations[y].tour);
-          if( results.orders[x].reservations[y].hotel && !hotels[results.orders[x].reservations[y].hotel] ) hotels.push(results.orders[x].reservations[y].hotel);
-          if( results.orders[x].reservations[y].transfer && !transfers[results.orders[x].reservations[y].transfer] ) transfers.push(results.orders[x].reservations[y].transfer);
-          if( results.orders[x].reservations[y].airport && !airports[results.orders[x].reservations[y].airport] ) airports.push(results.orders[x].reservations[y].airport);
-        }
-      }
-      Tour.find({id : tours}).exec(function(t_e,r_tours){
-        Hotel.find({id : hotels}).exec(function(h_e,r_hotels){
-          Airport.find({id : airports}).exec(function(a_e,r_airports){
-            Transfer.find({id : transfers}).exec(function(tr_e,r_transfers){
-              cb(null,{ tours : r_tours , hotels : r_hotels , airports : r_airports , transfers : r_transfers });
-            });
-          });
-        });
-      });
-    },
-    mapping: function(cb, results) {
-      var tours = _.indexBy(results.items_reservations.tours, 'id');
-      var hotels = _.indexBy(results.items_reservations.hotels, 'id');
-      var transfers = _.indexBy(results.items_reservations.transfers, 'id');
-      var airports = _.indexBy(results.items_reservations.airports, 'id');
-      var r = _.mapObject(results.reservations.map,function(val,key){
-        if( val.tour ) val.tour = tours[val.tour];
-        if( val.hotel ) val.hotel = hotels[val.hotel];
-        if( val.transfer ) val.transfer = transfers[val.transfer];
-        if( val.airport ) val.airport = airports[val.airport];
-      });
-        return cb(null, r);
-
-    }
-  }, 
-  function done(err, results) {
-     
-  });*/
   var reads = [
     function(cb){
-      Order.find().where({ id : ids }).populate('client').populate('reservations').populate('user').populate('company').exec(cb)
+      Order.find().where({ id : ids }).sort({'createdAt':-1}).populate('client').populate('reservations').populate('user').populate('company').exec(cb)
     },function(orders,cb){
       var tours = [], hotels = [], transfers = [], airports = [];
       for( var x in orders ){
@@ -650,7 +609,7 @@ var customOrdersFormat = function(ids,callback){
         }
       }
       Tour.find({id : tours}).exec(function(t_e,r_tours){
-        Hotel.find({id : hotels}).exec(function(h_e,r_hotels){
+        Hotel.find({id : hotels}).populate('rooms').exec(function(h_e,r_hotels){
           Airport.find({id : airports}).exec(function(a_e,r_airports){
             Transfer.find({id : transfers}).exec(function(tr_e,r_transfers){
               //cb(null,{ tours : r_tours , hotels : r_hotels , airports : r_airports , transfers : r_transfers });
@@ -676,8 +635,6 @@ var customOrdersFormat = function(ids,callback){
     }
   ]
   async.waterfall(reads,function(e,results){
-    //console.log(results);
-    //return results;
     callback(results);
   });
 }

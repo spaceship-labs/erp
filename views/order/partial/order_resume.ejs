@@ -15,6 +15,10 @@
                     <span ng-bind="' para ' + transfer.pax + ' personas'"></span> 
                     <span class='inblock' ng-hide="( transfer.type=='one_way'&&transfer.origin=='hotel' ) || !transfer.arrival_date" ng-bind="'Fecha de llegada: ' + formatDate(transfer.arrival_date)"></span>
                     <span class='inblock' ng-hide="( transfer.type=='one_way'&&transfer.origin=='airport' ) || !transfer.departure_date" ng-bind="'Fecha de Salida: ' + formatDate(transfer.departure_date)"></span>
+                    <span class='inblock' ng-hide="!transfer.contacts">
+                        Contactos: 
+                        <span ng-repeat="c in transfer.contacts" ng-init="auxClient = getClientByID(c)" ng-bind="($index>0?', ':'') + auxClient.name"></span>
+                    </span>
                     <span class='price' ng-bind="'$'+transfer.fee+' '+(generalFields.currency?generalFields.currency.currency_code:thecompany.base_currency.currency_code)"></span></p>
             </div>
             <div ng-if="reservations.tours.length">
@@ -27,7 +31,12 @@
                         <span ng-hide="!t.startDate" ng-bind="'Para el día '+formatDate(t.startDate)"></span>
                         <span ng-hide="!t.departureTime" ng-bind="' en el horario de '+t.departureTime.from+' - '+t.departureTime.to"></span>
                     </span> 
-                    <span class='price' ng-bind="'$'+((t.fee + f.feeKids)||0)+' '+(generalFields.currency?generalFields.currency.currency_code:thecompany.base_currency.currency_code)"></span></p>
+                    <span class='inblock' ng-hide="!t.contacts">
+                        Contactos: 
+                        <span ng-repeat="c in t.contacts" ng-init="auxClient = getClientByID(c)" ng-bind="($index>0?', ':'') + auxClient.name"></span>
+                    </span>
+                    <span class='price' ng-bind="'$'+((t.fee + f.feeKids)||0)+' '+(generalFields.currency?generalFields.currency.currency_code:thecompany.base_currency.currency_code)"></span>
+                </p>
             </div>
             <div ng-if="reservations.hotels.length">
                 <h4><strong>Reserva de hoteles</strong></h4>
@@ -39,6 +48,10 @@
                         <span ng-hide="!t.startDate&&!t.endDate" ng-bind="getDiffDates(t.startDate,t.endDate)+' noches'"></span>
                         <span ng-hide="!t.startDate" ng-bind="', de '+formatDate(t.startDate)" ></span>
                         <span ng-hide="!t.endDate" ng-bind="' hasta '+formatDate(t.endDate)" ></span>
+                    </span>
+                    <span class='inblock' ng-hide="!t.contacts">
+                        Contactos: 
+                        <span ng-repeat="c in t.contacts" ng-init="auxClient = getClientByID(c)" ng-bind="($index>0?', ':'') + auxClient.name"></span>
                     </span>
                     <span class='price' ng-bind="'$'+((t.fee + f.feeKids)||0)+' '+(generalFields.currency?generalFields.currency.currency_code:thecompany.base_currency.currency_code)"></span></p>
             </div>

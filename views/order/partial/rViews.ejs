@@ -185,7 +185,7 @@
                     <li ng-repeat="t in theorder.hotels">
                         <p><strong>Hotel:</strong> {{t.hotel.name}}</p>
                         <p><strong>Checkin: </strong>{{formatDate(t.startDate)}} <strong>Checkout: </strong>{{formatDate(t.endDate)}}</p>
-                        <p><strong><%= __('order-cuartos')%>:<strong> {{t.roomsNumber}} ( {{t.roomType}} ) <strong><%= __('order-adultos')%>:</strong> {{t.pax}}</p>
+                        <p><strong><%= __('order-cuartos')%>:<strong> {{t.roomsNumber}} ( {{getRoom(t)}} ) <strong><%= __('order-adultos')%>:</strong> {{t.pax}}</p>
                         <p><span ng-if="t.kidPax"><strong><%= __('order-menores')%>:</strong> {{t.kidPax}}</span> <strong><%= __('order-precio')%>:</strong> {{t.fee}}</span></p>
                     </li>
                 </ul>
