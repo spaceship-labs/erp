@@ -8,7 +8,24 @@
         Numero de elementos a exportar: 
         <input type="number" name="quantity" min="1" ng-model="limit">
     </label>
-    <br>
+    <div class="row">
+        <div class="col-md-6">
+            <p>
+                <label>Desde:</label>
+                <span class="field">
+                    <input type="date" datepicker-popup ng-model="date.from" is-open="status.opened" min-date="'2000-05-22'" max-date="maxDate" datepicker-options="dateOptions" close-text="Close" />
+                </span>
+            </p>
+        </div>
+        <div class="col-md-6">
+            <p>
+                <label>Hasta:</label>
+                <span class="field">
+                    <input type="date" datepicker-popup ng-model="date.to" is-open="status.opened" min-date="'2000-06-22'" max-date="maxDate" datepicker-options="dateOptions" close-text="Close" />
+                </span>
+            </p>
+        </div>
+    </div>
     <p>
         <label>{{translates.fields_sort}}:</label>
         <span class="field">

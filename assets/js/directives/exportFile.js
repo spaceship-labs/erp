@@ -34,6 +34,17 @@
         $scope.allElements = true;
         $scope.sort = 'asc';
         $scope.sortField = $scope.fields[$scope.fields.length - 1];
+        $scope.maxDate = new Date();
+        $scope.format = 'yyyy/MM/dd';
+        $scope.dateOptions = {
+            formatYear: 'yy',
+            startingDay: 1
+        };
+        var today = new Date();
+        $scope.date = {
+            from: new Date(today.getFullYear(), today.getMonth(), 1),
+            to: new Date()
+        };
 
         $scope.changeAllbox = function(){
             for(var k in $scope.selectFields){
@@ -71,7 +82,10 @@
                 var f = $scope.fields[$scope.filter.field];
                 url += '&filterField=' + f.handle + '&filter=' + $scope.filter.key.id;
             }
+
+            console.log('date', $scope.date);
             
+            console.log('url', url);
             location.href = url;
         };
     };
