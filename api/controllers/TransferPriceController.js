@@ -74,9 +74,13 @@ module.exports = {
 		});
 	},
 	createAll : function(req,res){
+		var companyID = req.params.id;
 		var reads = [
 			function(cb){
-				Company.find().exec(cb)
+				if( companyID )
+					Company.find({ id : companyID }).exec(cb)
+				else
+					Company.find().exec(cb)
 			},function(companies_,cb){
 				Airport.find().populate('location').exec(function(e,airports){ cb(e,companies_,airports) })
 			},function(companies_,airports,cb){

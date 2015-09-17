@@ -17,13 +17,13 @@
                     <tr>
                         <th  ng-repeat='label in sheet.values[0]'><strong>{{ label }}</strong></th>
                     </tr>
-                    <tr ng-repeat='value in sheet.values.slice(1)' class='rows'  ng-if="!sheet.import">
+                    <tr ng-repeat='value in sheet.values.slice(1) track by $index' class='rows'  ng-if="!sheet.import">
                         <td ng-repeat='val in value track by $index'>
                             <span class='cell' >{{ sheet.values.slice(1)[$parent.$index][$index]  }}</span>
                         </td>
                     </tr>
 
-                    <tr ng-repeat='value in sheet.values.slice(1)' class='rows'  ng-if="sheet.import">
+                    <tr ng-repeat='value in sheet.values.slice(1) track by $index' class='rows'  ng-if="sheet.import">
                         <td ng-repeat='val in value track by $index'>
                             <span class='cell' >
                                 <a target="_blank" ng-href="{{ url }}{{ sheet.values.slice(1)[$parent.$index][value.length-1] }}">

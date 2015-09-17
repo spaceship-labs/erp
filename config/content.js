@@ -704,6 +704,26 @@ module.exports.content = {
 			handle : 'description_en',
 		}
 	],
+	zone : [
+		{
+			label : 'Nombre Español',
+			label_en : 'Spanish name',
+			type : 'text',
+			handle : 'name',
+		},{
+			label : 'Código',
+			label_en : 'Code',
+			type : 'text',
+			handle : 'code',
+		},{
+			label 	: 'Ciudad',
+			label_en : 'City',
+			type 	: 'select',
+			handle 	: 'location',
+			object 	: 'locations',
+			required : true,
+		}
+	],
 	zoneBasic : [
 		{
 			label : 'Nombre Español',

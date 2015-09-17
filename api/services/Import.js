@@ -7,7 +7,7 @@ function iterDatas(data, model, fnIter, done){
     modelToLowerCase = model.toLowerCase(),
     content = sails.config.content[modelToLowerCase];
     
-    if(!content) return done(new Error('content[model] not found'));
+    if(!content) return done(new Error('content['+model.toLowerCase()+'] not found'));
 
     async.eachSeries(datas, function(single, nextSingle){
         async.each(content, function(item, next){
@@ -67,6 +67,7 @@ function replaceFieldsWithCollection(single, item, next, modelBase){
                 next(new Error('No model found'));
             }
         }
+        //console.log(modelBase);
         model.findOne({
             or: [
                 { name: single[item.handle] },
