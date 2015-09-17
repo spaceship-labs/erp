@@ -9,9 +9,19 @@
 				<tr>
 					<th ng-repeat="h in object.results.headers" ng-bind="h.label"></th>
 				</tr>
-				<tr ng-repeat="r in object.results.rows" ng-class="r.type=='c'?'underlight':''">
-					<td ng-repeat="h in object.results.headers" ng-bind="r[h.handle]"></td>
-				</tr>
+				<tbody ng-if="object.results.reportType=='bygroup'" ng-repeat="r in object.results.rows">
+					<tr ng-class="r.type=='c'?'underlight':''">
+						<td ng-repeat="h in object.results.headers" ng-bind="r[h.handle]"></td>
+					</tr>
+					<tr ng-repeat="r2 in r.rows2">
+						<td ng-repeat="h in object.results.headers" ng-bind="r2[h.handle]"></td>
+					</tr>
+				</tbody>
+				<tbody ng-if="object.results.reportType!='bygroup'">
+					<tr data-name="{{key}}" ng-repeat="(key,r) in object.results.rows" ng-class="r.type=='c'?'underlight':''">
+						<td ng-repeat="h in object.results.headers" ng-bind="r[h.handle]"></td>
+					</tr>
+				</tbody>
 			</table>
 		</div>
 		<div class='amountdue'>

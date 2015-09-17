@@ -60,15 +60,16 @@ module.exports = {
         var ids = [];
         for(x in reservations) ids.push( reservations[x]._id );
         //console.log('----------IDS---------');console.log(fields);console.log(ids);
-        Order.find().where({ id : ids }).populate('client').populate('reservations').populate('user').populate('company')
-          .exec(function(err,orders){
+        //Order.find().where({ id : ids }).populate('client').populate('reservations').populate('user').populate('company').exec(function(err,orders){
           //console.log('----------orders-------------');console.log(orders);
           reservation.aggregate([
               { $match : fields } , { $group : { _id : "$order" } } , { $group : { _id : null , count : { $sum:1 } } }
           ],function(err_c,count_){
-            res.json({ result:[],orders:orders,count: (count_[0]?count_[0].count:0) });
+            customOrdersFormat(ids,function(results){
+              res.json({ result:[],orders:results,count: (count_[0]?count_[0].count:0) });
+            });
           });
-        });
+        //});
       });
     });
   },
@@ -295,7 +296,12 @@ module.exports = {
     async.mapSeries( items, function(item,cb) {
       //item.req = req;
       var id = item.id;
-      item.hotel = item.hotel.id;
+      if( item.hotel )
+        item.hotel = item.hotel.id;
+      if( item.tour )
+        item.tour = item.tour.id;
+      if( item.client )
+        item.client = item.client.id;
       delete item.id;
       delete item.flag_priceupdated;
       delete item.usePrice;
@@ -304,10 +310,12 @@ module.exports = {
         cb(err,r);
       });
     },function(err,results){
+      if(err) return res.json(err);
       return res.json(results);
     });
   },
   edit : function(req,res){
+    console.log( req.params.all() );
     Order.findOne( req.params.id ).populate('reservations').populate('claims').populate('lostandfounds').exec(function(err,order){ Company.findOne(order.company).populate('currencies').populate('base_currency').exec(function(c_err,ordercompany){
       Reservation.find({ order : req.params.id })
       .populate('hotel').populate('tour').populate('airport').populate('client')
@@ -590,4 +598,49 @@ function formatFilterFields(f){
     }
   }
   return fx;
+}
+//En este caso necesito obtener los tours, hoteles, aeropuertos, transfers
+var customOrdersFormat = function(ids,callback){
+  var reads = [
+    function(cb){
+      Order.find().where({ id : ids }).sort({'createdAt':-1}).populate('client').populate('reservations').populate('user').populate('company').exec(cb)
+    },function(orders,cb){
+      var tours = [], hotels = [], transfers = [], airports = [];
+      for( var x in orders ){
+        for( var y in orders[x].reservations ){
+          if( orders[x].reservations[y].tour && !tours[orders[x].reservations[y].tour] ) tours.push(orders[x].reservations[y].tour);
+          if( orders[x].reservations[y].hotel && !hotels[orders[x].reservations[y].hotel] ) hotels.push(orders[x].reservations[y].hotel);
+          if( orders[x].reservations[y].transfer && !transfers[orders[x].reservations[y].transfer] ) transfers.push(orders[x].reservations[y].transfer);
+          if( orders[x].reservations[y].airport && !airports[orders[x].reservations[y].airport] ) airports.push(orders[x].reservations[y].airport);
+        }
+      }
+      Tour.find({id : tours}).exec(function(t_e,r_tours){
+        Hotel.find({id : hotels}).populate('rooms').exec(function(h_e,r_hotels){
+          Airport.find({id : airports}).exec(function(a_e,r_airports){
+            Transfer.find({id : transfers}).exec(function(tr_e,r_transfers){
+              //cb(null,{ tours : r_tours , hotels : r_hotels , airports : r_airports , transfers : r_transfers });
+              cb(null,orders,{ tours : r_tours , hotels : r_hotels , airports : r_airports , transfers : r_transfers })
+            });
+          });
+        });
+      });
+    },function(orders,items_reservations,cb){
+      var tours = _.indexBy(items_reservations.tours, 'id');
+      var hotels = _.indexBy(items_reservations.hotels, 'id');
+      var transfers = _.indexBy(items_reservations.transfers, 'id');
+      var airports = _.indexBy(items_reservations.airports, 'id');
+      for(var x in orders){
+        _.map(orders[x].reservations,function(val,key){
+          if( val.tour ) val.tour = tours[val.tour];
+          if( val.hotel ) val.hotel = hotels[val.hotel];
+          if( val.transfer ) val.transfer = transfers[val.transfer];
+          if( val.airport ) val.airport = airports[val.airport];
+        });
+      }
+      return cb(null, orders);
+    }
+  ]
+  async.waterfall(reads,function(e,results){
+    callback(results);
+  });
 }

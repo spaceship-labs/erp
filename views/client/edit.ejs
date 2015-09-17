@@ -2,7 +2,7 @@
     window.client = <%- JSON.stringify(client) %>;
     window.products = <%- JSON.stringify(products) %>;
 </script>
-<div ng-controller="clientEditCTL">
+<div ng-controller="clientEditCTL" class='ng-cloak'>
     <div class="col-md-6">
         <div class="alert alert-block unseen">
             <button data-dismiss="alert" class="close" type="button">×</button>
@@ -81,4 +81,7 @@
         </div>
     </div>
 
+</div>
+<div id="cargando-elementos" class="ng-cloak">
+    <img src="/images/loaders/images-cm.gif">
 </div>

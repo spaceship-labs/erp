@@ -28,7 +28,7 @@
                 <label><%= __('order-menores')%> Menores</label>
                 <span class='field'><select ng-change="updateTourPrice(item)" ng-options='obj for obj in [0,1,2,3,4,5,6,7,8,9,10]' ng-model='item.kidPax' ></select></span>
             </p>
-            <p>
+            <p ng-init="setHotelHere(item)">
                 <label><%= __('order-hotel')%></label>
                 <span class='field'>
                     <input type="text" class="form-control" 
@@ -45,22 +45,23 @@
             <p>
                 <label>Lugar de salida del tour</label>
                 <span class='field'>
-                    <input type='text' ng-model='item.departurePlace' >
+                    <!--<input type='text' ng-model='item.departurePlace' >-->
+                    <select ng-options="obj as ( obj.name + ' - ' + obj.time ) for obj in item.tour.departurePoints" ng-model="item.departurePlace" required></select>
                 </span>
             </p>
             <p>
                 <label><%= __('order-hora-salida')%></label>
                 <span class='field'>
-                    <select ng-options="( obj.from + ' - ' + obj.to) for obj in item.tour.schedules" ng-model="item.departureTime" required></select>
+                    <select ng-options="obj as ( obj.from + ' - ' + obj.to) for obj in item.tour.schedules" ng-model="item.departureTime" required></select>
                     <!--<timepicker ng-model="item.departureTime" hour-step="1" minute-step="1" show-meridian="ismeridian"></timepicker>-->
                 </span>
             </p>
             <p>
                 <label><%= __('order-precio')%></label>
-                <span class='field'><input type='text' ng-model="item.fee"></span>
+                <span class='field'><span ng-bind="item.fee||0"></span></span>
             </p>
             <p class='order-controls'>
-                <a class='btn btn-primary' ng-click="validateItem(item,'tour')">Guardar</a>
+                <a class='btn btn-primary' ng-click="validateItem(item,'tour',$index)">Guardar</a>
                 <span class='clear'></span>
             </p>
         </div>

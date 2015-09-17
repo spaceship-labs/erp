@@ -15,19 +15,58 @@ body.loginpage{background: @login-background;overflow: hidden;}
 }
 html .btn-primary.active,
 .btn-primary:hover{background: darken(@primary,10%);border-color: darken(@primary,10%);}
+.btn-primary.secondary{background: @secondaryBG;color: @secondaryTC;border-color:@secondaryBG;}
+.btn-primary.secondary:hover{background: darken(@secondaryBG,10%);color: @secondaryTC;border-color:darken(@secondaryBG,10%);}
 .secondary{background: @secondaryBG;color: @secondaryTC;}
 .btn-big{padding: 8px 46px;font-size: 15px;}
-.btn-primary + .btn-primary{margin-right: 10px;}
-.pull-right + .pull-right{margin-right: 10px;}
+.btn-primary + .btn-primary{margin-left: 10px;}
+.pull-right + .pull-right{margin-right: 10px;margin-left: 0px;}
 .pull-right.full-sm + .pull-right.full-sm{margin-right: 2%;}
 /*.btn-primary.pull-right + .btn-primary.pull-right{margin-left: 10px;}*/
 .pull-right.full-sm{width: 49%;}
 html .full-width{width: 100%;}
 
+/*Messages Custom*/
+#popup_container.alert-successCustom #popup_title{background: @secondaryBG;}
+#popup_container.alert-successCustom #popup_content{border-color:@secondaryBG; }
+
 /*Timepicker custom*/
 .timepicker-container .timepicker .btn{padding: 0 12px;}
 .timepicker-container .timepicker input{margin: 0;}
 .timepicker-container .custom-delete{margin-top: 42px;}
+table.compact-timepicker tr td .btn,
+table.compact-timepicker tr td{padding: 0;border:0 none;}
+
+/*Custom FLEX*/
+.custom-layout{display: -webkit-flex;display: -moz-flex;display: -ms-flexbox;display: flex;}
+.layout-flex{webkit-flex-direction: row;-ms-flex-direction: row;flex-direction: row;}
+.custom-flex{box-sizing: border-box;-webkit-flex: 1;-ms-flex: 1;flex: 1;}
+.flex3{webkit-flex: 0 0 30%;-ms-flex: 0 0 30%;flex: 0 0 30%;}
+.flex7{webkit-flex: 0 0 70%;-ms-flex: 0 0 70%;flex: 0 0 70%;}
+.custom-layout .flex3{max-width: 30%;}
+.custom-layout .flex7{max-width: 70%;}
+
+.modal-content .lateral-container{background: @header-background;}
+.modal-content .lateral-container h3{color: white;padding: 25px 25px 0;}
+.modal-content .lateral-container ul{padding: 25px;list-style-type: disc;color: white;list-style-position: inside;border-bottom: 1px solid;}
+.modal-content .principal-container img{width: 100%;}
+.modal-content .principal-container h2{color: @primary;text-align: center;margin-bottom: 15px;}
+.modal-content .principal-container h3{color: @primary;}
+.modal-content .principal-container .text-container{padding: 30px;}
+.modal-content .principal-container ul{list-style-position: inside;}
+.modal-content .principal-container ul img{float: left;width: 60px;margin: 0 7px 5px 0;}
+.modal-content input[type='text']{padding: 5px;margin-bottom: 5px;}
+
+/*Cart custom*/
+.paymentInformation{
+	-webkit-transition: all .2s;
+    transition: all .2s;}
+.paymentInformation .widgettitle{background: @cart-bg;border-bottom: 1px solid;}
+.paymentInformation .widgetcontent{border-color: @cart-borders;background: @cart-bg;color: white;}
+.paymentInformation.fixedItem{position: fixed;top: 20px;right: 20px;}
+.paymentInformation .price{display: block;text-align: right;font-size: 16px;}
+.paymentInformation .inblock{display: block;}
+.inlineMessage{display: block;padding: 10px 20px;text-align: center;background: @cart-bg!important;color: white;}
 
 /*Gral*/
 .text-list{list-style: none;}
@@ -67,6 +106,7 @@ html .full-width{width: 100%;}
 .stdform .ng-invalid-required.ng-touched{outline: red solid 1px;}
 .custom_inline_messages{margin: 10px 0;padding: 10px;border: 1px solid green;}
 .custom_inline_messages.error{border: 1px solid red;}
+.cursorPointer{cursor: pointer;}
 
 /*fee selector*/
 .fee-selector .tabs .tab.selected{border: 1px solid gray;border-bottom: 0 none;border-top-right-radius: 5px;border-top-left-radius: 5px;}
@@ -388,6 +428,9 @@ color: #fff;
 @media only screen and  (max-width: 1280px){
 	.widgettitle a.pull-right{display: block;float: none!important;padding-top: 2px}
 
+}
+@media only screen and  (max-width: 992px){
+	.paymentInformation.fixedItem{top: 0px;right: 0px;width: 100%!important;}
 }
 
 @media screen and (min-width: 992px){

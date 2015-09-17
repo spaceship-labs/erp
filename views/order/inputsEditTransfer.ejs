@@ -1,5 +1,7 @@
-<div class='widgetcontent nopadding'>
     <!--<h4 class="widgettitle"><%= __('order-info')%></h4>-->
+<p class='inlineMessage'>
+    Si necesitas algún pediddo especial favor de comunicarte al área de reservaciones al siguiente número gratuito: 01 800 227 42 36
+</p>
     <p>
         <label><%= __('order-hotel')%> </label>
         <span class='field'>
@@ -30,13 +32,13 @@
         </span>
     </p>
     <p>
-        <label><%= __('order-servicio')%> </label>
+        <label>Tipo de traslado </label>
         <span class='field'><select ng-change='updatePriceTransfer()' ng-options='obj as obj.transfer.name for obj in transfers track by obj.id' ng-model='transfer.transferprice' ></select></span>
     </p>
-    <p>
-        <label><%= __('order_service_type')%></label>
+    <!--<p>
+        <label>Tipo de traslado</label>
         <span class='field'><select ng-options='obj.value as obj.label for obj in service_types ' ng-model='transfer.service_type' ></select></span>
-    </p>
+    </p>-->
     <p>
         <label><%= __('order-estado')%> </label>
         <span class='field'><select ng-options='obj.handle as obj.name for obj in hrevState' ng-model='transfer.state' ></select></span>
@@ -53,7 +55,7 @@
     <p>
         <label>Número de personas</label>
         <span class='field'>
-            <input ng-change='updatePriceTransfer()' type='text' name='pax' ng-model="transfer.pax" />
+            <select ng-change="updatePriceTransfer()" ng-options='obj for obj in pax' ng-model='transfer.pax' ></select>
             <a ng-if="transfer.contacts" ng-click="setTheItemForContacts(transfer,'transfer',false)" data-toggle="modal" data-target="#myModal" >Ver contactos</a>
         </span>
     </p>
@@ -162,4 +164,3 @@
             <span class='field'><timepicker ng-model="transfer.departurepickup_time" ng-change="" hour-step="1" minute-step="1" show-meridian="ismeridian"></timepicker></span>
         </p>
     </div>
-</div>

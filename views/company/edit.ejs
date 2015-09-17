@@ -7,7 +7,7 @@
     window.admin_currencies = <%- JSON.stringify(currencies) %>;
     //console.log(window.currencies);
 </script>
-<div ng-controller='companyEditCTL'>
+<div ng-controller='companyEditCTL' class='ng-cloak'>
 <div class='row'>
     <div class="col-md-6">
         <div form-helper
@@ -213,4 +213,7 @@
     </div>
 </div><!--row end-->
 <% } %>
+</div>
+<div id="cargando-elementos" class="ng-cloak">
+    <img src="/images/loaders/images-cm.gif">
 </div>

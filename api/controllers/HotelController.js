@@ -41,12 +41,16 @@ module.exports = {
 	find : function(req,res){
 		var params = req.params.all();
 		var skip = params.skip || 0;
+		var limit = params.limit || 200;
 		//console.log(params);
 		if( typeof params.id == 'undefined' ) delete params.id;
 		delete params.skip;
-		params.company = req.session.select_company;
+		delete params.limit;
+		delete params.company;
+		delete params.adminCompany;
+		//params.company = req.session.select_company;
         if(params.name) params.name = new RegExp(params.name,"i");
-        Hotel.find(params).skip(skip).populateAll().exec(function(err,hotels){
+        Hotel.find(params).skip(skip).limit(limit).populateAll().exec(function(err,hotels){
         	if(err) res.json('err');
         	Hotel.count(params).exec(function(e,count){
         		if(e) res.json('err');

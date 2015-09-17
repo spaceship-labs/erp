@@ -8,7 +8,7 @@ module.exports = {
 
         phone_extension	: { type: 'string' },
 
-        email	: { type: 'string' , required : true },
+        email	: { type: 'string' },
 
         work_position : { type : 'string' },
 

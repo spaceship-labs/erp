@@ -5,29 +5,30 @@
 		<span ng-if='dragEnabled' ng-click='save()' class='fa icon' ng-class='saveClass'></span>
 	</h4>
 	<div class=''>
-		<table class='table' ng-if='dragEnabled'>
+		<table class='table stdform stdform2' ng-if='dragEnabled'>
 			<thead>
 		        <tr>
-		        	<th ng-bind="translates.d_lat"></th>
-		        	<th ng-bind="translates.d_lon"></th>
+		        	<th class='ng-hide' ng-bind="translates.d_lat"></th>
+		        	<th class='ng-hide' ng-bind="translates.d_lon"></th>
 		        	<th ng-bind="translates.d_dec"></th>
-		            <th ng-if="customFields" ng-repeat='column in customFields' ng-bind='column'></th>
+		            <th ng-if="customFields" ng-repeat='column in customFields' ng-bind='column.name'></th>
 		            <th ng-bind="translates.d_delete"></th>
 		        </tr>
 		    </thead>
 		    <tbody>
 				<tr ng-repeat='(key,marker) in markers'>
-					<td>
+					<td class='ng-hide'>
 						<input name='lat' ng-model="marker.lat" >
 					</td>
-					<td>
+					<td class='ng-hide'>
 						<input name='lng' ng-model="marker.lng" >
 					</td>
 					<td>
 						<input name='message' ng-model="marker.message" >
 					</td>
 					<td ng-if="customFields" ng-repeat='column in customFields'>
-		                <input name="{{column}}" ng-model="marker[column]" placeholder="{{column}}" >
+		                <input ng-if="column.type=='text'" type='text' name="{{column.name}}" ng-model="marker[column.name]" placeholder="{{column.name}}" >
+		                <timepicker class='compact-timepicker' ng-if='column.type == "time"' ng-model="marker[column.name]" hour-step="1" minute-step="1" show-meridian="ismeridian"></timepicker>
 		            </td>
 					<td><a class='fa fa-trash-o' ng-click='removeMarker(key)' style="cursor: pointer"></a></td>
 				</tr>    	

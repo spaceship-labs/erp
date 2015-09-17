@@ -1,5 +1,5 @@
 <div class='row-fluid'>
-    <div class='span12'>
+    <div class='span12 widgetbox'>
         <div class='headtitle'>
             <div class='btn-group'>
                 <a class="btn btn-primary pull-right" ng-click="removeTH($index,'hotel')"><i class='fa fa-times'></i><%= __('order-eliminar')%> </a>
@@ -26,8 +26,13 @@
                 </span></span>
             </p>
             <p>
-                <label><%= __('order-cuartos')%></label>
-                <span class='field'><select ng-change="getPriceHotel(item)" ng-options='obj.id as obj.name_es for obj in item.hotel.rooms' ng-model='item.roomType' ></select></span>
+                <label>Tipo de cuarto</label>
+                <span class='field'>
+                    <select 
+                        ng-change="getPriceHotel(item)" 
+                        ng-model='item.roomType'
+                        ng-options='obj.id as (obj.name_es + " (" + obj.pax + " personas)") for obj in item.hotel.rooms' ></select>
+                </span>
             </p>
             <p>
                 <label><%= __('order-num-cuartos')%></label>
@@ -43,11 +48,15 @@
             </p>
             <p>
                 <label> <%= __('order-precio')%></label>
-                <span class='field'><input type='text' ng-model="item.fee"></span>
+                <span class='field'><span ng-bind="item.fee||0"></span></span>
             </p>
-            <p>
+            <!--<p>
                 <label> <%= __('order-precio-esp')%></label>
                 <span class='field'><input type='text' ng-model="item.fee_special"></span>
+            </p>-->
+            <p class='order-controls'>
+                <a class='btn btn-primary' ng-click="validateItem(item,'hotel',$index)">Guardar</a>
+                <span class='clear'></span>
             </p>
         </div>
     </div>

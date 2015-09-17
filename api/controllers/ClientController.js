@@ -66,6 +66,7 @@ module.exports = {
     update: function(req,res){
         var form = Common.formValidate(req.params.all(),['id','name','address','phone','rfc','comments','city','state','country']);
         if(form){
+            delete form.contacts;
             Client_.update({id:form.id},form).exec(function(err,client_){
                 if(err) return res.json({text:'Ocurrio un error.'});
                 res.json({text:'Cliente actualizado.'});
@@ -103,11 +104,13 @@ module.exports = {
         }
     },
     add_contact2 : function(req,res){
-        var form = Common.formValidate(req.params.all(),['name','phone','email','client']);
+        //var form = Common.formValidate(req.params.all(),['name','client']);
+        var form = req.params.all();
+        form = form.contacts;
         if(form){
             Client_contact.create(form).exec(function(err,contact) {
                 if (err) return res.json({text : err});
-                Client_contact.find({ client : contact.client }).exec(function(err,contacts) {
+                Client_contact.find({ client : contact[0].client }).exec(function(err,contacts) {
                     if (err) return res.json({text : err});
                     res.json({ text:'Contacto creado.' , contact : contact , contacts : contacts });
                 });
@@ -207,7 +210,7 @@ module.exports = {
         }
     },
     update_contact2 : function(req,res){
-        var form = Common.formValidate(req.params.all(),['id','name','phone','email','client']);
+        var form = Common.formValidate(req.params.all(),['id','name','client']);
         var contact_id = form.id;
         delete form.id;
         if(form){

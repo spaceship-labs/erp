@@ -32,7 +32,7 @@ module.exports = {
         //console.log(form);
         Import.files.array2Model(form.values, add, function(err, objs){
             Import.checkAndImport(objs, form.model, function(err, creates){
-                console.log(err, creates);
+                //console.log(err, creates);
                 if(err) return res.ok({success:false, error:err.message});
                 res.ok({success: true, creates: creates});
             });

@@ -150,7 +150,7 @@ app.controller('orderCTL',function($scope,$http,$window,$upload,$rootScope){
 
     $scope.getTotalOrder = function(order){
         var total = 0;
-        if (order.reservations) {
+        if (order && order.reservations) {
             total = order.reservations.reduce(function(sum,reservation){
                 return sum + reservation.fee;
             },0);
@@ -194,8 +194,57 @@ app.controller('orderCTL',function($scope,$http,$window,$upload,$rootScope){
         $scope.theorder = order;
         jQuery('#orderModal').modal('show');
     };
+    $scope.getRoom = function(item){
+        console.log(item);
+        for( var x in item.hotel.rooms ){
+            if( item.roomType == item.hotel.rooms[x].id )
+                return item.hotel.rooms[x].name_es;
+        }
+    };
 });
 app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
+    $scope.customMessages = {
+        Tta : { show : false , type : 'alert' , message : $rootScope.translates.c_ordermessg1 }
+        ,Ttd : { show : false , type : 'alert' , message : $rootScope.translates.c_ordermessg2 }
+        ,TH  : { show : false , type : 'alert' , message : $rootScope.translates.c_ordermessg3 }
+        ,rcs : { 
+            show : false , type : 'alert' , message : 'La reserva se ha creado con éxito.' 
+            , buttons : [
+                { label : 'Ver reserva' , action : function(){ redirectToEdit('edit'); } }
+                ,{ label : 'Ver todas las reservas' , action : function(){ redirectToEdit('list'); } }
+            ]
+        }
+        ,rcf : { show : false , type : 'alert' , message : 'Ha ocurrido un error al crear la reserva, favor de revisar los campos e intentar de nuevo.' }
+    };
+    var customTimer;
+    $scope.PIwidth = jQuery('body').scrollTop() > 250?jQuery('.paymentInformation').parent().width() + 'px':'auto';
+    $scope.fixedItem = jQuery('body').scrollTop() > 250?true:false;
+    $scope.customCart = jQuery( window ).width() <= 992?true:false;
+    jQuery( window ).scroll(function(){
+        clearTimeout(customTimer);
+        customTimer = setTimeout(function(){ 
+            //console.log( jQuery('body').scrollTop() );
+            if( jQuery('body').scrollTop() > 250 ){
+                $scope.PIwidth = jQuery('.paymentInformation').parent().width() + 'px';
+                $scope.fixedItem = true;
+            }else{
+                $scope.fixedItem = false;
+                $scope.PIwidth = 'auto';
+            }
+            //console.log($scope.fixedItem + '  --  ' + $scope.PIwidth);
+            $scope.$apply();
+        }, 0);
+    });
+    jQuery( window ).resize(function(){
+        clearTimeout(customTimer);
+        customTimer = setTimeout(function(){ 
+            $scope.customCartShow = jQuery( window ).width() > 992?true:false;
+            $scope.customCart = jQuery( window ).width() <= 992?true:false;
+            $scope.PIwidth = jQuery('body').scrollTop() > 250?jQuery('.paymentInformation').parent().width() + 'px':'auto';
+            $scope.fixedItem = jQuery('body').scrollTop() > 250?true:false;
+            $scope.$apply();
+        }, 100);
+    });
     $scope.steps = 1;
     $scope.setSteps = function(action,set){
         if( $scope.client && $scope.client.id ){
@@ -204,12 +253,16 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
             else
                 $scope.steps += action=='next'?1:-1;
             $scope.steps = $scope.steps>5||$scope.steps<1?1:$scope.steps;
-            if($scope.steps==2 && !$scope.transfer) updateReservationsGeneralFields('transfer');
+            if($scope.steps==4 && !$scope.transfer){
+                updateReservationsGeneralFields('transfer');
+                $scope.setHotelHere($scope.transfer);
+                if($scope.transfer&&$scope.transfer.hotel&&!$scope.transfer.airport)
+                    $scope.getAirports();
+            }
             if($scope.steps==3 && $scope.reservations.tours.length>0) updateReservationsGeneralFields('tour');
         }else{
             $scope.steps = 1;
-            $scope.alertMessage.show = true;
-            $scope.alertMessage.message = "El usuario debe de ser creado o seleccionado antes de continuar al siguiente paso.";
+            $scope.showMessage('ucf');
         }
     };
     var updateReservationsGeneralFields = function(type){
@@ -239,10 +292,24 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
         var total = 0;
         total += $scope.transfer.fee||0;
         for(var x in $scope.reservations.tours)
-            total += $scope.reservations.tours[x].fee;
+            total += $scope.reservations.tours[x].fee || 0;
         for(var x in $scope.reservations.hotels)
-            total += $scope.reservations.hotels[x].fee;
+            total += $scope.reservations.hotels[x].fee || 0;
         $scope.theTotal = total;
+    }
+    $scope.getMinPrice = function(item,type){
+        if( item.rooms ){
+            var aux = 0;
+            for( var x in item.rooms ){
+                if( type == 'adult' )
+                    aux = parseFloat(item.rooms[x].fee)<aux||aux==0?parseFloat(item.rooms[x].fee):aux;
+                if( type == 'child' )
+                    aux = parseFloat(item.rooms[x].feeChild)<aux||aux==0?parseFloat(item.rooms[x].feeChild):aux;
+            }
+            return aux;
+        }else{
+            return '0';
+        }
     }
     $scope.company = company;
     $scope.companies = [];
@@ -253,6 +320,7 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
     $scope.hotels = hotels;
     //console.log($scope.hotels);
     $scope.allTours = {};
+    $scope.allHotels = {};
     $scope.transfers = transfers; // transfers disponibles
     $scope.client = '';
     $scope.client_flag = false;
@@ -276,6 +344,7 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
     $scope.transfer = false;
     $scope.reservations = { tours : [] , hotels : [] };
     $scope.generalFields = {};
+    $scope.collapseList = { tour : false , hotel : false };
     $scope.pax = [];
     for(var j=1;j<30;j++) $scope.pax.push(j);
     //funciones de control
@@ -288,7 +357,7 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
             }else if(type=='transfer')
                 $scope.transfer = false;
             else if(type=='tour')
-                $scope.reservations.tour = [];
+                $scope.reservations.tours = [];
             else if(type=='hotel')
                 $scope.reservations.hotels = [];
         }else{
@@ -320,7 +389,8 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
     };
     //abre/cierra datepickers
     $scope.open = function($event,var_open) {
-        $event.preventDefault();$event.stopPropagation();$scope.open[var_open] = true;
+        $event.preventDefault();$event.stopPropagation();
+        $scope.open[var_open] = true;
     };
     //Va a crear la reserva del transfer
     $scope.saveAll = function(){
@@ -345,14 +415,14 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
                     if(order && order.id){
                         $scope.order = order;
                         //ver si existe transfer
-                        if( $scope.transfer != false && ! angular.equals( {} , $scope.transfer ) ){
+                        if( $scope.transfer != false && ! angular.equals( {} , $scope.transfer ) && $scope.transfer.fee ){
                             $scope.reservationTransfer();
                         }else if( $scope.reservations.tours.length>0 ){
                             //crea los tours existentes
                             reservationTours();
                         }else if( $scope.reservations.hotels.length>0 ){
                             //Crea los hoteles existentes
-                            $scope.reservationHotels();
+                            reservationHotels();
                         }
                     }else{
                         console.log('ERROR');
@@ -374,15 +444,18 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
         var params = { items : $scope.reservations.tours , order : $scope.order.id , generalFields : $scope.generalFields };
         $http.post('/order/createReservationTour',params,{}).success(function(result) {
             if( $scope.reservations.hotels.length>0 )
-                $scope.reservationHotels();
-            else
-                $window.location =  "/order/edit/" + $scope.order.id;
+                reservationHotels();
+            else{
+                $scope.showMessage('rcs');
+                //$scope.redirectToEdit( );
+            }
         });
     };
     var reservationHotels = function(){
-        var params = { items : $scope.reservations.hotels , order : $scope.order.id };
+        var params = { items : $scope.reservations.hotels , order : $scope.order.id , generalFields : $scope.generalFields };
         $http.post('/order/createReservationTour',params,{}).success(function(result) {
-            $window.location =  "/order/edit/" + $scope.order.id;
+            $scope.showMessage('rcs');
+            //$scope.redirectToEdit( );
         });
     };
     $scope.reservationTransfer = function(){
@@ -404,12 +477,51 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
                 if( $scope.reservations.tours.length>0 )
                     reservationTours();
                 else if( $scope.reservations.hotels.length>0 )
-                    $scope.reservationHotels();
-                else
-                    $window.location =  "/order/edit/" + $scope.order.id;
+                    reservationHotels();
+                else{
+                    $scope.showMessage('rcs');
+                    //$scope.redirectToEdit( );
+                }
             });
         }
     };
+    $scope.showMessage = function(action){
+        $scope.alertMessage.buttons = [ { label : 'Ok' , action : function(){ $scope.alertMessage.show=false; } } ];
+        $scope.alertMessage.title = 'Error en la orden';
+        if( action == 'rcs' ){
+            $scope.alertMessage.show = true;
+            $scope.alertMessage.message = 'La reserva se ha creado con éxito.';
+            $scope.alertMessage.buttons = [ 
+                { label : 'Ver reserva' , action : function(){ redirectToEdit('edit'); } }
+                ,{ label : 'Ver todas las reservas' , action : function(){ redirectToEdit('list'); } }
+            ];
+            $scope.alertMessage.classType = 'alert-successCustom';
+            $scope.alertMessage.title = 'Mensaje de la reserva';
+        }
+        if( action == 'ucf' ){
+            $scope.alertMessage.show = true;
+            $scope.alertMessage.message = "El usuario debe de ser creado o seleccionado antes de continuar al siguiente paso.";
+        }
+        if( action == 'trcf' ){
+            $scope.alertMessage.show = true;
+            $scope.alertMessage.message = 'Campos incompletos, revisar el traslado antes de continuar.';
+        }
+        if( action == 'tcf' ){
+            $scope.alertMessage.show = true;
+            $scope.alertMessage.message = 'Campos inválidos, revisar el Tour antes de continuar.';
+        }
+        if( action == 'hcf' ){
+            $scope.alertMessage.show = true;
+            $scope.alertMessage.message = 'Campos inválidos, revisar el Hotel antes de continuar.';
+        }
+    }
+    //$scope.showMessage('rcs');
+    var redirectToEdit = function(action){
+        if( action == 'edit' )
+            $window.location =  "/order/edit/" + $scope.order.id;
+        if( action == 'list' )
+            $window.location =  "/order/";
+    }
     //obtiene los aeropuertos dependiendo de la ciudad elegida
     $scope.getAirports = function(){
         var params = {'id':$scope.transfer.hotel.location.id};
@@ -430,17 +542,27 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
     }
     //Obtener el número máximo de personas para un cuarto
     $scope.getPaxHotel = function(item,pax){
-        var i, res = [] , max = 10;
+        var i, res = [] , max = 10, resChildren = [];
         if( pax ) max = pax;
         max = max * item.roomsNumber;
         for (i = 1; i <= max ; i++) res.push(i);
-        item.hotel.maxApax = res; item.hotel.maxCpax = res;
+        for (i = 0; i <= ( max - (item.pax||0) ) ; i++) resChildren.push(i);
+        item.hotel.maxApax = res; 
+        item.hotel.maxCpax = resChildren;
     };
     //obtener el precio del hotel dependiendo de la las fechas, por la temporada
     $scope.getPriceHotel = function(item){
         if( item.roomType ){
             $http.get('/room/'+item.roomType).success(function(room){
                 $scope.getPaxHotel(item,room.pax);
+                var daysNumber = 1;
+                if( item.startDate && item.endDate ){
+                    /*var start = moment(item.startDate);
+                    var end = moment(item.endDate);
+                    daysNumber = end.diff(start,'days');*/
+                    daysNumber = $scope.getDiffDates(item.startDate,item.endDate);
+                    //console.log(daysNumber);
+                }
                 if( item.hotel.seasonScheme && item.roomType && room.seasonal == 'true' ){
                   var params = {
                     seasonScheme : item.hotel.seasonScheme, room : item.roomType ,
@@ -449,9 +571,13 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
                   $http.post('/hotel/getprice',params,{}).success(function(price) {
                     item.fee = item.roomsNumber*((price && price != '0')?price:room.fee);
                     item.fee = parseFloat(item.fee.replace('"',''));
+                    item.fee *= daysNumber;
+                    updateTotal();
                   });
                 }else{
                   item.fee = item.roomsNumber*(room.fee?parseFloat(room.fee.replace('"','')):0);
+                  item.fee *= daysNumber;
+                  updateTotal();
                 }
             });
         }
@@ -512,24 +638,39 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
             });
         }
     };
+    $scope.setHotelHere = function(item){
+        if( $scope.reservations.hotels[0] ){
+            item.hotel = $scope.reservations.hotels[0].hotel;
+        }
+    };
     $scope.addTH = function(type,item){
-        if( typeof $scope.client != 'string' && ! angular.equals( {} , $scope.client ) ){
+        console.log($scope.client);
+        if( typeof $scope.client != 'string' && ! angular.equals( {} , $scope.client ) && item ){
             //console.log('addedTour');console.log($scope.addedTour);
-            if( type=='tour' && item ){
+            if( type=='tour' ){
                 //console.log('tours');
                 for(var x in item.schedules){
                     var aux = false;
-                    item.schedules[x] = JSON.parse(item.schedules[x]);
+                    item.schedules[x] = typeof item.schedules[x] == 'string'?JSON.parse(item.schedules[x]):item.schedules[x];
                     aux = new Date(item.schedules[x].from);
                     item.schedules[x].from = aux.getHours() + ':' + (aux.getMinutes()==0?'00':aux.getMinutes());
                     aux = new Date(item.schedules[x].to);
                     item.schedules[x].to = aux.getHours() + ':' + (aux.getMinutes()==0?'00':aux.getMinutes());
                 }
-                console.log(item);
-                $scope.reservations.tours = $scope.reservations.tours.concat({tour:item, reservation_type : 'tour' , client : $scope.client });
-            }else if( type=='hotel' && $scope.addedHotel ){
-                $scope.reservations.hotels = $scope.reservations.hotels.concat({hotel:$scope.addedHotel, reservation_type : 'hotel' , client : $scope.client });
+                for(var x in item.departurePoints){
+                    var aux = false;
+                    item.departurePoints[x] = typeof item.departurePoints[x] == 'string'?JSON.parse(item.departurePoints[x]):item.departurePoints[x];
+                    aux = new Date(item.departurePoints[x].time);
+                    item.departurePoints[x].time = aux.getHours() + ':' + (aux.getMinutes()==0?'00':aux.getMinutes());
+                }
+                //console.log(item);
+                var auxTour = { tour : item, reservation_type : 'tour' , client : $scope.client };
+                $scope.reservations.tours = $scope.reservations.tours.concat(auxTour);
+                console.log($scope.reservations.tours);
+            }else if( type=='hotel'){
+                $scope.reservations.hotels = $scope.reservations.hotels.concat({hotel:item, reservation_type : 'hotel' , client : $scope.client });
             }
+            $scope.collapseList[type] = true;
             updateReservationsGeneralFields(type);
         }else{
             $scope.alertM.show = true;
@@ -543,12 +684,7 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
             $scope.reservations.hotels.splice(index,1);
     };
     $scope.validateDates = function(){
-        $scope.customMessages = {
-            Tta : { show : false , type : 'alert' , message : '$rootScope.translate.c_ordermessg1' },
-            Ttd : { show : false , type : 'alert' , message : '$rootScope.translate.c_ordermessg2' },
-            TH  : { show : false , type : 'alert' , message : '$rootScope.translate.c_ordermessg3' }
-        };
-        if( ! angular.equals( {} , $scope.transfer ) ){
+        if( $scope.transfer && ! angular.equals( {} , $scope.transfer ) ){
             validateTt();
             validateTH();
         }
@@ -630,7 +766,7 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
             return response.data.results.map(function(item){ return item; });
         });
     };
-    $scope.getTours = function(val){
+    /*$scope.getTours = function(val){
         var url = $scope.thecompany.adminCompany?'/tour/find':'/tour/findProducts/';
         var params = { name : val , company : $scope.thecompany.id , adminCompany : $scope.thecompany.adminCompany||false };
         //console.log(url);
@@ -638,7 +774,7 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
             //console.log(response.data);
             return response.data.results.map(function(item){ return item; });
         });
-    };
+    };*/
     $scope.getAllTours = function(){
         var skip = $scope.toursCurrentPage?($scope.toursCurrentPage-1) * 5 : 0;
         var url = $scope.thecompany.adminCompany?'/tour/find':'/tour/findProducts/';
@@ -651,6 +787,18 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
         });
     };
     $scope.getAllTours();
+    $scope.getAllHotels = function(){
+        var skip = $scope.hotelsCurrentPage?($scope.hotelsCurrentPage-1) * 5 : 0;
+        var url = $scope.thecompany.adminCompany?'/hotel/find':'/hotel/findProducts/';
+        var params = { skip : skip, limit : 5 , company : $scope.thecompany.id , adminCompany : $scope.thecompany.adminCompany||false };
+        if($scope.searchHotels!='') params.name = $scope.searchHotels;
+        $http.get( url , { params: params } ).then(function(response){
+            //console.log(response.data);
+            $scope.allHotels = response.data;
+            console.log($scope.allHotels);
+        });
+    };
+    $scope.getAllHotels();
     /*Contacts section*/
     //$scope.USClient = true;
     $scope.saveContact = function(){
@@ -663,13 +811,17 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
             });
         }
     };
+    console.log($scope.client);
+    //Set vars for tempContact
     $scope.setTheItemForContacts = function(item,type,index){
         $scope.theIFC = item?item:{};
-        $scope.theIFC.contacts = $scope.theIFC.contacts || [];
+        $scope.theIFC.contacts = item.contacts || [];
         $scope.theIFC.theType = type;
         $scope.theIFC.indexT = index;
-        console.log('IFC');
-        console.log($scope.theIFC);
+        //console.log('IFC');console.log($scope.theIFC);
+        var x = $scope.theIFC.pax-$scope.theIFC.contacts.length;
+        $scope.theIFCArray = getRange(x);
+        $scope.tempContacts = [];
     }
     $scope.contactFlag = 'create';
     $scope.theIFC = false;
@@ -683,27 +835,69 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
         $scope.contact = false;
         $scope.modalCollapse = false;
     };
+    //Guardar general del popup de clientes
     $scope.saveContactForm = function(){
-        if( $scope.theIFC.theType=='transfer' ){
-            $scope.transfer = $scope.transfer || {};
-            $scope.transfer.contacts = $scope.theIFC.contacts;
-        }else if( $scope.theIFC.theType=='tour' ){
-            $scope.reservations.tours[$scope.theIFC.indexT].contacts = $scope.theIFC.contacts;
+        //primero guardar todos los contactos,
+        var aux = [];
+        for(var x in $scope.tempContacts){
+            if( $scope.tempContacts[x].name && $scope.tempContacts[x].email && $scope.tempContacts[x].name != '' && $scope.tempContacts[x].email != '' ){
+                $scope.tempContacts[x].client = $scope.client.id;
+                aux.push($scope.tempContacts[x]);
+            }
         }
-        $scope.contact = false;
-        $scope.modalCollapse = false;
-        $scope.theIFC = false;
-        console.log($scope.transfer);
-        console.log($scope.reservations.tours);
-    };
-    $scope.createUpdateContact = function(){
-        if($scope.client && $scope.contact.name && $scope.contact.email && $scope.contact.phone ){
-            var action = $scope.contactFlag=='create'?"/client/add_contact2":"/client/update_contact2";
-            if($scope.contactFlag=='create') $scope.contact.client = $scope.client.id;
-            $http.post(action,$scope.contact,{}).success(function(result) {
+        if( aux.length > 0 ){
+            $http.post('/client/add_contact2',{contacts:aux},{}).success(function(result){
+                //aquí vamos a manejar los contactos una vez que hayan sido agregados
+                //result debe de ser el arreglo de contactos
+                var newContacts = result.contact;
                 $scope.client.contacts = result.contacts;
-                $scope.cancelContactForm();
-                //console.log(result);
+                newContacts = _.pluck(newContacts,'id');
+                for(var x in result.contacts){
+                    if( newContacts.indexOf( result.contacts[x].id ) >= 0 ){
+                        //add this contact to list
+                        $scope.addContactToItem( result.contacts[x].id );
+                    }
+                }
+                //limpiar los campos de los contactos agregados
+                var x = $scope.theIFC.pax - $scope.theIFC.contacts.length;
+                $scope.theIFCArray = false;
+                $scope.theIFCArray = getRange(x);
+                //Agregar los contactos a su item correspondiente y cerrar el popup
+                if( $scope.theIFC.theType=='transfer' ){
+                    $scope.transfer = $scope.transfer || {};
+                    $scope.transfer.contacts = $scope.theIFC.contacts;
+                }else if( $scope.theIFC.theType=='tour' ){
+                    $scope.reservations.tours[$scope.theIFC.indexT].contacts = $scope.theIFC.contacts;
+                }
+                $scope.contact = false;
+                $scope.modalCollapse = false;
+                $scope.theIFC = false;
+                //console.log($scope.transfer);console.log($scope.reservations.tours);
+            });
+        }
+    };
+    //Devuelve un objeto cliente del arreglo de contactos del cliente
+    $scope.getClientByID = function(id){
+        for( var x in $scope.client.contacts )
+            if( $scope.client.contacts[x].id == id )
+                return $scope.client.contacts[x];
+    }
+    //Guardar un contacto individual 
+    $scope.createUpdateContact2 = function(contact_item,type,index){
+        if($scope.client && contact_item && contact_item.name ){
+            var action = type=='create'?"/client/add_contact2":"/client/update_contact2";
+            contact_item.client = $scope.client.id;
+            console.log(contact_item);
+            $http.post(action,contact_item,{}).success(function(result) {
+                console.log(result);
+                $scope.client.contacts = result.contacts;
+                for(var x in $scope.client.contacts){
+                    if( $scope.client.contacts[x].id == result.contact.id ){ 
+                        console.log( 'index de contacto de cliente: ' + index );
+                        $scope.theIFCArray.splice( index , 1 );
+                        $scope.addContactToItem(x);
+                    }
+                }
             });
         }else{
             console.log('datos incompletos');
@@ -718,25 +912,200 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
             if( $scope.theIFC.contacts.indexOf(index) < 0 )
                 $scope.theIFC.contacts.push(index);
         }
+        var x = $scope.theIFC.pax - $scope.theIFC.contacts.length;
+        $scope.theIFCArray = getRange(x);
     };
     $scope.removeContactFromItem = function(item){
         $scope.theIFC.contacts.splice( $scope.theIFC.contacts.indexOf(item) , 1 );
+        var x = $scope.theIFC.pax - $scope.theIFC.contacts.length;
+        $scope.theIFCArray = getRange(x);
+    };
+    $scope.validateItem = function(item,type,index){
+        if(type=='tour')
+            validateTour(item,index);
+        if(type=='transfer')
+            validateTransfer(item);
+        if(type=='hotel')
+            validateHotel(item,index);
+    };
+    var validateTransfer = function(item){
+        if( item.fee ){
+            if( typeof item.saved == 'undefined' ){
+                jQuery('#myModal').modal('show');
+                $scope.setTheItemForContacts(item,'transfer',false);
+            }
+            item.saved = true;
+            $scope.setSteps('next',false);
+        }else{
+            item.saved = false;
+            $scope.showMessage('trcf');
+        }
+    };
+    var validateTour = function(item,index){
+        if( item.startDate && ( item.pax || item.kidPax ) && item.fee && item.departureTime ){
+            //if( typeof item.saved == 'undefined' ){
+                jQuery('#myModal').modal('show');
+                $scope.setTheItemForContacts(item,'tour',index);
+            //}
+            item.saved = true;
+        }else{
+            item.saved = false;
+            $scope.showMessage('tcf');
+        }
+    };
+    var validateHotel = function(item,index){
+        if( item.startDate && item.pax && item.fee && item.endDate && item.roomType && item.roomsNumber ){
+            //if( typeof item.saved == 'undefined' ){
+                jQuery('#myModal').modal('show');
+                $scope.setTheItemForContacts(item,'hotel',index);
+            //}
+            item.saved = true;
+        }else{
+            item.saved = false;
+            $scope.showMessage('hcf');
+        }
+    };
+    $scope.openTH = function(type,item){
+        $scope.theIFC = item;
+        $scope.theIFC.description = item.description_es?item.description_es.split("\n"):false;
+        if( type=='hotel' ){
+            $scope.theIFC.services = item.services_es?item.services_es.split("\n"):false;
+            $scope.theIFC.payed_services = item.payed_services_es?item.payed_services_es.split("\n"):false;
+            if( $scope.theIFC.rooms ){
+                for( var x in $scope.theIFC.rooms ){
+                    $scope.theIFC.rooms[x].description = $scope.theIFC.rooms[x].description_es?$scope.theIFC.rooms[x].description_es.split("\n"):false;
+                }
+            }
+        }
+        if( type == 'tour' ){
+            $scope.theIFC.includes = item.includes_es?item.includes_es.split("\n"):false;
+            $scope.theIFC.noincludes = item.does_not_include_es?item.does_not_include_es.split("\n"):false;
+            $scope.theIFC.recommendations = item.recommendations_es?item.recommendations_es.split("\n"):false;
+        }
+        $scope.theIFC.type = type;
+        $scope.theIFC.folder = type + 's';
+        console.log($scope.theIFC);
+    };
+    var getRange = function(number){
+        console.log('getrange: ' + number);
+        var result = [];
+        if( number && number>0 )
+            for( x = 0; x < number; x++ )
+                result.push(x);
+        return result;
+    };
+    $scope.formatDate = function(date){
+        return moment(date).format('L');
+    }
+    $scope.getDiffDates = function(start,end){
+        var result = '';
+        if(start && end){
+            var start = moment(start);
+            var end = moment(end);
+            result = end.diff(start,'days');
+        }
+        return result;
+    }
+});
+app.controller('orderEditCTL',function($scope,$http,$window){
+    var customTimer;
+    $scope.PIwidth = jQuery('body').scrollTop() > 250?jQuery('.paymentInformation').parent().width() + 'px':'auto';
+    $scope.fixedItem = jQuery('body').scrollTop() > 250?true:false;
+    $scope.customCart = jQuery( window ).width() <= 992?true:false;
+    $scope.pax = []; for(var j=1;j<30;j++) $scope.pax.push(j);
+    jQuery( window ).scroll(function(){
+        clearTimeout(customTimer);
+        customTimer = setTimeout(function(){ 
+            //console.log( jQuery('body').scrollTop() );
+            if( jQuery('body').scrollTop() > 250 ){
+                $scope.PIwidth = jQuery('.paymentInformation').parent().width() + 'px';
+                $scope.fixedItem = true;
+            }else{
+                $scope.fixedItem = false;
+                $scope.PIwidth = 'auto';
+            }
+            //console.log($scope.fixedItem + '  --  ' + $scope.PIwidth);
+            $scope.$apply();
+        }, 0);
+    });
+    jQuery( window ).resize(function(){
+        clearTimeout(customTimer);
+        customTimer = setTimeout(function(){ 
+            $scope.customCartShow = jQuery( window ).width() > 992?true:false;
+            $scope.customCart = jQuery( window ).width() <= 992?true:false;
+            $scope.PIwidth = jQuery('body').scrollTop() > 250?jQuery('.paymentInformation').parent().width() + 'px':'auto';
+            $scope.fixedItem = jQuery('body').scrollTop() > 250?true:false;
+            $scope.$apply();
+        }, 100);
+    });
+    $scope.steps = 1;
+    $scope.setSteps = function(action,set){
+        if( $scope.theclient && $scope.theclient.id ){
+            if(set)
+                $scope.steps = $scope.steps!=set?set:0;
+            else
+                $scope.steps += action=='next'?1:-1;
+            $scope.steps = $scope.steps>5||$scope.steps<1?1:$scope.steps;
+        }else{
+            $scope.steps = 1;
+            //$scope.alertMessage.show = true;
+            //$scope.alertMessage.message = "El usuario debe de ser creado o seleccionado antes de continuar al siguiente paso.";
+        }
     };
     $scope.validateItem = function(item,type){
         if(type=='tour')
             validateTour(item);
+        if(type=='hotel')
+            validateHotel(item);
     };
     var validateTour = function(item){
         if( item.startDate && ( item.pax || item.kidPax ) && item.fee && item.departureTime )
             item.saved = true;
         else{
             item.saved = false;
-            $scope.alertMessage.show = true;
-            $scope.alertMessage.message = 'Campos inválidos, revisar el tour antes de continuar.';
+            //$scope.alertMessage.show = true;
+            //$scope.alertMessage.message = 'Campos inválidos, revisar el tour antes de continuar.';
         }
     };
-});
-app.controller('orderEditCTL',function($scope,$http,$window){
+    var validateHotel = function(item){
+        if( item.startDate && item.pax && item.fee && item.endDate && item.roomType && item.roomsNumber ){
+            item.saved = true;
+        }else{
+            item.saved = false;
+            //$scope.alertMessage.show = true;
+            //$scope.alertMessage.message = 'Campos inválidos, revisar el Hotel antes de continuar.';
+        }
+    };
+    $scope.addTH = function(type,item){
+        if( typeof $scope.client != 'string' && ! angular.equals( {} , $scope.client ) ){
+            //console.log('addedTour');console.log($scope.addedTour);
+            if( type=='tour' && item ){
+                console.log(item);
+                for(var x in item.schedules){
+                    var aux = false;
+                    item.schedules[x] = typeof item.schedules[x] == 'string'?JSON.parse(item.schedules[x]):item.schedules[x];
+                    aux = new Date(item.schedules[x].from);
+                    item.schedules[x].from = aux.getHours() + ':' + (aux.getMinutes()==0?'00':aux.getMinutes());
+                    aux = new Date(item.schedules[x].to);
+                    item.schedules[x].to = aux.getHours() + ':' + (aux.getMinutes()==0?'00':aux.getMinutes());
+                }
+                console.log(item);
+                $scope.reservations.tours = $scope.reservations.tours.concat({tour:item, reservation_type : 'tour' , client : $scope.client });
+            }else if( type=='hotel' && $scope.addedHotel ){
+                $scope.reservations.hotels = $scope.reservations.hotels.concat({hotel:$scope.addedHotel, reservation_type : 'hotel' , client : $scope.client });
+            }
+            //updateReservationsGeneralFields(type);
+        }else{
+            $scope.alertM.show = true;
+            $scope.alertM.client = true;
+        }
+    };
+    $scope.removeTH = function(index,type){
+        if( type=='tour' && $scope.reservations.tours[index] )
+            $scope.reservations.tours.splice(index,1);
+        if( type=='hotel' && $scope.reservations.hotels[index] )
+            $scope.reservations.hotels.splice(index,1);
+    };
     $scope.content = content;
     $scope.order = order;
     $scope.thecompany = ordercompany;
@@ -760,6 +1129,18 @@ app.controller('orderEditCTL',function($scope,$http,$window){
     $scope.reservations = { tours : [] , hotels : [] };
     $scope.flag_priceupdated = false;
     console.log($scope.order);
+    $scope.getAllTours = function(){
+        var skip = $scope.toursCurrentPage?($scope.toursCurrentPage-1) * 5 : 0;
+        var url = $scope.thecompany.adminCompany?'/tour/find':'/tour/findProducts/';
+        var params = { skip : skip, limit : 5 , company : $scope.thecompany.id , adminCompany : $scope.thecompany.adminCompany||false };
+        if($scope.searchTours!='') params.name = $scope.searchTours;
+        $http.get( url , { params: params } ).then(function(response){
+            //console.log(response.data);
+            $scope.allTours = response.data;
+            //console.log($scope.allTours);
+        });
+    };
+    $scope.getAllTours();
     $scope.theTotal = 0;
     var updateTotal = function(){
         var total = 0;
@@ -774,11 +1155,30 @@ app.controller('orderEditCTL',function($scope,$http,$window){
         //console.log($scope.order);
         for(var x in $scope.order.reservations){
             var reserve = $scope.order.reservations[x];
-            if( reserve.reservation_type == 'transfer' )
+            if( reserve.reservation_type == 'transfer' ){
                 $scope.transfer = reserve;
-            else if( reserve.reservation_type == 'tour' )
+                $scope.getTransfers();
+            }else if( reserve.reservation_type == 'tour' ){
+                for(var x in reserve.tour.schedules){
+                    var aux = false;
+                    reserve.tour.schedules[x] = typeof reserve.tour.schedules[x] == 'string'?JSON.parse(reserve.tour.schedules[x]):reserve.tour.schedules[x];
+                    aux = new Date(reserve.tour.schedules[x].from);
+                    reserve.tour.schedules[x].from = aux.getHours() + ':' + (aux.getMinutes()==0?'00':aux.getMinutes());
+                    aux = new Date(reserve.tour.schedules[x].to);
+                    reserve.tour.schedules[x].to = aux.getHours() + ':' + (aux.getMinutes()==0?'00':aux.getMinutes());
+                }
+                for(var x in reserve.tour.departurePoints){
+                    var aux = false;
+                    reserve.tour.departurePoints[x] = typeof reserve.tour.departurePoints[x] == 'string'?JSON.parse(reserve.tour.departurePoints[x]):reserve.tour.departurePoints[x];
+                    aux = new Date(reserve.tour.departurePoints[x].time);
+                    reserve.tour.departurePoints[x].time = aux.getHours() + ':' + (aux.getMinutes()==0?'00':aux.getMinutes());
+                }
+                console.log('tour');
+                console.log(reserve);
+                console.log(reserve.departureTime);
+                console.log(reserve.departurePlace);
                 $scope.reservations.tours.push(reserve);
-            else if( reserve.reservation_type == 'hotel' )
+            }else if( reserve.reservation_type == 'hotel' )
                 $scope.reservations.hotels.push(reserve);
         }
         for(var x in $scope.reservations.hotels){
@@ -805,14 +1205,19 @@ app.controller('orderEditCTL',function($scope,$http,$window){
         $scope.dtfa[1] = ( !h && r ) || h;
     }
     $scope.getAirports = function(){
-        if( $scope.transfer ){
+        if( $scope.transfer && $scope.transfer.hotel ){
             var params = { byId : true , 'id' : ($scope.transfer.hotel.location.id || $scope.transfer.hotel.location) };
-            $http({method: 'POST', url: '/airport/getAirport',params:params}).success(function (result){ $scope.airports = result; });
+            $http({method: 'POST', url: '/airport/getAirport',params:params}).success(function (result){ 
+                $scope.airports = result;
+                $scope.transfer.airport = $scope.airports[0];
+                $scope.getTransfers(); 
+            });
         }
     }
     $scope.updateTourPrice = function(item){
+        console.log(item);
         item.flag_priceupdated = true;
-        if( item.usePrice ){
+        if( item.usePrice || !item.saved ){
             item.fee = item.tour.fee&&item.pax?item.tour.fee*item.pax:0;
             item.fee += item.tour.feeChild&&item.kidPax?item.tour.feeChild*item.kidPax:0;
             console.log('Use new prices');
@@ -838,9 +1243,9 @@ app.controller('orderEditCTL',function($scope,$http,$window){
             var transfer = $scope.transfer;
             //console.log('update price');
             if( transfer.hotel && transfer.airport && transfer.type ){
-                var mult = transfer.pax ? ( Math.ceil( transfer.pax / transfer.transfer.max_pax ) ):1;
+                var mult = transfer.pax ? ( Math.ceil( transfer.pax / transfer.transferprice.transfer.max_pax ) ):1;
                 //console.log( 'mult: ' + mult + ' price: ' + transfer.transfer[transfer.type] );
-                if( !transfer.usePrice && transfer.hotel.zone == $scope.transfer_bk.hotel.zone && transfer.airport.zone == $scope.transfer_bk.airport.zone ){
+                if( !transfer.usePrice && $scope.transfer_bk.hotel && transfer.hotel.zone == $scope.transfer_bk.hotel.zone && transfer.airport.zone == $scope.transfer_bk.airport.zone ){
                     $scope.transfer.fee = parseFloat( transfer.type=='one_way'?transfer.fee_adults:transfer.fee_adults_rt ) * mult;
                     console.log('usar precios guardados');
                 }else{
@@ -851,7 +1256,7 @@ app.controller('orderEditCTL',function($scope,$http,$window){
                     $scope.transfer.fee_kids_rt = transfer.transferprice.round_trip_child;
                     console.log('usar precios nuevos');
                 }
-                if( $scope.thecompany.base_currency.id != transfer.currency.id ){
+                if( transfer.currency && $scope.thecompany.base_currency.id != transfer.currency.id ){
                     if( $scope.transfer.useER ){
                         $scope.transfer.fee *= $scope.thecompany.exchange_rates[transfer.currency.id].sales;
                         $scope.transfer.exchange_rates = $scope.thecompany.exchange_rates;
@@ -875,14 +1280,14 @@ app.controller('orderEditCTL',function($scope,$http,$window){
     };
     //obtiene los servicios que están disponibles dependiendo de las zonas que se elijan 
     $scope.getTransfers = function(){
-        console.log($scope.transfer);
-        if( $scope.transfer && $scope.transfer.hotel.zone && $scope.transfer.airport.zone ){
+        //console.log($scope.transfer);
+        if( $scope.transfer && $scope.transfer.hotel && $scope.transfer.hotel.zone && $scope.transfer.airport && $scope.transfer.airport.zone ){
             var params = { 
-                zone1 : $scope.transfer.hotel.zone , 
+                zone1 : ($scope.transfer.hotel.zone.id?$scope.transfer.hotel.zone.id:$scope.transfer.hotel.zone) , 
                 zone2 : $scope.transfer.airport.zone ,
                 company : $scope.thecompany
             };
-            console.log(params);
+            //console.log(params);
             //$http({method: 'POST', url: '/order/getAvailableTransfers',params:params}).success(function (result){
             $http.post('/order/getAvailableTransfers', params , {}).success(function (result){
                 console.log('prices');console.log(result);
@@ -906,14 +1311,37 @@ app.controller('orderEditCTL',function($scope,$http,$window){
     };
     $scope.reservationTransfer = function(){
         var params = {item : $scope.transfer};
-        if( $scope.order && $scope.transfer.transfer && $scope.transfer.hotel ){
-            params.item.transfer = $scope.transfer.transfer.transfer.id;
-            params.item.hotel = $scope.transfer.hotel.id || false;
-            params.item.transfer = $scope.transfer.transferprice.transfer;
-            $http.post('/reservation/update/',params).success(function(result) {
-                console.log('Update transfer');
-                console.log(result);
-            });
+        console.log('transfer');
+        console.log($scope.transfer);
+        if( $scope.order && ( $scope.transfer.transfer || $scope.transfer.transferprice ) && $scope.transfer.hotel ){
+            //params.item.transfer = $scope.transfer.transfer.transfer.id;
+            console.log('transfer params');
+            console.log(params);
+            if( $scope.transfer.id ){
+                params.item.hotel = $scope.transfer.hotel.id || false;
+                params.item.transfer = $scope.transfer.transferprice.transfer?$scope.transfer.transferprice.transfer:$scope.transfer.transfer.transfer;
+                $http.post('/reservation/update/',params).success(function(result) {
+                    console.log('Update transfer');
+                    console.log(result);
+                });
+            }else{
+                params = $scope.transfer;
+                params.order = $scope.order.id;
+                params.reservation_type = 'transfer';
+                params.client = $scope.theclient;
+                params.transfer = $scope.transfer.transferprice.transfer.id;
+                params.transferprice = $scope.transfer.transferprice.id;
+                params.payment_method = params.payment_method || 'creditcard';
+                params.currency = params.currency || $scope.thecompany.base_currency;
+                params.autorization_code = params.autorization_code || '';
+                //console.log($scope.transfer);console.log(params);
+                for(var x in $scope.transfer.contacts)
+                    $scope.transfer.contacts[x] = $scope.theclient.contacts[$scope.transfer.contacts[x]];
+                $http.post('/order/createReservation',params,{}).success(function(result) {
+                    console.log('create transfer reservation');
+                    console.log(result);
+                });
+            }
         }
     };
     $scope.reservationTours = function(){
@@ -943,6 +1371,13 @@ app.controller('orderEditCTL',function($scope,$http,$window){
         if( item.roomType ){
             $http.get('/room/'+item.roomType).success(function(room){
                 $scope.getPaxHotel(item,room.pax);
+                var daysNumber = 1;
+                if( item.startDate && item.endDate ){
+                    var start = moment(item.startDate);
+                    var end = moment(item.endDate);
+                    daysNumber = end.diff(start,'days');
+                    //console.log(daysNumber);
+                }
                 if( item.hotel.seasonScheme && item.roomType && room.seasonal == 'true' ){
                   var params = {
                     seasonScheme : item.hotel.seasonScheme, room : item.roomType ,
@@ -951,9 +1386,11 @@ app.controller('orderEditCTL',function($scope,$http,$window){
                   $http.post('/hotel/getprice',params,{}).success(function(price) {
                     item.fee = item.roomsNumber*((price && price != '0')?price:room.fee);
                     item.fee = parseFloat(item.fee.replace('"',''));
+                    item.fee *= daysNumber;
                   });
                 }else{
                   item.fee = item.roomsNumber*(room.fee?parseFloat(room.fee.replace('"','')):0);
+                  item.fee *= daysNumber;
                 }
             });
         }
@@ -978,6 +1415,18 @@ app.controller('orderEditCTL',function($scope,$http,$window){
         console.log(item);
     }
     $scope.theIFC = false;
+    $scope.formatDate = function(date){
+        return moment(date).format('L');
+    }
+    $scope.getDiffDates = function(start,end){
+        var result = '';
+        if(start && end){
+            var start = moment(start);
+            var end = moment(end);
+            result = end.diff(start,'days');
+        }
+        return result;
+    }
 });
 /*
     Calcula el tiempo de pickup dependiendo del origen

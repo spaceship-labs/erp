@@ -68,6 +68,18 @@
             form-title='Lenguajes'
         ></div> 
     </div>
+    <div class='row-fluid'>
+        <div class="span12"> 
+            <div geo-marker 
+                save-function = "updateMarkers"
+                custom-fields = "[ {name:'name',type:'text'} , { name:'time',type:'time' } ]"
+                center = "center"
+                markers = "tour.departurePoints"
+                sizes = "{ height: '350px' }"
+                drag-enabled = "true"
+            ></div>
+        </div>
+    </div>
     <br/>
     <div delete-button url='/tour' redirect-url='/tour' object='tour' user='user'></div>
     <br/>

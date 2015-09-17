@@ -7,7 +7,7 @@
 	window.companies_ = <%- JSON.stringify(companies_) %>;
 	window.content = <%- JSON.stringify(_content) %>;
 </script>
-<div ng-controller="priceCTL" >
+<div ng-controller="priceCTL" class='ng-cloak'>
 	<div class='row-fluid'>
 		<div class='span4'>
 			<%= __('tranferprice-ciudad')%><select ng-change='updatePrices()' ng-model="thelocation" ng-options="obj as obj.name for obj in locations_" ></select>
@@ -113,4 +113,7 @@
 			</table></div>
 	</div>
 	<div class="clearfix"></div>
+</div>
+<div id="cargando-elementos" class="ng-cloak">
+    <img src="/images/loaders/images-cm.gif">
 </div>
