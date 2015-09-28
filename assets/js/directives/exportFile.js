@@ -83,9 +83,10 @@
                 url += '&filterField=' + f.handle + '&filter=' + $scope.filter.key.id;
             }
 
-            console.log('date', $scope.date);
+            if($scope.date && $scope.date.from && $scope.date.to)
+                url += '&dateFrom=' + $scope.date.from.toISOString() + '&dateTo='+$scope.date.to.toISOString();
             
-            console.log('url', url);
+            //console.log('url', url);
             location.href = url;
         };
     };
