@@ -6,7 +6,8 @@
     window.foodSchemes = <%- JSON.stringify(foodSchemes) %>;
 </script>
 <div ng-controller='hotelCTL' >
-	<div directory-listing objects='hotels' searchInput='searchInput' dir='hotels' edit-url='/hotel/edit/' get-info='getInfo' button-text='<%= __('hotel-agregar') %>'  button-text-import='<%= __('import') %>' type-import='hotel' get-url="/hotel/find/"></div>    
+	<div directory-listing objects='hotels' searchInput='searchInput' dir='hotels' edit-url='/hotel/edit/' get-info='getInfo' button-text='<%= __('hotel-agregar') %>'  button-text-import='<%= __('import') %>' type-import='hotel' get-url="/hotel/find/"  button-text-export='<%= __('export') %>' type-export='hotel' type-export-text='<%= __("sc_hotels") lang='<%=req.session.lang || "en"%>' %>'
+	></div>    
 	<div class="clearfix"></div>
 	<div class="modal fade" id="myModal">
 		<div class="modal-dialog">
