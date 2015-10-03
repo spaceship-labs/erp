@@ -1,0 +1,36 @@
+<script type='text/javascript'>
+	window.unities = <%- JSON.stringify(unities) %>;
+	window.unityTypes = <%- JSON.stringify(unityTypes) %>;
+</script>
+<div ng-controller='unityCTL' >
+	<div directory-listing 
+		objects='unities' 
+		keywords='searchInput' 
+		dir='unities' 
+		edit-url='/unity/edit/' 
+		get-info='getInfo'
+        get-url="/unity/find/"
+		name-var='nombre_completo'
+		button-text='Unidad nueva'
+		type-import='unity'
+		button-text-import='<%= __('import') %>'
+	></div>
+	<div class="modal fade" id="myModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div 
+					form-helper 
+			        fields='content.unity' 
+			        form-footer='<%= __('order-agregar')%>'
+			        form-save = 'createUnity'
+			        object = 'unity'
+			        form-title='Agregar unidad'
+			       	modal='true'
+			        objects='{ unitytypes : unityTypes }'
+			       	currency='company.base_currency'
+			        >
+			    </div>	
+			</div>
+		</div>
+	</div>
+</div>

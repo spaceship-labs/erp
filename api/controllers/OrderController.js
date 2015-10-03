@@ -19,6 +19,16 @@ module.exports = {
   		]
   	},req);
   },
+  reporteespecial : function(req,res){
+    var fields = {};
+    Reports.getReport('totalsReport',fields,function(results,err){
+      Export.mkp_report(results,function(err,csv){
+        var name = 'Reporte de montos ' + '.csv';
+        res.attachment(name);
+        res.end(csv, 'UTF-8');
+      });
+    });
+  },
   reportcustom : function(req,res){
     var params = req.params.all();
     if( params.type ){
@@ -33,7 +43,7 @@ module.exports = {
         fields.company = { "$in" : c_ };
       }
       Reports.getReport(params.type,fields,function(results,err){
-        res.json({ results : results , err : err });
+          res.json({ results : results , err : err });
       });
     }
   },
@@ -92,6 +102,19 @@ module.exports = {
   				]
   			},req);
     //}); }); });
+  },
+  quickorder : function(req,res){
+    var select_company = req.session.select_company || req.user.select_company;
+    Common.view(res.view,{
+      page:{
+        name:req.__('sc_reservations')
+        ,icon:'fa fa-car'   
+        ,controller : 'order.js'
+      },
+      breadcrumb : [
+        {label : req.__('sc_reservations')}
+      ]
+    },req);
   },
   getorder : function(req,res){
     //console.log(req.user);
@@ -154,13 +177,16 @@ module.exports = {
     Order.findOne(params.order).populate('company').exec(function(e,theorder){
       if(e) return res.json(e);
       params.company = theorder.company?theorder.company:(req.session.select_company || req.user.select_company);
-      params.currency = params.currency?params.currency.id:params.company.base_currency;
+      params.currency = params.currency?params.currency.id:theorder.company.base_currency;
       Company.findOne({adminCompany:true}).exec(function(c_err,mainCompany){
         if(c_err) res.json(false);
         TransferPrice.findOne(params.transferprice).populate('transfer').exec(function(tp_err,transferprice){
           if(tp_err) res.json(false);
           //console.log('Fee: ' + params.fee);
-          params.fee = transferprice[params.type] * Math.ceil( params.pax / transferprice.transfer.max_pax );
+          params.quantity = Math.ceil( params.pax / transferprice.transfer.max_pax );
+          params.fee = transferprice[params.type] * params.quantity;
+          console.log(params.currency);
+          console.log(theorder.company.exchange_rates);
           if( params.currency != theorder.company.base_currency )
             params.fee *= theorder.company.exchange_rates[params.currency].sales;
           //console.log('Fee2: ' + params.fee);console.log(transferprice);
@@ -174,6 +200,11 @@ module.exports = {
           params.exchange_rate_book = mainCompany.exchange_rate_book;
           params.exchange_rates = mainCompany.exchange_rates;
           params.folio = theorder.folio;
+          params.travelType = 'O';
+          if( params.type == 'one_way' ){
+            params.travelType = params.origin == 'hotel'?'R':'L';
+          }
+          params.service_type = transferprice.transfer.service_type || 'C' ;
           //console.log(params);
           Reservation.create(params).exec(function(err,reservation){
             console.log(err);

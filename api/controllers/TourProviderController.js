@@ -28,7 +28,8 @@ module.exports = {
 		TourProvider.findOne(req.params.id).populate('tours').exec(function(e,provider){
 			if(e) throw(e);
 			Location.find().exec(function(e,locations){
-				sails.controllers.admin.currenciesJson(req,res,function(currencies){
+				//sails.controllers.admin.currenciesJson(req,res,function(currencies){
+				Currency.find().exec(function(err,currencies){
 					Common.view(res.view,{
 						provider:provider
 						,locations:locations

@@ -6,10 +6,12 @@
     <div class='ng-cloak' ng-cloak>
 	<div class='row'>
 		<div class="textbutton col-sm-6 col-md-6 col-xs-12">
+            <a data-toggle="modal" data-target="#exportMKP" class='pull-right btn btn-primary full-sm'><i class='fa fa-download'></i> Exportar CSV</a>
 			<span class='dropdown pull-right full-sm'>
                 <a dropdown-toggle class='btn btn-primary full-width'><i class='fa fa-files-o'></i> Reportes</a>
                 <ul role='menu' class='dropdown-menu'>
                     <li>
+                        <a ng-click="SelectReport('transfer_gral')">Reporte Traslados (Gral.)</a>
                         <a ng-click="SelectReport('tours_gral')">Reporte Tours (Gral.)</a>
                         <a ng-click="SelectReport('tours_by_agency')">Reporte Tours (by Agency)</a>
                         <a ng-click="SelectReport('tours_by_user')">Reporte Tours (by User)</a>
@@ -38,6 +40,7 @@
             <p style="display:inline-block;">
                 <a href="/order/neworder" class='btn btn-primary'><i class = "fa fa-plus"></i> <%= __('order-crear')%></a>
                 <a class="btn btn-primary" data-toggle="modal" data-target="#uploadCVS"><i class="fa fa-upload"></i> <%= __('gral_importcvs')%></a>
+                <!--<a href='/order/reporteespecial' class='btn btn-primary'>Reporte de Montos</a>-->
             </p>
             <!-- <input type="text" placeholder="Buscar" class="form-control pull-right search" ng-model="searchText" /> -->
         </div>
@@ -58,6 +61,13 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <report-generator object="theReport"></report-generator>
+            </div>
+        </div>
+    </div>
+    <div class='modal fade' id='exportMKP'>
+        <div class='modal-dialog'>
+            <div class='modal-content'>
+                <%- partial('partial/exportMKP') -%>
             </div>
         </div>
     </div>

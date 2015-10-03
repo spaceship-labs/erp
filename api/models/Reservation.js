@@ -41,9 +41,17 @@ module.exports = {
             type:'string',
             enum : ['pending','liquidated','canceled']
         }
+        ,reservation_method : {
+            type: 'string'
+            ,enum: ['intern', 'api', 'rep', 'agencyApi'] 
+            ,defaultsTo : 'intern' }
         ,payment_method : {
             type:'string',
             enum : ['creditcard','paypal','cash','prepaid']
+        }
+        ,travelType : {
+            type : 'string'
+            ,enum : ['O', 'L', 'R'] // O : redondo, L : llegada, R : regreso
         }
         ,origin : {
             type:'string',
@@ -57,12 +65,15 @@ module.exports = {
             type:'string',
             enum : ['tour','hotel','transfer']
         }
-
         ,fee : {
             type : 'float',
             required : true
         }//total
-
+        ,feeKids : {
+            type : 'float'
+            ,defaultsTo : 0
+        }//total for kids
+        ,quantity : 'integer' //cantidad de servicios, reserva de transfer
         ,fee_kids : 'float'
         ,fee_kids_rt : 'float'
         ,fee_adults : 'float'
@@ -94,8 +105,12 @@ module.exports = {
         }
         ,roomsNumber : 'integer'
         //news
-        ,departure_airline : 'string'
-        ,arrival_airline : 'string'
+        ,departure_airline : {
+            model : 'airline'
+        }
+        ,arrival_airline : {
+            model : 'airline'
+        }
         ,room : 'string' //cuarto en el que se está quedando el cliente, para las reservas de traslados es informativo
         ,currency : {
         	model : 'currency'
@@ -111,6 +126,7 @@ module.exports = {
         ,transfer_type : {
             type:'string',
             enum : ['1','2'] //1=hotel-hotel , 2=aeropuerto-hotel
+            ,defaultsTo : '2'
         }
         /*
         	Objeto que va a contener los tipos de cambio y las comisiones
@@ -122,6 +138,12 @@ module.exports = {
         	- provider_payment : 'integer' //cuánto se pagará al proveedor
         */
         ,books : 'json'
+        ,assigned : {
+            type: 'string'
+            ,enum : ['1','2','3'] //1: inclomplete, 2: middle, 3: complete
+            ,defaultsTo : '1'
+        }
+        ,notes : 'string'
 
 	}
 	, attrs_labels : {

@@ -43,6 +43,24 @@ module.exports.apps = [
                 showInMenu : true,
                 controller : 'transferprice',
                 action : 'index'
+            },
+            {
+                label : 'Unidades',
+                label_en : 'Unities',
+                icon : 'fa-bus',
+                url : '/unity/',
+                showInMenu : true,
+                controller : 'unity',
+                action : 'index'
+            },
+            {
+                label : 'Tipos de unidad',
+                label_en : 'Unity types',
+                icon : 'fa-th-list',
+                url : '/unitytype/',
+                showInMenu : true,
+                controller : 'unitytype',
+                action : 'index'
             }
 		]
 	},
@@ -343,6 +361,26 @@ module.exports.apps = [
                 showInMenu : true,
                 controller : 'order',
                 action : 'index'
+            }
+            ,{
+                label : 'Reserva nueva'
+                ,label_en : 'New reservation'
+                ,icon : 'fa-car'
+                ,url : '/order/neworder/'
+                ,handle : 'orders'
+                ,showInMenu : true
+                ,controller : 'order'
+                ,action : 'neworder'
+            }
+            ,{
+                label : 'Reserva rápida'
+                ,label_en : 'Quick reservation'
+                ,icon : 'fa-car'
+                ,url : '/order/quickorder/'
+                ,handle : 'orders'
+                ,showInMenu : true
+                ,controller : 'order'
+                ,action : 'quickorder'
             }
         ]
     }

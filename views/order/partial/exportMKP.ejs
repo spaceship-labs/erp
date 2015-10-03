@@ -1,0 +1,14 @@
+<div class=''>
+    <p>Si no se seleccionan fechas se asumirá que se quieren descargar las reservas del día de hoy.</p>
+    <div class='row'>
+        <div class='col-md-6'>
+            <datepicker ng-model="exportMKP.from" show-weeks="true" ></datepicker>
+        </div>
+        <div class='col-md-6'>
+            <datepicker ng-model="exportMKP.to" show-weeks="true" ></datepicker>
+        </div>
+    </div>
+    <div>
+        <a class='btn btn-primary' ng-click="exportToMKP()">EXPORTAR</a>
+    </div>
+</div>

@@ -120,3 +120,8 @@ Export.filter = function(opts, done){
         }
     });
 };
+ Export.mkp_report = function(list,done){
+    csv.stringify(list, function(err, data){ 
+       done(err, data);
+    });
+ };

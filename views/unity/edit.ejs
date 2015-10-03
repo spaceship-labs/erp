@@ -1,0 +1,24 @@
+<script type='text/javascript'>
+    window.unity = <%- JSON.stringify(unity) %>;
+    window.unityTypes = <%- JSON.stringify(unitytypes) %>;
+</script>
+<div ng-controller='unityEditCTL' class="editar-tour ng-cloak">
+    <div class='row-fluid'>
+        <div class="span6">
+            <div form-helper 
+                fields='content.unity' 
+                object='unity' 
+                action='/unity/save' 
+                form-title='Información de la unidad'
+                objects='{ unitytypes : unityTypes }'
+                >
+            </div> 
+        </div> 
+    </div>
+    <br/>
+    <div delete-button url='/unity' redirect-url='/unity' object='unity' user='user'></div>
+    <br/>
+</div>
+<div id="cargando-elementos" class="ng-cloak">
+    <img src="/images/loaders/images-cm.gif">
+</div>

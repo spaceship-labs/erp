@@ -27,6 +27,10 @@ module.exports = {
       model : 'transferprice'
       ,via : 'transfer'
     }
+    ,service_type :{
+      type : 'string'
+      ,enum : ['C','P','D'] //c=colectivo , p=privado , d=directo
+    }
   }
   ,labels : { es : 'Traslados', en : 'Transfers' }
 };

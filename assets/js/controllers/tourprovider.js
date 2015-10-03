@@ -62,7 +62,8 @@ app.controller('tourproviderEditCTL',function($scope,$http){
         var params = t;
         params.provider = $scope.provider.id;
         $http.get('/tour/update', { params: params }).then(function(response){ 
-            $scope.provider.tours.push(response);
+            if(response.data)
+                $scope.provider.tours.push(response.data);
         });
     }
 });

@@ -201,8 +201,18 @@ app.controller('orderCTL',function($scope,$http,$window,$upload,$rootScope){
                 return item.hotel.rooms[x].name_es;
         }
     };
+    $scope.exportToMKP = function(){
+        var href = '/exportdata/to_mkp?';
+        href += 'from=' + (exportMKP.from?exportMKP.from:new Date());
+        href += '&to=' + (exportMKP.to?exportMKP.to:new Date());
+        $window.location = href;
+    }
 });
 app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
+    $scope.DatepickerOptions = {
+        minDate : new Date()
+    };
+    $scope.DatepickerOptions.minDate.setDate( $scope.DatepickerOptions.minDate.getDate() + 1 );
     $scope.customMessages = {
         Tta : { show : false , type : 'alert' , message : $rootScope.translates.c_ordermessg1 }
         ,Ttd : { show : false , type : 'alert' , message : $rootScope.translates.c_ordermessg2 }
@@ -467,7 +477,7 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
             params.transferprice = $scope.transfer.transfer.id;
             params.transfer = $scope.transfer.transfer.transfer.id;
             params.payment_method = params.payment_method || $scope.generalFields.payment_method;
-            params.currency = params.currency || $scope.generalFields.currency;
+            params.currency = $scope.generalFields.currency;
             params.autorization_code = params.autorization_code || $scope.generalFields.autorization_code;
             //console.log($scope.transfer);console.log(params);
             for(var x in $scope.transfer.contacts)
@@ -643,6 +653,7 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
             item.hotel = $scope.reservations.hotels[0].hotel;
         }
     };
+    //
     $scope.addTH = function(type,item){
         console.log($scope.client);
         if( typeof $scope.client != 'string' && ! angular.equals( {} , $scope.client ) && item ){
@@ -776,6 +787,7 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
         });
     };*/
     $scope.getAllTours = function(){
+        console.log($scope.thecompany);
         var skip = $scope.toursCurrentPage?($scope.toursCurrentPage-1) * 5 : 0;
         var url = $scope.thecompany.adminCompany?'/tour/find':'/tour/findProducts/';
         var params = { skip : skip, limit : 5 , company : $scope.thecompany.id , adminCompany : $scope.thecompany.adminCompany||false };
@@ -1427,6 +1439,281 @@ app.controller('orderEditCTL',function($scope,$http,$window){
         }
         return result;
     }
+});
+app.controller('orderQuickCTL',function($scope,$http,$window,$rootScope){
+    $scope.DatepickerOptions = {
+        minDate : new Date()
+    };
+    $scope.DatepickerOptions.minDate.setDate( $scope.DatepickerOptions.minDate.getDate() + 1 );
+    $scope.company = company;
+    $scope.companies = [];
+    $scope.thecompany = $scope.company;
+    $scope.order = false;
+    $scope.client_flag = false;
+    $scope.hrevState = [{ handle : 'pending' , name : 'Pendiente' } , { handle : 'liquidated' , name : 'Liquidado' }, { handle : 'canceled' , name : 'Cancelado' }];
+    $scope.hrevPayment = [ 
+        { handle : 'creditcard' , name : 'Tarjeta de crédito' }
+        ,{ handle : 'paypal' , name : 'Paypal' }
+        ,{ handle : 'cash' , name : 'Efectivo' }
+        ,{ handle : 'prepaid' , name : 'Prepago' }
+    ];
+    $scope.open = [false,false]; //abre/cierra los datepickers
+    $scope.pax = [];
+    for(var j=1;j<30;j++) $scope.pax.push(j);
+    $scope.customMessages = {
+        Tta : { show : false , type : 'alert' , message : $rootScope.translates.c_ordermessg1 }
+        ,Ttd : { show : false , type : 'alert' , message : $rootScope.translates.c_ordermessg2 }
+        ,TH  : { show : false , type : 'alert' , message : $rootScope.translates.c_ordermessg3 }
+        ,rcs : { 
+            show : false , type : 'alert' , message : 'La reserva se ha creado con éxito.' 
+            , buttons : [
+                { label : 'Ver reserva' , action : function(){ redirectToEdit('edit'); } }
+                ,{ label : 'Ver todas las reservas' , action : function(){ redirectToEdit('list'); } }
+            ]
+        }
+        ,rcf : { show : false , type : 'alert' , message : 'Ha ocurrido un error al crear la reserva, favor de revisar los campos e intentar de nuevo.' }
+    };
+    $scope.alertMessage = { show : false , title : '' , message : '' , type : 'alert' };
+    $scope.resetForm = function(){
+        $scope.transfer = false;
+        $scope.client = false;
+    };
+    //Crea un cliente en caso de que sea uno nuevo
+    $scope.createUpdateClient = function(){
+        var action = "/order/createClient";
+        if(!$scope.client_flag) $scope.client.company = $scope.thecompany.id;
+        else action = "/order/updateClient";
+        $http.post(action,$scope.client,{}).success(function(client_) {
+            $scope.client = client_;
+            $scope.client_flag = true;
+        });
+
+    };
+    $scope.saveAll = function(){
+        //crear una orden
+        if( typeof $scope.client != 'string' && ! angular.equals( {} , $scope.client ) ){
+            if( ! angular.equals( {} , $scope.transfer ) ){
+                if( $scope.transfer != false && !angular.equals( {} , $scope.transfer ) ) {
+                    var arrivalDate = new Date($scope.transfer.arrival_date);
+                    var departureDate = new Date($scope.transfer.departure_date);
+                    if (arrivalDate > departureDate) {
+                        $scope.alertM.show = true;
+                        $scope.alertM.date = true;
+                        return;
+                    }
+                }
+                var params = { 
+                    client : $scope.client 
+                    ,company : $scope.thecompany.id
+                };
+                $http.post('/order/createOrder',params,{}).success(function(order) {
+                    if(order && order.id){
+                        $scope.order = order;
+                        //ver si existe transfer
+                        if( $scope.transfer != false && ! angular.equals( {} , $scope.transfer ) && $scope.transfer.fee ){
+                            $scope.reservationTransfer();
+                        }
+                    }else{
+                        console.log('ERROR');
+                    }
+                });
+            }else{
+                $scope.alertM.show = true;
+                $scope.alertM.allEmpty = true;
+            }
+        }else{
+            $scope.alertM.show = true;
+            $scope.alertM.client = true;
+        }
+    };
+    $scope.reservationTransfer = function(){
+        var params = $scope.transfer;
+        if( $scope.order ){
+            params.order = $scope.order.id;
+            params.reservation_type = 'transfer';
+            params.client = $scope.client;
+            params.transferprice = $scope.transfer.transfer.id;
+            params.transfer = $scope.transfer.transfer.transfer.id;
+            for(var x in $scope.transfer.contacts)
+                $scope.transfer.contacts[x] = $scope.client.contacts[$scope.transfer.contacts[x]];
+            $http.post('/order/createReservation',params,{}).success(function(result) {
+                $scope.showMessage('rcs');
+                //$scope.redirectToEdit( );
+            });
+        }
+    };
+    //obtiene los aeropuertos dependiendo de la ciudad elegida
+    $scope.getAirports = function(){
+        var params = {'id':$scope.transfer.hotel.location.id};
+        $http({method: 'POST', url: '/airport/getAirport',params:params}).success(function (result){
+            $scope.airports = result;
+            $scope.transfer.airport = $scope.airports[0];
+            $scope.getTransfers();
+            $scope.updatePriceTransfer();
+        });
+    }
+    //Controla los inputs de fechas roundtrip/oneway
+    $scope.updateDatesFormat = function(){
+        /*var h = $scope.transfer.origin == 'hotel'?true:false;
+        var r = $scope.transfer.type == 'round_trip'?true:false;
+        $scope.dtfa[0] = ( h && r ) || (!h);
+        $scope.dtfa[1] = ( !h && r ) || h;*/
+    };
+    //Obtener el número máximo de personas para un cuarto
+    $scope.getPaxHotel = function(item,pax){
+        var i, res = [] , max = 10, resChildren = [];
+        if( pax ) max = pax;
+        max = max * item.roomsNumber;
+        for (i = 1; i <= max ; i++) res.push(i);
+        for (i = 0; i <= ( max - (item.pax||0) ) ; i++) resChildren.push(i);
+        item.hotel.maxApax = res; 
+        item.hotel.maxCpax = resChildren;
+    };
+    //Obtiene el precio cada que se hace una modificación elegida
+    $scope.updatePriceTransfer = function(){
+        console.log($scope.transfer)
+        if(!$scope.transfer.currency)
+            $scope.transfer.currency = $scope.thecompany.base_currency;
+        var transfer = $scope.transfer;
+        if( transfer.hotel && transfer.airport && transfer.type ){
+            var mult = transfer.pax?( Math.ceil( transfer.pax / transfer.transfer.transfer.max_pax ) ):1;
+            $scope.transfer.fee = transfer.transfer[transfer.type] * mult;
+            if( $scope.transfer.currency.id != $scope.thecompany.base_currency.id )
+                $scope.transfer.fee *= $scope.thecompany.exchange_rates[$scope.transfer.currency.id].sales;
+        }else{
+            $scope.transfer.fee = 0;
+        }
+        $scope.updateDatesFormat();
+        if( transfer.arrival_time )
+            transfer.arrivalpickup_time = getpickuptime(transfer,'arrival');
+        if( transfer.departure_time )
+            transfer.departurepickup_time = getpickuptime(transfer,'departure');
+        updateTotal();
+    };
+    $scope.getpickuptime = function(){
+        var transfer = $scope.transfer;
+        if( transfer.arrival_time )
+            transfer.arrivalpickup_time = getpickuptime(transfer,'arrival');
+        if( transfer.departure_time )
+            transfer.departurepickup_time = getpickuptime(transfer,'departure');
+    };
+    //obtiene los servicios que están disponibles dependiendo de las zonas que se elijan 
+    $scope.getTransfers = function(){
+        if( $scope.transfer.hotel.zone.id && $scope.transfer.airport.zone ){
+            var params = { 
+                zone1 : $scope.transfer.hotel.zone.id
+                ,zone2 : $scope.transfer.airport.zone 
+                ,company : $scope.thecompany
+            };
+            $http.post('/order/getAvailableTransfers', params , {}).success(function (result){
+                console.log('prices');console.log(result);
+                $scope.transfers = result;
+            });
+        }
+    };
+    $scope.validateDates = function(){
+        if( $scope.transfer && ! angular.equals( {} , $scope.transfer ) )
+            validateTt();
+    };
+    $scope.getHotels = function(val){
+        return $http.get('/hotel/find', { params: { name: val } }).then(function(response){
+            return response.data.results.map(function(item){ return item; });
+        });
+    };
+    $scope.getClients = function(val){
+        return $http.get('/client/find', { params: { name: val , company : $scope.thecompany.id } }).then(function(response){
+            return response.data.map(function(item){ return item; });
+        });
+    };
+    $scope.getAirlines = function(val){
+        return $http.get('/airline/find', { params: { name: val } }).then(function(response){
+            return response.data.results.map(function(item){ return item; });
+        });
+    };
+    var getCompanies = function(){
+        $http.post('/company/find',{limit:20,sort:'createdAt'},{}).success(function(result) {
+            //console.log('get companies');console.log(result);
+            $scope.companies = result;
+        });
+        //$scope.companies
+    };
+    getCompanies();
+    $scope.saveContact = function(){
+        if($scope.client && $scope.contact.name && $scope.contact.email && $scope.contact.phone ){
+            $scope.contact.client = $scope.client.id;
+            //$http({method: 'POST', url: '/client/add_contact2',params:$scope.contact}).success(function (result){
+            $http.post('/client/add_contact2',$scope.contact,{}).success(function(result) {
+                $scope.contact.contact = result.contacts;
+                //console.log(result);
+            });
+        }
+    };
+    var getRange = function(number){
+        console.log('getrange: ' + number);
+        var result = [];
+        if( number && number>0 )
+            for( x = 0; x < number; x++ )
+                result.push(x);
+        return result;
+    };
+    $scope.formatDate = function(date){
+        return moment(date).format('L');
+    }
+    $scope.getDiffDates = function(start,end){
+        var result = '';
+        if(start && end){
+            var start = moment(start);
+            var end = moment(end);
+            result = end.diff(start,'days');
+        }
+        return result;
+    };
+    var updateTotal = function(){
+        var total = 0;
+        total += $scope.transfer.fee||0;
+        $scope.theTotal = total;
+    };
+    //abre/cierra datepickers
+    $scope.open = function($event,var_open) {
+        $event.preventDefault();$event.stopPropagation();
+        $scope.open[var_open] = true;
+    };
+    $scope.showMessage = function(action){
+        $scope.alertMessage.buttons = [ { label : 'Ok' , action : function(){ $scope.alertMessage.show=false; } } ];
+        $scope.alertMessage.title = 'Error en la orden';
+        if( action == 'rcs' ){
+            $scope.alertMessage.show = true;
+            $scope.alertMessage.message = 'La reserva se ha creado con éxito.';
+            $scope.alertMessage.buttons = [ 
+                { label : 'Ver reserva' , action : function(){ redirectToEdit('edit'); } }
+                ,{ label : 'Ver todas las reservas' , action : function(){ redirectToEdit('list'); } }
+            ];
+            $scope.alertMessage.classType = 'alert-successCustom';
+            $scope.alertMessage.title = 'Mensaje de la reserva';
+        }
+        if( action == 'ucf' ){
+            $scope.alertMessage.show = true;
+            $scope.alertMessage.message = "El usuario debe de ser creado o seleccionado antes de continuar al siguiente paso.";
+        }
+        if( action == 'trcf' ){
+            $scope.alertMessage.show = true;
+            $scope.alertMessage.message = 'Campos incompletos, revisar el traslado antes de continuar.';
+        }
+        if( action == 'tcf' ){
+            $scope.alertMessage.show = true;
+            $scope.alertMessage.message = 'Campos inválidos, revisar el Tour antes de continuar.';
+        }
+        if( action == 'hcf' ){
+            $scope.alertMessage.show = true;
+            $scope.alertMessage.message = 'Campos inválidos, revisar el Hotel antes de continuar.';
+        }
+    };
+    var redirectToEdit = function(action){
+        if( action == 'edit' )
+            $window.location =  "/order/edit/" + $scope.order.id;
+        if( action == 'list' )
+            $window.location =  "/order/";
+    };
 });
 /*
     Calcula el tiempo de pickup dependiendo del origen

@@ -387,6 +387,12 @@ module.exports.content = {
 			handle : 'duration',
 		},
 		{
+			label : "Duración"
+			,label_en : 'Duration'
+			,type : 'time'
+			,handle : 'duration_formated'
+		},
+		{
 			label : 'Proveedor',
 			label_en : 'LocationProvider',
 			type : 'select',
@@ -493,12 +499,6 @@ module.exports.content = {
 		},
 	],
 	tourLenguajes : [
-		/*{
-			label : 'Nombre Español',
-			label_en : 'Spanish name',
-			type : 'text',
-			handle : 'name_es',
-		},*/
 		{
 			label : 'Nombre Inglés',
 			label_en : 'English name',
@@ -637,6 +637,30 @@ module.exports.content = {
 			message : "Separar por enter, cada línea es un elemento de lista",
 			message_en : "Separate with enter, each line is an list element",
 		},
+		{
+			label : 'Condiciones de transportación Español'
+			,label_en : 'Transportation terms Spanish'
+			,type : 'textarea'
+			,handle : 'transfer_term'
+		},
+		{
+			label : 'Condiciones de transportación Inglés'
+			,label_en : 'Transportation terms English'
+			,type : 'textarea'
+			,handle : 'transfer_term_en'
+		},
+		{
+			label : 'Condiciones de transportación Ruso'
+			,label_en : 'Transportation terms Russian'
+			,type : 'textarea'
+			,handle : 'transfer_term_ru'
+		},
+		{
+			label : 'Condiciones de transportación Portugués'
+			,label_en : 'Transportation terms Portuguese'
+			,type : 'textarea'
+			,handle : 'transfer_term_pt'
+		}
 	],
 	tourcategory : [
 		{
@@ -780,26 +804,20 @@ module.exports.content = {
 			required: false,
 			handle 	: 'name_en'
 		},
-		/*{
-			label 	: 'Precio viaje sencillo',
-			label_en : 'One Way',
-			type 	: 'text',
-			required: true,
-			handle 	: 'oneWay'
-		},
-		{
-			label 	: 'Precio viaje redondo',
-			label_en : 'Roundtrip',
-			type 	: 'text',
-			required: true,
-			handle 	: 'roundTrip'
-		},*/
 		{
 			label 	: 'Precio por hora',
 			label_en : 'Price by hour',
 			type 	: 'text',
 			required: true,
 			handle 	: 'priceByHr'
+		},
+		{
+			label : 'Tipo de servicio'
+			,label_en : 'Service type'
+			,type : 'select'
+			,object : 'serviceTypes'
+			,required : true
+			,handle : 'service_type'
 		},
 		{
 			label 	: 'Título URL',
@@ -1859,6 +1877,57 @@ module.exports.content = {
 			,type : 'text'
 			,handle : 'name_ru'
 			,required : true
+		}
+	]
+	, unitytypes : [
+		{
+			label : 'Nombre'
+			,label_en : 'Name'
+			,type : 'text'
+			,handle : 'name'
+			,required : true
+		}
+	]
+	, unity : [
+		{
+			label : 'Nombre'
+			,label_en : 'Name'
+			,type : 'text'
+			,handle : 'name'
+			,required : true
+		},
+		{
+			label : 'Modelo'
+			,label_en : 'Model'
+			,type : 'text'
+			,handle : 'model'
+			,required : true
+		},
+		{
+			label : 'Año'
+			,label_en : 'Year'
+			,type : 'text'
+			,handle : 'year'
+		},
+		{
+			label : 'Compañía'
+			,label_en : 'Company'
+			,type : 'text'
+			,handle : 'company'
+		},
+		{
+			label : 'Clave'
+			,label_en : 'Clave'
+			,type : 'text'
+			,handle : 'mkpid'
+			,required : true
+		},
+		{
+			label : 'Tipo'
+			,label_en : 'Type'
+			,type : 'select'
+			,object : 'unitytypes'
+			,handle : 'unitytype'
 		}
 	]
 };

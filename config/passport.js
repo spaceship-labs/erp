@@ -30,7 +30,7 @@ passport.serializeUser(function(user,done){
 });
 
 passport.deserializeUser(function(id,done){	
-	User.findOne(id.id).populate('companies').populate('accessList').exec(function (err, user){
+	User.findOne(id.id).populate('companies',{sort:'createdAt',limit:20}).populate('accessList').exec(function (err, user){
 		try {
 			user.select_company = user.default_company;
 			Company.findOne(user.select_company).populate('currencies').populate('base_currency').exec(function(e,company){

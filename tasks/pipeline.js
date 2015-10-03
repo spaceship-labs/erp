@@ -93,8 +93,8 @@ var jsFilesToInject = [
     "/bower_components/parsleyjs/dist/parsley.js",
 	"/js/themejs/*.js",                                            
 	"/js/{app.js,custom.js,shared.js}",//ignore setup.js 
-	'/js/directives/*.js',                                         
-	'/js/controllers/*.js',                                      
+	'/js/directives/*.js', 
+	//'/js/controllers/*.js', 
 ];                                                                     
                                                                        
                                                                        

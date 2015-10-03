@@ -89,6 +89,7 @@
     <script src="/bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script src="/bower_components/ng-file-upload/angular-file-upload-html5-shim.min.js"></script>
     <script src="/bower_components/angular/angular.min.js"></script>
+    <script src="/bower_components/tinymce/tinymce.min.js"></script>
     <script src="/bower_components/ng-file-upload/angular-file-upload.js"></script>
     <script src="/bower_components/chosen/chosen.jquery.min.js"></script>
     <script src="/bower_components/angular-ui-bootstrap-bower/ui-bootstrap.min.js"></script>
@@ -142,35 +143,12 @@
     <script src="/js/directives/tableHelper.js"></script>
     <script src="/js/directives/timeLineChart.js"></script>
     <script src="/js/directives/validNumber.js"></script>
-    <script src="/js/controllers/airline.js"></script>
-    <script src="/js/controllers/airport.js"></script>
-    <script src="/js/controllers/claim.js"></script>
-    <script src="/js/controllers/client.js"></script>
-    <script src="/js/controllers/company.js"></script>
-    <script src="/js/controllers/controller.js"></script>
-    <script src="/js/controllers/cupon.js"></script>
-    <script src="/js/controllers/dashboard.js"></script>
-    <script src="/js/controllers/hotel.js"></script>
-    <script src="/js/controllers/hotelroomview.js"></script>
-    <script src="/js/controllers/installation.js"></script>
-    <script src="/js/controllers/location.js"></script>
-    <script src="/js/controllers/lostandfound.js"></script>
-    <script src="/js/controllers/order.js"></script>
-    <script src="/js/controllers/packagetour.js"></script>
-    <script src="/js/controllers/price.js"></script>
-    <script src="/js/controllers/product.js"></script>
-    <script src="/js/controllers/room.js"></script>
-    <script src="/js/controllers/sale.js"></script>
-    <script src="/js/controllers/season.js"></script>
-    <script src="/js/controllers/tour.js"></script>
-    <script src="/js/controllers/tourcategories.js"></script>
-    <script src="/js/controllers/tourprovider.js"></script>
-    <script src="/js/controllers/transfer.js"></script>
-    <script src="/js/controllers/user.js"></script>
-    <script src="/js/controllers/zone.js"></script>
     <!--SCRIPTS END-->
     <%- partial('shared/jsTranslateVars') -%> 
-    
+    <script src="/js/controllers/controller.js"></script>
+    <% if(page){ %>
+        <script src="/js/controllers/<%=page.controller%>"></script>
+    <% } %>
 
   <!--</script>-->
   <!--</body>-->

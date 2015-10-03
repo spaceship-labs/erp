@@ -29,7 +29,7 @@ module.exports = {
         if(params.name) params.name = new RegExp(params.name,"i");
         //console.log(req.user);
         if( req.user.isAdmin || req.user.company.adminCompany ){
-            Company.find(params).exec(function(err,companies){
+            Company.find(params).populate('currencies').exec(function(err,companies){
                 res.json(companies);
             });
         }else{

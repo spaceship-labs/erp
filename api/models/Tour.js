@@ -34,6 +34,7 @@ module.exports = {
 		,agencies : {
 			collection : 'companyproduct'
 			, via : 'tour' }
+		,duration_formated : 'datetime'
 	}
 	, migrate : 'alter'
 	, attrs_labels : {

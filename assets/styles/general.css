@@ -350,7 +350,7 @@ h1,h2,h3,h4,h5 { font-weight: normal; line-height: normal; }
 
 .stdform input { padding: 5px; border: 1px solid #bbb; }
 .stdform textarea { padding: 6px 5px; border: 1px solid #bbb; }
-.stdform select { border: 1px solid #bbb; padding: 5px 2px; max-width: 100%;width: 100%;}
+.stdform select { border: 1px solid #bbb; padding: 7px 2px; max-width: 100%;width: 100%;}
 .stdform p, .stdform div.par { margin: 20px 0; }
 .stdform span.field, .stdform div.field { margin-left: 220px; display: block; position: relative; }
 .stdform .formwrapper { display: block; padding-top: 5px; margin-left: 220px; line-height: 25px; }

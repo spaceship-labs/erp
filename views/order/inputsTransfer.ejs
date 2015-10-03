@@ -90,7 +90,7 @@
             <label><%= __('order-llegada')%></label>
             <span class='field'>
                 <span class='input-group calendar-container'>
-                    <input is-open="open[0]" ng-model='transfer.arrival_date' id="arrival-date" datepicker-popup ng-change='getpickuptime()' />
+                    <input is-open="open[0]" ng-model='transfer.arrival_date' id="arrival-date" datepicker-popup min-date="DatepickerOptions.minDate" ng-change='getpickuptime()' />
                     <span class="input-group-btn">
                         <button type="button" class="btn btn-default" ng-click="open($event,0)"><i class="fa fa-calendar"></i></button>
                     </span>
@@ -120,7 +120,7 @@
             <label><%= __('order-fecha-salida')%></label>
             <span class='field'>
                 <span class='input-group calendar-container'>
-                    <input is-open="open[1]" ng-model='transfer.departure_date' datepicker-popup ng-change='getpickuptime()' />
+                    <input is-open="open[1]" ng-model='transfer.departure_date' datepicker-popup min-date="DatepickerOptions.minDate" ng-change='getpickuptime()' />
                     <span class="input-group-btn">
                         <button type="button" class="btn btn-default" ng-click="open($event,1)"><i class="fa fa-calendar"></i></button>
                     </span>
@@ -144,6 +144,8 @@
             <span class='field'><timepicker ng-model="transfer.departurepickup_time" hour-step="1" minute-step="1" show-meridian="ismeridian"></timepicker></span>
         </p>
     </div>
+    <h4 class="widgettitle">Notas</h4>
+    <p><textarea ng-model="transfer.notes"></textarea></p>
     <p class='order-controls'>
         <a ng-click="validateItem(transfer,'transfer',false)" class='btn btn-primary secondary pull-right' >Siguiente</a>
         <a ng-click="resetForm('transfer');setSteps('next',false)" class='btn btn-primary secondary pull-right' >Omitir</a>

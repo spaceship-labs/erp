@@ -1,0 +1,17 @@
+<script type='text/javascript'>
+  window.unity = <%- JSON.stringify(unity) %>;
+</script>
+<div ng-controller='unitytypeEditCTL'>
+    <div class='row-fluid'>
+        <div class="span12">        
+            <div form-helper 
+                fields='content.unitytypes' 
+                object='unity' 
+                action='/unitytype/update' 
+                form-title='<%= __('machine-info') %>'
+                >
+            </div> 
+        </div>
+    </div>
+    <br/>
+</div>

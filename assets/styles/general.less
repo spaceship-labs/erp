@@ -62,11 +62,19 @@ table.compact-timepicker tr td{padding: 0;border:0 none;}
 	-webkit-transition: all .2s;
     transition: all .2s;}
 .paymentInformation .widgettitle{background: @cart-bg;border-bottom: 1px solid;}
-.paymentInformation .widgetcontent{border-color: @cart-borders;background: @cart-bg;color: white;}
+.paymentInformation .widgetcontent{border-color: @cart-borders;background: @cart-bg;color: @cart-textColor;}
 .paymentInformation.fixedItem{position: fixed;top: 20px;right: 20px;}
 .paymentInformation .price{display: block;text-align: right;font-size: 16px;}
 .paymentInformation .inblock{display: block;}
 .inlineMessage{display: block;padding: 10px 20px;text-align: center;background: @cart-bg!important;color: white;}
+
+/*Quick Form*/
+.quickForm p{padding: 5px 10px;border: 0;font-weight: bold;}
+.quickForm input{width: 100%;}
+.quickForm .widgetcontent{background: #fcfcfc;}
+.quickForm input:focus,.quickForm select:focus,
+.quickForm a[href]:focus,.quickForm textarea:focus,
+.quickForm button:focus{ outline: 1px solid #0097FF;}
 
 /*Gral*/
 .text-list{list-style: none;}
