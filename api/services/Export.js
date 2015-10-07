@@ -102,7 +102,18 @@ Export.filter = function(opts, done){
         return done(new Error('No model found'));
     }
 
-    var defer = model.find({}, opts.fields);
+    var findOptions = {},
+        dateFrom = moment(opts.dateFrom),
+        dateTo   = moment(opts.dateTo);
+
+    if(opts.dateFrom && opts.dateTo && dateFrom.isValid() && dateTo.isValid()){
+        findOptions.createdAt = {
+            '>': dateFrom._d,
+            '<': dateTo._d
+        };
+    }
+
+    var defer = model.find(findOptions, opts.fields);
     async.eachSeries(filters, function(filt, next){
         if(opts[filt] && defer[filt])
             defer = defer[filt](opts[filt]);

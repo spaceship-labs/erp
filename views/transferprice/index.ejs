@@ -15,6 +15,7 @@
 		<div class='span4'>
 			<%= __('tranferprice-agencia')%> <select ng-change='updatePrices()' ng-model="thecompany" ng-options="obj as obj.name for obj in companies" ></select>
 		</div>
+		<button ng-if="false" class="btn btn-primary pull-right" data-toggle="modal" data-target="#exportmodal"><span class="fa fa-plus"></span><%= __('export') %></button>
 	</div>
 	<br/>
 	<h2 ng-bind="thelocation.name"></h2>
@@ -113,6 +114,17 @@
 			</table></div>
 	</div>
 	<div class="clearfix"></div>
+<div class="modal fade" id="exportmodal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><%=__('export')%> <%=__('order-precio')%></h4>
+            </div>
+            <div export-file export-type='transferprice' lang='<%=req.session.lang || "en"%>'></div>
+        </div>
+    </div>
+</div>
 </div>
 <div id="cargando-elementos" class="ng-cloak">
     <img src="/images/loaders/images-cm.gif">

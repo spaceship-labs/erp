@@ -1931,3 +1931,6 @@ module.exports.content = {
 		}
 	]
 };
+
+module.exports.content.transferprice = module.exports.content.price;
+
