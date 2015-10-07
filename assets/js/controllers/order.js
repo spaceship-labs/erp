@@ -362,8 +362,9 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
     $scope.resetForm = function(type){
         if(type){
             if(type=='client'){
-                $scope.client = false;
+                $scope.client = '';
                 $scope.generalFields = false;
+                $scope.client_flag = false;
             }else if(type=='transfer')
                 $scope.transfer = false;
             else if(type=='tour')
@@ -373,7 +374,8 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
         }else{
             $scope.transfer = false;
             $scope.reservations = { tours : [] , hotels : [] };
-            $scope.client = false;
+            $scope.client = '';
+            $scope.client_flag = false;
             $scope.generalFields = false;
         }
     };
@@ -391,7 +393,10 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
                 $scope.clients_ = $scope.clients_.concat(client_);
             }*/
             console.log(client_);
-            $scope.client = client_;
+            if( !$scope.client_flag )
+                $scope.client = client_;
+            else if( client_.client[0] )
+                $scope.client = client_.client[0];
             $scope.client_flag = true;
             //jQuery('#myModal').modal('hide');
         });
@@ -662,17 +667,25 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
                 //console.log('tours');
                 for(var x in item.schedules){
                     var aux = false;
-                    item.schedules[x] = typeof item.schedules[x] == 'string'?JSON.parse(item.schedules[x]):item.schedules[x];
-                    aux = new Date(item.schedules[x].from);
-                    item.schedules[x].from = aux.getHours() + ':' + (aux.getMinutes()==0?'00':aux.getMinutes());
-                    aux = new Date(item.schedules[x].to);
-                    item.schedules[x].to = aux.getHours() + ':' + (aux.getMinutes()==0?'00':aux.getMinutes());
+                    if( typeof item.schedules[x] == 'string' ){
+                        item.schedules[x] = JSON.parse(item.schedules[x]);
+                        aux = new Date(item.schedules[x].from);
+                        item.schedules[x].from = aux.getHours() + ':' + (aux.getMinutes()==0?'00':aux.getMinutes());
+                        aux = new Date(item.schedules[x].to);
+                        item.schedules[x].to = aux.getHours() + ':' + (aux.getMinutes()==0?'00':aux.getMinutes());
+                    }else{
+                        item.schedules[x] = item.schedules[x];
+                    }
                 }
                 for(var x in item.departurePoints){
                     var aux = false;
-                    item.departurePoints[x] = typeof item.departurePoints[x] == 'string'?JSON.parse(item.departurePoints[x]):item.departurePoints[x];
-                    aux = new Date(item.departurePoints[x].time);
-                    item.departurePoints[x].time = aux.getHours() + ':' + (aux.getMinutes()==0?'00':aux.getMinutes());
+                    if( typeof item.departurePoints[x] == 'string' ){
+                        item.departurePoints[x] = JSON.parse(item.departurePoints[x]);
+                        aux = new Date(item.departurePoints[x].time);
+                        item.departurePoints[x].time = aux.getHours() + ':' + (aux.getMinutes()==0?'00':aux.getMinutes());
+                    }else{
+                        item.departurePoints[x] = item.departurePoints[x];
+                    }
                 }
                 //console.log(item);
                 var auxTour = { tour : item, reservation_type : 'tour' , client : $scope.client };

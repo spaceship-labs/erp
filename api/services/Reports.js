@@ -251,7 +251,8 @@ module.exports.totalsReport = function(options,theCB){
 	console.log($match);
 	//agregarlo los _id para poder agreguparlo bien
 	var $groupGral = {
-		total : { $add : [ '$fee' , '$feeKids' ] }
+		total: { '$sum': '$fee' }
+		,totalKids: { '$sum': '$feeKids' }
 		,count : { $sum : 1 }
 		,pax : { $sum : '$pax' }
 		,kidPax : { $sum : '$kidPax' }
@@ -290,12 +291,12 @@ module.exports.totalsReport = function(options,theCB){
 					theReservation.aggregate([ { $match : $match }, { $group : $groupForPopulate } ],function(err,resultsForPopulate){ cb(err,resultsGlobal,resultsByMethod,resultsBypayment,resultsForPopulate); });
 				},function( resultsGlobal, resultsByMethod, resultsBypayment, resultsForPopulate, cb ){
 					var resultsPopulated = { hotels : [] , cupons : [] };
-					Hotels.find().where({ id : { '$in' : resultsForPopulate.hotels } }).populate('zone').exec(function(err,hotels){
+					Hotel.find({ id : resultsForPopulate[0].hotels }).populate('zone').exec(function(err,hotels){
 						if(err) theCB(false,err);
-						CuponSingle.find().where({ id : { '$in' : resultsForPopulate.cupons } }).populate('cupon').exec(function(err,cupons){
+						resultsPopulated.hotels = hotels || [];
+						CuponSingle.find({ id : resultsForPopulate[0].cupons }).populate('cupon').exec(function(err,cupons){
 							if(err) theCB(false,err);
-							resultsPopulated.hotels = hotels;
-							resultsPopulated.cupons = cupons;
+							resultsPopulated.cupons = cupons || [];
 							cb(err,resultsGlobal,resultsByMethod,resultsBypayment,resultsForPopulate,resultsPopulated);
 						});
 					});
@@ -306,7 +307,8 @@ module.exports.totalsReport = function(options,theCB){
 				console.log(resultsGlobal);
 				console.log(resultsByMethod);
 				console.log(resultsBypayment);
-				console.log(resultsForPopulate);
+				//console.log(resultsForPopulate);
+				//console.log(resultsPopulated);
 				var toCSV = [];
 				toCSV.push(['referencia', 'Pax', 'Total web', 'Descuento', 'Cupón', 'Precio yellow', 'Precio agencia', 'Diferencia yellow/agencia', 'Agencia diferencia', 'Comisión', 'Precio neto', 'Moneda', 'Region', 'Amount of Services', 'Service type', 'Metodo de pago', 'Airport', 'Servicio', 'Reservation Date', 'Status', 'Servicio completado'])
 				if( list_reservations ){ for( var x in list_reservations ){
@@ -317,8 +319,11 @@ module.exports.totalsReport = function(options,theCB){
 					item[i] = l.folio;
 					item[++i] = l.pax;
 					item[++i] = l.fee + l.feeKids;
-					item[++i] = l.type=='round_trip'?cupon.cupon.round_discount:cupon.cupon.simple_discount;//descuento
-					item[++i] = cupon.token;//cupón
+					if( cupon )
+						item[++i] = l.type=='round_trip'?cupon.cupon.round_discount:cupon.cupon.simple_discount;//descuento
+					else
+						item[++i] = 0;
+					item[++i] = cupon?cupon.token:'no';//cupón
 					item[++i] = 0;//precio yellow
 					item[++i] = 0;//precio agencia
 					item[++i] = 0;//diferencia yellow/agencia
@@ -326,7 +331,8 @@ module.exports.totalsReport = function(options,theCB){
 					item[++i] = l.commission_agency;//comisión
 					item[++i] = l.commission_agency ? l.fee - ( l.fee * l.commission_agency ) : l.fee;//precio neto?
 					item[++i] = l.currency.currency_code;
-					item[++i] = getItemById(l.hotel,resultsPopulated.hotels).zone.name;
+					var hotel = getItemById(l.hotel,resultsPopulated.hotels);
+					item[++i] = hotel.zone?hotel.zone.name:'NOOOOOOOOOOOOOOOOOOOOOO';
 					item[++i] = l.quantity;//cantidad
 					item[++i] = l.type;//service type
 					item[++i] = l.payment_method;
