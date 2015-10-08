@@ -1811,6 +1811,12 @@ module.exports.content = {
 			,required : true
 		}
 		,{
+			label : 'Razón social'
+			,label_en : 'Corporate name'
+			,type : 'text'
+			,handle : 'business_name'
+		}
+		,{
 			label: 'Dirección'
 			,label_en : 'Address'
 			,type : 'text'

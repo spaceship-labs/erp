@@ -34,10 +34,11 @@ app.controller('tourproviderEditCTL',function($scope,$http){
             data.feeChild_base = (tour.feeChild-(tour.feeChild*(data.commission_agency/100)));
             console.log(data);
             $scope.saveClass = 'fa-upload';
-            $http({method: 'POST',url:'/tour/update',params:data}).success(function(t){
+            $http.post('/tour/update', data).then(function(t){ 
+            //$http({method: 'POST',url:'/tour/update',params:data}).success(function(t){
                 $scope.saveClass = 'fa-save';
-                console.log(t);
-                $scope.provider.tours[index] = t;
+                console.log(t.data);
+                $scope.provider.tours[index] = t.data;
             });
         }else{
             console.log('error, valor no válido');
@@ -61,7 +62,7 @@ app.controller('tourproviderEditCTL',function($scope,$http){
     $scope.addTour = function(t){
         var params = t;
         params.provider = $scope.provider.id;
-        $http.get('/tour/update', { params: params }).then(function(response){ 
+        $http.post('/tour/update', params).then(function(response){ 
             if(response.data)
                 $scope.provider.tours.push(response.data);
         });

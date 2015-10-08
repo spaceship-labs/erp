@@ -12,7 +12,7 @@ app.controller('priceCTL',function($scope,$http){
             $scope.thecompany = $scope.companies[i];
     }
     $scope.updatePrices = function(req,res){
-    	params = { location : $scope.thelocation.id , company : $scope.thecompany.id };
+    	params = { location : $scope.thelocation.id , company : $scope.thecompany.id , transfer : $scope.thetransfer.id };
     	$http({method: 'POST', url: '/transferprice/getPrices',params:params }).success(function (prices){
 			$scope.prices = prices;
 			//$scope.companies = addPricesOnCompany($scope.companies,prices);
@@ -56,4 +56,16 @@ app.controller('priceCTL',function($scope,$http){
     	return $scope.isCollapsed[index];
     }
     //$scope.closeTransfers();
+    $scope.generatePrices = function(company,transfer){
+        if( company && transfer ){
+            var params = { companyID : company.id , transferID : transfer.id };
+            console.log(params);
+            $http({method: 'POST', url: '/transferprice/createCustom',params:params }).success(function (prices){
+                console.log('Resultado de crear los precios');
+                console.log(prices);
+                //$scope.prices = prices;
+                //$scope.companies = addPricesOnCompany($scope.companies,prices);
+            });
+        }
+    }
 });

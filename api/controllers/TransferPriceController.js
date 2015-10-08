@@ -19,11 +19,12 @@ module.exports = {
 			},function(companies_,airports,transfers,locations,cb){
 				TransferPrice.find({
 						company : req.user.default_company , 
+						transfer : transfers[0].id , 
 						"$or" : [
 							{'location' : locations[0].id}, 
 							{'location2' : locations[0].id} 
 						]
-					}).sort('zone1')
+					}).sort('zone1') //.limit(1000)
 					.populate('zone1').populate('zone2').populate('transfer').populate('location').populate('location2')
 					.exec(function(e,prices){ cb(e,companies_,airports,transfers,locations,prices) })
 			},
@@ -53,6 +54,7 @@ module.exports = {
 		TransferPrice.find({ 
 				//company:req.user.default_company ,
 				company : condiciones.company ,
+				transfer : condiciones.transfer , 
 				"$or" : [
 					{ 'location' : condiciones.location }, 
 					{ 'location2' : condiciones.location } 
@@ -71,6 +73,46 @@ module.exports = {
 		TransferPrice.update({id:params.id},params,function(e,price){
 			if(e) throw(e);
 			res.json(price);
+		});
+	},
+	createCustom : function(req,res){
+		var params = req.params.all();
+		var companyID = params.companyID;
+		var transferID = params.transferID;
+		var reads = [
+			function(cb){
+				if( companyID )
+					Company.find({ id : companyID }).exec(cb)
+				else
+					Company.find().exec(cb)
+			},function(companies_,cb){
+				Airport.find().populate('location').exec(function(e,airports){ cb(e,companies_,airports) })
+			},function(companies_,airports,cb){
+				if( transferID )
+					Transfer.find({ id : transferID }).exec(function(e,transfers){ cb(e,companies_,airports,transfers) })
+				else
+					Transfer.find().exec(function(e,transfers){ cb(e,companies_,airports,transfers) })
+			},function(companies_,airports,transfers,cb){
+				Location.find().populate('zones').populate('locations').exec(function(e,locations){ cb(e,companies_,airports,transfers,locations) })
+			},function(companies_,airports,transfers,locations,cb){
+				/*TransferPrice.find()
+					.populate('zone1').populate('zone2')
+					.exec(function(e,prices){ cb(e,companies_,airports,transfers,locations,prices) })*/
+				var prices = [];
+				cb(false,companies_,airports,transfers,locations,prices)
+			},
+		];
+		async.waterfall(reads,function(e,companies_,airports,transfers,locations,prices){
+			//res.json(transfers);
+			Transferprices.createTransferPrices(locations,transfers,companies_,function(){
+				res.json({
+					prices : prices ,
+					locations : locations ,
+					airports : airports ,
+					transfers : transfers ,
+					companies_ : companies_ 
+				});
+			});
 		});
 	},
 	createAll : function(req,res){
