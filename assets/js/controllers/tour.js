@@ -15,7 +15,6 @@ app.controller('tourCTL',function($scope,$http,$window,$rootScope){
         r[$rootScope.translates.c_updated] = tour.updatedAt;
 		return r;
 	};
-
 	$scope.createTour = function(newtour){
         $http({method: 'POST', url: '/tour/create',params:newtour}).success(function (result){
             $scope.tours = result.tours;
@@ -23,7 +22,11 @@ app.controller('tourCTL',function($scope,$http,$window,$rootScope){
             $window.location =  "/tour/edit/" + result.thetour.id;
         });    
     };
-
+    $scope.setTimes = function(){
+        $http({method: 'POST', url: '/tour/formatTimes',params : {} }).success(function (result){
+            console.log(result);
+        });
+    };
 });
 
 app.controller('tourEditCTL',function($scope,$http,$window){

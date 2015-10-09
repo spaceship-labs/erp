@@ -198,5 +198,42 @@ module.exports = {
 			res.json(r);
 		})
 	},
+	formatTimes : function(req,res){
+		Tour.find().exec(function(err,tours){
+			if(err) res.json(false);
+			formatDuration(tours,function(err,result){
+				res.json({ err : err , result : result });
+			});
+		})
+	}
 };
 
+var formatDuration = function(tours,thecb){
+	async.mapSeries( tours, function(tour,cb) {
+		//duration_formated
+		//duration
+		var timeString = tour.duration;
+		timeString = timeString.split(' ');
+		if( timeString[0] && timeString[0] != '' ){
+			var hrs = 0;
+			var mins = 0;
+			if( timeString[1] && timeString[1] == 'minutos' ){
+				mins = !isNaN( parseInt(timeString[0]) )?parseInt(timeString[0]):0; 
+			}else{
+				timeString = timeString[0].split('.');
+				hrs = !isNaN( parseInt(timeString[0]) )?parseInt(timeString[0]):0;
+				mins = timeString[1]?parseInt(timeString[1])*6:0;
+			}
+			var aux = new Date();
+			aux.setHours(hrs,mins);
+			console.log( tour.id + ' ' + hrs  + ':' + mins );
+			console.log( aux );	
+			Tour.update({id:tour.id},{ duration_formated : aux }).exec(function(err,t){
+				cb(err,t);
+			});
+		}else
+			cb(false,tour);
+	},function(err,results){
+		thecb(err,results);
+	});
+}
