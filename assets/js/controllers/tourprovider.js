@@ -22,8 +22,8 @@ app.controller('tourproviderCTL',function($scope,$http,$rootScope){
 });
 app.controller('tourproviderEditCTL',function($scope,$http){
     $scope.locations = locations;
-    provider.tours = provider.tours || [];
     $scope.provider = provider;
+    $scope.provider.tours = $scope.provider.tours || [];
     $scope.user = user;
     $scope.content = content;
     $scope.company = company;
