@@ -44,14 +44,14 @@
                     <tr ng-repeat="t in provider.tours">
                         <td data-title="Nombre" ng-bind="t.name"></td>
                         <td data-title="Precio base" >
-                            <p> Adultos: {{t.fee}} {{company.base_currency.currency_code}}</p>
-                            <p> Menores: {{t.feeChild}} {{company.base_currency.currency_code}}</p>
+                            <p> Adultos: {{t.fee | currency:'$':2}} {{company.base_currency.currency_code}}</p>
+                            <p> Menores: {{t.feeChild | currency:'$':2}} {{company.base_currency.currency_code}}</p>
                         </td>
                         <td>
-                            <span>{{t.fee_base || 0 }} {{company.base_currency.currency_code}}</span>
+                            <span>{{t.fee_base || 0 | currency:'$':2 }} {{company.base_currency.currency_code}}</span>
                         </td>
                         <td>
-                            <span >{{t.feeChild_base || 0 }} {{company.base_currency.currency_code}}</span>
+                            <span >{{t.feeChild_base || 0 | currency:'$':2 }} {{company.base_currency.currency_code}}</span>
                         </td>
                         <td data-title="Comisión agencia">
                             <span 
