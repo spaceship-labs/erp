@@ -18,9 +18,11 @@ app.controller('tourproviderCTL',function($scope,$http,$rootScope){
             jQuery('#myModal').modal('hide');
         });
     };
+    $scope.currencies = currencies;
 });
 app.controller('tourproviderEditCTL',function($scope,$http){
     $scope.locations = locations;
+    provider.tours = provider.tours || [];
     $scope.provider = provider;
     $scope.user = user;
     $scope.content = content;
@@ -66,5 +68,18 @@ app.controller('tourproviderEditCTL',function($scope,$http){
             if(response.data)
                 $scope.provider.tours.push(response.data);
         });
-    }
+    };
+    $scope.removeTour = function(t){
+        var params = t;
+        params.provider = ' ';
+        $http.post('/tour/update', params).then(function(response){ 
+            console.log( response.data );
+            if(response.data){
+                for(x in $scope.provider.tours){
+                    if( $scope.provider.tours[x].id == t.id )
+                        $scope.provider.tours.splice(x,1);
+                }
+            }
+        });
+    };
 });

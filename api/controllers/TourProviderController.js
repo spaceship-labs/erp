@@ -8,20 +8,25 @@
 module.exports = {
 	index : function(req,res){
 		TourProvider.find().exec(function(e,providers){
+			if(e) throw(e);
 			Location.find().exec(function(e,locations){
 				if(e) throw(e);
-				Common.view(res.view,{
-					providers : providers
-					,locations:locations
-					,page:{
-						name : "Proveedores de Tours",
-						icon:'fa fa-compass',
-						controller : 'tourprovider.js'
-					}
-					,breadcrumb : [
-						{label : 'Proveedores'}
-					]
-				},req);
+				Currency.find().exec(function(err,currencies){
+					if(err) throw(err);
+					Common.view(res.view,{
+						providers : providers
+						,locations:locations
+						,currencies:currencies || []
+						,page:{
+							name : "Proveedores de Tours",
+							icon:'fa fa-compass',
+							controller : 'tourprovider.js'
+						}
+						,breadcrumb : [
+							{label : 'Proveedores'}
+						]
+					},req);
+				});
 			});
 		});
 	},edit : function(req,res){
