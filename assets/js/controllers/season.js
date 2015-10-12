@@ -8,7 +8,14 @@ app.controller('seasonshemeCTL',function($scope,$http){
             jQuery('#myModal').modal('hide');
         });    
     };
-
+    $scope.cloneScheme = function(scheme){
+        console.log('clone function');
+        $http.post('/seasonscheme/cloneScheme',{ id : scheme.id },{}).success(function(scheme){
+            console.log(scheme);
+            if( scheme.result )
+                $scope.schemes.push(scheme.result);
+        });
+    }
 });
 app.controller('calendarCTL',function($scope,$http){
     $scope.content = content;
@@ -17,21 +24,50 @@ app.controller('calendarCTL',function($scope,$http){
     $scope.hotels = hotels;
     $scope.year = 2015;
     $scope.newSeason = {scheme:$scope.scheme.id};
+    $scope.editingSeason = false;
+    var formatDates = function(d){
+        var result = false;
+        console.log(d);
+        if( d ){
+            var dateFormat = new Date(d);
+            result = dateFormat.getDate() + "/" + (dateFormat.getMonth()+1) +"/" + dateFormat.getFullYear();
+        }
+        console.log(result);
+        return result;
+    };
     $scope.scheme.seasons.forEach(function(season){
         season.title = season.title || 'sin titulo';
-        var dateFormat = new Date(season.start);
-        var dateFormat2 = new Date(season.end);
-        season.newStart = dateFormat.getDate() + "/" + (dateFormat.getMonth()+1) +"/" + dateFormat.getFullYear();
-        season.newEnd = dateFormat2.getDate() + "/" + (dateFormat2.getMonth()+1) +"/" + dateFormat2.getFullYear();
+        season.newStart = formatDates( season.start );
+        season.newEnd = formatDates( season.end );
     });
-
    $scope.createSeason = function(){
         $http({method: 'POST', url: '/season/create',params:$scope.newSeason}).success(function (season){
             season.title = season.title || 'sin titulo';
+            season.newStart = formatDates( season.start );
+            season.newEnd = formatDates( season.end );
             $scope.scheme.seasons.push(season);
             jQuery('#myModal').modal('hide');
             $scope.$broadcast('UPDATE SEASONS');
-        });    
+        });
+    };
+    $scope.editSeason = function(){
+        delete $scope.editingSeason.newStart;
+        delete $scope.editingSeason.newEnd;
+        $http.post('/season/update/'+$scope.editingSeason.id,$scope.editingSeason,{}).success(function(season){
+            console.log(season);
+            season.title = season.title || 'sin titulo';
+            season.newStart = formatDates( season.start );
+            season.newEnd = formatDates( season.end );
+            for( var x in $scope.scheme.seasons ){
+                if( $scope.scheme.seasons[x].id == season.id ) $scope.scheme.seasons[x] = season;
+            }
+            $scope.editingSeason = false;
+            jQuery('#myModalEdit').modal('hide');
+        });
     }
-
+    $scope.setEditSeason = function(season){
+        if(season){
+            $scope.editingSeason = season;
+        }
+    };
 });

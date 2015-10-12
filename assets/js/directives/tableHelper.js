@@ -49,7 +49,9 @@
                 editRoute : '@',
                 deleteRoute : '@',
                 inlineEdit : '@', //url to update object
-                route : '@'
+                route : '@', 
+                cloneItem : '=',  // indica si mostrar 
+                cloneFunction : '=',  //función a ejecutar en caso de clone
         	},
         	templateUrl : '/template/find/tableHelper.html'
         };

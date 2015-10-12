@@ -26,7 +26,7 @@
             typeahead="tour as tour.name for tour in getTours($viewValue)" 
             typeahead-on-select="addTour($item, $model, $label)" >
     </div>
-    <div class='row' ng-show="provider.tours">
+    <div class='row'>
         <div class="col-md-12">
             <div class="widgetcontent custom-table nopadding ng-cloak">
                 <h4 class='widgettitle'>Tours</h4>
@@ -84,7 +84,7 @@
                               <button class="btn btn-primary" ng-click="rowform.$show()"><%= __('tranferprice-editar')%></button>
                             </div>
                         </td>
-                        <td><button class="btn btn-primary" ng-click="removeTour(t)">X</button></td>
+                        <td><a style='cursor:pointer' class="fa fa-trash-o" ng-click="removeTour(t)"></a></td>
                     </tr>
                 </table>
             </div>

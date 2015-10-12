@@ -46,7 +46,7 @@ module.exports = {
 						}
 						,breadcrumb : [
 							{label : 'Proveedores' , url : '/tourprovider/'}
-							,{ label : provider.name }
+							,{ label : provider.name || '' }
 						]
 					},req);
 				});

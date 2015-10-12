@@ -5,6 +5,7 @@
                 <th ng-repeat='column in columns' ng-bind="column[labelHelper]"></th>
                 <th ng-if="!inlineEdit" ng-bind="translates.d_edit"></th>
                 <th ng-bind="translates.d_delete"></th>
+                <th ng-if='cloneItem'>Clonar</th>
             </tr>
         </thead>
         <tbody>
@@ -22,6 +23,7 @@
                     <a ng-href='{{customEditRoute}}/{{object.id}}' class='fa fa-edit' style="cursor: pointer"></a>
                 </td>
     			<td><a class='fa fa-trash-o' ng-click='destroyObject(object,key)' style="cursor: pointer"></a></td>
+                <td ng-if='cloneItem' data-title='Clonar'><a style="cursor: pointer" ng-click="cloneFunction(object)" class='fa fa-files-o'></a></td>
     		</tr>    	
         </tbody>
     </table>

@@ -38,7 +38,11 @@ module.exports = {
 		delete params.company;
 		delete params.adminCompany;
         if(params.name) params.name = new RegExp(params.name,"i");
-        if( params.provider == 'null' ) params.provider = null;
+        //if( params.provider == 'null' ) params.provider = null;
+        if( params.provider == 'null' ){ 
+        	delete params.provider; 
+        	params.$or = [ { 'provider' : null } , { 'provider' : ' ' } ];
+    	}
         Tour.find(params).skip(skip).limit(limit).exec(function(err,tours){
         	if(err) res.json('err');
         	Tour.count(params).exec(function(e,count){
