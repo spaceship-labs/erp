@@ -32,13 +32,14 @@ module.exports = {
 	},edit : function(req,res){
 		TourProvider.findOne(req.params.id).populate('tours').exec(function(e,provider){
 			if(e) throw(e);
-			Location.find().exec(function(e,locations){
+			Location.find().exec(function(e,locations){ TourCategory.find().exec(function(e,tourcategories){
 				//sails.controllers.admin.currenciesJson(req,res,function(currencies){
 				Currency.find().exec(function(err,currencies){
 					Common.view(res.view,{
 						provider:provider
 						,locations:locations
 						,currencies : currencies
+						,tourcategories : tourcategories
 						,page:{
 							name : "Proveedores de Tours",
 							icon:'fa fa-compass',
@@ -50,7 +51,7 @@ module.exports = {
 						]
 					},req);
 				});
-			});
+			}); });
 		});
 	}
 	,update : function(req,res){

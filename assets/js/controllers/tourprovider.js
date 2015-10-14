@@ -28,6 +28,7 @@ app.controller('tourproviderEditCTL',function($scope,$http){
     $scope.content = content;
     $scope.company = company;
     $scope.currencies = currencies;
+    $scope.tourcategories = tourcategories;
     $scope.saveTour = function(data,tour,index){
         var aux = parseFloat(data.commission_agency);
         if( !isNaN(aux) ){

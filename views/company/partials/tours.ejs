@@ -39,6 +39,7 @@
         </form>
     </div>
     <div class='autocomplete'>
+        <a class='btn btn-primary' ng-click="addAllTours()" >Agregar Todos</a>
         <input type="text" placeholder="Tours" class="form-control" 
             ng-model="toursPrices" 
             typeahead="tour as tour.name for tour in getTours($viewValue)" 

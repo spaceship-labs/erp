@@ -22,8 +22,7 @@ module.exports = {
 				},req);
 			});
 		});
-	}
-    , find : function(req,res){
+	}, find : function(req,res){
         var params = req.params.all();
         if( typeof params.id == 'undefined' ) delete params.id;
         if(params.name) params.name = new RegExp(params.name,"i");
@@ -37,18 +36,16 @@ module.exports = {
                 res.json( user.companies );
             });
         }
-    }
-    , setasdefault : function(req,res){
+    }, setasdefault : function(req,res){
         if( req.user.isAdmin ){
             var params = { adminCompany : true };
             Company.update({ id : req.user.default_company },params).exec(function(err,c){
                 res.json(c);
             });
         }
-    }
-	, edit: function(req,res){
+    }, edit: function(req,res){
         var id = req.params.id;
-	if(!id) return res.notFound();
+	    if(!id) return res.notFound();
         Currency.find().exec(function(err, currencies){
             Company.findOne({id:id}).populate('users').populate('hotels').populate('taxes').populate('currencies').exec(function(err,company){
                 //if(err) throw err;

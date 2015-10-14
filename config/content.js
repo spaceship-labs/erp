@@ -359,7 +359,8 @@ module.exports.content = {
 		{
 			label : 'Máximo de clientes',
 			label_en : 'Client max number',
-			type : 'text',
+			type : 'select',
+			object : 'maxpax',
 			handle : 'pax',
 		},
 		{
@@ -458,12 +459,6 @@ module.exports.content = {
 			label_en : 'Children rate',
 			type : 'money',
 			handle : 'feeChild',
-		},
-		{
-			label : 'Horario General',
-			label_en : 'General schedule',
-			type : 'text',
-			handle : 'schedule',
 		},
 		{
 			label : 'Duración',
@@ -636,6 +631,30 @@ module.exports.content = {
 			handle : 'recommendations_pt',
 			message : "Separar por enter, cada línea es un elemento de lista",
 			message_en : "Separate with enter, each line is an list element",
+		},
+		{
+			label : 'Restricciones de edad, Español'
+			,label_en : "Age restrictions, Spanish"
+			,type : 'textarea'
+			,handle : 'age_restrictions_es'
+		},
+		{
+			label : 'Restricciones de edad, Inglés'
+			,label_en : "Age restrictions, English"
+			,type : 'textarea'
+			,handle : 'age_restrictions_en'
+		},
+		{
+			label : 'Restricciones de edad, Ruso'
+			,label_en : "Age restrictions, Russian"
+			,type : 'textarea'
+			,handle : 'age_restrictions_ru'
+		},
+		{
+			label : 'Restricciones de edad, Portugués'
+			,label_en : "Age restrictions, Portuguese"
+			,type : 'textarea'
+			,handle : 'age_restrictions_pt'
 		},
 		{
 			label : 'Condiciones de transportación Español'

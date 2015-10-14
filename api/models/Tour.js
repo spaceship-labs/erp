@@ -21,6 +21,7 @@ module.exports = {
 		,categories : {
 			collection : 'tourcategory'
 			,via:'tours' }
+		,pax : 'integer'
 		,fee : 'float' // precio de venta
 		,feeChild : 'float' //precio de venta
 		,fee_base : 'float' //precios de proveedor

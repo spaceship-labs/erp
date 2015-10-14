@@ -291,6 +291,7 @@ app.controller('companyEditCTL',function($scope,$http,$timeout){
             $http({method: 'delete', url: url }).success(cbUpdateCurrencies);
         }
     };
+    $scope.addAllTours = function(){}
 
     function cbUpdateCurrencies(company){
         if(company && company.currencies){

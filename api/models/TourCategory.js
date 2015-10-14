@@ -11,7 +11,6 @@ module.exports = {
   	,name_en : 'String'
   	,name_ru : 'String'
   	,name_pt : 'String'
-  	,icon : 'String'
   	,tours : {
   		collection : 'tour'
   		,via: 'categories'

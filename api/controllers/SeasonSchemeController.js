@@ -43,7 +43,9 @@ module.exports = {
     });
   },
   cloneScheme : function(req,res){
-    var schemeID = req.params.id;
+    var params = req.params.all();
+    var schemeID = params.id;
+    //res.json(schemeID);
     SeasonScheme.findOne(schemeID).populate('seasons').exec(function(e,scheme){
       if(e) throw (e);
       var schemeAux = { name : scheme.name + ' - copy ' };

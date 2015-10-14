@@ -9,9 +9,7 @@ app.controller('seasonshemeCTL',function($scope,$http){
         });    
     };
     $scope.cloneScheme = function(scheme){
-        console.log('clone function');
         $http.post('/seasonscheme/cloneScheme',{ id : scheme.id },{}).success(function(scheme){
-            console.log(scheme);
             if( scheme.result )
                 $scope.schemes.push(scheme.result);
         });
@@ -27,12 +25,10 @@ app.controller('calendarCTL',function($scope,$http){
     $scope.editingSeason = false;
     var formatDates = function(d){
         var result = false;
-        console.log(d);
         if( d ){
             var dateFormat = new Date(d);
             result = dateFormat.getDate() + "/" + (dateFormat.getMonth()+1) +"/" + dateFormat.getFullYear();
         }
-        console.log(result);
         return result;
     };
     $scope.scheme.seasons.forEach(function(season){
@@ -54,7 +50,6 @@ app.controller('calendarCTL',function($scope,$http){
         delete $scope.editingSeason.newStart;
         delete $scope.editingSeason.newEnd;
         $http.post('/season/update/'+$scope.editingSeason.id,$scope.editingSeason,{}).success(function(season){
-            console.log(season);
             season.title = season.title || 'sin titulo';
             season.newStart = formatDates( season.start );
             season.newEnd = formatDates( season.end );

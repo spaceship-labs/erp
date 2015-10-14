@@ -5,6 +5,10 @@ app.controller('tourCTL',function($scope,$http,$window,$rootScope){
     $scope.schemes = schemes;
     $scope.company = company;
     $scope.providers = providers;
+    $scope.tourcategories = tourcategories;
+    $scope.maxpax = [{id:0,name:'No aplica'}];
+    for(var x=1;x<30;x++)
+        $scope.maxpax.push({ id: x , name: x+' persona'+( x>1?'s':'' ) });
 	$scope.getInfo = function(tour){
         tour.createdAt=(moment(tour.createdAt).format('LL'));
         tour.updatedAt=(moment(tour.updatedAt).format('LL'));
@@ -34,13 +38,15 @@ app.controller('tourEditCTL',function($scope,$http,$window){
     $scope.locations = locations;
     $scope.providers = providers;
     $scope.tour = tour;
+    $scope.maxpax = [{id:0,name:'No aplica'}];
+    for(var x=1;x<30;x++)
+        $scope.maxpax.push({ id: x , name: x+' persona'+( x>1?'s':'' ) });
     console.log(tour);
     $scope.tour.schedules = $scope.tour.schedules || [];
     for(var x in $scope.tour.schedules)
         $scope.tour.schedules[x] = typeof $scope.tour.schedules[x] == 'string'?JSON.parse($scope.tour.schedules[x]):$scope.tour.schedules[x];
     $scope.user = user;
     $scope.tourcategories = tourcategories;
-    console.log(tourcategories);
     /*io.socket.get('/tour/find/'+tour.id,function(data,jwres){
         $scope.tour = data;
 	    $scope.tour.seasonScheme = data.seasonScheme && data.seasonScheme.id || null;

@@ -27,6 +27,7 @@ module.exports = {
 			tourcategory:tourcategory,
 			page:{
 				name:'Tour Categories'
+				,saveButton : true
 				,icon:'fa fa-folder'
 				,controller : 'tourcategories.js'
 			},
@@ -58,6 +59,7 @@ module.exports = {
 			profile: 'avatar',
 			id : form.id,
 		},function(e,category){
+			if(e) console.log(e);
 			res.json(category);
 		});
 	}
