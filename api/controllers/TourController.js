@@ -8,13 +8,14 @@
 module.exports = {
 	index: function(req,res){
 		Tour.find({}).sort('name').exec(function(e,tours){
-			SeasonScheme.find().sort('name').exec(function(e,schemes){
+			SeasonScheme.find().sort('name').exec(function(e,schemes){ TourCategory.find().exec(function(e,tourcategories){
 				Location.find({}).sort('name').exec(function(e,locations){ TourProvider.find().exec(function(e,providers){
 					Common.view(res.view,{
 						tours:tours,
 						schemes:schemes,
 						locations:locations,
 						providers : providers,
+						tourcategories: tourcategories,
 						page:{
 							name:req.__('sc_tour'),
 							icon:'fa fa-compass',
@@ -25,7 +26,7 @@ module.exports = {
 						]
 					},req);	
 				}); });
-			});
+			}); }); //seasons
 		});
 	},
 	find : function(req,res){
