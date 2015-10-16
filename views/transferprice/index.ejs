@@ -19,6 +19,7 @@
 			Transfer <select ng-change='updatePrices()' ng-model="thetransfer" ng-options="obj as obj.name for obj in transfers" ></select>
 		</div>
 		<button ng-if="false" class="btn btn-primary pull-right" data-toggle="modal" data-target="#exportmodal"><span class="fa fa-plus"></span><%= __('export') %></button>
+		<a ng-click='generatePrices(thecompany,thetransfer)'>Generar precios</a>
 	</div>
 	<br/>
 	<h2 ng-bind="thelocation.name"></h2>

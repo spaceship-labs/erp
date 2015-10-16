@@ -152,17 +152,9 @@ module.exports = {
     },
   createOrder : function(req,res){
     var params = req.params.all();
-    params.user = req.user.id;
-    params.company = params.company?params.company:(req.session.select_company || req.user.select_company);
-    params.reservation_method = 'intern';
-    params.req = req;
-    params.reservations = [];
-    delete params.id;
-    //console.log(params);
-    Order.create(params).exec(function(err,order){
-        //console.log(err);
-        if(err) return res.json(err);
-        return res.json(order);
+    OrderCore.createOrder(params,req,function(err,order){
+      if(err) return res.json(err);
+      return res.json(order);
     });
   },
   createReservation : function(req,res){
@@ -194,6 +186,8 @@ module.exports = {
           params.fee_adults_rt = transferprice.round_trip;
           params.fee_kids = transferprice.one_way_child;
           params.fee_kids_rt = transferprice.round_trip_child;
+          //necesitaría guardar otros 4 precios que serían los de la empresa principal
+          //esto en caso de que sea una reserva por agencia
           params.commission_sales = transferprice.commission_user || 0;
           params.commission_agency = transferprice.commission_agency || 0;
           params.exchange_rate_sale = mainCompany.exchange_rate_sale;
@@ -390,6 +384,10 @@ module.exports = {
     if( params.zone1 && params.zone2 ){
       var company = params.company?params.company:(req.session.select_company || req.user.select_company);
       customGetAvailableTransfers(company,params,res);
+      /*OrderCore.getAvailableTransfers(params.zone1,params.zone2,company,function(err,prices){
+        if(err) res.json(false);
+        res.json(prices);
+      });*/
     }else{
       return res.json(false);
     }

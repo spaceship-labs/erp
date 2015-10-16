@@ -57,6 +57,7 @@ module.exports = {
 			Common.view(res.view,{
 				transfer:transfer,
 				page:{
+					saveButton : true,
 					name:transfer.name,
 					icon:'fa fa-car',
 					controller : 'transfer.js'

@@ -8,6 +8,7 @@ module.exports.view = function(view,data,req){
 	data._content = sails.config.content;
 	data._content.socketUrl = sails.config.socketsUrl;
 	data._content.lang = req.getLocale();
+	data.interactions = sails.config.interactions[ process.env.ERPTHEME || 'default' ] || {};
 	//data.socketUrl = sails.config.socketsUrl;
 	Company.findOne(data.selected_company).populate('base_currency').populate('currencies').exec(function(e,company){
         if (e) console.log(e);
