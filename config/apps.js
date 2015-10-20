@@ -411,5 +411,23 @@ module.exports.apps = [
                 ,action : 'index'
             }
         ]
+    },
+    {
+        name : 'transport'
+        ,label : 'Transportes'
+        ,label_en : 'Transport'
+        ,icon : 'fa-road'
+        ,actions : [
+            {
+                label : 'Vehiculo'
+                ,label_en : 'Car'
+                ,icon : 'fa-car'
+                ,url : '/Transport/'
+                ,showInMenu : true
+                ,handle : 'transport'
+                ,controller : 'transport'
+                ,action : 'index'
+            }
+        ]
     }
 ];

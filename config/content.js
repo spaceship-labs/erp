@@ -1954,7 +1954,57 @@ module.exports.content = {
 			,object : 'unitytypes'
 			,handle : 'unitytype'
 		}
-	]
+	],
+	transport : [
+		{
+			label: 'ID',
+			label_en: 'ID',
+			type: 'text',
+			required: true,
+			handle: 'car_id',
+			on_Change: 'remove_invalid'
+		
+		},
+		{
+			label: 'Placa',
+			label_en: 'License plate',
+			type: 'text',
+			required: true,
+			handle: 'license_plate'
+		
+		},{
+			label: 'Modelo',
+			label_en: 'Model',
+			type: 'text',
+			required: true,
+			handle: 'car_model'
+		},
+		{
+			label : 'Tipo de servicio'
+			,label_en : 'Service type'
+			,type : 'select'
+			,object : 'serviceTypes'
+			,required : true
+			,handle : 'service_type'
+		},
+
+		{
+			label 	: 'Personas por servicio',
+			label_en : 'People by service',
+			type 	: 'text',
+			required: true,
+			handle 	: 'max_pax'
+		},
+		{
+			label: 'Empresa',
+			label_en: 'Company',
+			type : 'select',
+			handle : 'company',
+			object : 'companies',
+			required : true,
+		}
+	],
+
 };
 
 module.exports.content.transferprice = module.exports.content.price;
