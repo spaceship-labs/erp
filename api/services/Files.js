@@ -166,7 +166,7 @@ module.exports.makeCropsStreams = function(uploadOptions, opts, cb){
     async.each(sizes,function(size, next){ 
     	var wh = size.split('x');
         gmIm(opts.srcData)
-        .resize(wh[0], wh[1])
+        .resize(wh[0], wh[1], '!')
         .stream(function(err, stdout, stderr){
             if(err) return next(err);
             stdout.pipe(adapter.uploadStream({dirSave:opts.dirSave, name: size+opts.filename }, next));

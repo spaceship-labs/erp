@@ -11,26 +11,35 @@
 				</tr>
 				<tbody ng-if="object.results.reportType=='bygroup'" ng-repeat="r in object.results.rows">
 					<tr ng-class="r.type=='c'?'underlight':''">
-						<td ng-repeat="h in object.results.headers" ng-bind="r[h.handle]"></td>
+						<td ng-repeat="h in object.results.headers">
+							<span ng-if="h.type!='currency'" ng-bind="r[h.handle]"></span>
+							<span ng-if="h.type=='currency'" ng-bind="r[h.handle] | currency:'$ ':3"></
+						</td>
 					</tr>
 					<tr ng-repeat="r2 in r.rows2">
-						<td ng-repeat="h in object.results.headers" ng-bind="r2[h.handle]"></td>
+						<td ng-repeat="h in object.results.headers">
+							<span ng-if='h.type!="currency"' ng-bind="r2[h.handle]"></span>
+							<span ng-if='h.type=="currency"' ng-bind="r2[h.handle] | currency:'$ ':3"></span>
+						</td>
 					</tr>
 				</tbody>
 				<tbody ng-if="object.results.reportType!='bygroup'">
 					<tr data-name="{{key}}" ng-repeat="(key,r) in object.results.rows" ng-class="r.type=='c'?'underlight':''">
-						<td ng-repeat="h in object.results.headers" ng-bind="r[h.handle]"></td>
+						<td ng-repeat="h in object.results.headers">
+							<span ng-if="h.type!='currency'" ng-bind="r[h.handle]"></span>
+							<span ng-if="h.type=='currency'" ng-bind="r[h.handle] | currency:'$ ':3"></span>
+						</td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
 		<div class='amountdue'>
 			<ul>
-				<li><span class='listTitle'>Subtotal: </span><span ng-bind="object.results.totals.subtotal"></span></li>
-				<li><span class='listTitle'>IVA: </span><span ng-bind="object.results.totals.iva"></span></li>
+				<li><span class='listTitle'>Subtotal: </span><span ng-bind="object.results.totals.subtotal | currency:'$ ':3"></span></li>
+				<li><span class='listTitle'>IVA: </span><span ng-bind="object.results.totals.iva | currency:'$ ':3"></span></li>
 				<li><span class='listTitle'>Pax: </span><span ng-bind="object.results.totals.pax"></span></li>
 			</ul>
-			<h1><span>Total: </span> <a ng-bind='object.results.totals.total'></a></h1>
+			<h1><span>Total: </span> <a ng-bind='object.results.totals.total | currency:"$ ":3'></a></h1>
 		</div>
 	</div>
 </div>

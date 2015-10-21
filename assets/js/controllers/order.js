@@ -460,6 +460,7 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
             for(var x in $scope.reservations.tours[y].contacts)
                 $scope.reservations.tours[y].contacts[x] = $scope.client.contacts[$scope.reservations.tours[y].contacts[x]];
         var params = { items : $scope.reservations.tours , order : $scope.order.id , generalFields : $scope.generalFields };
+        params.currency = $scope.generalFields.currency;
         $http.post('/order/createReservationTour',params,{}).success(function(result) {
             if( $scope.reservations.hotels.length>0 )
                 reservationHotels();
@@ -482,7 +483,7 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
             params.order = $scope.order.id;
             params.reservation_type = 'transfer';
             params.client = $scope.client;
-            params.transferprice = $scope.transfer.transfer.id;
+            params.transferprice = $scope.transfer.transfer; // <<--- importante: tal vez regresar a .id 
             params.transfer = $scope.transfer.transfer.transfer.id;
             params.payment_method = params.payment_method || $scope.generalFields.payment_method;
             params.currency = $scope.generalFields.currency;

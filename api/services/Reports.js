@@ -15,8 +15,10 @@ module.exports.getReport = function(type,fields,cb){
 		'tours_gral' : true
 		,'tours_by_agency': true
 		,'tours_by_user': true
+		,'tours_by_provider': true
 		,'transfer_gral': true
 		,'totalsReport': true
+		,'logisticsReport': true
 	};
 	if( typeof reports_available[type] != 'undefined' ){
 		var results = {};
@@ -41,11 +43,11 @@ module.exports.transfer_gral = function(fields,cb){
 			if(r_err) cb(results,r_err);
 			results = {
 				headers : [ 
-					{ label : 'Servicio' , handle : 'transfer' }
-					,{ label : 'Pax' , handle : 'pax' }
-					,{ label : 'Vta.s/IVA' , handle : 'vsi' }
-					,{ label : 'IVA' , handle : 'iva' }
-					,{ label : 'Ventas netas' , handle : 'vn' }
+					{ label : 'Servicio' , handle : 'transfer', type : '' }
+					,{ label : 'Pax' , handle : 'pax', type : '' }
+					,{ label : 'Vta.s/IVA' , handle : 'vsi', type : 'currency' }
+					,{ label : 'IVA' , handle : 'iva', type : 'currency' }
+					,{ label : 'Ventas netas' , handle : 'vn', type : 'currency' }
 				]
 				,title : 'Ventas generales de Traslados'
 				,rows : {}
@@ -87,11 +89,11 @@ module.exports.tours_gral = function(fields,cb){
 			if(r_err){ console.log(r_err); cb(results , r_err); };
 			results = {
 				headers : [ 
-					{ label : 'Tour' , handle : 'tour' }
-					,{ label : 'Pax' , handle : 'pax' }
-					,{ label : 'Vta.s/IVA' , handle : 'vsi' }
-					,{ label : 'IVA' , handle : 'iva' }
-					,{ label : 'Ventas netas' , handle : 'vn' }
+					{ label : 'Tour' , handle : 'tour', type : '' }
+					,{ label : 'Pax' , handle : 'pax', type : '' }
+					,{ label : 'Vta.s/IVA' , handle : 'vsi', type : 'currency' }
+					,{ label : 'IVA' , handle : 'iva', type : 'currency' }
+					,{ label : 'Ventas netas' , handle : 'vn', type : 'currency' }
 				]
 				,title : 'Ventas generales de Tours'
 				,rows : {}
@@ -128,12 +130,12 @@ module.exports.tours_by_agency = function(fields,cb){
 			if(r_err){ console.log(r_err); cb(results , r_err); };
 			results = {
 				headers : [ 
-					{ label : 'Agencia' , handle : 'company' }
-					,{ label : 'Tour' , handle : 'tour' }
-					,{ label : 'Pax' , handle : 'pax' }
-					,{ label : 'Vta.s/IVA' , handle : 'vsi' }
-					,{ label : 'IVA' , handle : 'iva' }
-					,{ label : 'Ventas netas' , handle : 'vn' }
+					{ label : 'Agencia' , handle : 'company', type : '' }
+					,{ label : 'Tour' , handle : 'tour', type : '' }
+					,{ label : 'Pax' , handle : 'pax', type : '' }
+					,{ label : 'Vta.s/IVA' , handle : 'vsi', type : 'currency' }
+					,{ label : 'IVA' , handle : 'iva', type : 'currency' }
+					,{ label : 'Ventas netas' , handle : 'vn', type : 'currency' }
 				]
 				,title : 'Ventas generales de Tours por Agencia'
 				,rows : {}
@@ -176,13 +178,13 @@ module.exports.tours_by_user = function(fields,cb){
 			if(r_err){ console.log(r_err); cb(results , r_err); };
 			results = {
 				headers : [ 
-					{ label : 'Usuario' , handle : 'user' }
-					,{ label : 'Tour' , handle : 'tour' }
-					,{ label : 'Pax' , handle : 'pax' }
-					,{ label : 'Vta.s/IVA' , handle : 'vsi' }
-					,{ label : 'IVA' , handle : 'iva' }
-					,{ label : 'Ventas netas' , handle : 'vn' }
-					,{ label : 'Comisión' , handle : 'cm' }
+					{ label : 'Usuario' , handle : 'user', type : '' }
+					,{ label : 'Tour' , handle : 'tour', type : '' }
+					,{ label : 'Pax' , handle : 'pax', type : '' }
+					,{ label : 'Vta.s/IVA' , handle : 'vsi', type : 'currency' }
+					,{ label : 'IVA' , handle : 'iva', type : 'currency' }
+					,{ label : 'Ventas netas' , handle : 'vn', type : 'currency' }
+					,{ label : 'Comisión' , handle : 'cm', type : 'currency' }
 				]
 				,title : 'Ventas generales de Tours por Usuario'
 				,rows : {}
@@ -218,7 +220,12 @@ module.exports.tours_by_user = function(fields,cb){
 			cb(results,false);
 		});//Reservation END
 	});//Reservation count END
-}
+};
+/*
+*/
+module.exports.tours_by_provider = function(options,theCB){
+	
+};
 /*
 	Options debe de recibir:
 	- sDate 	: start date 
@@ -228,11 +235,53 @@ module.exports.tours_by_user = function(fields,cb){
 	- type 		: 1=listing, 2=totals, 3=both
 */
 var moment = require('moment-timezone');
-module.exports.totalsReport = function(options,theCB){
+module.exports.logisticsReport = function(options,theCB){
 	var name = 'MKP report -' + moment().tz('America/Mexico_City').format('D-MM-YYYY') + '.csv';
 	options.dateType = '1';
-	options.sDate = new Date("October 13, 2014")
-	options.eDate = new Date("October 13, 2015")
+	options.sDate = new Date("October 13, 2014");
+	options.eDate = new Date("October 13, 2016");
+	var $match = {
+		reservation_type : 'transfer'
+		/*,state : 'liquidated'
+		,$and : [
+			{ notes : { '$ne' : 'no reservar' } }
+			,{ notes : { '$ne' : 'no-reservar' } } 
+		]
+		,company : sails.models['company'].mongo.objectId('55b120357c4a37ed13757e43')*/
+	};
+	if( options.dateType == '1' ){
+		//$match.$and.push({ createdAt : { '$gte' : options.sDate } });
+		//$match.$and.push({ createdAt : { '$lte' : options.eDate } });
+	}else{
+		$match.$and.push({ createdAt : { '$gte' : options.sDate } });
+		$match.$and.push({ departure_date : { '$lte' : options.eDate } });
+	}
+	console.log($match);
+	Reservation.find( $match ).populate('currency').populate('transfer').populate('airport').populate('hotel')
+	.populate('order').populate('company').populate('client').populate('departure_airline')
+	.exec(function(r_err,list_reservations){
+		if(r_err) theCB(false,r_err);
+		var toCSV = [];
+		toCSV.push([
+			'Fecha','Estatus','Tipo reserva','Lugar origen','Clave reserva','Tipo de servicio'
+			,'Tipo de viaje','Clave tipo de unidad','Nombre tipo de unidad','Clave hotel'
+			,'Nombre hotel','Habitación','Nmbre pasajero','Apellidos pasajero','Adultos','Niños'
+			,'Fecha llegada','Hora llegada','Fecha salida','Clave aerolinea salida','Nombre aerolinea'
+			,'Hora vuelo','Hora pickup','Precio','Precio niño','Descuento','Subtotal','Total','Moneda','Tipo de cambio'
+			,'Observaciones','Clave agencia','Nombre agencia','Reserva de agencia']);
+		if( list_reservations ){ for( var x in list_reservations ){
+			var l = list_reservations[x];
+			var item = Reports.mkpFormatItemToExport(l,false);
+			toCSV.push(item);
+		} }//if reservations END
+		theCB(toCSV,false);
+	});//reservation find END
+};
+module.exports.totalsReport = function(options,theCB){
+	var name = 'Totals report -' + moment().tz('America/Mexico_City').format('D-MM-YYYY') + '.csv';
+	options.dateType = '1';
+	options.sDate = new Date("October 13, 2014");
+	options.eDate = new Date("October 13, 2016");
 	var $match = {
 		/*state : 'liquidated',
 		$and : [
@@ -316,6 +365,8 @@ module.exports.totalsReport = function(options,theCB){
 					var i = 0;
 					var item = [];
 					var cupon = getItemById( l.cupon, resultsPopulated.cupons );
+					var travelType = 'O';
+	    			if( l.type == 'one_way' ) travelType = l.origin == 'hotel'?'R':'L';
 					item[i] = l.folio;
 					item[++i] = l.pax;
 					item[++i] = l.fee + l.feeKids;
@@ -347,7 +398,7 @@ module.exports.totalsReport = function(options,theCB){
 			});//async waterfall END
 		});
 	});//reservation find END
-}
+};
 var getItemById = function(id,objectArray){
 	var r = false;
 	if( objectArray && objectArray.length > 0 )
@@ -355,4 +406,50 @@ var getItemById = function(id,objectArray){
 			if( objectArray[x].id == id )
 				return objectArray[x];
 	return  r;
+};
+module.exports.mkpFormatDateTime = function(date,type){
+	return date;
+}
+module.exports.mkpFormatItemToExport = function(reservation,cupon){
+	var i = 0;
+	var item = [];
+	var travelType = 'O';
+	if( reservation.type == 'one_way' ) travelType = reservation.origin == 'hotel'?'R':'L';
+	item[i] = Reports.mkpFormatDateTime(reservation.createdAt,'date');
+	item[++i] = 'N';
+	item[++i] = 2;//Tipo reserva
+	item[++i] = reservation.origin;
+	item[++i] = reservation.folio;
+	item[++i] = reservation.transfer.service_type;
+	item[++i] = travelType;
+	item[++i] = '';//clave tipo unidad
+	item[++i] = reservation.transfer.name;
+	item[++i] = reservation.hotel.mkpid;
+	item[++i] = reservation.hotel.name;
+	item[++i] = reservation.room;
+	item[++i] = reservation.client.name;
+	item[++i] = '';//last name
+	item[++i] = reservation.pax;
+	item[++i] = reservation.kidPax;
+	item[++i] = Reports.mkpFormatDateTime(reservation.arrival_date,'date');
+	item[++i] = Reports.mkpFormatDateTime(reservation.arrival_time,'time');
+	item[++i] = Reports.mkpFormatDateTime(reservation.departure_date,'date');
+	item[++i] = reservation.departure_airline.mkpid;
+	item[++i] = reservation.departure_airline.name;
+	item[++i] = Reports.mkpFormatDateTime(reservation.departure_time,'time');
+	item[++i] = Reports.mkpFormatDateTime(reservation.departurepickup_time,'time');
+	item[++i] = reservation.type=='one_way'?reservation.main_fee_adults || reservation.fee_adults : reservation.main_fee_adults_rt || reservation.fee_adults_rt;
+	item[++i] = reservation.type=='one_way'?reservation.main_fee_kids || reservation.fee_kids : reservation.main_fee_kids_rt || reservation.fee_kids_rt;
+	if( cupon )
+		item[++i] = reservation.type=='round_trip'?cupon.cupon.round_discount:cupon.cupon.simple_discount;//descuento
+	else
+		item[++i] = 0;
+	item[++i] = reservation.fee + reservation.feeKids;
+	item[++i] = reservation.fee + reservation.feeKids;
+	item[++i] = reservation.currency.currency_code;
+	item[++i] = reservation.notes;
+	item[++i] = reservation.company.mkpid;
+	item[++i] = reservation.company.name;
+	item[++i] = '';//reserva de agencia
+	return item;
 }

@@ -44,7 +44,7 @@ module.exports = {
         	delete params.provider; 
         	params.$or = [ { 'provider' : null } , { 'provider' : ' ' } ];
     	}
-        Tour.find(params).skip(skip).limit(limit).exec(function(err,tours){
+        Tour.find(params).skip(skip).limit(limit).sort('updatedAt DESC').exec(function(err,tours){
         	if(err) res.json('err');
         	Tour.count(params).exec(function(e,count){
         		if(e) res.json('err');
@@ -153,8 +153,8 @@ module.exports = {
     	var form = req.params.all();
     	var id = form.id;
 		form.req = req;
-		form.fee_base = form.fee_base?form.fee_base:(parseFloat(form.fee) || 0);
-		form.feeChild_base = form.feeChild_base?form.feeChild_base:(parseFloat(form.feeChild) || 0);
+		//form.fee_base = form.fee_base?form.fee_base:(parseFloat(form.fee) || 0);
+		//form.feeChild_base = form.feeChild_base?form.feeChild_base:(parseFloat(form.feeChild) || 0);
     	if(form.days){
     		var new_days = [];
     		form.days.forEach(function(day){
