@@ -11,17 +11,19 @@
             $scope.myView = view;
         };
         $scope.objects.forEach(function(object){
-            $scope.alphabetIndex.push(object.name[0].toUpperCase());
+            if(object && object.name)
+                $scope.alphabetIndex.push(object.name[0].toUpperCase());
         });
         $scope.currentLetter = $scope.alphabetIndex[0];
         $scope.objectFilter = function(obj){
+            var name = $scope.fieldName || 'name';
             if($scope.filter_by != 'name')
                 return true;
             if($scope.currentLetter && !$scope.searchInput){
-                return $scope.currentLetter == obj.name[0].toUpperCase();
+                return $scope.currentLetter == obj[name][0].toUpperCase();
             }else{
                 var regex = new RegExp('^'+$scope.searchInput,'i');
-                var name = obj.name;
+                var name = obj[name];
                 return name.match(regex);
             }
         };
@@ -54,15 +56,17 @@
             if(l) $scope.currentLetter = l;
         };
         $scope.$watch('objects',function(){
+            var name = $scope.fieldName || 'name';
             $scope.alphabetIndex = [];
             if($scope.objects)
                 $scope.objects.forEach(function(object){
-                    $scope.alphabetIndex.push(object.name[0].toUpperCase());
+                    $scope.alphabetIndex.push(object[name][0].toUpperCase());
                 });
             $scope.currentLetter = $scope.alphabetIndex[0];
         });
 
         $scope.$watch('filter_by',function(newV, oldV){
+            console.log($scope.objects);
             if(newV == 'name'){
                 $scope.objects = objectDefaultsFilterByName;
                 $scope.totalItems = 4;
@@ -93,6 +97,7 @@
                 typeExport : '@',
                 typeExportText : '@',
 		lang: '@',
+                fieldName: '@',//si no tiene campo name
                 getUrl : '@' // para la paginación del alfabeto, en caso de no tenerlo tampoco afecta
         	},
         	templateUrl : '/template/find/directoryListing.html'

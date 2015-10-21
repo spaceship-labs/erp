@@ -1,0 +1,31 @@
+<script type='text/javascript'>
+	window.transports = <%- JSON.stringify(transports) %>;
+	window.show_companies = <%- JSON.stringify(show_companies) %>;
+	window.content = <%- JSON.stringify(_content) %>;
+</script>
+<div ng-controller="transportCTL">
+	<div directory-listing objects='transports' searchInput='searchInput' dir='transports' edit-url='/transport/edit/' get-info='getInfo' button-text='<%= __("new_transport")%>' get-url="/transport/find/"  button-text-export='<%= __('export') %>' type-export='transport' type-export-text='<%= __("transports") %>' lang='<%=req.session.lang || "en"%>' field-name='car_id'></div>
+	<div class="clearfix"></div>
+	<div class="modal fade" id="myModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div 
+					form-helper 
+			        fields='content.transport' 
+			        form-footer='Agregar'
+			        form-save = 'validate'
+			        object = 'transfer'
+			        objects = '{serviceTypes : serviceTypes, companies: companies}'
+			       	onchanges = "{'validate' : validate, 'remove_invalid' : remove_invalid}"
+			        form-title='<%= __('add_transport')%>'
+			       	modal='true'
+			        >
+			    </div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="cargando-elementos" class="ng-cloak">
+	<img src="/images/loaders/images-cm.gif">
+</div>

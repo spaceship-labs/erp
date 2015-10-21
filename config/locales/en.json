@@ -461,4 +461,8 @@
   , "fields-sort-by": "Sort by"
   , "filter-by": "Filter by"
   , "filter-by-none": "Not filter"
+
+  ,"transports" : "Transports"
+  ,"new_transport" : "New Transport"
+  , "add_transport":"Add Transport"
 }

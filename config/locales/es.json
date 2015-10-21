@@ -467,4 +467,7 @@
   , "filter-by": "Filtrar por"
   , "filter-by-none": "No filtrar"
 
+  , "transports" : "Transportes"
+  , "new_transport" : "Nuevo Transporte"
+  , "add_transport":"Agregar Transporte"
 }

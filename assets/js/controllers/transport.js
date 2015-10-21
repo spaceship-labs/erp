@@ -14,7 +14,7 @@ app.controller('transportCTL',function($scope,$http,$rootScope){
     };
     $scope.getInfo = function(transport){
         var r = {};
-        r[$rootScope.translates.c_name] = transport["name_"+$rootScope.lang];
+        r.ID = transport.car_id;
         r[$rootScope.translates.c_created] = transport.createdAt;
         return r;
     };
@@ -24,7 +24,6 @@ app.controller('transportCTL',function($scope,$http,$rootScope){
             if(exist && exist.length){
                 angular.element('input[name=car_id]').addClass('has-error');
             }else{
-                console.log("creando"); 
                 $scope.createTransport(transport);
             }
         });
@@ -37,8 +36,11 @@ app.controller('transportCTL',function($scope,$http,$rootScope){
 app.controller('transportEditCTL',function($scope,$upload,$http,$window){
     $scope.transport = transport;
     $scope.content = content;
-    $scope.user = user;
+    $scope.companies = show_companies;
     $scope.serviceTypes = getTypes();
+    $scope.remove_invalid = function(){
+        angular.element('input[name=car_id]').removeClass('has-error');
+    };
 });
 
 var getTypes = function(){
