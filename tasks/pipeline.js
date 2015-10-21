@@ -94,7 +94,6 @@ var jsFilesToInject = [
 	"/js/themejs/*.js",                                            
 	"/js/{app.js,custom.js,shared.js}",//ignore setup.js 
 	'/js/directives/*.js', 
-	'/bower_components/Chart.js/Chart.js'
 	//'/js/controllers/*.js', 
 ];                                                                     
                                                                        
