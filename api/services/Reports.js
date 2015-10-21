@@ -9,7 +9,7 @@
 		- user 		: usuario para checar permisos, User type object
 		- cb 		: callback, function
 */
-var mainIVA = .15;
+var mainIVA = .15; 
 module.exports.getReport = function(type,fields,cb){
 	var reports_available = {
 		'tours_gral' : true
