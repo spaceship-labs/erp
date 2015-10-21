@@ -88,13 +88,13 @@ var jsFilesToInject = [
     '/bower_components/leaflet/dist/leaflet.js',
     '/bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.js',
     '/bower_components/angular-ui-tinymce/src/tinymce.js',
-	
+	'/bower_components/Chart.js/Chart.js',
 	"/bower_components/jquery-steps/jquery.steps.min.js",
     "/bower_components/parsleyjs/dist/parsley.js",
 	"/js/themejs/*.js",                                            
 	"/js/{app.js,custom.js,shared.js}",//ignore setup.js 
 	'/js/directives/*.js', 
-	'/bower_components/Chart.js/Chart.js',
+	'/bower_components/Chart.js/Chart.js'
 	//'/js/controllers/*.js', 
 ];                                                                     
                                                                        
