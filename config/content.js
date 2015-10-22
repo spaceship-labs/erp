@@ -1874,6 +1874,66 @@ module.exports.content = {
 			,handle : 'base_currency'
 		}
 	]
+	,tourprovider2 : [
+		{
+			label : 'Nombre'
+			,label_en : 'Name'
+			,type : 'text'
+			,handle : 'name'
+			,required : true
+		}
+		,{
+			label : 'Razón social'
+			,label_en : 'Corporate name'
+			,type : 'text'
+			,handle : 'business_name'
+		}
+		,{
+			label: 'Dirección'
+			,label_en : 'Address'
+			,type : 'text'
+			,handle : 'address'
+		}
+		,{
+			label : 'Ciudad'
+			,label_en : 'City'
+			,type : 'select'
+			,handle : 'location'
+			,object : 'locations'
+		}
+		,{
+			label : 'País'
+			,label_en : 'Country'
+			,type : 'text'
+			,handle : 'country'
+		}
+		,{
+			label : '¿Proporciona crédito?'
+			,label_en : 'Credit admited?'
+			,type : 'checkbox'
+			,handle : 'isCredit'
+		}
+		,{
+			label : 'Tipo de cambio'
+			,label_en : 'Exchange rate'
+			,type : 'text'
+			,handle : 'exchange_rate'
+		}
+		,{
+			label : 'Moneda base'
+			,label_en : 'Base currency'
+			,type : 'select'
+			,object : 'currencies'
+			,handle : 'base_currency'
+		}
+		,{
+            label : '¿Usar precios para nacionales?',
+            label_en : 'Use nation prices?',
+            type : 'checkbox',
+            handle : 'mxnPrices',
+            on_Change : 'changePricesTable',
+        }
+	]
 	, airline : [
 		{
 			label : 'Nombre'

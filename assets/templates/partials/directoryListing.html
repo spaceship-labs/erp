@@ -8,7 +8,7 @@
 	<p ng-if="buttonText != ''"><button class="btn btn-primary" data-toggle="modal" data-target="#myModal"> <span class = "fa fa-plus"></span>{{buttonText}}</button></p>-->
     
     <div class="row">
-    	<div class='col-md-6'>
+    	<div class='col-md-4'>
     		<p><label for="currency_select" ng-cloak>{{ translates.filter_by }}</label></p>
 		    <p>
 	            <select ng-model="filter_by">
@@ -17,8 +17,9 @@
 		        </select>
 	        </p>
     	</div>
-    	<div class='col-md-6'>
+    	<div class='col-md-8'>
     		<div class = "textbutton">
+    			<input ng-hide="!searchFind" class='pull-right searchField form-control' type='text' ng-model="search_text_input" placeholder="Buscar...">
 				<button ng-if="buttonText != ''" class="btn btn-primary pull-right" data-toggle="modal" data-target="#myModal"> <span class = "fa fa-plus"></span> {{buttonText}}</button>
 				<button ng-if="buttonTextImport" class="btn btn-primary pull-right" data-toggle="modal" data-target="#importmodal"><span class="fa fa-plus"></span>{{buttonTextImport}}</button>
 				<button ng-if="buttonTextExport" class="btn btn-primary pull-right" data-toggle="modal" data-target="#exportmodal"><span class="fa fa-plus"></span>{{buttonTextExport}}</button>

@@ -7,7 +7,7 @@
 
 module.exports = {
 	index: function(req,res){
-		Tour.find({}).sort('name').exec(function(e,tours){
+		Tour.find({}).sort('name').populate('provider').exec(function(e,tours){
 			SeasonScheme.find().sort('name').exec(function(e,schemes){ TourCategory.find().exec(function(e,tourcategories){
 				Location.find({}).sort('name').exec(function(e,locations){ TourProvider.find().exec(function(e,providers){
 					Common.view(res.view,{
@@ -44,7 +44,7 @@ module.exports = {
         	delete params.provider; 
         	params.$or = [ { 'provider' : null } , { 'provider' : ' ' } ];
     	}
-        Tour.find(params).skip(skip).limit(limit).sort('updatedAt DESC').exec(function(err,tours){
+        Tour.find(params).skip(skip).limit(limit).populate('provider').sort('updatedAt DESC').exec(function(err,tours){
         	if(err) res.json('err');
         	Tour.count(params).exec(function(e,count){
         		if(e) res.json('err');
@@ -69,7 +69,7 @@ module.exports = {
         	params.provider = { '!' : params.notProvider };
         	delete params.notProvider;
         }*/
-        Tour.find(params).exec(function(err,tours){
+        Tour.find(params).populate('provider').exec(function(err,tours){
         	if(err) res.json('err');
         	if(adminCompany=='false'){
         		var ids = [];

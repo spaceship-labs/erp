@@ -206,9 +206,9 @@ module.exports.tours_by_user = function(fields,cb){
 				results.rows[ '0_' + reservations[x].user.id ].iva += fee * mainIVA; //total de iva
 				results.rows[ '0_' + reservations[x].user.id ].rows2[ reservations[x].tour.id ].vn += fee; //total ventas netas commission_sales
 				results.rows[ '0_' + reservations[x].user.id ].vn += fee; //total ventas netas
-				results.rows[ '0_' + reservations[x].user.id ].rows2[ reservations[x].tour.id ].cm += (parseFloat(reservations[x].commission_sales)/100) * base_fee; //total comisión por tour
-				results.rows[ '0_' + reservations[x].user.id ].cm += (parseFloat(reservations[x].commission_sales)/100) * base_fee; //total comisión por tour
-				console.log( base_fee );
+				results.rows[ '0_' + reservations[x].user.id ].rows2[ reservations[x].tour.id ].cm += (parseFloat(reservations[x].commission_sales)/100) * fee; //total comisión por tour
+				results.rows[ '0_' + reservations[x].user.id ].cm += (parseFloat(reservations[x].commission_sales)/100) * fee; //total comisión por tour
+				console.log( fee );
 				console.log( reservations[x].commission_sales );
 
 				results.totals.total += fee;

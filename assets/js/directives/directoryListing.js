@@ -2,7 +2,8 @@
 	var controller = function($scope,$rootScope,$http){
         $scope.translates = $rootScope.translates;
         $scope.alphabet = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']; 
-        $scope.filter_by = 'date'
+        $scope.filter_by = 'name'
+        $scope.search_text_input = '';
         $scope.alphabetIndex = [];
         $scope.totalItems = 0;
         //$scope.dlPage = 1;
@@ -31,6 +32,9 @@
 
         var getMore = function(skip){
             var params = { 'skip':skip , 'limit': 30 , 'sort' : 'name asc' };
+            console.log($scope.searchFind);
+            if( $scope.searchFind && $scope.search_text_input != '' )
+                params.name = $scope.search_text_input;
             if($scope.filter_by == 'date'){
                 params.sort = 'createdAt desc';
             }
@@ -61,7 +65,10 @@
                 });
             $scope.currentLetter = $scope.alphabetIndex[0];
         });
-
+        $scope.$watch('search_text_input',function(){
+            console.log('searching...');
+            if( $scope.getUrl ) getMore(0);
+        });
         $scope.$watch('filter_by',function(newV, oldV){
             if(newV == 'name'){
                 $scope.objects = objectDefaultsFilterByName;
@@ -92,7 +99,8 @@
                 typeImport : '@',
                 typeExport : '@',
                 typeExportText : '@',
-		lang: '@',
+                searchFind : '=',//para agregar un buscador y afectar el getMore()
+                lang: '@',
                 getUrl : '@' // para la paginación del alfabeto, en caso de no tenerlo tampoco afecta
         	},
         	templateUrl : '/template/find/directoryListing.html'

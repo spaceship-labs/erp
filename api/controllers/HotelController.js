@@ -94,7 +94,7 @@ module.exports = {
 	    		hotel = formatHotel(hotel);
 	    		Location.find().sort('name').exec(function(e,locations){
 	    			SeasonScheme.find().sort('name').exec(function(e,schemes){
-	    				var zoneparams = hotel.location ? { 'location' : hotel.location.id } : {};
+	    				var zoneparams = hotel.location ? { 'location' : hotel.location } : {};
 	    				Zone.find(zoneparams).exec(function(e,zones){
 	    					FoodScheme.find().sort('name').exec(function(e,foodSchemes){
 	    						//console.log(hotel.foodSchemes);

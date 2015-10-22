@@ -45,15 +45,21 @@
             <p>
                 <label>Lugar de salida del tour</label>
                 <span class='field'>
-                    <!--<input type='text' ng-model='item.departurePlace' >-->
-                    <select ng-options="obj as ( obj.name + ' - ' + obj.time ) for obj in item.tour.departurePoints" ng-model="item.departurePlace" required></select>
+                    <select ng-if="!item.tour.haveTranslate" ng-options="obj as ( obj.name + ' - ' + obj.time ) for obj in item.tour.departurePoints" ng-model="item.departurePlace" required></select>
+                    <input ng-if="item.tour.haveTranslate" ng-model="item.departurePlace" required>
                 </span>
             </p>
             <p>
                 <label><%= __('order-hora-salida')%></label>
                 <span class='field'>
-                    <select ng-options="obj as ( obj.from + ' - ' + obj.to) for obj in item.tour.schedules" ng-model="item.departureTime" required></select>
-                    <!--<timepicker ng-model="item.departureTime" hour-step="1" minute-step="1" show-meridian="ismeridian"></timepicker>-->
+                    <select ng-if="!item.tour.haveTranslate" ng-options="obj as ( obj.from + ' - ' + obj.to) for obj in item.tour.schedules" ng-model="item.departureTime" required></select>
+                    <input ng-if="item.tour.haveTranslate" ng-model="item.departureTime" required>
+                </span>
+            </p>
+            <p>
+                <label>Notas</label>
+                <span class='field'>
+                    <textarea ng-model="item.notes"></textarea>
                 </span>
             </p>
             <p>

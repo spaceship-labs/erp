@@ -3,24 +3,28 @@
     window.locations = <%- JSON.stringify(locations) %>;
     window.currencies = <%- JSON.stringify(currencies) %>;
     window.tourcategories = <%- JSON.stringify(tourcategories) %>;
+    window.interactions = <%- JSON.stringify(interactions) %>;
+    console.log(interactions);
     //console.log(company);
 </script>
 <div ng-controller='tourproviderEditCTL' class="ng-cloak">
     <div class='row'>
         <div class="col-md-6">
             <div form-helper 
-                fields='content.tourprovider' 
+                fields='content[interactions.nationalPrices?"tourprovider2":"tourprovider"]'
                 object='provider' 
                 action='/tourprovider/update' 
                 form-title='<%= __('tour-info')%>'
                 currency='company.base_currency'
                 objects='{locations:locations,currencies:currencies}'
+                onchanges='{changePricesTable:changePricesTable}'
                 ></div>
         </div>
         <div class="col-md-6">
             <p><button class="btn btn-primary ng-binding" data-toggle="modal" data-target="#myModal"> <span class="fa fa-plus"></span> Tour nuevo</button></p>
         </div>
     </div>
+    <h4 class='widgettitle'>Tours</h4>
     <div class='autocomplete'>
         <input type="text" placeholder="Agregar tour" class="form-control" 
             ng-model="thetour" 
@@ -30,10 +34,10 @@
     <div class='row'>
         <div class="col-md-12">
             <div class="widgetcontent custom-table nopadding ng-cloak">
-                <h4 class='widgettitle'>Tours</h4>
                 <table class='table table-striped'>
                     <tr class='hide-sm'>
                         <th>Nombre</th>
+                        <th ng-if="interactions.nationalPrices">Folio de<br> sistema</th>
                         <th>Precio <br> Público</th>
                         <th>Precio adulto<br> base</th>
                         <th>Precio menor<br> base</th>
@@ -43,50 +47,105 @@
                         <th>Editar</th>
                         <th>Quitar</th>
                     </tr>
-                    <tr ng-repeat="t in provider.tours">
-                        <td data-title="Nombre" ng-bind="t.name"></td>
-                        <td data-title="Precio base" >
-                            <p> Adultos: {{t.fee | currency:'$':2}} {{company.base_currency.currency_code}}</p>
-                            <p> Menores: {{t.feeChild | currency:'$':2}} {{company.base_currency.currency_code}}</p>
-                        </td>
-                        <td>
-                            <span>{{t.fee_base || 0 | currency:'$':2 }} {{company.base_currency.currency_code}}</span>
-                        </td>
-                        <td>
-                            <span >{{t.feeChild_base || 0 | currency:'$':2 }} {{company.base_currency.currency_code}}</span>
-                        </td>
-                        <td data-title="Comisión agencia">
-                            <span 
-                                editable-text='t.commission_agency'
-                                e-name='commission_agency'
-                                e-form='rowform'
-                            >{{t.commission_agency || 0 }} %</span>
-                        </td>
-                        <td data-title="Comisión vendedor">
-                            <span 
-                                editable-text='t.commission_sales'
-                                e-name='commission_sales'
-                                e-form='rowform'
-                            >{{t.commission_sales || 0 }} %</span>
-                        </td>
-                        <td data-title="Visible en web">
-                            <span 
-                                editable-checkbox='t.visible'
-                                e-name='visible'
-                                e-form='rowform'
-                            ><i class="active-i fa {{t.visible?'active fa-check-square-o':'fa-square-o'}}"></i></span>
-                        </td>
-                        <td>
-                            <form editable-form name="rowform" onbeforesave="saveTour($data,t,$index)" ng-show="rowform.$visible" class="form-buttons form-inline" >
-                              <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary"><%= __('tranferprice-guardar')%></button>
-                              <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default"><%= __('tranferprice-cancelar')%></button>
-                            </form>
-                            <div class="buttons" ng-show="!rowform.$visible">
-                              <button class="btn btn-primary" ng-click="rowform.$show()"><%= __('tranferprice-editar')%></button>
-                            </div>
-                        </td>
-                        <td><a style='cursor:pointer' class="fa fa-trash-o" ng-click="removeTour(t)"></a></td>
-                    </tr>
+                    <tbody ng-repeat="t in provider.tours">
+                        <tr>
+                            <td data-title="Nombre" ng-bind="t.name"></td>
+                            <td ng-if='interactions.nationalPrices' data-title="Folio de sistema">
+                                <span 
+                                    editable-text='t.mkpid'
+                                    e-name='mkpid'
+                                    e-form='rowform'
+                                >{{t.mkpid || '' }}</span>
+                            </td>
+                            <td data-title="Precio base" >
+                                <p> Adultos: {{t.fee | currency:'$':2}} {{company.base_currency.currency_code}}</p>
+                                <p> Menores: {{t.feeChild | currency:'$':2}} {{company.base_currency.currency_code}}</p>
+                            </td>
+                            <td>
+                                <span>{{t.fee_base || 0 | currency:'$':2 }} {{company.base_currency.currency_code}}</span>
+                            </td>
+                            <td>
+                                <span >{{t.feeChild_base || 0 | currency:'$':2 }} {{company.base_currency.currency_code}}</span>
+                            </td>
+                            <td data-title="Comisión agencia">
+                                <span 
+                                    editable-text='t.commission_agency'
+                                    e-name='commission_agency'
+                                    e-form='rowform'
+                                >{{t.commission_agency || 0 }} %</span>
+                            </td>
+                            <td data-title="Comisión vendedor">
+                                <span 
+                                    editable-text='t.commission_sales'
+                                    e-name='commission_sales'
+                                    e-form='rowform'
+                                >{{t.commission_sales || 0 }} %</span>
+                            </td>
+                            <td data-title="Visible en web">
+                                <span 
+                                    editable-checkbox='t.visible'
+                                    e-name='visible'
+                                    e-form='rowform'
+                                ><i class="active-i fa {{t.visible?'active fa-check-square-o':'fa-square-o'}}"></i></span>
+                            </td>
+                            <td>
+                                <form editable-form name="rowform" onbeforesave="saveTour($data,t,$index)" ng-show="rowform.$visible" class="form-buttons form-inline" >
+                                  <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary"><%= __('tranferprice-guardar')%></button>
+                                  <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default"><%= __('tranferprice-cancelar')%></button>
+                                </form>
+                                <div class="buttons" ng-show="!rowform.$visible">
+                                  <button class="btn btn-primary" ng-click="rowform.$show()"><%= __('tranferprice-editar')%></button>
+                                </div>
+                            </td>
+                            <td><a style='cursor:pointer' class="fa fa-trash-o" ng-click="removeTour(t)"></a></td>
+                        </tr>
+                        <tr ng-if="interactions.nationalPrices&&provider.mxnPrices">
+                            <td ></td>
+                            <td ng-if='interactions.nationalPrices' data-title="Folio de sistema">
+                                <span 
+                                    editable-text='t.mkpidMX'
+                                    e-name='mkpidMX'
+                                    e-form='rowform'
+                                >{{t.mkpidMX || '' }}</span>
+                            </td>
+                            <td data-title="Precio base" >
+                                <p> Adultos: <span 
+                                    editable-text='t.feeMX'
+                                    e-name='feeMX'
+                                    e-form='rowform'
+                                >{{t.feeMX || 0 | currency:'$':2 }}</span> {{company.base_currency.currency_code}}</p>
+                                <p> Menores: <span 
+                                    editable-text='t.feeChildMX'
+                                    e-name='feeChildMX'
+                                    e-form='rowform'
+                                >{{t.feeChildMX || 0 | currency:'$':2 }}</span> {{company.base_currency.currency_code}}</p>
+                            </td>
+                            <td>
+                                <span>{{t.fee_baseMX || 0 | currency:'$':2 }} {{company.base_currency.currency_code}}</span>
+                            </td>
+                            <td>
+                                <span >{{t.feeChild_baseMX || 0 | currency:'$':2 }} {{company.base_currency.currency_code}}</span>
+                            </td>
+                            <td data-title="Comisión agencia">
+                                <span 
+                                    editable-text='t.commission_agencyMX'
+                                    e-name='commission_agencyMX'
+                                    e-form='rowform'
+                                >{{t.commission_agencyMX || 0 }} %</span>
+                            </td>
+                            <td data-title="Comisión vendedor">
+                                <span 
+                                    editable-text='t.commission_salesMX'
+                                    e-name='commission_salesMX'
+                                    e-form='rowform'
+                                >{{t.commission_salesMX || 0 }} %</span>
+                            </td>
+                            <td></td>
+                            <td>
+                            </td>
+                            <td></td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
             <p>Los campos agregados al tour son para manejo de contabilidad</p>

@@ -31,7 +31,7 @@ app.controller('hotelCTL',function($scope,$http,$window,$rootScope){
         hotel.createdAt=(moment(hotel.createdAt).format('LL'));
         hotel.updatedAt=(moment(hotel.updatedAt).format('LL'));
         var r = {};
-        r[$rootScope.translates.c_population] = hotel.location.name;
+        r[$rootScope.translates.c_population] = hotel.location?hotel.location.name:'';
         r[$rootScope.translates.c_adress] = hotel.address;
         //r[$rootScope.translates.c_phones] = hotel.phones;
         r[$rootScope.translates.c_created] = hotel.createdAt;

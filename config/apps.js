@@ -36,8 +36,8 @@ module.exports.apps = [
                 action : 'currencies'
             },
             {
-                label : 'Precios',
-                label_en : 'Prices',
+                label : 'Precios de traslados',
+                label_en : 'Transfers Prices',
                 icon : 'fa-money',
                 url : '/transferprice/',
                 showInMenu : true,

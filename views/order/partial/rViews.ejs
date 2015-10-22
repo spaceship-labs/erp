@@ -11,7 +11,9 @@
             <th> <%= __('sc_tour')%> </th>
             <th> <%= __('sc_hotels')%> </th>
             <th> <%= __('d_seemore')%> </th>
+            <% if (req.user.hasPermission(req.res.locals.selected_company.id,'orders_e')) {%>
             <th> <%= __('order-editar')%> </th>
+            <% } %>
             <% if (req.user.hasPermission(req.res.locals.selected_company.id,'orders_d')) {%>
                 <th> <%= __('order-borrar')%> </th>
             <% } %>

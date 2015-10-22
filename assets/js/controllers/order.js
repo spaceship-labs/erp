@@ -805,7 +805,7 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
     };
     getCompanies();
     $scope.getHotels = function(val){
-        return $http.get('/hotel/find', { params: { name: val } }).then(function(response){
+        return $http.get('/hotel/find', { params: { name: val, active : true } }).then(function(response){
             //console.log(response);
             return response.data.results.map(function(item){ return item; });
         });

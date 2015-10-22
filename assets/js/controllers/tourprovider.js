@@ -26,6 +26,7 @@ app.controller('tourproviderEditCTL',function($scope,$http){
     $scope.provider.tours = $scope.provider.tours || [];
     $scope.user = user;
     $scope.content = content;
+    $scope.interactions = interactions;
     $scope.company = company;
     $scope.currencies = currencies;
     $scope.tourcategories = tourcategories;
@@ -35,6 +36,25 @@ app.controller('tourproviderEditCTL',function($scope,$http){
             angular.extend(data, { id : tour.id });
             data.fee_base = (tour.fee-(tour.fee*(data.commission_agency/100)));
             data.feeChild_base = (tour.feeChild-(tour.feeChild*(data.commission_agency/100)));
+            data.fee_baseMX = (tour.feeMX-(tour.feeMX*(data.commission_agencyMX/100)));
+            data.feeChild_baseMX = (tour.feeChildMX-(tour.feeChildMX*(data.commission_agencyMX/100)));
+            console.log(data);
+            $scope.saveClass = 'fa-upload';
+            $http.post('/tour/update', data).then(function(t){ 
+            //$http({method: 'POST',url:'/tour/update',params:data}).success(function(t){
+                $scope.saveClass = 'fa-save';
+                console.log(t.data);
+                $scope.provider.tours[index] = t.data;
+            });
+        }else{
+            console.log('error, valor no válido');
+        }
+    };
+    $scope.saveTourMX = function(data,tour,index){
+        var aux = parseFloat(data.commission_agencyMX);
+        if( !isNaN(aux) ){
+            angular.extend(data, { id : tour.id });
+            
             console.log(data);
             $scope.saveClass = 'fa-upload';
             $http.post('/tour/update', data).then(function(t){ 
@@ -82,5 +102,8 @@ app.controller('tourproviderEditCTL',function($scope,$http){
                 }
             }
         });
+    };
+    $scope.changePricesTable = function(){
+        console.log('on change');
     };
 });

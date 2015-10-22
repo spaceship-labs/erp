@@ -17,6 +17,7 @@ app.controller('tourCTL',function($scope,$http,$window,$rootScope){
         r[$rootScope.translates.c_baseRate] = tour.fee;
         r[$rootScope.translates.c_created] = tour.createdAt;
         r[$rootScope.translates.c_updated] = tour.updatedAt;
+        r['Proveedor'] = tour.provider?tour.provider.name:'Sin proveedor asignado.';
 		return r;
 	};
 	$scope.createTour = function(newtour){
