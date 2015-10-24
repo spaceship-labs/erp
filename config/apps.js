@@ -427,6 +427,15 @@ module.exports.apps = [
                 ,handle : 'transport'
                 ,controller : 'transport'
                 ,action : 'index'
+            },
+            {
+                label : 'Asignar'
+                ,label_en : 'Asign'
+                ,icon : 'fa-clock-o'
+                ,url : '/TransportAsign/'
+                ,showInMenu : true
+                ,controller : 'transportasign'
+                ,action : 'index'
             }
         ]
     }

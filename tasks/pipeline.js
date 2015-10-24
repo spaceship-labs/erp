@@ -84,6 +84,8 @@ var jsFilesToInject = [
 	'/bower_components/fullcalendar/gcal.js',
 	'/bower_components/angular-xeditable/dist/js/xeditable.js',    
 	'/bower_components/moment/min/moment-with-langs.min.js',
+    '/bower_components/moment/min/moment-with-locales.js',
+    '/bower_components/moment-timezone/moment-timezone.js',
     '/bower_components/underscore/underscore-min.js',     
     '/bower_components/leaflet/dist/leaflet.js',
     '/bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.js',
