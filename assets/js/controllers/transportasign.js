@@ -11,10 +11,24 @@ app.constant('uiCalendarConfig', {calendars: {}})
     };
 
     /* alert on eventClick */
-    $scope.alertOnEventClick = function( date, jsEvent, view){
-        $scope.alertMessage = (date.title + ' was clicked ');
-        console.log(date);
-        console.log("click!", arguments);
+    $scope.alertOnEventClick = function(even, jsEvent, view){
+        console.log(even);
+        console.log("click!");
+	    $scope.modal = {
+            start: even.start,
+            end: even.end,
+            company: even.transport.company,
+            transport: even.transport.id
+        };
+        if(!$scope.companies.length){
+            $http.get('/transportAsign/show_companies').then(function(res){
+                if(res && res.data)
+                    $scope.companies = res.data;
+            });
+        }
+        $scope.changeCompany();
+        jQuery('#select-transport-update').modal('show');
+
     };
 
      /* Render Tooltip */
@@ -28,6 +42,7 @@ app.constant('uiCalendarConfig', {calendars: {}})
     $scope.modal = {};
     $scope.companies = [];
     $scope.transports = [];
+    $scope.events = [];
 
     var cacheTransports = {};
     $scope.changeCompany = function(){
@@ -57,14 +72,28 @@ app.constant('uiCalendarConfig', {calendars: {}})
 
     };
 
+    $scope.update = function(){
+        console.log($scope.modal);
+    };
+
     function addEvent(transportAsign){
-        $http.get('/transport/'+transportAsign.transport).then(function(res){
+        $http.get('/transportAsign/'+transportAsign.id).then(function(res){
             ts = res && res.data
             if(ts){
-                $scope.events.push({transport: ts, title: 'ID: ' + ts.car_id + ' company:' + ts.company.name, start: transportAsign.start, end: transportAsign.end , allDay: false});
+                $scope.events.push(formatEven(ts)[0])
                 jQuery('#select-transport').modal('hide');
             }
         });
+    }
+
+    function getCompanies(){
+        if(!$scope.companies.length){
+            $http.get('/transportAsign/show_companies').then(function(res){
+                if(res && res.data)
+                    $scope.companies = res.data;
+            });
+        }
+    
     }
 
     function onSelect(start, end){
@@ -74,12 +103,7 @@ app.constant('uiCalendarConfig', {calendars: {}})
         $scope.modal.start = start;
         $scope.modal.end = end;
         jQuery('#select-transport').modal('show');
-        if(!$scope.companies.length){
-            $http.get('/transportAsign/show_companies').then(function(res){
-                if(res && res.data)
-                    $scope.companies = res.data;
-            });
-        }
+        getCompanies();
     }
 
     /* config object */
@@ -107,7 +131,6 @@ app.constant('uiCalendarConfig', {calendars: {}})
     };
 
     /* event source that contains custom events on the scope */
-    $scope.events = [];
     /*
     $scope.events = [
       {title: 'All Day Event',start: new Date(y, m, 1)},
@@ -129,51 +152,28 @@ app.constant('uiCalendarConfig', {calendars: {}})
     */
 
     /* event source that calls a function on every view switch */
-    $scope.eventsF = function (start, end, /*timezone*/ callback) {
-      console.log("yo!!", arguments);
-      var s = new Date(start).getTime() / 1000;
-      var e = new Date(end).getTime() / 1000;
-      var m = new Date(start).getMonth();
-      var events = [{title: 'Feed Me ' + m,start: s + (500),end: s + (100),allDay: false, className: ['customFeed']},
-      {title: 'Feed Me 2' + m,start: s + (500),end: s + (100),allDay: false, className: ['customFeed']},
-{title: 'Feed Me 3' + m,start: s + (500),end: s + (100),allDay: false, className: ['customFeed']},
-{title: 'Feed Me 4' + m,start: s + (500),end: s + (100),allDay: false, className: ['customFeed']},
-      {title: 'Feed Me 2' + m,start: s + (500),end: s + (100),allDay: false, className: ['customFeed']},
-{title: 'Feed Me 3' + m,start: s + (500),end: s + (100),allDay: false, className: ['customFeed']},
-{title: 'Feed Me 4' + m,start: s + (500),end: s + (100),allDay: false, className: ['customFeed']},
-      {title: 'Feed Me 2' + m,start: s + (500),end: s + (100),allDay: false, className: ['customFeed']},
-{title: 'Feed Me 3' + m,start: s + (500),end: s + (100),allDay: false, className: ['customFeed']},
-{title: 'Feed Me 4' + m,start: s + (500),end: s + (100),allDay: false, className: ['customFeed']},
-      {title: 'Feed Me 2' + m,start: s + (500),end: s + (100),allDay: false, className: ['customFeed']},
-{title: 'Feed Me 3' + m,start: s + (500),end: s + (100),allDay: false, className: ['customFeed']},
-{title: 'Feed Me 4' + m,start: s + (500),end: s + (100),allDay: false, className: ['customFeed']},
-      {title: 'Feed Me 2' + m,start: s + (500),end: s + (100),allDay: false, className: ['customFeed']},
-{title: 'Feed Me 3' + m,start: s + (500),end: s + (100),allDay: false, className: ['customFeed']},
-{title: 'Feed Me 4' + m,start: s + (500),end: s + (100),allDay: false, className: ['customFeed']},
-      {title: 'Feed Me 2' + m,start: s + (500),end: s + (100),allDay: false, className: ['customFeed']},
-{title: 'Feed Me 3' + m,start: s + (500),end: s + (100),allDay: false, className: ['customFeed']},
-{title: 'Feed Me 4' + m,start: s + (500),end: s + (100),allDay: false, className: ['customFeed']},
-{title: 'Feed Me 2' + m,start: s + (500),end: s + (100),allDay: false, className: ['customFeed']},
-{title: 'Feed Me 3' + m,start: s + (500),end: s + (100),allDay: false, className: ['customFeed']},
-{title: 'Feed Me 4' + m,start: s + (500),end: s + (100),allDay: false, className: ['customFeed']},
-      {title: 'Feed Me 2' + m,start: s + (500),end: s + (100),allDay: false, className: ['customFeed']},
-{title: 'Feed Me 3' + m,start: s + (500),end: s + (100),allDay: false, className: ['customFeed']},
-{title: 'Feed Me 4' + m,start: s + (500),end: s + (100),allDay: false, className: ['customFeed']},
-      {title: 'Feed Me 2' + m,start: s + (500),end: s + (100),allDay: false, className: ['customFeed']},
-{title: 'Feed Me 3' + m,start: s + (500),end: s + (100),allDay: false, className: ['customFeed']},
-{title: 'Feed Me 4' + m,start: s + (500),end: s + (100),allDay: false, className: ['customFeed']},
-      {title: 'Feed Me 2' + m,start: s + (500),end: s + (100),allDay: false, className: ['customFeed']},
-{title: 'Feed Me 3' + m,start: s + (500),end: s + (100),allDay: false, className: ['customFeed']},
-{title: 'Feed Me 4' + m,start: s + (500),end: s + (100),allDay: false, className: ['customFeed']},
-      {title: 'Feed Me 2' + m,start: s + (500),end: s + (100),allDay: false, className: ['customFeed']},
-{title: 'Feed Me 3' + m,start: s + (500),end: s + (100),allDay: false, className: ['customFeed']},
-{title: 'Feed Me 4' + m,start: s + (500),end: s + (100),allDay: false, className: ['customFeed']},
-      {title: 'Feed Me 2' + m,start: s + (500),end: s + (100),allDay: false, className: ['customFeed']},
-{title: 'Feed Me 3' + m,start: s + (500),end: s + (100),allDay: false, className: ['customFeed']},
-{title: 'Feed Me 4' + m,start: s + (500),end: s + (100),allDay: false, className: ['customFeed']}
-      ];
-      callback(events);
+    $scope.eventsF = function (start, end, /*timezone*/ done) {
+      $http.get('/transportAsign/find').then(function(res){
+      	if(res && res.data){
+            var ls = formatEven(res.data);
+            done(ls);
+        }
+      });
     };
+
+    function formatEven(transportAsigns, done){
+        console.log(transportAsigns);
+        var list = transportAsigns.length && transportAsigns || [transportAsigns];
+        return list.map(function(asign){
+            return {asign: asign, transport: asign.transport, title: 'ID: ' + asign.transport.car_id + ' | Company: '+ getCompanyName(asign.transport.company), start: asign.start, end: asign.end, allDay: false}
+        });
+    }
+
+    function getCompanyName(company){
+        return _.find(all_companies, function(a){
+            if(a.id == company) return true;
+        }).name;
+    }
 
     $scope.eventSources = [$scope.events, $scope.eventsF];
 

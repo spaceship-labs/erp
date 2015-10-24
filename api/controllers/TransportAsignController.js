@@ -7,7 +7,7 @@
 
 module.exports = {
     index: function(req, res){
-        getCompanies(req, function(err, companies){
+        Company.find().exec(function(err, companies){
             Common.view(res.view,{
                 companies: companies,
                 page:{
@@ -40,14 +40,3 @@ module.exports = {
         });
     }
 };
-
-function getCompanies(req, done){
-    var defer;
-    if(req.user.isAdmin){
-        defer = Company.find();
-    }else{
-        var company = req.session.select_company || req.user.select_company;
-        defer = Company.find({id: company}).limit(1);
-    }
-    defer.exec(done);
-}

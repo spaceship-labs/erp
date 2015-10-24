@@ -1,6 +1,10 @@
+<script type='text/javascript'>
+  window.all_companies = <%- JSON.stringify(companies) %>;
+</script>
 <div ng-controller="transportAsignCTL">
     <div ui-calendar="uiConfig.calendar" class="span9 calendar" ng-model="eventSources" calendar="myCalendar"></div>
 
+    <!-- modal create -->
     <div class="modal fade" id="select-transport">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -10,35 +14,7 @@
                 </div>
                 <div>
                     <form ng-class='formClass' class="form stdform stdform2" name="form">
-                		<p>
-                            <label>Empresa</label>
-                            <span class="field">
-                                <select 
-                                    ng-model='modal.company'
-                                    ng-options="obj.id as obj.name for obj in companies"
-                                    ng-change="changeCompany()"
-                                    required
-                                    class='form-control' >
-                                </select>
-                            </span>
-                        </p>
-                        <p>
-                            <label>ID</label>
-                            <span class="field">
-                                <select 
-                                    ng-model='modal.transport'
-                                    ng-options="obj.id as obj.car_id for obj in transports"
-                                    required
-                                    class='form-control' >
-                                </select>
-                            </span>
-                        </p>
-                        <p>
-                            <label>Hora</label>
-                            <span class="field">
-                                <input type="time" ng-model="modal.start">
-                            </span>
-                        </p>
+                        <%- partial('form') %>
                         <p class="stdformbutton">
                             <button ng-click='save()' class="btn btn-primary" ng-disabled="form.$invalid">Guardar</button>
                             <button type="reset" class="btn reset">Reset</button>
@@ -48,4 +24,26 @@
             </div>
         </div>
     </div>
+    
+    <!-- modal update -->
+    <div class="modal fade" id="select-transport-update">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Actualizar translado {{modal.day}}</h4>
+                </div>
+                <div>
+                    <form ng-class='formClass' class="form stdform stdform2" name="form">
+                        <%- partial('form') %>
+                        <p class="stdformbutton">
+                            <button ng-click='update()' class="btn btn-primary" ng-disabled="form.$invalid">Guardar</button>
+                            <button type="reset" class="btn reset">Reset</button>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
