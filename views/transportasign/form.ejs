@@ -1,0 +1,35 @@
+<p>
+    <label>Empresa</label>
+    <span class="field">
+        <select 
+            ng-model='modal.company'
+            ng-options="obj.id as obj.name for obj in companies"
+            ng-change="changeCompany()"
+            required
+            class='form-control' >
+        </select>
+    </span>
+</p>
+<p>
+    <label>ID</label>
+    <span class="field">
+        <select 
+            ng-model='modal.transport'
+            ng-options="obj.id as obj.car_id for obj in transports"
+            required
+            class='form-control' >
+        </select>
+    </span>
+</p>
+<p>
+    <label>Hora inicio</label>
+    <span class="field">
+        <input type="time" ng-model="modal.start">
+    </span>
+</p>
+<p>
+    <label>Hora final</label>
+    <span class="field">
+        <input type="time" ng-model="modal.end">
+    </span>
+</p>

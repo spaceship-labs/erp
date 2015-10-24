@@ -93,6 +93,7 @@ var jsFilesToInject = [
 	'/bower_components/Chart.js/Chart.js',
 	"/bower_components/jquery-steps/jquery.steps.min.js",
     "/bower_components/parsleyjs/dist/parsley.js",
+    '/bower_components/angular-chroma/angular-chroma.js',
 	"/js/themejs/*.js",                                            
 	"/js/{app.js,custom.js,shared.js}",//ignore setup.js 
 	'/js/directives/*.js', 
