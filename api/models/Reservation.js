@@ -98,6 +98,9 @@ module.exports = {
         ,startDate : 'date'
         ,endDate : 'date'
         ,autorization_code : 'string'
+        //nuevos campos para VCM
+        ,controlCode : 'string' //ellos lo llaman cupón
+        ,confirmationCode : 'string' //confirmación del tour
 
         //hotel
         ,roomType : {

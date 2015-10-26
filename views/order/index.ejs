@@ -1,5 +1,6 @@
 <script type='text/javascript'>
-	window.content = <%- JSON.stringify(_content) %>;
+    window.content = <%- JSON.stringify(_content) %>;
+	window.interactions = <%- JSON.stringify(interactions) %>;
 </script>
 <div ng-controller='orderCTL' class='order-index'>
     <div id="cargando-elementos" class='ng-cloak' ng-cloak><img src="/images/loaders/images-cm.gif"></div>
@@ -40,7 +41,9 @@
             <p style="display:inline-block;">
                 <a href="/order/neworder" class='btn btn-primary'><i class = "fa fa-plus"></i> <%= __('order-crear')%></a>
                 <a class="btn btn-primary" data-toggle="modal" data-target="#uploadCVS"><i class="fa fa-upload"></i> <%= __('gral_importcvs')%></a>
-                <!--<a href='/order/reporteespecial' class='btn btn-primary'>Reporte de Montos</a>-->
+                <% if( interactions.mkp ){ %>
+                    <a href='/order/reporteespecial' class='btn btn-primary'>Reporte de Montos</a>
+                <% } %>
             </p>
             <!-- <input type="text" placeholder="Buscar" class="form-control pull-right search" ng-model="searchText" /> -->
         </div>

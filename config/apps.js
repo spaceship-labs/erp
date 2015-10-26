@@ -382,6 +382,16 @@ module.exports.apps = [
                 ,controller : 'order'
                 ,action : 'quickorder'
             }
+            ,{
+                label : 'Reserva rápida (Tour)'
+                ,label_en : 'Quick reservation (Tour)'
+                ,icon : 'fa-compass'
+                ,url : '/order/quicktour/'
+                ,handle : 'orders'
+                ,showInMenu : true
+                ,controller : 'order'
+                ,action : 'quicktour'
+            }
         ]
     }
     ,{

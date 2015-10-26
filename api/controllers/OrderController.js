@@ -7,18 +7,73 @@
 var async = require('async');
 var fs = require('fs');
 module.exports = {
+  /*
+    VISTAS
+  */
   index: function (req, res) {
   	Common.view(res.view,{
-  		page:{
-  			name:req.__('sc_reservations')
-  			,icon:'fa fa-car'		
-  			,controller : 'order.js'
-  		},
-  		breadcrumb : [
-  			{label : req.__('sc_reservations')}
-  		]
+  		page:{ name:req.__('sc_reservations'), icon:'fa fa-car', controller : 'order.js' },
+  		breadcrumb : [ {label : req.__('sc_reservations')} ]
   	},req);
   },
+  neworder : function(req,res){
+    var select_company = req.session.select_company || req.user.select_company;
+        Common.view(res.view,{
+          page:{ name:req.__('sc_reservations'), icon:'fa fa-car', controller : 'order.js' },
+          breadcrumb : [ {label : req.__('sc_reservations')} ]
+        },req);
+  },
+  quickorder : function(req,res){
+    var select_company = req.session.select_company || req.user.select_company;
+    Common.view(res.view,{
+      page:{ name:req.__('sc_reservations'), icon:'fa fa-car', controller : 'order.js' },
+      breadcrumb : [ {label : req.__('sc_reservations')} ]
+    },req);
+  },
+  quicktour : function(req,res){
+    var select_company = req.session.select_company || req.user.select_company;
+    Common.view(res.view,{
+      page:{ name:req.__('sc_reservations'), icon:'fa fa-compass', controller : 'order.js' },
+      breadcrumb : [ {label : req.__('sc_reservations')} ]
+    },req);
+  },
+  edit : function(req,res){
+    console.log( req.params.all() );
+    Order.findOne( req.params.id ).populate('reservations').populate('claims').populate('lostandfounds').exec(function(err,order){ Company.findOne(order.company).populate('currencies').populate('base_currency').exec(function(c_err,ordercompany){
+      Reservation.find({ order : req.params.id })
+      .populate('hotel').populate('tour').populate('airport').populate('client')
+      .populate('currency').populate('transfer').populate('transferprice')
+      .exec(function(err,reservations){
+        Client_.find().sort('name').exec(function(e,clients_){ 
+          Client_.findOne({ id : order.client}).populate('contacts').exec(function(e,theclient){
+              Transfer.find().sort('name').exec(function(e,transfers){
+                  Hotel.find().sort('name').populate('location').populate('rooms').exec(function(e,hotels){
+                    order.reservations = reservations || [];
+                    Common.view(res.view,{
+                      order : order,
+                      clients_ : clients_ ,
+                      theclient : theclient ,
+                      hotels : hotels ,
+                      transfers : transfers ,
+                      ordercompany : ordercompany ,
+                      page:{
+                        name:req.__('sc_reservations')
+                        ,icon:'fa fa-car'
+                        ,controller : 'order.js'
+                      },
+                      breadcrumb : [
+                        { label : req.__('sc_reservations') , url : '/order/' } ,
+                        { label : order.id }
+                      ]
+                    },req);
+              }); }); // transfer / hotel
+        }); }); // client
+      });//reservation
+    }); }); //order and company
+  },
+  /*
+    LLAMADAS HTTP
+  */
   reporteespecial : function(req,res){
     var fields = {};
     Reports.getReport('logisticsReport',fields,function(results,err){
@@ -52,7 +107,6 @@ module.exports = {
     var params = req.params.all();
     var skip = params.skip || 0;
     var limit = params.limit || 20;
-    //var fields = params.fields || {};
     var fields = formatFilterFields(params.fields);
     if( ! req.user.isAdmin ){
       var c_ = [];
@@ -60,18 +114,13 @@ module.exports = {
         if( req.user.companies[c].id )
           c_.push( sails.models['company'].mongo.objectId(req.user.companies[c].id) );
       }
-      //console.log('companies');console.log(c_);
       fields.company = { "$in" : c_ };
     }
-    //console.log(fields);
     Reservation.native(function(e,reservation){
       reservation.aggregate([ { $sort : { createdAt : -1 } },{ $match : fields },{ $group : { _id : "$order" } },{ $skip : skip } , { $limit : limit }
       ],function(err,reservations){
         var ids = [];
         for(x in reservations) ids.push( reservations[x]._id );
-        //console.log('----------IDS---------');console.log(fields);console.log(ids);
-        //Order.find().where({ id : ids }).populate('client').populate('reservations').populate('user').populate('company').exec(function(err,orders){
-          //console.log('----------orders-------------');console.log(orders);
           reservation.aggregate([
               { $match : fields } , { $group : { _id : "$order" } } , { $group : { _id : null , count : { $sum:1 } } }
           ],function(err_c,count_){
@@ -79,45 +128,10 @@ module.exports = {
               res.json({ result:[],orders:results,count: (count_[0]?count_[0].count:0) });
             });
           });
-        //});
       });
     });
   },
-  neworder : function(req,res){
-    var select_company = req.session.select_company || req.user.select_company;
-    //console.log('select_company');console.log(select_company);
-  	//Client_.find({company:select_company}).sort('name').exec(function(e,clients_){ Hotel.find().sort('name').populate('location').populate('zone').populate('rooms').exec(function(e,hotels){ Tour.find().sort('name').exec(function(e,allTours){
-  			Common.view(res.view,{
-  				clients_ : [] ,
-  				hotels:[] ,
-  				transfers : [] ,
-          allTours : [] ,
-  				page:{
-  					name:req.__('sc_reservations')
-  					,icon:'fa fa-car'		
-  					,controller : 'order.js'
-  				},
-  				breadcrumb : [
-  					{label : req.__('sc_reservations')}
-  				]
-  			},req);
-    //}); }); });
-  },
-  quickorder : function(req,res){
-    var select_company = req.session.select_company || req.user.select_company;
-    Common.view(res.view,{
-      page:{
-        name:req.__('sc_reservations')
-        ,icon:'fa fa-car'   
-        ,controller : 'order.js'
-      },
-      breadcrumb : [
-        {label : req.__('sc_reservations')}
-      ]
-    },req);
-  },
   getorder : function(req,res){
-    //console.log(req.user);
     Order.find().where(Common.getCompaniesForSearch(req.user)).sort('createdAt desc').populate('reservations').populate('user').exec(function(e,orders){
       if(err) return res.json(false);
       res.json(orders);
@@ -353,42 +367,6 @@ module.exports = {
       return res.json(results);
     });*/
   },
-  edit : function(req,res){
-    console.log( req.params.all() );
-    Order.findOne( req.params.id ).populate('reservations').populate('claims').populate('lostandfounds').exec(function(err,order){ Company.findOne(order.company).populate('currencies').populate('base_currency').exec(function(c_err,ordercompany){
-      Reservation.find({ order : req.params.id })
-      .populate('hotel').populate('tour').populate('airport').populate('client')
-      .populate('currency').populate('transfer').populate('transferprice')
-      .exec(function(err,reservations){
-              //console.log(reservations[0]);
-        Client_.find().sort('name').exec(function(e,clients_){ 
-          Client_.findOne({ id : order.client}).populate('contacts').exec(function(e,theclient){
-              //console.log(theclient);
-              Transfer.find().sort('name').exec(function(e,transfers){
-                  Hotel.find().sort('name').populate('location').populate('rooms').exec(function(e,hotels){
-                    order.reservations = reservations || [];
-                    Common.view(res.view,{
-                      order : order,
-                      clients_ : clients_ ,
-                      theclient : theclient ,
-                      hotels : hotels ,
-                      transfers : transfers ,
-                      ordercompany : ordercompany ,
-                      page:{
-                        name:req.__('sc_reservations')
-                        ,icon:'fa fa-car'
-                        ,controller : 'order.js'
-                      },
-                      breadcrumb : [
-                        { label : req.__('sc_reservations') , url : '/order/' } ,
-                        { label : order.id }
-                      ]
-                    },req);
-              }); }); // transfer / hotel
-        }); }); // client
-      });//reservation
-    }); }); //order and company
-  },
   /*
   * Obitien los transfers disponibles dependiendo de si está activo el precio
   * Recibe las 2 zonas para la búsqueda
@@ -507,46 +485,7 @@ module.exports = {
     });
   }
 };
-/*
-function customGetAvailableTransfers(company,params,res){
-  //console.log('company');console.log(company);
-  if(company.adminCompany){
-    TransferPrice.find({ 
-      company : company.id
-      ,active : true
-      ,"$or":[ 
-        { "$and" : [{'zone1' : params.zone1, 'zone2' : params.zone2}] } , 
-        { "$and" : [{'zone1' : params.zone2, 'zone2' : params.zone1}] } 
-      ] 
-    }).populate('transfer').exec(function(err,prices){
-      //console.log('prices admin');console.log(prices);
-      if(prices)
-        return res.json(prices);
-      else
-        return res.json(false);
-    });
-  }else{
-    CompanyProduct.find({agency : company.id,product_type:'transfer'}).exec(function(cp_err,products){
-      var productsArray = [];
-      for(var x in products) productsArray.push( products[x].transfer );
-      TransferPrice.find({ 
-        company : company.id
-        ,active : true
-        ,transfer : productsArray
-        ,"$or":[ 
-          { "$and" : [{'zone1' : params.zone1, 'zone2' : params.zone2}] } , 
-          { "$and" : [{'zone1' : params.zone2, 'zone2' : params.zone1}] } 
-        ] 
-      }).populate('transfer').exec(function(err,prices){
-        //console.log('prices NO admin');console.log(prices);
-        if(prices)
-          return res.json(prices);
-        else
-          return res.json(false);
-      });
-    });
-  }
-}*/
+
 /*
   'service','client','pax','arrival_date','arrival_fly','arrival_time','Hotel','transfer',
   'departure_date','departure_fly','departure_time','note','agency','Airport';

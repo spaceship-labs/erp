@@ -208,8 +208,7 @@ module.exports.tours_by_user = function(fields,cb){
 				results.rows[ '0_' + reservations[x].user.id ].vn += fee; //total ventas netas
 				results.rows[ '0_' + reservations[x].user.id ].rows2[ reservations[x].tour.id ].cm += (parseFloat(reservations[x].commission_sales)/100) * fee; //total comisión por tour
 				results.rows[ '0_' + reservations[x].user.id ].cm += (parseFloat(reservations[x].commission_sales)/100) * fee; //total comisión por tour
-				console.log( fee );
-				console.log( reservations[x].commission_sales );
+				//console.log( fee );console.log( reservations[x].commission_sales );
 
 				results.totals.total += fee;
 				results.totals.subtotal += fee - (fee * mainIVA);
@@ -224,7 +223,33 @@ module.exports.tours_by_user = function(fields,cb){
 /*
 */
 module.exports.tours_by_provider = function(options,theCB){
-	
+	var results = [];
+	options.dateType = '1';
+	options.sDate = new Date("October 13, 2014");
+	options.eDate = new Date("October 13, 2016");
+	var $match = {};
+	var $groupGral = {
+		_id : null
+		,toursIDs : { '$push' : '$tour' }
+	};
+	var $groupTours = {
+		_id : '$provider'
+		,toursIDsByProvider : { '$push' : '$tour' }
+		,providersArray : { '$push' : '$provider' }
+	}
+	var $groupTotals = {
+		_id : null
+		,total: { '$sum': '$fee' }
+		,totalKids: { '$sum': '$feeKids' }
+		,count : { $sum : 1 }
+		,pax : { $sum : '$pax' }
+		,kidPax : { $sum : '$kidPax' }
+	};
+	Reservation.native(function(err,theReservation){
+		theReservation.aggregate([ { $sort : { createdAt : -1 } }, { $match : $match }, { $group : $groupGral } ], function(err,resultsGlobal){ 
+			
+		});
+	});
 };
 /*
 	Options debe de recibir:

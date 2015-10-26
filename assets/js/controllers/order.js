@@ -329,11 +329,11 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
     $scope.alertM = { show: false, client : false, allEmpty: false };
     $scope.alertMessage = { show : false , title : '' , message : '' , type : 'alert' };
     //$scope.clients_ = clients_;
-    $scope.hotels = hotels;
+    $scope.hotels = [];
     //console.log($scope.hotels);
     $scope.allTours = {};
     $scope.allHotels = {};
-    $scope.transfers = transfers; // transfers disponibles
+    $scope.transfers = []; // transfers disponibles
     $scope.client = '';
     $scope.client_flag = false;
     $scope.airports = [];
@@ -1660,6 +1660,11 @@ app.controller('orderQuickCTL',function($scope,$http,$window,$rootScope){
     };
     $scope.getHotels = function(val){
         return $http.get('/hotel/find', { params: { name: val } }).then(function(response){
+            return response.data.results.map(function(item){ return item; });
+        });
+    };
+    $scope.getHotels = function(val){
+        return $http.get('/tour/find', { params: { name: val } }).then(function(response){
             return response.data.results.map(function(item){ return item; });
         });
     };
