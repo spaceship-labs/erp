@@ -1,5 +1,9 @@
 app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile, uiCalendarConfig, chroma){
-    /* alert on eventClick */
+    console.log("local", moment().format("HH:MM"));
+    var timeZone = 'America/Mexico_City';
+    moment.tz.add(timeZone+'|PST PDT|80 70|0101|1Lzm0 1zb0 Op0');
+
+
     var on = {};
 
     on.eventClick = function(even, jsEvent, view, revertFunc){
@@ -22,6 +26,16 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
         jQuery('#select-transport-update').modal('show');
 
     };
+
+    on.select = function(start, end){
+    	var time = moment(start).tz(timeZone);
+        $scope.modal = {};
+        $scope.modal.day = time.format('YYYY/MM/DD');
+        $scope.modal.start = start;
+        $scope.modal.end = time.add(1, 'hour').toDate();
+        jQuery('#select-transport').modal('show');
+        getCompanies();
+    }
 
     on.drop = function(event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view){
         on.eventClick(event, jsEvent, view, revertFunc);
@@ -53,11 +67,7 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
     };
 
     $scope.save = function(){
-        $http.post('/transportAsign/create', {
-            transport: $scope.modal.transport,
-            start: $scope.modal.start,
-            end: $scope.modal.end
-        }).then(function(res){
+        $http.post('/transportAsign/create', getFormParams()).then(function(res){
             if(res && res.data)
                 addEvent(res.data);
         });
@@ -65,12 +75,7 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
     };
 
     $scope.update = function(){
-        $http.post('/transportAsign/'+$scope.modal.asign.id, {
-            start: $scope.modal.start,
-            end: $scope.modal.end,
-            company: $scope.modal.company,
-            transport:  $scope.modal.transport
-        }).then(function(res){
+        $http.post('/transportAsign/'+$scope.modal.asign.id, getFormParams()).then(function(res){
             if(res && res.data){ 
                 var f = formatEven(res.data)[0]
                 var event = $scope.modal.event;
@@ -86,6 +91,14 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
             
         });
     };
+
+    function getFormParams(){
+        return {
+            transport: $scope.modal.transport,
+            start: moment($scope.modal.start).tz(timeZone).toDate().toISOString(),
+            end: moment($scope.modal.end).tz(timeZone).toDate().toISOString()
+        };
+    }
 
     $scope.cancel = function(){
         if($scope.modal.revertFunc){
@@ -115,20 +128,10 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
     
     }
 
-    function onSelect(start, end){
-    	var time = moment(start);
-        $scope.modal = {};
-        $scope.modal.day = time.format('YYYY/MM/DD');
-        $scope.modal.start = start;
-        $scope.modal.end = time.add(1, 'hour').toDate();
-        jQuery('#select-transport').modal('show');
-        getCompanies();
-    }
-
     /* config object */
     $scope.uiConfig = {
       calendar:{
-        height: 600,
+        height: 800,
         editable: true,
         header:{
           left: 'title',
@@ -143,11 +146,15 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
         defaultView: 'agendaDay',
         eventClick: on.eventClick,
         eventDrop: on.drop,
-        eventResize: $scope.alertOnResize,
+        //eventResize: $scope.alertOnResize,
         eventRender: $scope.eventRender,
-        select: onSelect,
+        select: on.select,
         allDaySlot: false,
         slotEventOverlap: false,
+        dayNames: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sábado'] ||  ['Sunday', 'Monday', 'Tuesday', 'Wednesday',
+         'Thursday', 'Friday', 'Saturday'],
+        dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sáb'] || ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+        monthNames:['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']|| ['January', 'February', 'March', 'April', 'May', 'June', 'July','August', 'September', 'October', 'November', 'December'],
         buttonText: {
             month: 'Mes',
             week: 'Semana',
@@ -162,7 +169,11 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
     /* event source that calls a function on every view switch */
     $scope.eventsF = function (start, end, /*timezone*/ done) {
         console.log(start, end);
-        $http.get('/transportAsign/find').then(function(res){
+	
+        //$http.get('/transportAsign/find?where={"start":{">=":"'+moment(start).tz(timeZone).toISOString()+'"}}').then(function(res){
+        var from = moment(start).tz(timeZone).toISOString(),
+            to = moment(end).tz(timeZone).toISOString();
+        $http.get('/transportAsign/find?where={"$and":[{"start":{">=":"'+from+'"}},{"start":{"<=":"'+to+'"}}]}').then(function(res){
             if(res && res.data && res.data[0]){
                 console.log(res.data);
                 $scope.events.forEach(function(){
@@ -178,9 +189,24 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
         var list = transportAsigns.length && transportAsigns || [transportAsigns];
 
         return list.map(function(asign, index){
+            console.log(asign);
             var bg = chroma.chroma(chroma.chroma.random()).darken(2),
                 color = 'white';
-            return {asign: asign, transport: asign.transport, title: 'ID: ' + asign.transport.car_id + ' | Company: '+ getCompanyName(asign.transport.company), start: asign.start, end: asign.end, allDay: false, backgroundColor: bg, textColor: color, borderColor: 'black', className: 'even_hour'}
+            return {
+                asign: asign, 
+                transport: asign.transport, 
+                title: ' ID: ' + asign.transport.car_id + 
+                        ' | Company: ' + getCompanyName(asign.transport.company) + 
+                        ' | Placa: ' + asign.transport.license_plate +
+                        ' | Max Pax:' + asign.transport.max_pax ,
+                start: asign.start, 
+                end: asign.end, 
+                allDay: false, 
+                backgroundColor: bg, 
+                textColor: color, 
+                borderColor: 'black', 
+                className: 'even_hour'
+            };
         });
     }
 

@@ -43,7 +43,7 @@
     "rc": "~0.3.3",
     "sails": "~0.10.5",
     "sails-disk": "~0.10.0",
-    "sails-mongo": "0.10.5",
+    "sails-mongo": "0.10.6",
     "skipper-pkgcloud": "0.0.4",
     "underscore.string": "^3.0.3"
   },
