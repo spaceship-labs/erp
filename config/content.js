@@ -1991,7 +1991,7 @@ module.exports.content = {
 		{
 			label 	: 'Personas por servicio',
 			label_en : 'People by service',
-			type 	: 'text',
+			type 	: 'number',
 			required: true,
 			handle 	: 'max_pax'
 		},
@@ -2001,6 +2001,13 @@ module.exports.content = {
 			type : 'select',
 			handle : 'company',
 			object : 'companies',
+			required : true,
+		},
+		{
+			label: 'Comisión',
+			label_en: 'Commission',
+			type : 'number',
+			handle : 'commission',
 			required : true,
 		}
 	],

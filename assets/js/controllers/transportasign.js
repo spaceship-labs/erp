@@ -1,21 +1,16 @@
-app.constant('uiCalendarConfig', {calendars: {}})
-.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile, uiCalendarConfig, chroma){
-    
-    $scope.remove = function(index) {
-      $scope.events.splice(index,1);
-    };
-
+app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile, uiCalendarConfig, chroma){
     /* alert on eventClick */
     var on = {};
 
-    on.eventClick = function(even, jsEvent, view){
+    on.eventClick = function(even, jsEvent, view, revertFunc){
         $scope.modal = {
             start: even.start,
             end: even.end,
             company: even.transport.company,
             transport: even.transport.id,
             asign: even.asign,
-            event: even
+            event: even,
+            revertFunc: revertFunc || false
         };
         if(!$scope.companies.length){
             $http.get('/transportAsign/show_companies').then(function(res){
@@ -28,8 +23,8 @@ app.constant('uiCalendarConfig', {calendars: {}})
 
     };
 
-    on.drop = function(){
-    	console.log('YO!!!', arguments);
+    on.drop = function(event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view){
+        on.eventClick(event, jsEvent, view, revertFunc);
     };
 
      /* Render Tooltip */
@@ -76,7 +71,6 @@ app.constant('uiCalendarConfig', {calendars: {}})
             company: $scope.modal.company,
             transport:  $scope.modal.transport
         }).then(function(res){
-            console.log(res);
             if(res && res.data){ 
                 var f = formatEven(res.data)[0]
                 var event = $scope.modal.event;
@@ -91,6 +85,14 @@ app.constant('uiCalendarConfig', {calendars: {}})
             }
             
         });
+    };
+
+    $scope.cancel = function(){
+        if($scope.modal.revertFunc){
+            $scope.modal.revertFunc();
+        }
+        jQuery('#select-transport-update').modal('hide');
+        $scope.modal = {};
     };
 
     function addEvent(transportAsign){
@@ -119,7 +121,6 @@ app.constant('uiCalendarConfig', {calendars: {}})
         $scope.modal.day = time.format('YYYY/MM/DD');
         $scope.modal.start = start;
         $scope.modal.end = time.add(1, 'hour').toDate();
-        console.log($scope.modal);
         jQuery('#select-transport').modal('show');
         getCompanies();
     }
@@ -147,14 +148,23 @@ app.constant('uiCalendarConfig', {calendars: {}})
         select: onSelect,
         allDaySlot: false,
         slotEventOverlap: false,
+        buttonText: {
+            month: 'Mes',
+            week: 'Semana',
+            basicDay: 'Lista del dia',
+            agendaDay: 'Dia por hora',
+            today: 'Hoy'
+        }
       }
     };
 
 
     /* event source that calls a function on every view switch */
     $scope.eventsF = function (start, end, /*timezone*/ done) {
-        $http.get('/transportAsign/find?sort=start DESC').then(function(res){
+        console.log(start, end);
+        $http.get('/transportAsign/find').then(function(res){
             if(res && res.data && res.data[0]){
+                console.log(res.data);
                 $scope.events.forEach(function(){
                 //eliminate exists
                 $scope.events.pop();
@@ -175,9 +185,10 @@ app.constant('uiCalendarConfig', {calendars: {}})
     }
 
     function getCompanyName(company){
-        return _.find(all_companies, function(a){
+        var found = _.find(all_companies, function(a){
             if(a.id == company) return true;
-        }).name;
+        })
+        return found && found.name || '';
     }
 
     $scope.eventSources = [$scope.events, $scope.eventsF];

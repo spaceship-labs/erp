@@ -27,6 +27,8 @@
                 </textarea>
 	            <input type='checkbox' ng-if='field.type == "checkbox"' name='{{field.handle}}' class='form-control' ng-checked='object[field.handle]' ng-model='object[field.handle]' />
 	            <input type='text' ng-if='field.type == "text"' name='{{field.handle}}' class='form-control' ng-model='object[field.handle]' ng-required='field.required' ng-class="{ 'has-error' : form[field.handle].$invalid && !form[field.handle].$pristine }" ng-change="onChangefx(field)" />
+
+	            <input type='number' ng-if='field.type == "number"' name='{{field.handle}}' class='form-control' ng-model='object[field.handle]' ng-required='field.required' ng-class="{ 'has-error' : form[field.handle].$invalid && !form[field.handle].$pristine }" ng-change="onChangefx(field)" />
 	            <input type='password' ng-if='field.type == "password"' name='{{field.handle}}' class='form-control' ng-model='object[field.handle]' />
 	            
 	            <select 
