@@ -29,10 +29,16 @@ module.exports.getCurrencies = function(cb){
 }
 
 module.exports.getOneData = function(cb){
-	Exchange_rates.count(function(err, n){
-		if(n > 0)
-			return cb && cb(err, n);
+    Currency.count(function(err, n){
+        if(n > 0){
+            Exchange_rates.count(function(err, n){
+                if(n > 0)
+                    return cb && cb(err, n);
 
-		module.exports.getCurrencies();
-	});
+                module.exports.getCurrencies();
+            });
+        
+        }
+    
+    });
 };
