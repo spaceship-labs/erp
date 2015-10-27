@@ -10,7 +10,7 @@ module.exports.getCurrencies = function(cb){
 			if(err)	return cb && cb(err);
 			
 			Currency.find().exec(function(err,cu){
-				if(err)	return cb && cb(err);
+				if(err || !cu.length)	return cb && cb(err);
 
 				var currencies = {};
 				for(var i=0;i<cu.length;i++){
@@ -29,16 +29,10 @@ module.exports.getCurrencies = function(cb){
 }
 
 module.exports.getOneData = function(cb){
-    Currency.count(function(err, n){
-        if(n > 0){
-            Exchange_rates.count(function(err, n){
-                if(n > 0)
-                    return cb && cb(err, n);
+	Exchange_rates.count(function(err, n){
+		if(n > 0)
+			return cb && cb(err, n);
 
-                module.exports.getCurrencies();
-            });
-        
-        }
-    
-    });
+		module.exports.getCurrencies();
+	});
 };
