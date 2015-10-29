@@ -1,15 +1,18 @@
 app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile, uiCalendarConfig, chroma){
-    console.log("local", moment().format("HH:MM"));
     var timeZone = 'America/Mexico_City';
     moment.tz.add(timeZone+'|PST PDT|80 70|0101|1Lzm0 1zb0 Op0');
 
-
-    var on = {};
-
+    
+    var on = {},
+    current_lang = window.current_lang || 'es';
     on.eventClick = function(even, jsEvent, view, revertFunc){
+        var start = moment(even.start).tz(timeZone),
+            end = moment(even.end).tz(timeZone);
+        if(!end.isValid())
+            end = start.add(1, 'hour');
         $scope.modal = {
-            start: even.start,
-            end: even.end,
+            start: start.toDate(),
+            end: end.toDate(),
             company: even.transport.company,
             transport: even.transport.id,
             asign: even.asign,
@@ -31,7 +34,7 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
     	var time = moment(start).tz(timeZone);
         $scope.modal = {};
         $scope.modal.day = time.format('YYYY/MM/DD');
-        $scope.modal.start = start;
+        $scope.modal.start = time.toDate();
         $scope.modal.end = time.add(1, 'hour').toDate();
         jQuery('#select-transport').modal('show');
         getCompanies();
@@ -56,6 +59,7 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
 
     var cacheTransports = {};
     $scope.changeCompany = function(){
+    	$scope.transports = [];
         var company = $scope.modal.company;
         if(!cacheTransports[company]){
             $http.get('/transport/find?company='+company).then(function(res){
@@ -93,10 +97,15 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
     };
 
     function getFormParams(){
+        var end = moment($scope.modal.end).tz(timeZone),
+            start = moment($scope.modal.start).tz(timeZone);
+        if(!end.isValid())
+            end = start.add(1, 'hour');
+            
         return {
             transport: $scope.modal.transport,
-            start: moment($scope.modal.start).tz(timeZone).toDate().toISOString(),
-            end: moment($scope.modal.end).tz(timeZone).toDate().toISOString()
+            start: start.toDate().toISOString(),
+            end: end.toDate().toISOString()
         };
     }
 
@@ -128,6 +137,7 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
     
     }
 
+    var is_spanish = current_lang == 'es'? true: false;
     /* config object */
     $scope.uiConfig = {
       calendar:{
@@ -151,16 +161,21 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
         select: on.select,
         allDaySlot: false,
         slotEventOverlap: false,
-        dayNames: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sábado'] ||  ['Sunday', 'Monday', 'Tuesday', 'Wednesday',
-         'Thursday', 'Friday', 'Saturday'],
-        dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sáb'] || ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-        monthNames:['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']|| ['January', 'February', 'March', 'April', 'May', 'June', 'July','August', 'September', 'October', 'November', 'December'],
-        buttonText: {
+        dayNames: is_spanish ? ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sábado'] : ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+        dayNamesShort: is_spanish ? ['Dom', 'Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sáb'] : ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+        monthNames: is_spanish ? ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'] : ['January', 'February', 'March', 'April', 'May', 'June', 'July','August', 'September', 'October', 'November', 'December'],
+        buttonText: is_spanish? {
             month: 'Mes',
             week: 'Semana',
             basicDay: 'Lista del dia',
             agendaDay: 'Dia por hora',
             today: 'Hoy'
+        } : {
+            month: 'Month',
+            week: 'Week',
+            basicDay: 'list of day',
+            agendaDay: 'Day per hour',
+            today: 'Today'
         }
       }
     };
@@ -168,14 +183,10 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
 
     /* event source that calls a function on every view switch */
     $scope.eventsF = function (start, end, /*timezone*/ done) {
-        console.log(start, end);
-	
-        //$http.get('/transportAsign/find?where={"start":{">=":"'+moment(start).tz(timeZone).toISOString()+'"}}').then(function(res){
         var from = moment(start).tz(timeZone).toISOString(),
             to = moment(end).tz(timeZone).toISOString();
         $http.get('/transportAsign/find?where={"$and":[{"start":{">=":"'+from+'"}},{"start":{"<=":"'+to+'"}}]}').then(function(res){
             if(res && res.data && res.data[0]){
-                console.log(res.data);
                 $scope.events.forEach(function(){
                 //eliminate exists
                 $scope.events.pop();
@@ -189,7 +200,6 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
         var list = transportAsigns.length && transportAsigns || [transportAsigns];
 
         return list.map(function(asign, index){
-            console.log(asign);
             var bg = chroma.chroma(chroma.chroma.random()).darken(2),
                 color = 'white';
             return {

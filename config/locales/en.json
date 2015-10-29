@@ -465,4 +465,9 @@
   ,"transports" : "Transports"
   ,"new_transport" : "New Transport"
   , "add_transport":"Add Transport"
+  , "start_hour": "Start hour"
+  , "end_hour" : "End hour"
+  , "asign_update": "Update"
+  , "asign_save": "Save"
+  , "asign": "Asign"
 }

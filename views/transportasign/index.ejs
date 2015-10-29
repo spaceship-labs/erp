@@ -1,5 +1,6 @@
 <script type='text/javascript'>
   window.all_companies = <%- JSON.stringify(companies) %>;
+  window.current_lang = <%- JSON.stringify(req.session.lang) %>;
 </script>
 <div ng-controller="transportAsignCTL">
     <div ui-calendar="uiConfig.calendar" class="span9 calendar" ng-model="eventSources" calendar="myCalendar" id="mainCalendar"></div>
@@ -10,13 +11,13 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">Asignar translado {{modal.day}}</h4>
+                    <h4 class="modal-title"><%= __("asign") %> {{modal.day}}</h4>
                 </div>
                 <div>
                     <form ng-class='formClass' class="form stdform stdform2" name="form">
                         <%- partial('form') %>
                         <p class="stdformbutton">
-                            <button ng-click='save()' class="btn btn-primary" ng-disabled="form.$invalid">Guardar</button>
+                            <button ng-click='save()' class="btn btn-primary" ng-disabled="form.$invalid"><%= __('asign_save')%></button>
                             <button type="reset" class="btn reset">Reset</button>
                         </p>
                     </form>
@@ -31,14 +32,14 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">Actualizar translado {{modal.day}}</h4>
+                    <h4 class="modal-title"><%= __("asign_update") %> {{modal.day}}</h4>
                 </div>
                 <div>
                     <form ng-class='formClass' class="form stdform stdform2" name="form">
                         <%- partial('form') %>
                         <p class="stdformbutton">
-                            <button ng-click='update()' class="btn btn-primary" ng-disabled="form.$invalid">Actualizar</button>
-                            <button ng-click='cancel()' class="btn reset">Cancel</button>
+                            <button ng-click='update()' class="btn btn-primary" ng-disabled="form.$invalid"><%= __("asign_update") %></button>
+                            <button ng-click='cancel()' class="btn reset"> <%=__("gral_cancel") %></button>
                         </p>
                     </form>
                 </div>
