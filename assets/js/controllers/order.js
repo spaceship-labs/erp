@@ -1503,6 +1503,7 @@ app.controller('orderQuickCTL',function($scope,$http,$window,$rootScope){
     $scope.open = [false,false]; //abre/cierra los datepickers
     $scope.pax = [];
     for(var j=1;j<30;j++) $scope.pax.push(j);
+    $scope.searchBy = 'c';
     $scope.customMessages = {
         Tta : { show : false , type : 'alert' , message : $rootScope.translates.c_ordermessg1 }
         ,Ttd : { show : false , type : 'alert' , message : $rootScope.translates.c_ordermessg2 }
@@ -1553,7 +1554,7 @@ app.controller('orderQuickCTL',function($scope,$http,$window,$rootScope){
                     if(order && order.id){
                         $scope.order = order;
                         //ver si existe transfer
-                        if( $scope.transfer != false && ! angular.equals( {} , $scope.transfer ) && $scope.transfer.fee ){
+                        if(  $scope.transfer != false && ! angular.equals( {} , $scope.transfer ) && $scope.transfer.fee ){
                             $scope.reservationTransfer();
                         }
                     }else{
@@ -1565,10 +1566,24 @@ app.controller('orderQuickCTL',function($scope,$http,$window,$rootScope){
                 $scope.alertM.allEmpty = true;
             }
         }else{
-            $scope.alertM.show = true;
-            $scope.alertM.client = true;
+            $scope.showMessage('tcf');
         }
     };
+    $scope.saveTourReservation = function( form ){
+        if( form.$valid && $scope.reservationTour.fee ){
+            var params = $scope.reservationTour;
+            params.company = $scope.thecompany;
+            params.reservation_type = 'tour';
+            params.generalFields = {};
+            $http.post('/order/createquickreservation',params,{}).success(function(result) {
+                if( result.results )
+                $scope.showMessage('rcs');
+                //$scope.redirectToEdit( );
+            });
+        }else{
+            $scope.showMessage('tcf');
+        }
+    }
     $scope.reservationTransfer = function(){
         var params = $scope.transfer;
         if( $scope.order ){
@@ -1633,6 +1648,19 @@ app.controller('orderQuickCTL',function($scope,$http,$window,$rootScope){
             transfer.departurepickup_time = getpickuptime(transfer,'departure');
         updateTotal();
     };
+    //Se calcula de nuevo el precio cuando cambia de tour, número de pax o agencia
+    $scope.updatePriceTour = function(){
+        console.log('get tour prices');
+        if( $scope.reservationTour.tour && $scope.reservationTour.tour.id ){
+            if(!$scope.reservationTour.currency)
+                $scope.reservationTour.currency = $scope.thecompany.base_currency;
+            if( !$scope.reservationTour.pax ) $scope.reservationTour.pax = 1;
+            $scope.reservationTour.fee = $scope.reservationTour.pax * $scope.reservationTour.tour.fee;
+            if( $scope.reservationTour.kidPax ) $scope.reservationTour.feeKids = $scope.reservationTour.kidPax * $scope.reservationTour.tour.feeChild;
+            if( $scope.reservationTour.currency.id != $scope.thecompany.base_currency.id )
+                $scope.reservationTour.fee *= $scope.thecompany.exchange_rates[$scope.reservationTour.currency.id].sales;
+        }
+    }
     $scope.getpickuptime = function(){
         var transfer = $scope.transfer;
         if( transfer.arrival_time )
@@ -1663,8 +1691,12 @@ app.controller('orderQuickCTL',function($scope,$http,$window,$rootScope){
             return response.data.results.map(function(item){ return item; });
         });
     };
-    $scope.getHotels = function(val){
-        return $http.get('/tour/find', { params: { name: val } }).then(function(response){
+    $scope.getTours = function(val){
+        var url = $scope.thecompany.adminCompany?'/tour/find':'/tour/findProducts/';
+        var params = { limit : 15 , company : $scope.thecompany.id , adminCompany : $scope.thecompany.adminCompany||false };
+        if( $scope.searchBy == 'n' ) params.name = val;
+        if( $scope.searchBy == 'c' ) params.mkpid = val;
+        return $http.get(url, { params: params }).then(function(response){
             return response.data.results.map(function(item){ return item; });
         });
     };

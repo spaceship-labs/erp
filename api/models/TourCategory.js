@@ -15,6 +15,10 @@ module.exports = {
   		collection : 'tour'
   		,via: 'categories'
   	}
+    ,classification : {
+      type : 'String'
+      ,enum : [ 'aquatic', 'land' ]
+    }
   }
 };
 

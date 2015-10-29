@@ -433,7 +433,13 @@ var getItemById = function(id,objectArray){
 	return  r;
 };
 module.exports.mkpFormatDateTime = function(date,type){
-	return date;
+	var result = date?date:'';
+	if( type == 'date' && result != '' ){
+		result = moment(date).format('YYYYMMDD');
+	}else if( type == 'time' && result != '' ){
+		result = moment(date).format('HHmm');
+	}
+	return result;
 }
 module.exports.mkpFormatItemToExport = function(reservation,cupon){
 	var i = 0;
@@ -455,12 +461,12 @@ module.exports.mkpFormatItemToExport = function(reservation,cupon){
 	item[++i] = reservation.client.name;
 	item[++i] = '';//last name
 	item[++i] = reservation.pax;
-	item[++i] = reservation.kidPax;
+	item[++i] = reservation.kidPax||0;
 	item[++i] = Reports.mkpFormatDateTime(reservation.arrival_date,'date');
 	item[++i] = Reports.mkpFormatDateTime(reservation.arrival_time,'time');
 	item[++i] = Reports.mkpFormatDateTime(reservation.departure_date,'date');
-	item[++i] = reservation.departure_airline.mkpid;
-	item[++i] = reservation.departure_airline.name;
+	item[++i] = reservation.departure_airline?reservation.departure_airline.mkpid:'';
+	item[++i] = reservation.departure_airline?reservation.departure_airline.name:'';
 	item[++i] = Reports.mkpFormatDateTime(reservation.departure_time,'time');
 	item[++i] = Reports.mkpFormatDateTime(reservation.departurepickup_time,'time');
 	item[++i] = reservation.type=='one_way'?reservation.main_fee_adults || reservation.fee_adults : reservation.main_fee_adults_rt || reservation.fee_adults_rt;
@@ -471,9 +477,10 @@ module.exports.mkpFormatItemToExport = function(reservation,cupon){
 		item[++i] = 0;
 	item[++i] = reservation.fee + reservation.feeKids;
 	item[++i] = reservation.fee + reservation.feeKids;
+	item[++i] = '';
 	item[++i] = reservation.currency.currency_code;
 	item[++i] = reservation.notes;
-	item[++i] = reservation.company.mkpid;
+	item[++i] = reservation.company.mkpid||'';
 	item[++i] = reservation.company.name;
 	item[++i] = '';//reserva de agencia
 	return item;

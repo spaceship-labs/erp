@@ -69,7 +69,7 @@ module.exports.createReservationTourHotel = function(params,userID,callback){
 	        item.user = userID;
 	        item.payment_method = item.payment_method?item.payment_method.handle:(params.generalFields.payment_method?params.generalFields.payment_method.handle:'creditcard');
 	        item.currency = params.currency?params.currency.id:theorder.company.base_currency;
-	        item.autorization_code = item.autorization_code || params.generalFields.autorization_code;
+	        item.autorization_code = item.autorization_code || params.generalFields.autorization_code || '';
 	        delete item.id;
 			OrderCore.getTourAndPrices(item.reservation_type,item[item.reservation_type].id,theorder.company,function(err,products){
 				if( item.reservation_type ){

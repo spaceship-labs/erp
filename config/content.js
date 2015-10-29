@@ -369,6 +369,7 @@ module.exports.content = {
 			type : 'money',
 			handle : 'fee',
 		},
+
 		{
 			label : 'Tarifa niños',
 			label_en : 'Children rate',
@@ -705,6 +706,13 @@ module.exports.content = {
 			,label_en : 'Portuguese name'
 			,type : 'text'
 			,handle : 'name_pt'
+		}
+		,{
+			label : 'Clasificación'
+			,label_en : 'Classification'
+			,type : 'select'
+			,object : 'classifications'
+			,handle : 'classification'
 		}
 	]
 	,location : [
@@ -2018,4 +2026,3 @@ module.exports.content = {
 };
 
 module.exports.content.transferprice = module.exports.content.price;
-

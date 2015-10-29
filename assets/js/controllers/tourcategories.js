@@ -7,8 +7,16 @@ app.controller('tourcategoryCTL',function($scope,$http){
             jQuery('#myModal').modal('hide');
         });
     };
+    $scope.classifications = [
+        { id: 'aquatic' , name : "Acuático" }
+        ,{ id: 'land' , name : "Terrestre" }
+    ];
 });
 app.controller('tourcategoryEditCTL',function($scope,$http){
 	$scope.tourcategory = tourcategory;
 	$scope.content = content;
+    $scope.classifications = [
+        { id: 'aquatic' , name : "Acuático" }
+        ,{ id: 'land' , name : "Terrestre" }
+    ];
 });

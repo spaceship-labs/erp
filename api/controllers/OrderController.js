@@ -177,87 +177,44 @@ module.exports = {
     OrderCore.createTransferReservation(params, req.user.id, req.session.select_company || req.user.select_company ,function(err,reservation){
       return res.json(reservation);
     });
-    /*
-    params.hotel = params.hotel.id;
-    params.state = params.state.handle;
-    params.payment_method = params.payment_method ? params.payment_method.handle : 'creditcard';
-    params.airport = params.airport.id;
-    params.client = params.client.id;
-    params.user = req.user.id;
+  },
+  /*
+    Esta función va a manejar las reservas rápidas
+    En el caso de los tours se debe crear la orden, el cliente y el tour
+    En el caso del transfer se recibirá sólo la reserva (ya debe de existir la orden y el cliente)
+  */
+  createquickreservation : function(req,res){
+    var params = req.params.all();
     delete params.id;
-    Order.findOne(params.order).populate('company').exec(function(e,theorder){
-      if(e) return res.json(e);
-      params.company = theorder.company?theorder.company:(req.session.select_company || req.user.select_company);
-      params.currency = params.currency?params.currency.id:params.company.base_currency;
-      Company.findOne({adminCompany:true}).exec(function(c_err,mainCompany){
-        if(c_err) res.json(false);
-        TransferPrice.findOne(params.transferprice).populate('transfer').exec(function(tp_err,transferprice){
-          if(tp_err) res.json(false);
-          //console.log('Fee: ' + params.fee);
-          params.quantity = Math.ceil( params.pax / transferprice.transfer.max_pax );
-          params.fee = transferprice[params.type] * params.quantity;
-          console.log(params.currency);
-          console.log(theorder.company.exchange_rates);
-          if( params.currency != theorder.company.base_currency )
-            params.fee *= theorder.company.exchange_rates[params.currency].sales;
-          //console.log('Fee2: ' + params.fee);console.log(transferprice);
-          params.fee_adults = transferprice.one_way;
-          params.fee_adults_rt = transferprice.round_trip;
-          params.fee_kids = transferprice.one_way_child;
-          params.fee_kids_rt = transferprice.round_trip_child;
-          //necesitaría guardar otros 4 precios que serían los de la empresa principal
-          //esto en caso de que sea una reserva por agencia
-          params.commission_sales = transferprice.commission_user || 0;
-          params.commission_agency = transferprice.commission_agency || 0;
-          params.exchange_rate_sale = mainCompany.exchange_rate_sale;
-          params.exchange_rate_book = mainCompany.exchange_rate_book;
-          params.exchange_rates = mainCompany.exchange_rates;
-          params.folio = theorder.folio;
-          params.travelType = 'O';
-          if( params.type == 'one_way' )
-            params.travelType = params.origin == 'hotel'?'R':'L';
-          params.service_type = transferprice.transfer.service_type || 'C' ;
-          //console.log(params);
-          Reservation.create(params).exec(function(err,reservation){
-            console.log(err);
-            if(err) return res.json(err);
-            theorder.reservations.push(reservation.id);
-            theorder.save(function(err_o){
-              //console.log('reservations');console.log(theorder);
-              return res.json(reservation);
-            });
+    var aux = {};
+    aux.items = [];
+    aux.generalFields = params.generalFields;
+    if( params.currency )
+      aux.currency = params.currency;
+    if( params.reservation_type == 'tour' ){
+      Client_.create({ name : params.client }).exec(function(err,client){
+        if(err) return res.json({ error : err, result : false });
+        orderParams = { client : client.id , company : params.company };//cliente y agencia
+        //params.client = client;
+        aux.client = client;
+        //console.log('Create client');
+        OrderCore.createOrder( orderParams, req, function(err,order){
+          if(err) return res.json({ error : err, result : false });
+          //params.order = order.id;
+          aux.order = order.id;
+          //params.items = [];
+          aux.items.push(params);
+          //params.items.push(params);
+          //console.log('Create order');
+          //console.log(aux);
+          OrderCore.createReservationTourHotel(aux,req.user.id,function(err,results){
+            if(err) return res.json({ error : err, result : false });
+            //console.log('Create reservations');
+            return res.json({ error : false, results : results });
           });
         });
       });
-    });//order
-    */
-  },
-  createReservation2 : function(req,res){
-  	//var requided = ['hotel','airport','transfer','state','payment_method','pax','fee','origin','type','fee'];
-  	var params = req.params.all();
-  	params.hotel = params.hotel.id;
-  	params.state = params.state.handle;
-  	params.payment_method = params.payment_method.handle;
-    params.airport = params.airport.id;
-  	params.client = params.client.id;
-    params.user = req.user.id;
-    delete params.id;
-    Order.findOne(params.order).exec(function(e,theorder){
-      if(e) return res.json(e);
-      params.company = theorder.company?theorder.company:(req.session.select_company || req.user.select_company);
-      //CompanyProduct.findOne({ product_type : 'transfer' , agency : params.company , transfer : params.transfer }).populate('transfer').exec(function(cp_err,product){
-        Reservation.create(params).exec(function(err,reservation){
-          if(err) return res.json(err);
-          //antes de guardar la orden, hay que generar el objeto que guardará las comisiones
-          theorder.reservations.push(reservation.id);
-          //console.log('reservations');console.log(theorder);
-          theorder.save(function(err_o){
-            //console.log('reservations');console.log(theorder);
-            return res.json(reservation);
-          });
-        });
-      //});
-    });
+    }
   },
   createReservationTour : function(req,res){
     var params = req.params.all();
