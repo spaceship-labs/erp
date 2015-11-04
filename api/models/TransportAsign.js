@@ -10,7 +10,7 @@ module.exports = {
   attributes: {
     transport: {
         model: 'transport',
-        required: true
+        //required: true
     },
     start: {
         type: 'datetime',

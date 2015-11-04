@@ -10,6 +10,7 @@ module.exports = {
         Company.find().exec(function(err, companies){
             Common.view(res.view,{
                 companies: companies,
+                type: 'asign',
                 page:{
                     name:req.__('sc_transfer')
                     ,icon:'fa fa-clock-o'

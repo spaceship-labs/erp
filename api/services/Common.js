@@ -12,7 +12,12 @@ module.exports.view = function(view,data,req){
 	Company.findOne(data.selected_company).populate('base_currency').populate('currencies').exec(function(e,company){
         if (e) console.log(e);
 		data.selected_company = company;
-		view(data);
+        if(data.select_view){
+    		view(data.select_view, data);
+        }else{
+            view(data);
+        }
+        
 	});
 };
 module.exports.renderMenu = function(req){

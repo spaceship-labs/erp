@@ -1,5 +1,5 @@
 <p>
-    <label><%=__("order-empresa")%></label>
+    <label><%=__("transport")%></label>
     <span class="field">
         <select 
             ng-model='modal.company'
@@ -31,5 +31,22 @@
     <label><%=__("end_hour")%></label>
     <span class="field">
         <input ng-class="{'has-error': error.invalid_end}" type="time" ng-model="modal.end">
+    </span>
+</p>
+<p>
+    <label>Pax</label>
+    <span class="field">
+        <input type="number" ng-model="modal.pax">
+    </span>
+</p>
+<p>
+    <label><%= __("order_service_type")%></label>
+    <span class="field">
+        <select 
+            ng-model='modal.service_type'
+            ng-options="obj.id as obj.name for obj in service_types"
+            required
+            class='form-control' >
+        </select>
     </span>
 </p>

@@ -436,6 +436,15 @@ module.exports.apps = [
                 ,showInMenu : true
                 ,controller : 'transportasign'
                 ,action : 'index'
+            },
+            {
+                label : 'Solicitar'
+                ,label_en : 'Pedir'
+                ,icon : 'fa-clock-o'
+                ,url : '/TransportAsignRequest/'
+                ,showInMenu : true
+                ,controller : 'transportasignrequest'
+                ,action : 'index'
             }
         ]
     }

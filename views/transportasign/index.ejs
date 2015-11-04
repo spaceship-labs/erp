@@ -1,6 +1,7 @@
 <script type='text/javascript'>
   window.all_companies = <%- JSON.stringify(companies) %>;
   window.current_lang = <%- JSON.stringify(req.session.lang) %>;
+  window.view_type = <%- JSON.stringify(type) %>;
 </script>
 <div ng-controller="transportAsignCTL">
     <div ui-calendar="uiConfig.calendar" class="span9 calendar" ng-model="eventSources" calendar="myCalendar" id="mainCalendar"></div>
@@ -15,7 +16,11 @@
                 </div>
                 <div>
                     <form ng-class='formClass' class="form stdform stdform2" name="form">
-                        <%- partial('form') %>
+                        <% if(type == 'asign'){ %>
+                            <%- partial('form_asign') %>
+                        <% }else{ %>
+                            <%- partial('form_request') %>
+                        <% } %>
                         <p class="stdformbutton">
                             <button ng-click='save()' class="btn btn-primary" ng-disabled="form.$invalid"><%= __('asign_save')%></button>
                             <button type="reset" class="btn reset">Reset</button>
@@ -36,7 +41,11 @@
                 </div>
                 <div>
                     <form ng-class='formClass' class="form stdform stdform2" name="form">
-                        <%- partial('form') %>
+                        <% if(type == 'asign'){ %>
+                            <%- partial('form_asign') %>
+                        <% }else{ %>
+                            <%- partial('form_request') %>
+                        <% } %>
                         <p class="stdformbutton">
                             <button ng-click='update()' class="btn btn-primary" ng-disabled="form.$invalid"><%= __("asign_update") %></button>
                             <button ng-click='cancel()' class="btn reset"> <%=__("gral_cancel") %></button>

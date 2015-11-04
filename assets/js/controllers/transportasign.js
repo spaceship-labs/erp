@@ -5,6 +5,7 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
     
     var on = {},
     current_lang = window.current_lang || 'es';
+    $scope.view_type = window.view_type;
     on.eventClick = function(even, jsEvent, view, revertFunc){
         var start = moment(even.start).tz(timeZone),
             end = moment(even.end).tz(timeZone);
@@ -13,8 +14,10 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
         $scope.modal = {
             start: start.toDate(),
             end: end.toDate(),
-            company: even.transport.company,
-            transport: even.transport.id,
+            company: even.transport && even.transport.company,
+            transport: even.transport && even.transport.id,
+            service_type: even.asign.service_type,
+            pax: even.asign.pax,
             asign: even.asign,
             event: even,
             revertFunc: revertFunc || false
@@ -119,12 +122,18 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
             start = moment($scope.modal.start).tz(timeZone);
         if(!end.isValid())
             end = start.add(1, 'hour');
-            
-        return {
-            transport: $scope.modal.transport,
-            start: start.toDate().toISOString(),
-            end: end.toDate().toISOString()
-        };
+
+        var params = {
+                transport: $scope.modal.transport,
+                start: start.toDate().toISOString(),
+                end: end.toDate().toISOString(),
+                service_type: $scope.modal.service_type
+            };
+        if($scope.view_type == 'asign'){
+            return params;
+        }
+        params.pax = $scope.modal.pax;
+        return params;
     }
 
     $scope.cancel = function(){
@@ -220,13 +229,30 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
         return list.map(function(asign, index){
             var bg = chroma.chroma(chroma.chroma.random()).darken(2),
                 color = 'white';
+
+            if($scope.view_type == 'asign' && asign.transport){
+                return {
+                    asign: asign, 
+                    transport: asign.transport, 
+                    title: ' ID: ' + asign.transport.car_id + 
+                            ' | transport: ' + getCompanyName(asign.transport.company) + 
+                            ' | Placa: ' + asign.transport.license_plate +
+                            ' | Max Pax:' + asign.transport.max_pax + 
+                            (asign.pax? (' | Request Pax: ' + asign.pax) : '') +
+                            ' | Request Type: ' + getServiceType(asign.service_type),
+                    start: asign.start, 
+                    end: asign.end, 
+                    allDay: false, 
+                    backgroundColor: bg, 
+                    textColor: color, 
+                    borderColor: 'black', 
+                    className: 'even_hour'
+                };
+            }
             return {
                 asign: asign, 
                 transport: asign.transport, 
-                title: ' ID: ' + asign.transport.car_id + 
-                        ' | Company: ' + getCompanyName(asign.transport.company) + 
-                        ' | Placa: ' + asign.transport.license_plate +
-                        ' | Max Pax:' + asign.transport.max_pax ,
+                title: 'Pax:' + asign.pax + ' | type: ' + getServiceType(asign.service_type),
                 start: asign.start, 
                 end: asign.end, 
                 allDay: false, 
@@ -235,7 +261,15 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
                 borderColor: 'black', 
                 className: 'even_hour'
             };
+
         });
+    }
+
+    function getServiceType(type){
+        var f = _.find($scope.service_types, function(s){
+                    return s.id == type;
+                });
+        return f && f.name || '';
     }
 
     function getCompanyName(company){
@@ -247,4 +281,11 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
 
     $scope.eventSources = [$scope.events, $scope.eventsF];
 
+    $scope.service_types = [
+            { name : 'Colectivo' , id : 'C' }
+            ,{ name : 'Privado' , id : 'P' }
+            ,{ name : 'Lujo' , id : 'L' }
+        ];
+
 });
+

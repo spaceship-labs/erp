@@ -470,4 +470,6 @@
   , "asign_update": "Update"
   , "asign_save": "Save"
   , "asign": "Asign"
+  , "request": "Request"
+  , "transport": "Transport"
 }
