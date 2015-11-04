@@ -7,7 +7,6 @@
 
 module.exports = {
     index: function(req, res){
-        console.log("request.");
         Company.find().exec(function(err, companies){
             Common.view(res.view,{
                 select_view: 'transportasign/index',

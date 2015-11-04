@@ -16,7 +16,7 @@ module.exports.models = {
   //
   // (defaults to localDiskDb)
   connection: 'mongodb',
-  migrate: 'safe',
+  migrate: 'alter',//'safe',
   updateAvatar : function(req,opts,cb){
     this.findOne({id:opts.id}).exec(function(e,obj){
       if(e) return cb && cb(e,obj);
