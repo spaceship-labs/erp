@@ -30,6 +30,6 @@
 <p>
     <label><%=__("end_hour")%></label>
     <span class="field">
-        <input type="time" ng-model="modal.end">
+        <input ng-class="{'has-error': error.invalid_end}" type="time" ng-model="modal.end">
     </span>
 </p>

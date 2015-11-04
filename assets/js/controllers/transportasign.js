@@ -56,6 +56,7 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
     $scope.companies = [];
     $scope.transports = [];
     $scope.events = [];
+    $scope.error = {};
 
     var cacheTransports = {};
     $scope.changeCompany = function(){
@@ -70,30 +71,47 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
         }
     };
 
+    function validDate(){
+        var start = moment($scope.modal.start).tz(timeZone),
+            end = moment($scope.modal.end).tz(timeZone);
+
+        if(!end.isValid())
+            return true;
+        
+        if(end.isAfter(start))
+            return true;
+        
+        $scope.error.invalid_end = true;
+        return false;
+    }
+
     $scope.save = function(){
-        $http.post('/transportAsign/create', getFormParams()).then(function(res){
-            if(res && res.data)
-                addEvent(res.data);
-        });
+        $scope.error.invalid_end = false;
+    	if(validDate())
+            $http.post('/transportAsign/create', getFormParams()).then(function(res){
+                if(res && res.data)
+                    addEvent(res.data);
+            });
 
     };
 
     $scope.update = function(){
-        $http.post('/transportAsign/'+$scope.modal.asign.id, getFormParams()).then(function(res){
-            if(res && res.data){ 
-                var f = formatEven(res.data)[0]
-                var event = $scope.modal.event;
-                event.title = f.title;
-                event.asign = f.asign;
-                event.start = f.start;
-                event.end = f.end;
-                event.transport = f.transport;
+        if(validDate()){
+            $http.post('/transportAsign/'+$scope.modal.asign.id, getFormParams()).then(function(res){
+                if(res && res.data){ 
+                    var f = formatEven(res.data)[0]
+                    var event = $scope.modal.event;
+                    event.title = f.title;
+                    event.asign = f.asign;
+                    event.start = f.start;
+                    event.end = f.end;
+                    event.transport = f.transport;
                 
-                jQuery('#mainCalendar').fullCalendar('updateEvent', event);
-                jQuery('#select-transport-update').modal('hide');
-            }
-            
-        });
+                    jQuery('#mainCalendar').fullCalendar('updateEvent', event);
+                    jQuery('#select-transport-update').modal('hide');
+                }
+            });
+        }
     };
 
     function getFormParams(){
