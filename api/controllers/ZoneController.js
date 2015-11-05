@@ -77,7 +77,7 @@ module.exports = {
 			TransferPrice.destroy({ zone2 : req.params.all().id }).exec(function(e,tp2){
 				Zone.destroy({id:req.params.all().id}).exec(function(e,z){
 					if(e) throw(e);
-					res.json(z);
+					res.json(z[0]?z[0]:z);
 				});
 			});
 		});
