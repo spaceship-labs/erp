@@ -1,5 +1,6 @@
 app.controller('orderCTL',function($scope,$http,$window,$upload,$rootScope){
     $scope.orders = [];
+    $scope.cancelationMotives = cancelationMotives;
     $scope.content = content;
     $scope.totalOrders = 0;
     $scope.currentPage = 1;
@@ -194,6 +195,19 @@ app.controller('orderCTL',function($scope,$http,$window,$upload,$rootScope){
         $scope.theorder = order;
         jQuery('#orderModal').modal('show');
     };
+    $scope.openCancelOrder = function(order){
+        $scope.theorder = order;
+        jQuery('#cancelModal').modal('show');
+    };
+    $scope.cancelOrder = function(){
+        var params = { id : $scope.theorder.id, cancelation : $scope.cancelation };
+        $http.post('/order/cancelorder',params,{}).success(function(results){
+            console.log(results);
+            jQuery('#cancelModal').modal('hide');
+            $scope.currentPage = 1;
+            sendFilterFx(0);
+        });
+    }
     $scope.getRoom = function(item){
         console.log(item);
         for( var x in item.hotel.rooms ){

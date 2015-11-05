@@ -12,8 +12,9 @@ module.exports = {
   */
   index: function (req, res) {
   	Common.view(res.view,{
-  		page:{ name:req.__('sc_reservations'), icon:'fa fa-car', controller : 'order.js' },
-  		breadcrumb : [ {label : req.__('sc_reservations')} ]
+      cancelationMotives : OrderCore.getCancelationMotives()
+  		,page:{ name:req.__('sc_reservations'), icon:'fa fa-car', controller : 'order.js' }
+  		,breadcrumb : [ {label : req.__('sc_reservations')} ]
   	},req);
   },
   neworder : function(req,res){
@@ -74,6 +75,12 @@ module.exports = {
   /*
     LLAMADAS HTTP
   */
+  cancelorder : function(req,res){
+    var params = req.params.all();
+    OrderCore.cancelOrder(params.id,params.cancelation,function(err,result){
+      res.json({ error : err, result : result });
+    });
+  },
   reporteespecial : function(req,res){
     var fields = {};
     Reports.getReport('logisticsReport',fields,function(results,err){

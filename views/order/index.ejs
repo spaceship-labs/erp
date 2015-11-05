@@ -1,5 +1,6 @@
 <script type='text/javascript'>
     window.content = <%- JSON.stringify(_content) %>;
+    window.cancelationMotives = <%- JSON.stringify(cancelationMotives) %>;
 	window.interactions = <%- JSON.stringify(interactions) %>;
 </script>
 <div ng-controller='orderCTL' class='order-index'>
@@ -14,8 +15,13 @@
                     <li>
                         <a ng-click="SelectReport('transfer_gral')">Reporte Traslados (Gral.)</a>
                         <a ng-click="SelectReport('tours_gral')">Reporte Tours (Gral.)</a>
-                        <a ng-click="SelectReport('tours_by_agency')">Reporte Tours (by Agency)</a>
                         <a ng-click="SelectReport('tours_by_user')">Reporte Tours (by User)</a>
+                        <a ng-click="SelectReport('tours_by_provider')">Reporte Tours (by Provider)</a>
+                        <a ng-click="SelectReport('tours_by_agency')">Reporte Tours (by Agency)</a>
+                        <a ng-click="SelectReport('tours_by_hotel')">Reporte Tours (by Hotel)</a>
+                        <a ng-click="SelectReport('tours_by_user_list')">Reporte Tours Detallado (by User)</a>
+                        <a ng-click="SelectReport('tours_by_provider_list')">Reporte Tours Detallado (by Provider)</a>
+                        <a ng-click="SelectReport('tours_by_agency_list')">Reporte Tours Detallado (by Agency)</a>
                     </li>
                 </ul>
             </span>

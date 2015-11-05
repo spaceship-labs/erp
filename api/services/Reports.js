@@ -1,4 +1,7 @@
 /*
+	Notas Generales de los reportes
+		- En todos los reportes se deben de obtener las reservas liquidadas y las canceladas para poder calcular las devoluciones
+		- Definir el IVA en la empresa principal!!
 	Este servicio generará todos los reportes
 	Se separará cada uno de los reportes en funciones, las dejaré públicas
 	para que se pueda accederse a cada una por separado.
@@ -14,16 +17,17 @@ module.exports.getReport = function(type,fields,cb){
 	var reports_available = {
 		'tours_gral' : true
 		,'tours_by_agency': true
+		,'tours_by_hotel': true
 		,'tours_by_user': true
 		,'tours_by_provider': true
 		,'transfer_gral': true
 		,'totalsReport': true
 		,'logisticsReport': true
+		,'tours_by_user_list': true
+		,'tours_by_provider_list': true
+		,'tours_by_agency_list': true
 	};
 	if( typeof reports_available[type] != 'undefined' ){
-		var results = {};
-		var errors = false;
-		//cb(results , errors);
 		Reports[type](fields,cb);
 	}else{
 		cb(false,'Undefined report');
@@ -79,6 +83,108 @@ module.exports.transfer_gral = function(fields,cb){
 		- cb 	 : callback, function
  */
 module.exports.tours_gral = function(fields,cb){
+	var results = {
+		headers : [ 
+			{ label : 'Tour' , handle : 'name', object : '_id' , type : '' }
+			,{ label : 'Categoría' , handle : 'category', object : '_id' , type : '' }
+			,{ label : 'Pax' , handle : 'pax', type : '' }
+			,{ label : 'Ventas' , handle : 'total', type : 'currency' }
+			,{ label : 'Pax' , handle : 'paxDev', type : '' }
+			,{ label : 'Devolución' , handle : 'totalDev', type : 'currency' }
+			,{ label : 'Pax' , handle : 'paxneto', type : '' }
+			,{ label : 'Vta.s/IVA' , handle : 'total_iva', type : 'currency' }
+			,{ label : 'IVA' , handle : 'iva', type : 'currency' }
+			,{ label : 'Ventas netas' , handle : 'neto', type : 'currency' }
+		]
+		,title : 'Ventas Tours por Servicio'
+		,rows : {}
+		,totals : { total : 0 , subtotal : 0 , iva : 0 , pax : 0 }
+	}
+	/*
+		Para saber si es por la fecha de creación o la de reservación
+		options.dateType = '1';
+	*/
+	fields.sDate = new Date("October 13, 2014");
+	fields.eDate = new Date("October 13, 2016");
+	var $match = {
+		reservation_type : 'tour'
+		,$and : [
+			//{ $or : [ { state : 'pending' } , { state : 'canceled' } ] },
+			{ $or : [ 
+				{ createdAt : { $gte : fields.sDate , $lte : fields.eDate } } 
+				,{ cancelationDate : { $gte : fields.sDate , $lte : fields.eDate } } 
+			] }
+		]
+	};
+	var $groupGral = {
+		_id : null
+		,toursIDs : { '$push' : '$tour' }
+		,total : { $sum : '$totalNeto' }
+		,pax : { $sum : '$paxNeto' }
+	};
+	var $groupTotals = {
+		_id 		: '$tour'
+		,pax 		: { $sum : '$paxSum' }
+		,total 		: { $sum : '$feeSum' }
+		,paxDev 	: { $sum : '$paxWDev' }
+		,totalDev 	: { $sum : '$totalWDev' }
+		,paxneto 	: { $sum : '$paxWithoutDev' }
+		,neto 		: { $sum : '$totalWithoutDev' }
+		,count 		: { $sum : 1 }
+	};
+	var feeSumVar = { $add : [ { $ifNull : [ '$fee', 0 ] } , { $ifNull : [ '$feeKids', 0 ] } ] };
+	var paxSumVar = { $add : [ { $ifNull : [ '$pax', 0 ] } , { $ifNull : [ '$kidPax', 0 ] }	] };
+	Reservation.native(function(err,theReservation){
+		theReservation.aggregate([ 
+			{ $sort : { createdAt : -1 } }, { $match : $match }
+			,{ $project : {
+				tour:1,fee:1,feeKids:1,pax:1,kidPax:1,state:1
+				,totalNeto 	: { $cond : [ { $ne : ['$state' , 'canceled'] },feeSumVar,0 ] }
+				,paxNeto 	: { $cond : [ { $ne : ['$state' , 'canceled'] },paxSumVar,0 ] }
+			} }
+			,{ $group : $groupGral } 
+		],function(err,resultsGlobal){ 
+			if( err || resultsGlobal.length <= 0 ){ theCB(resultsGlobal,err); }
+			resultsGlobal = resultsGlobal[0];
+			//obtener los proveedores;
+			Tour.find({ id : resultsGlobal.toursIDs }).populate('categories').exec(function(err,allTours){
+				//iteration
+				theReservation.aggregate([ 
+					 { $sort  : {createdAt:-1} }
+					,{ $match : $match }
+					,{ $project : { 
+						fee:1, pax:1, state:1, feeKids:1, kidPax:1, tour:1 
+						,feeSum 	: feeSumVar, paxSum 	: paxSumVar
+						,totalWDev 	: { $cond : [ { $eq : ['$state' , 'canceled'] },feeSumVar,0 ] }
+						,paxWDev 	: { $cond : [ { $eq : ['$state' , 'canceled'] },paxSumVar,0 ] }
+						,totalWithoutDev 	: { $cond : [ { $ne : ['$state' , 'canceled'] },feeSumVar,0 ] }
+						,paxWithoutDev 		: { $cond : [ { $ne : ['$state' , 'canceled'] },paxSumVar,0 ] }
+					 } }
+					,{ $group : $groupTotals } 
+				],function(err,resultsTours){
+					if(err) console.log(err);
+					//obtiene los totales de las reservas
+					results.rows = [];
+					for(var x in resultsTours){ 
+						resultsTours[x]._id = getItemById( resultsTours[x]._id, allTours );
+						resultsTours[x].iva = resultsTours[x].neto*mainIVA;
+						resultsTours[x].total_iva = resultsTours[x].neto - resultsTours[x].iva;
+						resultsTours[x]._id.category = resultsTours[x]._id.categories.length>0?resultsTours[x]._id.categories[0].classification:'';
+					}
+					results.rows = resultsTours;
+					//totales globales
+					results.totals.pax =resultsGlobal.pax;
+					results.totals.total =resultsGlobal.total;
+					results.totals.iva =resultsGlobal.total*mainIVA;
+					results.totals.subtotal = resultsGlobal.total - results.totals.iva;
+					results.reportType = '';
+					cb(results,err);
+				});
+			});
+		}); //get all reservations
+	}); //reservation native
+}
+module.exports.tours_gral2 = function(fields,cb){
 	var results = false;
 	Reservation.count(function(c_err,num){
 		if(c_err) cb(results , c_err);
@@ -95,7 +201,7 @@ module.exports.tours_gral = function(fields,cb){
 					,{ label : 'IVA' , handle : 'iva', type : 'currency' }
 					,{ label : 'Ventas netas' , handle : 'vn', type : 'currency' }
 				]
-				,title : 'Ventas generales de Tours'
+				,title : 'Ventas de Tours por servicio'
 				,rows : {}
 				,totals : { total : 0 , subtotal : 0 , iva : 0 , pax : 0 }
 			}
@@ -119,7 +225,149 @@ module.exports.tours_gral = function(fields,cb){
 		});//Reservation END
 	});//Reservation count END
 }
+module.exports.tours_by_agency_list = function(fields,cb){
+	fields.listing = true;
+	Reports.tours_by_agency(fields,cb);
+}
 module.exports.tours_by_agency = function(fields,cb){
+	var results = {
+		headers : [ 
+			{ label : 'Agencia' , handle : 'name', object : '_id', object2:'_id' , type : '' }
+			,{ label : 'Pax' , handle : 'pax', type : '' }
+			,{ label : 'Ventas' , handle : 'total', type : 'currency' }
+			,{ label : 'Pax' , handle : 'paxDev', type : '' }
+			,{ label : 'Devolución' , handle : 'totalDev', type : 'currency' }
+			,{ label : 'Pax' , handle : 'paxneto', type : '' }
+			,{ label : 'Vta.s/IVA' , handle : 'total_iva', type : 'currency' }
+			,{ label : 'IVA' , handle : 'iva', type : 'currency' }
+			,{ label : 'Ventas netas' , handle : 'neto', type : 'currency' }
+		]
+		,title : 'Ventas Tours por Agencia'
+		,rows : {}
+		,totals : { total : 0 , subtotal : 0 , iva : 0 , pax : 0 }
+	}
+	/*
+		Para saber si es por la fecha de creación o la de reservación
+		options.dateType = '1';
+	*/
+	fields.sDate = new Date("October 13, 2014");
+	fields.eDate = new Date("October 13, 2016");
+	var $match = {
+		reservation_type : 'tour'
+		,$and : [
+			//{ $or : [ { state : 'pending' } , { state : 'canceled' } ] },
+			{ $or : [ 
+				{ createdAt : { $gte : fields.sDate , $lte : fields.eDate } } 
+				,{ cancelationDate : { $gte : fields.sDate , $lte : fields.eDate } } 
+			] }
+		]
+	};
+	var $groupGral = {
+		_id : null
+		,usersIDs : { '$push' : '$company' }
+		,total : { $sum : '$totalNeto' }
+		,pax : { $sum : '$paxNeto' }
+	};
+	var $groupTotals = {
+		_id 		: '$company'
+		,pax 		: { $sum : '$paxSum' }
+		,total 		: { $sum : '$feeSum' }
+		,paxDev 	: { $sum : '$paxWDev' }
+		,totalDev 	: { $sum : '$totalWDev' }
+		,paxneto 	: { $sum : '$paxWithoutDev' }
+		,neto 		: { $sum : '$totalWithoutDev' }
+		,count 		: { $sum : 1 }
+		,toursIDs 	: { $push : '$tour' }
+	};
+	var feeSumVar = { $add : [ { $ifNull : [ '$fee', 0 ] } , { $ifNull : [ '$feeKids', 0 ] } ] };
+	var paxSumVar = { $add : [ { $ifNull : [ '$pax', 0 ] } , { $ifNull : [ '$kidPax', 0 ] }	] };
+	Reservation.native(function(err,theReservation){
+		theReservation.aggregate([ 
+			{ $sort : { createdAt : -1 } }, { $match : $match }
+			,{ $project : {
+				company:1,fee:1,feeKids:1,pax:1,kidPax:1,state:1
+				,totalNeto 	: { $cond : [ { $ne : ['$state' , 'canceled'] },feeSumVar,0 ] }
+				,paxNeto 	: { $cond : [ { $ne : ['$state' , 'canceled'] },paxSumVar,0 ] }
+			} }
+			,{ $group : $groupGral } 
+		],function(err,resultsGlobal){ 
+			if( err || resultsGlobal.length <= 0 ){ theCB(resultsGlobal,err); }
+			resultsGlobal = resultsGlobal[0];
+			//obtener los proveedores;
+			Company.find({ id : resultsGlobal.usersIDs }).exec(function(err,allCompanies){
+				//iteration
+				theReservation.aggregate([ 
+					 { $sort  : {createdAt:-1} }
+					,{ $match : $match }
+					,{ $project : { 
+						fee:1, pax:1, state:1, feeKids:1, kidPax:1, company:1,tour:1
+						,feeSum 	: feeSumVar, paxSum 	: paxSumVar
+						,totalWDev 	: { $cond : [ { $eq : ['$state' , 'canceled'] },feeSumVar,0 ] }
+						,paxWDev 	: { $cond : [ { $eq : ['$state' , 'canceled'] },paxSumVar,0 ] }
+						,totalWithoutDev 	: { $cond : [ { $ne : ['$state' , 'canceled'] },feeSumVar,0 ] }
+						,paxWithoutDev 		: { $cond : [ { $ne : ['$state' , 'canceled'] },paxSumVar,0 ] }
+					 } }
+					,{ $group : $groupTotals } 
+				],function(err,resultsTours){
+					if(err) console.log(err);
+					//obtiene los totales de las reservas
+					async.mapSeries( resultsTours, function(item,theCB){
+						item._id = getItemById( item._id, allCompanies );
+						item.iva = item.neto*mainIVA;
+						item.total_iva = item.neto - item.iva;
+						if( fields.listing ){
+							item.type = 'c';
+							$groupTotals._id = '$tour';
+							$match.tour = { '$in' : item.toursIDs };
+							$match.company = sails.models['company'].mongo.objectId( item._id.id );
+							console.log($match);
+							theReservation.aggregate([ 
+								 { $sort  : {createdAt:-1} }
+								,{ $match : $match }
+								,{ $project : { 
+									fee:1, pax:1, state:1, feeKids:1, kidPax:1, tour:1,company:1
+									,feeSum 	: feeSumVar, paxSum 	: paxSumVar
+									,totalWDev 	: { $cond : [ { $eq : ['$state' , 'canceled'] },feeSumVar,0 ] }
+									,paxWDev 	: { $cond : [ { $eq : ['$state' , 'canceled'] },paxSumVar,0 ] }
+									,totalWithoutDev 	: { $cond : [ { $ne : ['$state' , 'canceled'] },feeSumVar,0 ] }
+									,paxWithoutDev 		: { $cond : [ { $ne : ['$state' , 'canceled'] },paxSumVar,0 ] }
+								 } }
+								,{ $group : $groupTotals } 
+							],function(err,resultsUsers){
+								if(err) console.log(err);
+								Tour.find({ id : item.toursIDs }).exec(function(err,allTours){
+									//obtiene los totales de las reservas
+									for( var y in resultsUsers ){
+										resultsUsers[y]._id = getItemById( resultsUsers[y]._id, allTours );
+										resultsUsers[y].iva = resultsUsers[y].neto*mainIVA;
+										resultsUsers[y].total_iva = resultsUsers[y].neto-resultsUsers[y].iva;
+									}
+									item.allTours = allTours;
+									item.rows2 = resultsUsers;
+									theCB(err,item);
+								});
+							});
+						}else{
+							theCB(err,item)
+						}
+					},function(err,rows){
+						//results
+						results.rows = rows;
+						//totales globales
+						results.totals.pax = resultsGlobal.pax;
+						results.totals.total = resultsGlobal.total;
+						results.totals.iva = resultsGlobal.total*mainIVA;
+						results.totals.subtotal = resultsGlobal.total - results.totals.iva;
+						results.reportType = '';
+						if( fields.listing ) results.reportType = 'bygroup';
+						cb(results,err);
+					});
+				});
+			});
+		}); //get all reservations
+	}); //reservation native
+}
+module.exports.tours_by_agency2 = function(fields,cb){
 	var results = false;
 	Reservation.count(function(c_err,num){
 		if(c_err){ console.log(c_err); cb(results , c_err); };
@@ -167,7 +415,266 @@ module.exports.tours_by_agency = function(fields,cb){
 		});//Reservation END
 	});//Reservation count END
 }
+module.exports.tours_by_hotel = function(fields,cb){
+	var results = {
+		headers : [ 
+			{ label : 'Hotel' , handle : 'name', object : '_id' , type : '' }
+			,{ label : 'Pax' , handle : 'pax', type : '' }
+			,{ label : 'Ventas' , handle : 'total', type : 'currency' }
+			,{ label : 'Pax' , handle : 'paxDev', type : '' }
+			,{ label : 'Devolución' , handle : 'totalDev', type : 'currency' }
+			,{ label : 'Pax' , handle : 'paxneto', type : '' }
+			,{ label : 'Vta.s/IVA' , handle : 'total_iva', type : 'currency' }
+			,{ label : 'IVA' , handle : 'iva', type : 'currency' }
+			,{ label : 'Ventas netas' , handle : 'neto', type : 'currency' }
+		]
+		,title : 'Ventas Tours por Hotel'
+		,rows : {}
+		,totals : { total : 0 , subtotal : 0 , iva : 0 , pax : 0 }
+	}
+	/*
+		Para saber si es por la fecha de creación o la de reservación
+		options.dateType = '1';
+	*/
+	fields.sDate = new Date("October 13, 2014");
+	fields.eDate = new Date("October 13, 2016");
+	var $match = {
+		reservation_type : 'tour'
+		,$and : [
+			//{ $or : [ { state : 'pending' } , { state : 'canceled' } ] },
+			{ $or : [ 
+				{ createdAt : { $gte : fields.sDate , $lte : fields.eDate } } 
+				,{ cancelationDate : { $gte : fields.sDate , $lte : fields.eDate } } 
+			] }
+		]
+	};
+	var $groupGral = {
+		_id : null
+		,hotelsIDs : { '$push' : '$hotel' }
+		,total : { $sum : '$totalNeto' }
+		,pax : { $sum : '$paxNeto' }
+	};
+	var $groupTotals = {
+		_id 		: '$hotel'
+		,pax 		: { $sum : '$paxSum' }
+		,total 		: { $sum : '$feeSum' }
+		,paxDev 	: { $sum : '$paxWDev' }
+		,totalDev 	: { $sum : '$totalWDev' }
+		,paxneto 	: { $sum : '$paxWithoutDev' }
+		,neto 		: { $sum : '$totalWithoutDev' }
+		,count 		: { $sum : 1 }
+	};
+	var feeSumVar = { $add : [ { $ifNull : [ '$fee', 0 ] } , { $ifNull : [ '$feeKids', 0 ] } ] };
+	var paxSumVar = { $add : [ { $ifNull : [ '$pax', 0 ] } , { $ifNull : [ '$kidPax', 0 ] }	] };
+	Reservation.native(function(err,theReservation){
+		theReservation.aggregate([ 
+			{ $sort : { createdAt : -1 } }, { $match : $match }
+			,{ $project : {
+				hotel:1,fee:1,feeKids:1,pax:1,kidPax:1,state:1
+				,totalNeto 	: { $cond : [ { $ne : ['$state' , 'canceled'] },feeSumVar,0 ] }
+				,paxNeto 	: { $cond : [ { $ne : ['$state' , 'canceled'] },paxSumVar,0 ] }
+			} }
+			,{ $group : $groupGral } 
+		],function(err,resultsGlobal){ 
+			if( err || resultsGlobal.length <= 0 ){ theCB(resultsGlobal,err); }
+			resultsGlobal = resultsGlobal[0];
+			//obtener los proveedores;
+			Hotel.find({ id : resultsGlobal.hotelsIDs }).exec(function(err,allHotels){
+				//iteration
+				theReservation.aggregate([ 
+					 { $sort  : {createdAt:-1} }
+					,{ $match : $match }
+					,{ $project : { 
+						fee:1, pax:1, state:1, feeKids:1, kidPax:1, hotel:1 
+						,feeSum 	: feeSumVar, paxSum 	: paxSumVar
+						,totalWDev 	: { $cond : [ { $eq : ['$state' , 'canceled'] },feeSumVar,0 ] }
+						,paxWDev 	: { $cond : [ { $eq : ['$state' , 'canceled'] },paxSumVar,0 ] }
+						,totalWithoutDev 	: { $cond : [ { $ne : ['$state' , 'canceled'] },feeSumVar,0 ] }
+						,paxWithoutDev 		: { $cond : [ { $ne : ['$state' , 'canceled'] },paxSumVar,0 ] }
+					 } }
+					,{ $group : $groupTotals } 
+				],function(err,resultsTours){
+					if(err) console.log(err);
+					//obtiene los totales de las reservas
+					for(var x in resultsTours){ 
+						resultsTours[x]._id = getItemById( resultsTours[x]._id, allHotels );
+						resultsTours[x].iva = resultsTours[x].neto*mainIVA;
+						resultsTours[x].total_iva = resultsTours[x].neto - resultsTours[x].iva;
+					}
+					//results.allUsers = allUsers;
+					//results.resultsGlobal = resultsGlobal;
+					results.rows = resultsTours;
+					//totales globales
+					results.totals.pax =resultsGlobal.pax;
+					results.totals.total =resultsGlobal.total;
+					results.totals.iva =resultsGlobal.total*mainIVA;
+					results.totals.subtotal = resultsGlobal.total - results.totals.iva;
+					results.reportType = '';
+					cb(results,err);
+				});
+			});
+		}); //get all reservations
+	}); //reservation native
+}
+module.exports.tours_by_user_list = function(fields,cb){
+	fields.listing = true;
+	Reports.tours_by_user( fields, cb );
+}
 module.exports.tours_by_user = function(fields,cb){
+	var results = {
+		headers : [ 
+			{ label : 'Usuario' , handle : 'name', object : '_id', object2:'_id' , type : '' }
+			,{ label : 'Pax' , handle : 'pax', type : '' }
+			,{ label : 'Ventas' , handle : 'total', type : 'currency' }
+			,{ label : 'Pax' , handle : 'paxDev', type : '' }
+			,{ label : 'Devolución' , handle : 'totalDev', type : 'currency' }
+			,{ label : 'Pax' , handle : 'paxneto', type : '' }
+			,{ label : 'Vta.s/IVA' , handle : 'total_iva', type : 'currency' }
+			,{ label : 'IVA' , handle : 'iva', type : 'currency' }
+			,{ label : 'Ventas netas' , handle : 'neto', type : 'currency' }
+		]
+		,title : 'Ventas Tours por Usuario'
+		,rows : {}
+		,totals : { total : 0 , subtotal : 0 , iva : 0 , pax : 0 }
+	}
+	/*
+		Para saber si es por la fecha de creación o la de reservación
+		options.dateType = '1';
+	*/
+	fields.sDate = new Date("October 13, 2014");
+	fields.eDate = new Date("October 13, 2016");
+	var $match = {
+		reservation_type : 'tour'
+		,$and : [
+			//{ $or : [ { state : 'pending' } , { state : 'canceled' } ] },
+			{ $or : [ 
+				{ createdAt : { $gte : fields.sDate , $lte : fields.eDate } } 
+				,{ cancelationDate : { $gte : fields.sDate , $lte : fields.eDate } } 
+			] }
+		]
+	};
+	var $groupGral = {
+		_id : null
+		,usersIDs : { '$push' : '$user' }
+		,total : { $sum : '$totalNeto' }
+		,pax : { $sum : '$paxNeto' }
+	};
+	var $groupTotals = {
+		_id 		: '$user'
+		,pax 		: { $sum : '$paxSum' }
+		,total 		: { $sum : '$feeSum' }
+		,paxDev 	: { $sum : '$paxWDev' }
+		,totalDev 	: { $sum : '$totalWDev' }
+		,paxneto 	: { $sum : '$paxWithoutDev' }
+		,neto 		: { $sum : '$totalWithoutDev' }
+		,count 		: { $sum : 1 }
+		,toursIDs 	: { $push : '$tour' }
+	};
+	var feeSumVar = { $add : [ { $ifNull : [ '$fee', 0 ] } , { $ifNull : [ '$feeKids', 0 ] } ] };
+	var paxSumVar = { $add : [ { $ifNull : [ '$pax', 0 ] } , { $ifNull : [ '$kidPax', 0 ] }	] };
+	Reservation.native(function(err,theReservation){
+		theReservation.aggregate([ 
+			{ $sort : { createdAt : -1 } }, { $match : $match }
+			,{ $project : {
+				user:1,fee:1,feeKids:1,pax:1,kidPax:1,state:1, tour:1
+				,totalNeto 	: { $cond : [ { $ne : ['$state' , 'canceled'] },feeSumVar,0 ] }
+				,paxNeto 	: { $cond : [ { $ne : ['$state' , 'canceled'] },paxSumVar,0 ] }
+			} }
+			,{ $group : $groupGral } 
+		],function(err,resultsGlobal){ 
+			if( err || resultsGlobal.length <= 0 ){ theCB(resultsGlobal,err); }
+			resultsGlobal = resultsGlobal[0];
+			//obtener los proveedores;
+			User.find({ id : resultsGlobal.usersIDs }).exec(function(err,allUsers){
+				//iteration
+				theReservation.aggregate([ 
+					 { $sort  : {createdAt:-1} }
+					,{ $match : $match }
+					,{ $project : { 
+						fee:1, pax:1, state:1, feeKids:1, kidPax:1, user:1, tour:1
+						,feeSum 	: feeSumVar, paxSum 	: paxSumVar
+						,totalWDev 	: { $cond : [ { $eq : ['$state' , 'canceled'] },feeSumVar,0 ] }
+						,paxWDev 	: { $cond : [ { $eq : ['$state' , 'canceled'] },paxSumVar,0 ] }
+						,totalWithoutDev 	: { $cond : [ { $ne : ['$state' , 'canceled'] },feeSumVar,0 ] }
+						,paxWithoutDev 		: { $cond : [ { $ne : ['$state' , 'canceled'] },paxSumVar,0 ] }
+					 } }
+					,{ $group : $groupTotals } 
+				],function(err,resultsTours){
+					if(err) console.log(err);
+					//obtiene los totales de las reservas
+					async.mapSeries( resultsTours, function(item,theCB){
+						//iteration
+						item._id = getItemById( item._id, allUsers );
+						item.iva = item.neto*mainIVA;
+						item.total_iva = item.neto - item.iva;
+						if( fields.listing ){
+							item.type = 'c';
+							$groupTotals._id = '$tour';
+							$match.tour = { '$in' : item.toursIDs };
+							$match.user = sails.models['user'].mongo.objectId( item._id.id );
+							console.log($match);
+							theReservation.aggregate([ 
+								 { $sort  : {createdAt:-1} }
+								,{ $match : $match }
+								,{ $project : { 
+									fee:1, pax:1, state:1, feeKids:1, kidPax:1, tour:1,user:1
+									,feeSum 	: feeSumVar, paxSum 	: paxSumVar
+									,totalWDev 	: { $cond : [ { $eq : ['$state' , 'canceled'] },feeSumVar,0 ] }
+									,paxWDev 	: { $cond : [ { $eq : ['$state' , 'canceled'] },paxSumVar,0 ] }
+									,totalWithoutDev 	: { $cond : [ { $ne : ['$state' , 'canceled'] },feeSumVar,0 ] }
+									,paxWithoutDev 		: { $cond : [ { $ne : ['$state' , 'canceled'] },paxSumVar,0 ] }
+								 } }
+								,{ $group : $groupTotals } 
+							],function(err,resultsUsers){
+								if(err) console.log(err);
+								Tour.find({ id : item.toursIDs }).exec(function(err,allTours){
+									//obtiene los totales de las reservas
+									for( var y in resultsUsers ){
+										resultsUsers[y]._id = getItemById( resultsUsers[y]._id, allTours );
+										resultsUsers[y].iva = resultsUsers[y].neto*mainIVA;
+										resultsUsers[y].total_iva = resultsUsers[y].neto-resultsUsers[y].iva;
+									}
+									item.allTours = allTours;
+									item.rows2 = resultsUsers;
+									theCB(err,item);
+								});
+							});
+						}else{
+							theCB(err,item);
+						}
+					},function(err,rows){
+						//results
+						results.rows = rows;
+						//totales globales
+						results.totals.pax =resultsGlobal.pax;
+						results.totals.total =resultsGlobal.total;
+						results.totals.iva =resultsGlobal.total*mainIVA;
+						results.totals.subtotal = resultsGlobal.total - results.totals.iva;
+						results.reportType = '';
+						if( fields.listing ) results.reportType = 'bygroup';
+						cb(results,err);
+					});
+					/*for(var x in resultsTours){ 
+						resultsTours[x]._id = getItemById( resultsTours[x]._id, allUsers );
+						resultsTours[x].iva = resultsTours[x].neto*mainIVA;
+						resultsTours[x].total_iva = resultsTours[x].neto - resultsTours[x].iva;
+					}*/
+					//results.allUsers = allUsers;
+					//results.resultsGlobal = resultsGlobal;
+					/*results.rows = resultsTours;
+					//totales globales
+					results.totals.pax =resultsGlobal.pax;
+					results.totals.total =resultsGlobal.total;
+					results.totals.iva =resultsGlobal.total*mainIVA;
+					results.totals.subtotal = resultsGlobal.total - results.totals.iva;
+					results.reportType = '';
+					cb(results,err);*/
+				});
+			});
+		}); //get all reservations
+	}); //reservation native
+}
+module.exports.tours_by_user2 = function(fields,cb){
 	var results = false;
 	Reservation.count(function(c_err,num){
 		if(c_err){ console.log(c_err); cb(results , c_err); };
@@ -220,36 +727,161 @@ module.exports.tours_by_user = function(fields,cb){
 		});//Reservation END
 	});//Reservation count END
 };
-/*
-*/
-module.exports.tours_by_provider = function(options,theCB){
-	var results = [];
-	options.dateType = '1';
-	options.sDate = new Date("October 13, 2014");
-	options.eDate = new Date("October 13, 2016");
-	var $match = {};
+module.exports.tours_by_provider_list = function(fields,theCB){
+	fields.listing = true;
+	Reports.tours_by_provider( fields, theCB );
+}
+module.exports.tours_by_provider = function(fields,theCB){
+	var results = {
+		headers : [ 
+			{ label : 'Proveedor' , handle : 'name', object : '_id', object2 : '_id' , type : '' }
+			,{ label : 'Pax' , handle : 'pax', object : 'resultsProvider', type : '' }
+			,{ label : 'Ventas' , handle : 'total', object : 'resultsProvider', type : 'currency' }
+			,{ label : 'Pax' , handle : 'paxDev', object : 'resultsProvider', type : '' }
+			,{ label : 'Devolución' , handle : 'totalDev', object : 'resultsProvider', type : 'currency' }
+			,{ label : 'Pax' , handle : 'paxneto', object : 'resultsProvider', type : '' }
+			,{ label : 'Vta.s/IVA' , handle : 'total_iva', object : 'resultsProvider', type : 'currency' }
+			,{ label : 'IVA' , handle : 'iva', object:'resultsProvider', type : 'currency' }
+			,{ label : 'Ventas netas' , handle : 'neto', object:'resultsProvider', type : 'currency' }
+		]
+		,title : 'Ventas Tours por Proveedor'
+		,rows : {}
+		,totals : { total : 0 , subtotal : 0 , iva : 0 , pax : 0 }
+	}
+	/*
+		Para saber si es por la fecha de creación o la de reservación
+		options.dateType = '1';
+	*/
+	fields.sDate = new Date("October 13, 2014");
+	fields.eDate = new Date("October 13, 2016");
+	var $match = {
+		reservation_type : 'tour'
+		,$and : [
+			//{ $or : [ { state : 'pending' } , { state : 'canceled' } ] },
+			{ $or : [ 
+				{ createdAt : { $gte : fields.sDate , $lte : fields.eDate } } 
+				,{ cancelationDate : { $gte : fields.sDate , $lte : fields.eDate } } 
+			] }
+		]
+	};
 	var $groupGral = {
 		_id : null
 		,toursIDs : { '$push' : '$tour' }
+		,total : { $sum : '$totalNeto' }
+		,pax : { $sum : '$paxNeto' }
 	};
 	var $groupTours = {
 		_id : '$provider'
-		,toursIDsByProvider : { '$push' : '$tour' }
+		,toursIDsByProvider : { '$push' : '$_id' }
 		,providersArray : { '$push' : '$provider' }
 	}
 	var $groupTotals = {
-		_id : null
-		,total: { '$sum': '$fee' }
-		,totalKids: { '$sum': '$feeKids' }
-		,count : { $sum : 1 }
-		,pax : { $sum : '$pax' }
-		,kidPax : { $sum : '$kidPax' }
+		_id 		: null
+		,pax 		: { $sum : '$paxSum' }
+		//,kidPax 		: { $sum : '$kidPax' }
+		,total 		: { $sum : '$feeSum' }
+		//,feeKids 		: { $sum : '$feeKids' }
+		,paxDev 	: { $sum : '$paxWDev' }
+		,totalDev 	: { $sum : '$totalWDev' }
+		,paxneto 	: { $sum : '$paxWithoutDev' }
+		,neto 		: { $sum : '$totalWithoutDev' }
+		,count 		: { $sum : 1 }
 	};
+	var feeSumVar = { $add : [ { $ifNull : [ '$fee', 0 ] } , { $ifNull : [ '$feeKids', 0 ] } ] };
+	var paxSumVar = { $add : [ { $ifNull : [ '$pax', 0 ] } , { $ifNull : [ '$kidPax', 0 ] }	] };
 	Reservation.native(function(err,theReservation){
-		theReservation.aggregate([ { $sort : { createdAt : -1 } }, { $match : $match }, { $group : $groupGral } ], function(err,resultsGlobal){ 
-			
-		});
-	});
+		theReservation.aggregate([ 
+			{ $sort : { createdAt : -1 } }, { $match : $match }
+			,{ $project : {
+				tour:1,fee:1,feeKids:1,pax:1,kidPax:1,state:1
+				,totalNeto 	: { $cond : [ { $ne : ['$state' , 'canceled'] },feeSumVar,0 ] }
+				,paxNeto 	: { $cond : [ { $ne : ['$state' , 'canceled'] },paxSumVar,0 ] }
+			} }
+			,{ $group : $groupGral } 
+		],function(err,resultsGlobal){ 
+			Tour.native(function(err,theTour){
+				//console.log(resultsGlobal);
+				if( err || resultsGlobal.length <= 0 ){ 
+					theCB(resultsGlobal,err);
+				}
+				resultsGlobal = resultsGlobal[0];
+				theTour.aggregate([ { $sort : {createdAt : -1}}, {$match : { _id : { "$in" : resultsGlobal.toursIDs} }}, { $group : $groupTours } ],function(err,resultsTours){
+					var allProviders = [];
+					for( var x in resultsTours ) allProviders.push( resultsTours[x].providersArray );
+					//obtener los proveedores
+					//console.log(allProviders);
+					TourProvider.find({ id : allProviders }).exec(function(err,allProviders){
+						async.mapSeries( resultsTours, function(item,cb){
+							//iteration
+							$match.tour = { "$in" : item.toursIDsByProvider };
+							theReservation.aggregate([ 
+								 { $sort  : {createdAt:-1} }
+								,{ $match : $match }
+								,{ $project : { 
+									fee:1, pax:1, state:1, feeKids:1, kidPax:1
+									,feeSum 	: feeSumVar, paxSum 	: paxSumVar
+									,totalWDev 	: { $cond : [ { $eq : ['$state' , 'canceled'] },feeSumVar,0 ] }
+									,paxWDev 	: { $cond : [ { $eq : ['$state' , 'canceled'] },paxSumVar,0 ] }
+									,totalWithoutDev 	: { $cond : [ { $ne : ['$state' , 'canceled'] },feeSumVar,0 ] }
+									,paxWithoutDev 		: { $cond : [ { $ne : ['$state' , 'canceled'] },paxSumVar,0 ] }
+								 } }
+								,{ $group : $groupTotals } 
+							],function(err,resultsProvider){
+								if(err) console.log(err);
+								//obtiene los totales de las reservas
+								resultsProvider = resultsProvider[0];
+								item._id = getItemById( item._id, allProviders );
+								resultsProvider.iva = resultsProvider.neto*mainIVA;
+								resultsProvider.total_iva = resultsProvider.neto-resultsProvider.iva;
+								item.resultsProvider = resultsProvider;
+								if( fields.listing ){
+									item.type = 'c';
+									results.reportType = 'bygroup';
+									$groupTotals._id = '$tour';
+									theReservation.aggregate([ 
+										 { $sort  : {createdAt:-1} }
+										,{ $match : $match }
+										,{ $project : { 
+											fee:1, pax:1, state:1, feeKids:1, kidPax:1, tour:1
+											,feeSum 	: feeSumVar, paxSum 	: paxSumVar
+											,totalWDev 	: { $cond : [ { $eq : ['$state' , 'canceled'] },feeSumVar,0 ] }
+											,paxWDev 	: { $cond : [ { $eq : ['$state' , 'canceled'] },paxSumVar,0 ] }
+											,totalWithoutDev 	: { $cond : [ { $ne : ['$state' , 'canceled'] },feeSumVar,0 ] }
+											,paxWithoutDev 		: { $cond : [ { $ne : ['$state' , 'canceled'] },paxSumVar,0 ] }
+										 } }
+										,{ $group : $groupTotals } 
+									],function(err,resultsProviderInside){
+										if(err) console.log(err);
+										Tour.find({ id : item.toursIDsByProvider }).exec(function(err,allTours){
+											//obtiene los totales de las reservas
+											for( var y in resultsProviderInside ){
+												resultsProviderInside[y]._id = getItemById( resultsProviderInside[y]._id, allTours );
+												resultsProviderInside[y].iva = resultsProviderInside[y].neto*mainIVA;
+												resultsProviderInside[y].total_iva = resultsProviderInside[y].neto-resultsProviderInside[y].iva;
+											}
+											item.allTours = allTours;
+											item.rows2 = resultsProviderInside;
+											cb(err,item);
+										});
+									});
+								}else{
+									cb(err,item);
+								}
+							});
+						},function(err,rows){
+							//results
+							results.totals.total = resultsGlobal.total;
+							results.totals.pax = resultsGlobal.pax;
+							results.totals.iva = resultsGlobal.total*mainIVA;
+							results.totals.subtotal = resultsGlobal.total - results.totals.iva;
+							results.rows = rows;
+							theCB(results,err);
+						});
+					});
+				});
+			});
+		}); //get all reservations
+	}); //reservation native
 };
 /*
 	Options debe de recibir:
@@ -430,7 +1062,7 @@ var getItemById = function(id,objectArray){
 		for(var x in objectArray)
 			if( objectArray[x].id == id )
 				return objectArray[x];
-	return  r;
+	return r;
 };
 module.exports.mkpFormatDateTime = function(date,type){
 	var result = date?date:'';

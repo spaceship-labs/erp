@@ -12,22 +12,28 @@
 				<tbody ng-if="object.results.reportType=='bygroup'" ng-repeat="r in object.results.rows">
 					<tr ng-class="r.type=='c'?'underlight':''">
 						<td ng-repeat="h in object.results.headers">
-							<span ng-if="h.type!='currency'" ng-bind="r[h.handle]"></span>
-							<span ng-if="h.type=='currency'" ng-bind="r[h.handle] | currency:'$ ':3"></
+							<span ng-if="h.type!='currency'&&!h.object" ng-bind="r[h.handle]"></span>
+							<span ng-if="h.type!='currency'&&h.object" ng-bind="r[h.object][h.handle]"></span>
+							<span ng-if="h.type=='currency'&&!h.object" ng-bind="r[h.handle] | currency:'$ ':3"></span>
+							<span ng-if="h.type=='currency'&&h.object" ng-bind="r[h.object][h.handle] | currency:'$ ':3"></span>
 						</td>
 					</tr>
 					<tr ng-repeat="r2 in r.rows2">
 						<td ng-repeat="h in object.results.headers">
-							<span ng-if='h.type!="currency"' ng-bind="r2[h.handle]"></span>
-							<span ng-if='h.type=="currency"' ng-bind="r2[h.handle] | currency:'$ ':3"></span>
+							<span ng-if='h.type!="currency"&&!h.object2' ng-bind="r2[h.handle]"></span>
+							<span ng-if='h.type!="currency"&&h.object2' ng-bind="r2[h.object2][h.handle]"></span>
+							<span ng-if='h.type=="currency"&&!h.object2' ng-bind="r2[h.handle] | currency:'$ ':3"></span>
+							<span ng-if='h.type=="currency"&&h.object2' ng-bind="r2[h.object2][h.handle] | currency:'$ ':3"></span>
 						</td>
 					</tr>
 				</tbody>
 				<tbody ng-if="object.results.reportType!='bygroup'">
 					<tr data-name="{{key}}" ng-repeat="(key,r) in object.results.rows" ng-class="r.type=='c'?'underlight':''">
 						<td ng-repeat="h in object.results.headers">
-							<span ng-if="h.type!='currency'" ng-bind="r[h.handle]"></span>
-							<span ng-if="h.type=='currency'" ng-bind="r[h.handle] | currency:'$ ':3"></span>
+							<span ng-if="h.type!='currency'&&h.object" ng-bind="r[h.object][h.handle]"></span>
+							<span ng-if="h.type!='currency'&&!h.object" ng-bind="r[h.handle]"></span>
+							<span ng-if="h.type=='currency'&&h.object" ng-bind="r[h.object][h.handle] | currency:'$ ':3"></span>
+							<span ng-if="h.type=='currency'&&!h.object" ng-bind="r[h.handle] | currency:'$ ':3"></span>
 						</td>
 					</tr>
 				</tbody>

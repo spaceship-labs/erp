@@ -146,6 +146,7 @@ module.exports = {
             ,defaultsTo : '1'
         }
         ,notes : 'string'
+        ,cancelationDate : 'date'
 
 	}
 	, attrs_labels : {

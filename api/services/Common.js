@@ -19,7 +19,7 @@ module.exports.view = function(view,data,req){
 };
 module.exports.customContent = function(interactions){
 	var content = sails.config.content;
-	if( interactions.customContent.length > 0 ){
+	if( interactions.customContent && interactions.customContent.length > 0 ){
 		for( var x in interactions.customContent ){
 			//content[ interactions.customContent[x].contentField ].push( interactions.customContent[x].fields );
 			content[ interactions.customContent[x].contentField ] = interactions.customContent[x].fields;

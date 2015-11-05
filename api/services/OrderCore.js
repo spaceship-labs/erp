@@ -1,3 +1,12 @@
+module.exports.getCancelationMotives = function(){
+	var result = [
+		'Mal tiempo'
+		,'Mal servicio (proveedor)'
+		,'No es lo que me vendieron (vendedor)'
+		,'Otros'
+	];
+	return result;
+}
 /*
 	Create section 
 		create order
@@ -30,32 +39,38 @@ module.exports.createTransferReservation = function(params, defaultUserID, defau
       		params.currency = params.currency?params.currency.id:params.company.base_currency;
       		OrderCore.getTransferPrice(params.transferprice.zone1,params.transferprice.zone2,params.transfer,companies.company.id,companies.mainCompany,function(err,prices){
       			if(err) callback(err,false);
-      			params.service_type = prices.price.transfer.service_type || 'C' ;
-      			params.quantity = Math.ceil( params.pax / prices.price.transfer.max_pax );
-          		params.fee = prices.price[params.type] * params.quantity;
-          		if( params.currency != companies.company.base_currency )
-            		params.fee *= companies.company.exchange_rates[params.currency].sales;
-            	//se guardan los precios que se están cobrando
-				params.fee_adults = prices.price.one_way;
-				params.fee_adults_rt = prices.price.round_trip;
-				params.fee_kids = prices.price.one_way_child;
-				params.fee_kids_rt = prices.price.round_trip_child;
-				params.exchange_rate_sale = companies.company.exchange_rates[params.currency].sales;
-	            params.exchange_rate_book = companies.company.exchange_rates[params.currency].book;
-				//en caso de que sea una reserva de agencia, guardar precios de la empresa principal
-				if( companies.mainCompany && prices.mainPrice ){
-					params.main_fee_adults 		= prices.mainPrice.one_way;
-					params.main_fee_adults_rt 	= prices.mainPrice.round_trip;
-					params.main_fee_kids 		= prices.mainPrice.one_way_child;
-					params.main_fee_kids_rt 	= prices.mainPrice.round_trip_child;
-				}
-				Reservation.create(params).exec(function(err,reservation){
-            		if(err) callback(err,false);
-            		theorder.reservations.push(reservation.id);
-            		theorder.save(function(err){
-              			callback(err,reservation);
-            		});
-          		});//Reservation create
+      			Exchange_rates.find().limit(1).sort({createdAt:-1}).exec(function(err,theExhangeRates){
+      				if(err) cb(err,item);
+					theExhangeRates = theExhangeRates[0];
+	      			params.service_type = prices.price.transfer.service_type || 'C' ;
+	      			params.quantity = Math.ceil( params.pax / prices.price.transfer.max_pax );
+	          		params.fee = prices.price[params.type] * params.quantity;
+	          		if( params.currency != companies.company.base_currency )
+	            		params.fee *= companies.company.exchange_rates[params.currency].sales;
+	            	//se guardan los precios que se están cobrando
+					params.fee_adults = prices.price.one_way;
+					params.fee_adults_rt = prices.price.round_trip;
+					params.fee_kids = prices.price.one_way_child;
+					params.fee_kids_rt = prices.price.round_trip_child;
+					params.exchange_rate_sale = companies.company.exchange_rates[params.currency].sales;
+		            params.exchange_rate_book = companies.company.exchange_rates[params.currency].book;
+					//en caso de que sea una reserva de agencia, guardar precios de la empresa principal
+					if( companies.mainCompany && prices.mainPrice ){
+						params.main_fee_adults 		= prices.mainPrice.one_way;
+						params.main_fee_adults_rt 	= prices.mainPrice.round_trip;
+						params.main_fee_kids 		= prices.mainPrice.one_way_child;
+						params.main_fee_kids_rt 	= prices.mainPrice.round_trip_child;
+					}
+					params.globalRates = theExhangeRates.rates;
+					Reservation.create(params).exec(function(err,reservation){
+	            		if(err) callback(err,false);
+	            		theorder.reservations.push(reservation.id);
+	            		theorder.state = reservation.state;
+	            		theorder.save(function(err){
+	              			callback(err,reservation);
+	            		});
+	          		});//Reservation create
+          		});//exchange rates
       		});//getTransferPrice
 	    });//getCompanies
 	});
@@ -70,38 +85,63 @@ module.exports.createReservationTourHotel = function(params,userID,callback){
 	        item.payment_method = item.payment_method?item.payment_method.handle:(params.generalFields.payment_method?params.generalFields.payment_method.handle:'creditcard');
 	        item.currency = params.currency?params.currency.id:theorder.company.base_currency;
 	        item.autorization_code = item.autorization_code || params.generalFields.autorization_code || '';
+	        item.state = item.state?item.state.handle:(params.generalFields.state?params.generalFields.state.handle:'pending');
 	        delete item.id;
 			OrderCore.getTourAndPrices(item.reservation_type,item[item.reservation_type].id,theorder.company,function(err,products){
-				if( item.reservation_type ){
-					item.fee_adults_base = products.item.fee_base;
-					item.fee_kids_base = products.item.feeChild_base;
-					if( theorder.company.adminCompany ){
-						item.fee_adults = products.item.fee;
-		                item.fee_kids = products.item.feeChild;
-					}else if( products.agencyProduct ){
-						item.fee_adults = products.agencyProduct.fee;
-		                item.fee_kids = products.agencyProduct.feeChild;
-		                item.commission_agency = products.item.commission_agency;
-		                //main fees
-		                item.main_fee_adults = products.item.fee;
-		                item.main_fee_kids = products.item.feeChild;
-					}
-	                item.commission_sales = products.item.commission_sales;
-	                item.exchange_rate_sale = theorder.company.exchange_rates[item.currency].sales;
-	            	item.exchange_rate_book = theorder.company.exchange_rates[item.currency].book;
-	                item.exchange_rate_provider = products.item.provider?products.item.provider.exchange_rate:0;
-            	}
-                item[item.reservation_type] = products.item.id;
-                item.folio = theorder.folio;
-                Reservation.create(item).exec(function(err,r){
+				Exchange_rates.find().limit(1).sort({createdAt:-1}).exec(function(err,theExhangeRates){
 					if(err) cb(err,item);
-					item.id = r.id; 
-					cb(err,item);
+					theExhangeRates = theExhangeRates[0];
+					if( item.reservation_type ){
+						item.fee_adults_base = products.item.fee_base;
+						item.fee_kids_base = products.item.feeChild_base;
+						if( theorder.company.adminCompany ){
+							item.fee_adults = products.item.fee;
+			                item.fee_kids = products.item.feeChild;
+						}else if( products.agencyProduct ){
+							item.fee_adults = products.agencyProduct.fee;
+			                item.fee_kids = products.agencyProduct.feeChild;
+			                item.commission_agency = products.item.commission_agency;
+			                //main fees
+			                item.main_fee_adults = products.item.fee;
+			                item.main_fee_kids = products.item.feeChild;
+						}
+		                item.commission_sales = products.item.commission_sales;
+		                item.exchange_rate_sale = theorder.company.exchange_rates[item.currency].sales;
+		            	item.exchange_rate_book = theorder.company.exchange_rates[item.currency].book;
+		                item.exchange_rate_provider = products.item.provider?products.item.provider.exchange_rate:0;
+		                item.globalRates = theExhangeRates.rates;
+	            	}
+	                item[item.reservation_type] = products.item.id;
+	                item.folio = theorder.folio;
+	                Reservation.create(item).exec(function(err,r){
+						if(err) cb(err,item);
+						item.id = r.id; 
+						cb(err,item);
+					});
 				});
 			});
 		},callback);
 	});
 };
+module.exports.cancelOrder = function(order,fields,callback){
+	Order.findOne(order).populate('reservations').exec(function(err,theorder){
+		if(err) callback(err,false);
+		var cancelationDate = new Date();
+		theorder.state = 'canceled';
+		theorder.cancelationDate = cancelationDate;
+		if( fields.motive ) theorder.motive = fields.motive;
+		if( fields.others ) theorder.motiveOthers = fields.others;
+		theorder.save(function(err,_order){
+			async.mapSeries( theorder.reservations, function(item,cb) {
+				item.state = 'canceled';
+				item.cancelationDate = cancelationDate;
+				if( fields.motive ) item.motive = fields.motive;
+				if( fields.others ) item.motiveOthers = fields.others;
+				item.save(cb);
+			},callback);
+		});
+	});
+}
 module.exports.updateReservations = function(params,callback){
 	items = params.items || [];
     async.mapSeries( items, function(item,cb) {
