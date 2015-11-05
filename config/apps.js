@@ -40,7 +40,7 @@ module.exports.apps = [
                 label_en : 'Prices',
                 icon : 'fa-money',
                 url : '/transferprice/',
-                showInMenu : true,
+                showInMenu : false,
                 controller : 'transferprice',
                 action : 'index'
             },
@@ -49,7 +49,7 @@ module.exports.apps = [
                 label_en : 'Unities',
                 icon : 'fa-bus',
                 url : '/unity/',
-                showInMenu : true,
+                showInMenu : false,
                 controller : 'unity',
                 action : 'index'
             },
@@ -58,7 +58,7 @@ module.exports.apps = [
                 label_en : 'Unity types',
                 icon : 'fa-th-list',
                 url : '/unitytype/',
-                showInMenu : true,
+                showInMenu : false,
                 controller : 'unitytype',
                 action : 'index'
             }
