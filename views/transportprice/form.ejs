@@ -1,0 +1,72 @@
+<p>
+    <label><%=__("localidad")%> 1</label>
+    <span class="field">
+        <select 
+            ng-model='location.from'
+            ng-options="obj.id as obj.name for obj in locations"
+            ng-change="changeLocation('from')"
+            required
+            class='form-control' >
+        </select>
+    </span>
+</p>
+<p>
+    <label>Localidad 2</label>
+    <span class="field">
+        <select 
+            ng-model='location.to'
+            ng-options="obj.id as obj.name for obj in locations"
+            required
+            ng-change="changeLocation('to')"
+            class='form-control' >
+        </select>
+    </span>
+</p>
+<p>
+    <label>Zona 1</label>
+    <span class="field">
+        <select 
+            ng-model='modal.zoneFrom'
+            ng-options="obj.id as obj.name for obj in filter_zones.from"
+            required
+            ng-change="setName('from')"
+            class='form-control' >
+        </select>
+    </span>
+</p>
+<p>
+    <label>Zona 2</label>
+    <span class="field">
+        <select 
+            ng-model='modal.zoneTo'
+            ng-options="obj.id as obj.name for obj in filter_zones.to"
+            required
+            ng-change="setName('to')"
+            class='form-control' >
+        </select>
+    </span>
+</p>
+
+<p>
+    <label><%= __("order_service_type")%></label>
+    <span class="field">
+        <select 
+            ng-model='modal.service_type'
+            ng-options="obj.id as obj.name for obj in serviceTypes"
+            required
+            class='form-control' >
+        </select>
+    </span>
+</p>
+<p>
+    <label><%= __("price")%></label>
+    <span class="field">
+        <input type="number" step="0.001" ng-model="modal.price" required class="form-control">
+    </span>
+</p>
+<p>
+    <label><%= __("name")%></label>
+    <span class="field">
+        <input type="text" ng-model="modal.name" required class="form-control">
+    </span>
+</p>

@@ -43,6 +43,94 @@ app.controller('transportEditCTL',function($scope,$upload,$http,$window){
     };
 });
 
+app.controller('transportPriceCTL',function($scope, $http, $filter){
+    $scope.locations = window.locations || [];
+    $scope.prices = window.prices || [];
+    $scope.zones = window.zones || [];
+    $scope.serviceTypes = getTypes();
+    $scope.location = {};
+    $scope.filter_zones = {};
+    $scope.modal = {};
+
+    $scope.changeLocation = function(type){
+        $scope.filter_zones[type] = $filter('filter')($scope.zones, function(val){
+                                return val.location == $scope.location[type];
+                            }); 
+    };
+
+    $scope.setName = function(){
+        if($scope.modal.zoneFrom && $scope.modal.zoneTo){
+            var pre = _.find($scope.zones, function(z){
+                        return z.id == $scope.modal.zoneFrom;
+                    }),
+                pos = _.find($scope.zones, function(z){
+                        return z.id == $scope.modal.zoneTo;
+                });
+            $scope.modal.name = (pre && pre.name || '') + ' | ' + (pos && pos.name || '')
+        }
+    };
+
+    $scope.save = function(){
+        if(!$scope.modal.id){
+            $http.post('/transportprice/create', $scope.modal).then(function(res){
+                if(res && res.data){
+                    jQuery('.reset').click();
+                    var zoneFrom = _.find($scope.zones, function(z){
+                            return z.id == res.data.zoneFrom;
+                        });
+
+                    var zoneTo = _.find($scope.zones, function(z){
+                            return z.id == res.data.zoneTo;
+                        });
+                    if(zoneFrom){
+                        res.data.zoneFrom = zoneFrom;
+                    }
+                    if(zoneTo){
+                        res.data.zoneTo = zoneTo
+                    }
+                    $scope.prices.push(res.data);
+                    jQuery('#transportprice').modal('hide'); 
+                    $scope.modal = {};
+                }
+            });
+        }else{
+            $http.post('/transportprice/'+$scope.modal.id, $scope.modal).then(function(res){
+                if(res && res.data){
+                    delete $scope.modal.id;
+                    jQuery('.reset').click();
+                    jQuery('#transportprice').modal('hide'); 
+                    $scope.modal = {};
+                }                
+            });
+        }
+    };
+    
+    
+    $scope.getTypeName = function(type){
+        var f = _.find($scope.serviceTypes, function(t){
+                return t.id == type;
+        });
+        return f && f.name || '';
+    };
+
+    $scope.edit = function(price){
+        $scope.location.from = price.zoneFrom.location;
+        $scope.location.to = price.zoneTo.location;
+        $scope.changeLocation('from');
+        $scope.changeLocation('to');
+
+        $scope.modal = {
+            zoneFrom: price.zoneFrom.id,
+            zoneTo: price.zoneTo.id,
+            service_type: price.service_type,
+            price: price.price,
+            name: price.name,
+            id: price.id
+        };
+        jQuery('#transportprice').modal('show');
+    };
+});
+
 var getTypes = function(){
     r = [
         { name : 'Colectivo' , id : 'C' }
@@ -50,4 +138,4 @@ var getTypes = function(){
         ,{ name : 'Lujo' , id : 'L' }
     ];
     return r;
-}
+};

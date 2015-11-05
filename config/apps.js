@@ -429,6 +429,16 @@ module.exports.apps = [
                 ,action : 'index'
             },
             {
+                label : 'Precio'
+                ,label_en : 'Price'
+                ,icon : 'fa-money'
+                ,url : '/TransportPrice/'
+                ,showInMenu : true
+                ,handle : 'transport'
+                ,controller : 'transport'
+                ,action : 'price'
+            },
+            {
                 label : 'Asignar'
                 ,label_en : 'Asign'
                 ,icon : 'fa-clock-o'
@@ -439,7 +449,7 @@ module.exports.apps = [
             },
             {
                 label : 'Solicitar'
-                ,label_en : 'Pedir'
+                ,label_en : 'Request'
                 ,icon : 'fa-clock-o'
                 ,url : '/TransportAsignRequest/'
                 ,showInMenu : true

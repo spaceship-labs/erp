@@ -477,4 +477,7 @@
   , "asign": "Asignar"
   , "request": "Solicitar"
   , "transport": "Transportista"
+
+  , "price_zone": "Zona"
+  , "price":"Precio"
 }

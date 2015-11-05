@@ -472,4 +472,7 @@
   , "asign": "Asign"
   , "request": "Request"
   , "transport": "Transport"
+
+  , "price_zone": "Zone"
+  , "price":"Price"
 }
