@@ -5,11 +5,17 @@
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
 
+var async = require('async');
 module.exports = {
     index: function(req, res){
-        Company.find().exec(function(err, companies){
+        async.parallel({
+            companies: function(done){
+                Company.find().exec(done);
+            }
+        
+        }, function (err, data){
             Common.view(res.view,{
-                companies: companies,
+                companies: data.companies,
                 type: 'asign',
                 page:{
                     name:req.__('sc_transfer')
@@ -20,6 +26,7 @@ module.exports = {
                     {label : req.__('sc_transfer')}
                 ]
             },req);
+        
         });
     },
     

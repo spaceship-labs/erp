@@ -480,4 +480,8 @@
 
   , "price_zone": "Zona"
   , "price":"Precio"
+  , "location_from": "Ciudad salida"
+  , "location_to": "Ciudad llegada"
+  , "zone_from": "Zona salida"
+  , "zone_to": "Zone llegada"
 }

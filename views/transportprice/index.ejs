@@ -13,20 +13,20 @@
 			<div class="widgetcontent custom-table nopadding">
                 <table class="table table-striped">
                     <tr class='hide-sm'>
-                        <th><%= __('order_name')%>        </th>
-                        <th><%= __('price_zone')%> 1      </th>
-                        <th><%= __('price_zone')%> 2      </th>
-                        <th><%= __('order-precio')%>      </th>
-                        <th><%= __('order_service_type')%></th>
-                        <th><%= __('order-editar') %>     </th>
+                        <th><%= __('order_name')%>          </th>
+                        <th><%= __('zone_from')%>           </th>
+                        <th><%= __('zone_to')%>             </th>
+                        <th><%= __('order-precio')%>        </th>
+                        <th><%= __('order_service_type')%>  </th>
+                        <th><%= __('order-editar') %>       </th>
                     </tr>
                     <tr ng-repeat="price in prices">
-                        <td data-title="<%= __('order_name')%>        "><span ng-bind="price.name"></span></td>
-                        <td data-title="<%= __('price_zone')%> 1      "><span ng-bind="price.zoneFrom.name"></span></td>
-                        <td data-title="<%= __('price_zone')%> 2      "><span ng-bind="price.zoneTo.name"></span></td>
-                        <td data-title="<%= __('order-precio')%>      "><span ng-bind="price.price"></span></td>
-                        <td data-title="<%= __('order_service_type')%>"><span ng-bind="getTypeName(price.service_type)"></span></td>
-                        <td data-title="<%= __('order-editar') %>     "><a ng-click="edit(price)"><span class="table-icon fa fa-edit"></span></a></td>
+                        <td data-title="<%= __('order_name')%>          "><span ng-bind="price.name"></span></td>
+                        <td data-title="<%= __('zone_from')%>           "><span ng-bind="price.zoneFrom.name"></span></td>
+                        <td data-title="<%= __('zone_to')%>             "><span ng-bind="price.zoneTo.name"></span></td>
+                        <td data-title="<%= __('order-precio')%>        "><span ng-bind="price.price"></span></td>
+                        <td data-title="<%= __('order_service_type')%>  "><span ng-bind="getTypeName(price.service_type)"></span></td>
+                        <td data-title="<%= __('order-editar') %>       "><a ng-click="edit(price)"><span class="table-icon fa fa-edit"></span></a></td>
                     </tr>
                 </table>
             </div>

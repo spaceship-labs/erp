@@ -1,4 +1,51 @@
 <p>
+    <label><%=__("location_from")%></label>
+    <span class="field">
+        <select 
+            ng-model='location.from'
+            ng-options="obj.id as obj.name for obj in locations"
+            ng-change="changeLocation('from')"
+            required
+            class='form-control' >
+        </select>
+    </span>
+</p>
+<p>
+    <label><%=__("location_to")%></label>
+    <span class="field">
+        <select 
+            ng-model='location.to'
+            ng-options="obj.id as obj.name for obj in locations"
+            required
+            ng-change="changeLocation('to')"
+            class='form-control' >
+        </select>
+    </span>
+</p>
+<p>
+    <label><%=__("zone_from")%></label>
+    <span class="field">
+        <select 
+            ng-model='modal.zoneFrom'
+            ng-options="obj.id as obj.name for obj in filter_zones.from"
+            required
+            class='form-control' >
+        </select>
+    </span>
+</p>
+<p>
+    <label><%=__("zone_to")%></label>
+    <span class="field">
+        <select 
+            ng-model='modal.zoneTo'
+            ng-options="obj.id as obj.name for obj in filter_zones.to"
+            required
+            class='form-control' >
+        </select>
+    </span>
+</p>
+
+<p>
     <label>Pax</label>
     <span class="field">
         <input type="number" ng-model="modal.pax">

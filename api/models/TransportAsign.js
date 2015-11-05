@@ -19,8 +19,19 @@ module.exports = {
     end: {
         type: 'datetime',
         required: true
-    }
+    },
 
+    zoneFrom: {
+        model: 'zone'
+    },
+
+    zoneTo:{
+        model: 'zone'
+    },
+    
+    price: {
+        model: 'transportprice'
+    }
   }
 };
 

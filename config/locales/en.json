@@ -475,4 +475,9 @@
 
   , "price_zone": "Zone"
   , "price":"Price"
+  , "location_from": "Location departure"
+  , "location_to": "Location arrival"
+  , "zone_from": "Zone departure"
+  , "zone_to": "Zone arrival"
+   
 }

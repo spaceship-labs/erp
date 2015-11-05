@@ -1,4 +1,4 @@
-app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile, uiCalendarConfig, chroma){
+app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile, uiCalendarConfig, chroma, $filter){
     var timeZone = 'America/Mexico_City';
     moment.tz.add(timeZone+'|PST PDT|80 70|0101|1Lzm0 1zb0 Op0');
 
@@ -6,7 +6,45 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
     var on = {},
     current_lang = window.current_lang || 'es';
     $scope.view_type = window.view_type;
+
+    $scope.location = {};
+    //if($scope.view_type == 'request'){
+        $http.get('/location/find').then(function(res){
+            $scope.locations = res && res.data || [];
+        });
+
+        $http.get('/zone/find?populate').then(function(res){
+            $scope.zones = res && res.data || [];
+        });
+
+        $http.get('/transportprice/find').then(function(res){
+            $scope.prices = res && res.data || [];
+        });
+
+    //}
+
+    $scope.filter_zones = {};
+    $scope.changeLocation = function(type){
+        $scope.filter_zones[type] = $filter('filter')($scope.zones, function(val){
+                                return val.location == $scope.location[type];
+                            }); 
+    };
+
+    $scope.filter_price = function(zoneFrom, zoneTo, service_type){
+        zoneFrom = zoneFrom || $scope.modal.zoneFrom;
+        zoneTo = zoneTo || $scope.modal.zoneTo;
+        service_type = service_type || $scope.modal.service_type;
+        if(zoneFrom && zoneTo && service_type){
+            return $filter('filter')($scope.prices, function(pr){
+                return pr.zoneFrom.id == zoneFrom && pr.zoneTo.id == zoneTo && pr.service_type == service_type;
+            });
+        }
+        return [];
+    };
+
     on.eventClick = function(even, jsEvent, view, revertFunc){
+        console.log(even);
+        $scope.location = {};
         var start = moment(even.start).tz(timeZone),
             end = moment(even.end).tz(timeZone);
         if(!end.isValid())
@@ -29,11 +67,19 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
             });
         }
         $scope.changeCompany();
+        $scope.location.from = even.asign.zoneFrom.location;
+        $scope.location.to = even.asign.zoneTo.location;
+        $scope.changeLocation('from');
+        $scope.changeLocation('to');
+        $scope.modal.zoneFrom = even.asign.zoneFrom.id;
+        $scope.modal.zoneTo = even.asign.zoneTo.id;
+        $scope.modal.price = even.asign.price && even.asign.price.id;
         jQuery('#select-transport-update').modal('show');
 
     };
 
     on.select = function(start, end){
+        $scope.location = {};
     	var time = moment(start).tz(timeZone);
         $scope.modal = {};
         $scope.modal.day = time.format('YYYY/MM/DD');
@@ -127,12 +173,17 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
                 transport: $scope.modal.transport,
                 start: start.toDate().toISOString(),
                 end: end.toDate().toISOString(),
-                service_type: $scope.modal.service_type
+                service_type: $scope.modal.service_type,
+                pax: $scope.modal.pax,
+                zoneFrom: $scope.modal.zoneFrom,
+                zoneTo: $scope.modal.zoneTo
             };
+        //return params
         if($scope.view_type == 'asign'){
+            params.price = $scope.modal.price;
             return params;
         }
-        params.pax = $scope.modal.pax;
+        //params.pax = $scope.modal.pax;
         return params;
     }
 
