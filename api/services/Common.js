@@ -254,7 +254,7 @@ function equals(a,b){
 }
 module.exports.equals = equals;
 
-module.exports.orderCustomAI = function(val){
+module.exports.orderCustomAI = function(val,cb){
 	Counter.native(function(err, counter){
 	    counter.findAndModify(
 	        { name: 'folio' }
@@ -264,9 +264,11 @@ module.exports.orderCustomAI = function(val){
 	        ,function (err, object) {
 	           if(err) console.log(err);
 	           console.log(object);
-	           Order.update({ id:val.id },{ folio:object.seq},function(o_err,order){
+	           val.folio = object.seq;
+	           cb(val);
+	           /*Order.update({ id:val.id },{ folio:object.seq},function(o_err,order){
 	           	val.folio = order.folio;
-	           });
+	           });*/
 	        }
 	    );
 	})

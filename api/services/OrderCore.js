@@ -62,6 +62,7 @@ module.exports.createTransferReservation = function(params, defaultUserID, defau
 						params.main_fee_kids_rt 	= prices.mainPrice.round_trip_child;
 					}
 					params.globalRates = theExhangeRates.rates;
+					delete params.generalFields;
 					Reservation.create(params).exec(function(err,reservation){
 	            		if(err) callback(err,false);
 	            		theorder.reservations.push(reservation.id);
@@ -81,11 +82,13 @@ module.exports.createReservationTourHotel = function(params,userID,callback){
 		async.mapSeries( params.items, function(item,cb) {
 			item.order = theorder.id;
 	        item.company = theorder.company.id;
+	        item.folio = theorder.folio;
 	        item.user = userID;
 	        item.payment_method = item.payment_method?item.payment_method.handle:(params.generalFields.payment_method?params.generalFields.payment_method.handle:'creditcard');
 	        item.currency = params.currency?params.currency.id:theorder.company.base_currency;
 	        item.autorization_code = item.autorization_code || params.generalFields.autorization_code || '';
 	        item.state = item.state?item.state.handle:(params.generalFields.state?params.generalFields.state.handle:'pending');
+	        console.log(theorder);
 	        delete item.id;
 			OrderCore.getTourAndPrices(item.reservation_type,item[item.reservation_type].id,theorder.company,function(err,products){
 				Exchange_rates.find().limit(1).sort({createdAt:-1}).exec(function(err,theExhangeRates){
@@ -112,7 +115,7 @@ module.exports.createReservationTourHotel = function(params,userID,callback){
 		                item.globalRates = theExhangeRates.rates;
 	            	}
 	                item[item.reservation_type] = products.item.id;
-	                item.folio = theorder.folio;
+	                delete item.generalFields;
 	                Reservation.create(item).exec(function(err,r){
 						if(err) cb(err,item);
 						item.id = r.id; 
