@@ -21,6 +21,7 @@ module.exports = {
         rate : categorías numéricas, barras
       */
     }
+    ,rating : 'array'
     ,classification : {
       type : 'String'
       ,enum : [ 'aquatic', 'land' ]

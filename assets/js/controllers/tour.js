@@ -67,7 +67,8 @@ app.controller('tourEditCTL',function($scope,$http,$window){
         });
     };
     $scope.$on('SAVE_ALL', function () {
-        save();
+        $scope.save();
+        console.log('SAVE_ALL!!!!!!!!');
     });
     $scope.addSchedule = function(){
         var aux = { from : '' , to : '' };

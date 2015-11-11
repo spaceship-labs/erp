@@ -111,7 +111,7 @@ module.exports = {
 		});
 	},
 	edit : function(req,res){
-		Tour.findOne(req.params.id).populate('categories').exec(function(e,tour){ TourCategory.find().exec(function(tc_err,tourcategories){
+		Tour.findOne(req.params.id).populate('categories').exec(function(e,tour){ TourCategory.find({type:{ $ne:'rate' }}).exec(function(tc_err,tourcategories){
 			if(e) return res.redirect("/tour/");
 			Location.find({}).sort('name').exec(function(e,locations){
 	    		SeasonScheme.find().sort('name').exec(function(e,schemes){ TourProvider.find().exec(function(e,providers){
