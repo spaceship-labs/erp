@@ -24,12 +24,19 @@ module.exports = {
 		});
 	}, find : function(req,res){
         var params = req.params.all();
+        var skip = params.skip || 0;
+        var limit = params.limit || 200;
         if( typeof params.id == 'undefined' ) delete params.id;
+        delete params.skip;
+        delete params.limit;
         if(params.name) params.name = new RegExp(params.name,"i");
         //console.log(req.user);
         if( req.user.isAdmin || req.user.company.adminCompany ){
-            Company.find(params).populate('currencies').exec(function(err,companies){
-                res.json(companies);
+            Company.find(params).skip(skip).limit(limit).populate('currencies').exec(function(err,companies){
+                Company.count(params).exec(function(e,count){
+                    //res.json(companies);
+                    res.json({ results : companies , count : count });
+                });
             });
         }else{
             User.findOne(req.user.id).populate('companies',params).exec(function(err,user){

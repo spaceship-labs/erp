@@ -18,5 +18,6 @@ module.exports = {
     ,distance : 'string'
     ,gasoline : 'string'
     ,time : 'integer'
+    ,active : 'boolean'
   }
 };

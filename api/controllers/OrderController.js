@@ -131,8 +131,9 @@ module.exports = {
           reservation.aggregate([
               { $match : fields } , { $group : { _id : "$order" } } , { $group : { _id : null , count : { $sum:1 } } }
           ],function(err_c,count_){
+            if(err_c) res.json({ result:[],orders:[],count: 0 });
             customOrdersFormat(ids,function(results){
-              res.json({ result:[],orders:results,count: (count_[0]?count_[0].count:0) });
+              res.json({ result:[],orders:results,count: (count_&&count_.length>0?count_[0].count:0) });
             });
           });
       });
@@ -202,21 +203,13 @@ module.exports = {
       Client_.create({ name : params.client }).exec(function(err,client){
         if(err) return res.json({ error : err, result : false });
         orderParams = { client : client.id , company : params.company };//cliente y agencia
-        //params.client = client;
         aux.client = client;
-        //console.log('Create client');
         OrderCore.createOrder( orderParams, req, function(err,order){
           if(err) return res.json({ error : err, result : false });
-          //params.order = order.id;
           aux.order = order.id;
-          //params.items = [];
           aux.items.push(params);
-          //params.items.push(params);
-          //console.log('Create order');
-          //console.log(aux);
           OrderCore.createReservationTourHotel(aux,req.user.id,function(err,results){
             if(err) return res.json({ error : err, result : false });
-            //console.log('Create reservations');
             return res.json({ error : false, results : results });
           });
         });
@@ -229,79 +222,6 @@ module.exports = {
       if (err) return res.json(err);
       return res.json(results);
     });
-    /*Order.findOne({id : params.order }).populate('company').exec(function(e,theorder){
-      if(e) return res.json(e);
-      //console.log(params.items);return res.json(false);
-      async.mapSeries( params.items, function(item,cb) {
-        item.order = theorder.id;
-        item.company = theorder.company.id;
-        item.user = req.user.id;
-        item.payment_method = item.payment_method?item.payment_method.handle:(params.generalFields.payment_method?params.generalFields.payment_method.handle:'creditcard');
-        item.currency = item.currency?item.currency.id:(params.generalFields.currency?params.generalFields.currency.id:theorder.company.base_currency);
-        item.autorization_code = item.autorization_code || params.generalFields.autorization_code;
-        delete item.id;
-        if( item.reservation_type == 'tour' ){
-          if( theorder.company.adminCompany ){
-            //en este caso llega un tour sólo es agregar los campos faltantes
-            Tour.findOne(item.tour.id).populate('provider').exec(function(t_err,tour){
-              if(t_err) cb(t_err,item);
-              item.fee_adults = tour.fee;
-              item.fee_adults_base = tour.fee_base;
-              item.fee_kids = tour.feeChild;
-              item.fee_kids_base = tour.feeChild_base;
-              item.commission_agency = tour.commission_agency;
-              item.commission_sales = tour.commission_sales;
-              item.exchange_rate_sale = theorder.company.exchange_rate_sale;
-              item.exchange_rate_book = theorder.company.exchange_rate_book;
-              item.exchange_rate_provider = tour.provider?tour.provider.exchange_rate:0;
-              item.exchange_rates = theorder.company.exchange_rates;
-              item.tour = item.tour.id;
-              item.folio = theorder.folio;
-              //console.log(item);
-              Reservation.create(item).exec(function(err,r){
-                if(err) cb(err,item);
-                //console.log(err);console.log(r);
-                item.id = r.id; 
-                cb(err,item);
-              });
-            });
-          }else{
-            //en este caso llega un companyProduct agregar los campos faltantes y cambiar el tour
-            CompanyProduct.findOne(item.tour.id).exec(function(cp_err,companyproduct){
-              Tour.findOne(companyproduct.tour).populate('provider').exec(function(t_err,tour){
-                if(t_err) cb(t_err,item);
-                item.fee_adults = tour.fee;
-                item.fee_adults_base = tour.fee_base;
-                item.fee_kids = tour.feeChild;
-                item.fee_kids_base = tour.feeChild_base;
-                item.commission_agency = tour.commission_agency;
-                item.commission_sales = tour.commission_sales;
-                item.exchange_rate_sale = theorder.company.exchange_rate_sale;
-                item.exchange_rate_book = theorder.company.exchange_rate_book;
-                item.exchange_rate_provider = tour.provider?tour.provider.exchange_rate:0;
-                item.tour = tour.id;
-                item.folio = theorder.folio;
-                Reservation.create(item).exec(function(err,r){
-                  item.id = r.id; 
-                  cb(err,item);
-                });
-              });
-            });
-          }
-        }else{
-          Reservation.create(item).exec(function(err,r){
-            item.id = r.id; 
-            cb(err,item);
-          });
-        }
-      },function(err,results){
-          if (err) {
-              console.log(err);
-              return res.json(err);
-          }
-          return res.json(results);
-      });
-    });*/
   },
   updateReservation : function(req,res){
     var params = req.params.all();
@@ -359,14 +279,11 @@ module.exports = {
     var r = {};
     if(params.reservation_type)
       r = {reservation_type : params.reservation_type};
-    //console.log(params);console.log(c);console.log(o);console.log(r);
     Order.find(o).populate('client',c).populate('reservations',r).populate('company').then(function(orders) {
       var result = [];
       for(var x in orders){
-        //console.log(orders[x].reservations.length);
         if(orders[x].reservations.length>0 && typeof orders[x].client != 'undefined' ) result.push(orders[x]);
       }
-      //console.log(result);
       res.json(result);
     });
   }
@@ -523,8 +440,15 @@ function formatFilterFields(f){
       if( f[x].type == 'date' ){
         var from = {}; from[f[x].field] = { '$gte' : new Date(f[x].model.from) };
         var to = {}; to[f[x].field] = { '$lte' : new Date(f[x].model.to) };
-        fx['$and'] = [from,to];
-        //console.log('from');console.log(from);console.log('to');console.log(to);
+        if( f[x].field == 'arrival_date' ){
+          fx['$or'] = [ 
+            { $and : [ from, to ] }, 
+            { $and : [ { startDate : { '$gte' : new Date(f[x].model.from) } }, { startDate : { '$lte' : new Date(f[x].model.to) } } ] }, 
+            { $and : [ { cancelationDate : { '$gte' : new Date(f[x].model.from) } }, { cancelationDate : { '$lte' : new Date(f[x].model.to) } } ] }
+            ]
+        }else{
+          fx['$and'] = [from,to];
+        }
       }else if( f[x].type == 'autocomplete' ){
         if(sails.models[f[x].model_]){
           if( f[x].special_field && f[x].special_field == 'provider' ){

@@ -109,8 +109,9 @@ module.exports.tours_gral = function(fields,cb){
 		Para saber si es por la fecha de creación o la de reservación
 		options.dateType = '1';
 	*/
-	fields.sDate = new Date("October 13, 2014");
-	fields.eDate = new Date("October 13, 2016");
+	//fields.sDate = new Date("October 13, 2014");
+	//fields.eDate = new Date("October 13, 2016");
+	fields.reservation_type = 'tour';
 	var $match = {
 		reservation_type : 'tour'
 		,$and : [
@@ -121,6 +122,7 @@ module.exports.tours_gral = function(fields,cb){
 			] }
 		]
 	};
+	$match = fields;
 	var $groupGral = {
 		_id : null
 		,toursIDs : { '$push' : '$tour' }
@@ -139,20 +141,25 @@ module.exports.tours_gral = function(fields,cb){
 	};
 	var feeSumVar = { $add : [ { $ifNull : [ '$fee', 0 ] } , { $ifNull : [ '$feeKids', 0 ] } ] };
 	var paxSumVar = { $add : [ { $ifNull : [ '$pax', 0 ] } , { $ifNull : [ '$kidPax', 0 ] }	] };
+	console.log($match);
 	Reservation.native(function(err,theReservation){
 		theReservation.aggregate([ 
 			{ $sort : { createdAt : -1 } }, { $match : $match }
 			,{ $project : {
-				tour:1,fee:1,feeKids:1,pax:1,kidPax:1,state:1
+				arrival_date:1,cancelationDate:1,startDate:1
+				,tour:1,fee:1,feeKids:1,pax:1,kidPax:1,state:1
 				,totalNeto 	: { $cond : [ { $ne : ['$state' , 'canceled'] },feeSumVar,0 ] }
 				,paxNeto 	: { $cond : [ { $ne : ['$state' , 'canceled'] },paxSumVar,0 ] }
 			} }
 			,{ $group : $groupGral } 
 		],function(err,resultsGlobal){ 
-			if( err || resultsGlobal.length <= 0 ){ theCB(resultsGlobal,err); }
+			//cb( { r:resultsGlobal,match:$match },err );return;
+			if( err || typeof resultsGlobal == 'undefined' || !resultsGlobal.length ){ cb(resultsGlobal,err); return; }
+			console.log('ENTRA!!!!!!!!!!!');
 			resultsGlobal = resultsGlobal[0];
 			//obtener los proveedores;
 			Tour.find({ id : resultsGlobal.toursIDs }).populate('categories').exec(function(err,allTours){
+				if( err ){ cb(false,err); return;}
 				//iteration
 				theReservation.aggregate([ 
 					 { $sort  : {createdAt:-1} }
@@ -167,7 +174,7 @@ module.exports.tours_gral = function(fields,cb){
 					 } }
 					,{ $group : $groupTotals } 
 				],function(err,resultsTours){
-					if(err) console.log(err);
+					if(err){ cb(false,err); return;}
 					//obtiene los totales de las reservas
 					results.rows = [];
 					for(var x in resultsTours){ 
@@ -183,6 +190,7 @@ module.exports.tours_gral = function(fields,cb){
 					results.totals.iva =resultsGlobal.total*mainIVA;
 					results.totals.subtotal = resultsGlobal.total - results.totals.iva;
 					results.reportType = '';
+					results.match = $match;
 					cb(results,err);
 				});
 			});

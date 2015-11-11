@@ -1,5 +1,5 @@
 app.controller('companyCTL',function($scope,$http,$rootScope){
-    $scope.companies = companies;
+    $scope.companies = [];
     $scope.content = content;
     $scope.currencies = currencies;
     $scope.company = selected_company;

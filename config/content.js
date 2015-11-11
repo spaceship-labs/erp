@@ -2025,4 +2025,38 @@ module.exports.content = {
 	]
 };
 
-module.exports.content.transferprice = module.exports.content.price;
+//module.exports.content.transferprice = module.exports.content.price;
+module.exports.content.transferprice = [
+	{
+		label : 'Agencia'
+		,label_en : 'Agency'
+		,object : 'company'
+		,handle : 'company'
+	},
+	{
+		label : 'Zona1'
+		,label_en : 'AgencyZone 1'
+		,handle : 'zone'
+		,handle2 : 'zone1'
+		,object : 'zone1'
+	},
+	{
+		label : 'Zona 2'
+		,label_en : 'Zone 2'
+		,handle : 'zone'
+		,handle2 : 'zone2'
+		,object : 'zone2'
+	},
+	{
+		label : 'Transfer'
+		,label_en : 'Transfer'
+		,handle : 'transfer'
+		,object : 'transfer'
+	},
+	{
+		label : 'Transfer'
+		,label_en : 'Transfer'
+		,handle : 'location'
+		,object : 'location'
+	},
+]

@@ -1,5 +1,5 @@
 app.controller('priceCTL',function($scope,$http){
-	$scope.prices = prices;
+	$scope.prices = [];
 	$scope.locations_ = locations_;
 	$scope.transfers = transfers;
 	$scope.airports = airports;
@@ -11,6 +11,20 @@ app.controller('priceCTL',function($scope,$http){
         if($scope.companies[i].id==user.default_company)
             $scope.thecompany = $scope.companies[i];
     }
+    $scope.getInfo = function(price){
+        price.createdAt=(moment(price.createdAt).format('LL'));
+        price.updatedAt=(moment(price.updatedAt).format('LL'));
+        price.name = price.zone1.name + ' - ' + price.zone2.name;
+        var r = {};
+        r['Nombre'] = price.name;
+        r['Company'] = price.company?price.company.name:'';
+        r['Zona'] = price.zone1?price.zone1.name:'';
+        r['Zona2'] = price.zone2?price.zone2.name:'';
+        r['Created'] = price.createdAt;
+        r['Updated'] = price.updatedAt;
+        return r;
+        
+    };
     $scope.updatePrices = function(req,res){
     	params = { location : $scope.thelocation.id , company : $scope.thecompany.id , transfer : $scope.thetransfer.id };
     	$http({method: 'POST', url: '/transferprice/getPrices',params:params }).success(function (prices){

@@ -369,6 +369,34 @@ module.exports.apps = [
         ]
     }
     ,{
+        name : 'Reportes'
+        ,label : 'Reportes'
+        ,label_en : 'Reports'
+        ,icon : 'fa-bar-chart'
+        ,actions : [
+            {
+                label : 'Reportes'
+                ,label_en : 'Reports'
+                ,icon : 'fa-file-text-o'
+                ,url : '/report/'
+                ,showInMenu : true
+                ,handle : 'reports'
+                ,controller : 'reports'
+                ,action : 'index'
+            }
+            ,{
+                label : 'Gráficas'
+                ,label_en : 'Charts'
+                ,icon : 'fa-pie-chart'
+                ,url : '/report/charts/'
+                ,showInMenu : true
+                ,handle : 'reports'
+                ,controller : 'reports'
+                ,action : 'index'
+            }
+        ]
+    }
+    ,{
         name : 'claims'
         ,label : 'Quejas y Objetos perdidos'
         ,label_en : 'Claims and Lost&Found'
