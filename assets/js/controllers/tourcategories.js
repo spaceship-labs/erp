@@ -15,6 +15,10 @@ app.controller('tourcategoryCTL',function($scope,$http){
 app.controller('tourcategoryEditCTL',function($scope,$http){
 	$scope.tourcategory = tourcategory;
 	$scope.content = content;
+    $scope.categoryTypes = {
+        id : 'normal' , label : 'Categoría normal'
+        , id : 'rate' , label : 'Rating'
+    }
     $scope.classifications = [
         { id: 'aquatic' , name : "Acuático" }
         ,{ id: 'land' , name : "Terrestre" }

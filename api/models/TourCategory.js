@@ -11,10 +11,16 @@ module.exports = {
   	,name_en : 'String'
   	,name_ru : 'String'
   	,name_pt : 'String'
-  	,tours : {
-  		collection : 'tour'
-  		,via: 'categories'
-  	}
+    ,tours : { collection : 'tour', via: 'categories' }
+  	//,tours : { collection : 'tourtourcategory', via: 'tourcategory_tours' }
+    ,type : {
+      type: 'String'
+      ,enum : ['normal', 'rate'] 
+      /* Aquí se pueden ir agregando las variantes de categorías que podemos ir agregando
+        normal: categorías normales
+        rate : categorías numéricas, barras
+      */
+    }
     ,classification : {
       type : 'String'
       ,enum : [ 'aquatic', 'land' ]

@@ -708,6 +708,13 @@ module.exports.content = {
 			,handle : 'name_pt'
 		}
 		,{
+			label : 'Tipo de categoría'
+			,label_en : 'Category type'
+			,type : 'select'
+			,object : 'categoryTypes'
+			,handle : 'type'
+		}
+		,{
 			label : 'Clasificación'
 			,label_en : 'Classification'
 			,type : 'select'

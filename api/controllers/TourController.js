@@ -134,8 +134,8 @@ module.exports = {
 							{label : tour.name},
 						]
 					},req);				
-				}); });
-			});
+				}); });//seasons and providers
+			});//location
 		}); }); //tour and tour categorys
 	},
 	updateIcon: function(req,res){
