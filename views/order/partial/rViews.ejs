@@ -166,7 +166,7 @@
             <div class='modal-data'>
                 <p class='text-center'>
                     <strong>Folio : </strong> {{theorder.folio}} 
-                    <strong><%= __('order-fecha')%> : </strong> {{formatDate(theorder.createdAt)}} 
+                    <strong>Fecha de reservación : </strong> {{formatDate(theorder.createdAt)}} 
                     <strong><%= __('order-usuario')%> : </strong> {{theorder.user.name + ' ' + theorder.user.last_name}} 
                 </p><p class='text-center'>
                     <strong>Agencia : </strong> {{theorder.company.name}} 
@@ -203,7 +203,7 @@
                     <li ng-repeat="t in theorder.tours">
                         <p><strong>Tour:</strong> {{t.tour.name}}</p>
                         <p><strong><%= __('order-adultos')%>:</strong> {{t.pax}} <span ng-if="t.kidPax"> <strong><%= __('order-menores')%>:</strong> {{t.kidPax}}</span></p>
-                        <p><strong>Fecha:</strong> {{formatDate(t.startDate)}} <strong><%= __('order-precio')%>:</strong> {{t.fee}}</span></p>
+                        <p><strong>Fecha de Tour:</strong> {{formatDate(t.startDate)}} <strong><%= __('order-precio')%>:</strong> {{t.fee | currency}}</span></p>
                     </li>
                 </ul>
             </div>

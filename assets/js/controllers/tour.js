@@ -47,7 +47,9 @@ app.controller('tourEditCTL',function($scope,$http,$window){
     for(var x in $scope.tour.schedules)
         $scope.tour.schedules[x] = typeof $scope.tour.schedules[x] == 'string'?JSON.parse($scope.tour.schedules[x]):$scope.tour.schedules[x];
     $scope.user = user;
-    $scope.tourcategories = tourcategories;
+    $scope.tourcategories = tourcategories; //categorias normales
+    $scope.rateCategories = []; //categorias tipo rate
+    $scope.tourRateCategories = []; //categorias ya agregadas o por agregar
     /*io.socket.get('/tour/find/'+tour.id,function(data,jwres){
         $scope.tour = data;
 	    $scope.tour.seasonScheme = data.seasonScheme && data.seasonScheme.id || null;
@@ -60,8 +62,14 @@ app.controller('tourEditCTL',function($scope,$http,$window){
     $scope.saveClass = 'fa-save';
     $scope.save = function(){
         $scope.saveClass = 'fa-upload';
-        var form = {id:$scope.tour.id,days:$scope.tour.days, schedules : $scope.tour.schedules };
-        $http({method: 'POST',url:'/tour/save',params:form}).success(function(tour){
+        var form = {
+            id : $scope.tour.id
+            ,days : $scope.tour.days
+            ,schedules : $scope.tour.schedules 
+            ,rates : $scope.tourRateCategories
+        };
+        //$http({method: 'POST',url:'/tour/update',params:form}).success(function(tour){
+        $http.post('/tour/update',form,{}).success(function(tour) {
             $scope.tour.days = tour.days;
             $scope.saveClass = 'fa-save';
         });
@@ -91,5 +99,31 @@ app.controller('tourEditCTL',function($scope,$http,$window){
         lat : 21.1667,
         lng : -86.8333,
         zoom : 6
+    };
+    $scope.getRateCategories = function(){
+        $scope.theRC = false;
+        var $ne = [];
+        for( x in $scope.tourRateCategories ) $ne.push( $scope.tourRateCategories[x].category.id );
+        var params = { type : 'rate' };
+        if( $ne.length > 0 ) params.id = { '!' : $ne };
+        $http({method: 'POST', url: '/tourcategory/find',params:params}).success(function (cats){
+            if( cats && cats.results ){
+                for(var x in cats.results) 
+                    for(var y in cats.results[x].rating)
+                        cats.results[x].rating[y] = typeof cats.results[x].rating[y] == 'string'?JSON.parse(cats.results[x].rating[y]):cats.results[x].rating[y];
+                $scope.rateCategories = cats.results;
+            }
+        });
+    };
+    $http.post('/tour/getrates',{tour:$scope.tour.id},{}).success(function(rates){
+        if( rates ) $scope.tourRateCategories = rates;
+        $scope.getRateCategories();
+    });
+    $scope.addRC = function(){
+        if( $scope.theRC ){
+            var aux = { category : $scope.theRC , value : 1, titles : _.pluck($scope.theRC.rating,'label') };
+            $scope.tourRateCategories.push(aux);
+            $scope.getRateCategories();
+        }
     };
 });

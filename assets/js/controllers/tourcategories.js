@@ -31,6 +31,8 @@ app.controller('tourcategoryEditCTL',function($scope,$http){
             $scope.tourcategory.rating.push({ value : v ,label:'Item ' + v });
         }else{
             $scope.tourcategory.rating.splice(index,1);
+            for(x in $scope.tourcategory.rating)
+                $scope.tourcategory.rating[x].value = parseInt(x)+1;
         }
     };
     $scope.save = function(){

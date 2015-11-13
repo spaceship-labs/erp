@@ -9,7 +9,7 @@
 		<div class="textbutton col-sm-6 col-md-6 col-xs-12">
             <a data-toggle="modal" data-target="#exportMKP" class='pull-right btn btn-primary full-sm'><i class='fa fa-download'></i> Exportar CSV</a>
 			<span class='dropdown pull-right full-sm'>
-                <a dropdown-toggle class='btn btn-primary full-width'><i class='fa fa-files-o'></i> Reportes</a>
+                <a uib-dropdown-toggle class='btn btn-primary full-width'><i class='fa fa-files-o'></i> Reportes</a>
                 <ul role='menu' class='dropdown-menu'>
                     <li>
                         <a ng-click="SelectReport('transfer_gral')">Reporte Traslados (Gral.)</a>
@@ -34,7 +34,7 @@
 		</div>
         <div class="textbutton col-sm-6 col-md-6 col-xs-12">
             <span class='dropdown pull-right full-sm'>
-                <a dropdown-toggle class='btn btn-primary full-width'><i class='fa fa-filter'></i> <%= __('gral_filters')%></a>
+                <a uib-dropdown-toggle class='btn btn-primary full-width'><i class='fa fa-filter'></i> <%= __('gral_filters')%></a>
                 <ul role='menu' class='dropdown-menu'>
                     <li ng-repeat="f in filtersArray">
                         <a ng-click="openFilter(f)" ng-class='!f.active?"inactive":""'>{{f.label}}</a>

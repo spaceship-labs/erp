@@ -136,7 +136,7 @@ module.exports = {
 					},req);				
 				}); });//seasons and providers
 			});//location
-		}); }); //tour and tour categorys
+		}); }); //tour and tour category
 	},
 	updateIcon: function(req,res){
     	form = req.params.all();
@@ -147,6 +147,19 @@ module.exports = {
 		},function(e,tour){
 			if(e) console.log(e);
 			res.json(tour);
+		});
+	},
+	getrates : function(req,res){
+		var params = req.params.all();
+		if( !params.tour ){ res.json([]); return; }
+		TourTourcategory.find({ tour_categories : params.tour }).populate('tourcategory_tours').exec(function(err,cats){
+			if( err ){ res.json([]); return; }
+			var results = [];
+			for( var x in cats ){
+				if( cats[x].tourcategory_tours.type && cats[x].tourcategory_tours.type == 'rate' )
+				results.push({ category : cats[x].tourcategory_tours , value : cats[x].value, titles : _.pluck(cats[x].tourcategory_tours.rating,'label') })
+			}
+			res.json(results);
 		});
 	},
 	update : function(req,res){
@@ -162,13 +175,39 @@ module.exports = {
     		});
     		form.days = new_days;
     	}
-    	Tour.update({id:id},form,function(e,tour){
+    	var rates = form.rates;
+    	delete form.rates;
+    	Tour.update({id:id},form,function(e,tour){ Tour.findOne(id).populate('categories').exec(function(e,tour){
     		if(e) throw(e);
-    		Tour.findOne(tour[0].id).exec(function(e,tour){
-    			if(e) throw(e);
-    			res.json(tour);
-    		});
-    	});
+    		if( rates ){
+    			for( x in rates ) tour.categories.add( rates[x].category.id );
+    			tour.save(function(tour_){
+    				//ahora se van a actualizar los valores con un foreach async
+    				async.mapSeries( rates, function(item,theCB){
+    					if(item.category.type && item.category.type=='rate'){
+    						var aux = { value : item.value };
+    						var params = { tourcategory_tours : item.category.id, tour_categories : tour.id };
+    						TourTourcategory.update(params,aux,function(err,category){
+    							if(err) theCB(err,item);
+    							if( category[0] )
+    								item.id = category[0].id;
+    							theCB(err,item);
+    						});
+    					}else{
+    						theCB(false,item);
+    					}
+    				},function(err,results){
+    					tour.rates = results;
+						res.json(tour);
+					});
+    			});
+    		}else{
+    			Tour.findOne(tour[0].id).populate('categories').exec(function(e,tour){
+	    			if(e) throw(e);
+	    			res.json(tour);
+	    		});
+    		}
+    	}); });
     },
 
 	addFiles : function(req,res){

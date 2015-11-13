@@ -2,7 +2,7 @@
     <a class='cursorPointer' ng-click="customCart=!customCart">
         <h5 class="widgettitle">Resumen de reservación <i ng-hide="customCartShow" ng-bind="', $' + theTotal"></i></h5>
     </a>
-    <div collapse="customCart"><div class="widgetcontent ">
+    <div uib-collapse="customCart"><div class="widgetcontent ">
         <div ng-show="!transfer.fee && reservations.tours.length==0 && reservations.hotels.length==0">
             <h4>No hay reservas activas</h4>
         </div>

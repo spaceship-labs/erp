@@ -26,7 +26,7 @@
                         </div>
                         <a class='expand' ng-click="setSteps('',1)"><h4 class="widgettitle"><i class='fa fa-user'></i> <%= __('order-cliente')%></h4></a>
                     </div>
-                    <div class='widgetcontent nopadding'><div collapse="!(steps==1?true:false)">
+                    <div class='widgetcontent nopadding'><div uib-collapse="!(steps==1?true:false)">
                         <!--<p class='order-controls'>
                             <span><a class='' ng-click="searchClient = !searchClient"><i class='fa fa-search'></i> Buscar existente</a></span>
                             <span><a class='' data-toggle="modal" data-target="#myModal"><i class='fa fa-plus'></i>  <%= __('order-nuevo-cliente')%></a></span>
@@ -117,9 +117,9 @@
                         </div>
                         <a class='expand' ng-click="setSteps('',2)"><h4 class="widgettitle"><i class='fa fa-building'></i> <%= __('order-reservar-hotel')%></h4></a>
                     </div>
-                    <div collapse="!(steps==2?true:false)">
+                    <div uib-collapse="!(steps==2?true:false)">
                         <div class='row'>
-                            <div class='col-md-12 peoplelist orderTourList'><div collapse="collapseList.hotel">
+                            <div class='col-md-12 peoplelist orderTourList'><div uib-collapse="collapseList.hotel">
                                 <input type="text" class="form-control" 
                                         placeholder="Buscar Hoteles"
                                         ng-model="searchHotels"
@@ -197,9 +197,9 @@
                         </div>
                         <a class='expand' ng-click="setSteps('',3)"><h4 class="widgettitle"><i class='fa fa-compass'></i> <%= __('order-reservar-tour')%></h4></a>
                     </div>
-                    <div collapse="!(steps==3?true:false)">
+                    <div uib-collapse="!(steps==3?true:false)">
                         <div class='row'>
-                            <div class='col-md-12 peoplelist orderTourList'><div collapse="collapseList.tour">
+                            <div class='col-md-12 peoplelist orderTourList'><div uib-collapse="collapseList.tour">
                                 <input type="text" class="form-control" 
                                         placeholder="Buscar Tours"
                                         ng-model="searchTours"
@@ -278,7 +278,7 @@
                         </div>
                         <a class='expand' ng-click="setSteps('',4)"><h4 class="widgettitle"><i class='fa fa-car'></i> <%= __('order-reservar-tras')%></h4></a>
                     </div>
-                    <div class='widgetcontent nopadding'><div class='collapseCustom' collapse="!(steps==4?true:false)">
+                    <div class='widgetcontent nopadding'><div class='collapseCustom' uib-collapse="!(steps==4?true:false)">
                         <%- partial('inputsTransfer') -%> 
                     </div></div>
                     <div class="clearfix"></div>

@@ -6,7 +6,10 @@
     <!-- Tour section -->
     <div class='row'>
         <div class='stdform stdform2 col-md-12 widgetbox'>
-            <h4 class="widgettitle"><i class='fa fa-car'></i> <%= __('order-reservar-tras')%></h4>
+            <h4 class="widgettitle">
+                <i class='fa fa-car'></i> <%= __('order-reservar-tras')%>
+                <a class='icon fa fa-calendar-o' ng-click="showReservationDate=!showReservationDate"></a>
+            </h4>
             <div class='widgetcontent nopadding'>
                 <div class='row'>
                     <!-- Column 1 -->
@@ -56,6 +59,9 @@
                     </div>
                     <!-- Column 2 -->
                     <div class='col-md-6'>
+                        <div ng-hide="showReservationDate">
+                            <p>Fecha de Reserva</p>
+                        </div>
                         <p>Cupón</p>
                         <p><input tabindex='' type="text" class="form-control" 
                             ng-model="reservationTour.controlCode" ></p>

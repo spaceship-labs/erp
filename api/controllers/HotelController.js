@@ -97,6 +97,7 @@ module.exports = {
 	    				var zoneparams = hotel.location ? { 'location' : hotel.location } : {};
 	    				//Zone.find(zoneparams).exec(function(e,zones){
 	    				Location.findOne(hotel.location).populate('zones').exec(function(e,lZones){ 
+	    					lZones = lZones||{};
 	    					FoodScheme.find().sort('name').exec(function(e,foodSchemes){
 	    						//console.log(hotel.foodSchemes);
 	    						//console.log(typeof hotel.foodSchemes.add );
@@ -104,7 +105,7 @@ module.exports = {
 									hotel:hotel,
 									locations:locations,
 									schemes:schemes,
-									zones:lZones.zones,
+									zones:lZones.zones||[],
 									foodSchemes:foodSchemes,
 									_content:sails.config.content,
 									page:{

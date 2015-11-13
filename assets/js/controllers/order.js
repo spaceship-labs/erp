@@ -1555,7 +1555,6 @@ app.controller('orderQuickCTL',function($scope,$http,$window,$rootScope){
             $scope.client = client_;
             $scope.client_flag = true;
         });
-
     };
     $scope.saveAll = function(){
         //crear una orden

@@ -18,7 +18,7 @@
                 <div class='headtitle'>
                     <a class='expand' ng-click="setSteps('',1)"><h4 class="widgettitle"><i class='fa fa-user'></i> <%= __('order-cliente')%></h4></a>
                 </div>
-                <div class='widgetcontent nopadding'><div collapse="!(steps==1?true:false)">
+                <div class='widgetcontent nopadding'><div uib-collapse="!(steps==1?true:false)">
                     <form class='form stdform stdform2 nopadding'>
                         <p>
                             <label>Nombre completo*</label>
@@ -46,7 +46,7 @@
                     <div class='headtitle'>
                         <a class='expand' ng-click="setSteps('',2)"><h4 class="widgettitle"><i class='fa fa-building'></i> <%= __('order-reservar-hotel')%></h4></a>
                     </div>
-                    <div collapse="!(steps==2?true:false)">
+                    <div uib-collapse="!(steps==2?true:false)">
                         <div class='isCtourContainer'>
                             <div class='stdform2' ng-repeat='item in reservations.hotels' ng-hide="item.saved">
                                 <%- partial('inputsHotel') -%> 
@@ -91,7 +91,7 @@
                 <div class='headtitle'>
                     <a class='expand' ng-click="setSteps('',3)"><h4 class="widgettitle"><i class='fa fa-compass'></i> <%= __('order-reservar-tour')%></h4></a>
                 </div>
-                <div collapse="!(steps==3?true:false)">
+                <div uib-collapse="!(steps==3?true:false)">
                     <div class='row'>
                         <div class='col-md-12 peoplelist orderTourList'>
                             <input type="text" class="form-control" 
@@ -161,7 +161,7 @@
                         </div>
                         <a class='expand' ng-click="setSteps('',4)"><h4 class="widgettitle"><i class='fa fa-car'></i> <%= __('order-reservar-tras')%></h4></a>
                     </div>
-                    <div class='widgetcontent nopadding'><div class='collapseCustom' collapse="!(steps==4?true:false)">
+                    <div class='widgetcontent nopadding'><div class='collapseCustom' uib-collapse="!(steps==4?true:false)">
                         <%- partial('inputsEditTransfer') -%> 
                     </div></div>
                     <div class="clearfix"></div>
