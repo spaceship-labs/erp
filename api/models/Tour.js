@@ -36,6 +36,11 @@ module.exports = {
 			collection : 'companyproduct'
 			, via : 'tour' }
 		,duration_formated : 'datetime'
+		,type : {
+			type: 'string',
+			enum: ['family', 'adult'],
+			defaultsTo : 'family'
+		}
 	}
 	, migrate : 'alter'
 	, attrs_labels : {
