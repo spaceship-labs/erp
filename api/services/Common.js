@@ -5,16 +5,27 @@ module.exports.view = function(view,data,req){
 	data.companies = req.user.companies;
 	data.selected_company = req.session.select_company || req.user.select_company;
 	data.current_user = req.user;
-	data._content = sails.config.content;
+	data.interactions = sails.config.interactions[ process.env.ERPTHEME || 'default' ] || {};
+	//data._content = sails.config.content;
+	data._content = Common.customContent(data.interactions);
 	data._content.socketUrl = sails.config.socketsUrl;
 	data._content.lang = req.getLocale();
-	data.interactions = sails.config.interactions[ process.env.ERPTHEME || 'default' ] || {};
 	//data.socketUrl = sails.config.socketsUrl;
 	Company.findOne(data.selected_company).populate('base_currency').populate('currencies').exec(function(e,company){
         if (e) console.log(e);
 		data.selected_company = company;
 		view(data);
 	});
+};
+module.exports.customContent = function(interactions){
+	var content = sails.config.content;
+	if( interactions.customContent && interactions.customContent.length > 0 ){
+		for( var x in interactions.customContent ){
+			//content[ interactions.customContent[x].contentField ].push( interactions.customContent[x].fields );
+			content[ interactions.customContent[x].contentField ] = interactions.customContent[x].fields;
+		}
+	}
+	return content;
 };
 module.exports.renderMenu = function(req){
 	var menu = "";
@@ -243,7 +254,7 @@ function equals(a,b){
 }
 module.exports.equals = equals;
 
-module.exports.orderCustomAI = function(val){
+module.exports.orderCustomAI = function(val,cb){
 	Counter.native(function(err, counter){
 	    counter.findAndModify(
 	        { name: 'folio' }
@@ -253,9 +264,11 @@ module.exports.orderCustomAI = function(val){
 	        ,function (err, object) {
 	           if(err) console.log(err);
 	           console.log(object);
-	           Order.update({ id:val.id },{ folio:object.seq},function(o_err,order){
+	           val.folio = object.seq;
+	           cb(val);
+	           /*Order.update({ id:val.id },{ folio:object.seq},function(o_err,order){
 	           	val.folio = order.folio;
-	           });
+	           });*/
 	        }
 	    );
 	})

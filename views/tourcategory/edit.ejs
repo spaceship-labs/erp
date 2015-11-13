@@ -1,23 +1,39 @@
 <script type='text/javascript'>
     window.tourcategory = <%- JSON.stringify(tourcategory) %>;
 </script>
-<div ng-controller='tourcategoryEditCTL' class="col-md-6 editar-transfer ng-cloak">
-    <div profile-image 
-        object='tourcategory' 
-        update-method='/tourcategory/updateIcon' 
-        delete-method='/tourcategory/destroyIcon' 
-        image-attr='icon' 
-        dir='tourcategories'>
-    </div> 
-    <div class='row-fluid'>
-        <div class="span12">
-            <div form-helper 
-                fields='content.tourcategory' 
+<div ng-controller='tourcategoryEditCTL' class="editar-transfer ng-cloak">
+    <div class='row'>
+        <div class='col-md-6'>
+            <div profile-image 
                 object='tourcategory' 
-                action='/tourcategory/update' 
-                form-title='<%= __('transfer-info')%>'
-                >
+                update-method='/tourcategory/updateIcon' 
+                delete-method='/tourcategory/destroyIcon' 
+                image-attr='icon' 
+                dir='tourcategories'>
             </div> 
+            <div class='row-fluid'>
+                <div class="span12">
+                    <div form-helper 
+                        fields='content.tourcategory' 
+                        object='tourcategory' 
+                        objects="{classifications:classifications,categoryTypes:categoryTypes}"
+                        action='/tourcategory/update/<%=tourcategory.id%>' 
+                        form-title='<%= __('transfer-info')%>'
+                        >
+                    </div> 
+                </div>
+            </div>
+        </div>
+        <div class='col-md-6' ng-hide="tourcategory.type!='rate'">
+            <div class='widgetbox'>
+                <h4 class='widgettitle'>Valores de Rating <span class="fa fa-plus icon" ng-click="addRemoveRate('add',false)"></span></h4>
+                <div class='widgetcontent nopadding stdform2 stdform'>
+                    <p ng-repeat="obj in tourcategory.rating track by $index">
+                        <label><a class='fa fa-times' ng-click="addRemoveRate('remove',$index)"></a> <span ng-bind="obj.value"></span></label>
+                        <span class='field'><input type='text' ng-model="obj.label"></span>
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
     <br/>

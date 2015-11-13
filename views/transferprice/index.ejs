@@ -19,7 +19,8 @@
 			Transfer <select ng-change='updatePrices()' ng-model="thetransfer" ng-options="obj as obj.name for obj in transfers" ></select>
 		</div>
 		<button ng-if="false" class="btn btn-primary pull-right" data-toggle="modal" data-target="#exportmodal"><span class="fa fa-plus"></span><%= __('export') %></button>
-		<a ng-click='generatePrices(thecompany,thetransfer)'>Generar precios</a>
+		<!--<a ng-click='generatePrices(thecompany,thetransfer)'>Generar precios</a>-->
+		<button class="btn btn-primary" data-toggle="modal" data-target="#importmodal"><span class="fa fa-plus"></span> Importar precios</button>
 	</div>
 	<br/>
 	<h2 ng-bind="thelocation.name"></h2>
@@ -28,7 +29,7 @@
 			<div class="headtitle">
 				<h4 class="widgettitle ng-binding ng-cloak"><span ng-bind="serv[0].transfer.name"></span><span class='pull-right'><a href="" ng-click="isFCollapsed($index)"><i class='fa fa-plus'></i></a></span></h4>
 			</div>
-			<div collapse="isCollapsed[$index]"><table class='table table-striped responsive' ng-show='serv'>
+			<div uib-collapse="isCollapsed[$index]"><table class='table table-striped responsive' ng-show='serv'>
 				<thead><tr class='sortable'>
 					<th><a href='' class='sortable-item' ng-click="sortByField('zone1')"><%= __('tranferprice-zona')%> <i class='fa fa-sort-asc'></i></a></th>
 					<th><a href='' class='sortable-item' ng-click="sortByField('zone2')"><%= __('tranferprice-zona')%> <i class='fa fa-sort-asc'></i></a></th>
@@ -126,6 +127,17 @@
                 <h4 class="modal-title"><%=__('export')%> <%=__('order-precio')%></h4>
             </div>
             <div export-file export-type='transferprice' lang='<%=req.session.lang || "en"%>'></div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="importmodal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Importar precios</h4>
+            </div>
+            <div import-files import-type='transferprice' url='/transferprice/edit/'></div>
         </div>
     </div>
 </div>

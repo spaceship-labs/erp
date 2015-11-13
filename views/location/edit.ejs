@@ -40,11 +40,24 @@
                     <span ng-click='toggleZoneForm()' class='fa icon' ng-class='newZoneClass'></span>  
                 </h4>
                 <div ng-show='showZoneForm'>
-                    <div form-helper 
+                    <p> 
+                        <input type='radio' name='typeAddZone' ng-model='typeAddZone' value='1'> Agregar zona nueva
+                        <input type='radio' name='typeAddZone' ng-model='typeAddZone' value='2'> Seleccionar zona existente
+                    </p>
+                    <div ng-hide="typeAddZone!='1'" ><div form-helper 
                         fields='content.zoneBasic' 
                         form-footer='<%= __("gral_addZone") %>'
                         form-save = 'addZone'
                         object = 'zone' >
+                    </div></div>
+                    <div ng-hide="typeAddZone!='2'">
+                        <form class='stdform stdform2 widgetbox widgetcontent nopadding' ng-submit="addExistingZone()" name='form'>
+                            <p>
+                                <label>Zona</label>
+                                <span class='field'><select ng-options="obj.id as obj.name for obj in allZones track by obj.id" required ng-model='existingZone'></select></span>
+                            </p>
+                            <p class='stdformbutton'> <button type='submit' class='btn btn-primary' ng-disabled="form.$invalid">Agregar</button> </p>
+                        </form>
                     </div>
                 </div>
                 <div ng-show='location_o.zones.length'>
@@ -80,7 +93,7 @@
             </div>
         </div>
     </div></div>
-    <div delete-button url='/location_o' redirect-url='/location_o' object='location_o' user='user'></div>
+    <div delete-button url='/location' redirect-url='/location' object='location_o' user='user'></div>
 </div>
 
     <div id="cargando-elementos" class="ng-cloak">

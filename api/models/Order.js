@@ -36,7 +36,6 @@ module.exports = {
 	,migrate : "safe"
 	,afterCreate: function(val,cb){
 		Notifications.after(Order,val,'create');
-		Common.orderCustomAI(val);
 		cb();
 	},afterUpdate: function(val,cb){
 		//Notifications.after(Order,val,'update');
@@ -45,7 +44,9 @@ module.exports = {
 		//Notifications.before(val);
 		cb();
 	},beforeCreate: function(val,cb){
-		Notifications.before(val);
-		cb();
+		Common.orderCustomAI(val,function(val){
+			Notifications.before(val);
+			cb();
+		});
 	}
 }

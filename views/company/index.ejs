@@ -1,5 +1,5 @@
 <script type='text/javascript'>
-	window.companies = <%-JSON.stringify(companies) %>;
+
 	window.currencies = <%-JSON.stringify(currencies) %>;
     window.user = <%- JSON.stringify(current_user) %>;
     window.selected_company = <%- JSON.stringify(selected_company) %>;
@@ -7,12 +7,13 @@
 
 <div class="wrap_createCompany row-fluid" ng-controller="companyCTL">
 	<div directory-listing 
-		 objects='companies' 
-		 searchInput='searchInput' 
-		 dir='companies' 
-		 edit-url='/company/edit/' 
-		 get-info='getInfo' 
-		 button-text='<%= __('emp-nueva-emp') %>'
+		objects='companies' 
+		searchInput='searchInput' 
+		search-find='true'
+		dir='companies' 
+		edit-url='/company/edit/' 
+		get-info='getInfo' 
+		button-text='<%= __('emp-nueva-emp') %>'
 		get-url="/company/find/"
 		button-text-import='<%= __('import') %>' 
 		button-text-export='<%= __('export') %>' 

@@ -1,5 +1,6 @@
 app.controller('orderCTL',function($scope,$http,$window,$upload,$rootScope){
     $scope.orders = [];
+    $scope.cancelationMotives = cancelationMotives;
     $scope.content = content;
     $scope.totalOrders = 0;
     $scope.currentPage = 1;
@@ -50,7 +51,7 @@ app.controller('orderCTL',function($scope,$http,$window,$upload,$rootScope){
         ,{ label : $rootScope.translates.agency , value : 'company' , type : 'autocomplete' , field : 'company' , model_ : 'company' , action : 
             function(term){
                 return $http.get('/company/find', { params: { 'name': term , 'limit': 10 , 'sort' : 'name asc' }
-                }).then(function(response){ return response.data; });
+                }).then(function(response){ return response.data.results; });
             }
         }
         ,{ label : $rootScope.translates.transfer_type , value : 'type' , type : 'select' , field : 'type' , options : [{ value : $rootScope.translates.d_all , key : 'all' },{value:$rootScope.translates.one_way,key:'one_way'},{value:$rootScope.translates.round_trip,key:'round_trip'}] }
@@ -194,6 +195,19 @@ app.controller('orderCTL',function($scope,$http,$window,$upload,$rootScope){
         $scope.theorder = order;
         jQuery('#orderModal').modal('show');
     };
+    $scope.openCancelOrder = function(order){
+        $scope.theorder = order;
+        jQuery('#cancelModal').modal('show');
+    };
+    $scope.cancelOrder = function(){
+        var params = { id : $scope.theorder.id, cancelation : $scope.cancelation };
+        $http.post('/order/cancelorder',params,{}).success(function(results){
+            console.log(results);
+            jQuery('#cancelModal').modal('hide');
+            $scope.currentPage = 1;
+            sendFilterFx(0);
+        });
+    }
     $scope.getRoom = function(item){
         console.log(item);
         for( var x in item.hotel.rooms ){
@@ -799,12 +813,12 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
     var getCompanies = function(){
         $http.post('/company/find',{},{}).success(function(result) {
             //console.log('get companies');console.log(result);
-            $scope.companies = result;
+            $scope.companies = result.results;
         });
         //$scope.companies
     };
     getCompanies();
-    $scope.getHotels = function(val){
+    $scope.getHotels = function(val){ 
         return $http.get('/hotel/find', { params: { name: val } }).then(function(response){
             //console.log(response);
             return response.data.results.map(function(item){ return item; });
@@ -1370,11 +1384,16 @@ app.controller('orderEditCTL',function($scope,$http,$window){
         console.log($scope.transfer);
         if( $scope.order && ( $scope.transfer.transfer || $scope.transfer.transferprice ) && $scope.transfer.hotel ){
             //params.item.transfer = $scope.transfer.transfer.transfer.id;
-            console.log('transfer params');
-            console.log(params);
+            //console.log('transfer params');console.log(params);
             if( $scope.transfer.id ){
                 params.item.hotel = $scope.transfer.hotel.id || false;
                 params.item.transfer = $scope.transfer.transferprice.transfer?$scope.transfer.transferprice.transfer:$scope.transfer.transfer.transfer;
+                if( $scope.generalFields ){
+                    params.state = $scope.generalFields.state;
+                    params.payment_method = $scope.generalFields.payment_method;
+                    params.autorization_code = $scope.generalFields.autorization_code;
+                    params.currency = $scope.generalFields.currency;
+                }
                 $http.post('/reservation/update/',params).success(function(result) {
                     console.log('Update transfer');
                     console.log(result);
@@ -1386,15 +1405,20 @@ app.controller('orderEditCTL',function($scope,$http,$window){
                 params.client = $scope.theclient;
                 params.transfer = $scope.transfer.transferprice.transfer.id;
                 params.transferprice = $scope.transfer.transferprice.id;
-                params.payment_method = params.payment_method || 'creditcard';
+                if( $scope.generalFields ){
+                    params.state = $scope.generalFields.state;
+                    params.payment_method = $scope.generalFields.payment_method;
+                    params.autorization_code = $scope.generalFields.autorization_code;
+                    params.currency = $scope.generalFields.currency;
+                }
+                /*params.payment_method = params.payment_method || 'creditcard';
                 params.currency = params.currency || $scope.thecompany.base_currency;
-                params.autorization_code = params.autorization_code || '';
+                params.autorization_code = params.autorization_code || '';*/
                 //console.log($scope.transfer);console.log(params);
                 for(var x in $scope.transfer.contacts)
                     $scope.transfer.contacts[x] = $scope.theclient.contacts[$scope.transfer.contacts[x]];
                 $http.post('/order/createReservation',params,{}).success(function(result) {
-                    console.log('create transfer reservation');
-                    console.log(result);
+                    //console.log('create transfer reservation');console.log(result);
                 });
             }
         }
@@ -1503,6 +1527,7 @@ app.controller('orderQuickCTL',function($scope,$http,$window,$rootScope){
     $scope.open = [false,false]; //abre/cierra los datepickers
     $scope.pax = [];
     for(var j=1;j<30;j++) $scope.pax.push(j);
+    $scope.searchBy = 'c';
     $scope.customMessages = {
         Tta : { show : false , type : 'alert' , message : $rootScope.translates.c_ordermessg1 }
         ,Ttd : { show : false , type : 'alert' , message : $rootScope.translates.c_ordermessg2 }
@@ -1530,7 +1555,6 @@ app.controller('orderQuickCTL',function($scope,$http,$window,$rootScope){
             $scope.client = client_;
             $scope.client_flag = true;
         });
-
     };
     $scope.saveAll = function(){
         //crear una orden
@@ -1553,7 +1577,7 @@ app.controller('orderQuickCTL',function($scope,$http,$window,$rootScope){
                     if(order && order.id){
                         $scope.order = order;
                         //ver si existe transfer
-                        if( $scope.transfer != false && ! angular.equals( {} , $scope.transfer ) && $scope.transfer.fee ){
+                        if(  $scope.transfer != false && ! angular.equals( {} , $scope.transfer ) && $scope.transfer.fee ){
                             $scope.reservationTransfer();
                         }
                     }else{
@@ -1565,10 +1589,24 @@ app.controller('orderQuickCTL',function($scope,$http,$window,$rootScope){
                 $scope.alertM.allEmpty = true;
             }
         }else{
-            $scope.alertM.show = true;
-            $scope.alertM.client = true;
+            $scope.showMessage('tcf');
         }
     };
+    $scope.saveTourReservation = function( form ){
+        if( form.$valid && $scope.reservationTour.fee ){
+            var params = $scope.reservationTour;
+            params.company = $scope.thecompany;
+            params.reservation_type = 'tour';
+            params.generalFields = {};
+            $http.post('/order/createquickreservation',params,{}).success(function(result) {
+                if( result.results )
+                $scope.showMessage('rcs');
+                //$scope.redirectToEdit( );
+            });
+        }else{
+            $scope.showMessage('tcf');
+        }
+    }
     $scope.reservationTransfer = function(){
         var params = $scope.transfer;
         if( $scope.order ){
@@ -1633,6 +1671,19 @@ app.controller('orderQuickCTL',function($scope,$http,$window,$rootScope){
             transfer.departurepickup_time = getpickuptime(transfer,'departure');
         updateTotal();
     };
+    //Se calcula de nuevo el precio cuando cambia de tour, número de pax o agencia
+    $scope.updatePriceTour = function(){
+        console.log('get tour prices');
+        if( $scope.reservationTour.tour && $scope.reservationTour.tour.id ){
+            if(!$scope.reservationTour.currency)
+                $scope.reservationTour.currency = $scope.thecompany.base_currency;
+            if( !$scope.reservationTour.pax ) $scope.reservationTour.pax = 1;
+            $scope.reservationTour.fee = $scope.reservationTour.pax * $scope.reservationTour.tour.fee;
+            if( $scope.reservationTour.kidPax ) $scope.reservationTour.feeKids = $scope.reservationTour.kidPax * $scope.reservationTour.tour.feeChild;
+            if( $scope.reservationTour.currency.id != $scope.thecompany.base_currency.id )
+                $scope.reservationTour.fee *= $scope.thecompany.exchange_rates[$scope.reservationTour.currency.id].sales;
+        }
+    }
     $scope.getpickuptime = function(){
         var transfer = $scope.transfer;
         if( transfer.arrival_time )
@@ -1663,8 +1714,12 @@ app.controller('orderQuickCTL',function($scope,$http,$window,$rootScope){
             return response.data.results.map(function(item){ return item; });
         });
     };
-    $scope.getHotels = function(val){
-        return $http.get('/tour/find', { params: { name: val } }).then(function(response){
+    $scope.getTours = function(val){
+        var url = $scope.thecompany.adminCompany?'/tour/find':'/tour/findProducts/';
+        var params = { limit : 15 , company : $scope.thecompany.id , adminCompany : $scope.thecompany.adminCompany||false };
+        if( $scope.searchBy == 'n' ) params.name = val;
+        if( $scope.searchBy == 'c' ) params.mkpid = val;
+        return $http.get(url, { params: params }).then(function(response){
             return response.data.results.map(function(item){ return item; });
         });
     };
@@ -1681,7 +1736,7 @@ app.controller('orderQuickCTL',function($scope,$http,$window,$rootScope){
     var getCompanies = function(){
         $http.post('/company/find',{limit:20,sort:'createdAt'},{}).success(function(result) {
             //console.log('get companies');console.log(result);
-            $scope.companies = result;
+            $scope.companies = result.results;
         });
         //$scope.companies
     };

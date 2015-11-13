@@ -40,10 +40,11 @@ module.exports = {
   }
   	,find : function(req,res){
 		var params = req.params.all();
-		var skip = params.skip || 30;
-		delete params.id;
+		var skip = params.skip || 0;
+		if( typeof params.id == 'undefined' ) delete params.id;
 		delete params.skip;
         if(params.name) params.name = new RegExp(params.name,"i");
+        console.log(params);
         TourCategory.find(params).skip(skip).exec(function(err,tourcategories){
         	if(err) res.json('err');
         	TourCategory.count(params).exec(function(e,count){

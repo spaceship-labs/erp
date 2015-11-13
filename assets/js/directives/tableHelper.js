@@ -22,6 +22,8 @@
                     });
                 } else {
                     $http({method:'POST',url:'/'+$scope.route+'/destroy/',data:object}).success(function (obj){
+                        console.log('DESTROY');
+                        console.log(obj);
                         if(obj.id == object.id) $scope.objects.splice(key,1);
                     });
                 }

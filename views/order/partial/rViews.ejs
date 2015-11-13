@@ -10,12 +10,13 @@
             <th> <%= __('order_transfer')%> </th>
             <th> <%= __('sc_tour')%> </th>
             <th> <%= __('sc_hotels')%> </th>
+            <th> Estado </th>
             <th> <%= __('d_seemore')%> </th>
             <% if (req.user.hasPermission(req.res.locals.selected_company.id,'orders_e')) {%>
             <th> <%= __('order-editar')%> </th>
             <% } %>
             <% if (req.user.hasPermission(req.res.locals.selected_company.id,'orders_d')) {%>
-                <th> <%= __('order-borrar')%> </th>
+                <th> Cancelar </th>
             <% } %>
         </tr>
         <tr ng-repeat='order in orders | filter:searchText'>
@@ -35,12 +36,13 @@
             <td> {{order.transfer?'1':0}} </td>
             <td> {{order.tours.length}} </td>
             <td> {{order.hotels.length}} </td>
+            <td> {{order.state}} </td>
             <td ng-class='isHiden[$index]?"hide-row":""'><a href='#' ng-click="orderDetails(order)" ><i class='fa fa-eye'></i></a></td>
             <% if (req.user.hasPermission(req.res.locals.selected_company.id,'orders_e')) {%>
                 <td ng-class='isHiden[$index]?"hide-row":""' data-title="<%= __('order-editar')%>"><a href="/order/edit/{{order.id}}"><span class="table-icon fa fa-edit"></span></a></td>
             <% } %>
             <% if (req.user.hasPermission(req.res.locals.selected_company.id,'orders_d')) {%>
-                <td ng-class='isHiden[$index]?"hide-row":""' data-title="<%= __('order-borrar')%>"><a href="/order/edit/{{order.id}}"><span class="table-icon fa fa-trash-o"></span></a></td>
+                <td ng-class='isHiden[$index]?"hide-row":""' data-title="Cancelar"><a ng-click="openCancelOrder(order)" ><span class="table-icon fa fa-trash-o"></span></a></td>
             <% } %>
         </tr>
     </table>
@@ -63,7 +65,7 @@
                     <a class='icon'><i class='fa fa-plane'></i></a><%= __('order-reservar-tras')%>
                     <span class='actions'>
                         <a href="/order/edit/{{order.id}}"><span class="table-icon fa fa-edit"></span></a>
-                        <a href="/order/edit/{{order.id}}"><span class="table-icon fa fa-trash-o"></span></a>
+                        <a ng-click="openCancelOrder(order)"><span class="table-icon fa fa-trash-o"></span></a>
                     </span>
                 </h4>
                 <div ng-if="order.transfer" class='content-border'><div class='row'>
@@ -130,6 +132,30 @@
         </div></div>
     </div>
 </div></div>
+<div class='modal fade invoiceModal' id="cancelModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title ng-binding"><span class='icon fa fa-trash-o'></span>Cancelar reservación</h4>
+            </div>
+            <form class='form stdform stdform2' name='cancelForm' ng-submit="cancelOrder()" >
+                <p>
+                    <label>Motivos</label> 
+                    <span class='field'><select ng-model="cancelation.motive" ng-options="obj for obj in cancelationMotives"></select> </span>
+                </p>
+                <p>
+                    <label>Otros motivos</label>
+                    <span class='field'><input type='text' ng-model="cancelation.others"></span>
+                </p>
+                <p class='stdformbutton'>
+                    <button ng-disabled="!(cancelation.motive||cancelation.others)" type="submit" class='btn btn-primary'>Cancelar reservación</button>
+                    <button type="buttom" data-dismiss="modal" aria-hidden="true" class='btn'>Cerrar</button>
+                </p>
+            </form>
+        </div>
+    </div>
+</div>
 <div class="modal fade invoiceModal" id="orderModal">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -140,7 +166,7 @@
             <div class='modal-data'>
                 <p class='text-center'>
                     <strong>Folio : </strong> {{theorder.folio}} 
-                    <strong><%= __('order-fecha')%> : </strong> {{formatDate(theorder.createdAt)}} 
+                    <strong>Fecha de reservación : </strong> {{formatDate(theorder.createdAt)}} 
                     <strong><%= __('order-usuario')%> : </strong> {{theorder.user.name + ' ' + theorder.user.last_name}} 
                 </p><p class='text-center'>
                     <strong>Agencia : </strong> {{theorder.company.name}} 
@@ -177,7 +203,7 @@
                     <li ng-repeat="t in theorder.tours">
                         <p><strong>Tour:</strong> {{t.tour.name}}</p>
                         <p><strong><%= __('order-adultos')%>:</strong> {{t.pax}} <span ng-if="t.kidPax"> <strong><%= __('order-menores')%>:</strong> {{t.kidPax}}</span></p>
-                        <p><strong>Fecha:</strong> {{formatDate(t.startDate)}} <strong><%= __('order-precio')%>:</strong> {{t.fee}}</span></p>
+                        <p><strong>Fecha de Tour:</strong> {{formatDate(t.startDate)}} <strong><%= __('order-precio')%>:</strong> {{t.fee | currency}}</span></p>
                     </li>
                 </ul>
             </div>

@@ -18,9 +18,8 @@ module.exports = {
 		,cupons : {
 			model:'cupon',
 			via:'tours' }
-		,categories : {
-			collection : 'tourcategory'
-			,via:'tours' }
+		,categories : { collection : 'tourcategory',via:'tours' }
+		//,categories : { collection : 'tourtourcategory', via:'tour_categories' }
 		,pax : 'integer'
 		,fee : 'float' // precio de venta
 		,feeChild : 'float' //precio de venta

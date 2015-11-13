@@ -45,6 +45,31 @@ module.exports = {
 			});
 		});
 	},
+	addLocation : function(req,res){
+		var params = req.params.all();
+		if( params.zone && params.location ){
+			Zone.findOne(params.zone).exec(function(err,zone){
+				if(err) res.json({ errr : err, result : false });
+				zone.locations.add(params.location);
+				zone.save(function(err,zone){
+					res.json({ errr : err, result : zone });
+				});
+			});
+		}else{
+			res.json({ errr : 'no data', result : false });
+		}
+	},
+	formatZones : function(req,res){
+		Zone.find().populate('location').exec(function(err,zones){
+			async.mapSeries( zones, function(zone,theCB){
+				//
+				zone.locations.add(zone.location.id);
+				zone.save( theCB );
+			},function(err,results){
+				res.json({ err : err, results : results });
+			});
+		});
+	},
 	destroy : function(req,res){
 		//Borrar los precios que estén relacionados a la zona
 		console.log(req.params.all())
@@ -52,7 +77,7 @@ module.exports = {
 			TransferPrice.destroy({ zone2 : req.params.all().id }).exec(function(e,tp2){
 				Zone.destroy({id:req.params.all().id}).exec(function(e,z){
 					if(e) throw(e);
-					res.json(z);
+					res.json(z[0]?z[0]:z);
 				});
 			});
 		});
@@ -66,6 +91,19 @@ module.exports = {
     			if(e) throw(e);
     			res.json(zone);
     		});
+    	});
+    },
+    find : function(req,res){
+    	var params = req.params.all();
+    	var skip = params.skip || 0;
+		var limit = params.limit || 200;
+		//console.log(params);
+		if( typeof params.id == 'undefined' ) delete params.id;
+		delete params.skip;
+		delete params.limit;
+        if(params.name) params.name = new RegExp(params.name,"i");
+    	Zone.find(params).limit(limit).skip(skip).exec(function(err,zones){
+    		res.json({err:err,result:zones});
     	});
     },
     updateIcon: function(req,res){
@@ -107,9 +145,10 @@ module.exports = {
 	getZones : function(req,res){
 		params = req.params.all();
 		console.log(params);
-		Zone.find({ 'location' : params.id }).exec(function(e,zones){ 
+		//Zone.find({ 'location' : params.id }).exec(function(e,zones){ 
+		Location.findOne(params.id).populate('zones').exec(function(e,location){
 			if(e) throw(e);
-			res.json(zones);
+			res.json(location.zones);
 		});
 	},
 };

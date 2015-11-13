@@ -6,7 +6,7 @@
             <select tabindex='1' class='outerSelect' ng-change="getAllTours()" ng-model='thecompany' ng-options="obj as obj.name for obj in companies" ></select>
         </div>
         <div class='col-sm-12 col-md-6 col-lg-6'>
-            <a class="btn btn-primary pull-right full-sm" ng-click="saveAll()"><i class='fa fa-save'></i> <%= __('order-reservar')%> </a>
+            <a class="btn btn-primary pull-right full-sm" ng-click="saveAll('transfer')"><i class='fa fa-save'></i> <%= __('order-reservar')%> </a>
             <a class='btn btn-primary pull-right full-sm' ng-click="resetForm(false)" ><i class='fa fa-eraser'></i> Limpiar campos</a>
             <div class='clear'></div>
         </div>

@@ -151,18 +151,6 @@ module.exports.apps = [
         url: '/clientes/',
         handle: 'clientes',
         notDropdown : true
-        /*actions : [
-            {
-                label: 'Buscar',
-                label_en : 'Search',
-                icon: 'fa-user',
-                url: '/clientes/',
-                handle: 'clientes',
-                showInMenu: true,
-                controller : 'client',
-                action : 'index'
-            }
-        ]*/
     },
     /* hotels */
     {
@@ -254,27 +242,24 @@ module.exports.apps = [
         controller : 'packagetour',
         action : 'index',
         notDropdown : true
-        /*actions   : [
+    },
+    {
+        name        : 'tours'
+        ,label      : 'Tours'
+        ,label_en   : 'Tours'
+        ,icon       : 'fa-compass'
+        ,actions    : [
             {
-                label : 'Circuitos',
-                label_en : 'Circuits',
-                icon : 'fa-dropbox',
-                url : '/packagetour/',
-                handle : 'packagetour',
+                label : 'Tours',
+                label_en : 'Tours',
+                icon : 'fa-compass',
+                url : '/tour/',
+                handle : 'tours',
                 showInMenu : true,
-                controller : 'packagetour',
+                controller : 'tour',
                 action : 'index'
             }
-        ]*/
-    },
-    /* transfers */
-    {
-        name : 'transfers',
-        label : 'Servicios',
-        label_en : 'Services',
-        icon : 'fa-clipboard',
-        actions : [
-            {
+            ,{
                 label : 'Proveedores de Tours',
                 label_en : 'Tours Providers',
                 icon : 'fa-compass',
@@ -294,17 +279,16 @@ module.exports.apps = [
                 controller : 'tourcategory',
                 action : 'index'
             }
-            ,{
-                label : 'Tours',
-                label_en : 'Tours',
-                icon : 'fa-compass',
-                url : '/tour/',
-                handle : 'tours',
-                showInMenu : true,
-                controller : 'tour',
-                action : 'index'
-            }
-            ,{
+        ]
+    },
+    /* transfers */
+    {
+        name : 'transfers',
+        label : 'Servicios',
+        label_en : 'Services',
+        icon : 'fa-clipboard',
+        actions : [
+            {
                 label : 'Traslados',
                 label_en : 'Transfers',
                 icon : 'fa-road',
@@ -314,16 +298,6 @@ module.exports.apps = [
                 controller : 'transfer',
                 action : 'index'
             }
-            /*,{
-                label : 'Reservaciones',
-                label_en : 'Reservations',
-                icon : 'fa-car',
-                url : '/order/',
-                handle : 'orders',
-                showInMenu : true,
-                controller : 'order',
-                action : 'index'
-            }*/
             ,{
                 label : 'Cupones',
                 label_en : 'Cupons',
@@ -391,6 +365,34 @@ module.exports.apps = [
                 ,showInMenu : true
                 ,controller : 'order'
                 ,action : 'quicktour'
+            }
+        ]
+    }
+    ,{
+        name : 'Reportes'
+        ,label : 'Reportes'
+        ,label_en : 'Reports'
+        ,icon : 'fa-bar-chart'
+        ,actions : [
+            {
+                label : 'Reportes'
+                ,label_en : 'Reports'
+                ,icon : 'fa-file-text-o'
+                ,url : '/report/'
+                ,showInMenu : true
+                ,handle : 'reports'
+                ,controller : 'reports'
+                ,action : 'index'
+            }
+            ,{
+                label : 'Gráficas'
+                ,label_en : 'Charts'
+                ,icon : 'fa-pie-chart'
+                ,url : '/report/charts/'
+                ,showInMenu : true
+                ,handle : 'reports'
+                ,controller : 'reports'
+                ,action : 'index'
             }
         ]
     }

@@ -63,7 +63,8 @@
 
                 });
             }else{
-                $http({method:'POST',url:$scope.action,data:submitObject}).success(function (obj){
+                //$http({method:'POST',url:$scope.action,data:submitObject}).success(function (obj){
+                $http.post($scope.action,submitObject,{}).success(function(obj){
                     //$scope.object = object; //Se comento por error en casos donde varios formHelpers dependen de un mismo objeto.
                     console.log(submitObject);
                     $scope.form.$setPristine();

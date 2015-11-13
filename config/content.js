@@ -369,6 +369,7 @@ module.exports.content = {
 			type : 'money',
 			handle : 'fee',
 		},
+
 		{
 			label : 'Tarifa niños',
 			label_en : 'Children rate',
@@ -705,6 +706,20 @@ module.exports.content = {
 			,label_en : 'Portuguese name'
 			,type : 'text'
 			,handle : 'name_pt'
+		}
+		,{
+			label : 'Tipo de categoría'
+			,label_en : 'Category type'
+			,type : 'select'
+			,object : 'categoryTypes'
+			,handle : 'type'
+		}
+		,{
+			label : 'Clasificación'
+			,label_en : 'Classification'
+			,type : 'select'
+			,object : 'classifications'
+			,handle : 'classification'
 		}
 	]
 	,location : [
@@ -2017,5 +2032,38 @@ module.exports.content = {
 	]
 };
 
-module.exports.content.transferprice = module.exports.content.price;
-
+//module.exports.content.transferprice = module.exports.content.price;
+module.exports.content.transferprice = [
+	{
+		label : 'Agencia'
+		,label_en : 'Agency'
+		,object : 'company'
+		,handle : 'company'
+	},
+	{
+		label : 'Zona1'
+		,label_en : 'AgencyZone 1'
+		,handle : 'zone'
+		,handle2 : 'zone1'
+		,object : 'zone1'
+	},
+	{
+		label : 'Zona 2'
+		,label_en : 'Zone 2'
+		,handle : 'zone'
+		,handle2 : 'zone2'
+		,object : 'zone2'
+	},
+	{
+		label : 'Transfer'
+		,label_en : 'Transfer'
+		,handle : 'transfer'
+		,object : 'transfer'
+	},
+	{
+		label : 'Transfer'
+		,label_en : 'Transfer'
+		,handle : 'location'
+		,object : 'location'
+	},
+]

@@ -3,7 +3,7 @@
         <a ng-click="isCollapseObj['toursCollapse']=!isCollapseObj['toursCollapse']" class="pull-right fa fa-{{isCollapseObj['toursCollapse']?'plus':'minus'}}"></a>
         <a ng-click="isCollapseObj['toursCollapseFilter']=!isCollapseObj['toursCollapseFilter']" class="pull-right fa fa-filter"></a>
     </h4>
-    <div collapse="!isCollapseObj['toursCollapseFilter']">
+    <div uib-collapse="!isCollapseObj['toursCollapseFilter']">
         <form class='form stdform stdform2 stdform3' ng-submit="updateTourPrices()">
             <div class='row'>
                 <div class='col-md-6'>
@@ -48,7 +48,7 @@
     <div class='custom_inline_messages' ng-class="messages.tour.alertType" ng-hide="!messages.tour.show">
         <p><span ng-bind="messages.tour.m"></span> <strong ng-bind="messages.tour.item_name"></strong></p>
     </div>
-    <div class='collapsable' collapse="isCollapseObj['toursCollapse']">
+    <div class='collapsable' uib-collapse="isCollapseObj['toursCollapse']">
     <table class='table table-striped'>
         <tr class='hide-sm'>
             <th>Nombre</th>

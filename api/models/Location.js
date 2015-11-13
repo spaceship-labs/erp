@@ -10,7 +10,7 @@ module.exports = {
   	name :'string',
   	zones : {
   		collection 	: 'zone',
-  		via 		: 'location'
+  		via 		: 'locations'
   	},
   	locations : {
   		collection : 'location',
