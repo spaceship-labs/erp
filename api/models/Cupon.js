@@ -16,6 +16,10 @@ module.exports = {
         airport:'boolean',
         hotel:'boolean',
         days:'integer',//if -1 infinito
+        //los 3 siguientes es para no tener que agregar uno por uno los elementos disponibles
+        allTours : 'boolean',
+        allHotels : 'boolean',
+        allTransfers : 'boolean',
         hotels : {
             collection : 'hotel',
             via : 'cupons',

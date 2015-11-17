@@ -39,7 +39,6 @@ app.controller('tourEditCTL',function($scope,$http,$window){
     $scope.locations = locations;
     $scope.providers = providers;
     $scope.tour = tour;
-    console.log($scope.tour);
     $scope.maxpax = [{id:0,name:'No aplica'}];
     for(var x=1;x<30;x++)
         $scope.maxpax.push({ id: x , name: x+' persona'+( x>1?'s':'' ) });
@@ -50,6 +49,9 @@ app.controller('tourEditCTL',function($scope,$http,$window){
     $scope.tourcategories = tourcategories; //categorias normales
     $scope.rateCategories = []; //categorias tipo rate
     $scope.tourRateCategories = []; //categorias ya agregadas o por agregar
+    console.log('tour');
+    console.log($scope.tour);
+    console.log($scope.tourcategories);
     /*io.socket.get('/tour/find/'+tour.id,function(data,jwres){
         $scope.tour = data;
 	    $scope.tour.seasonScheme = data.seasonScheme && data.seasonScheme.id || null;

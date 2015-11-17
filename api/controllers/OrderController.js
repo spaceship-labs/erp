@@ -75,6 +75,17 @@ module.exports = {
   /*
     LLAMADAS HTTP
   */
+  updateOrderDate : function(req,res){
+    var company = req.user.select_company || req.session.select_company
+    if(req.user.hasPermission(company.id,'orders_e')){
+      var params = req.params.all();
+      OrderCore.updateOrderDate(params,function(err,result){
+        res.json({ error : err, result : result });
+      });
+    }else{
+      res.json({ error : 'No existen permisos suficientes', result : false });
+    }
+  },
   cancelorder : function(req,res){
     var params = req.params.all();
     OrderCore.cancelOrder(params.id,params.cancelation,function(err,result){

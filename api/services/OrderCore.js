@@ -126,6 +126,26 @@ module.exports.createReservationTourHotel = function(params,userID,callback){
 		},callback);
 	});
 };
+module.exports.updateOrderDate = function(params,callback){
+	var id = params.id;
+	if( id && params.newDate ){
+		Order.findOne(id).populate('reservations').exec(function(err,order){
+			if(err){ callback(err,false); return; }
+			order.createdAt = params.newDate;
+			order.save(function(err,order_){
+				if(err){ callback(err,false); return; }
+				async.mapSeries( order.reservations, function(item,cb){
+					Reservation.update({ id : item.id },{ createdAt : params.newDate },cb);
+				},function(err,result){
+					//console.log(order);
+					callback(err,order);
+				});
+			});
+		});
+	}else{
+		callback('No ID',false);
+	}
+};
 module.exports.cancelOrder = function(order,fields,callback){
 	Order.findOne(order).populate('reservations').exec(function(err,theorder){
 		if(err) callback(err,false);
@@ -144,7 +164,7 @@ module.exports.cancelOrder = function(order,fields,callback){
 			},callback);
 		});
 	});
-}
+};
 module.exports.updateReservations = function(params,callback){
 	items = params.items || [];
     async.mapSeries( items, function(item,cb) {

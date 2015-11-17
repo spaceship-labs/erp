@@ -66,7 +66,8 @@ module.exports.interactions = {
                         label_en : 'Categories',
                         type : 'multi-select',
                         handle : 'categories',
-                        object : 'tourcategories'
+                        object : 'tourcategories',
+                        removeAction : '/tour/removeCategory'
                     },
                     {
                         label : 'Ubicación',

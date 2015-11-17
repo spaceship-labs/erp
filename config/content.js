@@ -406,7 +406,8 @@ module.exports.content = {
 			label_en : 'Categories',
 			type : 'multi-select',
 			handle : 'categories',
-			object : 'tourcategories'
+			object : 'tourcategories',
+			removeAction : '/tour/removeCategory'
 		},
 		{
 			label : 'Ubicación',
@@ -472,7 +473,8 @@ module.exports.content = {
 			label_en : 'Categories',
 			type : 'multi-select',
 			handle : 'categories',
-			object : 'tourcategories'
+			object : 'tourcategories',
+			removeAction : '/tour/removeCategory'
 		},
 		{
 			label : 'Ubicación',
@@ -706,6 +708,13 @@ module.exports.content = {
 			,label_en : 'Portuguese name'
 			,type : 'text'
 			,handle : 'name_pt'
+		}
+		,{
+			label : 'Categoría principal'
+			,label_en : 'Principal category'
+			,type : 'checkbox'
+			,handle : 'principal'
+			,msg : 'Seleccionar si esta categoría entrará en el listado de categorías'
 		}
 		,{
 			label : 'Tipo de categoría'
@@ -1601,6 +1610,13 @@ module.exports.content = {
 			handle : 'days',
 		},
 		{
+			label : 'Todos los Hoteles'
+			,label_en : 'All the Hotels'
+			,msg : 'Cupón disponible para todos los hoteles?'
+			,type : 'checkbox'
+			,handle : 'allHotels'
+		},
+		{
 			label : 'Hoteles',
 			label_en : 'Hotels',
 			type : 'multi-select',
@@ -1608,6 +1624,14 @@ module.exports.content = {
 			object : 'hotels',
 			//removeAction : '/hotel/removeFoodScheme',
 			removeAction:'/cupon/removeHotel'
+			,hideIfField : 'allHotels'
+		},
+		{
+			label : 'Todos los Tours'
+			,label_en : 'All the Tours'
+			,msg : 'Cupón disponible para todos los tours?'
+			,type : 'checkbox'
+			,handle : 'allTours'
 		},
 		{
 			label : 'Tours',
@@ -1617,6 +1641,14 @@ module.exports.content = {
 			object : 'tours',
 			//removeAction : '/hotel/removeFoodScheme',
 			removeAction:'/cupon/removeTour'
+			,hideIfField : 'allTours'
+		},
+		{
+			label : 'Todos los Traslados'
+			,label_en : 'All the Transfers'
+			,msg : 'Cupón disponible para todos los tipos de traslado?'
+			,type : 'checkbox'
+			,handle : 'allTransfers'
 		},
 		{
 			label : 'Servicios',
@@ -1626,6 +1658,7 @@ module.exports.content = {
 			object : 'transfers',
 			//removeAction : '/hotel/removeFoodScheme',
 			removeAction:'/cupon/removeTransfer'
+			,hideIfField : 'allTransfers'
 		}
     ],
 	cuponsadvance : [
@@ -2067,3 +2100,17 @@ module.exports.content.transferprice = [
 		,object : 'location'
 	},
 ]
+
+/*
+	Propiedades agregadas para el formhelper
+	- hideIfField : 
+		Oculta un campo en caso de que otro campo esté seleccionado.
+		Va en el campo a ocultar y recibe el nombre del campo a validar
+	- hideIfNotField ;
+		Oculta un campo en caso de que otro campo NO esté seleccionado.
+		Va en el campo a ocultar y recibe el nombre del campo a validar
+	- on_Change : 
+		Ejecuta una función en caso de cambiar este campo, recibe el nombre de la función a llamar
+		El formhelper debe de recibir un objeto con funciones como
+			onchanges = "{'getZones' : getZones}"
+*/

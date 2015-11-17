@@ -38,19 +38,29 @@ module.exports = {
 		delete params.limit;
 		delete params.company;
 		delete params.adminCompany;
-        if(params.name) params.name = new RegExp(params.name,"i");
-        //if( params.provider == 'null' ) params.provider = null;
-        if( params.provider == 'null' ){ 
-        	delete params.provider; 
-        	params.$or = [ { 'provider' : null } , { 'provider' : ' ' } ];
-    	}
-        Tour.find(params).skip(skip).limit(limit).populate('provider').sort('updatedAt DESC').exec(function(err,tours){
-        	if(err) res.json('err');
-        	Tour.count(params).exec(function(e,count){
-        		if(e) res.json('err');
-            	res.json({ results : tours , count : count });
+        if( params.providerCode ){
+        	var par = { mkpid : new RegExp(params.providerCode,"i")};
+        	TourProvider.findOne(par).populate('tours').exec(function(err,provider){
+        		if( err ){ res.json(err); return; }
+    			if(provider)
+    				for( var x in provider.tours )
+    					provider.tours[x].provider = { name : provider.name };
+        		res.json({ results : provider?provider.tours:[] , count : provider?provider.tours.length:0 });
         	});
-        });
+        }else{
+        	if(params.name) params.name = new RegExp(params.name,"i");
+	        if( params.provider == 'null' ){ 
+	        	delete params.provider; 
+	        	params.$or = [ { 'provider' : null } , { 'provider' : ' ' } ];
+	    	}
+	        Tour.find(params).skip(skip).limit(limit).populate('provider').sort('updatedAt DESC').exec(function(err,tours){
+	        	if(err) res.json('err');
+	        	Tour.count(params).exec(function(e,count){
+	        		if(e) res.json('err');
+	            	res.json({ results : tours , count : count });
+	        	});
+	        });
+        }
 	}
 	,findProducts : function(req,res){
 		var params = req.params.all();
@@ -111,12 +121,14 @@ module.exports = {
 		});
 	},
 	edit : function(req,res){
-		Tour.findOne(req.params.id).populate('categories').exec(function(e,tour){ TourCategory.find({type:{ $ne:'rate' }}).exec(function(tc_err,tourcategories){
+		Tour.findOne(req.params.id).populate('categories',{type:{$ne:'rate'}}).exec(function(e,tour){ TourCategory.find({type:{ $ne:'rate' }}).exec(function(tc_err,tourcategories){
 			if(e) return res.redirect("/tour/");
 			Location.find({}).sort('name').exec(function(e,locations){
 	    		SeasonScheme.find().sort('name').exec(function(e,schemes){ TourProvider.find().exec(function(e,providers){
 	    			if(tour.provider)
 	    				tour.provider = tour.provider.id || tour.provider;
+	    			for(var x in tour.categories)
+	    				tour.categories[x] = Common.getItemById(tour.categories[x].id,tourcategories);
 					Common.view(res.view,{
 						tour:tour,
 						locations:locations,
@@ -176,11 +188,14 @@ module.exports = {
     		form.days = new_days;
     	}
     	var rates = form.rates;
+    	var cats = form.categories;
     	delete form.rates;
-    	Tour.update({id:id},form,function(e,tour){ Tour.findOne(id).populate('categories').exec(function(e,tour){
+    	delete form.categories
+    	Tour.update({id:id},form,function(e,tour){ Tour.findOne(id).exec(function(e,tour){
     		if(e) throw(e);
     		if( rates ){
     			for( x in rates ) tour.categories.add( rates[x].category.id );
+    			for( x in cats ) tour.categories.add( cats[x].id );
     			tour.save(function(tour_){
     				//ahora se van a actualizar los valores con un foreach async
     				async.mapSeries( rates, function(item,theCB){
@@ -202,14 +217,24 @@ module.exports = {
 					});
     			});
     		}else{
-    			Tour.findOne(tour[0].id).populate('categories').exec(function(e,tour){
+    			Tour.findOne(id).populate('categories').exec(function(e,tour){
 	    			if(e) throw(e);
 	    			res.json(tour);
 	    		});
     		}
     	}); });
     },
-
+    removeCategory : function(req,res){
+		var params = req.params.all();
+		Tour.findOne({id:params.obj}).exec(function(e,tour){
+			if(e) throw(e);
+			tour.categories.remove(params.rel);
+			tour.save(function(e,tour){
+				if(e) throw(e);
+				res.json(tour)
+			});
+		})
+	},
 	addFiles : function(req,res){
 		form = req.params.all();
     	Tour.findOne({id:form.id}).exec(function(e,tour){
