@@ -127,8 +127,7 @@ module.exports = {
 	    		SeasonScheme.find().sort('name').exec(function(e,schemes){ TourProvider.find().exec(function(e,providers){
 	    			if(tour.provider)
 	    				tour.provider = tour.provider.id || tour.provider;
-	    			for(var x in tour.categories)
-	    				tour.categories[x] = Common.getItemById(tour.categories[x].id,tourcategories);
+	    			//for(var x in tour.categories) tour.categories[x] = Common.getItemById(tour.categories[x].id,tourcategories);
 					Common.view(res.view,{
 						tour:tour,
 						locations:locations,
@@ -212,14 +211,19 @@ module.exports = {
     						theCB(false,item);
     					}
     				},function(err,results){
-    					tour.rates = results;
-						res.json(tour);
+    					Tour.findOne(id).populate('categories',{type:{$ne:'rate'}}).exec(function(e,tour){
+    						tour.rates = results;
+							res.json(tour);
+    					});
 					});
     			});
     		}else{
-    			Tour.findOne(id).populate('categories').exec(function(e,tour){
-	    			if(e) throw(e);
-	    			res.json(tour);
+    			for( x in cats ) tour.categories.add( cats[x].id );
+    			tour.save(function(tour_){
+	    			Tour.findOne(id).populate('categories').exec(function(e,tour){
+		    			if(e) throw(e);
+		    			res.json(tour);
+		    		});
 	    		});
     		}
     	}); });
