@@ -1743,6 +1743,15 @@ module.exports.content = {
 			handle : 'multiple',
 		},
 		{
+			label : 'Número de reclamos',
+			label_en : 'Claims Number',
+			type : 'number',
+			handle : 'times',
+			maxValue : '100',
+			hideIfNotField : 'multiple',
+			msg : 'Número de veces que puede utilizarse esta instancia'
+		},
+		{
 			label : 'Descripción',
 			label_en : 'Description',
 			type : 'text',
@@ -1781,6 +1790,15 @@ module.exports.content = {
 			label_en : 'Multiple',
 			type : 'checkbox',
 			handle : 'multiple',
+		},
+		{
+			label : 'Número de reclamos',
+			label_en : 'Claims Number',
+			type : 'number',
+			handle : 'times',
+			maxValue : '100',
+			hideIfNotField : 'multiple',
+			msg : 'Número de veces que puede utilizarse esta instancia'
 		},
 		{
 			label : 'Descripcion',

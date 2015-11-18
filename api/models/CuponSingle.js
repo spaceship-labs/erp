@@ -17,6 +17,7 @@ module.exports = {
         },
         expiration:'date',
         multiple:'boolean',
+        times:'integer',
         description:'string'
     },
     beforeCreate:function(val,cb){ 
