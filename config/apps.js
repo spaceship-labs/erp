@@ -40,7 +40,7 @@ module.exports.apps = [
                 label_en : 'Prices',
                 icon : 'fa-money',
                 url : '/transferprice/',
-                showInMenu : false,
+                showInMenu : true,
                 controller : 'transferprice',
                 action : 'index'
             },
@@ -426,6 +426,16 @@ module.exports.apps = [
                 ,showInMenu : true
                 ,handle : 'transport'
                 ,controller : 'transport'
+                ,action : 'index'
+            },
+            {
+                label : 'Tipo de vehiculo'
+                ,label_en : 'Type of Car'
+                ,icon : 'fa-car'
+                ,url : '/TransportType/'
+                ,showInMenu : true
+                ,handle : 'transporttype'
+                ,controller : 'transporttype'
                 ,action : 'index'
             },
             {

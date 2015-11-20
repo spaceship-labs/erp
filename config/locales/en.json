@@ -479,5 +479,8 @@
   , "location_to": "Location arrival"
   , "zone_from": "Zone departure"
   , "zone_to": "Zone arrival"
+
+  ,"transporttype" : "Car Type"
+  ,"addtransporttype" : "Add Car Type"
    
 }

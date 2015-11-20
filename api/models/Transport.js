@@ -15,7 +15,11 @@ module.exports = {
     },
     company: {
         model:'company',
-       required: true
+        required: true
+    },
+    types:{
+        collection: 'transportType',
+        via: 'transports'
     }
 
   }

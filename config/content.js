@@ -2011,6 +2011,40 @@ module.exports.content = {
 			required : true,
 		}
 	],
+	transporttype : [
+		{
+			label: 'Nombre',
+			label_en: 'Name',
+			type: 'text',
+			required: true,
+			handle: 'name',
+		},
+		{
+			label: 'Pax',
+			label_en: 'Pax',
+			type: 'number',
+			required: true,
+			handle: 'pax'
+		
+		},
+		{
+			label: 'Tipo de translado',
+			label_en: 'Type of transfer',
+			type : 'multi-select',
+			handle : 'transfers',
+			object : 'transfers',
+			required : true,
+			removeAction : '/transporttype/remove_transfer',
+		},
+		{
+			label : 'Transportes',
+			label_en : 'Transports',
+			type : 'multi-select',
+			handle : 'transports',
+			object : 'transports',
+			removeAction : '/transporttype/remove_transport',
+		},
+	],
 
 };
 

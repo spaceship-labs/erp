@@ -484,4 +484,7 @@
   , "location_to": "Ciudad llegada"
   , "zone_from": "Zona salida"
   , "zone_to": "Zone llegada"
+
+  ,"transporttype" : "Tipo de vehiculo"
+  ,"addtransporttype" : "Agregar tipo de vehiculo"
 }
