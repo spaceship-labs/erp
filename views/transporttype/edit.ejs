@@ -1,0 +1,23 @@
+<script type='text/javascript'>
+    window.transports = <%- JSON.stringify(transports) %>;
+    window.transporttype = <%- JSON.stringify(type) %>;
+    window.content = <%- JSON.stringify(_content) %>;
+</script>
+<div ng-controller='transporttypeeditCTL' class="ng-cloak">
+    <div class='row-fluid'>
+        <div class="span8">
+            <div form-helper 
+                fields='content.transporttype' 
+                object='transporttype' 
+                form-title='<%= __('machine-info') %>'
+                form-save='save'
+                objects='{transports:transports}'
+                >
+            </div> 
+        </div>
+    </div>
+</div>
+
+<div id="cargando-elementos" class="ng-cloak">
+    <img src="/images/loaders/images-cm.gif">
+</div>

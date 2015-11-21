@@ -1979,15 +1979,7 @@ module.exports.content = {
 			required: true,
 			handle: 'car_model'
 		},
-		{
-			label : 'Tipo de servicio'
-			,label_en : 'Service type'
-			,type : 'select'
-			,object : 'serviceTypes'
-			,required : true
-			,handle : 'service_type'
-		},
-
+		/*
 		{
 			label 	: 'Personas por servicio',
 			label_en : 'People by service',
@@ -1995,6 +1987,7 @@ module.exports.content = {
 			required: true,
 			handle 	: 'max_pax'
 		},
+		*/
 		{
 			label: 'Empresa',
 			label_en: 'Company',
@@ -2003,13 +1996,6 @@ module.exports.content = {
 			object : 'companies',
 			required : true,
 		},
-		{
-			label: 'Comisión',
-			label_en: 'Commission',
-			type : 'number',
-			handle : 'commission',
-			required : true,
-		}
 	],
 	transporttype : [
 		{
