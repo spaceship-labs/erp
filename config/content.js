@@ -406,7 +406,8 @@ module.exports.content = {
 			label_en : 'Categories',
 			type : 'multi-select',
 			handle : 'categories',
-			object : 'tourcategories'
+			object : 'tourcategories',
+			removeAction : '/tour/removeCategory'
 		},
 		{
 			label : 'Ubicación',
@@ -472,7 +473,8 @@ module.exports.content = {
 			label_en : 'Categories',
 			type : 'multi-select',
 			handle : 'categories',
-			object : 'tourcategories'
+			object : 'tourcategories',
+			removeAction : '/tour/removeCategory'
 		},
 		{
 			label : 'Ubicación',
@@ -706,6 +708,13 @@ module.exports.content = {
 			,label_en : 'Portuguese name'
 			,type : 'text'
 			,handle : 'name_pt'
+		}
+		,{
+			label : 'Categoría principal'
+			,label_en : 'Principal category'
+			,type : 'checkbox'
+			,handle : 'principal'
+			,msg : 'Seleccionar si esta categoría entrará en el listado de categorías'
 		}
 		,{
 			label : 'Tipo de categoría'
@@ -1595,10 +1604,21 @@ module.exports.content = {
 			required : true,
 		},
 		{
-			label : 'Días de duración',
-			label_en : 'Duration days',
-			type : 'text',
-			handle : 'days',
+			label : 'Fecha de expiración',
+			label_en : 'Expiration date',
+			type : 'date',
+			handle : 'expirationDate',
+			options : {
+			    formatYear: 'yy',
+			    startingDay: 1
+			}
+		},
+		{
+			label : 'Todos los Hoteles'
+			,label_en : 'All the Hotels'
+			,msg : 'Cupón disponible para todos los hoteles?'
+			,type : 'checkbox'
+			,handle : 'allHotels'
 		},
 		{
 			label : 'Hoteles',
@@ -1608,6 +1628,14 @@ module.exports.content = {
 			object : 'hotels',
 			//removeAction : '/hotel/removeFoodScheme',
 			removeAction:'/cupon/removeHotel'
+			,hideIfField : 'allHotels'
+		},
+		{
+			label : 'Todos los Tours'
+			,label_en : 'All the Tours'
+			,msg : 'Cupón disponible para todos los tours?'
+			,type : 'checkbox'
+			,handle : 'allTours'
 		},
 		{
 			label : 'Tours',
@@ -1617,6 +1645,14 @@ module.exports.content = {
 			object : 'tours',
 			//removeAction : '/hotel/removeFoodScheme',
 			removeAction:'/cupon/removeTour'
+			,hideIfField : 'allTours'
+		},
+		{
+			label : 'Todos los Traslados'
+			,label_en : 'All the Transfers'
+			,msg : 'Cupón disponible para todos los tipos de traslado?'
+			,type : 'checkbox'
+			,handle : 'allTransfers'
 		},
 		{
 			label : 'Servicios',
@@ -1626,9 +1662,17 @@ module.exports.content = {
 			object : 'transfers',
 			//removeAction : '/hotel/removeFoodScheme',
 			removeAction:'/cupon/removeTransfer'
+			,hideIfField : 'allTransfers'
 		}
     ],
 	cuponsadvance : [
+		{
+			label : 'Descuento General'
+			,label_en : 'General discount'
+			,type : 'text'
+			,handle : 'gral_discount'
+			,message : 'Este es el decuento que se aplicaría a los tours y hoteles'
+		},
 		{
 			label : 'Descuento viaje sencillo',
 			label_en : 'One way discount',
@@ -1710,6 +1754,15 @@ module.exports.content = {
 			handle : 'multiple',
 		},
 		{
+			label : 'Número de reclamos',
+			label_en : 'Claims Number',
+			type : 'number',
+			handle : 'times',
+			maxValue : '100',
+			hideIfNotField : 'multiple',
+			msg : 'Número de veces que puede utilizarse esta instancia'
+		},
+		{
 			label : 'Descripción',
 			label_en : 'Description',
 			type : 'text',
@@ -1748,6 +1801,15 @@ module.exports.content = {
 			label_en : 'Multiple',
 			type : 'checkbox',
 			handle : 'multiple',
+		},
+		{
+			label : 'Número de reclamos',
+			label_en : 'Claims Number',
+			type : 'number',
+			handle : 'times',
+			maxValue : '100',
+			hideIfNotField : 'multiple',
+			msg : 'Número de veces que puede utilizarse esta instancia'
 		},
 		{
 			label : 'Descripcion',
@@ -2067,3 +2129,17 @@ module.exports.content.transferprice = [
 		,object : 'location'
 	},
 ]
+
+/*
+	Propiedades agregadas para el formhelper
+	- hideIfField : 
+		Oculta un campo en caso de que otro campo esté seleccionado.
+		Va en el campo a ocultar y recibe el nombre del campo a validar
+	- hideIfNotField ;
+		Oculta un campo en caso de que otro campo NO esté seleccionado.
+		Va en el campo a ocultar y recibe el nombre del campo a validar
+	- on_Change : 
+		Ejecuta una función en caso de cambiar este campo, recibe el nombre de la función a llamar
+		El formhelper debe de recibir un objeto con funciones como
+			onchanges = "{'getZones' : getZones}"
+*/

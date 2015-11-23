@@ -15,8 +15,13 @@ module.exports = {
             type:'string',
             unique:true
         },
+        orders : {
+            collection : 'order'
+            ,via : 'cuponsingle'
+        },
         expiration:'date',
         multiple:'boolean',
+        times:'integer',
         description:'string'
     },
     beforeCreate:function(val,cb){ 

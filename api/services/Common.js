@@ -273,3 +273,11 @@ module.exports.orderCustomAI = function(val,cb){
 	    );
 	})
 };
+module.exports.getItemById = function(id,objectArray){
+	var r = false;
+	if( objectArray && objectArray.length > 0 )
+		for(var x in objectArray)
+			if( objectArray[x].id == id )
+				return objectArray[x];
+	return r;
+};

@@ -27,8 +27,9 @@
             var data = {
                 obj : $scope.object.id,
                 rel : object.id,
-            }
-            $http({method:'POST',url:field.removeAction,data:data}).success(function (obj){
+            };
+            //$http({method:'POST',url:field.removeAction,data:data}).success(function (obj){
+            $http.post(field.removeAction,data,{}).success(function (obj){
                 $scope.object[field.handle] = obj[field.handle];
             });
         };

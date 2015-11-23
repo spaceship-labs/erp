@@ -22,6 +22,12 @@ module.exports = {
 			model : 'user' }
 		,company : {
 			model : 'company' }
+		,cuponsingle : {
+			model : 'cuponSingle'
+		}
+		,cupon : {
+			model : 'cupon'
+		}
 		,reservations : {
 			collection : 'reservation', via : 'order' }
 		,claims : {

@@ -7,7 +7,7 @@
     <div class='row'>
         <div class='stdform stdform2 col-md-12 widgetbox'>
             <h4 class="widgettitle">
-                <i class='fa fa-car'></i> <%= __('order-reservar-tras')%>
+                <i class='fa fa-compass'></i> Reserva de Tour
                 <a class='icon fa fa-calendar-o' ng-click="showReservationDate=!showReservationDate"></a>
             </h4>
             <div class='widgetcontent nopadding'>
@@ -28,6 +28,7 @@
                             Tour* 
                             <input type='radio' name='bytype' ng-model="searchBy" value="c"> Código
                             <input type='radio' name='bytype' ng-model="searchBy" value="n"> Nombre
+                            <input type='radio' name='bytype' ng-model="searchBy" value="p"> Código de proveedor
                         </p>
                         <p style="position:relative">
                             <input tabindex='' type="text" class="form-control" 
@@ -59,9 +60,6 @@
                     </div>
                     <!-- Column 2 -->
                     <div class='col-md-6'>
-                        <div ng-hide="showReservationDate">
-                            <p>Fecha de Reserva</p>
-                        </div>
                         <p>Cupón</p>
                         <p><input tabindex='' type="text" class="form-control" 
                             ng-model="reservationTour.controlCode" ></p>
@@ -100,6 +98,12 @@
                     <div class='col-md-6'>
                         <p>Moneda</p>
                         <p><select tabindex='32' ng-options="c as c.name for c in thecompany.currencies" name='currency' ng-model='transfer.currency' ng-change='updatePriceTour()' ></select></p>
+                        <p>Token de descuento</p>
+                        <p style='position:relative'>
+                            <input type='text' ng-model="theCupon.token" ng-change="validateCupon()" >
+                            <a ng-hide="!theCupon.cupon.id" style="position: absolute;right: 18px;top: 17px;color: green;" class='fa fa-check'></a>
+                            <a ng-hide="theCupon.cupon.id" style="position: absolute;right: 18px;top: 16px;color: red;" class='fa fa-times'></a>
+                        </p>
                     </div>
                 </div>
                 <h4 class="widgettitle">Notas</h4>

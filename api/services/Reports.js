@@ -1408,7 +1408,7 @@ module.exports.tours_commision_by_cupon =function(fields,cb){
 */
 var moment = require('moment-timezone');
 module.exports.logisticsReport = function(options,theCB){
-	var name = 'MKP report -' + moment().tz('America/Mexico_City').format('D-MM-YYYY') + '.csv';
+	var name = 'Export reservations -' + moment().tz('America/Mexico_City').format('D-MM-YYYY') + '.csv';
 	options.dateType = '1';
 	options.sDate = new Date("October 13, 2014");
 	options.eDate = new Date("October 13, 2016");

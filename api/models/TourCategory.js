@@ -11,6 +11,7 @@ module.exports = {
   	,name_en : 'String'
   	,name_ru : 'String'
   	,name_pt : 'String'
+    ,principal : 'boolean'
     ,tours : { collection : 'tour', via: 'categories' }
   	//,tours : { collection : 'tourtourcategory', via: 'tourcategory_tours' }
     ,type : {
