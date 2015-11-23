@@ -21,7 +21,10 @@ app.controller('tourCTL',function($scope,$http,$window,$rootScope){
 		return r;
 	};
 	$scope.createTour = function(newtour){
-        $http({method: 'POST', url: '/tour/create',params:newtour}).success(function (result){
+        //console.log(newtour);
+        //$http({method: 'POST', url: '/tour/create',params:newtour}).success(function (result){
+        $http.post('/tour/create',newtour,{}).success(function(result) {
+            //console.log(result);
             $scope.tours = result.tours;
             jQuery('#myModal').modal('hide');
             $window.location =  "/tour/edit/" + result.thetour.id;

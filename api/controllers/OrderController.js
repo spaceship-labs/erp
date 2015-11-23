@@ -75,6 +75,12 @@ module.exports = {
   /*
     LLAMADAS HTTP
   */
+  validatecupon : function(req,res){
+    var params = req.params.all();
+    OrderCore.validateCupon(params.token,function(err,cupon,single){
+      res.json({ err : err, cupon : cupon, single : single })
+    });
+  },
   updateOrderDate : function(req,res){
     var company = req.user.select_company || req.session.select_company
     if(req.user.hasPermission(company.id,'orders_e')){
@@ -213,12 +219,13 @@ module.exports = {
     if( params.reservation_type == 'tour' ){
       Client_.create({ name : params.client }).exec(function(err,client){
         if(err) return res.json({ error : err, result : false });
-        orderParams = { client : client.id , company : params.company };//cliente y agencia
+        orderParams = { client : client.id , company : params.company, token : params.token };//cliente y agencia
         aux.client = client;
         OrderCore.createOrder( orderParams, req, function(err,order){
           if(err) return res.json({ error : err, result : false });
           aux.order = order.id;
           aux.items.push(params);
+          delete params.token;
           OrderCore.createReservationTourHotel(aux,req.user.id,function(err,results){
             if(err) return res.json({ error : err, result : false });
             return res.json({ error : false, results : results });

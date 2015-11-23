@@ -98,6 +98,12 @@
                     <div class='col-md-6'>
                         <p>Moneda</p>
                         <p><select tabindex='32' ng-options="c as c.name for c in thecompany.currencies" name='currency' ng-model='transfer.currency' ng-change='updatePriceTour()' ></select></p>
+                        <p>Token de descuento</p>
+                        <p style='position:relative'>
+                            <input type='text' ng-model="theCupon.token" ng-change="validateCupon()" >
+                            <a ng-hide="!theCupon.cupon.id" style="position: absolute;right: 18px;top: 17px;color: green;" class='fa fa-check'></a>
+                            <a ng-hide="theCupon.cupon.id" style="position: absolute;right: 18px;top: 16px;color: red;" class='fa fa-times'></a>
+                        </p>
                     </div>
                 </div>
                 <h4 class="widgettitle">Notas</h4>

@@ -106,19 +106,26 @@ module.exports = {
 	}
 	,create : function(req,res){
 		var form = req.params.all();
+		var cats = form.categories || [];
 		form.days = [true,true,true,true,true,true,true];
 		form.name_pt = form.name_es = form.name_en = form.name_ru = form.name;
 		form.req = req;
 		form.fee_base = parseFloat(form.fee) || 0;
 		form.feeChild_base = parseFloat(form.feeChild) || 0;
-		Tour.create(form).exec(function(err,tour){
+		delete form.id;
+		delete form.categories;
+		Tour.create(form).exec(function(err,tour){ Tour.findOne(tour.id).exec(function(e,tour){
 			if(err) return res.json({text:err});
-			Tour.find({}).sort('name').exec(function(e,tours){
-				if(e) return res.json({text:e});
-				var result = { tours : tours , thetour : tour }
-				res.json(result);
+			//console.log(cats);
+			for( x in cats ) tour.categories.add( cats[x].id );
+			tour.save(function(tour_){
+				Tour.find({}).sort('name').exec(function(e,tours){
+					if(e) return res.json({text:e});
+					var result = { tours : tours , thetour : tour };
+					res.json(result);
+				});
 			});
-		});
+		}); }); // create and findOne
 	},
 	edit : function(req,res){
 		Tour.findOne(req.params.id).populate('categories',{type:{$ne:'rate'}}).exec(function(e,tour){ TourCategory.find({type:{ $ne:'rate' }}).exec(function(tc_err,tourcategories){

@@ -1543,7 +1543,11 @@ app.controller('orderQuickCTL',function($scope,$http,$window,$rootScope){
     ];
     $scope.open = [false,false]; //abre/cierra los datepickers
     $scope.pax = [];
-    for(var j=1;j<30;j++) $scope.pax.push(j);
+    $scope.kidPax = [];
+    for(var j=0;j<20;j++){ 
+        if( j>0 ) $scope.pax.push(j);
+        $scope.kidPax.push(j);
+    }
     $scope.searchBy = 'c';
     $scope.customMessages = {
         Tta : { show : false , type : 'alert' , message : $rootScope.translates.c_ordermessg1 }
@@ -1559,6 +1563,7 @@ app.controller('orderQuickCTL',function($scope,$http,$window,$rootScope){
         ,rcf : { show : false , type : 'alert' , message : 'Ha ocurrido un error al crear la reserva, favor de revisar los campos e intentar de nuevo.' }
     };
     $scope.alertMessage = { show : false , title : '' , message : '' , type : 'alert' };
+    $scope.theCupon = { cupon : {} , token : '' };
     $scope.resetForm = function(){
         $scope.transfer = false;
         $scope.client = false;
@@ -1590,6 +1595,9 @@ app.controller('orderQuickCTL',function($scope,$http,$window,$rootScope){
                     client : $scope.client 
                     ,company : $scope.thecompany.id
                 };
+                if( $scope.theCupon.cupon ) params.token = $scope.theCupon.token;
+                console.log('create order');
+                console.log(params);
                 $http.post('/order/createOrder',params,{}).success(function(order) {
                     if(order && order.id){
                         $scope.order = order;
@@ -1615,6 +1623,9 @@ app.controller('orderQuickCTL',function($scope,$http,$window,$rootScope){
             params.company = $scope.thecompany;
             params.reservation_type = 'tour';
             params.generalFields = {};
+            if( $scope.theCupon.cupon ) params.token = $scope.theCupon.token;
+            console.log('create order');
+            console.log(params);
             $http.post('/order/createquickreservation',params,{}).success(function(result) {
                 if( result.results )
                 $scope.showMessage('rcs');
@@ -1696,9 +1707,36 @@ app.controller('orderQuickCTL',function($scope,$http,$window,$rootScope){
                 $scope.reservationTour.currency = $scope.thecompany.base_currency;
             if( !$scope.reservationTour.pax ) $scope.reservationTour.pax = 1;
             $scope.reservationTour.fee = $scope.reservationTour.pax * $scope.reservationTour.tour.fee;
-            if( $scope.reservationTour.kidPax ) $scope.reservationTour.feeKids = $scope.reservationTour.kidPax * $scope.reservationTour.tour.feeChild;
-            if( $scope.reservationTour.currency.id != $scope.thecompany.base_currency.id )
+            if( $scope.reservationTour.kidPax ) 
+                $scope.reservationTour.feeKids = $scope.reservationTour.kidPax * $scope.reservationTour.tour.feeChild;
+            else
+                $scope.reservationTour.feeKids = 0;
+            if( $scope.reservationTour.currency.id != $scope.thecompany.base_currency.id ){
                 $scope.reservationTour.fee *= $scope.thecompany.exchange_rates[$scope.reservationTour.currency.id].sales;
+                $scope.reservationTour.feeKids *= $scope.thecompany.exchange_rates[$scope.reservationTour.currency.id].sales;
+            }
+            if( $scope.theCupon.cupon ){
+                console.log( typeof $scope.theCupon.cupon.gral_discount );
+                if( typeof $scope.theCupon.cupon.gral_discount == 'string' )
+                    $scope.theCupon.cupon.gral_discount = parseInt($scope.theCupon.cupon.gral_discount)/100;
+                console.log( $scope.theCupon.cupon.gral_discount );
+                if( $scope.theCupon.cupon.allTours ){
+                    console.log('all tours');
+                    $scope.reservationTour.fee = $scope.reservationTour.fee - ($scope.reservationTour.fee*$scope.theCupon.cupon.gral_discount);
+                    $scope.reservationTour.feeKids = $scope.reservationTour.feeKids - ($scope.reservationTour.feeKids*$scope.theCupon.cupon.gral_discount);
+                    console.log($scope.reservationTour.fee);
+                    console.log($scope.reservationTour.feeKids);
+                }else{
+                    for( var x in $scope.theCupon.cupon.tours ){
+                        if( $scope.reservationTour.tour.id == $scope.theCupon.cupon.tours[x].id ){
+                            console.log('in array of tours');
+                            $scope.reservationTour.fee = $scope.reservationTour.fee - ($scope.reservationTour.fee*$scope.theCupon.cupon.gral_discount);
+                            $scope.reservationTour.feeKids = $scope.reservationTour.feeKids - ($scope.reservationTour.feeKids*$scope.theCupon.cupon.gral_discount);
+                            break;
+                        }
+                    }
+                }
+            }
         }
     }
     $scope.getpickuptime = function(){
@@ -1836,6 +1874,22 @@ app.controller('orderQuickCTL',function($scope,$http,$window,$rootScope){
         if( action == 'list' )
             $window.location =  "/order/";
     };
+    $scope.validateCupon = function(){
+        //$scope.theCupon = { cupon : {} , token : '' };
+        if( $scope.theCupon.token && $scope.theCupon.token != '' ){
+            $http.post('/order/validatecupon', {token:$scope.theCupon.token}, {}).success(function(result){
+                if( result.cupon && result.single ){
+                    $scope.theCupon.cupon = result.cupon;
+                    $scope.theCupon.single = result.single;
+                    $scope.updatePriceTour();
+                }
+                else if( result.err && result.err == 'max_times' )
+                    console.log('Este cupón ya se ha instanciado el máximo de veces');
+                console.log(result);
+                console.log($scope.theCupon);
+            });
+        }
+    }
 });
 /*
     Calcula el tiempo de pickup dependiendo del origen

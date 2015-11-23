@@ -1604,10 +1604,14 @@ module.exports.content = {
 			required : true,
 		},
 		{
-			label : 'Días de duración',
-			label_en : 'Duration days',
-			type : 'text',
-			handle : 'days',
+			label : 'Fecha de expiración',
+			label_en : 'Expiration date',
+			type : 'date',
+			handle : 'expirationDate',
+			options : {
+			    formatYear: 'yy',
+			    startingDay: 1
+			}
 		},
 		{
 			label : 'Todos los Hoteles'
@@ -1662,6 +1666,13 @@ module.exports.content = {
 		}
     ],
 	cuponsadvance : [
+		{
+			label : 'Descuento General'
+			,label_en : 'General discount'
+			,type : 'text'
+			,handle : 'gral_discount'
+			,message : 'Este es el decuento que se aplicaría a los tours y hoteles'
+		},
 		{
 			label : 'Descuento viaje sencillo',
 			label_en : 'One way discount',
