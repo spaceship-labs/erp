@@ -11,6 +11,10 @@ app.controller('tourcategoryCTL',function($scope,$http){
         { id: 'aquatic' , name : "Acuático" }
         ,{ id: 'land' , name : "Terrestre" }
     ];
+    $scope.categoryTypes = [
+        {id : 'normal' , name : 'Categoría normal'}
+        ,{ id : 'rate' , name : 'Rating'}
+    ];
 });
 app.controller('tourcategoryEditCTL',function($scope,$http){
 	$scope.tourcategory = tourcategory;

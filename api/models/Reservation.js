@@ -43,7 +43,7 @@ module.exports = {
         }
         ,reservation_method : {
             type: 'string'
-            ,enum: ['intern', 'api', 'rep', 'agencyApi'] 
+            ,enum: ['intern', 'api', 'rep', 'agencyApi','web']
             ,defaultsTo : 'intern' }
         ,payment_method : {
             type:'string',

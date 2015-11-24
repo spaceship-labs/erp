@@ -15,7 +15,9 @@ module.exports = {
 	  	},*/
 		reservation_method : {
 		    type: 'string'
-		    ,enum: ['intern', 'api', 'rep', 'agencyApi'] ,required : true }
+		    ,enum: ['intern', 'api', 'rep', 'agencyApi','web'] ,
+			required : true
+		}
 		,client : {
 			model : 'client_', }
 		,user : {
