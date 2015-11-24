@@ -12,6 +12,7 @@ module.exports = {
 	      required: true },
 		phones : 'array',
 		location : { model : 'location' },
+		departurePlaces : 'array',
 		rooms : {
 			collection : 'room',
 			via: 'hotel' },

@@ -51,8 +51,15 @@
                             </span>
                         </p>
                         <p>Lugar de salida*</p>
-                        <p><input tabindex='' type="text" class="form-control" 
-                            ng-model="reservationTour.departurePlace" required="true" required ></p>
+                        <p>
+                            <input tabindex='' type="text" class="form-control" 
+                            ng-model="reservationTour.departurePlace" 
+                            typeahead-editable='true'
+                            typeahead="obj as obj for obj in reservationTour.hotel.departurePlaces" 
+                            required="true" required >
+                            <!--<input tabindex='' type="text" class="form-control" 
+                            ng-model="reservationTour.departurePlace" required="true" required >-->
+                        </p>
                         <p>Agencia: </p>
                         <p ng-bind="thecompany.name">
                             <!--<select tabindex='1' class='outerSelect' ng-model='thecompany' ng-options="obj as obj.name for obj in companies" ></select>-->

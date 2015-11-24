@@ -189,7 +189,7 @@ module.exports = {
     	if(form.days){
     		var new_days = [];
     		form.days.forEach(function(day){
-    			new_days.push(day == 'true');
+    			new_days.push(day);
     		});
     		form.days = new_days;
     	}

@@ -53,7 +53,7 @@ app.controller('tourEditCTL',function($scope,$http,$window){
     $scope.rateCategories = []; //categorias tipo rate
     $scope.tourRateCategories = []; //categorias ya agregadas o por agregar
     console.log('tour');
-    console.log($scope.tour.categories);
+    console.log($scope.tour);
     console.log($scope.tourcategories);
     /*io.socket.get('/tour/find/'+tour.id,function(data,jwres){
         $scope.tour = data;
@@ -75,6 +75,7 @@ app.controller('tourEditCTL',function($scope,$http,$window){
         };
         //$http({method: 'POST',url:'/tour/update',params:form}).success(function(tour){
         $http.post('/tour/update',form,{}).success(function(tour) {
+            console.log(tour);
             $scope.tour.days = tour.days;
             $scope.saveClass = 'fa-save';
         });
