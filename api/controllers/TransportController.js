@@ -13,12 +13,12 @@ module.exports = {
                 transports: data.transports,
                 show_companies: data.companies,
                 page:{
-                    name:req.__('sc_transfer')
+                    name:'Vehículos'
                     ,icon:'fa fa-car'
                     ,controller : 'transport.js'
                 },
                 breadcrumb : [
-                    {label : req.__('sc_transfer')}
+                    {label : 'Vehículos'}
                 ]
             },req);        
         });
@@ -35,10 +35,14 @@ module.exports = {
                 show_companies: data.companies,
                 page:{
                     saveButton : true,
-                    name:req.__('transports'),
+                    name: 'Vehículo: ' + data.transports.length>0?data.transports[0].car_id:'' ,
                     icon:'fa fa-car',
                     controller : 'transport.js'
-                }
+                },
+                breadcrumb : [
+                    {label : 'Vehículos', url : '/Transport' }
+                    ,{label : data.transports.length>0?data.transports[0].car_id:'Vehículo' }
+                ]
             },req);
             
         });
@@ -74,7 +78,7 @@ function getInfo(req, transportFind, next){
         companies: function(done){
             var defer;
             if(req.user.isAdmin){
-                defer = Company.find();
+                defer = Company.find({ company_type : 'transport' });
             }else{
                 var company = req.session.select_company || req.user.select_company;
                 defer = Company.find({id: company}).limit(1);

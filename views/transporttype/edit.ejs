@@ -1,6 +1,7 @@
 <script type='text/javascript'>
     window.transports = <%- JSON.stringify(transports) %>;
     window.transporttype = <%- JSON.stringify(type) %>;
+    window.transfers = <%- JSON.stringify(transfers) %>;
     window.content = <%- JSON.stringify(_content) %>;
 </script>
 <div ng-controller='transporttypeeditCTL' class="ng-cloak">
@@ -11,7 +12,7 @@
                 object='transporttype' 
                 form-title='<%= __('machine-info') %>'
                 form-save='save'
-                objects='{transports:transports}'
+                objects='{transports:transports, transfers:transfers}'
                 >
             </div> 
         </div>

@@ -40,7 +40,8 @@ module.exports = {
                     controller : 'transporttype.js'
                 },
                 breadcrumb : [
-                    {label : req.__('sc_transfer')}
+                    {label : req.__('sc_transfer') , url : '/transporttype' }
+                    ,{label : data.types.name }
                 ]
             },req);
         });

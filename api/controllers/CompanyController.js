@@ -172,7 +172,9 @@ module.exports = {
 		});
 	}
     ,update : function(req,res) {
-        var form = Common.formValidate(req.params.all(),['id','name','address','zipcode','description','terms','footer']);
+        console.log(req.params.all());
+        var form = Common.formValidate(req.params.all(),['id','name','address','zipcode','description','terms','footer','company_type']);
+        console.log(form);
         Company.update({id : form.id},form).exec(function(err,company){
            if (err) {
                console.log(err);

@@ -11,6 +11,11 @@ module.exports = {
 		  type : 'string',
 		  required: true
 		}
+		,company_type : {
+			type : 'string'
+			,enum : ['transport','agency']
+			,defaultsTo : 'agency'
+		}
 		,icon:'json'
 		,description:'string'
 		,address:'string'

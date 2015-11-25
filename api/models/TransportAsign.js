@@ -30,7 +30,10 @@ module.exports = {
     },
     
     price: {
-        model: 'transportprice'
+        model: 'transferprice'
+    },
+    transport : {
+        model : 'transfer'
     }
   }
 };

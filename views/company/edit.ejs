@@ -14,12 +14,12 @@
              fields='content.company'
              object='mycompany'
              action='/company/update'
-             objects = '{currencies:currencies}'
+             objects = '{currencies:currencies,company_types:company_types}'
              currency = 'company.base_currency'
              form-title='<%= __("gral_companyInfo") %>'
-	     add-method='/company/addFiles'
-	     url-file='/company/files'
-	     dir='company/files'
+    	     add-method='/company/addFiles'
+    	     url-file='/company/files'
+    	     dir='company/files'
              restrict="apps"
                 >
         </div>
@@ -196,7 +196,7 @@
     </div><!--span4-->
 </div><!--row end-->
 <% if (!mycompany.adminCompany) {%>
-<div class='row'>
+<div class='row' ng-if="mycompany.company_type=='agency'">
     <div class='col-md-12'>
         <div class="widgetbox">
             <h4 class='widgettitle'>Productos</h4>

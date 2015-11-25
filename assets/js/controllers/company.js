@@ -4,6 +4,7 @@ app.controller('companyCTL',function($scope,$http,$rootScope){
     $scope.currencies = currencies;
     $scope.company = selected_company;
     $scope.user = user;
+    $scope.company_types = [{id:'agency',name:'Agencia'},{id:'transport',name:'Transportista'}];
     //$scope.apps = apps;
 
     $scope.getInfo = function(company){
@@ -43,14 +44,15 @@ app.controller('companyEditCTL',function($scope,$http,$timeout){
     $scope.isCollapseObj = {};
     $scope.locations = [];
     $scope.exchangerates = $scope.mycompany.exchange_rates || {};
-    console.log(mycompany);
+    //$scope.mycompany.company_type = mycompany.company_type || 'agency';
+    console.log($scope.mycompany);
     $scope.actualCurrency = $scope.mycompany.base_currency || $scope.company.base_currency;
     $scope.messages = {
         tour : { show : false , m : '' , message_add : "Nuevo Tour agregado al catálogo: " , message_rm : 'Tour eliminado del catálogo: ' , item_name : '' , type : 'success' }
         ,transfer : { show : false , m : '' , message_add : "Nuevo Servicio agregado al catálogo: " , message_rm : 'Servicio eliminado del catálogo: ' , item_name : '' , type : 'success' }
         ,hotel : { show : false , m : '' , message_add : "Nuevo Hotel agregado al catálogo: " , message_rm : 'Hotel eliminado del catálogo: ' , item_name : '' , type : 'success' }
-
     };
+    $scope.company_types = [{id:'agency',name:'Agencia'},{id:'transport',name:'Transportista'}];
     var setMessage = function(section,action,name,alertType,show){
         if(show){
             $scope.messages[section].m = action=='add'?$scope.messages[section].message_add:$scope.messages[section].message_rm;

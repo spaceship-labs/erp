@@ -38,7 +38,7 @@ module.exports = {
     show_companies: function(req, res){
         var defer;
         if(req.user.isAdmin){
-            defer = Company.find();
+            defer = Company.find({ company_type : 'transport' });
         }else{
             var company = req.session.select_company || req.user.select_company;
             defer = Company.find({id: company}).limit(1);

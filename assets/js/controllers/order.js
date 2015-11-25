@@ -605,11 +605,33 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
             item.fee *= $scope.thecompany.exchange_rates[item.currency.id].sales;
         updateTotal();
     }
+    //set the transfer by pax number
+    var setTransferDefault = function(){
+        $scope.transfer.pax = $scope.transfer.pax || 1;
+        $scope.transfer.type = $scope.transfer.type || 'one_way';
+        $scope.transfer.serviceType = $scope.transfer.serviceType || 'P';
+        console.log('transfers');
+        console.log($scope.transfers);
+        if( $scope.transfers.length > 0 ){
+            var initMaxPax = 100;
+            for( var x in $scope.transfers ){
+                if( $scope.transfer.serviceType == 'P' && $scope.transfers[x].transfer.service_type == 'P' && $scope.transfer.pax <= $scope.transfers[x].transfer.max_pax && $scope.transfers[x].transfer.max_pax <= initMaxPax ){
+                    initMaxPax = $scope.transfers[x].transfer.max_pax;
+                    $scope.transfer.transfer = $scope.transfers[x];
+                }
+                if( $scope.transfer.serviceType == 'C' && $scope.transfers[x].transfer.service_type == 'C' )
+                    $scope.transfer.transfer = $scope.transfers[x];
+            }
+            console.log('if transfers');
+            console.log($scope.transfer);
+        }
+    }
     //Obtiene el precio cada que se hace una modificación elegida
     $scope.updatePriceTransfer = function(){
         console.log($scope.transfer)
         if(!$scope.transfer.currency)
             $scope.transfer.currency = $scope.thecompany.base_currency;
+        setTransferDefault();
         var transfer = $scope.transfer;
         if( transfer.hotel && transfer.airport && transfer.type ){
             var mult = transfer.pax?( Math.ceil( transfer.pax / transfer.transfer.transfer.max_pax ) ):1;

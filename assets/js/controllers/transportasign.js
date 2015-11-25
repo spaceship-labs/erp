@@ -13,7 +13,7 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
             $scope.locations = res && res.data || [];
         });
 
-        $http.get('/zone/find?populate').then(function(res){
+        $http.get('/zone/find?populate&limit=200').then(function(res){
             $scope.zones = res && res.data || [];
         });
 
@@ -27,7 +27,7 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
     $scope.changeLocation = function(type){
         $scope.filter_zones[type] = $filter('filter')($scope.zones, function(val){
                                 return val.location == $scope.location[type];
-                            }); 
+                            });
     };
 
     $scope.filter_price = function(zoneFrom, zoneTo, service_type){
@@ -56,6 +56,7 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
             transport: even.transport && even.transport.id,
             service_type: even.asign.service_type,
             pax: even.asign.pax,
+            fee: even.asign.fee,
             asign: even.asign,
             event: even,
             revertFunc: revertFunc || false
@@ -176,7 +177,10 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
                 service_type: $scope.modal.service_type,
                 pax: $scope.modal.pax,
                 zoneFrom: $scope.modal.zoneFrom,
-                zoneTo: $scope.modal.zoneTo
+                zoneTo: $scope.modal.zoneTo,
+                fee: $scope.modal.fee,
+                transfer: $scope.modal.transfer.transfer.id,
+                price: $scope.modal.transfer.id,
             };
         //return params
         if($scope.view_type == 'asign'){
@@ -337,6 +341,58 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
             ,{ name : 'Privado' , id : 'P' }
             ,{ name : 'Lujo' , id : 'L' }
         ];
-
+    //obtener los transfers/prices dependiendo de las zonas seleccionadas
+    $scope.tranferPrices = false;
+    $scope.getPrices = function(){
+        if( $scope.modal.zoneFrom && $scope.modal.zoneTo ){
+            var params = {
+                zone1 : $scope.modal.zoneFrom
+                ,zone2 : $scope.modal.zoneTo
+            };
+            $http.post('/transportAsignRequest/getprices', params ).then(function(res){
+                console.log(res);
+                $scope.tranferPrices = res.data;
+                $scope.updatePrice();
+            });
+        }
+    };
+    //set the transfer by pax number
+    var setTransferDefault = function(){
+        $scope.modal.pax = $scope.modal.pax || 1;
+        $scope.modal.type = $scope.modal.type || 'one_way';
+        $scope.modal.service_type = $scope.modal.service_type || 'C';
+        console.log('transfers');
+        console.log($scope.modal);
+        $scope.modal.transfer = false;
+        if( $scope.tranferPrices.length > 0 ){
+            var initMaxPax = 100;
+            for( var x in $scope.tranferPrices ){
+                if( $scope.modal.service_type == 'P' && $scope.tranferPrices[x].transfer.service_type == 'P' && $scope.modal.pax <= $scope.tranferPrices[x].transfer.max_pax && $scope.tranferPrices[x].transfer.max_pax <= initMaxPax ){
+                    initMaxPax = $scope.tranferPrices[x].transfer.max_pax;
+                    $scope.modal.transfer = $scope.tranferPrices[x];
+                }
+                if( $scope.modal.service_type == 'C' && $scope.tranferPrices[x].transfer.service_type == 'C' )
+                    $scope.modal.transfer = $scope.tranferPrices[x];
+            }
+            console.log('if transfers');
+            console.log($scope.modal);
+        }
+    }
+    //Obtiene el precio cada que se hace una modificación elegida
+    $scope.updatePrice = function(){
+        //console.log($scope.transfer)
+        //if(!$scope.transfer.currency)$scope.transfer.currency = $scope.thecompany.base_currency;
+        setTransferDefault();
+        var transfer = $scope.modal;
+        if( transfer.transfer ){
+            var mult = transfer.pax?( Math.ceil( transfer.pax / transfer.transfer.transfer.max_pax ) ):1;
+            //console.log( 'mult: ' + mult + ' price: ' + transfer.transfer[transfer.type] );
+            $scope.modal.fee = parseFloat(transfer.transfer[transfer.type]) * mult;
+            //if( $scope.transfer.currency.id != $scope.thecompany.base_currency.id )
+                //$scope.transfer.fee *= $scope.thecompany.exchange_rates[$scope.transfer.currency.id].sales;
+        }else{
+            $scope.modal.fee = 0;
+        }
+    };
 });
 

@@ -20,6 +20,7 @@ app.controller('transporttypeCTL',function($scope,$http,$rootScope){
 
 app.controller('transporttypeeditCTL',function($scope,$http,$rootScope){
     $scope.content = content;
+    $scope.transfers = window.transfers || [];
     $scope.save = function(type){
         console.log(type);
         $http.post('/transporttype/update/'+type.id, type).then(function(res){

@@ -28,6 +28,7 @@
         <select 
             ng-model='modal.zoneFrom'
             ng-options="obj.id as obj.name for obj in filter_zones.from"
+            ng-change="getPrices()"
             required
             class='form-control' >
         </select>
@@ -39,16 +40,10 @@
         <select 
             ng-model='modal.zoneTo'
             ng-options="obj.id as obj.name for obj in filter_zones.to"
+            ng-change="getPrices()"
             required
             class='form-control' >
         </select>
-    </span>
-</p>
-
-<p>
-    <label>Pax</label>
-    <span class="field">
-        <input type="number" ng-model="modal.pax" required>
     </span>
 </p>
 <p>
@@ -57,9 +52,16 @@
         <select 
             ng-model='modal.service_type'
             ng-options="obj.id as obj.name for obj in service_types"
+            ng-change="updatePrice()"
             required
             class='form-control' >
         </select>
+    </span>
+</p>
+<p>
+    <label>Pax</label>
+    <span class="field">
+        <input type="number" ng-change="updatePrice()" ng-model="modal.pax" required>
     </span>
 </p>
 <p>
@@ -72,5 +74,11 @@
     <label><%=__("end_hour")%></label>
     <span class="field">
         <input ng-class="{'has-error': error.invalid_end}" type="time" ng-model="modal.end">
+    </span>
+</p>
+<p>
+    <label>Total</label>
+    <span class='field'>
+        <i>{{modal.fee}}</i>
     </span>
 </p>

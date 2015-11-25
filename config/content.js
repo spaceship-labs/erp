@@ -967,6 +967,14 @@ module.exports.content = {
 			required : true,
 		},
 		{
+			label : 'Tipo de empresa'
+			,label_en : 'Company type'
+			,handle : 'company_type'
+			,type : 'select'
+			,required : true
+			,object : 'company_types'
+		},
+		{
 			label : 'Direccion',
 			label_en : 'Address',
 			handle : 'address',
@@ -1989,7 +1997,7 @@ module.exports.content = {
 		},
 		*/
 		{
-			label: 'Empresa',
+			label: 'Transportista',
 			label_en: 'Company',
 			type : 'select',
 			handle : 'company',
@@ -2023,8 +2031,8 @@ module.exports.content = {
 			removeAction : '/transporttype/remove_transfer',
 		},
 		{
-			label : 'Transportes',
-			label_en : 'Transports',
+			label : 'Vehículos',
+			label_en : 'Vehicle',
 			type : 'multi-select',
 			handle : 'transports',
 			object : 'transports',
