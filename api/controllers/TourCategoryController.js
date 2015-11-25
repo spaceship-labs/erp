@@ -38,20 +38,25 @@ module.exports = {
 		},req);
 	});
   }
-  	,find : function(req,res){
+	,find : function(req,res){
 		var params = req.params.all();
 		var skip = params.skip || 0;
-		if( typeof params.id == 'undefined' ) delete params.id;
+		//console.log(params);
+		if( typeof params.id == 'undefined' )
+			delete params.id;
+		else
+			params.id = JSON.parse(params.id);
 		delete params.skip;
-        if(params.name) params.name = new RegExp(params.name,"i");
-        console.log(params);
-        TourCategory.find(params).skip(skip).exec(function(err,tourcategories){
-        	if(err) res.json('err');
-        	TourCategory.count(params).exec(function(e,count){
-        		if(e) res.json('err');
-            	res.json({ results : tourcategories , count : count });
-        	});
-        });
+		if(params.name) params.name = new RegExp(params.name,"i");
+
+		TourCategory.find(params).skip(skip).exec(function(err,tourcategories){
+			if(err) res.json('err');
+			//console.log(tourcategories);
+			TourCategory.count(params).exec(function(e,count){
+				if(e) res.json('err');
+				res.json({ results : tourcategories , count : count });
+			});
+		});
 	}
   ,updateIcon: function(req,res){
     	form = req.params.all();

@@ -42,6 +42,9 @@ app.controller('tourEditCTL',function($scope,$http,$window){
     $scope.locations = locations;
     $scope.providers = providers;
     $scope.tour = tour;
+    if (angular.isUndefined($scope.tour.departurePoints)) {
+        $scope.tour.departurePoints = [];
+    }
     $scope.maxpax = [{id:0,name:'No aplica'}];
     for(var x=1;x<30;x++)
         $scope.maxpax.push({ id: x , name: x+' persona'+( x>1?'s':'' ) });
@@ -52,9 +55,7 @@ app.controller('tourEditCTL',function($scope,$http,$window){
     $scope.tourcategories = tourcategories; //categorias normales
     $scope.rateCategories = []; //categorias tipo rate
     $scope.tourRateCategories = []; //categorias ya agregadas o por agregar
-    console.log('tour');
-    console.log($scope.tour);
-    console.log($scope.tourcategories);
+
     /*io.socket.get('/tour/find/'+tour.id,function(data,jwres){
         $scope.tour = data;
 	    $scope.tour.seasonScheme = data.seasonScheme && data.seasonScheme.id || null;
@@ -75,14 +76,14 @@ app.controller('tourEditCTL',function($scope,$http,$window){
         };
         //$http({method: 'POST',url:'/tour/update',params:form}).success(function(tour){
         $http.post('/tour/update',form,{}).success(function(tour) {
-            console.log(tour);
+            //console.log(tour);
             $scope.tour.days = tour.days;
             $scope.saveClass = 'fa-save';
         });
     };
     $scope.$on('SAVE_ALL', function () {
         $scope.save();
-        console.log('SAVE_ALL!!!!!!!!');
+        //console.log('SAVE_ALL!!!!!!!!');
     });
     $scope.addSchedule = function(){
         var aux = { from : '' , to : '' };
@@ -110,6 +111,7 @@ app.controller('tourEditCTL',function($scope,$http,$window){
         $scope.theRC = false;
         var $ne = [];
         for( x in $scope.tourRateCategories ) $ne.push( $scope.tourRateCategories[x].category.id );
+
         var params = { type : 'rate' };
         if( $ne.length > 0 ) params.id = { '!' : $ne };
         $http({method: 'POST', url: '/tourcategory/find',params:params}).success(function (cats){
@@ -122,13 +124,15 @@ app.controller('tourEditCTL',function($scope,$http,$window){
         });
     };
     $http.post('/tour/getrates',{tour:$scope.tour.id},{}).success(function(rates){
-        if( rates ) $scope.tourRateCategories = rates;
+        if( rates )
+            $scope.tourRateCategories = rates;
         $scope.getRateCategories();
     });
     $scope.addRC = function(){
         if( $scope.theRC ){
             var aux = { category : $scope.theRC , value : 1, titles : _.pluck($scope.theRC.rating,'label') };
             $scope.tourRateCategories.push(aux);
+            //console.log($scope.tourRateCategories);
             $scope.getRateCategories();
         }
     };
