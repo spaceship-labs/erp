@@ -207,7 +207,7 @@ app.controller('companyEditCTL',function($scope,$http,$timeout){
             ,agency : $scope.mycompany.id
         };
         if( type == 'transfer' )
-            params.location = $scope.thelocation;
+            params.location = $scope.thelocation.id;
         console.log('companyproduct');
         console.log(params);
         $http({method: 'POST', url: '/companyproduct/find',data:params}).success(function(result){
