@@ -212,8 +212,8 @@ app.controller('companyEditCTL',function($scope,$http,$timeout){
         console.log(params);
         $http({method: 'POST', url: '/companyproduct/find',data:params}).success(function(result){
             $scope[spVar] = result;
-            //console.log('products: ' + type);
-            //console.log(result);
+            console.log('products: ' + type);
+            console.log(result);
         });
     };
     $scope.getProducts('tour','tours',0);
