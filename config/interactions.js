@@ -5,7 +5,91 @@ module.exports.interactions = {
         ,specialReservationMessage : "Si necesitas algún pediddo especial favor de comunicarte al área de reservaciones al siguiente número gratuito: 01 800 227 42 36"
         ,nationalPrices : true
         ,customContent : [
-        	{
+            {
+                contentField : 'hotel'
+                ,position : 1
+                ,fields : [
+                    {
+                        label : 'Nombre',
+                        label_en : 'Name',
+                        type : 'text',
+                        handle : 'name',
+                        required : true,
+                    },
+                    {
+                        label : 'Dirección',
+                        label_en : 'Address',
+                        type : 'text',
+                        handle : 'address',
+                    },
+                    {
+                        label : 'Ciudad',
+                        label_en : 'City',
+                        type : 'select',
+                        handle : 'location',
+                        object : 'locations',
+                        on_Change : 'getZones',
+                        required : true,
+                    },
+                    {
+                        label : 'Zona',
+                        label_en : 'Zone',
+                        type : 'select',
+                        handle : 'zone',
+                        object : 'zones',
+                        required : true,
+                    },
+                    {
+                        label : 'Teléfonos',
+                        label_en : 'Phones',
+                        type : 'text',
+                        handle : 'phones',
+                    },
+                    {
+                        label : 'Categoría',
+                        label_en : 'Category',
+                        type : 'select',
+                        handle : 'category',
+                        object : 'categories',
+                    },
+                    {
+                        label : 'Esquema de Temporadas',
+                        label_en : 'Seasons scheme',
+                        type : 'select',
+                        handle : 'seasonScheme',
+                        object : 'schemes',
+                    },
+                    {
+                        label : 'Esquemas de Alimentacion',
+                        label_en : 'Nutrition scheme',
+                        type : 'multi-select',
+                        handle : 'foodSchemes',
+                        object : 'foodSchemes',
+                        removeAction : '/hotel/removeFoodScheme',
+                    },
+                    {
+                        label : "Visible en web"
+                        ,label_en : "Visible on web"
+                        ,type : 'checkbox'
+                        ,handle : 'visible'
+                    },
+                    {
+                        label : 'Permite reservar',
+                        label_en : 'Allow booking',
+                        type    : 'checkbox',
+                        handle  : 'active',
+                    },
+                    {
+                        label : 'Principal',
+                        label_en : 'Principal',
+                        type    : 'checkbox',
+                        handle  : 'principal',
+                        message : "Seleccionar para que en el front aparezca al principio",
+                        message_en : "Seleccionar para que en el front aparezca al principio"
+                    }
+                ]
+            }
+        	,{
         		contentField : 'tour' //objeto al que se quiere agregar el campo
         		,position : 1 //número de posisición en el que se quiere insertar
         		,fields : [ //arreglo de campos a agregar, mismo formato que content
