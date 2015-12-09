@@ -56,6 +56,7 @@ module.exports = {
         Currency.find().exec(function(err, currencies){
             Company.findOne({id:id}).populate('users').populate('hotels').populate('taxes').populate('currencies').exec(function(err,company){
                 //if(err) throw err;
+                console.log(company);
 		if(err || !company) return res.notFound();
                 User.find().exec(function(err,users){
                     Hotel.find().exec(function(err,hotels){

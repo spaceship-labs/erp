@@ -40,6 +40,7 @@ module.exports = {
 			enum: ['family', 'adult'],
 			defaultsTo : 'family'
 		}
+		,url : 'string'
 	}
 	, migrate : 'alter'
 	, attrs_labels : {
@@ -90,6 +91,10 @@ module.exports = {
 		cb();
 	}
 	,beforeCreate: function(val,cb){
+		if (!val.name) {
+			return cb({err: ["Must have a username!"]});
+		}
+		val.url = val.name.replace(/\s+/g, '').toLowerCase();
 		Notifications.before(val);
 		cb();
 	}

@@ -27,6 +27,17 @@ module.exports = {
       type : 'String'
       ,enum : [ 'aquatic', 'land' ]
     }
+    ,url : 'strings'
+  }
+  ,beforeUpdate:function(val,cb){
+    cb();
+  }
+  ,beforeCreate: function(val,cb){
+    if (!val.name) {
+      return cb({err: ["Must have a username!"]});
+    }
+    val.url = val.name.replace(/\s+/g, '').toLowerCase();
+    cb();
   }
 };
 
