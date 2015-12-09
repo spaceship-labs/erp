@@ -12,10 +12,10 @@
             <th> <%= __('sc_hotels')%> </th>
             <th> Estado </th>
             <th> <%= __('d_seemore')%> </th>
-            <% if (req.user.hasPermission(req.res.locals.selected_company.id,'orders_e')) {%>
+            <% if (req.user.hasPermission(req.res.locals.selected_company.id,'orders_e_s')) {%>
             <th> <%= __('order-editar')%> </th>
             <% } %>
-            <% if (req.user.hasPermission(req.res.locals.selected_company.id,'orders_d')) {%>
+            <% if (req.user.hasPermission(req.res.locals.selected_company.id,'orders_d_s')) {%>
                 <th> Cancelar </th>
             <% } %>
         </tr>

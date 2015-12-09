@@ -62,7 +62,7 @@ function replaceFieldsWithCollection(single, item, next, modelBase){
         attr = sails.models[modelBase] && sails.models[modelBase].attributes;
         if(!model){
             if(attr && attr[item.handle]){
-                model = sails.models[attr[item.handle].model];
+                model = sails.models[attr[item.handle].model || attr[item.handle].collection];
             }else{
                 next(new Error('No model found'));
             }

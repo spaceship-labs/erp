@@ -13,7 +13,7 @@
 <div ng-controller='orderEditCTL' class="editar-reservacion ng-cloak">
     <div class='row'>
         <div class='col-md-8'>
-            <% if (req.user.hasPermission(req.res.locals.selected_company.id,'orders_e')) { %>
+            <% if (req.user.hasPermission(req.res.locals.selected_company.id,'orders_e_s')) { %>
                 <a ng-hide="reservationCollapse" ng-click="reservationCollapse=!reservationCollapse" class='btn ng-delete-button'><i class='fa fa-calendar-o'></i> Modificar fecha de captura</a><br>
                 <div uib-collapse="!reservationCollapse" class='widgetbox stdform stdform2'>
                     <h4 class='widgettitle'>Fecha de captura</h4>

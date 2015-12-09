@@ -39,6 +39,9 @@
 					<th><%= __('tranferprice-sencillo')%> child</th>
 					<th><%= __('tranferprice-redondo')%> child</th>
 					<th><a href='' class='sortable-item' ng-click="sortByField('active')"><%= __('tranferprice-activo')%> <i class='fa fa-sort-asc'></i></a></th>
+					<th ng-if="thecompany.adminCompany">Distancia</th>
+					<th ng-if="thecompany.adminCompany">Gasolina</th>
+					<th ng-if="thecompany.adminCompany">Tiempo</th>
 					<th><%= __('tranferprice-editar')%></th>
 				</tr></thead>
 				<tr class='price-row' ng-repeat='price in serv'>
@@ -94,13 +97,33 @@
 							e-form='rowform' e-required
 						>{{price.round_trip_child || 0}}</span>
 					</td>
-
 					<td>
 						<span 
 							editable-checkbox="price.active"
 							e-name='active'
 							e-form='rowform'
 						><i class="active-i fa {{price.active?'active fa-check-square-o':'fa-square-o'}}"></i></span>
+					</td>
+					<td ng-if="thecompany.adminCompany">
+						<span
+							editable-text="price.distance"
+							e-name='distance'
+							e-form='rowform'
+						>{{price.distance||'0'}} km</span>
+					</td>
+					<td ng-if="thecompany.adminCompany">
+						<span
+							editable-text="price.gasoline"
+							e-name='gasoline'
+							e-form='rowform'
+						>{{price.gasoline||'0'}} L</span>
+					</td>
+					<td ng-if="thecompany.adminCompany">
+						<span
+							editable-bstime="price.time"
+							e-name='time'
+							e-form='rowform'
+						>{{price.time||'00:00'}}</span>
 					</td>
 					<td>
 						<form editable-form name="rowform" onbeforesave="savePrice($data,price.id)" ng-show="rowform.$visible" class="form-buttons form-inline" >

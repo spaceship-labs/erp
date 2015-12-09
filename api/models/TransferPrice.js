@@ -15,9 +15,9 @@ module.exports = {
   	airport : { model 	: 'airport' },
     location : { model   : 'location' },
     location2 : { model   : 'location' }
-    ,distance : 'string'
+    ,distance : 'float'
     ,gasoline : 'string'
-    ,time : 'integer'
+    ,time : 'datetime'
     ,active : 'boolean'
   }
 };

@@ -369,6 +369,34 @@ module.exports.apps = [
         ]
     }
     ,{
+        name : 'Folios'
+        ,label : 'Folios'
+        ,label_en : 'Folios'
+        ,icon : 'fa-database'
+        ,actions : [
+            {
+                label : 'Folios'
+                ,label_en : 'Folios'
+                ,icon : 'fa-database'
+                ,url : '/folio/'
+                ,showInMenu : true
+                ,handle : 'folio'
+                ,controller : 'folio'
+                ,action : 'index'
+            }
+            ,{
+                label : 'Asignar folio'
+                ,label_en : 'Folio Assignment'
+                ,icon : 'fa-user-secret'
+                ,url : '/folio/assignment/'
+                ,showInMenu : true
+                ,handle : 'folio'
+                ,controller : 'folio'
+                ,action : 'assignment'
+            }
+        ]
+    }
+    ,{
         name : 'Reportes'
         ,label : 'Reportes'
         ,label_en : 'Reports'
