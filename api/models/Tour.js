@@ -42,7 +42,7 @@ module.exports = {
 		}
 		,url : 'string'
 	}
-	, migrate : 'alter'
+	, migrate : 'safe'
 	, attrs_labels : {
 		name : { es : 'Nombre' , en : 'Name' }
 		,name_en : { es : 'Nombre Inglés' , en : 'Name English' }
