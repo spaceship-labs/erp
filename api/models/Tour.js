@@ -94,7 +94,7 @@ module.exports = {
 		if (!val.name) {
 			return cb({err: ["Must have a username!"]});
 		}
-		val.url = val.name.replace(/\s+/g, '').toLowerCase();
+		val.url = val.name.replace(/\s+/g, '-').toLowerCase();
 		Notifications.before(val);
 		cb();
 	}
