@@ -28,7 +28,6 @@ module.exports = {
       ,enum : [ 'aquatic', 'land' ]
     }
     ,url : 'strings'
-    ,departurePoints : 'json'
   }
   ,beforeUpdate:function(val,cb){
     cb();

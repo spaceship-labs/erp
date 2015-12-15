@@ -30,6 +30,7 @@ app.controller('tourproviderEditCTL',function($scope,$http){
     $scope.company = company;
     $scope.currencies = currencies;
     $scope.tourcategories = tourcategories;
+
     $scope.saveTour = function(data,tour,index){
         var aux = parseFloat(data.commission_agency);
         if( !isNaN(aux) ){
@@ -93,7 +94,7 @@ app.controller('tourproviderEditCTL',function($scope,$http){
     $scope.removeTour = function(t){
         var params = t;
         params.provider = ' ';
-        $http.post('/tour/update', params).then(function(response){ 
+        $http.post('/tour/update', params).then(function(response){
             console.log( response.data );
             if(response.data){
                 for(x in $scope.provider.tours){
@@ -105,5 +106,20 @@ app.controller('tourproviderEditCTL',function($scope,$http){
     };
     $scope.changePricesTable = function(){
         console.log('on change');
+    };
+    $scope.updateMarkers = function(markers,cb){
+        //console.log($scope.item);
+        //console.log(markers);
+        var data = { id : $scope.provider.id , departurePoints : markers };
+        //console.log(data);
+        $http({method: 'POST', url: '/tourprovider/update',data:data}).success(function (item){
+            //$scope.tour = item;
+            cb(null,item);
+        });
+    };
+    $scope.center = {
+        lat : 21.1667,
+        lng : -86.8333,
+        zoom : 6
     };
 });
