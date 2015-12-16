@@ -183,7 +183,7 @@ module.exports = {
 	update : function(req,res){
     	var form = req.params.all();
     	var id = form.id;
-		form.req = req;
+		form.req = req;//why ?
 		//form.fee_base = form.fee_base?form.fee_base:(parseFloat(form.fee) || 0);
 		//form.feeChild_base = form.feeChild_base?form.feeChild_base:(parseFloat(form.feeChild) || 0);
     	if(form.days){
@@ -196,7 +196,7 @@ module.exports = {
     	var rates = form.rates;
     	var cats = form.categories;
     	delete form.rates;
-    	delete form.categories
+    	delete form.categories;
     	Tour.update({id:id},form,function(e,tour){ Tour.findOne(id).exec(function(e,tour){
     		if(e) throw(e);
     		if( rates ){

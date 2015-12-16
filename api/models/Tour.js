@@ -42,7 +42,7 @@ module.exports = {
 		}
 		,url : 'string'
 	}
-	, migrate : 'alter'
+	, migrate : 'safe'
 	, attrs_labels : {
 		name : { es : 'Nombre' , en : 'Name' }
 		,name_en : { es : 'Nombre Inglés' , en : 'Name English' }
@@ -94,7 +94,7 @@ module.exports = {
 		if (!val.name) {
 			return cb({err: ["Must have a username!"]});
 		}
-		val.url = val.name.replace(/\s+/g, '').toLowerCase();
+		val.url = val.name.replace(/\s+/g, '-').toLowerCase();
 		Notifications.before(val);
 		cb();
 	}

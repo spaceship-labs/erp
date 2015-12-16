@@ -39,7 +39,7 @@ module.exports = {
             model : 'transferprice' }
         ,state : {
             type:'string',
-            enum : ['pending','liquidated','canceled']
+            enum : ['pending','liquidated','canceled','error']
         }
         ,reservation_method : {
             type: 'string'

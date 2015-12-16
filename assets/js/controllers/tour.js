@@ -97,7 +97,7 @@ app.controller('tourEditCTL',function($scope,$http,$window){
         //console.log(markers);
         var data = { id : $scope.tour.id , departurePoints : markers };
         //console.log(data);
-        $http({method: 'POST', url: '/tour/update',params:data}).success(function (item){
+        $http({method: 'POST', url: '/tour/update',data:data}).success(function (item){
             //$scope.tour = item;
             cb(null,item);
         });

@@ -16,7 +16,7 @@ module.exports = {
   	//,tours : { collection : 'tourtourcategory', via: 'tourcategory_tours' }
     ,type : {
       type: 'String'
-      ,enum : ['normal', 'rate'] 
+      ,enum : ['normal', 'rate']
       /* Aquí se pueden ir agregando las variantes de categorías que podemos ir agregando
         normal: categorías normales
         rate : categorías numéricas, barras

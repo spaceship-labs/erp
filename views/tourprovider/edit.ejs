@@ -157,6 +157,21 @@
             </ul>
         </div>
     </div>
+    <md-divider></md-divider>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="widgetcontent custom-table nopadding ng-cloak">
+            <div geo-marker
+                 save-function = "updateMarkers"
+                 custom-fields = "[ {name:'name',type:'text'} , { name:'time',type:'time' } ]"
+                 center = "center"
+                 markers = "provider.departurePoints"
+                 sizes = "{ height: '350px' }"
+                 drag-enabled = "true"
+                    ></div>
+            </div>
+        </div>
+    </div>
     <br/>
     <div class='clear'></div>
     <div delete-button url='/tourprovider' redirect-url='/tourprovider' object='provider' user='user'></div>
