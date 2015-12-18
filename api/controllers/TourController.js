@@ -29,6 +29,12 @@ module.exports = {
 			}); }); //seasons
 		});
 	},
+	setAllToursUrl : function(req,res){
+		var params = req.params.all();
+		Common.setAllToursUrl(params.limit,params.skip,function(err,tours){
+			res.json({ err:err, results : tours?true:false });
+		});
+	},
 	find : function(req,res){
 		var params = req.params.all();
 		var skip = params.skip || 0;

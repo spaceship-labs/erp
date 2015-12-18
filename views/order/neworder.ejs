@@ -29,7 +29,7 @@
             qué item se va a agregar (en los casos de tours y hoteles)
         -->
         <div ng-hide="x=='Transfer'||collapse||(!client.name||client.name=='')"><div class='widgetcontent nopadding'>
-            <div ng-hide="x!='Tour'||selectReservationType!='tour'">
+            <div id="selectorTours" ng-hide="!(selectReservationType=='Tour'&&!collapse)">
                 <div class='peoplelist orderTourList'><div>
                     <h4 class='widgettitle'>Tours</h4>
                     <input type="text" class="form-control" 
@@ -57,7 +57,7 @@
                     <div><pagination total-items="allTours.count" ng-model="toursCurrentPage" max-size="7" class="pagination-sm" items-per-page='5' ng-change="getAllTours()"></pagination></div>
                 </div></div>
             </div>
-            <div ng-hide="x!='Hotel'||selectReservationType!='hotel'">
+            <div id="selectorHotels" ng-hide="!(selectReservationType=='Hotel'&&!collapse)">
                 <div class='peoplelist orderTourList'><div>
                     <h4 class='widgettitle'>Hoteles</h4>
                     <input type="text" class="form-control" 
@@ -71,7 +71,7 @@
                                 <img ng-if='!t.icon' ng-src="http://placehold.it/50x50">
                             </div>
                             <div class='info'>
-                                <p><strong><a ng-bind="t.name"></a></strong>, adultos desde $<span ng-bind="getMinPrice(t,'adult')"></span> , niños desde $<span ng-bind="getMinPrice(t,'child')"></span></p>
+                                <p><strong><a ng-bind="t.name"></a></strong>, <i ng-repeat="i in getRange(t.category)" class='fa fa-star'></i> adultos desde $<span ng-bind="getMinPrice(t,'adult')"></span> , niños desde $<span ng-bind="getMinPrice(t,'child')"></span></p>
                                 <p>{{t.description_es | limitTo : 180}}</p>
                             </div>
                             <div class='pull-right actions'>
@@ -88,46 +88,39 @@
         <!-- Aquí lo que sigue depende de lo que se haya seleccionado -->
         <form class='stdform stdform2' ng-hide="!client||client.name==''">
             <div ng-if="x=='Tour'&&reservations.tours.length>0">
-                <div ng-repeat="item in reservations.tours track by $index" ng-if="$index==0"><%- partial('inputsTour') -%></div>
+                <div ng-repeat="item in reservations.tours track by $index" ng-if="$index==0" id="itemTour{{$index}}"><%- partial('inputsTour') -%></div>
             </div>
             <div ng-if="x=='Hotel'&&reservations.hotels.length>0">
-                <div ng-repeat="item in reservations.hotels track by $index" ng-if="$index==0"><%- partial('inputsHotel') -%></div>
+                <div ng-repeat="item in reservations.hotels track by $index" ng-if="$index==0" id="itemHotel{{$index}}"><%- partial('inputsHotel') -%></div>
             </div>
-            <div ng-if="x=='Transfer'"><%- partial('inputsTransfer') -%></div>
+            <div ng-if="x=='Transfer'" id="itemTransfer"><%- partial('inputsTransfer') -%></div>
         </form>
         <!-- Lo extra agregado -->
-        <div ng-hide="!x" ng-hide="!client||client.name==''">
-            <div>Otros tours</div>
-            <div>Otros hotels</div>
-            <div>Otros transfers</div>
+        <div ng-hide="!x&&( reservations.hotels.length==0 || reservations.tours.length==0 || !transfer.pax )">
+            <div ng-hide="reservations.tours.length<(x=='Tour'?2:1)">
+                <p>Otros tours agregados</p>
+                <div ng-repeat="item in reservations.tours track by $index" ng-if="$index>(x=='Tour'?0:-1)" id="itemTour{{$index}}"><form class='stdform stdform2'><%- partial('inputsTour') -%></form></div>
+            </div>
+            <div ng-hide="reservations.hotels.length<(x=='Hotel'?2:1)">
+                <p>Otros hotels agregados</p>
+                <div ng-repeat="item in reservations.hotels track by $index" ng-if="$index>(x=='Hotel'?0:-1)" id="itemHotel{{$index}}"><form class='stdform stdform2'><%- partial('inputsHotel') -%></form></div>
+            </div>
+            <div ng-hide="x=='Transfer'||!transfer.pax"><form class='stdform stdform2'><%- partial('inputsTransfer') -%></form></div>
         </div>
         <!-- 
             Botones para agregar algo más (otro tour, hotel o traslado) 
             Al agregar algo debe de llevar la pantalla al nuevo formulario
         -->
-        <div ng-hide="!x">
+        <div ng-hide="!x||(reservations.hotels.length==0&&reservations.tours.length==0&&!transfer.hotel)">
             <span>Agregar</span> 
             <div class="btn-group giant-group">
-                <button ng-click="showToAdd('tour')" class="btn btn-success" >Tour</button>
-                <button ng-click="showToAdd('hotel')" class="btn btn-success" >Hotel</button>
-                <button ng-click="showToAdd('transfer')" class="btn btn-success" >Traslado</button>
+                <button ng-click="showToAdd('Tour')" class="btn btn-success" >Tour</button>
+                <button ng-click="showToAdd('Hotel')" class="btn btn-success" >Hotel</button>
+                <button ng-hide="x=='Transfer'||transfer.pax" ng-click="showToAdd('Transfer')" class="btn btn-success" >Traslado</button>
                 <div class='clear'></div>
             </div>
         </div>
         </div><div class='col-md-4'><%- partial('partial/order_resume') -%> </div>
-    </div>
-    <!--<div class='row'>
-        <div class='col-md-12'>
-            <a class="btn btn-primary btn-big pull-right full-sm" ng-click="saveAll()"><i class='fa fa-save'></i> <%= __('order-reservar')%> </a>
-            <a class='btn btn-primary btn-big pull-right full-sm' ng-click="resetForm(false)" ><i class='fa fa-eraser'></i> Limpiar campos</a>
-        </div>
-    </div>-->
-    <div class="modal fade" id="myModal">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <%- partial('partial/contacts_modal') -%> 
-            </div>
-        </div>
     </div>
     <div class="modal fade" id="myModal2">
         <div class="modal-dialog modal-lg">

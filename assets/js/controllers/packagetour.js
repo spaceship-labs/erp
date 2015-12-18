@@ -106,13 +106,14 @@ app.controller('packageItemEditCTL',function($scope,$http){
 		$scope.daysnumber.push(i+'');
 	}
 	$scope.updateMarkers = function(markers,cb){
-		//console.log($scope.item);
+		console.log($scope.item);
 		//console.log(markers);
 		var data = { id : $scope.item.id , markers : markers };
-		//console.log(data);
+		console.log(data);
 		$http({method: 'POST', url: '/packageitem/update',params:data}).success(function (item){
-            $scope.item = item;
-            cb(null,item);
+            //$scope.item = item;
+            console.log(item);
+            //cb(null,item);
         });
 	};
 	$scope.center = {

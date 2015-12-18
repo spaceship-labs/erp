@@ -34,10 +34,10 @@ module.exports = {
     	var form = req.params.all();
     	var id = form.id;
     	if( id && typeof id != 'undefined' ){
-    		delete form.id;
+    		//delete form.id;
     		PackageItem.update({id:id},form,function(e,p){
 	    		if(e) res.json(false);
-	    		PackageItem.findOne(p.id).populate('location').populate('package_').exec(function(e,item){
+	    		PackageItem.findOne(id).populate('location').populate('package_').exec(function(e,item){
 	    			if(e) res.json(false);
 	    			res.json(item);
 	    		});

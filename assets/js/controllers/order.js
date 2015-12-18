@@ -223,9 +223,9 @@ app.controller('orderCTL',function($scope,$http,$window,$upload,$rootScope){
         $window.location = href;
     }
 });
-app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
+app.controller('orderNewCTL',function($scope,$http,$window,$rootScope,$document){
     //varibales para seleccionar los items a agregar o mostrar
-    $scope.selectReservationType = 'tour';
+    $scope.selectReservationType = '';
     $scope.collapse = false;
     //terminan varibales nuevas
     $scope.DatepickerOptions = {
@@ -711,6 +711,7 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
     $scope.addTH = function(type,item){
         console.log($scope.client);
         $scope.collapse = true;
+        $scope.selectReservationType = type;
         if( typeof $scope.client != 'string' && ! angular.equals( {} , $scope.client ) && item ){
             //console.log('addedTour');console.log($scope.addedTour);
             if( type=='tour' ){
@@ -741,21 +742,35 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
                 var auxTour = { tour : item, reservation_type : 'tour' , client : $scope.client };
                 $scope.reservations.tours = $scope.reservations.tours.concat(auxTour);
                 console.log($scope.reservations.tours);
+                var lastIndex = $scope.reservations.tours.length-1;
+                var someElement = 'itemTour'+lastIndex;
             }else if( type=='hotel'){
                 $scope.reservations.hotels = $scope.reservations.hotels.concat({hotel:item, reservation_type : 'hotel' , client : $scope.client });
+                var lastIndex = $scope.reservations.hotels.length-1;
+                var someElement = 'itemHotel'+lastIndex;
             }
             $scope.collapseList[type] = true;
             updateReservationsGeneralFields(type);
+            setTimeout(function(){ 
+                someElement = angular.element(document.getElementById(someElement));
+                $document.scrollToElement(someElement, 30, 1000);
+                $scope.$apply();
+            }, 100);
         }else{
             $scope.alertM.show = true;
             $scope.alertM.client = true;
         }
     };
     $scope.removeTH = function(index,type){
-        if( type=='tour' && $scope.reservations.tours[index] )
+        $scope.selectReservationType = '';
+        if( type=='tour' && $scope.reservations.tours[index] ){
             $scope.reservations.tours.splice(index,1);
-        if( type=='hotel' && $scope.reservations.hotels[index] )
+            $scope.collapse = $scope.reservations.tours.length>0?true:false;
+        }
+        if( type=='hotel' && $scope.reservations.hotels[index] ){
             $scope.reservations.hotels.splice(index,1);
+            $scope.collapse = $scope.reservations.hotels.length>0?true:false;
+        }
     };
     $scope.validateDates = function(){
         if( $scope.transfer && ! angular.equals( {} , $scope.transfer ) ){
@@ -855,9 +870,8 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
         var url = $scope.thecompany.adminCompany?'/tour/find':'/tour/findProducts/';
         var params = { skip : skip, limit : 5 , company : $scope.thecompany.id , adminCompany : $scope.thecompany.adminCompany||false };
         if(searchTours!='') params.name = searchTours;
-        console.log(params);
+        //console.log(params);
         $http.post( url , params ).then(function(response){
-            //console.log(response.data);
             $scope.allTours = response.data;
             console.log(response.data);
         });
@@ -866,6 +880,7 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
     $scope.getAllHotels = function(){
         var skip = $scope.hotelsCurrentPage?($scope.hotelsCurrentPage-1) * 5 : 0;
         var url = $scope.thecompany.adminCompany?'/hotel/find':'/hotel/findProducts/';
+        //var params = { visible : true, skip : skip, limit : 5 , company : $scope.thecompany.id , adminCompany : $scope.thecompany.adminCompany||false };
         var params = { skip : skip, limit : 5 , company : $scope.thecompany.id , adminCompany : $scope.thecompany.adminCompany||false };
         if($scope.searchHotels!='') params.name = $scope.searchHotels;
         console.log(params);
@@ -1083,10 +1098,29 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope){
         }
         return result;
     };
-    $scope.shotToAdd = function(type){
-        $scope.collapse = false; //para mostrar el listing de tours/hoteles
+    $scope.showToAdd = function(type){
         $scope.selectReservationType = type;
-    }
+        if( type == 'Transfer' ){
+            $scope.transfer = { pax : 1 };
+            var someElement = angular.element(document.getElementById('itemTransfer'));
+        }else{ 
+            var someElement = angular.element(document.getElementById('selector'+type+'s'));
+            $scope.collapse = false;
+        }
+        setTimeout(function(){ 
+            $document.scrollToElement(someElement, 30, 1000);
+            $scope.$apply();
+        }, 100);
+    };
+    $scope.$watch('x', function(newValue, oldValue) {
+        $scope.collapse = false;
+        $scope.selectReservationType = $scope.x;
+    });
+    $scope.getRange = function(number){
+        var result = [];
+        if( number && number>0 ) for( x = 0; x < number; x++ ) result.push(x);
+        return result;
+    };
 });
 app.controller('orderEditCTL',function($scope,$http,$window){
     var customTimer;

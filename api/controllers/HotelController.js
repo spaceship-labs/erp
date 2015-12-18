@@ -38,6 +38,12 @@ module.exports = {
 			});
 		//});
 	},
+	setAllHotelsUrl : function(req,res){
+		var params = req.params.all();
+		Common.setAllHotelsUrl(params.limit,params.skip,function(err,hotels){
+			res.json({ err:err, results : hotels?true:false });
+		});
+	},
 	find : function(req,res){
 		var params = req.params.all();
 		var skip = params.skip || 0;
@@ -148,7 +154,7 @@ module.exports = {
     	form.req = req;
     	Hotel.update({id:form.id},form,function(e,hotel){
     		if(e) throw(e);
-    		Hotel.findOne(hotel[0].id).populate('rooms').exec(function(e,hotel){
+    		Hotel.findOne(hotel.id).populate('rooms').exec(function(e,hotel){
     			if(e) throw(e);    			
     			hotel = formatHotel(hotel);	
     			res.json(hotel);

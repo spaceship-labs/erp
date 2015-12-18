@@ -51,10 +51,10 @@
         <label><%= __('order-tipo-viaje')%> </label>
         <span class='field'>
             <span class="radio">
-                <input ng-change='updatePriceTransfer()' ng-model="transfer.type" type="radio" name="transtype" value="round_trip"> <%= __('order_tv_rt')%>
+                <input ng-change='updatePriceTransfer()' ng-model="transfer.type" type="radio" name="transtype" value="round_trip"> Redondo
             </span>
             <span class="radio">
-                <input ng-change='updatePriceTransfer()' ng-model="transfer.type" type="radio" name="transtype" value="one_way" checked> <%= __('order_tv_ow')%>
+                <input ng-change='updatePriceTransfer()' ng-model="transfer.type" type="radio" name="transtype" value="one_way" checked> sencillo
             </span>
         </span>
     </p>
@@ -65,7 +65,7 @@
                 <input ng-change='updatePriceTransfer()' ng-model="transfer.serviceType" type="radio" name="serviceType" value="P" checked> Privado
             </span>
             <span class="radio">
-                <input ng-change='updatePriceTransfer()' ng-model="transfer.serviceType" type="radio" name="serviceType" value="C"> Colectivo
+                <input ng-change='updatePriceTransfer()' ng-model="transfer.serviceType" type="radio" name="serviceType" value="C"> Compartido
             </span>
         </span>
     </p>
@@ -158,10 +158,10 @@
             <label><%= __('order-hora-salida')%></label>
             <span class='field'><timepicker ng-model="transfer.departure_time" ng-change="getpickuptime()" hour-step="1" minute-step="1" show-meridian="ismeridian"></timepicker></span>
         </p>
-        <p>
+        <!--<p>
             <label><%= __('order-pickup')%></label>
             <span class='field'><timepicker ng-model="transfer.departurepickup_time" hour-step="1" minute-step="1" show-meridian="ismeridian"></timepicker></span>
-        </p>
+        </p>-->
     </div>
     <h4 class="widgettitle">Notas</h4>
     <p><textarea ng-model="transfer.notes"></textarea></p>

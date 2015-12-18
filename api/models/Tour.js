@@ -87,6 +87,10 @@ module.exports = {
 		cb();
 	}
 	,beforeUpdate:function(val,cb){
+		if( typeof val.fee=='string' ) val.fee = val.fee==''?0:parseFloat(val.fee);
+		if( typeof val.feeChild=='string' ) val.feeChild = val.feeChild==''?0:parseFloat(val.feeChild);
+		val.fee = val.fee&&val.fee == val.fee?val.fee:1;
+		val.feeChild = val.feeChild&&val.feeChild==val.feeChild?val.feeChild:1;
 		Notifications.before(val);
 		cb();
 	}
@@ -94,7 +98,12 @@ module.exports = {
 		if (!val.name) {
 			return cb({err: ["Must have a username!"]});
 		}
-		val.url = val.name.replace(/\s+/g, '-').toLowerCase();
+		//val.url = val.name.replace(/\s+/g, '-').toLowerCase();
+		val.url = Common.stringReplaceChars(val.url);
+		if( typeof val.fee=='string' ) val.fee = val.fee==''?0:parseFloat(val.fee);
+		if( typeof val.feeChild=='string' ) val.feeChild = val.feeChild==''?0:parseFloat(val.feeChild);
+		val.fee = val.fee&&val.fee == val.fee?val.fee:1;
+		val.feeChild = val.feeChild&&val.feeChild==val.feeChild?val.feeChild:1;
 		Notifications.before(val);
 		cb();
 	}

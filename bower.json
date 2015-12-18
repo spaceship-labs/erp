@@ -60,7 +60,8 @@
     "parsleyjs": "~2.0.7",
     "jquery-steps": "~1.1.0",
     "sweetalert": "~0.5.0",
-    "leaflet-plugins": "~1.4.2"
+    "leaflet-plugins": "~1.4.2",
+    "angular-scroll": "~1.0.0"
   },
   "resolutions": {
     "jquery": "~2.x",
