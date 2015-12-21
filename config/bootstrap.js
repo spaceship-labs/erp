@@ -20,16 +20,16 @@ module.exports.bootstrap = function (cb) {
     CronJobs && CronJobs.init();
 
     //cb();
-    server.kill(function(err){
+    //server.kill(function(err){
         cb();
-    });
+    //});
 
     Files.getContainerLink();
 };
 
-server = http.createServer(function(req, res){
-    res.end('loading ERP... ');
-}).listen(port, function(){
-});
-
-killable(server);
+//server = http.createServer(function(req, res){
+//    res.end('loading ERP... ');
+//}).listen(port, function(){
+//});
+//
+//killable(server);
