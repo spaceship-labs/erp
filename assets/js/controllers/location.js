@@ -31,6 +31,8 @@ app.controller('locationEditCTL',function($scope,$upload,$http){
     $scope.zone = {};
     $scope.newZoneClass = 'fa-plus';
     $scope.typeAddZone = "1";
+    console.log('$scope.location_o');
+    console.log($scope.location_o);
     /*$scope.getRelatedLocations = function(){
         var result = [];
         if($scope.location_o.locations.length > 0){
