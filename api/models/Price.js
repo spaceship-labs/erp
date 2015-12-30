@@ -20,7 +20,10 @@ module.exports = {
         ,description : {
             type : 'string'
         }
-
+        ,active : {
+            type : 'boolean',
+            defaultsTo : true
+        }
         //optional
         //type == 'extra_hour'
         ,hour : 'integer'

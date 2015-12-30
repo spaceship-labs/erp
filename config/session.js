@@ -17,7 +17,6 @@ module.exports.session = {
   // forcing them to log in again. 
   secret: '53934c157dcffc818a52cde922aa5db0',
 
-
   // Set the session cookie expire time
   // The maxAge is set by milliseconds, the example below is for 24 hours
   //

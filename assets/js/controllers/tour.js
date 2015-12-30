@@ -163,6 +163,9 @@ app.controller('tourEditCTL',function($scope,$http,$window){
 
     $scope.addExtraPrice = function(){
         $scope.tour.extra_prices.push($scope.extra_price);
+    }
+
+    $scope.deleteExtraPrice = function(){
 
     }
 });
