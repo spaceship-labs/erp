@@ -128,6 +128,18 @@
             }
         };
 
+        $scope.fieldIsHidden = function(field){
+            //console.log('test');
+            var isHidden = false;
+            if (field.condition) {
+                var keyValues = field.condition.split('=');
+                //console.log($scope.object[keyValues[0]]);
+                isHidden = $scope.object[keyValues[0]] != keyValues[1];
+                //console.log(isHidden);
+            }
+            return (field.hideIfNotField && !object[field.hideIfNotField] || field.hideIfField && object[field.hideIfField]) || isHidden;
+        }
+
 
 
 

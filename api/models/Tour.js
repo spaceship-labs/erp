@@ -48,8 +48,7 @@ module.exports = {
             defaultsTo : 'single'
         }
         ,price : {
-            collection : 'price',
-            via : 'tour'
+            model : 'price'
         }
         ,extra_prices : {
             collection : 'price',
@@ -99,11 +98,24 @@ module.exports = {
 	,labels : { es : 'Tours', en : 'Tours' }
   	,afterCreate: function(val,cb){
 		Notifications.after(Tour,val,'create');
-		cb()
+        if (val.fee) {
+            var price = {
+                fee : val.fee,
+                feeChild : val.feeChild,
+                tour : val.id,
+                type : 'none'
+            };
+            Price.create(price).exec(function(err,res){
+                val.price = res.id;
+                val.save(cb);
+            });
+        } else {
+            cb();
+        }
 	}
 	,afterUpdate: function(val,cb){
 		Notifications.after(Tour,val,'update');
-		cb();
+        cb();
 	}
 	,beforeUpdate:function(val,cb){
 		if( typeof val.fee=='string' )
@@ -112,9 +124,21 @@ module.exports = {
             val.feeChild = val.feeChild == '' ? 0 : parseFloat(val.feeChild);
 		val.fee = val.fee ? val.fee : 0;
 		val.feeChild = val.feeChild ? val.feeChild : 0;
-
-		Notifications.before(val);
-		cb();
+        if (val.fee) {
+            var price = {
+                fee : val.fee,
+                feeChild : val.feeChild,
+                tour : val.id
+            };
+            Price.create(price).exec(function(err,res){
+                val.price = res.id;
+                Notifications.before(val);
+                cb();
+            });
+        } else {
+            Notifications.before(val);
+            cb();
+        }
 	}
 	,beforeCreate: function(val,cb){
 		if (!val.name) {

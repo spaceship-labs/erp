@@ -3,17 +3,26 @@ module.exports = {
 
     attributes: {
         fee : 'float'
-        ,feeKid : 'float'
-        ,extra_type : {
+        ,feeChild : 'float'
+
+        ,tour : {
+            model : 'Tour'
+        }
+        ,reservations : {
+            collection : 'reservation',
+            via : 'prices'
+        }
+        ,type : {
             type : 'string',
             enum: ['none', 'extra_hour'],
             defaultsTo : 'none'
         }
-        ,extra_selector : {
-            type : 'integer'
+        ,description : {
+            type : 'string'
         }
-        ,tour : {
-            model : 'Tour'
-        }
+
+        //optional
+        //type == 'extra_hour'
+        ,hour : 'integer'
     }
 };

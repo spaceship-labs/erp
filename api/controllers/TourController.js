@@ -134,8 +134,9 @@ module.exports = {
 		}); }); // create and findOne
 	},
 	edit : function(req,res){
-		Tour.findOne(req.params.id).populate('categories',{type:{$ne:'rate'}}).exec(function(e,tour){ TourCategory.find({type:{ $ne:'rate' }}).exec(function(tc_err,tourcategories){
+		Tour.findOne(req.params.id).populate('categories',{type:{$ne:'rate'}}).populate('extra_prices',{ type : { $ne : 'none' } }).exec(function(e,tour){ TourCategory.find({type:{ $ne:'rate' }}).exec(function(tc_err,tourcategories){
 			if(e) return res.redirect("/tour/");
+            //console.log(tour);
 			Location.find({}).sort('name').exec(function(e,locations){
 	    		SeasonScheme.find().sort('name').exec(function(e,schemes){ TourProvider.find().exec(function(e,providers){
 	    			if(tour.provider)
@@ -266,7 +267,7 @@ module.exports = {
     	});
 	},
 	removeFiles : function(req,res){
-		form = req.params.all();
+		var form = req.params.all();
 		Tour.findOne({id:form.id}).exec(function(e,tour){
 			tour.removeFiles(req,{
 				dir : 'tours/gallery',
@@ -291,7 +292,44 @@ module.exports = {
 				res.json({ err : err , result : result });
 			});
 		})
-	}
+	},
+    addExtraPrices : function(req,res) {
+        var params = req.params.all();
+        //console.log(params);
+        async.each(params.prices,function(price,callback){
+            if (price.id) {
+                Price.update({ id : price.id },price).exec(function(err,price_updated){
+                    callback(err,price_updated);
+                });
+            } else {
+                Price.create(price).exec(function(err,price_created){
+                    callback(err,price_created);
+                });
+            }
+        },function(err,result){
+            //console.log('saved extra prices');
+            var jsonRes = { success : true  };
+            if (err) {
+                jsonRes.success = false;
+                jsonRes.error = err;
+            }
+            Price.find({ tour : params.tour ,type : { $ne : 'none' } }).exec(function(er,prices){
+                if (er) {
+                    jsonRes.success = false;
+                    jsonRes.error = er;
+                }
+                jsonRes.extra_prices = prices;
+                res.json(jsonRes);
+            });
+        });
+    },
+    setAllTours : function(req,res) {
+        //var params = req.params.all();
+        Tour.update({ priceType : null },{ priceType : 'single' }).exec(function(err,results){
+            console.log(err);
+            res.json(results);
+        });
+    }
 };
 
 var formatDuration = function(tours,thecb){

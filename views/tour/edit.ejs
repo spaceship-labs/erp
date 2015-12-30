@@ -7,7 +7,7 @@
     window.content = <%- JSON.stringify(_content) %>;
 </script>
 <div ng-controller='tourEditCTL' class="editar-tour ng-cloak">
-    <div class="span4 profile-left profileEdit">
+    <div class="span6 profile-left profileEdit">
         <div profile-image 
             object='tour' 
             update-method='/tour/updateIcon' 
@@ -64,7 +64,85 @@
                 </div>
             </div>
         </div>
+        <div class="widgetbox">
+            <div class="headtitle">
+                <h4 class="widgettitle">Extras <span ng-click='saveExtraPrice()'  class='fa icon' ng-class='saveClass'></span></h4>
+            </div>
+            <div class="widgetcontent nopadding">
+                <div class='form stdform stdform2'>
+                    <p ng-if="extra_price.type == 'extra_hour'">
+                        <label>Horas</label>
+                        <span class='field'><input ng-model="extra_price.hour" type="number" min="0" max="12"/></span>
+                    </p>
+                    <p>
+                        <label>Tipo</label>
+                        <span class='field'><select ng-model="extra_price.type" ng-options="obj.id as obj.name for obj in extra_types"></select></span>
+                    </p>
+                    <p>
+                        <label>Tarifa ({{company.base_currency.currency_code}})</label>
+                            <span class="field">
+                                <span class="input-group">
+                                    <span class="input-group-addon">$</span>
+                                    <input class="form-control" type="text" ng-model='extra_price.fee' valid-number>
+                                </span>
+                            </span>
+                    </p>
+                    <p ng-if="tour.priceType == 'single'">
+                        <label>Tarifa niños ({{company.base_currency.currency_code}})</label>
+                            <span class="field">
+                                <span class="input-group">
+                                    <span class="input-group-addon">$</span>
+                                    <input class="form-control" type="text" ng-model='extra_price.feeChild' valid-number>
+                                </span>
+                            </span>
+                    </p>
+                    <p>
+                        <label>Descripcion</label>
+                        <span class='field'><input ng-model="extra_price.description"/></span>
+                    </p>
+                    <p>
+                        <a class='btn btn-primary pull-right' ng-click='addExtraPrice()'>Agregar Precio Extra</a>
+                    </p>
+                </div>
+                <div ng-repeat="extra_p in tour.extra_prices" class='form stdform stdform2 form-group'>
+                    <p>
+                        <a class="close pull-right" href="#">&times;</a>
+                    </p>
+                    <p ng-if="extra_p.type == 'extra_hour'">
+                        <label>Hora</label>
+                        <span class='field'><input ng-model="extra_p.hour" /></span>
+                    </p>
+                    <p>
+                        <label>Tipo</label>
+                        <span class='field'><select ng-model="extra_p.type" ng-options="obj.id as obj.name for obj in extra_types"></select></span>
+                    </p>
+                    <p>
+                        <label>Descripcion</label>
+                        <span class='field'><input ng-model="extra_p.description" /></span>
+                    </p>
+                    <p>
+                        <label>Tarifa ({{company.base_currency.currency_code}})</label>
+                            <span class="field">
+                                <span class="input-group">
+                                    <span class="input-group-addon">$</span>
+                                    <input class="form-control" type="text" ng-model='extra_p.fee' valid-number>
+                                </span>
+                            </span>
+                    </p>
+                    <p ng-if="tour.priceType == 'single'">
+                        <label>Tarfifa niños ({{company.base_currency.currency_code}})</label>
+                        <span class="field">
+                            <span class="input-group">
+                                <span class="input-group-addon">$</span>
+                                <input class="form-control" type="text" ng-model='extra_p.feeChild' valid-number>
+                            </span>
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
     </div>
+
     <div class="span6">
         <div form-helper 
             fields='content.tour' 
@@ -72,10 +150,10 @@
             action='/tour/save' 
             form-title='<%= __('tour-info')%>'
             currency='company.base_currency'
-            objects='{schemes:schemes,locations:locations,providers:providers,tourcategories:tourcategories,maxpax:maxpax}'
+            objects='{schemes:schemes,locations:locations,providers:providers,tourcategories:tourcategories,maxpax:maxpax,types:types}'
             >
         </div> 
-    </div> 
+    </div>
     <div class='row-fluid'>
         <div file-manager object='tour' add-method='/tour/addFiles' remove-method='/tour/removeFiles' dir='tours/gallery' ></div>
     </div>
