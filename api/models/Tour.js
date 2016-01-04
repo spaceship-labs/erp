@@ -57,6 +57,11 @@ module.exports = {
         ,duration : {
             type : 'integer'
         }
+        ,status : {
+            type: 'string',
+            enum: ['inactive', 'active'],
+            defaultsTo : 'inactive'
+        }
         //duration_type ?
 
 	}
@@ -98,12 +103,12 @@ module.exports = {
 	,labels : { es : 'Tours', en : 'Tours' }
   	,afterCreate: function(val,cb){
 		Notifications.after(Tour,val,'create');
+
         if (val.fee) {
             var price = {
                 fee : val.fee,
                 feeChild : val.feeChild,
-                tour : val.id,
-                type : 'none'
+                tour : val.id
             };
             Price.create(price).exec(function(err,res){
                 val.price = res.id;
@@ -118,41 +123,16 @@ module.exports = {
         cb();
 	}
 	,beforeUpdate:function(val,cb){
-		if( typeof val.fee=='string' )
-            val.fee = val.fee == '' ? 0 : parseFloat(val.fee);
-		if( typeof val.feeChild=='string' )
-            val.feeChild = val.feeChild == '' ? 0 : parseFloat(val.feeChild);
-		val.fee = val.fee ? val.fee : 0;
-		val.feeChild = val.feeChild ? val.feeChild : 0;
-        if (val.fee) {
-            var price = {
-                fee : val.fee,
-                feeChild : val.feeChild,
-                tour : val.id
-            };
-            Price.create(price).exec(function(err,res){
-                val.price = res.id;
-                Notifications.before(val);
-                cb();
-            });
-        } else {
+
             Notifications.before(val);
             cb();
-        }
 	}
 	,beforeCreate: function(val,cb){
 		if (!val.name) {
 			return cb({err: ["Must have a name!"]});
 		}
-		//val.url = val.name.replace(/\s+/g, '-').toLowerCase();
-		val.url = Common.stringReplaceChars(val.name);
 
-        if( typeof val.fee=='string' )
-            val.fee = val.fee == '' ? 0 : parseFloat(val.fee);
-        if( typeof val.feeChild=='string' )
-            val.feeChild = val.feeChild == '' ? 0 : parseFloat(val.feeChild);
-        val.fee = val.fee ? val.fee : 0;
-        val.feeChild = val.feeChild ? val.feeChild : 0;
+		val.url = Common.stringReplaceChars(val.name);
 
 		Notifications.before(val);
 		cb();
