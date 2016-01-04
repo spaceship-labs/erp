@@ -1,7 +1,24 @@
 <p>
-    <label>Pax</label>
+    <label>Clave</label>
     <span class="field">
-        <input type="number" ng-model="modal.pax">
+        <input type="text" ng-model="modal.clave">
+    </span>
+</p>
+<p>
+    <label>Agencia</label>
+    <span class="field">
+        <i>{{modal.company.name}}</i>
+    </span>
+</p>
+<p>
+    <label><%= __('order-hotel')%></label>
+    <span class='field'>
+        <input type="text" class="form-control" 
+            placeholder="<%= __('order-hotel')%>"
+            ng-model="modal.hotel" 
+            typeahead-editable='true'
+            typeahead="obj as obj.name for obj in getHotels($viewValue)" 
+            typeahead-on-select="getAirports()" >
     </span>
 </p>
 <p>
@@ -16,6 +33,95 @@
     </span>
 </p>
 <p>
+    <label>Servicio</label>
+    <span class="field">
+        <select 
+            ng-model='modal.transfer2'
+            ng-options="obj.transfer.id as obj.transfer.name for obj in transfers"
+            ng-change="getVehicles()"
+            required
+            class='form-control' >
+        </select>
+    </span>
+</p>
+<p>
+    <label>Pax</label>
+    <span class="field">
+        <input type="number" ng-model="modal.pax">
+    </span>
+<p>
+    <label>Transportista</label>
+    <span class='field'>
+        <select 
+            ng-model="theTransportist"
+            ng-options="c.id as c.name for c in all_companies"
+            ng-change="filterV(theTransportist)"
+        ></select>
+    </span>
+</p>
+<p>
+    <label>Vehículo</label>
+    <span class='field'>
+        <select 
+            ng-model="modal.vehicle"
+            ng-options="c.id as c.car_id group by c.transfertype for c in filter_vehicles"
+        ></select>
+    </span>
+</p>
+<p>
+    <label>No Show?</label>
+    <span class='field'>
+        <input type='checkbox' ng-model="modal.no_show">
+    </span>
+</p>
+<p>
+    <label>Notas</label>
+    <span class='field'>
+        <textarea ng-model='modal.notes'></textarea>
+    </span>
+</p>
+<p ng-hide="!dtfa[0]">
+    <label>Pickup (arrival)</label>
+    <span class='field'>
+        <timepicker ng-model="modal.arrivalpickup_time" hour-step="1" minute-step="1" show-meridian="ismeridian"></timepicker>
+    </span>
+</p>
+<p ng-hide="!dtfa[1]">
+    <label>Pickup (departure)</label>
+    <span class='field'>
+        <timepicker ng-model="modal.departurepickup_time" hour-step="1" minute-step="1" show-meridian="ismeridian"></timepicker>
+    </span>
+</p>
+<p>
+    <label><a ng-click="incidentesShow=!incidentesShow">{{ incidentesShow?'- Ocultar':'+ Mostrar' }} Incidentes</a></label>
+</p>
+<div ng-hide="!incidentesShow">
+    <p>
+        <label>Operador</label>
+        <span class='field'>
+            <input type='text' ng-model="modal.driver">
+        </span>
+    </p>
+    <p>
+        <label>Notas de incidencia</label>
+        <span class='field'>
+            <textarea ng-model='modal.notes2'></textarea>
+        </span>
+    </p>
+</div>
+<p>
+    <label><%=__("price")%></label>
+    <span class="field">
+        <i>{{modal.fee}}</i>
+        <!--<select 
+            ng-model='modal.price'
+            ng-options="obj.id as obj.name + ' | $ ' + obj.price for obj in filter_price()"
+            required
+            class='form-control' >
+        </select>-->
+    </span>
+</p>
+<!--<p>
     <label><%=__("zone_from")%></label>
     <span class="field">
         <select 
@@ -38,42 +144,6 @@
     </span>
 </p>
 <p>
-    <label><%=__("price")%></label>
-    <span class="field">
-        <i>{{modal.fee}}</i>
-        <!--<select 
-            ng-model='modal.price'
-            ng-options="obj.id as obj.name + ' | $ ' + obj.price for obj in filter_price()"
-            required
-            class='form-control' >
-        </select>-->
-    </span>
-</p>
-
-<p>
-    <label><%=__("transport")%></label>
-    <span class="field">
-        <select 
-            ng-model='modal.company'
-            ng-options="obj.id as obj.name for obj in companies"
-            ng-change="changeCompany()"
-            required
-            class='form-control' >
-        </select>
-    </span>
-</p>
-<p>
-    <label>ID</label>
-    <span class="field">
-        <select 
-            ng-model='modal.transport'
-            ng-options="obj.id as obj.car_id for obj in transports"
-            required
-            class='form-control' >
-        </select>
-    </span>
-</p>
-<p>
     <label><%=__("start_hour")%></label>
     <span class="field">
         <input type="time" ng-model="modal.start" required>
@@ -84,4 +154,4 @@
     <span class="field">
         <input ng-class="{'has-error': error.invalid_end}" type="time" ng-model="modal.end">
     </span>
-</p>
+</p>-->

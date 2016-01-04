@@ -7,11 +7,12 @@
 
 module.exports = {
     index: function(req, res){
-        Company.find().exec(function(err, companies){
+        Company.find().populate('base_currency').exec(function(err, companies){ Location.find().populate('zones').exec(function(err,locations){
             Common.view(res.view,{
-                select_view: 'transportasign/index',
+                select_view: 'transportasign/request',
                 type: 'request',
                 companies: companies,
+                locations : locations,
                 page:{
                     name:req.__('request'),
                     icon:'fa fa-clock-o',
@@ -21,7 +22,7 @@ module.exports = {
                     {label : req.__('sc_transfer')}
                 ]
             },req);
-        });
+        }); });
     },
     getprices : function(req,res){
         var params = req.params.all();

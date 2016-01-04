@@ -4,7 +4,7 @@
         <select class='' ng-change="getProducts('transfer','transfers',0)" ng-model="thelocation" ng-options=" obj.id as obj.name for obj in locations " ></select>
         <a ng-click="isCollapseObj['transferCollapseFilter']=!isCollapseObj['transferCollapseFilter']" class="pull-right fa fa-filter"></a>
     </h4>
-    <div collapse="!isCollapseObj['transferCollapseFilter']">
+    <div uib-collapse="!isCollapseObj['transferCollapseFilter']">
         <form class='form stdform stdform2 stdform3' ng-submit="updateTransferPrices()">
             <div class='row'>
                 <div class='col-md-6'>
@@ -72,7 +72,7 @@
                 <i class="fa fa-{{isCollapseObj[service[0].transfer.id]?'minus':'plus'}}"></i>
             </a>
         </h4>
-        <div class='collapsable' collapse="!isCollapseObj[service[0].transfer.id]">
+        <div class='collapsable' uib-collapse="!isCollapseObj[service[0].transfer.id]">
         <table class='table table-striped'>
             <tr class='hide-sm'>
                 <th>Zona</th>

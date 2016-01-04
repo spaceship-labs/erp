@@ -30,6 +30,9 @@ app.controller('locationEditCTL',function($scope,$upload,$http){
     $scope.showZoneForm = false;
     $scope.zone = {};
     $scope.newZoneClass = 'fa-plus';
+    $scope.typeAddZone = "1";
+    console.log('$scope.location_o');
+    console.log($scope.location_o);
     /*$scope.getRelatedLocations = function(){
         var result = [];
         if($scope.location_o.locations.length > 0){
@@ -53,6 +56,29 @@ app.controller('locationEditCTL',function($scope,$upload,$http){
             //console.log('zone');console.log(zone);
             $scope.location_o.zones.push(zone);
             $scope.newZoneClass = 'fa-plus';
+        });
+    };
+    $scope.allZones = [];
+    var getAllZones = function(){
+        var ids = [];
+        for(var x in $scope.location_o.zones) ids.push( $scope.location_o.zones[x].id );
+        var params = { 'id' : { '!' : ids } };
+        console.log(params);
+        $http.post('/zone/find',params,{}).success(function(result) {
+            console.log(result);
+            if( result.result ) $scope.allZones = result.result;
+            console.log( $scope.allZones );
+        });
+    }
+    getAllZones();
+    $scope.addExistingZone = function(){
+        var params = { zone : $scope.existingZone, location : $scope.location_o.id };
+        $http({method: 'POST', url: '/zone/addLocation',params:params}).success(function(result){
+            if( result.result ){
+                $scope.location_o.zones.push(result.result);
+                $scope.newZoneClass = 'fa-plus';
+                getAllZones();
+            }
         });
     };
     /*$scope.saveClass2 = 'fa-save';

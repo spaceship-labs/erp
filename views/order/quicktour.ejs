@@ -1,0 +1,152 @@
+<script type='text/javascript'>
+    window.company = <%- JSON.stringify(selected_company) %>;
+</script>
+<div ng-controller='orderQuickCTL' class='ng-cloak quickForm'>
+<form class='stdform stdform2 col-md-12 widgetbox' action='' name='formRT' method='post'>
+    <!-- Tour section -->
+    <div class='row'>
+        <div class='stdform stdform2 col-md-12 widgetbox'>
+            <h4 class="widgettitle">
+                <i class='fa fa-compass'></i> Reserva de Tour
+                <a class='icon fa fa-calendar-o' ng-click="showReservationDate=!showReservationDate"></a>
+            </h4>
+            <div class='widgetcontent nopadding'>
+                <div class='row'>
+                    <!-- Column 1 -->
+                    <div class='col-md-6'>
+                        <p>Nombre completo*</p>
+                        <p><input tabindex='' type='text' name="name" ng-model="reservationTour.client" ng-required="true" required>
+                        </p>
+                        <p><%= __('order-hotel')%>*</p>
+                        <p><input tabindex='' type="text" class="form-control" 
+                            placeholder="<%= __('order-hotel')%>"
+                            ng-model="reservationTour.hotel" 
+                            typeahead-editable='true'
+                            typeahead="obj as obj.name for obj in getHotels($viewValue)" 
+                            required="true" required ></p>
+                        <p>
+                            Tour* 
+                            <input type='radio' name='bytype' ng-model="searchBy" value="c"> Código
+                            <input type='radio' name='bytype' ng-model="searchBy" value="n"> Nombre
+                            <input type='radio' name='bytype' ng-model="searchBy" value="p"> Código de proveedor
+                        </p>
+                        <p style="position:relative">
+                            <input tabindex='' type="text" class="form-control" 
+                            placeholder="Tour"
+                            ng-model="reservationTour.tour" 
+                            typeahead-editable='true'
+                            typeahead="obj as (obj.name + (obj.provider?', '+obj.provider.name:'') ) for obj in getTours($viewValue)" 
+                            typeahead-on-select="updatePriceTour()"
+                            required="true" required >
+            <a ng-hide="!reservationTour.tour.id" style="position: absolute;right: 18px;top: 17px;color: green;" class='fa fa-check'></a>
+            <a ng-hide="reservationTour.tour.id" style="position: absolute;right: 18px;top: 16px;color: red;" class='fa fa-times'></a>
+                        </p>
+                        <p>Fecha de Tour*</p>
+                        <p>
+                            <span class='input-group calendar-container'>
+                                <input tabindex='19' is-open="open[0]" ng-model='reservationTour.startDate' id="arrival-date" datepicker-popup min-date="DatepickerOptions.minDate" required="true" required />
+                                <span class="input-group-btn">
+                                    <button tabindex='18' type="button" class="btn btn-default" ng-click="open($event,0)"><i class="fa fa-calendar"></i></button>
+                                </span>
+                            </span>
+                        </p>
+                        <p>Lugar de salida*</p>
+                        <p>
+                            <input tabindex='' type="text" class="form-control" 
+                            ng-model="reservationTour.departurePlace" 
+                            typeahead-editable='true'
+                            typeahead="obj as obj for obj in reservationTour.hotel.departurePlaces" 
+                            required="true" required >
+                            <!--<input tabindex='' type="text" class="form-control" 
+                            ng-model="reservationTour.departurePlace" required="true" required >-->
+                        </p>
+                        <p>Agencia: </p>
+                        <p ng-bind="thecompany.name">
+                            <!--<select tabindex='1' class='outerSelect' ng-model='thecompany' ng-options="obj as obj.name for obj in companies" ></select>-->
+                        </p>
+                    </div>
+                    <!-- Column 2 -->
+                    <div class='col-md-6'>
+                        <div ng-hide="!showReservationDate"><p>Fecha de reserva</p>
+                        <p>
+                            <span class='input-group calendar-container'>
+                                <input is-open="open[1]" ng-model='reservationTour.createdAt' id="" datepicker-popup required="true" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="open($event,1)"><i class="fa fa-calendar"></i></button>
+                                </span>
+                            </span>
+                        </p></div>
+                        <p>Cupón</p>
+                        <p><input tabindex='' type="text" class="form-control" 
+                            ng-model="reservationTour.controlCode" ></p>
+                        <p><%= __('order_room')%>*</p>
+                        <p><input tabindex='' type='text' ng-model="reservationTour.room" name='room' required="true" required /></p>
+                        <div class='row'>
+                            <div class='col-md-6 col-xs-6'>
+                                <p>Pax Adultos*</p>
+                                <p><select tabindex='' ng-change="updatePriceTour()" ng-options='obj for obj in pax' ng-model='reservationTour.pax' required="true" required ></select></p>
+                            </div>
+                            <div class='col-md-6 col-xs-6'>
+                                <p>Pax Niños</p>
+                                <p><select tabindex='' ng-change="updatePriceTour()" ng-options='obj for obj in kidPax' ng-model='reservationTour.kidPax' ></select></p>
+                            </div>
+                        </div>
+                        <p>Confirmación</p>
+                        <p><input tabindex='' type="text" class="form-control" 
+                            ng-model="reservationTour.confirmationCode" ></p>
+                        <p>Hora de Tour*</p>
+                        <p><input tabindex='' type="text" class="form-control" 
+                            ng-model="reservationTour.departureTime" required="true" required ></p>
+                        <p><%= __('order-tarifa')%></p>
+                        <p> <span>{{ reservationTour.fee + reservationTour.feeKids || 0}}</span> </p>
+                    </div>
+                </div><!-- Termina sección lugares -->
+                <h4 class="widgettitle">Información de pago</h4>
+                <div class='row'>
+                    <div class='col-md-6'>
+                        <p><%= __('order-pago')%></p>
+                        <p><select tabindex='30' ng-options='obj as obj.name for obj in hrevPayment' ng-model='reservationTour.payment_method' ></select></p>
+                        <div ng-show="reservationTour.payment_method.handle=='creditcard'">
+                            <p><%= __('order-autorizacion')%></p>
+                            <p><input tabindex='31' type='text' name='autorization_code' ng-model="reservationTour.autorization_code" /></p>
+                        </div>
+                    </div>
+                    <div class='col-md-6'>
+                        <p>Moneda</p>
+                        <p><select tabindex='32' ng-options="c as c.name for c in thecompany.currencies" name='currency' ng-model='transfer.currency' ng-change='updatePriceTour()' ></select></p>
+                        <p>Token de descuento</p>
+                        <p style='position:relative'>
+                            <input type='text' ng-model="theCupon.token" ng-change="validateCupon()" >
+                            <a ng-hide="!theCupon.cupon.id" style="position: absolute;right: 18px;top: 17px;color: green;" class='fa fa-check'></a>
+                            <a ng-hide="theCupon.cupon.id" style="position: absolute;right: 18px;top: 16px;color: red;" class='fa fa-times'></a>
+                        </p>
+                    </div>
+                </div>
+                <h4 class="widgettitle">Notas</h4>
+                <p><textarea tabindex='29' ng-model="reservationTour.notes"></textarea></p>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <div class='row'>
+        <div class='col-md-12'>
+            <a tabindex='33' class="btn btn-primary btn-big pull-right full-sm" ng-click="saveTourReservation(formRT)"><i class='fa fa-save'></i> <%= __('order-reservar')%> </a>
+            <a class='btn btn-primary btn-big pull-right full-sm' ng-click="resetForm(false)" ><i class='fa fa-eraser'></i> Limpiar campos</a>
+        </div>
+    </div>
+    <div id='popup_overlay' class='ng-hide ng-cloak' ng-hide="!alertMessage.show"></div>
+    <div id='popup_container' class='alert-warning ng-hide ng-cloak' ng-class="alertMessage.classType" ng-hide="!alertMessage.show">
+        <h1 id="popup_title">{{alertMessage.title || 'Error en la orden'}}</h1>
+        <div id="popup_content" class="alert" ng-show="alertMessage.show" >
+            <div id="popup_message" ng-bind="alertMessage.message"></div>
+            <div id="popup_panel">
+                <a ng-repeat="b in alertMessage.buttons" ng-click="b.action()" id="" class='btn btn-primary' ng-bind="b.label"></a>
+            </div>
+        </div>
+    </div>
+    <div custom-message messages="customMessages"></div>
+</form>
+</div>
+<div id="cargando-elementos" class="ng-cloak">
+    <img src="/images/loaders/images-cm.gif">
+</div>

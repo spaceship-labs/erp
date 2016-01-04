@@ -28,6 +28,8 @@ module.exports = {
     ,feeChild_base : 'float' /*Precio contable*/
     ,commission_agency : 'integer'
     ,commission_sales : 'integer'
+    ,mxnPrices : 'boolean'
+    ,departurePoints : 'json'
   }
   ,labels : {
     es : 'Proveedores de Tours'

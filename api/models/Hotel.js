@@ -12,6 +12,7 @@ module.exports = {
 	      required: true },
 		phones : 'array',
 		location : { model : 'location' },
+		departurePlaces : 'array',
 		rooms : {
 			collection : 'room',
 			via: 'hotel' },
@@ -66,7 +67,7 @@ module.exports = {
 		Notifications.after(Hotel,val,'create');
 		cb()
 	},afterUpdate: function(val,cb){
-		console.log('update hotel');
+		//console.log('update hotel');
 		Notifications.after(Hotel,val,'update');
 		cb();
 	},beforeUpdate:function(val,cb){

@@ -11,6 +11,10 @@ module.exports = {
   	name : 'string',
   	location : {
   		model : 'location'
+  	},
+  	locations : {
+  		collection : 'location'
+  		,via : 'zones'
   	}
   }
   ,label_es : 'Zonas'

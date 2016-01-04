@@ -3,7 +3,7 @@
     <span class="field">
         <select 
             ng-model='location.from'
-            ng-options="obj.id as obj.name for obj in locations"
+            ng-options="obj as obj.name for obj in locations"
             ng-change="changeLocation('from')"
             required
             class='form-control' >
@@ -15,7 +15,7 @@
     <span class="field">
         <select 
             ng-model='location.to'
-            ng-options="obj.id as obj.name for obj in locations"
+            ng-options="obj as obj.name for obj in locations"
             required
             ng-change="changeLocation('to')"
             class='form-control' >
@@ -27,11 +27,11 @@
     <span class="field">
         <select 
             ng-model='modal.zoneFrom'
-            ng-options="obj.id as obj.name for obj in filter_zones.from"
+            ng-options="obj.id as obj.name for obj in location.from.zones"
             ng-change="getPrices()"
             required
             class='form-control' >
-        </select>
+        </select><!-- filter_zones.from -->
     </span>
 </p>
 <p>
@@ -39,11 +39,11 @@
     <span class="field">
         <select 
             ng-model='modal.zoneTo'
-            ng-options="obj.id as obj.name for obj in filter_zones.to"
+            ng-options="obj.id as obj.name for obj in location.to.zones"
             ng-change="getPrices()"
             required
             class='form-control' >
-        </select>
+        </select> <!-- filter_zones.to -->
     </span>
 </p>
 <p>

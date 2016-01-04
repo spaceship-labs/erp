@@ -14,8 +14,14 @@ module.exports = {
         round:'boolean',
         simple:'boolean',
         airport:'boolean',
+        perpetuo:'boolean',
         hotel:'boolean',
         days:'integer',//if -1 infinito
+        expirationDate : 'date',
+        //los 3 siguientes es para no tener que agregar uno por uno los elementos disponibles
+        allTours : 'boolean',
+        allHotels : 'boolean',
+        allTransfers : 'boolean',
         hotels : {
             collection : 'hotel',
             via : 'cupons',

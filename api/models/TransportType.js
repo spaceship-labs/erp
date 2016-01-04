@@ -16,11 +16,22 @@ module.exports = {
             type: 'integer',
             required: true
         },
-        transports: {
+        transports: { 
             collection: 'transport',
             via: 'types',
             dominant: true
         },
+        /*
+            Tipo principal, 
+            esto para no asignar vehículos de otros tipos si hay los predeterminados
+        */
+        transfer: { 
+            model: 'transfer',
+        },
+        /*
+            Tipos alternativos,
+            tipos a elegir en caso de que no hayan vehículos disponibles del principal
+        */
         transfers: {
             collection: 'transfer',
             via: 'transporttypes',

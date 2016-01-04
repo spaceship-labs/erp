@@ -65,7 +65,8 @@ app.controller('packageEditCTL',function($scope,$http,$rootScope){
 		//console.log($scope.collapsableClass);
 	}
 	$scope.addDay = function(newDay,cb){
-		$http({method: 'POST', url: '/packageitem/create',params:newDay}).success(function (day){
+		//$http({method: 'POST', url: '/packageitem/create',params:newDay}).success(function (day){
+		$http.post('/packageitem/create',newDay,{}).success(function(day){
 			if(day.type=='day')
             	$scope.items.day.push(day);
             else
@@ -105,13 +106,14 @@ app.controller('packageItemEditCTL',function($scope,$http){
 		$scope.daysnumber.push(i+'');
 	}
 	$scope.updateMarkers = function(markers,cb){
-		//console.log($scope.item);
+		console.log($scope.item);
 		//console.log(markers);
 		var data = { id : $scope.item.id , markers : markers };
-		//console.log(data);
+		console.log(data);
 		$http({method: 'POST', url: '/packageitem/update',params:data}).success(function (item){
-            $scope.item = item;
-            cb(null,item);
+            //$scope.item = item;
+            console.log(item);
+            //cb(null,item);
         });
 	};
 	$scope.center = {

@@ -1,13 +1,25 @@
-app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile, uiCalendarConfig, chroma, $filter){
+app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile, uiCalendarConfig, chroma, $filter,$window){
     var timeZone = 'America/Mexico_City';
     moment.tz.add(timeZone+'|PST PDT|80 70|0101|1Lzm0 1zb0 Op0');
 
-    
+    //varibales para solicitud de servicio
+    $scope.dtfa = [true,true];
+    $scope.all_companies = window.all_companies;
+    console.log($scope.companies);
+    $scope.pax = [];
+    for(var j=1;j<( 30 );j++) $scope.pax.push(j);
+    $scope.open = [false,false]; //abre/cierra los datepickers
+    $scope.alertMessage = { show : false , title : '' , message : '' , type : 'alert' };
+    //terminan variables nuevas
     var on = {},
     current_lang = window.current_lang || 'es';
     $scope.view_type = window.view_type;
 
     $scope.location = {};
+    if($scope.view_type == 'request'){
+        $scope.locations = window.locations;
+        console.log(window.locations);
+    }else{
     //if($scope.view_type == 'request'){
         $http.get('/location/find').then(function(res){
             $scope.locations = res && res.data || [];
@@ -21,7 +33,7 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
             $scope.prices = res && res.data || [];
         });
 
-    //}
+    }
 
     $scope.filter_zones = {};
     $scope.changeLocation = function(type){
@@ -192,9 +204,9 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
     }
 
     $scope.cancel = function(){
-        if($scope.modal.revertFunc){
+        /*if($scope.modal.revertFunc){
             $scope.modal.revertFunc();
-        }
+        }*/
         jQuery('#select-transport-update').modal('hide');
         $scope.modal = {};
     };
@@ -358,7 +370,7 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
     };
     //set the transfer by pax number
     var setTransferDefault = function(){
-        $scope.modal.pax = $scope.modal.pax || 1;
+        /*$scope.modal.pax = $scope.modal.pax || 1;
         $scope.modal.type = $scope.modal.type || 'one_way';
         $scope.modal.service_type = $scope.modal.service_type || 'C';
         console.log('transfers');
@@ -376,7 +388,7 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
             }
             console.log('if transfers');
             console.log($scope.modal);
-        }
+        }*/
     }
     //Obtiene el precio cada que se hace una modificación elegida
     $scope.updatePrice = function(){
@@ -394,5 +406,385 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
             $scope.modal.fee = 0;
         }
     };
+    /*
+        Funciones agregadas para la reserva de un servicio
+    */
+    $scope.theTotal = 0;
+    var updateTotal = function(){
+        $scope.theTotal = $scope.modal.fee||0;
+    }
+    //obtiene los aeropuertos dependiendo de la ciudad elegida
+    $scope.getAirports = function(){
+        var params = {'id':$scope.modal.hotel.location.id};
+        $http({method: 'POST', url: '/airport/getAirport',params:params}).success(function (result){
+            //console.log('airports');console.log(result);
+            $scope.airports = result;
+            $scope.modal.airport = $scope.airports[0];
+            $scope.getTransfers();
+            $scope.updatePriceTransfer();
+        });
+    };
+    $scope.getHotels = function(val){ 
+        return $http.get('/hotel/find', { params: { name: val } }).then(function(response){
+            //console.log(response);
+            return response.data.results.map(function(item){ return item; });
+        });
+    };
+    $scope.getAirlines = function(val){
+        return $http.get('/airline/find', { params: { name: val } }).then(function(response){
+            return response.data.results.map(function(item){ return item; });
+        });
+    };
+    //Obtiene el precio cada que se hace una modificación elegida
+    $scope.updatePriceTransfer = function(){
+        console.log($scope.modal)
+        if(!$scope.modal.currency)
+            $scope.modal.currency = $scope.modal.company.base_currency;
+        setTransferDefault();
+        var transfer = $scope.modal;
+        if( transfer.hotel && transfer.airport && transfer.type && transfer.transfer ){
+            var mult = transfer.pax?( Math.ceil( transfer.pax / transfer.transfer.transfer.max_pax ) ):1;
+            //console.log( 'mult: ' + mult + ' price: ' + transfer.transfer[transfer.type] );
+            $scope.modal.fee = transfer.transfer[transfer.type] * mult;
+            if( $scope.modal.currency.id != $scope.modal.company.base_currency.id )
+                $scope.modal.fee *= $scope.modal.company.exchange_rates[$scope.modal.currency.id].sales;
+        }else{
+            $scope.modal.fee = 0;
+        }
+        $scope.updateDatesFormat();
+        updateTotal();
+    };
+    //Controla los inputs de fechas roundtrip/oneway
+    $scope.updateDatesFormat = function(){
+        var h = $scope.modal.origin == 'hotel'?true:false;
+        var r = $scope.modal.type == 'round_trip'?true:false;
+        $scope.dtfa[0] = ( h && r ) || (!h);
+        $scope.dtfa[1] = ( !h && r ) || h;
+    };
+     //obtiene los servicios que están disponibles dependiendo de las zonas que se elijan 
+    $scope.getTransfers = function(){
+        //console.log('get transfers');console.log($scope.transfer);
+        if( $scope.modal.hotel.zone && $scope.modal.airport.zone ){
+            var params = { 
+                zone1 : $scope.modal.hotel.zone.id || $scope.modal.hotel.zone
+                ,zone2 : $scope.modal.airport.zone 
+                ,company : $scope.modal.company
+            };
+            console.log('transfers params');
+            console.log(params);
+            //$http({method: 'POST', url: '/order/getAvailableTransfers',params:params}).success(function (result){
+            $http.post('/order/getAvailableTransfers', params , {}).success(function (result){
+                console.log('prices');console.log(result);
+                $scope.transfers = result;
+                if(!$scope.asignando) $scope.updatePriceTransfer();
+            });
+        }
+    };
+     //Va a crear la reserva del transfer
+    $scope.saveAll = function(){
+        //crear una orden
+        if( typeof $scope.client != 'string' && ! angular.equals( {} , $scope.client ) ){
+            if( ! angular.equals( {} , $scope.transfer ) ){
+                var params = { 
+                    client:$scope.client 
+                    ,company : $scope.modal.company.id
+                };
+                $http.post('/order/createOrder',params,{}).success(function(order) {
+                    //console.log('order');console.log(order);
+                    if(order && order.id){
+                        $scope.order = order;
+                        reservationTransfer();
+                    }else{
+                        console.log('ERROR');
+                    }
+                });
+            }else{
+                $scope.alertM.show = true;
+                $scope.alertM.allEmpty = true;
+            }
+        }else{
+            $scope.alertM.show = true;
+            $scope.alertM.client = true;
+        }
+    };
+    var redirectToEdit = function(action){
+        if( action == 'edit' )
+            $window.location =  "/TransportAsignRequest/";
+        if( action == 'list' )
+            $window.location =  "/TransportAsign/";
+    };
+    var reservationTransfer = function(){
+        var params = $scope.modal;
+        if( $scope.order ){
+            params.order = $scope.order.id;
+            params.reservation_type = 'transfer';
+            params.client = $scope.client;
+            params.transferprice = $scope.modal.transfer; 
+            params.transfer = $scope.modal.transfer.transfer.id;
+            params.state = 'liquidated';
+            params.company.base_currency = $scope.modal.company.base_currency.id;
+            console.log(params);
+            $http.post('/order/createReservation',params,{}).success(function(result) {
+                    $scope.showMessage('rcs');
+            });
+        }
+    };
+    $scope.showMessage = function(action){
+        $scope.alertMessage.buttons = [ { label : 'Ok' , action : function(){ $scope.alertMessage.show=false; } } ];
+        $scope.alertMessage.title = 'Error en la orden';
+        if( action == 'rcs' ){
+            $scope.alertMessage.show = true;
+            $scope.alertMessage.message = 'La reserva se ha creado con éxito.';
+            $scope.alertMessage.buttons = [ 
+                { label : 'Nueva reserva' , action : function(){ redirectToEdit('edit'); } }
+                ,{ label : 'Asignar reservas' , action : function(){ redirectToEdit('list'); } }
+            ];
+            $scope.alertMessage.classType = 'alert-successCustom';
+            $scope.alertMessage.title = 'Mensaje de la reserva';
+        }
+        if( action == 'trcf' ){
+            $scope.alertMessage.show = true;
+            $scope.alertMessage.message = 'Campos incompletos, revisar el traslado antes de continuar.';
+        }
+    };
+    //abre/cierra datepickers
+    $scope.open = function($event,var_open) {
+        $event.preventDefault();$event.stopPropagation();
+        $scope.open[var_open] = true;
+    };
+    $scope.formatDate = function(date,format){
+        if(date&&format){
+            return moment(date).format(format);
+        }else{
+            return '';
+        }
+    }
+    $scope.getDateHr = function(x,dt){
+        var h = x.origin == 'hotel'?true:false;
+        var r = x.type == 'round_trip'?true:false;
+        if( ( h && r ) || (!h) ){ //arrival date
+            var date = x.arrival_date;
+            var hr = x.arrival_time;
+        }else{ //departure
+            var date = x.departure_date;
+            var hr = x.departure_time;
+        }
+        //console.log(date);
+        if( dt )
+            return moment(date).format('DD/MM/YYYY');//.format('YYYY/MM/DD');// + moment(hr).tz(timeZone).format(' h:mm:ss a');
+        else
+            return moment(hr).format('h:mm a');// + moment(date).tz(timeZone).format(' YYYY/MM/DD');
+    };
+    $scope.sortByDateHr = function(x){
+        var date = $scope.getDateHr(x,true);
+        date = new Date(date);
+        return date;
+    };
+    $scope.getIcon = function(x){
+        var today = moment().tz(timeZone);
+        var date = moment( $scope.getDateHr(x,true) ).tz(timeZone);
+        var result = ''
+        if( today.format("YYYY-MM-DD") === date.format("YYYY-MM-DD") )
+            result = "fa fa-exclamation-triangle";
+        else if( today.add(1,'d').format("YYYY-MM-DD") == date.format("YYYY-MM-DD") )
+            result = "fa fa-exclamation";
+        return result;
+    };
+    $scope.openAssign = function(x){
+        $scope.modal = x;
+        $scope.modal.transfer2 = x.transfer.id || x.transfer;
+        $scope.asignando = true;
+        $scope.getTransfers();
+        //console.log(x);
+        $scope.getVehicles();
+        jQuery('#select-transport-update').modal('show');
+    };
+    $scope.getVehicles = function(){
+        $scope.vehicles = [];
+        if( $scope.modal.transfer ){
+            var params = {
+                transfer : $scope.modal.transfer
+            };
+            $http.post('/TransportAsign/getVehicles',params,{}).success(function(result) {
+                console.log(result);
+                $scope.vehicles = result;
+                $scope.filterV($scope.theTransportist);
+            });
+        }
+    };
+    $scope.filter_vehicles = {};
+    $scope.filterV = function(company){
+        $scope.filter_vehicles = $filter('filter')($scope.vehicles, function(val){
+            return val && val.company &&(!company || val.company == company);
+        });
+    };
+    var getModalFields = function(){
+        var result = {
+            id : $scope.modal.id
+            ,vehicle : $scope.modal.vehicle.id
+            ,hotel : $scope.modal.hotel.id
+            ,service_type : $scope.modal.service_type
+            ,transfer : $scope.modal.transfer2
+            ,pax : $scope.modal.pax
+            ,no_show : $scope.modal.no_show
+            ,notes : $scope.modal.notes
+            ,driver : $scope.modal.driver
+            ,notes2 : $scope.modal.notes2
+        };
+        if( $scope.dtfa[0] )
+            result.arrivalpickup_time = $scope.modal.arrivalpickup_time;
+        if( $scope.dtfa[1] )
+            result.departurepickup_time = $scope.modal.departurepickup_time;
+        return result;
+    }
+    $scope.newUpdate = function(){
+        if( $scope.modal.vehicle ){
+            $http.post('/TransportAsign/assign',getModalFields(),{}).success(function(result) {
+                console.log(result);
+                if(result){
+                    $scope.reservations.asigned.push(result);
+                    for( var x in $scope.reservations.notAsigned )
+                        if($scope.reservations.notAsigned[x].id == result.id)
+                            $scope.reservations.notAsigned.splice(x,1);
+                    jQuery('#select-transport-update').modal('hide');
+                }
+            });
+        }
+    }
+    //Filtros, esto tal vez sería mejor meterlo como un servicio
+    $scope.filters = {};
+    $scope.filtersArray = [
+        { label : 'Folio' , value : 'folio' , type : 'number' , field : 'folio' }
+        ,{ label : $rootScope.translates.arrival_date , value : 'arrival' , type : 'date' , field : 'arrival_date' , options : { oneDate : false } }
+        ,{ label : $rootScope.translates.departure_date , value : 'departure' , type : 'date' , field : 'departure_date' , options : { oneDate : false } }
+        ,{ label : $rootScope.translates.reservation_date , value : 'reserve' , type : 'date' , field : 'createdAt' , options : { oneDate : false } }
+        ,{ label : $rootScope.translates.client , value : 'client' , type : 'autocomplete' , field : 'client' , model_ : 'client_' , action : 
+            function(term){
+                return $http.get('/client/find', { params: { 'name': term , 'limit': 10 , 'sort' : 'name asc' }
+                }).then(function(response){ return response.data; });
+            } 
+        }
+        ,{ label : $rootScope.translates.hotel , value : 'hotel' , type : 'autocomplete' , field : 'hotel' , model_ : 'hotel' , action : 
+            function(term){
+                return $http.get('/hotel/find', { params: { 'name': term , 'limit': 10 , 'sort' : 'name asc' }
+                }).then(function(response){ return response.data.results; });
+            }
+        }
+        ,{ label : $rootScope.translates.airport , value : 'airport' , type : 'autocomplete' , field : 'airport', model_ : 'airport' , action : 
+            function(term){
+                return $http.get('/airport/find', { params: { 'name': term , 'limit': 10 , 'sort' : 'name asc' }
+                }).then(function(response){ return response.data.results; });
+            }
+        }
+        ,{ label : $rootScope.translates.transfer , value : 'transfer' , type : 'autocomplete' , field : 'transfer', model_ : 'transfer' , action : 
+            function(term){
+                return $http.get('/transfer/find', { params: { 'name': term , 'limit': 10 , 'sort' : 'name asc' }
+                }).then(function(response){ return response.data.results; });
+            }
+        }
+        ,{ label : $rootScope.translates.agency , value : 'company' , type : 'autocomplete' , field : 'company' , model_ : 'company' , action : 
+            function(term){
+                return $http.get('/company/find', { params: { 'name': term , 'limit': 10 , 'sort' : 'name asc' }
+                }).then(function(response){ return response.data.results; });
+            }
+        }
+        ,{ label : $rootScope.translates.transfer_type , value : 'type' , type : 'select' , field : 'type' , options : [{ value : $rootScope.translates.d_all , key : 'all' },{value:$rootScope.translates.one_way,key:'one_way'},{value:$rootScope.translates.round_trip,key:'round_trip'}] }
+    ];
+    $scope.setIC = function(val){ $scope.isCollapsedFilter = val; }
+    $scope.removeFilter = function(f){
+        delete $scope.filters[f.field];
+        $scope.isCollapsedFilter = false;
+        $scope.currentPage = 1;
+        sendFilterFx(0);
+    };
+    $scope.openFilter = function(f){
+        for( x in $scope.filtersArray )
+            $scope.filtersArray[x].open = false;
+        f.open = true;
+        $scope.isCollapsedFilter = true;
+    };
+    $scope.sendFilter = function(f){
+        $scope.isCollapsedFilter = false;
+        $scope.filters[f.field] = f;
+        $scope.currentPage = 1;
+        sendFilterFx(0);
+    };
+    $scope.filterDate = function(action){
+        if( ! $scope.theDate )
+            $scope.theDate = moment();
+        if( action == 'today' )
+            $scope.theDate = moment();
+        else if( action == 'prev' )
+            $scope.theDate.subtract(1,'days');
+        else if( action == 'next' )
+            $scope.theDate.add(1,'days');
+        var aux = $scope.theDate.clone();
+        aux.add('days',1)
+        //enviamos el filtro a arrival_date y departure_date
+        $scope.filters.arrival_date = { 
+            label : $rootScope.translates.arrival_date , 
+            value : 'arrival' , type : 'date' , 
+            field : 'arrival_date' , 
+            options : { oneDate : true } ,
+            model : {from:$scope.theDate.format('YYYY/MM/DD'), to:aux.format('YYYY/MM/DD')}
+        };
+        $scope.filters.departure_date = { 
+            label : $rootScope.translates.departure_date , 
+            value : 'departure' , type : 'date' , 
+            field : 'departure_date' , 
+            options : { oneDate : true } ,
+            model : {from:$scope.theDate.format('YYYY/MM/DD'), to:aux.format('YYYY/MM/DD')}
+        };
+        $scope.currentPage = 1;
+        sendFilterFx(0);
+    }
+    $scope.resetFilter = function(){
+        $scope.isCollapsedFilter = false;
+        $scope.filters = {};
+        $scope.currentPage = 1;
+        sendFilterFx(0);
+    };
+    var formatReservations = function(r){
+        for(var x in r.notAsigned){
+            var date = $scope.getDateHr(r.notAsigned[x],true);
+            //console.log(date);console.log(r.notAsigned[x]);
+            r.notAsigned[x].groupBy = date;
+        }
+        r.notAsigned = _.groupBy(r.notAsigned,'groupBy');
+        for(var x in r.asigned){
+            r.asigned[x].groupBy = $scope.getDateHr(r.asigned[x],true);
+        }
+        r.asigned = _.groupBy(r.asigned,'groupBy');
+        return r;
+    }
+    var sendFilterFx = function(skip){
+        var fx = {};
+        var f = $scope.filters;
+        for( var x in f ){
+            if( f[x].special_field && f[x].special_field == 'provider' ){
+                var t = f[x].model.item.tours;
+                f[x].model.item = [];
+                for(var y in t) f[x].model.item.push( t[y].id );
+            }
+            //console.log(f[x]);
+        }
+        var params = { fields : f , skip : skip };
+        console.log(f);
+        $http.post('/TransportAsign/getReservations',params,{}).success(function(result) {
+            //console.log(result);
+            $scope.reservations = formatReservations(result);
+            console.log($scope.reservations);
+            //$scope.reservations = result;
+        });
+    };
+    $scope.reservations = {};
+    $scope.theDate = false;
+    /*$scope.getReservations = function(){
+        var params = {};
+        $http.post('/TransportAsign/getReservations',params,{}).success(function(result) {
+            console.log(result);
+            $scope.reservations = result;
+        });
+    };*/
+    sendFilterFx(0);
 });
-

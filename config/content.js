@@ -369,6 +369,7 @@ module.exports.content = {
 			type : 'money',
 			handle : 'fee',
 		},
+
 		{
 			label : 'Tarifa niños',
 			label_en : 'Children rate',
@@ -405,7 +406,8 @@ module.exports.content = {
 			label_en : 'Categories',
 			type : 'multi-select',
 			handle : 'categories',
-			object : 'tourcategories'
+			object : 'tourcategories',
+			removeAction : '/tour/removeCategory'
 		},
 		{
 			label : 'Ubicación',
@@ -471,7 +473,8 @@ module.exports.content = {
 			label_en : 'Categories',
 			type : 'multi-select',
 			handle : 'categories',
-			object : 'tourcategories'
+			object : 'tourcategories',
+			removeAction : '/tour/removeCategory'
 		},
 		{
 			label : 'Ubicación',
@@ -705,6 +708,27 @@ module.exports.content = {
 			,label_en : 'Portuguese name'
 			,type : 'text'
 			,handle : 'name_pt'
+		}
+		,{
+			label : 'Categoría principal'
+			,label_en : 'Principal category'
+			,type : 'checkbox'
+			,handle : 'principal'
+			,msg : 'Seleccionar si esta categoría entrará en el listado de categorías'
+		}
+		,{
+			label : 'Tipo de categoría'
+			,label_en : 'Category type'
+			,type : 'select'
+			,object : 'categoryTypes'
+			,handle : 'type'
+		}
+		,{
+			label : 'Clasificación'
+			,label_en : 'Classification'
+			,type : 'select'
+			,object : 'classifications'
+			,handle : 'classification'
 		}
 	]
 	,location : [
@@ -1050,12 +1074,12 @@ module.exports.content = {
         	,message : 'Monto de creédito que se da a la agencia'
         	,message_en : ''
         },
-	{
-		label : 'Contrato',
-		label_en : 'contract',
-		handle : 'contract',
-		type : 'file',
-	},
+		{
+			label : 'Contrato',
+			label_en : 'contract',
+			handle : 'contract',
+			type : 'file',
+		},
 	],
     user : [
         {
@@ -1588,10 +1612,21 @@ module.exports.content = {
 			required : true,
 		},
 		{
-			label : 'Días de duración',
-			label_en : 'Duration days',
-			type : 'text',
-			handle : 'days',
+			label : 'Fecha de expiración',
+			label_en : 'Expiration date',
+			type : 'date',
+			handle : 'expirationDate',
+			options : {
+			    formatYear: 'yy',
+			    startingDay: 1
+			}
+		},
+		{
+			label : 'Todos los Hoteles'
+			,label_en : 'All the Hotels'
+			,msg : 'Cupón disponible para todos los hoteles?'
+			,type : 'checkbox'
+			,handle : 'allHotels'
 		},
 		{
 			label : 'Hoteles',
@@ -1601,6 +1636,14 @@ module.exports.content = {
 			object : 'hotels',
 			//removeAction : '/hotel/removeFoodScheme',
 			removeAction:'/cupon/removeHotel'
+			,hideIfField : 'allHotels'
+		},
+		{
+			label : 'Todos los Tours'
+			,label_en : 'All the Tours'
+			,msg : 'Cupón disponible para todos los tours?'
+			,type : 'checkbox'
+			,handle : 'allTours'
 		},
 		{
 			label : 'Tours',
@@ -1610,6 +1653,14 @@ module.exports.content = {
 			object : 'tours',
 			//removeAction : '/hotel/removeFoodScheme',
 			removeAction:'/cupon/removeTour'
+			,hideIfField : 'allTours'
+		},
+		{
+			label : 'Todos los Traslados'
+			,label_en : 'All the Transfers'
+			,msg : 'Cupón disponible para todos los tipos de traslado?'
+			,type : 'checkbox'
+			,handle : 'allTransfers'
 		},
 		{
 			label : 'Servicios',
@@ -1619,9 +1670,17 @@ module.exports.content = {
 			object : 'transfers',
 			//removeAction : '/hotel/removeFoodScheme',
 			removeAction:'/cupon/removeTransfer'
+			,hideIfField : 'allTransfers'
 		}
     ],
 	cuponsadvance : [
+		{
+			label : 'Descuento General'
+			,label_en : 'General discount'
+			,type : 'text'
+			,handle : 'gral_discount'
+			,message : 'Este es el decuento que se aplicaría a los tours y hoteles'
+		},
 		{
 			label : 'Descuento viaje sencillo',
 			label_en : 'One way discount',
@@ -1703,6 +1762,15 @@ module.exports.content = {
 			handle : 'multiple',
 		},
 		{
+			label : 'Número de reclamos',
+			label_en : 'Claims Number',
+			type : 'number',
+			handle : 'times',
+			maxValue : '100',
+			hideIfNotField : 'multiple',
+			msg : 'Número de veces que puede utilizarse esta instancia'
+		},
+		{
 			label : 'Descripción',
 			label_en : 'Description',
 			type : 'text',
@@ -1741,6 +1809,15 @@ module.exports.content = {
 			label_en : 'Multiple',
 			type : 'checkbox',
 			handle : 'multiple',
+		},
+		{
+			label : 'Número de reclamos',
+			label_en : 'Claims Number',
+			type : 'number',
+			handle : 'times',
+			maxValue : '100',
+			hideIfNotField : 'multiple',
+			msg : 'Número de veces que puede utilizarse esta instancia'
 		},
 		{
 			label : 'Descripcion',
@@ -1882,6 +1959,66 @@ module.exports.content = {
 			,handle : 'base_currency'
 		}
 	]
+	,tourprovider2 : [
+		{
+			label : 'Nombre'
+			,label_en : 'Name'
+			,type : 'text'
+			,handle : 'name'
+			,required : true
+		}
+		,{
+			label : 'Razón social'
+			,label_en : 'Corporate name'
+			,type : 'text'
+			,handle : 'business_name'
+		}
+		,{
+			label: 'Dirección'
+			,label_en : 'Address'
+			,type : 'text'
+			,handle : 'address'
+		}
+		,{
+			label : 'Ciudad'
+			,label_en : 'City'
+			,type : 'select'
+			,handle : 'location'
+			,object : 'locations'
+		}
+		,{
+			label : 'País'
+			,label_en : 'Country'
+			,type : 'text'
+			,handle : 'country'
+		}
+		,{
+			label : '¿Proporciona crédito?'
+			,label_en : 'Credit admited?'
+			,type : 'checkbox'
+			,handle : 'isCredit'
+		}
+		,{
+			label : 'Tipo de cambio'
+			,label_en : 'Exchange rate'
+			,type : 'text'
+			,handle : 'exchange_rate'
+		}
+		,{
+			label : 'Moneda base'
+			,label_en : 'Base currency'
+			,type : 'select'
+			,object : 'currencies'
+			,handle : 'base_currency'
+		}
+		,{
+            label : '¿Usar precios para nacionales?',
+            label_en : 'Use nation prices?',
+            type : 'checkbox',
+            handle : 'mxnPrices',
+            on_Change : 'changePricesTable',
+        }
+	]
 	, airline : [
 		{
 			label : 'Nombre'
@@ -1987,15 +2124,13 @@ module.exports.content = {
 			required: true,
 			handle: 'car_model'
 		},
-		/*
-		{
+		/*{
 			label 	: 'Personas por servicio',
 			label_en : 'People by service',
 			type 	: 'number',
 			required: true,
 			handle 	: 'max_pax'
-		},
-		*/
+		},*/
 		{
 			label: 'Transportista',
 			label_en: 'Company',
@@ -2022,12 +2157,19 @@ module.exports.content = {
 		
 		},
 		{
-			label: 'Tipo de translado',
-			label_en: 'Type of transfer',
+			label: 'Tipo principal de translado',
+			label_en: 'Principal transfer Type',
+			type : 'select',
+			handle : 'transfer',
+			object : 'transfers',
+		},
+		{
+			label: 'Tipos de translado',
+			label_en: 'Transfer types',
 			type : 'multi-select',
 			handle : 'transfers',
 			object : 'transfers',
-			required : true,
+			/*required : true,*/
 			removeAction : '/transporttype/remove_transfer',
 		},
 		{
@@ -2042,5 +2184,52 @@ module.exports.content = {
 
 };
 
-module.exports.content.transferprice = module.exports.content.price;
+//module.exports.content.transferprice = module.exports.content.price;
+module.exports.content.transferprice = [
+	{
+		label : 'Agencia'
+		,label_en : 'Agency'
+		,object : 'company'
+		,handle : 'company'
+	},
+	{
+		label : 'Zona1'
+		,label_en : 'AgencyZone 1'
+		,handle : 'zone'
+		,handle2 : 'zone1'
+		,object : 'zone1'
+	},
+	{
+		label : 'Zona 2'
+		,label_en : 'Zone 2'
+		,handle : 'zone'
+		,handle2 : 'zone2'
+		,object : 'zone2'
+	},
+	{
+		label : 'Transfer'
+		,label_en : 'Transfer'
+		,handle : 'transfer'
+		,object : 'transfer'
+	},
+	{
+		label : 'Transfer'
+		,label_en : 'Transfer'
+		,handle : 'location'
+		,object : 'location'
+	},
+]
 
+/*
+	Propiedades agregadas para el formhelper
+	- hideIfField : 
+		Oculta un campo en caso de que otro campo esté seleccionado.
+		Va en el campo a ocultar y recibe el nombre del campo a validar
+	- hideIfNotField ;
+		Oculta un campo en caso de que otro campo NO esté seleccionado.
+		Va en el campo a ocultar y recibe el nombre del campo a validar
+	- on_Change : 
+		Ejecuta una función en caso de cambiar este campo, recibe el nombre de la función a llamar
+		El formhelper debe de recibir un objeto con funciones como
+			onchanges = "{'getZones' : getZones}"
+*/

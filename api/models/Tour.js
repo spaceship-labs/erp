@@ -18,9 +18,8 @@ module.exports = {
 		,cupons : {
 			model:'cupon',
 			via:'tours' }
-		,categories : {
-			collection : 'tourcategory'
-			,via:'tours' }
+		,categories : { collection : 'tourcategory',via:'tours' }
+		//,categories : { collection : 'tourtourcategory', via:'tour_categories' }
 		,pax : 'integer'
 		,fee : 'float' // precio de venta
 		,feeChild : 'float' //precio de venta
@@ -36,8 +35,14 @@ module.exports = {
 			collection : 'companyproduct'
 			, via : 'tour' }
 		,duration_formated : 'datetime'
+		,type : {
+			type: 'string',
+			enum: ['family', 'adult'],
+			defaultsTo : 'family'
+		}
+		,url : 'string'
 	}
-	, migrate : 'alter'
+	, migrate : 'safe'
 	, attrs_labels : {
 		name : { es : 'Nombre' , en : 'Name' }
 		,name_en : { es : 'Nombre Inglés' , en : 'Name English' }
@@ -82,10 +87,23 @@ module.exports = {
 		cb();
 	}
 	,beforeUpdate:function(val,cb){
+		if( typeof val.fee=='string' ) val.fee = val.fee==''?0:parseFloat(val.fee);
+		if( typeof val.feeChild=='string' ) val.feeChild = val.feeChild==''?0:parseFloat(val.feeChild);
+		val.fee = val.fee&&val.fee == val.fee?val.fee:1;
+		val.feeChild = val.feeChild&&val.feeChild==val.feeChild?val.feeChild:1;
 		Notifications.before(val);
 		cb();
 	}
 	,beforeCreate: function(val,cb){
+		if (!val.name) {
+			return cb({err: ["Must have a username!"]});
+		}
+		//val.url = val.name.replace(/\s+/g, '-').toLowerCase();
+		val.url = Common.stringReplaceChars(val.url);
+		if( typeof val.fee=='string' ) val.fee = val.fee==''?0:parseFloat(val.fee);
+		if( typeof val.feeChild=='string' ) val.feeChild = val.feeChild==''?0:parseFloat(val.feeChild);
+		val.fee = val.fee&&val.fee == val.fee?val.fee:1;
+		val.feeChild = val.feeChild&&val.feeChild==val.feeChild?val.feeChild:1;
 		Notifications.before(val);
 		cb();
 	}

@@ -39,11 +39,11 @@ module.exports = {
             model : 'transferprice' }
         ,state : {
             type:'string',
-            enum : ['pending','liquidated','canceled']
+            enum : ['pending','liquidated','canceled','error']
         }
         ,reservation_method : {
             type: 'string'
-            ,enum: ['intern', 'api', 'rep', 'agencyApi'] 
+            ,enum: ['intern', 'api', 'rep', 'agencyApi','web']
             ,defaultsTo : 'intern' }
         ,payment_method : {
             type:'string',
@@ -65,22 +65,22 @@ module.exports = {
             type:'string',
             enum : ['tour','hotel','transfer']
         }
-        ,fee : {
+        ,fee : { //precio de adultos a cobrar
             type : 'float',
             required : true
         }//total
-        ,feeKids : {
+        ,feeKids : { //precio niños a cobrar
             type : 'float'
             ,defaultsTo : 0
         }//total for kids
         ,quantity : 'integer' //cantidad de servicios, reserva de transfer
-        ,fee_kids : 'float'
-        ,fee_kids_rt : 'float'
-        ,fee_adults : 'float'
-        ,fee_adults_rt : 'float'
-        ,fee_special : 'float'
-
-        ,coupon : {
+        ,fee_kids : 'float' //save del precio niños en ese momento
+        ,fee_kids_rt : 'float' //save del precio niños en ese momento
+        ,fee_adults : 'float' //save del precio adultos en ese momento
+        ,fee_adults_rt : 'float' //save del precio adultos en ese momento
+        ,fee_special : 'float' 
+        ,discount : 'float'
+        ,cuponsingle : {
             model : 'CuponSingle'
         }
 
@@ -98,6 +98,13 @@ module.exports = {
         ,startDate : 'date'
         ,endDate : 'date'
         ,autorization_code : 'string'
+        //nuevos campos para VCM
+        //ellos lo llaman cupón en el caso de yellow será la validaciṕn del mkp
+        ,controlCode : { 
+            type : 'string' 
+            ,defaultsTo : ''
+        }
+        ,confirmationCode : 'string' //confirmación del tour o transfer (VCM)
 
         //hotel
         ,roomType : {
@@ -144,6 +151,8 @@ module.exports = {
             ,defaultsTo : '1'
         }
         ,notes : 'string'
+        ,cancelationDate : 'date'
+        ,no_show : 'boolean'
 
 	}
 	, attrs_labels : {

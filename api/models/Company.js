@@ -11,6 +11,7 @@ module.exports = {
 		  type : 'string',
 		  required: true
 		}
+		,legal_name : 'string'
 		,company_type : {
 			type : 'string'
 			,enum : ['transport','agency']
@@ -59,6 +60,10 @@ module.exports = {
 			, via : 'agency'
 		}
 		,adminCompany : 'boolean'
+		/*Americanada variables*/
+		,local_iva : 'boolean'
+		,comision : 'integer'
+		,gasomatic : 'boolean'
 		,addApps : function(apps,cb){
 			if(Array.isArray(apps)){
                 var cApps = this.apps || [];

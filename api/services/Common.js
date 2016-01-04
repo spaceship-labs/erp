@@ -1,3 +1,32 @@
+module.exports.stringReplaceChars = function(string){
+	var replace_map = {"á" : 'a', "é" : 'e', "í" : 'i', "ó" : 'o', "ú" : 'u', "?" : '', "!" : '', "’" : '', "'" : '','/' : '+','ñ' : 'n','¿' : '','¡' : '','.' : '','°' : '','&' : '',',' : '','Â' : ''};
+	string = string.toLowerCase().replace(/[áéíóú?!’'\/ñ¿¡.°&,Â]/g, function(match){
+    		return replace_map[match];
+  		}).replace(/\s+/g, '-');
+	return string;
+}
+module.exports.setAllToursUrl = function(limit,skip,theCB){
+	limit = limit || 100;
+	skip = skip || 0;
+	Tour.find().limit(limit).skip(skip).exec(function(err,tours){
+		if(err) return err;
+		async.mapSeries( tours, function(tour,CB){
+			tour.url = Common.stringReplaceChars( tour.url&&tour.url!=''?tour.url:tour.name );
+			tour.save(CB);
+		},theCB);
+	});
+}
+module.exports.setAllHotelsUrl = function(limit,skip,theCB){
+	limit = limit || 100;
+	skip = skip || 0;
+	Hotel.find().limit(limit).skip(skip).exec(function(err,hotels){
+		if(err) return err;
+		async.mapSeries( hotels, function(hotel,CB){
+			hotel.url = Common.stringReplaceChars( hotel.url&&hotel.url!=''?hotel.url:hotel.name );
+			hotel.save(CB);
+		},theCB);
+	});
+}
 module.exports.view = function(view,data,req){
 	data = data || {};
 	data.page = data.page || {};
@@ -5,7 +34,9 @@ module.exports.view = function(view,data,req){
 	data.companies = req.user.companies;
 	data.selected_company = req.session.select_company || req.user.select_company;
 	data.current_user = req.user;
-	data._content = sails.config.content;
+	data.interactions = sails.config.interactions[ process.env.ERPTHEME || 'default' ] || {};
+	//data._content = sails.config.content;
+	data._content = Common.customContent(data.interactions);
 	data._content.socketUrl = sails.config.socketsUrl;
 	data._content.lang = req.getLocale();
 	//data.socketUrl = sails.config.socketsUrl;
@@ -19,6 +50,16 @@ module.exports.view = function(view,data,req){
         }
         
 	});
+};
+module.exports.customContent = function(interactions){
+	var content = sails.config.content;
+	if( interactions.customContent && interactions.customContent.length > 0 ){
+		for( var x in interactions.customContent ){
+			//content[ interactions.customContent[x].contentField ].push( interactions.customContent[x].fields );
+			content[ interactions.customContent[x].contentField ] = interactions.customContent[x].fields;
+		}
+	}
+	return content;
 };
 module.exports.renderMenu = function(req){
 	var menu = "";
@@ -247,7 +288,7 @@ function equals(a,b){
 }
 module.exports.equals = equals;
 
-module.exports.orderCustomAI = function(val){
+module.exports.orderCustomAI = function(val,cb){
 	Counter.native(function(err, counter){
 	    counter.findAndModify(
 	        { name: 'folio' }
@@ -257,10 +298,27 @@ module.exports.orderCustomAI = function(val){
 	        ,function (err, object) {
 	           if(err) console.log(err);
 	           console.log(object);
-	           Order.update({ id:val.id },{ folio:object.seq},function(o_err,order){
+	           val.folio = object.seq;
+	           cb(val);
+	           /*Order.update({ id:val.id },{ folio:object.seq},function(o_err,order){
 	           	val.folio = order.folio;
-	           });
+	           });*/
 	        }
 	    );
 	})
+};
+module.exports.getItemById = function(id,objectArray){
+	var r = false;
+	if( objectArray && objectArray.length > 0 )
+		for(var x in objectArray)
+			if( objectArray[x].id == id )
+				return objectArray[x];
+	return r;
+};
+module.exports.getIndexById = function(id,objectArray){
+	if( objectArray && objectArray.length > 0 )
+		for(var x in objectArray)
+			if( objectArray[x].id == id )
+				return x;
+	return -1;
 };

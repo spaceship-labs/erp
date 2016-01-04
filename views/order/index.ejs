@@ -1,5 +1,7 @@
 <script type='text/javascript'>
-	window.content = <%- JSON.stringify(_content) %>;
+    window.content = <%- JSON.stringify(_content) %>;
+    window.cancelationMotives = <%- JSON.stringify(cancelationMotives) %>;
+	window.interactions = <%- JSON.stringify(interactions) %>;
 </script>
 <div ng-controller='orderCTL' class='order-index'>
     <div id="cargando-elementos" class='ng-cloak' ng-cloak><img src="/images/loaders/images-cm.gif"></div>
@@ -7,22 +9,33 @@
 	<div class='row'>
 		<div class="textbutton col-sm-6 col-md-6 col-xs-12">
             <a data-toggle="modal" data-target="#exportMKP" class='pull-right btn btn-primary full-sm'><i class='fa fa-download'></i> Exportar CSV</a>
-			<span class='dropdown pull-right full-sm'>
-                <a dropdown-toggle class='btn btn-primary full-width'><i class='fa fa-files-o'></i> Reportes</a>
-                <ul role='menu' class='dropdown-menu'>
+			<span uib-dropdown class='dropdown pull-right full-sm'>
+                <a uib-dropdown-toggle class='btn btn-primary full-width'><i class='fa fa-files-o'></i> Reportes</a>
+                <ul role='menu' class='uib-dropdown-menu'>
                     <li>
                         <a ng-click="SelectReport('transfer_gral')">Reporte Traslados (Gral.)</a>
                         <a ng-click="SelectReport('tours_gral')">Reporte Tours (Gral.)</a>
-                        <a ng-click="SelectReport('tours_by_agency')">Reporte Tours (by Agency)</a>
                         <a ng-click="SelectReport('tours_by_user')">Reporte Tours (by User)</a>
+                        <a ng-click="SelectReport('tours_by_provider')">Reporte Tours (by Provider)</a>
+                        <a ng-click="SelectReport('tours_by_agency')">Reporte Tours (by Agency)</a>
+                        <a ng-click="SelectReport('tours_by_hotel')">Reporte Tours (by Hotel)</a>
+                        <a ng-click="SelectReport('tours_by_payment_method')">Reporte Tours (by Payment)</a>
+                        <a>Reportes Detallados</a>
+                        <a ng-click="SelectReport('tours_by_user_list')">Reporte Tours Detallado (by User)</a>
+                        <a ng-click="SelectReport('tours_by_provider_list')">Reporte Tours Detallado (by Provider)</a>
+                        <a ng-click="SelectReport('tours_by_agency_list')">Reporte Tours Detallado (by Agency)</a>
+                        <a ng-click="SelectReport('tours_by_hotel_list')">Reporte Tours Detallado (by Hotel)</a>
+                        <a ng-click="SelectReport('tours_by_payment_method_list')">Reporte Tours Detallado (by Payment)</a>
+                        <a ng-click="SelectReport('tours_cupon_by_user')">Reporte Tours Cupón (by User)</a>
+                        <a ng-click="SelectReport('tours_commision_by_cupon')">Reporte Tours Comisión (by User)</a>
                     </li>
                 </ul>
             </span>
             <div class='clear'></div>
 		</div>
         <div class="textbutton col-sm-6 col-md-6 col-xs-12">
-            <span class='dropdown pull-right full-sm'>
-                <a dropdown-toggle class='btn btn-primary full-width'><i class='fa fa-filter'></i> <%= __('gral_filters')%></a>
+            <span uib-dropdown class='dropdown pull-right full-sm'>
+                <a uib-dropdown-toggle class='btn btn-primary full-width'><i class='fa fa-filter'></i> <%= __('gral_filters')%></a>
                 <ul role='menu' class='dropdown-menu'>
                     <li ng-repeat="f in filtersArray">
                         <a ng-click="openFilter(f)" ng-class='!f.active?"inactive":""'>{{f.label}}</a>
@@ -40,7 +53,9 @@
             <p style="display:inline-block;">
                 <a href="/order/neworder" class='btn btn-primary'><i class = "fa fa-plus"></i> <%= __('order-crear')%></a>
                 <a class="btn btn-primary" data-toggle="modal" data-target="#uploadCVS"><i class="fa fa-upload"></i> <%= __('gral_importcvs')%></a>
-                <!--<a href='/order/reporteespecial' class='btn btn-primary'>Reporte de Montos</a>-->
+                <% if( interactions.mkp ){ %>
+                    <a href='/order/reporteespecial' class='btn btn-primary'>Reporte de Montos</a>
+                <% } %>
             </p>
             <!-- <input type="text" placeholder="Buscar" class="form-control pull-right search" ng-model="searchText" /> -->
         </div>
@@ -58,15 +73,15 @@
     <%- partial('partial/cvsForm') -%>
     </div>
     <div class="modal fade" id="reportsModal">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <report-generator object="theReport"></report-generator>
             </div>
         </div>
     </div>
     <div class='modal fade' id='exportMKP'>
-        <div class='modal-dialog'>
-            <div class='modal-content'>
+        <div class='modal-dialog modal-lg'>
+            <div class='modal-content padding20'>
                 <%- partial('partial/exportMKP') -%>
             </div>
         </div>

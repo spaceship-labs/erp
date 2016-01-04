@@ -31,7 +31,7 @@ app.controller('hotelCTL',function($scope,$http,$window,$rootScope){
         hotel.createdAt=(moment(hotel.createdAt).format('LL'));
         hotel.updatedAt=(moment(hotel.updatedAt).format('LL'));
         var r = {};
-        r[$rootScope.translates.c_population] = hotel.location.name;
+        r[$rootScope.translates.c_population] = hotel.location?hotel.location.name:'';
         r[$rootScope.translates.c_adress] = hotel.address;
         //r[$rootScope.translates.c_phones] = hotel.phones;
         r[$rootScope.translates.c_created] = hotel.createdAt;
@@ -86,34 +86,46 @@ app.controller('hotelEditCTL',function($scope,$upload,$http,$rootScope){
     $scope.newSeasonClass = 'fa-plus';
     $scope.newSeason = {};
     $scope.room = {};
+    $scope.hotel.departurePlaces = hotel.departurePlaces || [];
     $scope.dateOptions = {
         formatYear: 'yy',
         startingDay: 1
     };
 
-    
+    $scope.$on('SAVE_ALL', function () {
+        $scope.saveAll();
+        console.log('SAVE_ALL!!!!!!!!');
+    });
     $scope.saveGeo = function(marker,cb){
         var obj = {
             id : hotel.id,
             latitude : marker.lat,
             longitude : marker.lng,
-        }
-        $http({method: 'POST', url: '/hotel/update',data:obj}).success(function(hotel){
+            departurePlaces : $scope.hotel.departurePlaces
+        };
+        $http({method: 'POST', url: '/hotel/update',params:obj}).success(function(hotel){
             $scope.hotel.latitude = hotel.latitude;
             $scope.hotel.longitude = hotel.longitude;
             cb(null,hotel);
+        });
+    };
+    $scope.saveAll = function(){
+        var obj = {
+            id : hotel.id,
+            departurePlaces : $scope.hotel.departurePlaces
+        };
+        $http({method: 'POST', url: '/hotel/update',params:obj}).success(function(hotel){
+            $scope.hotel.departurePlaces = hotel.departurePlaces;
         });
     }
     $scope.toggleRoomForm = function(){
         $scope.showRoomForm = !$scope.showRoomForm;
         $scope.newRoomClass = $scope.showRoomForm ? 'fa-minus' : 'fa-plus';
     };
-
     $scope.toggleSeasonForm = function(){
         $scope.showSeasonForm = !$scope.showSeasonForm;
         $scope.newSeasonClass = $scope.showSeasonForm ? 'fa-minus' : 'fa-plus';
     };
-
     $scope.addRoom = function(room){
         $scope.room.hotel = $scope.hotel.id;
         $scope.newRoomClass = 'fa-upload';
@@ -133,5 +145,14 @@ app.controller('hotelEditCTL',function($scope,$upload,$http,$rootScope){
     $scope.changeLocations = function(value){
         console.log(value);
     };
-    
+    $scope.addDeparturePlace = function(){
+        $scope.hotel.departurePlaces.push($scope.newdeparturePlace);
+        $scope.newdeparturePlace = '';
+    };
+    $scope.updateInline = function(data,index){
+        $scope.hotel.departurePlaces[index] = data;
+    };
+    $scope.removePlace = function(index){
+        $scope.hotel.departurePlaces.splice(index,1);
+    }
 });

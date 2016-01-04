@@ -26,7 +26,7 @@
                 </span></span>
             </p>
             <p>
-                <label>Tipo de cuarto</label>
+                <label>Tipo de habitación</label>
                 <span class='field'>
                     <select 
                         ng-change="getPriceHotel(item)" 
@@ -35,7 +35,7 @@
                 </span>
             </p>
             <p>
-                <label><%= __('order-num-cuartos')%></label>
+                <label>Número de habitaciones</label>
                 <span class='field'><select ng-change="getPriceHotel(item)" ng-options='obj for obj in [1,2,3,4,5,6,7,8,9,10]' ng-model='item.roomsNumber'></select></span>
             </p>
             <p>
@@ -53,11 +53,11 @@
             <!--<p>
                 <label> <%= __('order-precio-esp')%></label>
                 <span class='field'><input type='text' ng-model="item.fee_special"></span>
-            </p>-->
+            </p>
             <p class='order-controls'>
                 <a class='btn btn-primary' ng-click="validateItem(item,'hotel',$index)">Guardar</a>
                 <span class='clear'></span>
-            </p>
+            </p>-->
         </div>
     </div>
 </div>

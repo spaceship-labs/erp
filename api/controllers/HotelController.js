@@ -38,6 +38,12 @@ module.exports = {
 			});
 		//});
 	},
+	setAllHotelsUrl : function(req,res){
+		var params = req.params.all();
+		Common.setAllHotelsUrl(params.limit,params.skip,function(err,hotels){
+			res.json({ err:err, results : hotels?true:false });
+		});
+	},
 	find : function(req,res){
 		var params = req.params.all();
 		var skip = params.skip || 0;
@@ -94,8 +100,10 @@ module.exports = {
 	    		hotel = formatHotel(hotel);
 	    		Location.find().sort('name').exec(function(e,locations){
 	    			SeasonScheme.find().sort('name').exec(function(e,schemes){
-	    				var zoneparams = hotel.location ? { 'location' : hotel.location.id } : {};
-	    				Zone.find(zoneparams).exec(function(e,zones){
+	    				var zoneparams = hotel.location ? { 'location' : hotel.location } : {};
+	    				//Zone.find(zoneparams).exec(function(e,zones){
+	    				Location.findOne(hotel.location).populate('zones').exec(function(e,lZones){ 
+	    					lZones = lZones||{};
 	    					FoodScheme.find().sort('name').exec(function(e,foodSchemes){
 	    						//console.log(hotel.foodSchemes);
 	    						//console.log(typeof hotel.foodSchemes.add );
@@ -103,7 +111,7 @@ module.exports = {
 									hotel:hotel,
 									locations:locations,
 									schemes:schemes,
-									zones:zones,
+									zones:lZones.zones||[],
 									foodSchemes:foodSchemes,
 									_content:sails.config.content,
 									page:{
@@ -146,7 +154,7 @@ module.exports = {
     	form.req = req;
     	Hotel.update({id:form.id},form,function(e,hotel){
     		if(e) throw(e);
-    		Hotel.findOne(hotel[0].id).populate('rooms').exec(function(e,hotel){
+    		Hotel.findOne(hotel.id).populate('rooms').exec(function(e,hotel){
     			if(e) throw(e);    			
     			hotel = formatHotel(hotel);	
     			res.json(hotel);

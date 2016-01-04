@@ -15,13 +15,21 @@ module.exports = {
 	  	},*/
 		reservation_method : {
 		    type: 'string'
-		    ,enum: ['intern', 'api', 'rep', 'agencyApi'] ,required : true }
+		    ,enum: ['intern', 'api', 'rep', 'agencyApi','web'] ,
+			required : true
+		}
 		,client : {
 			model : 'client_', }
 		,user : {
 			model : 'user' }
 		,company : {
 			model : 'company' }
+		,cuponsingle : {
+			model : 'cuponSingle'
+		}
+		,cupon : {
+			model : 'cupon'
+		}
 		,reservations : {
 			collection : 'reservation', via : 'order' }
 		,claims : {
@@ -36,7 +44,6 @@ module.exports = {
 	,migrate : "safe"
 	,afterCreate: function(val,cb){
 		Notifications.after(Order,val,'create');
-		Common.orderCustomAI(val);
 		cb();
 	},afterUpdate: function(val,cb){
 		//Notifications.after(Order,val,'update');
@@ -45,7 +52,9 @@ module.exports = {
 		//Notifications.before(val);
 		cb();
 	},beforeCreate: function(val,cb){
-		Notifications.before(val);
-		cb();
+		Common.orderCustomAI(val,function(val){
+			Notifications.before(val);
+			cb();
+		});
 	}
 }

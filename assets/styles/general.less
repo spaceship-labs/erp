@@ -29,6 +29,12 @@ html .full-width{width: 100%;}
 /*Messages Custom*/
 #popup_container.alert-successCustom #popup_title{background: @secondaryBG;}
 #popup_container.alert-successCustom #popup_content{border-color:@secondaryBG; }
+/*sorted list*/
+.orderListing{list-style: none;}
+.orderListing .l-separator{margin-top: 5px;font-weight: bold;background: darkgray!important;}
+.orderListing .l-row{padding: 5px 15px;border-bottom: 1px solid lightgray;background: rgba(225,225,225,.4);position: relative;}
+.orderListing .l-row:nth-child(even){background: rgba(225, 225, 225, 1);}
+.orderListing .listAction{position: absolute;right: 0;top: 1px;font-size: 11px;}
 
 /*Timepicker custom*/
 .timepicker-container .timepicker .btn{padding: 0 12px;}
@@ -63,9 +69,10 @@ table.compact-timepicker tr td{padding: 0;border:0 none;}
     transition: all .2s;}
 .paymentInformation .widgettitle{background: @cart-bg;border-bottom: 1px solid;}
 .paymentInformation .widgetcontent{border-color: @cart-borders;background: @cart-bg;color: @cart-textColor;}
-.paymentInformation.fixedItem{position: fixed;top: 20px;right: 20px;}
+.paymentInformation.fixedItem{position: fixed;top: 20px;right: 20px;max-height: 90%;overflow: auto;}
 .paymentInformation .price{display: block;text-align: right;font-size: 16px;}
 .paymentInformation .inblock{display: block;}
+.paymentInformation .btn-primary{display: block;width: 100%;background: white;color: #4db248;border-color: white;}
 .inlineMessage{display: block;padding: 10px 20px;text-align: center;background: @cart-bg!important;color: white;}
 
 /*Quick Form*/
@@ -100,7 +107,7 @@ table.compact-timepicker tr td{padding: 0;border:0 none;}
 .peoplelist.orderTourList{margin: 0;}
 .peoplelist.orderTourList .thumb img{width: 50px;margin-right: -57px;}
 .peoplelist.orderTourList .peopleinfo{margin: 0;}
-.peoplelist.orderTourList .peopleinfo li{padding: 6px 0;}
+.peoplelist.orderTourList .peopleinfo li{padding: 6px;}
 .peoplelist.orderTourList .peopleinfo li .info{float: left;width: 100%;padding-left: 60px;padding-right: 90px;margin-right: -90px;}
 .peoplelist.orderTourList .peopleinfo li p{margin: 0;}
 .peoplelist.orderTourList .peopleinfo li + li{border-top: 1px solid gray;}
@@ -185,6 +192,8 @@ table.compact-timepicker tr td{padding: 0;border:0 none;}
 .switch-lang .chosen-container .chosen-results li.highlighted{color: #fff}
 .switch-lang .chosen-container{margin-top: 5px} 
 .switch-lang .chosen-single:hover{background: #fff}
+.giant-group{display: block;}
+.giant-group .btn{width: 33.33333%;font-size: 18px;text-transform: uppercase;}
 
 /*Menu*/
 .nav-tabs.nav-stacked > li.active > a, .nav-tabs.nav-stacked > li.active > a:hover, .nav-tabs.nav-stacked > li.active > a:focus{background:@primary!important;}
@@ -241,6 +250,7 @@ table.compact-timepicker tr td{padding: 0;border:0 none;}
 .widgettitle a span{font-size: 16px;vertical-align: initial;}
 .widgetcontent{border: 2px solid @primary;width: 100%;}
 .widgetcontent.custom-table{border: 2px solid @primary;overflow: auto;}
+.ng-directory-listing .searchField{width: auto;}
 .ng-directory-listing .peoplelist  .widgettitle a.text-limit,
 .widgettitle .text-limit{overflow: hidden;text-overflow: ellipsis;white-space: nowrap;padding-right: 85px;margin-right: -85px;float: left;text-transform: uppercase!important;width: 100%;}
 a, a:hover, a:link, a:active, a:focus{color: @links-color;}
@@ -263,7 +273,7 @@ html .btn-primary , .btn-primary:focus, .btn-primary:active, .btn-primary.active
 
 .custom-table table{margin-bottom: 0!important;width: 100%}
 .custom-table table th{position: relative;}
-.custom-table table th:last-child:after{content: "";background: @primary;height: 100%;position: absolute;right: -1px;top: 0;width: 1px}
+.custom-table table th:last-child:after{content: "";background: @primary;height: 100%;position: absolute;right: -1px;top: 0;width: 1px;display: none;}/*No entiendo la razón de tu exitencia ¬_¬ */
 .custom-table table th,.custom-table table td{font-size: 12px;padding: 6px;max-width: 400px;}
 .custom-table table td.th,
 .custom-table table tr.underlight td,
@@ -634,7 +644,7 @@ color: #fff;
 /*.page-description { color: #4DB248;} */
 
 /*delete-button styles*/
-.ng-delete-button{top: 100px; left: 200px; height: 37px; width: 196px; font-size: 14px; background-color: #FC201C; color: white; border: solid #FC201C; cursor: pointer; text-align: center; font-weight: bold;}
+.ng-delete-button{top: 100px; left: 200px; height: 37px; min-width: 196px; font-size: 14px; background-color: #FC201C; color: white; border: solid #FC201C; cursor: pointer; text-align: center; font-weight: bold;}
 .ng-delete-button .fa{font-weight: bold;}
 
 

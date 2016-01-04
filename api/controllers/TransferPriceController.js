@@ -48,6 +48,23 @@ module.exports = {
 			},req);
 		});
 	},
+	find : function(req,res){
+		var params = req.params.all();
+		var skip = params.skip || 0;
+		var limit = params.limit || 200;
+		if( typeof params.id == 'undefined' ) delete params.id;
+		delete params.skip;
+		delete params.limit;
+		TransferPrice.find(params)
+			.sort('zone1').limit(limit).skip(skip)
+			.populate('zone1').populate('zone2').populate('transfer').populate('company')
+			.exec(function(e,prices){ 
+				if(e) throw(e);
+				TransferPrice.find(params).exec(function(e,count){ 
+					res.json({ results : prices, count : count });
+				});
+			});
+	},
 	getPrices : function(req,res){
 		var condiciones = req.params.all();
 		console.log(condiciones);

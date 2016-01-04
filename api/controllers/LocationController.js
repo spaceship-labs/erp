@@ -7,6 +7,7 @@
 
 module.exports = {
 	index : function(req,res){
+		//Zone.destroy().exec(function(err,zones){
 		Location.find().sort('name').populate('zones').exec(function(e,locations){
 			Common.view(res.view,{
 				locations:locations,
@@ -20,6 +21,7 @@ module.exports = {
 				]
 			},req);
 		});
+		//});
 	},
 	customfind : function(req,res){
 		var params = req.params.all();

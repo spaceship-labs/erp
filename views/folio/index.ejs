@@ -1,0 +1,45 @@
+<script type='text/javascript'>
+	window.content = <%- JSON.stringify(_content) %>;
+</script>
+<div ng-controller='folioCTL' >
+	<div class='row'>
+		<div class='col-md-12'>
+			<div class='widgetcontent custom-table nopadding'>
+				<p><input type='checkbox' ng-true-value="true" ng-false-value='false' ng-model='selectedFolios["1"]' ng-change="addRemoveSelection('1')" > 1</p>
+				<p><input type='checkbox' ng-true-value="true" ng-false-value='false' ng-model='selectedFolios["2"]' ng-change="addRemoveSelection('2')" > 2</p>
+				<p><input type='checkbox' ng-true-value="true" ng-false-value='false' ng-model='selectedFolios["3"]' ng-change="addRemoveSelection('3')" > 3</p>
+				<p><input type='checkbox' ng-true-value="true" ng-false-value='false' ng-model='selectedFolios["4"]' ng-change="addRemoveSelection('4')" > 4</p>
+				<p><input type='checkbox' ng-true-value="true" ng-false-value='false' ng-model='selectedFolios["5"]' ng-change="addRemoveSelection('5')" > 5</p>
+				<p>{{selectedFoliosArray | json}}</p>
+				<table>
+					<tr>
+						<th>Acción</th>
+						<th>Código</th>
+						<th>Usuario</th>
+						<th>Vendendor</th>
+						<th>Estado</th>
+						<th>Expiración</th>
+						<th>Folio de reserva</th>
+					</tr>
+					<tbody>
+						<tr ng-repeat="folio in folios track by folio.id">
+							<td><input type='checkbox' ng-model="selectedFolios[folio.id]" ></td>
+							<td>{{folio.code}}</td>
+							<td>{{folio.user.name}}</td>
+							<td>{{folio.seller.name}}</td>
+							<td>{{folio.status}}</td>
+							<td>{{folio.expirationDate}}</td>
+							<td>{{folio.order.folio}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="clearfix"></div>
+	<div class="modal fade" id="myModal">
+		<div class="modal-dialog">
+			<div class="modal-content">Folio modal</div>
+		</div>
+	</div>
+</div>

@@ -16,6 +16,7 @@ module.exports = {
         }, function (err, data){
             Common.view(res.view,{
                 companies: data.companies,
+                locations : [],
                 type: 'asign',
                 page:{
                     name:req.__('sc_transfer')
@@ -29,7 +30,26 @@ module.exports = {
         
         });
     },
-    
+    assign : function(req,res){
+        var params = req.params.all();
+        AssignCore.assignReservation(params,function(err,reservation){
+            res.json(reservation);
+        });
+    },
+    getReservations : function(req,res){
+        var params = req.params.all();
+        delete params.id;
+        AssignCore.getReservationsDivided( params, function(err,reservations){
+            res.json( reservations );
+        });
+    },
+    getVehicles : function(req,res){
+        var params = req.params.all()
+        delete params.id;
+        AssignCore.getVehicles(params,function(err,vehicles){
+            res.json( vehicles );
+        });
+    },
     test: function(req, res){
         console.log(req.allParams());
         res.ok();

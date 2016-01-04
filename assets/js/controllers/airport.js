@@ -21,7 +21,7 @@ app.controller('airportCTL',function($scope,$http,$rootScope){
         return r;
     };
     $scope.getZones = function(thelocation){
-        $http({method: 'POST', url: '/zone/getZones',data: {id:thelocation} }).success(function (zones){
+        $http({method: 'POST', url: '/zone/getZones',data: {id:$scope.airport.location} }).success(function (zones){
             $scope.zones = zones;
         });
     };

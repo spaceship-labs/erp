@@ -57,41 +57,44 @@ module.exports.ifContentValid = function(data, model, done){
 };
 
 function replaceFieldsWithCollection(single, item, next, modelBase){ 
-    if(item.object && single[item.handle]){
+    if(item.object && single[item.handle2 || item.handle ]){
         var model = sails.models[item.handle],
         attr = sails.models[modelBase] && sails.models[modelBase].attributes;
-        if(!model){
-            if(attr && attr[item.handle]){
-                model = sails.models[attr[item.handle].model];
+        console.log(item.handle);
+        if(!model||typeof model == 'undefined'){
+            if(attr && attr[item.handle] && ( attr[item.handle].model || attr[item.handle].collection ) ){
+                model = sails.models[attr[item.handle].model || attr[item.handle].collection];
+                if( !model||typeof model == 'undefined' )
+                    return next();
             }else{
-                next(new Error('No model found'));
+                return next();
             }
         }
         //console.log(modelBase);
         model.findOne({
             or: [
-                { name: single[item.handle] },
-                { id: single[item.handle]}
+                { name: single[item.handle2 || item.handle] },
+                { name_en: single[item.handle2 || item.handle] },
+                { id: single[item.handle2 || item.handle]},
+                { mkpid: single[item.handle2 || item.handle]}
             ]
         }).exec(function(err, find){
             if(err) return next(err);
             if(find){
-                single[item.handle] = find.id;
+                single[item.handle2 || item.handle] = find.id;
                 next();
             }else{
-                model.create({ name: single[item.handle] })
+                model.create({ name: single[item.handle2 || item.handle] })
                      .exec(function(err, newModel){
                         if(err) return next(err);
-                        single[item.handle] = newModel.id;
+                        single[item.handle2 || item.handle] = newModel.id;
                         next();
                      });
             }
-        
         });
     }else{
         next();
     }
-
 }
 
 module.exports.replaceFieldsWithCollection = function(data, model, done){

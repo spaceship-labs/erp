@@ -1085,7 +1085,7 @@ ul.list-inline li { display: inline-block; margin: 0 5px 10px 0; }
 .amountdue { text-align: right; }
 .amountdue h1 { 
 	text-align: center; line-height: normal; border: 1px solid #ccc; background: #fcfcfc; 
-	display: inline-block; padding: 10px 30px; width: 200px;
+	display: inline-block; padding: 10px 30px;
 }
 .amountdue h1 span { display: block; font-size: 12px; text-transform: uppercase; color: #666; }
 .amountdue .btn { margin-top: 15px; width: 222px; }

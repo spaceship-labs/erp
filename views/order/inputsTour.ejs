@@ -3,7 +3,6 @@
         <div class='headtitle'>
             <div class='btn-group'>
                 <a class="btn btn-primary pull-right" ng-click="removeTH($index,'tour')"><i class='fa fa-times'></i> <%= __('order-eliminar')%></a>
-                <a class="btn btn-primary pull-right" ng-click="setTheItemForContacts(item,'tour',$index)" data-toggle="modal" data-target="#myModal"><i class='fa fa-user'></i> Clientes</a>
             </div>
             <h4 class="widgettitle"><span><%= __('order-reservar-tour')%><span ng-bind="item.tour.name"></span></span></h4>
         </div>
@@ -39,30 +38,14 @@
                 </span>
             </p>
             <p>
-                <label><%= __('order_room')%> </label>
-                <span class='field'><input type='text' ng-model="item.room" name='room' /></span>
-            </p>
-            <p>
-                <label>Lugar de salida del tour</label>
+                <label>Notas</label>
                 <span class='field'>
-                    <!--<input type='text' ng-model='item.departurePlace' >-->
-                    <select ng-options="obj as ( obj.name + ' - ' + obj.time ) for obj in item.tour.departurePoints" ng-model="item.departurePlace" required></select>
-                </span>
-            </p>
-            <p>
-                <label><%= __('order-hora-salida')%></label>
-                <span class='field'>
-                    <select ng-options="obj as ( obj.from + ' - ' + obj.to) for obj in item.tour.schedules" ng-model="item.departureTime" required></select>
-                    <!--<timepicker ng-model="item.departureTime" hour-step="1" minute-step="1" show-meridian="ismeridian"></timepicker>-->
+                    <textarea ng-model="item.notes"></textarea>
                 </span>
             </p>
             <p>
                 <label><%= __('order-precio')%></label>
                 <span class='field'><span ng-bind="item.fee||0"></span></span>
-            </p>
-            <p class='order-controls'>
-                <a class='btn btn-primary' ng-click="validateItem(item,'tour',$index)">Guardar</a>
-                <span class='clear'></span>
             </p>
         </div>
         <div ng-show='item.flag_priceupdated' class='centeralign'><div class='widgetcontent' >

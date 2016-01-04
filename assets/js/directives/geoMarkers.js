@@ -3,9 +3,18 @@
         $scope.saveClass = 'fa-save';
         $scope.reverseClass = 'fa-search';
         $scope.translates = $rootScope.translates;
+        $scope.layers = {
+            baselayers: {
+                googleRoadmap: {
+                    name: 'Google Streets',
+                    layerType: 'ROADMAP',
+                    type: 'google'
+                }
+            }
+        };
         /*Creará un marcador con los campos que se le pasen en la directiva*/
         $scope.createMarker = function(){
-            var newIndex = 'item_' + _.keys($scope.markers).length
+            var newIndex = 'item_' + _.keys($scope.markers).length;
             $scope.markers[newIndex] = {
                 lat : $scope.center.lat ,
                 lng : $scope.center.lng ,
@@ -13,7 +22,6 @@
                 focus : true ,
                 draggable : $scope.dragEnabled
             };
-            console.log($scope.markers);
         };
         $scope.save = function(){
             $scope.saveClass = 'fa-upload';
@@ -44,8 +52,9 @@
             //$scope.markers.splice(index,1);
             delete $scope.markers[key];
         };
+
         var formatMarkers = function(){
-            if($scope.markers){
+            if($scope.markers && _.keys($scope.markers).length > 0){
                 for( var x in $scope.markers ){
                     $scope.markers[x].draggable = $scope.dragEnabled;
                     $scope.markers[x].focus = false;

@@ -10,10 +10,12 @@
         dir='transporttype' 
         edit-url='/transporttype/edit/' 
         get-info='getInfo' 
-        button-text='<%= __('addtransporttype') %>' 
+        button-text="<%= __('addtransporttype') %>" 
+        button-text-import='<%= __('import') %>' 
+		type-import='transporttype'
         get-url="/transporttype/find/"  
-        lang='<%=req.session.lang || "en"%>'>
-    </div>
+        lang='<%=req.session.lang || "en"%>' 
+    ></div>
 	<div class="modal fade" id="myModal">
 		<div class="modal-dialog">
 			<div class="modal-content">

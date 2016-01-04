@@ -27,8 +27,9 @@
             var data = {
                 obj : $scope.object.id,
                 rel : object.id,
-            }
-            $http({method:'POST',url:field.removeAction,data:data}).success(function (obj){
+            };
+            //$http({method:'POST',url:field.removeAction,data:data}).success(function (obj){
+            $http.post(field.removeAction,data,{}).success(function (obj){
                 $scope.object[field.handle] = obj[field.handle];
             });
         };
@@ -63,7 +64,8 @@
 
                 });
             }else{
-                $http({method:'POST',url:$scope.action,data:submitObject}).success(function (obj){
+                //$http({method:'POST',url:$scope.action,data:submitObject}).success(function (obj){
+                $http.post($scope.action,submitObject,{}).success(function(obj){
                     //$scope.object = object; //Se comento por error en casos donde varios formHelpers dependen de un mismo objeto.
                     console.log(submitObject);
                     $scope.form.$setPristine();
