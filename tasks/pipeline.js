@@ -90,6 +90,7 @@ var jsFilesToInject = [
     '/bower_components/underscore/underscore-min.js',
 	'/bower_components/leaflet/dist/leaflet.js',
 	'/bower_components/leaflet-plugins/layer/tile/Google.js',
+	'/bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.js',
 	'/bower_components/angular-leaflet/dist/angular-leaflet-directive.js',
     '/bower_components/angular-ui-tinymce/src/tinymce.js',
 	'/bower_components/Chart.js/Chart.js',
