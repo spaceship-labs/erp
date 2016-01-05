@@ -60,7 +60,8 @@
     "sass-bootstrap-glyphicons": "~1.0.0",
     "slimScroll": "0.2.5",
     "sweetalert": "~0.5.0",
-    "underscore": "~1.7.0"
+    "underscore": "~1.7.0",
+    "leaflet": "~0.7.7"
   },
   "resolutions": {
     "jquery": "~2.x",
