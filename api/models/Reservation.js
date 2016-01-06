@@ -35,6 +35,8 @@ module.exports = {
 			model : 'hotel' }
 		,transfer : {
 			model : 'transfer' }
+        ,asign : {
+            model : 'transportasign' }
         ,transferprice : {
             model : 'transferprice' }
         ,state : {
@@ -87,6 +89,7 @@ module.exports = {
         ,pax : 'integer'
         ,kidPax : 'integer'
 
+        ,pickup_time : 'datetime'
         ,arrival_date : 'date'
         ,arrival_fly : 'string'
         ,arrival_time : 'datetime'

@@ -1,3 +1,8 @@
+app.filter('to_trusted', ['$sce', function($sce) {
+    return function(text) {
+        return $sce.trustAsHtml(text);
+    };
+}]);
 app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile, uiCalendarConfig, chroma, $filter,$window){
     var timeZone = 'America/Mexico_City';
     moment.tz.add(timeZone+'|PST PDT|80 70|0101|1Lzm0 1zb0 Op0');
@@ -451,15 +456,26 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
         }else{
             $scope.modal.fee = 0;
         }
-        $scope.updateDatesFormat();
+        $scope.updateOriginsFormat();
         updateTotal();
     };
     //Controla los inputs de fechas roundtrip/oneway
-    $scope.updateDatesFormat = function(){
+    $scope.updateOriginsFormat = function(){
         var h = $scope.modal.origin == 'hotel'?true:false;
         var r = $scope.modal.type == 'round_trip'?true:false;
         $scope.dtfa[0] = ( h && r ) || (!h);
         $scope.dtfa[1] = ( !h && r ) || h;
+    };
+    $scope.getArrivalDepartureAsigned = function(r){
+        var result = '';
+        if( r.asign ){
+            var o           = r.origin == 'hotel'       ?true:false;
+            var oText       = " Llegada <span class='" + ( r.asign.vehicle_arrival?"greenText'>asignada":"redText'>No asignada" ) + '</span>. ';
+            var t           = r.type == 'round_trip'    ?true:false;
+            var tText       = " Salida <span class='" + ( r.asign.vehicle_departure?"greenText'>asignada":"redText'>No asignada" ) + '</span>. ';
+            result          = ( ( o && t ) || (!o)?oText:'' ) + ( ( !o && t ) || o?tText:'' );
+        }
+        return result;
     };
      //obtiene los servicios que están disponibles dependiendo de las zonas que se elijan 
     $scope.getTransfers = function(){
@@ -594,6 +610,7 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
         $scope.modal = x;
         $scope.modal.transfer2 = x.transfer.id || x.transfer;
         $scope.asignando = true;
+        $scope.updateOriginsFormat();
         $scope.getTransfers();
         //console.log(x);
         $scope.getVehicles();
@@ -608,7 +625,7 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
             $http.post('/TransportAsign/getVehicles',params,{}).success(function(result) {
                 console.log(result);
                 $scope.vehicles = result;
-                $scope.filterV($scope.theTransportist);
+                $scope.filterV($scope.modal.asign.company);
             });
         }
     };
@@ -621,31 +638,36 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
     var getModalFields = function(){
         var result = {
             id : $scope.modal.id
-            ,vehicle : $scope.modal.vehicle.id
+            //,vehicle : $scope.modal.vehicle.id
             ,hotel : $scope.modal.hotel.id
             ,service_type : $scope.modal.service_type
             ,transfer : $scope.modal.transfer2
             ,pax : $scope.modal.pax
-            ,no_show : $scope.modal.no_show
+            //,no_show : $scope.modal.no_show
             ,notes : $scope.modal.notes
-            ,driver : $scope.modal.driver
-            ,notes2 : $scope.modal.notes2
+            //,driver : $scope.modal.driver
+            //,notes2 : $scope.modal.notes2
+            //,pickup_time : $scope.modal.asign.pickup_time
+            ,asign : $scope.modal.asign //lo comentado se pasó a este objeto
         };
-        if( $scope.dtfa[0] )
-            result.arrivalpickup_time = $scope.modal.arrivalpickup_time;
+        /*if( $scope.dtfa[0] )
+            result.vehicle_arrival = $scope.modal.arrivalpickup_time;
         if( $scope.dtfa[1] )
-            result.departurepickup_time = $scope.modal.departurepickup_time;
+            result.departurepickup_time = $scope.modal.departurepickup_time;*/
         return result;
     }
     $scope.newUpdate = function(){
-        if( $scope.modal.vehicle ){
+        if( $scope.modal.asign && ( $scope.modal.asign.vehicle_arrival || $scope.modal.asign.vehicle_departure ) ){
             $http.post('/TransportAsign/assign',getModalFields(),{}).success(function(result) {
                 console.log(result);
                 if(result){
-                    $scope.reservations.asigned.push(result);
-                    for( var x in $scope.reservations.notAsigned )
+                    divideAfterUpdate(result);
+                    /*result.groupBy = $scope.getDateHr(result,true);
+                    if( !$scope.reservations.asigned[result.groupBy] ) $scope.reservations.asigned[result.groupBy] = [];
+                    $scope.reservations.asigned[result.groupBy].push(result);
+                    for( var x in $scope.reservations.notAsigned[result.groupBy] )
                         if($scope.reservations.notAsigned[x].id == result.id)
-                            $scope.reservations.notAsigned.splice(x,1);
+                            $scope.reservations.notAsigned.splice(x,1);*/
                     jQuery('#select-transport-update').modal('hide');
                 }
             });
@@ -744,17 +766,37 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
         $scope.currentPage = 1;
         sendFilterFx(0);
     };
-    var formatReservations = function(r){
-        for(var x in r.notAsigned){
-            var date = $scope.getDateHr(r.notAsigned[x],true);
-            //console.log(date);console.log(r.notAsigned[x]);
-            r.notAsigned[x].groupBy = date;
+    var divideAfterUpdate = function(r){
+        if(r){
+            r.groupBy = $scope.getDateHr(r,true);
+            if( !$scope.reservations.asigned[r.groupBy] ) $scope.reservations.asigned[r.groupBy] = [];
+            var index = -1;
+            for( var x in $scope.reservations.asigned[r.groupBy] )
+                if($scope.reservations.asigned[r.groupBy][x].id == r.id)
+                    index = x;
+            if( index >= 0 )
+                $scope.reservations.asigned[r.groupBy][x] = r;
+            else 
+                $scope.reservations.asigned[r.groupBy].push(r);
+            for( var x in $scope.reservations.notAsigned[r.groupBy] ){
+                if($scope.reservations.notAsigned[r.groupBy][x].id == r.id){
+                    if(r.type = 'one_way')
+                        $scope.reservations.notAsigned[r.groupBy].splice(x,1);
+                    else
+                        $scope.reservations.notAsigned[r.groupBy][x] =  x;
+                }
+            }
         }
-        r.notAsigned = _.groupBy(r.notAsigned,'groupBy');
+    }
+    var divideReservations = function(r){
+        for(var x in r.notAsigned){
+            r.notAsigned[x].groupBy = $scope.getDateHr(r.notAsigned[x],true);
+        }
+        r.notAsigned = _.groupBy(r.notAsigned,'groupBy') || [];
         for(var x in r.asigned){
             r.asigned[x].groupBy = $scope.getDateHr(r.asigned[x],true);
         }
-        r.asigned = _.groupBy(r.asigned,'groupBy');
+        r.asigned = _.groupBy(r.asigned,'groupBy') || [];
         return r;
     }
     var sendFilterFx = function(skip){
@@ -772,13 +814,14 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
         console.log(f);
         $http.post('/TransportAsign/getReservations',params,{}).success(function(result) {
             //console.log(result);
-            $scope.reservations = formatReservations(result);
+            $scope.reservations = divideReservations(result);
             console.log($scope.reservations);
             //$scope.reservations = result;
         });
     };
     $scope.reservations = {};
     $scope.theDate = false;
+    $scope.dateRestrinctions : { arrival : { minDate : '', minHr : '' } , departure : { minDate : '', minHr : '' } };
     /*$scope.getReservations = function(){
         var params = {};
         $http.post('/TransportAsign/getReservations',params,{}).success(function(result) {
@@ -787,4 +830,12 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
         });
     };*/
     sendFilterFx(0);
+    //función set min dates/hrs
+    //recibe la fecha para saber si validar la hr
+    $scope.setMinDatesHrs = function( date , dh ){
+        var result = '';
+        var today = moment(); //hoy
+        var date = moment(date); //fecha seleccionada
+        return result;
+    }
 });

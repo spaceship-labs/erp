@@ -53,43 +53,52 @@
     <label>Transportista</label>
     <span class='field'>
         <select 
-            ng-model="theTransportist"
+            ng-model="modal.asign.company"
             ng-options="c.id as c.name for c in all_companies"
-            ng-change="filterV(theTransportist)"
+            ng-change="filterV(modal.asign.company)"
         ></select>
     </span>
 </p>
-<p>
-    <label>Vehículo</label>
+<p ng-hide="!dtfa[0]"> <!-- arrival -->
+    <label>Vehículo (llegada)</label>
     <span class='field'>
         <select 
-            ng-model="modal.vehicle"
+            ng-model="modal.asign.vehicle_arrival"
             ng-options="c.id as c.car_id group by c.transfertype for c in filter_vehicles"
         ></select>
+    </span>
+</p>
+<p ng-hide="!dtfa[0]"> <!-- arrival -->
+    <label>Pickup (llegada)</label>
+    <span class='field'>
+        <timepicker ng-model="modal.asign.arrivalpickup_time" hour-step="1" minute-step="1" show-meridian="ismeridian"></timepicker>
+    </span>
+</p>
+<p ng-hide="!dtfa[1]"> <!-- departure -->
+    <label>Vehículo (salida)</label>
+    <span class='field'>
+        <select 
+            ng-model="modal.asign.vehicle_departure"
+            ng-options="c.id as c.car_id group by c.transfertype for c in filter_vehicles"
+        ></select>
+    </span>
+</p>
+<p ng-hide="!dtfa[1]"> <!-- departure -->
+    <label>Pickup (salida)</label>
+    <span class='field'>
+        <timepicker ng-model="modal.asign.departurepickup_time" hour-step="1" minute-step="1" show-meridian="ismeridian"></timepicker>
     </span>
 </p>
 <p>
     <label>No Show?</label>
     <span class='field'>
-        <input type='checkbox' ng-model="modal.no_show">
+        <input type='checkbox' ng-model="modal.asign.no_show">
     </span>
 </p>
 <p>
     <label>Notas</label>
     <span class='field'>
         <textarea ng-model='modal.notes'></textarea>
-    </span>
-</p>
-<p ng-hide="!dtfa[0]">
-    <label>Pickup (arrival)</label>
-    <span class='field'>
-        <timepicker ng-model="modal.arrivalpickup_time" hour-step="1" minute-step="1" show-meridian="ismeridian"></timepicker>
-    </span>
-</p>
-<p ng-hide="!dtfa[1]">
-    <label>Pickup (departure)</label>
-    <span class='field'>
-        <timepicker ng-model="modal.departurepickup_time" hour-step="1" minute-step="1" show-meridian="ismeridian"></timepicker>
     </span>
 </p>
 <p>
@@ -99,13 +108,13 @@
     <p>
         <label>Operador</label>
         <span class='field'>
-            <input type='text' ng-model="modal.driver">
+            <input type='text' ng-model="modal.asign.driver">
         </span>
     </p>
     <p>
         <label>Notas de incidencia</label>
         <span class='field'>
-            <textarea ng-model='modal.notes2'></textarea>
+            <textarea ng-model='modal.asign.notes'></textarea>
         </span>
     </p>
 </div>

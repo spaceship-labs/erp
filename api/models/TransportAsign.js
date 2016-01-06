@@ -8,7 +8,21 @@
 module.exports = {
 
   attributes: {
-    transport: {
+    arrivalpickup_time : 'datetime'
+    ,departurepickup_time : 'datetime'
+    ,vehicle_arrival : { //vehículo asignado para una llegada
+        model : 'transport'
+    }
+    ,vehicle_departure : { //vehículo asignado para una salida
+        model : 'transport'
+    }
+    ,company : { //transportista
+        model : 'company'
+    }
+    ,no_show : 'boolean' //no se presentó el cliente?
+    ,notes : 'string' 
+    ,driver : 'string' //no hay base de datos por eso string
+    /*transport: {
         model: 'transport',
         //required: true
     },
@@ -34,7 +48,7 @@ module.exports = {
     },
     transport : {
         model : 'transfer'
-    }
+    }*/
   }
 };
 

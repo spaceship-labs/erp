@@ -27,31 +27,31 @@
     <%- partial('../order/partial/filters') -%> 
     <div class='row'>
         <div class='col-md-6'>
-            <h4 class='widgettitle'>Reservaciones sin asignar</h4>
-            <ul class='orderListing' ng-repeat="(key,notAsigned) in reservations.notAsigned">
-                <li class='l-row l-separator'>{{key}}</li>
-                <li class='l-row' ng-repeat="x in notAsigned | orderBy:sortByDateHr:false">
-                    <p><i class="{{getIcon(x)}}"></i> <span ng-bind="getDateHr(x,false)"></span> | <span ng-bind="x.company.name"></span>, <span ng-bind="x.transfer.name"></span></p>
-                    <a ng-click="openAssign(x)" class='listAction btn btn-primary'>Asignar</a>
-                </li>
-                <!--<li class='l-row' ng-repeat="x in notAsigned | orderBy:sortByDateHr:false">
-                    <p><i class="{{getIcon(x)}}"></i> <span ng-bind="getDateHr(x,false)"></span> | <span ng-bind="x.company.name"></span>, <span ng-bind="x.transfer.name"></span></p>
-                    <a ng-click="openAssign(x)" class='listAction btn btn-primary'>Asignar</a>
-                </li>-->
-            </ul>
-        </div>
-        <div class='col-md-6'>
             <h4 class='widgettitle'>Reservaciones asignadas</h4>
             <ul class='orderListing' ng-repeat="(key,asigned) in reservations.asigned">
                 <li class='l-row l-separator'>{{key}}</li>
                 <li class='l-row' ng-repeat="x in asigned | orderBy:sortByDateHr:false">
-                    <p><i class="{{getIcon(x)}}"></i> <span ng-bind="getDateHr(x,false)"></span> | <span ng-bind="x.company.name"></span>, <span ng-bind="x.transfer.name"></span></p>
+                    <p>
+                        <i class="{{getIcon(x)}}"></i> <span ng-bind="getDateHr(x,false)"></span> 
+                        | <span ng-bind="x.company.name"></span>, <span ng-bind="x.transfer.name"></span>
+                        | <span ng-bind-html="getArrivalDepartureAsigned(x) | to_trusted"></span>
+                    </p>
+                    <a ng-click="openAssign(x)" class='listAction btn btn-primary'>Editar</a>
+                </li>
+            </ul>
+        </div>
+        <div class='col-md-6'>
+            <h4 class='widgettitle'>Reservaciones sin asignar</h4>
+            <ul class='orderListing' ng-repeat="(key,notAsigned) in reservations.notAsigned">
+                <li class='l-row l-separator'>{{key}}</li>
+                <li class='l-row' ng-repeat="x in notAsigned | orderBy:sortByDateHr:false">
+                    <p>
+                        <i class="{{getIcon(x)}}"></i> <span ng-bind="getDateHr(x,false)"></span> 
+                        | <span ng-bind="x.company.name"></span>, <span ng-bind="x.transfer.name"></span>
+                        | <span ng-bind-html="getArrivalDepartureAsigned(x) | to_trusted"></span>
+                    </p>
                     <a ng-click="openAssign(x)" class='listAction btn btn-primary'>Asignar</a>
                 </li>
-                <!--<li class='l-row' ng-repeat="x in reservations.asigned | orderBy:sortByDateHr:false">
-                    <p><span ng-bind="getDateHr(x,false)"></span> | <span ng-bind="x.company.name"></span>, <span ng-bind="x.transfer.name"></span></p>
-                    <a ng-click="openAssign(x)" class='listAction btn btn-primary'>Editar</a>
-                </li>-->
             </ul>
         </div>
     </div>

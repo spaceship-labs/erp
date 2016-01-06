@@ -33,6 +33,7 @@ module.exports = {
     assign : function(req,res){
         var params = req.params.all();
         AssignCore.assignReservation(params,function(err,reservation){
+            console.log(err);
             res.json(reservation);
         });
     },

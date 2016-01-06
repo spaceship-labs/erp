@@ -1,11 +1,17 @@
 module.exports.assignReservation = function(params,callback){
 	var id = params.id;
 	delete params.id;
-	Reservation.update({id:id},params,function(err,r){
+	delete params.asign.id;
+	TransportAsign.create(params.asign).exec(function(err,asigned){
 		if(err) return callback(err,false);
-		Reservation.findOne(id).populateAll().exec(callback);
+		delete params.asign;
+		params.asign = asigned.id;
+		Reservation.update({id:id},params,function(err,r){
+			if(err) return callback(err,false);
+			Reservation.findOne(id).populateAll().exec(callback);
+		});
 	});
-}
+};
 module.exports.formatFilterFields = function(f){
 	var fx = { };
 	fx['$or'] = [];
@@ -48,7 +54,7 @@ module.exports.formatFilterFields = function(f){
       }
     }
   }
-  console.log(fx['$or']);
+  //console.log(fx['$or']);
   if( fx['$or'].length == 0 ) delete fx['$or'];
   return fx;
 };
@@ -63,7 +69,7 @@ module.exports.getReservationsDivided = function(params,callback){
 		var result = { asigned : [] , notAsigned : [] };
 		if(err) return callback(err,result);
 		for( var x in reservations ){
-			if( reservations[x].vehicle )
+			if( reservations[x].asign )
 				result.asigned.push( reservations[x] );
 			else
 				result.notAsigned.push( reservations[x] );
@@ -86,7 +92,7 @@ module.exports.getVehicles = function(params,callback){
 				,{ transfers : params.transfer.id || params.transfer }
 			]
 		}
-		console.log(condiciones);
+		//console.log(condiciones);
 		TransportType.find(condiciones).populateAll().exec(function(err,types){
 			//console.log(types.transports.length);
 			var vehicles = [];

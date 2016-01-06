@@ -1,6 +1,6 @@
 app.controller('transportCTL',function($scope,$http,$rootScope){
     $scope.transports = transports;
-    $scope.types = types;
+    //$scope.types = types;
     $scope.content = content;
     $scope.serviceTypes = getTypes();
     $scope.companies = window.show_companies;
@@ -37,7 +37,7 @@ app.controller('transportCTL',function($scope,$http,$rootScope){
 app.controller('transportEditCTL',function($scope,$upload,$http,$window){
     $scope.transport = transport;
     $scope.content = content;
-    $scope.types = types;
+    //$scope.types = types;
     $scope.companies = show_companies;
     $scope.serviceTypes = getTypes();
     $scope.remove_invalid = function(){
