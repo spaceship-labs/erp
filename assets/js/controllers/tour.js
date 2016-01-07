@@ -162,10 +162,20 @@ app.controller('tourEditCTL',function($scope,$http,$window){
     }
 
     $scope.addExtraPrice = function(){
-        $scope.tour.extra_prices.push($scope.extra_price);
+        $scope.tour.extra_prices.push(angular.copy($scope.extra_price));
+        $scope.extra_price = {
+            fee : 0,
+            feeChild : 0,
+            description : '',
+            tour : $scope.tour.id,
+            type : 'extra_hour',
+            hour : 0
+        };
     }
 
-    $scope.deleteExtraPrice = function(){
-
+    $scope.deleteExtraPrice = function(index){
+        var extra_price_delete = $scope.tour.extra_prices[index];
+        console.log(extra_price_delete);
+        $scope.tour.extra_prices.splice(index,1);
     }
 });

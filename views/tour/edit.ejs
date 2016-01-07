@@ -106,7 +106,7 @@
                 </div>
                 <div ng-repeat="extra_p in tour.extra_prices" class='form stdform stdform2 form-group'>
                     <p>
-                        <a class="close pull-right" href="#">&times;</a>
+                        <a class="close pull-right" ng-click="deleteExtraPrice($index)">&times;</a>
                     </p>
                     <p ng-if="extra_p.type == 'extra_hour'">
                         <label>Hora</label>
