@@ -112,7 +112,7 @@ module.exports = {
             };
             Price.create(price).exec(function(err,res){
                 val.price = res.id;
-                val.save(cb);
+                cb();
             });
         } else {
             cb();
