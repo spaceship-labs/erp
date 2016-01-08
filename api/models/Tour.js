@@ -59,8 +59,11 @@ module.exports = {
         }
         ,status : {
             type: 'string',
-            enum: ['inactive', 'active'],
-            defaultsTo : 'inactive'
+            enum: ['inactive', 'active','draft'],
+            defaultsTo : 'draft'
+        }
+        ,haveTranslate : {
+            type : 'boolean'
         }
         //duration_type ?
 
