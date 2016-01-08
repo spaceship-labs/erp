@@ -11,11 +11,15 @@ module.exports = {
         async.parallel({
             companies: function(done){
                 Company.find().exec(done);
+            },
+            vehicles : function(done){
+                Transport.find().exec(done);
             }
         
         }, function (err, data){
             Common.view(res.view,{
                 companies: data.companies,
+                all_vehicles: data.vehicles,
                 locations : [],
                 type: 'asign',
                 page:{
@@ -40,7 +44,7 @@ module.exports = {
     getReservations : function(req,res){
         var params = req.params.all();
         delete params.id;
-        AssignCore.getReservationsDivided( params, function(err,reservations){
+        AssignCore.getReservationsDivided( params, req.user, function(err,reservations){
             res.json( reservations );
         });
     },

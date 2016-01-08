@@ -10,6 +10,7 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
     //varibales para solicitud de servicio
     $scope.dtfa = [true,true];
     $scope.all_companies = window.all_companies;
+    $scope.all_vehicles = window.all_vehicles;
     console.log($scope.companies);
     $scope.pax = [];
     for(var j=1;j<( 30 );j++) $scope.pax.push(j);
@@ -473,7 +474,8 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
             var oText       = " Llegada <span class='" + ( r.asign.vehicle_arrival?"greenText'>asignada":"redText'>No asignada" ) + '</span>. ';
             var t           = r.type == 'round_trip'    ?true:false;
             var tText       = " Salida <span class='" + ( r.asign.vehicle_departure?"greenText'>asignada":"redText'>No asignada" ) + '</span>. ';
-            result          = ( ( o && t ) || (!o)?oText:'' ) + ( ( !o && t ) || o?tText:'' );
+            //result          = ( ( o && t ) || (!o)?oText:'' ) + ( ( !o && t ) || o?tText:'' );
+            result          = ( ( !o && !t ) || t?oText:'' ) + ( ( !o && t ) || o?tText:'' );
         }
         return result;
     };
@@ -625,9 +627,25 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
             $http.post('/TransportAsign/getVehicles',params,{}).success(function(result) {
                 console.log(result);
                 $scope.vehicles = result;
-                $scope.filterV($scope.modal.asign.company);
+                $scope.filterV($scope.modal.asign?$scope.modal.asign.company:false);
             });
         }
+    };
+    $scope.getName =function(type,id){
+        var a = [];
+        var name = '';
+        var field = 'name';
+        if( type == 'company' ){
+            a = $scope.all_companies;
+        }
+        if( type == 'vehicle' ){
+            a = $scope.all_vehicles;
+            field = 'car_id';
+        }
+        for( var x in a )
+            if( a[x].id == id )
+                name = a[x][field];
+        return name;
     };
     $scope.filter_vehicles = {};
     $scope.filterV = function(company){
@@ -659,6 +677,7 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
     $scope.newUpdate = function(){
         if( $scope.modal.asign && ( $scope.modal.asign.vehicle_arrival || $scope.modal.asign.vehicle_departure ) ){
             $http.post('/TransportAsign/assign',getModalFields(),{}).success(function(result) {
+                console.log('result update');
                 console.log(result);
                 if(result){
                     divideAfterUpdate(result);
@@ -767,6 +786,7 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
         sendFilterFx(0);
     };
     var divideAfterUpdate = function(r){
+        r.isNew = false;
         if(r){
             r.groupBy = $scope.getDateHr(r,true);
             if( !$scope.reservations.asigned[r.groupBy] ) $scope.reservations.asigned[r.groupBy] = [];
@@ -774,16 +794,17 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
             for( var x in $scope.reservations.asigned[r.groupBy] )
                 if($scope.reservations.asigned[r.groupBy][x].id == r.id)
                     index = x;
+            r.isNew = true;
             if( index >= 0 )
                 $scope.reservations.asigned[r.groupBy][x] = r;
             else 
                 $scope.reservations.asigned[r.groupBy].push(r);
             for( var x in $scope.reservations.notAsigned[r.groupBy] ){
                 if($scope.reservations.notAsigned[r.groupBy][x].id == r.id){
-                    if(r.type = 'one_way')
+                    if(r.type == 'one_way')
                         $scope.reservations.notAsigned[r.groupBy].splice(x,1);
                     else
-                        $scope.reservations.notAsigned[r.groupBy][x] =  x;
+                        $scope.reservations.notAsigned[r.groupBy][x] =  r;
                 }
             }
         }
@@ -821,7 +842,7 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
     };
     $scope.reservations = {};
     $scope.theDate = false;
-    $scope.dateRestrinctions : { arrival : { minDate : '', minHr : '' } , departure : { minDate : '', minHr : '' } };
+    $scope.dateRestrinctions = { arrival : { minDate : '', minHr : '' } , departure : { minDate : '', minHr : '' } };
     /*$scope.getReservations = function(){
         var params = {};
         $http.post('/TransportAsign/getReservations',params,{}).success(function(result) {
@@ -832,10 +853,10 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
     sendFilterFx(0);
     //función set min dates/hrs
     //recibe la fecha para saber si validar la hr
-    $scope.setMinDatesHrs = function( date , dh ){
+    /*$scope.setMinDatesHrs = function( date , dh ){
         var result = '';
         var today = moment(); //hoy
         var date = moment(date); //fecha seleccionada
         return result;
-    }
+    }*/
 });

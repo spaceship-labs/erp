@@ -1,4 +1,21 @@
 <p>
+    <label>Resumen de reserva</label>
+    <span class='clear'></span>
+</p>
+<div class='reservationResume row'>
+    <div class='col-md-6'>
+        <p>Folio: <span ng-bind="modal.folio"></span></p>
+        <p>Clave: <span ng-bind="modal.clave"></span></p>
+        <p>Agencia: <span ng-bind="modal.company.name"></span></p>
+    </div>
+    <div class='col-md-6'>
+        <p><%= __('order-hotel')%>: <span ng-bind="modal.hotel.name"></span></p>
+        <p><%= __("order_service_type")%>: <span ng-bind="modal.service_type"></span></p>
+        <p>Servicio: <span ng-bind="modal.transfer.name"></span></p>
+        <p>Pax: <span ng-bind="modal.pax"></span></p>
+    </div>
+</div>
+<!--<p>
     <label>Clave</label>
     <span class="field">
         <input type="text" ng-model="modal.clave">
@@ -49,7 +66,7 @@
     <span class="field">
         <input type="number" ng-model="modal.pax">
     </span>
-<p>
+<p>-->
     <label>Transportista</label>
     <span class='field'>
         <select 
@@ -90,12 +107,6 @@
     </span>
 </p>
 <p>
-    <label>No Show?</label>
-    <span class='field'>
-        <input type='checkbox' ng-model="modal.asign.no_show">
-    </span>
-</p>
-<p>
     <label>Notas</label>
     <span class='field'>
         <textarea ng-model='modal.notes'></textarea>
@@ -109,6 +120,12 @@
         <label>Operador</label>
         <span class='field'>
             <input type='text' ng-model="modal.asign.driver">
+        </span>
+    </p>
+    <p>
+        <label>No Show?</label>
+        <span class='field'>
+            <input type='checkbox' ng-model="modal.asign.no_show">
         </span>
     </p>
     <p>

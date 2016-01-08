@@ -2,6 +2,7 @@ module.exports.assignReservation = function(params,callback){
 	var id = params.id;
 	delete params.id;
 	delete params.asign.id;
+	params.asign.reservation = id;
 	TransportAsign.create(params.asign).exec(function(err,asigned){
 		if(err) return callback(err,false);
 		delete params.asign;
@@ -58,25 +59,58 @@ module.exports.formatFilterFields = function(f){
   if( fx['$or'].length == 0 ) delete fx['$or'];
   return fx;
 };
-module.exports.getReservationsDivided = function(params,callback){
+module.exports.divideReservations = function(reservations){
+	var result = { asigned : [] , notAsigned : [] };
+	for( var x in reservations ){
+		if( reservations[x].asign )
+			result.asigned.push( reservations[x] );
+		else
+			result.notAsigned.push( reservations[x] );
+	}
+	return result
+}
+module.exports.getReservationsDivided = function(params,user,callback){
 	//configurar parámetros
-	//console.log(params);
 	var skip = params.skip || 0;
     var limit = params.limit || 100;
-	var fields = AssignCore.formatFilterFields(params.fields);
-	//console.log(fields)
-	Reservation.find().where(fields).populateAll().limit(limit).skip(skip).exec(function(err,reservations){
-		var result = { asigned : [] , notAsigned : [] };
-		if(err) return callback(err,result);
-		for( var x in reservations ){
-			if( reservations[x].asign )
-				result.asigned.push( reservations[x] );
-			else
-				result.notAsigned.push( reservations[x] );
-		}
-		return callback(err,result);
-	});
+	params.fields = AssignCore.formatFilterFields(params.fields);
+	params.conditions = {};
+	if( !user.company.adminCompany && user.company.company_type == 'transport' ){
+		params.ta = { company : sails.models['company'].mongo.objectId(user.company.id) };
+		AssignCore.getReservationsByTransportist(params,function(err,reservations){
+			return callback(err, AssignCore.divideReservations(reservations) );
+		});
+	}else{
+		if( !user.company.adminCompany && user.company.company_type == 'agency' )
+	        params.conditions.company = user.company.id;
+		var conditions = params.conditions;
+		Reservation.find(conditions).where(params.fields).populateAll().limit(limit).skip(skip).exec(function(err,reservations){
+			return callback(err, AssignCore.divideReservations(reservations) );
+		});
+	}
 };
+module.exports.getReservationsByTransportist = function(params,callback){
+	var skip = params.skip || 0;
+    var limit = params.limit || 100;
+	var $match = params.ta || {};
+	var $groupGral = {
+		_id : null
+		,reservationsIDs : { '$push' : '$reservation' }
+	};
+	delete params.ta;
+	TransportAsign.native(function(err,TA){
+		TA.aggregate([ 
+			{ $sort : { createdAt : -1 } }, { $match : $match }
+			,{ $group : $groupGral } 
+		],function(err,tas){ 
+			tas = tas[0];
+			params.fields.id = tas.reservationsIDs;
+			Reservation.find().where(params.fields).populateAll().limit(limit).skip(skip).exec(function(err,reservations){
+				return callback(err,reservations);
+			});
+		});
+	});
+}
 /*
 	Entre los parámetros debe de recibir siempre: 
 		company : Transportista de la cual queremos obtener los vehículos

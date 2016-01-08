@@ -32,9 +32,23 @@ html .full-width{width: 100%;}
 /*sorted list*/
 .orderListing{list-style: none;}
 .orderListing .l-separator{margin-top: 5px;font-weight: bold;background: darkgray!important;}
-.orderListing .l-row{padding: 5px 15px;border-bottom: 1px solid lightgray;background: rgba(225,225,225,.4);position: relative;}
+.orderListing .l-row{padding: 5px 15px;padding-right: 70px;border-bottom: 1px solid lightgray;background: rgba(225,225,225,.4);position: relative;}
 .orderListing .l-row:nth-child(even){background: rgba(225, 225, 225, 1);}
 .orderListing .listAction{position: absolute;right: 0;top: 1px;font-size: 11px;}
+.orderListing .l-row.isNew{
+	-webkit-transition: all .2s;
+    transition: all .2s;
+    -webkit-animation: newRow 2s 2;
+    animation: newRow 2s 2;
+    -webkit-animation-delay: 1s;
+    animation-delay : 1s;
+}
+#select-transport .reservationResume p{padding: 1px 15px;background: white;}
+@keyframes newRow {
+	0% { opacity: 1; background: #e1e1e1; }
+	50% { opacity: 0; background: rgba(0,140,0,.5); }
+	100% { opacity: 1; background: #e1e1e1;}
+}
 
 /*Timepicker custom*/
 .timepicker-container .timepicker .btn{padding: 0 12px;}

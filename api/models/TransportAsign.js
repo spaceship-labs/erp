@@ -10,6 +10,9 @@ module.exports = {
   attributes: {
     arrivalpickup_time : 'datetime'
     ,departurepickup_time : 'datetime'
+    ,reservation : {
+        model : 'reservation'
+    }
     ,vehicle_arrival : { //vehículo asignado para una llegada
         model : 'transport'
     }
