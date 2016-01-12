@@ -48,7 +48,29 @@ module.exports = {
             res.json( reservations );
         });
     },
-    getVehicles : function(req,res){
+    exportOperation : function(req,res){
+        var params = req.params.all();
+        delete params.id;
+        AssignCore.exportCSV(params,function(err,results){
+            Export.mkp_report(results,function(err,csv){
+                var name = 'Operacion.csv';
+                res.attachment(name);
+                res.end(csv, 'UTF-8');
+            });
+        });
+    }
+    ,importoperation : function(req,res){
+        var form = req.params.all(),
+            dir = 'tmpImport',
+            dirSave = __dirname+'/../../assets/uploads/'+dir+'/';
+        Files.saveFiles(req, {dir: dir, disableCloud: true }, function(err, files){
+            if(err && !files.length) return res.ok({ success:false, error: err.message });
+            Import.files.xlsx2Json(dirSave + files[0].filename, AssignCore.importOperation(err,book,function(err,result){
+                res.json({});
+            }));
+        });
+    }
+    ,getVehicles : function(req,res){
         var params = req.params.all()
         delete params.id;
         AssignCore.getVehicles(params,function(err,vehicles){
@@ -59,7 +81,6 @@ module.exports = {
         console.log(req.allParams());
         res.ok();
     },
-
     show_companies: function(req, res){
         var defer;
         if(req.user.isAdmin){

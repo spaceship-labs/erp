@@ -157,3 +157,125 @@ module.exports.getVehicles = function(params,callback){
 		});
 	});
 };
+var moment = require('moment-timezone');
+module.exports.exportCSV = function(params,theCB){
+	var name = 'Export operation -' + moment().tz('America/Mexico_City').format('D-MM-YYYY') + '.csv';
+	var $match = AssignCore.formatFilterFields(params);
+	//$match.reservation_type = 'transfer';
+	console.log($match);
+	Reservation.find().where( $match ).populateAll()
+	.exec(function(r_err,list_reservations){
+		if(r_err) return theCB(r_err,[]);
+		var toCSV = [];
+		toCSV.push(['Fecha','Vuelo (salida)','Vuelo (llegada)','Cuenta?','Cliente','Hotel','Clave','Servicio','Pax','Agencia','Hora (salida)','Hora (llegada)','Unidad (salida)','Unidad (llegada)','Notas']);
+		if( list_reservations ){ 
+			async.mapSeries( list_reservations, function(item,cb){
+				if( !item.asign ) return cb( false, item );
+				TransportAsign.findOne(item.asign.id).populateAll().exec(function(err,ta){
+					item.asign = ta;
+					item = AssignCore.FormatItemToExport(item);
+					toCSV.push(item);
+					cb( err, item );
+				});
+			},function(err,rows){
+				//results
+				return theCB(err,toCSV);
+			});
+		}else{ //if reservations END
+			return theCB({err:'no reservations'},toCSV);
+		}
+	});//reservation find END
+};
+module.exports.FormatItemToExport = function(reservation){
+	var i = 0;
+	var item = [];
+	item[i] = moment(reservation.createdAt).format('D-MM-YYYY');
+	item[++i] = reservation.departure_fly?(reservation.departure_fly + ' / ' + reservation.departure_airline.name):'';
+	item[++i] = reservation.arrival_fly?(reservation.arrival_fly + ' / ' + reservation.arrival_airline.name):'';
+	item[++i] = 'Cuenta';
+	item[++i] = reservation.client.name; //cliente
+	item[++i] = reservation.hotel.name; //hotel
+	item[++i] = reservation.clave; //clave
+	item[++i] = reservation.transfer.name; //servicio
+	item[++i] = reservation.pax + ( reservation.kidPax || 0 ); //pax
+	item[++i] = reservation.company.name; //Agencia
+	item[++i] = reservation.asign.departurepickup_time?moment(reservation.asign.departurepickup_time).format('HH:mm'):'';
+	item[++i] = reservation.asign.arrivalpickup_time?moment(reservation.asign.arrivalpickup_time).format('HH:mm'):'';
+	item[++i] = reservation.asign.vehicle_departure?reservation.asign.vehicle_departure.car_id:'';
+	item[++i] = reservation.asign.vehicle_arrival?reservation.asign.vehicle_arrival.car_id:'';
+	item[++i] = reservation.notes; //notas
+	return item;
+};
+module.exports.getObject = function(row,type){
+	var result = {};
+	if( type == 'reservation' ){
+		result.hotel = row[4];
+		result.hotel = row[5];
+		result.pax = row[6];
+		result.company = row[7];
+		result.reservation_method = 'intern';
+		result.reservation_type = 'transfer';
+		if( row[0] == 'llegada' ){
+			result.origin = 'airport';
+			result.arrival_time = moment(row[8]);
+			result.arrival_fly = row[1];
+			result.arrival_airline = row[2];
+		}else{
+			result.origin = 'hotel';
+			result.departure_time = moment(row[8]);
+			result.departure_fly = row[1];
+			result.departure_airline = row[2];
+		}
+	}
+	if( type == 'client' ){
+		result.name = row[3]
+	}
+	if( type == 'asign' ){
+		result.company = row[9].company;
+		if( row[0] == 'llegada' ){
+			result.vehicle_arrival = row[9];
+		}else{
+			result.vehicle_departure = row[9];
+		}
+	}
+	return result;
+}
+module.exports.importOperation = function(err,book,callback){
+	if(err) return callback(err,false);
+	if( !book.sheets ) return callback({message:'no rows'},false);
+	async.mapSeries( book.sheets[0].values, function(item,cb){
+		//llegada o salida?,vuelo, airline, cliente, hotel, servicio, pax, agencia, hora, unidad
+		async.parallel({
+            airline: function(done){
+                Airline.findOne({ name : item[2] }).exec(done);
+            },
+            hotel: function(done){
+                Hotel.findOne({ name : item[4] }).exec(done);
+            },
+            service: function(done){
+                Transfer.findOne({ name : item[5] }).exec(done);
+            },
+            agency : function(done){
+            	Company.findOne({ name : item[7] }).exec(done);
+            },
+            unidad : function(done){
+            	Transport.findOne({ car_id : item[9] }).populateAll().exec(done);
+            }
+        
+        }, function(err, search){
+        	item[2] = search.airline;
+        	item[4] = search.hotel;
+        	item[5] = search.service;
+        	item[7] = search.agency;
+        	item[2] = search.unidad;
+            var r  = AssignCore.getObject(item,'reservation');
+			var c  = AssignCore.getObject(item,'client');
+			var ta = AssignCore.getObject(item,'asign');
+			//crear la orden/reserva/cliente/transportasign
+			//
+        });
+	},function(err,rows){
+		//results
+		return theCB(err,toCSV);
+	});
+}
