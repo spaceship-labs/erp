@@ -363,18 +363,33 @@ module.exports.content = {
 			object : 'maxpax',
 			handle : 'pax',
 		},
+        {
+            label : 'Tipo de tarifa',
+            label_en : 'Rate type',
+            type : 'select',
+            handle : 'priceType',
+            object : 'types'
+        },
+        {
+            label : 'Tarifa',
+            label_en : 'Rate',
+            type : 'money',
+            handle : 'fee',
+            condition : "priceType=group"
+        },
 		{
 			label : 'Tarifa adultos',
 			label_en : 'Adult rate',
 			type : 'money',
 			handle : 'fee',
+            condition : "priceType=single"
 		},
-
 		{
 			label : 'Tarifa niños',
 			label_en : 'Children rate',
 			type : 'money',
 			handle : 'feeChild',
+            condition : "priceType=single"
 		},
 		/*{
 			label : 'Horario General',
@@ -382,12 +397,6 @@ module.exports.content = {
 			type : 'text',
 			handle : 'schedule',
 		},*/
-		{
-			label : 'Duración',
-			label_en : 'Duration',
-			type : 'text',
-			handle : 'duration',
-		},
 		{
 			label : "Duración"
 			,label_en : 'Duration'
@@ -434,7 +443,7 @@ module.exports.content = {
 			label_en : 'The transfer is included?',
 			type : 'checkbox',
 			handle : 'haveTranslate'
-		},
+		}
 	],
 	tourforproviders : [
 		{

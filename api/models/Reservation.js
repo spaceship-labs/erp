@@ -152,7 +152,10 @@ module.exports = {
         }
         ,notes : 'string'
         ,cancelationDate : 'date'
-
+        ,prices : {
+            collection : 'price',
+            via : 'reservations'
+        }
 	}
 	, attrs_labels : {
 		//transfer reservations

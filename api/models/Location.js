@@ -15,7 +15,7 @@ module.exports = {
   	locations : {
   		collection : 'location',
   		via : 'id',
-      dominant : true
+        dominant : true
   	},
     airports : {
       collection : 'airport'

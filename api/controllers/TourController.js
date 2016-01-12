@@ -116,8 +116,11 @@ module.exports = {
 		form.days = [true,true,true,true,true,true,true];
 		form.name_pt = form.name_es = form.name_en = form.name_ru = form.name;
 		form.req = req;
-		form.fee_base = parseFloat(form.fee) || 0;
-		form.feeChild_base = parseFloat(form.feeChild) || 0;
+
+        form.fee = parseFloat(form.fee) || 0;
+        form.feeChild = parseFloat(form.feeChild) || 0;
+		form.fee_base = form.fee;
+		form.feeChild_base = form.feeChild;
 		delete form.id;
 		delete form.categories;
 		Tour.create(form).exec(function(err,tour){ Tour.findOne(tour.id).exec(function(e,tour){
@@ -134,8 +137,9 @@ module.exports = {
 		}); }); // create and findOne
 	},
 	edit : function(req,res){
-		Tour.findOne(req.params.id).populate('categories',{type:{$ne:'rate'}}).exec(function(e,tour){ TourCategory.find({type:{ $ne:'rate' }}).exec(function(tc_err,tourcategories){
+		Tour.findOne(req.params.id).populate('categories',{type:{$ne:'rate'}}).populate('extra_prices',{ type : { $ne : 'none' } }).exec(function(e,tour){ TourCategory.find({type:{ $ne:'rate' }}).exec(function(tc_err,tourcategories){
 			if(e) return res.redirect("/tour/");
+            //console.log(tour);
 			Location.find({}).sort('name').exec(function(e,locations){
 	    		SeasonScheme.find().sort('name').exec(function(e,schemes){ TourProvider.find().exec(function(e,providers){
 	    			if(tour.provider)
@@ -163,7 +167,7 @@ module.exports = {
 		}); }); //tour and tour category
 	},
 	updateIcon: function(req,res){
-    	form = req.params.all();
+    	var form = req.params.all();
 		Tour.updateAvatar(req,{
 			dir : 'tours',
 			profile: 'avatar',
@@ -189,9 +193,9 @@ module.exports = {
 	update : function(req,res){
     	var form = req.params.all();
     	var id = form.id;
-		form.req = req;//why ?
-		//form.fee_base = form.fee_base?form.fee_base:(parseFloat(form.fee) || 0);
-		//form.feeChild_base = form.feeChild_base?form.feeChild_base:(parseFloat(form.feeChild) || 0);
+
+        form.req = req;//why ?
+
     	if(form.days){
     		var new_days = [];
     		form.days.forEach(function(day){
@@ -203,43 +207,49 @@ module.exports = {
     	var cats = form.categories;
     	delete form.rates;
     	delete form.categories;
-    	Tour.update({id:id},form,function(e,tour){ Tour.findOne(id).exec(function(e,tour){
-    		if(e) throw(e);
-    		if( rates ){
-    			for( x in rates ) tour.categories.add( rates[x].category.id );
-    			for( x in cats ) tour.categories.add( cats[x].id );
-    			tour.save(function(tour_){
-    				//ahora se van a actualizar los valores con un foreach async
-    				async.mapSeries( rates, function(item,theCB){
-    					if(item.category.type && item.category.type=='rate'){
-    						var aux = { value : item.value };
-    						var params = { tourcategory_tours : item.category.id, tour_categories : tour.id };
-    						TourTourcategory.update(params,aux,function(err,category){
-    							if(err) theCB(err,item);
-    							if( category[0] )
-    								item.id = category[0].id;
-    							theCB(err,item);
-    						});
-    					}else{
-    						theCB(false,item);
-    					}
-    				},function(err,results){
-    					Tour.findOne(id).populate('categories',{type:{$ne:'rate'}}).exec(function(e,tour){
-    						tour.rates = results;
-							res.json(tour);
-    					});
-					});
-    			});
-    		}else{
-    			for( x in cats ) tour.categories.add( cats[x].id );
-    			tour.save(function(tour_){
-	    			Tour.findOne(id).populate('categories').exec(function(e,tour){
-		    			if(e) throw(e);
-		    			res.json(tour);
-		    		});
-	    		});
-    		}
-    	}); });
+        Tour.findOne(id).exec(function(e,tour){
+
+            //TODO pasar a validacion que regresa el precio nuevo o vacio
+            var differentFee = false;
+            var price = {
+                fee : tour.fee,
+                feeChild : tour.feeChild,
+                tour : id
+            };
+
+            if (!_.isUndefined(form.fee) && !_.isNull(form.fee)) {
+                form.fee = parseFloat(form.fee) || 0;
+                form.fee_base = form.fee;
+                price.fee = form.fee;
+                if (form.fee != tour.fee) {
+                    differentFee = true;
+                }
+            } else {
+                price.fee = tour.fee;
+            }
+
+            if (!_.isUndefined(form.feeChild) && !_.isNull(form.feeChild)) {
+                form.feeChild = parseFloat(form.feeChild) || 0;
+                form.feeChild_base = form.feeChild;
+                price.feeChild = form.feeChild;
+                if (form.feeChild != tour.feeChild) {
+                    differentFee = true;
+                }
+            } else {
+                price.feeChild = tour.feeChild;
+            }
+
+            if (differentFee) {
+                Price.create(price).exec(function(errPrice,newPrice){
+                    form.price = newPrice.id;
+                    tourUpdate(res,id,form,rates,cats);
+                });
+            } else {
+                tourUpdate(res,id,form,rates,cats);
+            }
+
+
+        });
     },
     removeCategory : function(req,res){
 		var params = req.params.all();
@@ -266,7 +276,7 @@ module.exports = {
     	});
 	},
 	removeFiles : function(req,res){
-		form = req.params.all();
+		var form = req.params.all();
 		Tour.findOne({id:form.id}).exec(function(e,tour){
 			tour.removeFiles(req,{
 				dir : 'tours/gallery',
@@ -291,7 +301,44 @@ module.exports = {
 				res.json({ err : err , result : result });
 			});
 		})
-	}
+	},
+    addExtraPrices : function(req,res) {
+        var params = req.params.all();
+        //console.log(params);
+        async.each(params.prices,function(price,callback){
+            if (price.id) {
+                Price.update({ id : price.id },price).exec(function(err,price_updated){
+                    callback(err,price_updated);
+                });
+            } else {
+                Price.create(price).exec(function(err,price_created){
+                    callback(err,price_created);
+                });
+            }
+        },function(err,result){
+            //console.log('saved extra prices');
+            var jsonRes = { success : true  };
+            if (err) {
+                jsonRes.success = false;
+                jsonRes.error = err;
+            }
+            Price.find({ tour : params.tour ,type : { $ne : 'none' } }).exec(function(er,prices){
+                if (er) {
+                    jsonRes.success = false;
+                    jsonRes.error = er;
+                }
+                jsonRes.extra_prices = prices;
+                res.json(jsonRes);
+            });
+        });
+    },
+    setAllTours : function(req,res) {
+        //var params = req.params.all();
+        Tour.update({ priceType : null },{ priceType : 'single' }).exec(function(err,results){
+            console.log(err);
+            res.json(results);
+        });
+    }
 };
 
 var formatDuration = function(tours,thecb){
@@ -322,4 +369,46 @@ var formatDuration = function(tours,thecb){
 	},function(err,results){
 		thecb(err,results);
 	});
-}
+};
+
+var tourUpdate = function(res,id,form,rates,cats) {
+    Tour.update({id:id},form,function(err,tour_update){
+        if(err) throw(err);
+        Tour.findOne(id).exec(function(e,tour) {
+            if( rates ){
+                for( x in rates ) tour.categories.add( rates[x].category.id );
+                for( x in cats ) tour.categories.add( cats[x].id );
+                tour.save(function(tour_){
+                    //ahora se van a actualizar los valores con un foreach async
+                    async.mapSeries( rates, function(item,theCB){
+                        if(item.category.type && item.category.type=='rate'){
+                            var aux = { value : item.value };
+                            var params = { tourcategory_tours : item.category.id, tour_categories : tour.id };
+                            TourTourcategory.update(params,aux,function(err,category){
+                                if(err) theCB(err,item);
+                                if( category[0] )
+                                    item.id = category[0].id;
+                                theCB(err,item);
+                            });
+                        }else{
+                            theCB(false,item);
+                        }
+                    },function(err,results){
+                        Tour.findOne(id).populate('categories',{type:{$ne:'rate'}}).exec(function(e,tour){
+                            tour.rates = results;
+                            res.json(tour);
+                        });
+                    });
+                });
+            }else{
+                for( x in cats ) tour.categories.add( cats[x].id );
+                tour.save(function(tour_){
+                    Tour.findOne(id).populate('categories').exec(function(e,tour){
+                        if(e) throw(e);
+                        res.json(tour);
+                    });
+                });
+            }
+        });
+    });
+};
