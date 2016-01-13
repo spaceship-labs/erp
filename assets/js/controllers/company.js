@@ -1,5 +1,10 @@
 app.controller('companyCTL',function($scope,$http,$rootScope){
     $scope.companies = [];
+    $scope.objFilters = {};
+    if( window.isAgencies )
+        $scope.objFilters = { company_type : 'transport' };
+    else
+        $scope.objFilters = { company_type : 'agency' };
     $scope.content = content;
     $scope.currencies = currencies;
     $scope.company = selected_company;

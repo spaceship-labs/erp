@@ -10,9 +10,10 @@ anchor = require('anchor');
 module.exports = {
 	index: function(req,res){
 		Currency.find().exec(function(err,currencies){
-			Company.find().populate('base_currency').exec(function(err,companies){
+			//Company.find().populate('base_currency').exec(function(err,companies){
 				Common.view(res.view,{
 					apps : sails.config.apps
+                    ,isAgencies : true
 					,currencies:currencies || []
 					,page:{
 						name:req.__('sc_companies')
@@ -20,9 +21,25 @@ module.exports = {
 						,controller : 'company.js'
 					}
 				},req);
-			});
+			//});
 		});
-	}, find : function(req,res){
+	}, providers : function(req,res){
+        Currency.find({ company_type : { '!' : 'transport' } }).exec(function(err,currencies){
+            //Company.find().populate('base_currency').exec(function(err,companies){
+                Common.view(res.view,{
+                    apps : sails.config.apps
+                    ,select_view: 'company/index'
+                    ,isAgencies : true
+                    ,currencies:currencies || []
+                    ,page:{
+                        name:req.__('sc_companies')
+                        ,icon:'fa fa-building'
+                        ,controller : 'company.js'
+                    }
+                },req);
+            //});
+        });
+    }, find : function(req,res){
         var params = req.params.all();
         var skip = params.skip || 0;
         var limit = params.limit || 200;

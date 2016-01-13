@@ -34,6 +34,9 @@
 
         var getMore = function(skip){
             var params = { 'skip':skip , 'limit': 30 , 'sort' : 'name asc' };
+            if( $scope.objFilters )
+                for(var x in $scope.objFilters)
+                    params[x] = $scope.objFilters[x];
             console.log($scope.searchFind);
             if( $scope.searchFind && $scope.search_text_input != '' )
                 params.name = $scope.search_text_input;
@@ -93,6 +96,7 @@
         	controller : controller,
         	scope : {
         		objects : '=',
+                objFilters : '=',
                 searchInput : '=',
                 dir : '@',
                 editUrl : '@',

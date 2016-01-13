@@ -15,6 +15,15 @@ module.exports.apps = [
                 showInMenu : true,
                 controller : 'company'
 			},
+            {
+                label : 'Transportistas'
+                ,label_en : 'Providers'
+                ,icon : 'fa-car'
+                ,url : '/company/providers'
+                ,handle : 'empresas'
+                ,showInMenu : true
+                ,controller : 'company'
+            },
 			{
                 label : 'Usuarios',
 				label_en : 'Users',
