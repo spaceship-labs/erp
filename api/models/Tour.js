@@ -62,9 +62,12 @@ module.exports = {
             enum: ['inactive', 'active','draft'],
             defaultsTo : 'draft'
         }
-        ,haveTranslate : {
-            type : 'boolean'
+        ,transferHotels : {
+            collection : 'Hotel',
+            via : 'transferTours',
+            dominant : true
         }
+
         //duration_type ?
 
 	}
@@ -85,7 +88,7 @@ module.exports = {
 		,duration : { es : 'Duración' , en : 'Duration' }
 		,provider : { es : 'Proveedor' , en : 'Provider' }
 		,visible : { es : 'Visible en web' , en : 'Web visible' }
-		,haveTranslate : { es : 'Transporte incluido' , en : 'Transfer included' }
+		,haveTransfer : { es : 'Transporte incluido' , en : 'Transfer included' }
 		,description_es : { es : 'Descripción Español' , en : 'Spanish description' }
 		,description_en : { es : 'Descripción Inglés' , en : 'English description' }
 		,description_ru : { es : 'Descripción Ruso' , en : 'Russian description' }

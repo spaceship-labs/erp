@@ -5,6 +5,7 @@
     window.providers = <%- JSON.stringify(providers) %>;
     window.locations = <%- JSON.stringify(locations) %>;
     window.content = <%- JSON.stringify(_content) %>;
+    window.hotels = <%- JSON.stringify(hotels) %>;
 </script>
 <div ng-controller='tourEditCTL' class="editar-tour ng-cloak">
     <div class="span6 profile-left profileEdit">
@@ -150,7 +151,7 @@
             action='/tour/save' 
             form-title='<%= __('tour-info')%>'
             currency='company.base_currency'
-            objects='{schemes:schemes,locations:locations,providers:providers,tourcategories:tourcategories,maxpax:maxpax,types:types}'
+            objects='{schemes:schemes,locations:locations,providers:providers,tourcategories:tourcategories,maxpax:maxpax,types:types,hotels:hotels}'
             >
         </div> 
     </div>

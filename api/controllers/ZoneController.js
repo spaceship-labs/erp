@@ -62,9 +62,10 @@ module.exports = {
 	formatZones : function(req,res){
 		Zone.find().populate('location').exec(function(err,zones){
 			async.mapSeries( zones, function(zone,theCB){
-				//
+
 				zone.locations.add(zone.location.id);
-				zone.save( theCB );
+				console.log(zone.locations);
+				//zone.save( theCB );
 			},function(err,results){
 				res.json({ err : err, results : results });
 			});

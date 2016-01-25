@@ -33,7 +33,17 @@ module.exports = {
 		zone : { model : 'zone' },
 		cupons:{
 			model : 'cupon',
-			via : 'hotels' },
+			via : 'hotels'
+        },
+        transferTours : {
+            collection : 'Tour',
+            via : 'transferHotels'
+        },
+        visible : {
+            type : 'string',
+            enum : ['yes','no'],
+            defaultsTo : 'yes'
+        }
 	}
 	,attrs_labels : {
 		name : { es : 'Nombre' , en : 'Nombre' }

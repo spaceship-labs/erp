@@ -6,14 +6,15 @@
 	<h4 ng-if='formTitle && !modal' class="widgettitle">{{formTitle}} <span ng-click='save()' class='fa icon' ng-class='saveClass'></span></h4>
 	<form ng-class='formClass' class="form stdform stdform2" name="form">
 		<p ng-repeat='field  in fields | filter:formFilter' ng-hide="fieldIsHidden(field)">
-	        <label>{{field[label]}} <span ng-if='field.type == "money"&&currency' >({{currency.currency_code}})</span> <span class='formmessage' ng-if="field[msg]" ng-bind="field[msg]"></span> <span ng-if='field.required'>*</span></label>
+	        <label for="{{getFieldId($index)}}">{{field[label]}} <span ng-if='field.type == "money"&&currency' >({{currency.currency_code}})</span> <span class='formmessage' ng-if="field[msg]" ng-bind="field[msg]"></span> <span ng-if='field.required'>*</span></label>
 	        <span class="field">
 	            <textarea 
 	            	ng-if='field.type == "textarea"' 
 	            	name='{{field.handle}}' 
 	            	class='form-control' 
 	            	ng-model='object[field.handle]'
-	            	ng-required='field.required'>
+	            	ng-required='field.required'
+                    id="{{getFieldId($index)}}">
 	            </textarea>
                 <textarea
                         ng-if='field.type == "textarea-editor"'
@@ -22,13 +23,14 @@
                         ng-model='object[field.handle]'
                         ng-required='field.required'
                         ui-tinymce="tinymceOptions"
+                        id="{{getFieldId($index)}}"
                         >
 
                 </textarea>
-	            <input type='checkbox' ng-if='field.type == "checkbox"' name='{{field.handle}}' class='form-control' ng-checked='object[field.handle]' ng-model='object[field.handle]' ng-change="onChangefx(field)" />
-	            <input type='text' ng-if='field.type == "text"' name='{{field.handle}}' class='form-control' ng-model='object[field.handle]' ng-required='field.required' ng-class="{ 'has-error' : form[field.handle].$invalid && !form[field.handle].$pristine }" ng-change="onChangefx(field)" />
-	            <input type='number' ng-if='field.type == "number"' name='{{field.handle}}' class='form-control' ng-model='object[field.handle]' ng-required='field.required' ng-class="{ 'has-error' : form[field.handle].$invalid && !form[field.handle].$pristine }" ng-change="onChangefx(field)" min="{{field.minValue||1}}" max="{{field.maxValue||50}}" />
-	            <input type='password' ng-if='field.type == "password"' name='{{field.handle}}' class='form-control' ng-model='object[field.handle]' />
+	            <input type='checkbox' ng-if='field.type == "checkbox"' id="{{getFieldId($index)}}" name='{{field.handle}}' class='form-control' ng-checked='object[field.handle]' ng-model='object[field.handle]' ng-change="onChangefx(field)" />
+	            <input type='text' ng-if='field.type == "text"' id="{{getFieldId($index)}}" name='{{field.handle}}' class='form-control' ng-model='object[field.handle]' ng-required='field.required' ng-class="{ 'has-error' : form[field.handle].$invalid && !form[field.handle].$pristine }" ng-change="onChangefx(field)" />
+	            <input type='number' ng-if='field.type == "number"' id="{{getFieldId($index)}}" name='{{field.handle}}' class='form-control' ng-model='object[field.handle]' ng-required='field.required' ng-class="{ 'has-error' : form[field.handle].$invalid && !form[field.handle].$pristine }" ng-change="onChangefx(field)" min="{{field.minValue||1}}" max="{{field.maxValue||50}}" />
+	            <input type='password' ng-if='field.type == "password"' id="{{getFieldId($index)}}" name='{{field.handle}}' class='form-control' ng-model='object[field.handle]' />
 	            
 	            <select 
 	            	ng-if='field.type == "select"'
@@ -36,13 +38,15 @@
 	            	ng-options="obj.id as obj.name for obj in objects[field.object]"
 	            	ng-change="onChangefx(field)"
 	            	ng-required='field.required'
-	            	class='form-control' >
+	            	class='form-control'
+                    id="{{getFieldId($index)}}" >
 	            </select>
 	            <select 
 	            	ng-if='field.type == "select-num"'
 	            	ng-model='object[field.handle]'
 	            	ng-options="obj for obj in objects[field.object]"
-	            	class='form-control' >
+	            	class='form-control'
+                    id="{{getFieldId($index)}}" >
 	            </select>
 		    <span ng-if="field.type == 'file'">
 		    	<a ng-if="object[field.handle]" 
@@ -57,12 +61,12 @@
 
 				<span ng-if='field.type == "money"' class="input-group">
 					<span ng-if='currency.prefix' class="input-group-addon"  ng-bind='currency.prefix'></span>
-					<input class="form-control" type="text" name='{{field.handle}}' ng-model='object[field.handle]' valid-number>
+					<input class="form-control" type="text" name='{{field.handle}}' ng-model='object[field.handle]' valid-number id="{{getFieldId($index)}}">
 					<span ng-if='currency.suffix' class="input-group-addon"  ng-bind='currency.suffix'></span>
 				</span>
 				
-				<datepicker ng-if='field.type == "date"' ng-model="object[field.handle]" show-weeks="true" class="well well-sm"></datepicker>
-				<timepicker ng-if='field.type == "time"' ng-model="object[field.handle]" hour-step="1" minute-step="1" show-meridian="ismeridian"></timepicker>
+				<datepicker ng-if='field.type == "date"' ng-model="object[field.handle]" show-weeks="true" class="well well-sm" id="{{getFieldId($index)}}"></datepicker>
+				<timepicker ng-if='field.type == "time"' ng-model="object[field.handle]" hour-step="1" minute-step="1" show-meridian="ismeridian" id="{{getFieldId($index)}}"></timepicker>
 
 				<span ng-if='field.type == "multi-select"'>
 					<span class='multi-tag' ng-repeat='obj in object[field.handle]'> {{obj.name}} <a href='' ng-click='removeRel(field,obj)'> x </a></span>
@@ -72,7 +76,9 @@
 					multiple
 					ng-options='obj as obj.name for obj in objects[field.object] track by obj.id'
 					ng-model='object[field.handle]'
-					ng-if='field.type == "multi-select"' ></select>
+					ng-if='field.type == "multi-select"'
+                    ng-id="{{getFieldId($index)}}"
+                    ></select>
 	        </span>
 	    </p>
 	    <p ng-if='formFooter' class="stdformbutton">

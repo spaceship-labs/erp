@@ -436,14 +436,23 @@ module.exports.content = {
 			label_en : 'Season schemes',
 			type : 'select',
 			handle : 'seasonScheme',
-			object : 'schemes',
+			object : 'schemes'
 		},
 		{
 			label : '¿El traslado está incluido?',
 			label_en : 'The transfer is included?',
 			type : 'checkbox',
-			handle : 'haveTranslate'
-		}
+			handle : 'haveTransfer'
+		},
+        {
+            label : 'Traslado incluido en hoteles',
+            label_en : 'Transfer included for hotels',
+            type : 'multi-select',
+            handle : 'transferHotels',
+            object : 'hotels',
+            condition : "haveTransfer=1",
+            removeAction : '/tour/removeHotel'
+        }
 	],
 	tourforproviders : [
 		{
@@ -500,9 +509,9 @@ module.exports.content = {
 		},
 		{
 			label : 'Traslado incluido',
-			label : 'Transfer included',
+			label_en : 'Transfer included',
 			type : 'checkbox',
-			handle : 'haveTranslate'
+			handle : 'haveTransfer'
 		},
 	],
 	tourLenguajes : [

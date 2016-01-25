@@ -137,33 +137,46 @@ module.exports = {
 		}); }); // create and findOne
 	},
 	edit : function(req,res){
-		Tour.findOne(req.params.id).populate('categories',{type:{$ne:'rate'}}).populate('extra_prices',{ type : { $ne : 'none' } }).exec(function(e,tour){ TourCategory.find({type:{ $ne:'rate' }}).exec(function(tc_err,tourcategories){
-			if(e) return res.redirect("/tour/");
+		Tour.findOne(req.params.id).populate('categories',{type:{$ne:'rate'}}).populate('extra_prices',{ type : { $ne : 'none' } }).populate('transferHotels').exec(function(e,tour){
+            if(e) {
+                console.log(e);
+                return res.redirect("/tour/");
+            }
+            if (!tour) {
+                return res.notFound();
+            }
+            TourCategory.find({type:{ $ne:'rate' }}).exec(function(tc_err,tourcategories){
             //console.log(tour);
-			Location.find({}).sort('name').exec(function(e,locations){
-	    		SeasonScheme.find().sort('name').exec(function(e,schemes){ TourProvider.find().exec(function(e,providers){
-	    			if(tour.provider)
-	    				tour.provider = tour.provider.id || tour.provider;
-	    			//for(var x in tour.categories) tour.categories[x] = Common.getItemById(tour.categories[x].id,tourcategories);
-					Common.view(res.view,{
-						tour:tour,
-						locations:locations,
-						schemes:schemes,
-						providers : providers,
-						tourcategories : tourcategories,
-						page:{
-							saveButton : true,
-							name:tour.name,
-							icon:'fa fa-compass',
-							controller : 'tour.js'
-						},
-						breadcrumb : [
-							{label : req.__('sc_tour'), url: '/tour/'},
-							{label : tour.name},
-						]
-					},req);				
-				}); });//seasons and providers
-			});//location
+            Hotel.find({},{select: ['id', 'name','latitude','longitude']} ).exec(function(e,hotels){
+                Location.find({}).sort('name').exec(function(e,locations){
+                    SeasonScheme.find().sort('name').exec(function(e,schemes){
+                        TourProvider.find().exec(function(e,providers){
+                            if(!_.isUndefined(tour.provider))
+                                tour.provider = _.isObject(tour.provider) ? tour.provider.id : tour.provider;
+                            //for(var x in tour.categories) tour.categories[x] = Common.getItemById(tour.categories[x].id,tourcategories);
+                            Common.view(res.view,{
+                                tour:tour,
+                                locations:locations,
+                                schemes:schemes,
+                                providers : providers,
+                                tourcategories : tourcategories,
+                                hotels : hotels,
+                                page:{
+                                    saveButton : true,
+                                    name:tour.name,
+                                    icon:'fa fa-compass',
+                                    controller : 'tour.js'
+                                },
+                                breadcrumb : [
+                                    {label : req.__('sc_tour'), url: '/tour/'},
+                                    {label : tour.name},
+                                ]
+                            },req);
+                        });
+                    });//seasons and providers
+                });//location
+            });//hotels
+
 		}); }); //tour and tour category
 	},
 	updateIcon: function(req,res){

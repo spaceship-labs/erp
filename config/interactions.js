@@ -177,7 +177,7 @@ module.exports.interactions = {
                         label : '¿El traslado está incluido?',
                         label_en : 'The transfer is included?',
                         type : 'checkbox',
-                        handle : 'haveTranslate'
+                        handle : 'haveTransfer'
                     }
         		]
         	}

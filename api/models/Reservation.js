@@ -132,7 +132,7 @@ module.exports = {
         }
         ,transfer_type : {
             type:'string',
-            enum : ['1','2'] //1=hotel-hotel , 2=aeropuerto-hotel
+            enum : ['1','2','3'] //1=hotel-hotel , 2=aeropuerto-hotel, 3=hotel-tour
             ,defaultsTo : '2'
         }
         /*
@@ -152,6 +152,7 @@ module.exports = {
         }
         ,notes : 'string'
         ,cancelationDate : 'date'
+        //la idea es que prices tenga la referencia a los precios usados en la creacion de esta reserva , independientemente de que objeto vengan , tour , transfer , cupon , etc.
         ,prices : {
             collection : 'price',
             via : 'reservations'
