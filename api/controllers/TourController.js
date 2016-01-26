@@ -275,6 +275,17 @@ module.exports = {
 			});
 		})
 	},
+    removeHotel : function(req,res){
+        var params = req.params.all();
+        Tour.findOne({id:params.obj}).exec(function(e,tour){
+            if(e) throw(e);
+            tour.transferHotels.remove(params.rel);
+            tour.save(function(e,tour){
+                if(e) throw(e);
+                res.json(tour)
+            });
+        })
+    },
 	addFiles : function(req,res){
 		form = req.params.all();
     	Tour.findOne({id:form.id}).exec(function(e,tour){

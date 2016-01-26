@@ -15,8 +15,8 @@
         $scope.msg = $rootScope.lang=='es'?'message':'message_en';
         $scope.translates = $rootScope.translates;
 
-        $scope.getFieldId = function(index) {
-            return ('input_field_' + $scope.formTitle.replace(/ /g,'_') + '_' + index);
+        $scope.getFieldId = function(index,handle) {
+            return ('input_field_' + handle.replace(/ /g,'_') + '_' + index);
         };
 
         $scope.getSaveStatusClass = function(){
