@@ -43,6 +43,7 @@ app.controller('tourEditCTL',function($scope,$http,$window){
     $scope.locations = locations;
     $scope.providers = providers;
     $scope.tour = tour;
+    $scope.zones = zones;
     $scope.hotels = hotels.map(function(h){
         var hotel = {};
         hotel.id = h.id;
@@ -188,4 +189,11 @@ app.controller('tourEditCTL',function($scope,$http,$window){
         console.log(extra_price_delete);
         $scope.tour.extra_prices.splice(index,1);
     }
+
+    $scope.getZones = function(){
+        var data = {id:$scope.tour.location};
+        $http({method: 'POST', url: '/zone/getZones',data: data }).success(function (zones){
+            $scope.zones = zones;
+        });
+    };
 });

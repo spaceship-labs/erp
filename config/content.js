@@ -423,8 +423,18 @@ module.exports.content = {
 			label_en : 'Location',
 			type : 'select',
 			handle : 'location',
-			object : 'locations'
+			object : 'locations',
+            on_Change : 'getZones',
+            required : true
 		},
+        {
+            label 	: 'Zona',
+            label_en : 'Zone',
+            type 	: 'select',
+            handle 	: 'zone',
+            object 	: 'zones',
+            required : true
+        },
 		{
 			label : "¿Es visible en web?"
 			,label_en : "It's visible on web?"

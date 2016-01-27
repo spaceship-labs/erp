@@ -67,7 +67,9 @@ module.exports = {
             via : 'transferTours',
             dominant : true
         }
-
+        ,zone : {
+            model : 'zone'
+        }
         //duration_type ?
 
 	}

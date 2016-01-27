@@ -146,36 +146,39 @@ module.exports = {
                 return res.notFound();
             }
             TourCategory.find({type:{ $ne:'rate' }}).exec(function(tc_err,tourcategories){
-            //console.log(tour);
-            Hotel.find({},{select: ['id', 'name','latitude','longitude']} ).exec(function(e,hotels){
-                Location.find({}).sort('name').exec(function(e,locations){
-                    SeasonScheme.find().sort('name').exec(function(e,schemes){
-                        TourProvider.find().exec(function(e,providers){
-                            if(!_.isUndefined(tour.provider))
-                                tour.provider = _.isObject(tour.provider) ? tour.provider.id : tour.provider;
-                            //for(var x in tour.categories) tour.categories[x] = Common.getItemById(tour.categories[x].id,tourcategories);
-                            Common.view(res.view,{
-                                tour:tour,
-                                locations:locations,
-                                schemes:schemes,
-                                providers : providers,
-                                tourcategories : tourcategories,
-                                hotels : hotels,
-                                page:{
-                                    saveButton : true,
-                                    name:tour.name,
-                                    icon:'fa fa-compass',
-                                    controller : 'tour.js'
-                                },
-                                breadcrumb : [
-                                    {label : req.__('sc_tour'), url: '/tour/'},
-                                    {label : tour.name},
-                                ]
-                            },req);
-                        });
-                    });//seasons and providers
-                });//location
-            });//hotels
+                //console.log(tour);
+                Hotel.find({},{select: ['id', 'name','latitude','longitude']} ).exec(function(e,hotels){
+                    Location.find({}).sort('name').exec(function(e,locations){
+                        SeasonScheme.find().sort('name').exec(function(e,schemes){
+                            TourProvider.find().exec(function(e,providers){
+                                Location.findOne(hotel.location).populate('zones').exec(function(error,lZones) {
+                                    if (!_.isUndefined(tour.provider))
+                                        tour.provider = _.isObject(tour.provider) ? tour.provider.id : tour.provider;
+                                    //for(var x in tour.categories) tour.categories[x] = Common.getItemById(tour.categories[x].id,tourcategories);
+                                    Common.view(res.view, {
+                                        tour: tour,
+                                        locations: locations,
+                                        schemes: schemes,
+                                        providers: providers,
+                                        tourcategories: tourcategories,
+                                        hotels: hotels,
+                                        zones : lZones && lZones.zones ? lZones.zones : [],
+                                        page: {
+                                            saveButton: true,
+                                            name: tour.name,
+                                            icon: 'fa fa-compass',
+                                            controller: 'tour.js'
+                                        },
+                                        breadcrumb: [
+                                            {label: req.__('sc_tour'), url: '/tour/'},
+                                            {label: tour.name},
+                                        ]
+                                    }, req);
+                                });
+                            });
+                        });//seasons and providers
+                    });//location
+                });//hotels
 
 		}); }); //tour and tour category
 	},
@@ -358,9 +361,12 @@ module.exports = {
     },
     setAllTours : function(req,res) {
         //var params = req.params.all();
-        Tour.update({ priceType : null },{ priceType : 'single' }).exec(function(err,results){
+        Tour.find().exec(function(err,results){
             console.log(err);
-            res.json(results);
+            console.log(results);
+            res.json(results.map(function(el){
+                return { id : el.id , haveTranslate : el.haveTranslate , haveTransfer : el.haveTransfer };
+            }));
         });
     }
 };
