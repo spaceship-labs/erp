@@ -271,6 +271,7 @@ module.exports.importOperation = function(err,book,callback){
             var r  = AssignCore.getObject(item,'reservation');
 			var c  = AssignCore.getObject(item,'client');
 			var ta = AssignCore.getObject(item,'asign');
+			TrasferPrice.customGetAvailableTransfers(company,params,function(){});
 			//crear la orden/reserva/cliente/transportasign
 			//
         });
@@ -278,4 +279,37 @@ module.exports.importOperation = function(err,book,callback){
 		//results
 		return theCB(err,toCSV);
 	});
+}
+module.exports.customGetAvailableTransfers = function(company,params){
+  //console.log('company');console.log(company);
+  if(company.adminCompany){
+    TransferPrice.find({ 
+      company : company.id
+      ,active : true
+      ,"$or":[ 
+        { "$and" : [{'zone1' : params.zone1, 'zone2' : params.zone2}] } , 
+        { "$and" : [{'zone1' : params.zone2, 'zone2' : params.zone1}] } 
+      ] 
+    }).populate('transfer').exec(function(err,prices){
+    	if(err) return false;
+    	return prices
+    });
+  }else{
+    CompanyProduct.find({agency : company.id,product_type:'transfer'}).exec(function(cp_err,products){
+      var productsArray = [];
+      for(var x in products) productsArray.push( products[x].transfer );
+      TransferPrice.find({ 
+        company : company.id
+        ,active : true
+        ,transfer : productsArray
+        ,"$or":[ 
+          { "$and" : [{'zone1' : params.zone1, 'zone2' : params.zone2}] } , 
+          { "$and" : [{'zone1' : params.zone2, 'zone2' : params.zone1}] } 
+        ] 
+      }).populate('transfer').exec(function(err,prices){
+      	if(err) return false;
+    	return prices
+      });
+    });
+  }
 }
