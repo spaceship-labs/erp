@@ -8,7 +8,7 @@ app.controller('tourCTL',function($scope,$http,$window,$rootScope){
     $scope.tourcategories = tourcategories;
     $scope.types = [ { id : 'single', name : 'por persona' },{ id : 'group',name : 'por grupo' } ];
     $scope.maxpax = [{id:0,name:'No aplica'}];
-    for(var x=1;x<30;x++)
+    for(var x=1;x<50;x++)
         $scope.maxpax.push({ id: x , name: x+' persona'+( x>1?'s':'' ) });
 	$scope.getInfo = function(tour){
         tour.createdAt=(moment(tour.createdAt).format('LL'));
@@ -43,6 +43,16 @@ app.controller('tourEditCTL',function($scope,$http,$window){
     $scope.locations = locations;
     $scope.providers = providers;
     $scope.tour = tour;
+    $scope.zones = zones;
+    $scope.hotels = hotels.map(function(h){
+        var hotel = {};
+        hotel.id = h.id;
+        hotel.name = h.name;
+        hotel.location = h.location;
+        hotel.latitude = h.latitude;
+        hotel.longitude = h.longitude;
+        return hotel;
+    });
     $scope.extra_price = {
         fee : 0,
         feeChild : 0,
@@ -51,13 +61,14 @@ app.controller('tourEditCTL',function($scope,$http,$window){
         type : 'extra_hour',
         hour : 0
     };
+
     //console.log(tour);
     $scope.types = [ { id : 'single', name : 'por persona' },{ id : 'group',name : 'por grupo' } ];
     if (angular.isUndefined($scope.tour.departurePoints)) {
         $scope.tour.departurePoints = [];
     }
     $scope.maxpax = [{id:0,name:'No aplica'}];
-    for(var x=1;x<30;x++)
+    for(var x=1;x<50;x++)
         $scope.maxpax.push({ id: x , name: x+' persona'+( x>1?'s':'' ) });
     $scope.tour.schedules = $scope.tour.schedules || [];
     for(var x in $scope.tour.schedules)
@@ -178,4 +189,11 @@ app.controller('tourEditCTL',function($scope,$http,$window){
         console.log(extra_price_delete);
         $scope.tour.extra_prices.splice(index,1);
     }
+
+    $scope.getZones = function(){
+        var data = {id:$scope.tour.location};
+        $http({method: 'POST', url: '/zone/getZones',data: data }).success(function (zones){
+            $scope.zones = zones;
+        });
+    };
 });

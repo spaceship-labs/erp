@@ -59,8 +59,16 @@ module.exports = {
         }
         ,status : {
             type: 'string',
-            enum: ['inactive', 'active'],
-            defaultsTo : 'inactive'
+            enum: ['inactive', 'active','draft'],
+            defaultsTo : 'draft'
+        }
+        ,transferHotels : {
+            collection : 'Hotel',
+            via : 'transferTours',
+            dominant : true
+        }
+        ,zone : {
+            model : 'zone'
         }
         //duration_type ?
 
@@ -82,7 +90,7 @@ module.exports = {
 		,duration : { es : 'Duración' , en : 'Duration' }
 		,provider : { es : 'Proveedor' , en : 'Provider' }
 		,visible : { es : 'Visible en web' , en : 'Web visible' }
-		,haveTranslate : { es : 'Transporte incluido' , en : 'Transfer included' }
+		,haveTransfer : { es : 'Transporte incluido' , en : 'Transfer included' }
 		,description_es : { es : 'Descripción Español' , en : 'Spanish description' }
 		,description_en : { es : 'Descripción Inglés' , en : 'English description' }
 		,description_ru : { es : 'Descripción Ruso' , en : 'Russian description' }

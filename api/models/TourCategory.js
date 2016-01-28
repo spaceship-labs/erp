@@ -16,10 +16,11 @@ module.exports = {
   	//,tours : { collection : 'tourtourcategory', via: 'tourcategory_tours' }
     ,type : {
       type: 'String'
-      ,enum : ['normal', 'rate']
+      ,enum : ['normal', 'rate','accesibility']
       /* Aquí se pueden ir agregando las variantes de categorías que podemos ir agregando
         normal: categorías normales
         rate : categorías numéricas, barras
+        accesibility : categorias de accesibilidad (acepta adultos , bebes , ancianos , etc) , util para filtros
       */
     }
     ,rating : 'array'
