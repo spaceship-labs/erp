@@ -151,7 +151,7 @@ module.exports = {
                     Location.find({}).sort('name').exec(function(e,locations){
                         SeasonScheme.find().sort('name').exec(function(e,schemes){
                             TourProvider.find().exec(function(e,providers){
-                                Location.findOne(hotel.location).populate('zones').exec(function(error,lZones) {
+                                Location.findOne(tour.location).populate('zones').exec(function(error,lZones) {
                                     if (!_.isUndefined(tour.provider))
                                         tour.provider = _.isObject(tour.provider) ? tour.provider.id : tour.provider;
                                     //for(var x in tour.categories) tour.categories[x] = Common.getItemById(tour.categories[x].id,tourcategories);
