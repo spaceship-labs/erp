@@ -286,7 +286,7 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope,$document)
                 updateReservationsGeneralFields('transfer');
                 $scope.setHotelHere($scope.transfer);
                 if($scope.transfer&&$scope.transfer.hotel&&!$scope.transfer.airport)
-                    $scope.getAirports();
+                    $scope.getAirports($scope.transfer);
             }
             if($scope.steps==3 && $scope.reservations.tours.length>0) updateReservationsGeneralFields('tour');
         }else{
@@ -307,7 +307,7 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope,$document)
                 ,state : $scope.generalFields.state
             };
             if($scope.transfer.hotel)
-                $scope.getAirports();
+                $scope.getAirports($scope.transfer);
         }else if(type=='tour'){
             for(var x in $scope.reservations.tours){
                 $scope.reservations.tours[x].currency = $scope.generalFields.currency;
@@ -560,9 +560,10 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope,$document)
             $window.location =  "/order/edit/" + $scope.order.id;
         if( action == 'list' )
             $window.location =  "/order/";
-    }
+    };
     //obtiene los aeropuertos dependiendo de la ciudad elegida
-    $scope.getAirports = function(){
+    $scope.getAirports = function(transfer){
+        if(transfer) $scope.transfer = transfer;
         var params = {'id':$scope.transfer.hotel.location.id};
         $http({method: 'POST', url: '/airport/getAirport',params:params}).success(function (result){
             //console.log('airports');console.log(result);
@@ -571,7 +572,7 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope,$document)
             $scope.getTransfers();
             $scope.updatePriceTransfer();
         });
-    }
+    };
     //Controla los inputs de fechas roundtrip/oneway
     $scope.updateDatesFormat = function(){
         var h = $scope.transfer.origin == 'hotel'?true:false;

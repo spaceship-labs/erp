@@ -293,7 +293,7 @@ module.exports.getTransferPrice = function(zone1,zone2,transfer,company,mainComp
     });
 }
 module.exports.getAvailableTransfers = function(zone1,zone2,company,callback){
-	if(company.adminCompany){
+	//if(company.adminCompany){
 	    TransferPrice.find({ 
 	      company : company.id
 	      ,active : true
@@ -302,7 +302,7 @@ module.exports.getAvailableTransfers = function(zone1,zone2,company,callback){
 	        { "$and" : [{'zone1' : zone2, 'zone2' : zone1}] } 
 	      ] 
 	    }).populate('transfer').exec(callback);
-	}else{
+	/*}else{
 	    CompanyProduct.find({agency : company.id, product_type:'transfer'}).exec(function(cp_err,products){
 	      var productsArray = [];
 	      for(var x in products) productsArray.push( products[x].transfer );
@@ -316,7 +316,7 @@ module.exports.getAvailableTransfers = function(zone1,zone2,company,callback){
 	        ] 
 	      }).populate('transfer').exec(callback);
 	    });
-	}
+	}*/
 };
 /*
 	Esta función de validar el cupón no valida que sea aplicable a los tours/hoteles/transfers
