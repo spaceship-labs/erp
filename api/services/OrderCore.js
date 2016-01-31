@@ -32,7 +32,7 @@ module.exports.createTransferReservation = function(params, defaultUserID, defau
 	Order.findOne(params.order).exec(function(e,theorder){
 		if(e) callback(e,false);
 		params.hotel = params.hotel.id || params.hotel;
-	    params.state = params.state.handle || params.state;
+	    params.state = params.state?(params.state.handle || params.state):'liquidated';
 	    params.payment_method = params.payment_method ? params.payment_method.handle||params.payment_method : 'creditcard';
 	    params.airport = params.airport.id || params.airport;
 	    params.client = params.client.id||params.client;
@@ -43,7 +43,7 @@ module.exports.createTransferReservation = function(params, defaultUserID, defau
 	    	if(err) callback(err,false);
 	    	params.folio = theorder.folio;
 	    	params.company = companies.company;
-      		params.currency = params.currency?params.currency.id:params.company.base_currency;
+      		params.currency = params.currency?params.currency.id:(params.company.base_currency?params.company.base_currency:companies.mainCompany.base_currency);
       		OrderCore.getTransferPrice(params.transferprice.zone1,params.transferprice.zone2,params.transfer,companies.company.id,companies.mainCompany,function(err,prices){
       			if(err) callback(err,false);
       			Exchange_rates.find().limit(1).sort({createdAt:-1}).exec(function(err,theExhangeRates){
@@ -59,8 +59,16 @@ module.exports.createTransferReservation = function(params, defaultUserID, defau
 					params.fee_adults_rt = prices.price.round_trip;
 					params.fee_kids = prices.price.one_way_child;
 					params.fee_kids_rt = prices.price.round_trip_child;
-					params.exchange_rate_sale = companies.company.exchange_rates[params.currency].sales;
-		            params.exchange_rate_book = companies.company.exchange_rates[params.currency].book;
+					if( companies.company.exchange_rates && companies.company.exchange_rates[params.currency] ){
+						params.exchange_rate_sale = companies.company.exchange_rates[params.currency].sales;
+		            	params.exchange_rate_book = companies.company.exchange_rates[params.currency].book;
+					}else{
+						console.log(companies.mainCompany.name);
+						console.log(companies.mainCompany.exchange_rates);
+						console.log(params.currency);
+						params.exchange_rate_sale = companies.mainCompany.exchange_rates[params.currency].sales;
+		            	params.exchange_rate_book = companies.mainCompany.exchange_rates[params.currency].book;
+					}
 					//en caso de que sea una reserva de agencia, guardar precios de la empresa principal
 					if( companies.mainCompany && prices.mainPrice ){
 						params.main_fee_adults 		= prices.mainPrice.one_way;
