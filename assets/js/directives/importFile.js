@@ -2,12 +2,16 @@
     var controller = function($scope, $upload, $http){
         $scope.sheets = false;
         $scope.error = false;
+        $scope.form = {};
         $scope.upload = function($files){
             $scope.loading = true;
             $scope.imports = [];
             $scope.upload = $upload.upload({
                 url: '/importdata/upload',
-                file: $files, 	                
+                file: $files,
+                data: {
+                    removeHtmlTags: $scope.form.removeHtmlTags
+                }
             }).progress(function(evt){
             }).success(function(data, status, headers, config) {
                 $scope.loading = false;

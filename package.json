@@ -45,12 +45,13 @@
     "sails-disk": "~0.10.0",
     "sails-mongo": "0.10.5",
     "skipper-pkgcloud": "0.0.4",
+    "striptags": "^2.1.1",
     "underscore.string": "^3.0.3"
   },
-    "engines": {
-        "node": "0.10.x",
-        "npm": "1.4.21"
-    },
+  "engines": {
+    "node": "0.10.x",
+    "npm": "1.4.21"
+  },
   "scripts": {
     "start": "node app.js",
     "karma": "./node_modules/karma/bin/karma start karma.conf.js",

@@ -417,7 +417,8 @@ describe('Import', function(){
     describe('files', function(){
 
         var files,
-        values;
+        values,
+        valuesClearHtml;
         before(function(){
             mockery.enable({
                 warnOnReplace: false,
@@ -496,6 +497,9 @@ describe('Import', function(){
                                     },{
                                         address: 'b2',
                                         value: 'zone 2'
+                                    }, {
+                                        address: 'b4',
+                                        value: '<p>text </br> <strong>lol </strong></p>'
                                     }]
                                 ]
                             }]
@@ -506,8 +510,13 @@ describe('Import', function(){
             mockery.registerMock('pyspreadsheet', pyspreadsheet);
             files = require('../../api/services/Import').files;
             values = [];
-            values.push([['Name','Zone', 'Location'], ['Airport 1', 'alguna zona 2', 'cancun'], ['air 3', 'other 3', 'chetumal']]);//hoja 1
-            values.push([['Name', 'Zone'], ['Air 1', 'zone 2']]);//hoja 2
+            valuesClearHtml = [];
+            var tmp = [['Name','Zone', 'Location'], ['Airport 1', 'alguna zona 2', 'cancun'], ['air 3', 'other 3', 'chetumal']];
+            values.push(tmp);//hoja 1
+            valuesClearHtml.push(tmp);
+            tmp = [['Name', 'Zone'], ['Air 1', 'zone 2', '<p>text </br> <strong>lol </strong></p>']];
+            values.push(tmp);//hoja 2
+            valuesClearHtml.push([['Name', 'Zone'], ['Air 1', 'zone 2', 'text  lol']]);
         });
 
         after(function(){
@@ -532,6 +541,21 @@ describe('Import', function(){
                 });
             
             });
+
+	    it('should clear html tags from xlsx', function(done){
+	    	files.xlsx2Json('file.xlsx',{removeHtmlTags: true}, function(err, json) {
+
+                    json.should.be.an.instanceOf(Object);
+                    json.should.have.property('sheets').and.be.an.instanceOf(Array);
+                    json.sheets.forEach(function(sheet, i){
+                        sheet.should.have.property('name');
+                        sheet.should.have.property('values');
+                        sheet.values.should.be.eql(valuesClearHtml[i]);
+                    });
+                    done();
+            
+            });
+	    });
 
         });
 
