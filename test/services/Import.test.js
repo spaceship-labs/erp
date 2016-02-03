@@ -500,7 +500,10 @@ describe('Import', function(){
                                     }, {
                                         address: 'b4',
                                         value: '<p>text </br> <strong>lol </strong></p>'
-                                    }]
+                                    }, {
+				    	address: 'b5',
+					value: 5
+				    }]
                                 ]
                             }]
                         });
@@ -514,9 +517,9 @@ describe('Import', function(){
             var tmp = [['Name','Zone', 'Location'], ['Airport 1', 'alguna zona 2', 'cancun'], ['air 3', 'other 3', 'chetumal']];
             values.push(tmp);//hoja 1
             valuesClearHtml.push(tmp);
-            tmp = [['Name', 'Zone'], ['Air 1', 'zone 2', '<p>text </br> <strong>lol </strong></p>']];
+            tmp = [['Name', 'Zone'], ['Air 1', 'zone 2', '<p>text </br> <strong>lol </strong></p>', 5]];
             values.push(tmp);//hoja 2
-            valuesClearHtml.push([['Name', 'Zone'], ['Air 1', 'zone 2', 'text  lol']]);
+            valuesClearHtml.push([['Name', 'Zone'], ['Air 1', 'zone 2', 'text  lol', 5]]);
         });
 
         after(function(){
