@@ -154,7 +154,8 @@ module.exports = {
     	form.req = req;
     	Hotel.update({id:form.id},form,function(e,hotel){
     		if(e) throw(e);
-    		Hotel.findOne(hotel.id).populate('rooms').exec(function(e,hotel){
+		
+    		Hotel.findOne(form.id).populate('rooms').exec(function(e,hotel){
     			if(e) throw(e);    			
     			hotel = formatHotel(hotel);	
     			res.json(hotel);
