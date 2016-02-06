@@ -125,8 +125,8 @@ app.controller('orderCTL',function($scope,$http,$window,$upload,$rootScope){
         else return false;
     };
     $scope.formatTime = function(time){
-        var t = new Date(time);
-        if(time) return t.getHours() + ':' + t.getMinutes();
+        var t = moment(time).utc();
+        if(time) return t.format("hh:mm");
         else return false;
     };
     $scope.formaOrders = function(){
