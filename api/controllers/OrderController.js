@@ -48,7 +48,8 @@ module.exports = {
         Client_.find().sort('name').exec(function(e,clients_){ 
           Client_.findOne({ id : order.client}).populate('contacts').exec(function(e,theclient){
               Transfer.find().sort('name').exec(function(e,transfers){
-                  Hotel.find().sort('name').populate('location').populate('rooms').exec(function(e,hotels){
+                  Hotel.find().limit(1).sort('name').populate('location').populate('rooms').exec(function(e,hotels){
+                    //console.log('order', order);
                     order.reservations = reservations || [];
                     Common.view(res.view,{
                       order : order,

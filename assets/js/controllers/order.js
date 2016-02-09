@@ -120,13 +120,14 @@ app.controller('orderCTL',function($scope,$http,$window,$upload,$rootScope){
     }
     sendFilterFx(0);
     $scope.formatDate = function(date){
-        var d = new Date(date);
-        if(date) return d.getDate() + '/' + (d.getMonth()+1) + '/' + d.getFullYear();
+        var d = moment(date);
+	if (date) return d.format("DD/MM/YYYY");
+        //if(date) return d.getDate() + '/' + (d.getMonth()+1) + '/' + d.getFullYear();
         else return false;
     };
     $scope.formatTime = function(time){
-        var t = new Date(time);
-        if(time) return t.getHours() + ':' + t.getMinutes();
+        var t = moment(time);
+        if(time) return t.format("HH:mm");
         else return false;
     };
     $scope.formaOrders = function(){
