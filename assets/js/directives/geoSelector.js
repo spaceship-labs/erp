@@ -70,7 +70,7 @@
             };
 
             $http({
-                method: 'POST', 
+                method: 'POST',
                 url: '/home/geocode',
                 data: {
                     location : $scope.location

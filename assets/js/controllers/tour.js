@@ -90,7 +90,42 @@ app.controller('tourEditCTL',function($scope,$http,$window){
     $scope.saveClass = 'fa-save';
     $scope.extra_types = [
         { name : 'Hora extra', id : 'extra_hour' }
-    ]
+    ];
+    async.each($scope.providers,function(p,cb){
+        if (p.id == $scope.tour.provider) {
+            cb(p);
+        } else {
+            cb();
+        }
+    },function(item){
+        if (item) {
+            for(var x in item.departurePoints){
+                var aux = false;
+                if( typeof item.departurePoints[x] == 'string' ){
+                    item.departurePoints[x] = JSON.parse(item.departurePoints[x]);
+                    aux = new Date(item.departurePoints[x].time);
+                    item.departurePoints[x].time = aux.getHours() + ':' + (aux.getMinutes()==0?'00':aux.getMinutes());
+                }else{
+                    item.departurePoints[x] = item.departurePoints[x];
+                }
+            }
+            async.map(item.departurePoints,function(p,cb){
+                console.log(p);
+                var provider_location = {
+                    id : p.message,
+                    latitude : p.lat,
+                    longitude : p.lng,
+                    name : p.message,
+                    tour : $scope.tour.id
+                };
+                cb(false,provider_location);
+            },function(err,results){
+                console.log(results);
+                $scope.all_provider_locations = results;
+            });
+        }
+    });
+
     $scope.save = function(){
         $scope.saveClass = 'fa-upload';
         var form = {

@@ -3,25 +3,26 @@ var passport = require('passport')
 , bcrypt = require('bcrypt');
 passport.use(new LocalStrategy(function(username, password, done){
 	process.nextTick(function () {
-		User.findOne().where({
-			or: [
-				{ name: username },
-				{ email: username }
-			]
-		}).populate('accessList').exec(function(err, user) {
-			if (err) { return done(null, err); }
-			if (!user) { 
-				//return done(null, true, { message: 'Logged In Successfully'}); 
-				return done(null, false, { message: 'Unknown user ' + username }); 
-			}
-			bcrypt.compare(password, user.password, function(err, res) {
-				if (!res) return done(null, false, { message: 'Invalid Password'});
+        User.findOne().where({
+            or: [
+                { name: username },
+                { email: username }
+            ]
+        }).populate('accessList').exec(function(err, user) {
+            if (err) { return done(null, err); }
+            if (!user) {
+                //return done(null, true, { message: 'Logged In Successfully'});
+                return done(null, false, { message: 'Unknown user ' + username });
+            }
+            bcrypt.compare(password, user.password, function(err, res) {
+                if (!res) return done(null, false, { message: 'Invalid Password'});
                 User.update({id : user.id},{ lastLogin : new Date() }).exec(function(err,ruser){
                     delete user.password;
                     return done(null, user, { message: 'Logged In Successfully'} );
                 });
-			});
-		})
+            });
+        });
+
 	});
 }));
 
