@@ -4,6 +4,7 @@
 	window.schemes = <%- JSON.stringify(schemes) %>;
 	window.tourcategories = <%- JSON.stringify(tourcategories) %>;
 	window.providers = <%- JSON.stringify(providers) %>;
+    window.zones = <%- JSON.stringify(zones) %>;
 </script>
 <div ng-controller='tourCTL' >
 	<!--<p><button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Nuevo Tour</button></p>-->
@@ -36,8 +37,9 @@
 			        object = 'tour'
 			        form-title='<%= __('tour-agregar')%>'
 			       	modal='true'
-			        objects='{schemes:schemes,locations:locations,providers:providers,maxpax:maxpax,tourcategories:tourcategories,types:types}'
+			        objects='{schemes:schemes,locations:locations,providers:providers,maxpax:maxpax,tourcategories:tourcategories,types:types,zones:zones}'
 			       	currency='company.base_currency'
+                    onchanges = "{'getZones' : getZones}"
 			        >
 			    </div>	
 			</div>

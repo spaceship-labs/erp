@@ -16,6 +16,7 @@ module.exports = {
 						locations:locations,
 						providers : providers,
 						tourcategories: tourcategories,
+                        zones : [],
 						page:{
 							name:req.__('sc_tour'),
 							icon:'fa fa-compass',

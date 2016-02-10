@@ -6,6 +6,7 @@ app.controller('tourCTL',function($scope,$http,$window,$rootScope){
     $scope.company = company;
     $scope.providers = providers;
     $scope.tourcategories = tourcategories;
+    $scope.zones = zones;
     $scope.types = [ { id : 'single', name : 'por persona' },{ id : 'group',name : 'por grupo' } ];
     $scope.maxpax = [{id:0,name:'No aplica'}];
     for(var x=1;x<50;x++)
@@ -13,7 +14,7 @@ app.controller('tourCTL',function($scope,$http,$window,$rootScope){
 	$scope.getInfo = function(tour){
         tour.createdAt=(moment(tour.createdAt).format('LL'));
         tour.updatedAt=(moment(tour.updatedAt).format('LL'));
-        var r = {}
+        var r = {};
         r[$rootScope.translates.c_name] = tour.name;
         r[$rootScope.translates.c_baseRate] = tour.fee;
         r[$rootScope.translates.c_created] = tour.createdAt;
@@ -34,6 +35,12 @@ app.controller('tourCTL',function($scope,$http,$window,$rootScope){
     $scope.setTimes = function(){
         $http({method: 'POST', url: '/tour/formatTimes',params : {} }).success(function (result){
             console.log(result);
+        });
+    };
+    $scope.getZones = function(){
+        $http({method: 'POST', url: '/zone/getZones',data: {id:$scope.tour.location} }).success(function (zones){
+            $scope.zones = zones;
+            //console.log('zones');console.log(zones);
         });
     };
 });
@@ -91,6 +98,7 @@ app.controller('tourEditCTL',function($scope,$http,$window){
     $scope.extra_types = [
         { name : 'Hora extra', id : 'extra_hour' }
     ];
+    $scope.all_provider_locations = [];
     async.each($scope.providers,function(p,cb){
         if (p.id == $scope.tour.provider) {
             cb(p);
@@ -108,21 +116,14 @@ app.controller('tourEditCTL',function($scope,$http,$window){
                 }else{
                     item.departurePoints[x] = item.departurePoints[x];
                 }
+                var auxPoint = {};
+                auxPoint.name = item.departurePoints[x].message;
+                auxPoint.tour = $scope.tour.id;
+                auxPoint.id = item.departurePoints[x].message;
+                auxPoint.latitude = item.departurePoints[x].lat;
+                auxPoint.longitude = item.departurePoints[x].lng;
+                $scope.all_provider_locations.push(auxPoint);
             }
-            async.map(item.departurePoints,function(p,cb){
-                console.log(p);
-                var provider_location = {
-                    id : p.message,
-                    latitude : p.lat,
-                    longitude : p.lng,
-                    name : p.message,
-                    tour : $scope.tour.id
-                };
-                cb(false,provider_location);
-            },function(err,results){
-                console.log(results);
-                $scope.all_provider_locations = results;
-            });
         }
     });
 
@@ -231,4 +232,31 @@ app.controller('tourEditCTL',function($scope,$http,$window){
             $scope.zones = zones;
         });
     };
+
+    $scope.getProviderLocations = function(){
+        $scope.all_provider_locations = [];
+        for(var i in $scope.providers){
+            if ($scope.providers[i].id == $scope.tour.provider ) {
+                var item = $scope.providers[i];
+                for(var x in item.departurePoints) {
+                    var aux = false;
+                    if( typeof item.departurePoints[x] == 'string' ){
+                        item.departurePoints[x] = JSON.parse(item.departurePoints[x]);
+                        aux = new Date(item.departurePoints[x].time);
+                        item.departurePoints[x].time = aux.getHours() + ':' + (aux.getMinutes()==0?'00':aux.getMinutes());
+                    }else{
+                        item.departurePoints[x] = item.departurePoints[x];
+                    }
+                    var auxPoint = {};
+                    auxPoint.name = item.departurePoints[x].message;
+                    auxPoint.tour = $scope.tour.id;
+                    auxPoint.id = item.departurePoints[x].message;
+                    auxPoint.latitude = item.departurePoints[x].lat;
+                    auxPoint.longitude = item.departurePoints[x].lng;
+                    $scope.all_provider_locations.push(auxPoint);
+                }
+            }
+        }
+        console.log($scope.all_provider_locations);
+    }
 });
