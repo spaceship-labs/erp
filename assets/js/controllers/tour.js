@@ -99,33 +99,6 @@ app.controller('tourEditCTL',function($scope,$http,$window){
         { name : 'Hora extra', id : 'extra_hour' }
     ];
     $scope.all_provider_locations = [];
-    async.each($scope.providers,function(p,cb){
-        if (p.id == $scope.tour.provider) {
-            cb(p);
-        } else {
-            cb();
-        }
-    },function(item){
-        if (item) {
-            for(var x in item.departurePoints){
-                var aux = false;
-                if( typeof item.departurePoints[x] == 'string' ){
-                    item.departurePoints[x] = JSON.parse(item.departurePoints[x]);
-                    aux = new Date(item.departurePoints[x].time);
-                    item.departurePoints[x].time = aux.getHours() + ':' + (aux.getMinutes()==0?'00':aux.getMinutes());
-                }else{
-                    item.departurePoints[x] = item.departurePoints[x];
-                }
-                var auxPoint = {};
-                auxPoint.name = item.departurePoints[x].message;
-                auxPoint.tour = $scope.tour.id;
-                auxPoint.id = item.departurePoints[x].message;
-                auxPoint.latitude = item.departurePoints[x].lat;
-                auxPoint.longitude = item.departurePoints[x].lng;
-                $scope.all_provider_locations.push(auxPoint);
-            }
-        }
-    });
 
     $scope.save = function(){
         $scope.saveClass = 'fa-upload';
@@ -237,26 +210,30 @@ app.controller('tourEditCTL',function($scope,$http,$window){
         $scope.all_provider_locations = [];
         for(var i in $scope.providers){
             if ($scope.providers[i].id == $scope.tour.provider ) {
+                console.log($scope.providers[i].departurePoints);
                 var item = $scope.providers[i];
                 for(var x in item.departurePoints) {
-                    var aux = false;
                     if( typeof item.departurePoints[x] == 'string' ){
                         item.departurePoints[x] = JSON.parse(item.departurePoints[x]);
-                        aux = new Date(item.departurePoints[x].time);
-                        item.departurePoints[x].time = aux.getHours() + ':' + (aux.getMinutes()==0?'00':aux.getMinutes());
                     }else{
                         item.departurePoints[x] = item.departurePoints[x];
                     }
                     var auxPoint = {};
+                    auxPoint.lat = item.departurePoints[x].lat;
+                    auxPoint.lng = item.departurePoints[x].lng;
+                    auxPoint.message = item.departurePoints[x].message;
                     auxPoint.name = item.departurePoints[x].message;
-                    auxPoint.tour = $scope.tour.id;
-                    auxPoint.id = item.departurePoints[x].message;
-                    auxPoint.latitude = item.departurePoints[x].lat;
-                    auxPoint.longitude = item.departurePoints[x].lng;
+                    auxPoint.type = item.departurePoints[x].type;
+                    auxPoint.identifier = item.departurePoints[x].identifier;
                     $scope.all_provider_locations.push(auxPoint);
                 }
             }
         }
-        console.log($scope.all_provider_locations);
+        //console.log($scope.all_provider_locations);
     }
+    $scope.getProviderLocations();
+
+    $scope.$watch('tour.provider', function(t) {
+        $scope.getProviderLocations();
+    });
 });

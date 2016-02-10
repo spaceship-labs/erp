@@ -408,16 +408,9 @@ module.exports.content = {
 			label_en : 'LocationProvider',
 			type : 'select',
 			handle : 'provider',
-			object : 'providers'
+			object : 'providers',
+            on_Change : 'getProviderLocations'
 		},
-        {
-            label : 'Locaciones de proveedor',
-            label_en : 'Provider locations',
-            type : 'multi-select',
-            handle : 'provider_locations',
-            object : 'provider_departurepoints',
-            removeAction : '/tour/removeProviderPoint'
-        },
 		{
 			label : 'Categorías',
 			label_en : 'Categories',

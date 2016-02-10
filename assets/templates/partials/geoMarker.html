@@ -8,6 +8,7 @@
 		<table class='table stdform stdform2' ng-if='dragEnabled'>
 			<thead>
 		        <tr>
+                    <th ng-if="optionalMarkers.length > 0">Escoje</th>
 		        	<th class='ng-hide' ng-bind="translates.d_lat"></th>
 		        	<th class='ng-hide' ng-bind="translates.d_lon"></th>
 		        	<th ng-bind="translates.d_dec"></th>
@@ -17,6 +18,13 @@
 		    </thead>
 		    <tbody>
 				<tr ng-repeat='(key,marker) in markers'>
+                    <td ng-if="optionalMarkers.length > 0">
+                        <select
+                                ng-model="optionalMarker[key]"
+                                ng-options="obj as obj.name for obj in optionalMarkers"
+                                ng-change="selectOptionalMarker(key,optionalMarker[key])" >
+                        </select>
+                    </td>
 					<td class='ng-hide'>
 						<input name='lat' ng-model="marker.lat" >
 					</td>
