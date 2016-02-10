@@ -54,6 +54,8 @@ module.exports = {
 			, via : 'agency'
 		}
 		,adminCompany : 'boolean'
+		,emails_contact: 'string'
+		,emails_billing: 'string'
 		,addApps : function(apps,cb){
 			if(Array.isArray(apps)){
                 var cApps = this.apps || [];
