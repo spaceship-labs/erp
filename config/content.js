@@ -1101,6 +1101,22 @@ module.exports.content = {
 		handle : 'contract',
 		type : 'file',
 	},
+	{
+		label : 'Emails de contacto',
+		label_en : 'Contact emails',
+		handle : 'emails_contact',
+        	message : 'Emails que recibiran los correos del formulario de contacto (sepearado por coma)',
+        	message_en : '',
+		type : 'text',
+	},
+	{
+		label : 'Email de facturación',
+		label_en : 'Billing emails',
+		handle : 'emails_billing',
+		type : 'text',
+        	message : 'Emails que recibiran los correos del formulario de facturación (sepearado por coma)',
+        	message_en : ''
+	},
 	],
     user : [
         {

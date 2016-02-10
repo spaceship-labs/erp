@@ -180,7 +180,7 @@ module.exports = {
 		});
 	}
     ,update : function(req,res) {
-        var form = Common.formValidate(req.params.all(),['id','name','address','zipcode','description','terms','footer']);
+        var form = Common.formValidate(req.params.all(),['id','name','address','zipcode','description','terms','footer', 'emails_contact', 'emails_billing']);
         Company.update({id : form.id},form).exec(function(err,company){
            if (err) {
                console.log(err);
