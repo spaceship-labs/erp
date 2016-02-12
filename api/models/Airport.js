@@ -14,6 +14,10 @@ module.exports = {
   	location : {
   		model : 'location'
   	},
+    locations : {
+      collection : "location"
+      ,via : 'airportslist'
+    },
   	zone : {
   		model : 'zone'
   	}

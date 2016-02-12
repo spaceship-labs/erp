@@ -6,7 +6,7 @@
             $scope.loading = true;
             $scope.imports = [];
             $scope.upload = $upload.upload({
-                url: '/importdata/upload',
+                url: $scope.uploadUrl || '/importdata/upload',
                 file: $files, 	                
             }).progress(function(evt){
             }).success(function(data, status, headers, config) {
@@ -59,7 +59,8 @@
             controller: controller,
             scope: {
                 importType: '@',
-                url:'@'
+                url:'@',
+                uploadUrl : '@'
             },
             templateUrl : '/templates/partials/importFiles.html'
         };

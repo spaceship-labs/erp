@@ -82,10 +82,14 @@ module.exports = {
 	},
 	getAirport : function(req,res){
 		var params = req.params.all();
-		Airport.find({ 'location' : params.id }).exec(function(e,airports){ 
+		Location.findOne(params.id).populate('airports').exec(function(err,thelocation){
+			if(err) throw(err);
+			res.json(thelocation.airports)
+		});
+		/*Airport.find({ 'location' : params.id }).exec(function(e,airports){ 
 			if(e) throw(e);
 			res.json(airports);
-		});
+		});*/
 	}
 };
 

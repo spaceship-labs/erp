@@ -17,6 +17,11 @@ module.exports = {
   		via : 'id',
       dominant : true
   	},
+    airportslist : {
+      collection : 'airport'
+      ,via : 'locations'
+      ,dominant : true
+    },
     airports : {
       collection : 'airport'
       ,via : 'location'

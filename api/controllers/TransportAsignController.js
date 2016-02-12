@@ -65,9 +65,22 @@ module.exports = {
             dirSave = __dirname+'/../../assets/uploads/'+dir+'/';
         Files.saveFiles(req, {dir: dir, disableCloud: true }, function(err, files){
             if(err && !files.length) return res.ok({ success:false, error: err.message });
-            Import.files.xlsx2Json(dirSave + files[0].filename, AssignCore.importOperation(err,book,function(err,result){
-                res.json({});
-            }));
+            Import.files.xlsx2Json(dirSave + files[0].filename, function(err, book){
+                AssignCore.importOperation(err,book,req,function(err,result){
+                    if(err) return res.ok({ success:false, error: err.message});
+                    res.ok({success: true, sheets:book.sheets});
+                });
+            });
+        });
+    }
+    ,importJson: function(req, res){
+        var form = req.params.all(),
+        add = {};
+        Import.files.array2Model(form.values, add, function(err, objs){
+            Import.checkAndImport(objs, form.model, function(err, creates){
+                if(err) return res.ok({success:false, error:err.message});
+                res.ok({success: true, creates: creates});
+            });
         });
     }
     ,getVehicles : function(req,res){

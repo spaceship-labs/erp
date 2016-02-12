@@ -30,7 +30,7 @@ module.exports.createOrder = function(params, req , callback){
 };
 module.exports.createTransferReservation = function(params, defaultUserID, defaultCompany, callback){
 	Order.findOne(params.order).exec(function(e,theorder){
-		if(e) callback(e,false);
+		if(e) return callback(e,false);
 		params.hotel = params.hotel.id || params.hotel;
 	    params.state = params.state.handle || params.state;
 	    params.payment_method = params.payment_method ? params.payment_method.handle||params.payment_method : 'creditcard';
@@ -40,15 +40,17 @@ module.exports.createTransferReservation = function(params, defaultUserID, defau
 	    delete params.id;
 	    theorder.company = theorder.company || defaultCompany;
 	    OrderCore.getCompanies(theorder.company,function(err,companies){
-	    	if(err) callback(err,false);
+	    	if(err) return callback(err,false);
 	    	params.folio = theorder.folio;
 	    	params.company = companies.company;
       		params.currency = params.currency?params.currency.id||params.currency:params.company.base_currency;
       		OrderCore.getTransferPrice(params.transferprice.zone1,params.transferprice.zone2,params.transfer,companies.company.id,companies.mainCompany,function(err,prices){
-      			if(err) callback(err,false);
+      			if(err) return callback(err,false);
       			Exchange_rates.find().limit(1).sort({createdAt:-1}).exec(function(err,theExhangeRates){
       				if(err) cb(err,item);
 					theExhangeRates = theExhangeRates[0];
+					console.log('prices');
+					console.log(prices.price);
 	      			params.service_type = prices.price.transfer.service_type || 'C' ;
 	      			params.quantity = Math.ceil( params.pax / prices.price.transfer.max_pax );
 	          		params.fee = prices.price[params.type] * params.quantity;
@@ -73,7 +75,7 @@ module.exports.createTransferReservation = function(params, defaultUserID, defau
 					params.globalRates = theExhangeRates.rates;
 					delete params.generalFields;
 					Reservation.create(params).exec(function(err,reservation){
-	            		if(err) callback(err,false);
+	            		if(err) return callback(err,false);
 	            		theorder.reservations.push(reservation.id);
 	            		theorder.state = reservation.state;
 	            		theorder.save(function(err){

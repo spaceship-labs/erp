@@ -24,6 +24,7 @@ app.controller('locationEditCTL',function($scope,$upload,$http){
     $scope.user = user;
     $scope.location_o = location_o;
     $scope.locations = locations;
+    $scope.airports = airports;
     $scope.relatedLocations = [];
     $scope.content = content;
     $scope.test = '';
@@ -31,18 +32,7 @@ app.controller('locationEditCTL',function($scope,$upload,$http){
     $scope.zone = {};
     $scope.newZoneClass = 'fa-plus';
     $scope.typeAddZone = "1";
-    console.log('$scope.location_o');
-    console.log($scope.location_o);
-    /*$scope.getRelatedLocations = function(){
-        var result = [];
-        if($scope.location_o.locations.length > 0){
-            for(var x=0;x<$scope.location_o.locations.length;x++){
-                result.push( $scope.location_o.locations[x].id );
-            }
-        }
-        $scope.relatedLocations = result;
-    };
-    $scope.getRelatedLocations();*/
+    console.log('$scope.location_o');console.log($scope.location_o);
     $scope.toggleZoneForm = function(){
         $scope.showZoneForm = !$scope.showZoneForm;
         $scope.newZoneClass = $scope.showZoneForm ? 'fa-minus' : 'fa-plus';
@@ -51,9 +41,7 @@ app.controller('locationEditCTL',function($scope,$upload,$http){
         $scope.zone.location = $scope.location_o.id;
         $scope.newZoneClass = 'fa-upload';
         $scope.showZoneForm = false;
-        $http({method: 'POST', url: '/location/addZone',params:$scope.zone}).success(function(zone){ //location_o
-            //$scope.location_o.zones = location_o.zones;
-            //console.log('zone');console.log(zone);
+        $http({method: 'POST', url: '/location/addZone',params:$scope.zone}).success(function(zone){
             $scope.location_o.zones.push(zone);
             $scope.newZoneClass = 'fa-plus';
         });
@@ -81,37 +69,51 @@ app.controller('locationEditCTL',function($scope,$upload,$http){
             }
         });
     };
-    /*$scope.saveClass2 = 'fa-save';
-    $scope.updateRelatedCities = function(){
-        $scope.saveClass2 = 'fa-upload';
-        $scope.location_o.locations = $scope.relatedLocations;
-        $http({method: 'POST', url: '/location/update',params:$scope.location_o }).success(function(location_){
-            $scope.location_o = location_;
-            $scope.getRelatedLocations();
-            $scope.saveClass2 = 'fa-save';
+    var updateAirports = function(){
+        console.log('updateAirports function');
+        $scope.notaddedAirports = [];
+        angular.forEach($scope.airports,function(a){
+            if ( _.pluck($scope.location_o.airportslist , 'id').indexOf(a.id) == -1)
+                $scope.notaddedAirports.push(a);
         });
-    }*/
+    };
+    $scope.addAirport = function(){
+        var params = { location : $scope.location_o.id, airport : $scope.airportToAdd.id };
+        $http({method: 'POST', url: '/location/addairport',params:params}).success(function(result){
+            console.log(result);
+            if( !result.err ){
+                $scope.location_o.airportslist = result.result;
+                updateAirports();
+            }
+        });
+    };
+    $scope.removeAirport = function(a){
+        var params = { id : $scope.location_o.id , airport : a.id }
+        $http({method: 'POST', url: '/location/removeAirport',params:params }).success(function(location_){
+            if( !result.err ){
+                $scope.location_o.airportslist = result.result;
+                updateAirports();
+            }
+        });
+    };
+    updateAirports();
+    //Funciones que ya no se usan ( por ahora )
     var updateLocations = function(){
         $scope.notRelatedLocations = [];
         $scope.relatedLocations = [];
         angular.forEach($scope.locations,function(l){
-            //if ($scope.location_o.locations.indexOf(l.id) == -1) {
-            if ( _.pluck($scope.location_o.locations , 'id').indexOf(l.id) == -1) {
+            if ( _.pluck($scope.location_o.locations,'id').indexOf(l.id) == -1) {
                 $scope.notRelatedLocations.push(l);
             } else {
                 $scope.relatedLocations.push(l);
             }
         });
-        console.log($scope.relatedLocations);
-        console.log($scope.notRelatedLocations);
     };
-
     $scope.removeLocation = function(l){
         var params = { id : $scope.location_o.id , loc : l.id }
         $http({method: 'POST', url: '/location/removeLoc',params:params }).success(function(location_){
             $scope.location_o = location_;
             updateLocations();
-            //$scope.$apply();
         });
     };
     $scope.addLocation = function(l){
@@ -119,7 +121,6 @@ app.controller('locationEditCTL',function($scope,$upload,$http){
         $http({method: 'POST', url: '/location/addLoc',params:params }).success(function(location_){
             $scope.location_o = location_;
             updateLocations();
-            //$scope.$apply();
         });
     };
     updateLocations();

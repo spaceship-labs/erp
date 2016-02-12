@@ -38,14 +38,16 @@ module.exports = {
         });
 	},
 	edit : function(req,res){
-		Location.findOne(req.params.id).populate('zones').populate('locations').exec(function(e,location){
+		Location.findOne(req.params.id).populateAll().exec(function(e,location){
 			if(e) return res.redirect("/location/");
 			Location.find({ id : {'!':location.id} }).exec(function(e,locations){
-				//LocationRelated.find({location1 : location.id}).populate('location1').populate('location2').exec(function(e,relatedLocations){
-					if(e) return res.redirect("/location/");
+				if(e) return res.redirect("/location/");
+				Airport.find().exec(function(err,airports){
+					//LocationRelated.find({location1 : location.id}).populate('location1').populate('location2').exec(function(e,relatedLocations){ });
 					Common.view(res.view,{
 						location_o : location,
 						locations : locations,
+						airports : airports,
 						//relatedLocations : relatedLocations,
 						page:{
 							name:location.name,
@@ -57,9 +59,36 @@ module.exports = {
 							{label : location.name},
 						]
 					},req);	
-				//});
+				});
 			});
 		});
+	},
+	addairport : function(req,res){
+		var params = req.params.all();
+		if( !params.location && !params.airport ) return res.json({err:'no parameters',result:false});
+		Location.findOne(params.location).exec(function(err,location){
+			if(err) res.json({ err : err, result : false });
+			location.airportslist.add( params.airport );
+			location.save(function(err){
+				console.log(err);
+				Location.findOne(params.location).populate('airportslist').exec(function(err,location){
+					console.log(location);
+					res.json({err:false, result : location.airportslist});
+				});
+			});
+		});
+	},
+	removeAirport : function(req,res){
+		var form = req.params.all();
+		var id = form.id;
+    	var airport = form.airport;
+    	Location.findOne(id).exec(function(err, location_o) {
+    		if(err) res.json({ err : err, result : false });
+    		location_o.airportslist.remove(airport);
+    		location_o.save(function(err){
+    			res.json({ err : false, result : location_o.airportslist });
+    		});
+    	});
 	},
 	addLoc : function(req,res){
 		var form = req.params.all();
@@ -124,20 +153,10 @@ module.exports = {
 		async.waterfall(reads,function(e,zone,companies_,locations_,transfers){
 			if(e) throw(e);
 			var zones1 = [];zones1.push(zone);
-			Transferprices.afterCreateZone(zones1,locations_,transfers,companies_,function(){
+			//Transferprices.afterCreateZone(zones1,locations_,transfers,companies_,function(){
 				res.json(zone);
-			});
+			//});
 		});
-		/*var form = req.params.all();
-		var location_o = form.location;
-		Zone.create(form).exec(function(e,r){
-			if(e) throw(e);
-			Location.findOne(location_o).populate('zones').exec(function(e,location_o){
-				if(e) throw(e);
-				location_o = location_o;
-				res.json(location_o)
-			});
-		});*/
 	},
 	updateIcon: function(req,res){
     	form = req.params.all();

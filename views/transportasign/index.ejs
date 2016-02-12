@@ -10,7 +10,7 @@
 <div ng-controller="transportAsignCTL" class='ng-cloak' ng-cloak>
     <div class='row'>
         <div class="col-sm-6 col-md-6 col-xs-12">
-            <a class='btn btn-primary pull-right full-sm'><i class='fa fa-upload'></i> Importar</a>
+            <a class="btn btn-primary pull-right full-sm" data-toggle="modal" data-target="#importmodal"><i class="fa fa-upload"></i>Importar</a>
             <a href="/TransportAsign/exportOperation" class='btn btn-primary pull-right full-sm'><i class='fa fa-download'></i> Exportar</a>
         </div>
     </div>
@@ -142,5 +142,16 @@
             </div>
         </div>
     </div>
-
+    <div class="modal fade" id="importmodal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Importar operación</h4>
+                </div>
+                <div import-files import-type='reservation' url='/order/edit/' upload-url="/transportAsign/importoperation" ></div>
+            </div>
+        </div>
+    </div>
+    <%- partial('../order/partial/cvsForm') -%>
 </div>

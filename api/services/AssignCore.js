@@ -13,6 +13,17 @@ module.exports.assignReservation = function(params,callback){
 		});
 	});
 };
+module.exports.smallAssignReservation = function(asign,reservationID,callback){
+	asign.reservation = reservationID;
+	TransportAsign.create(asign).exec(function(err,asigned){
+		if(err) return callback(err,false);
+		var params = { asign : asigned.id };
+		Reservation.update({id:reservationID},params,function(err,r){
+			if(err) return callback(err,false);
+			Reservation.findOne(reservationID).populateAll().exec(callback);
+		});
+	});
+};
 module.exports.formatFilterFields = function(f){
 	var fx = { };
 	fx['$or'] = [];
@@ -210,19 +221,27 @@ module.exports.getObject = function(row,type){
 	var result = {};
 	if( type == 'reservation' ){
 		result.hotel = row[4];
-		result.hotel = row[5];
+		//result.service = row[5];
+		result.transfer = row[5];
 		result.pax = row[6];
 		result.company = row[7];
+		result.type = 'one_way';
+		//default data
 		result.reservation_method = 'intern';
 		result.reservation_type = 'transfer';
+		result.state = { handle : 'liquidated' };
+		result.payment_method = { handle : 'creditcard' };
+		//end default data
 		if( row[0] == 'llegada' ){
 			result.origin = 'airport';
-			result.arrival_time = moment(row[8]);
+			result.arrival_time = moment(row[10]+' '+row[8]).format('YYYY-MM-DD HH:mm:ss');
+			console.log(result.arrival_time);
+			console.log(result.departure_time);
 			result.arrival_fly = row[1];
 			result.arrival_airline = row[2];
 		}else{
 			result.origin = 'hotel';
-			result.departure_time = moment(row[8]);
+			result.departure_time = moment(row[10]+' '+row[8]).format('YYYY-MM-DD HH:mm:ss');
 			result.departure_fly = row[1];
 			result.departure_airline = row[2];
 		}
@@ -240,11 +259,12 @@ module.exports.getObject = function(row,type){
 	}
 	return result;
 }
-module.exports.importOperation = function(err,book,callback){
+module.exports.importOperation = function(err,book,req,callback){
 	if(err) return callback(err,false);
 	if( !book.sheets ) return callback({message:'no rows'},false);
+	book.sheets[0].values.splice(0,1);
 	async.mapSeries( book.sheets[0].values, function(item,cb){
-		//llegada o salida?,vuelo, airline, cliente, hotel, servicio, pax, agencia, hora, unidad
+		//0 llegada o salida?,vuelo, airline, cliente, hotel, servicio, pax, agencia, hora, unidad
 		async.parallel({
             airline: function(done){
                 Airline.findOne({ name : item[2] }).exec(done);
@@ -259,10 +279,16 @@ module.exports.importOperation = function(err,book,callback){
             	Company.findOne({ name : item[7] }).exec(done);
             },
             unidad : function(done){
-            	Transport.findOne({ car_id : item[9] }).populateAll().exec(done);
+            	Transport.findOne({ car_id : (item[9]+'') }).populateAll().exec(done);
             }
         
         }, function(err, search){
+        	console.log('------------item');
+        	console.log(item);
+        	console.log('------------search');
+        	console.log(search);
+        	if(err || !(search.hotel && search.service && search.agency && search.unidad) )
+        		return cb(err&&{search:search},false);
         	item[2] = search.airline;
         	item[4] = search.hotel;
         	item[5] = search.service;
@@ -271,18 +297,67 @@ module.exports.importOperation = function(err,book,callback){
             var r  = AssignCore.getObject(item,'reservation');
 			var c  = AssignCore.getObject(item,'client');
 			var ta = AssignCore.getObject(item,'asign');
-			TrasferPrice.customGetAvailableTransfers(company,params,function(){});
-			//crear la orden/reserva/cliente/transportasign
-			//
+			//Airport.findOne({ location : search.hotel.location }).exec(function(err,airport){
+			Location.findOne(search.hotel.location).populate('airportslist').exec(function(err,hotelLocation){
+				console.log('------------airport list');
+				console.log(hotelLocation.airportslist);
+				if( err || !hotelLocation.airportslist || hotelLocation.airportslist.length == 0 ) return cb(err,false);
+				var airport = hotelLocation.airportslist[0];
+				console.log('------------airport');
+				console.log(hotelLocation.airportslist);
+				console.log(airport);
+				if( err || !airport )
+					return cb(err,false);
+				var params = { zone1 : airport.zone , zone2 : search.hotel.zone };
+				AssignCore.getTransferPrice(search.agency,airport.zone,search.hotel.zone,search.service,function(err,price){
+					if(err||!price) return cb({message:'no price found'},false);
+					//crear la orden/reserva/cliente/transportasign
+					Client_.create(c).exec(function(err,client){
+						c.id = client.id;
+						console.log('client');
+						var params2 = { company : search.agency.id, client : client.id };
+						console.log(params2)
+						OrderCore.createOrder(params2,req,function(err,order){
+							console.log('order');
+							r.transferprice = price;
+							r.order = order.id;
+							r.folio = order.folio;
+							r.airport = airport.id;
+							r.client = client.id;
+							r.user = order.user;
+							r.transfer = search.service.id;
+							OrderCore.createTransferReservation(r, req.user.id, req.session.select_company || req.user.select_company,function(err,reservation){
+								console.log('reservation');
+								console.log(err);
+								r = reservation;
+								AssignCore.smallAssignReservation(ta,reservation.id,cb);
+							});//create reservation end
+						});//create order
+					});//create client
+				});
+			});
         });
 	},function(err,rows){
 		//results
-		return theCB(err,toCSV);
+		console.log('end');
+		console.log(err);
+		return callback(err,rows);
 	});
+}
+module.exports.getTransferPrice = function(company,zone1,zone2,transfer,callback){
+	TransferPrice.findOne({ 
+      company : company.id
+      ,active : true
+      ,transfer : transfer.id
+      ,"$or":[ 
+        { "$and" : [{'zone1' : zone1, 'zone2' : zone2}] } , 
+        { "$and" : [{'zone1' : zone2, 'zone2' : zone1}] } 
+      ] 
+    }).populate('transfer').exec(callback);
 }
 module.exports.customGetAvailableTransfers = function(company,params){
   //console.log('company');console.log(company);
-  if(company.adminCompany){
+  //if(company.adminCompany){
     TransferPrice.find({ 
       company : company.id
       ,active : true
@@ -294,7 +369,7 @@ module.exports.customGetAvailableTransfers = function(company,params){
     	if(err) return false;
     	return prices
     });
-  }else{
+  /*}else{
     CompanyProduct.find({agency : company.id,product_type:'transfer'}).exec(function(cp_err,products){
       var productsArray = [];
       for(var x in products) productsArray.push( products[x].transfer );
@@ -311,5 +386,5 @@ module.exports.customGetAvailableTransfers = function(company,params){
     	return prices
       });
     });
-  }
+  }*/
 }

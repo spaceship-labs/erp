@@ -21,7 +21,6 @@ module.exports.getReport = function(type,fields,cb){
 		,'tours_by_user': true
 		,'tours_by_provider': true
 		,'tours_by_payment_method': true
-		,'transfer_gral': true
 		,'totalsReport': true
 		,'logisticsReport': true
 		,'tours_by_user_list': true
@@ -31,6 +30,10 @@ module.exports.getReport = function(type,fields,cb){
 		,'tours_by_payment_method_list': true
 		,'tours_cupon_by_user': true
 		,'tours_commision_by_cupon': true
+		,'transfer_gral': true
+		,'transfer_by_service' : true
+		,'transfer_by_agency' : true
+		,'transfer_by_provider' : true
 	};
 	if( typeof reports_available[type] != 'undefined' ){
 		Reports[type](fields,cb);

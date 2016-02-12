@@ -3,7 +3,7 @@ app.filter('to_trusted', ['$sce', function($sce) {
         return $sce.trustAsHtml(text);
     };
 }]);
-app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile, uiCalendarConfig, chroma, $filter,$window){
+app.controller('transportAsignCTL',function($scope, $http, $rootScope,$upload, $compile, uiCalendarConfig, chroma, $filter,$window){
     var timeZone = 'America/Mexico_City';
     moment.tz.add(timeZone+'|PST PDT|80 70|0101|1Lzm0 1zb0 Op0');
 
@@ -859,4 +859,25 @@ app.controller('transportAsignCTL',function($scope, $http, $rootScope, $compile,
         var date = moment(date); //fecha seleccionada
         return result;
     }*/
+    $scope.saveFile = function() {
+        $scope.loading = true;
+        $scope.f = { finish : false };
+        $scope.upload = $upload.upload({ url: '/transportAsign/importoperation' , file: $scope.file
+        }).progress(function(evt){ $scope.loadingProgress = parseInt(100.0 * evt.loaded / evt.total);
+        }).success(function(data, status, headers, config) {
+            console.log('data file',data);
+            $scope.loading = false;
+            $scope.loadingProgress = 0;
+            $scope.f.finish = true;
+            $scope.f.success = data.success;
+            $scope.f.results = data.result;
+            $scope.f.errors = data.errors;
+        });
+    };
+    $scope.WFile = function($files,$e){
+        if($files) {
+            $scope.fileName = $files[0].name;
+            $scope.file = $files;
+        }
+    };
 });
