@@ -27,7 +27,7 @@
     "angular-ui-calendar": "~0.8.1",
     "angular-ui-date": "latest",
     "angular-ui-sortable": "~0.12.11",
-    "angular-ui-tinymce": "latest",
+    "angular-ui-tinymce": "0.0.12",
     "angular-xeditable": "~0.1.8",
     "async": "~1.5.2",
     "bootstrap": "3.0.0",
