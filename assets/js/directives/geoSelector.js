@@ -11,6 +11,15 @@
                 logic: 'emit'
             }
         };
+        $scope.layers = {
+            baselayers: {
+                googleRoadmap: {
+                    name: 'Google Streets',
+                    layerType: 'ROADMAP',
+                    type: 'google'
+                }
+            }
+        };
 
         $scope.save = function(){
             $scope.saveClass = 'fa-upload';
