@@ -293,7 +293,7 @@ module.exports.importOperation = function(err,book,req,callback){
         	item[4] = search.hotel;
         	item[5] = search.service;
         	item[7] = search.agency;
-        	item[2] = search.unidad;
+        	item[9] = search.unidad;
             var r  = AssignCore.getObject(item,'reservation');
 			var c  = AssignCore.getObject(item,'client');
 			var ta = AssignCore.getObject(item,'asign');
@@ -349,6 +349,7 @@ module.exports.getTransferPrice = function(company,zone1,zone2,transfer,callback
       company : company.id
       ,active : true
       ,transfer : transfer.id
+      ,type : { '$ne' : 'provider' }
       ,"$or":[ 
         { "$and" : [{'zone1' : zone1, 'zone2' : zone2}] } , 
         { "$and" : [{'zone1' : zone2, 'zone2' : zone1}] } 
@@ -361,6 +362,7 @@ module.exports.customGetAvailableTransfers = function(company,params){
     TransferPrice.find({ 
       company : company.id
       ,active : true
+      ,type : { '$ne' : 'provider' }
       ,"$or":[ 
         { "$and" : [{'zone1' : params.zone1, 'zone2' : params.zone2}] } , 
         { "$and" : [{'zone1' : params.zone2, 'zone2' : params.zone1}] } 
@@ -388,3 +390,13 @@ module.exports.customGetAvailableTransfers = function(company,params){
     });
   }*/
 }
+/*
+	SERVICIOS de la operacion
+Colectivo
+Colectivo por pax
+Luxury hasta 6 pax
+privado 1-4 pax
+privado 1-8 pax
+privado 9-16 pax
+privado por pax
+*/

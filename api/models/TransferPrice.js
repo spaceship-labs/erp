@@ -15,9 +15,19 @@ module.exports = {
   	airport : { model 	: 'airport' },
     location : { model   : 'location' },
     location2 : { model   : 'location' }
+    ,one_way : 'float'
+    ,round_trip : 'float'
+    ,one_way_child : 'float'
+    ,round_trip_child : 'float'
+    ,commission_agency : 'float'
     ,distance : 'float'
     ,gasoline : 'string'
     ,time : 'datetime'
     ,active : 'boolean'
+    ,type : {
+      type : 'string'
+      ,enum : ['agency','provider']
+      ,defaultsTo : 'agency'
+    }
   }
 };

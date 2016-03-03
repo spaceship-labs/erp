@@ -29,7 +29,7 @@ module.exports = {
                 Common.view(res.view,{
                     apps : sails.config.apps
                     ,select_view: 'company/index'
-                    ,isAgencies : true
+                    ,isAgencies : false
                     ,currencies:currencies || []
                     ,page:{
                         name:req.__('sc_companies')
@@ -73,7 +73,7 @@ module.exports = {
         Currency.find().exec(function(err, currencies){
             Company.findOne({id:id}).populate('users').populate('hotels').populate('taxes').populate('currencies').exec(function(err,company){
                 //if(err) throw err;
-                console.log(company);
+                //console.log(company);
 		if(err || !company) return res.notFound();
                 User.find().exec(function(err,users){
                     Hotel.find().exec(function(err,hotels){
@@ -305,6 +305,25 @@ module.exports = {
             });
         });
     },
+    gettransferprices : function(req,res){
+        var params = req.params.all();
+        Transferprices.getPricesbyCompany(params.company,params.transfer,params.type,function(err,prices){
+            if(err) return res.json(false);
+            res.json(prices);
+        });
+    },
+    checkpriceexist : function(req,res){
+        var params = req.params.all();
+        Transferprices.ifPriceExist(params,function(err,ifPrice){
+            res.json({err:err,result:ifPrice});
+        });
+    },
+    newprice : function(req,res){
+        var params = req.params.all();
+        Transferprices.newPrice(params,function(err,price){
+            res.json({err:err,result:price});
+        });
+    }
 };
 
 var update = {

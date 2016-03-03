@@ -46,9 +46,10 @@ module.exports = {
 		async.waterfall(reads,function(e,transfer,companies_,locations_){
 			if(e) throw(e);
 			var transfers = [];transfers.push(transfer);
-			Transferprices.createTransferPrices(locations_,transfers,companies_,function(){
+			res.json(transfer);
+			/*Transferprices.createTransferPrices(locations_,transfers,companies_,function(){
 				res.json(transfer);
-			});
+			});*/
 		});
 	},
 	edit : function(req,res){

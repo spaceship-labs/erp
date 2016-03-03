@@ -14,9 +14,10 @@ module.exports = {
 		,legal_name : 'string'
 		,company_type : {
 			type : 'string'
-			,enum : ['transport','agency']
+			,enum : ['provider','agency','agency_provider']
 			,defaultsTo : 'agency'
 		}
+		,parentCompany : { model : 'company' }
 		,icon:'json'
 		,description:'string'
 		,address:'string'

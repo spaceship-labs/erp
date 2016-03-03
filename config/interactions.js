@@ -177,7 +177,7 @@ module.exports.interactions = {
                         label : '¿El traslado está incluido?',
                         label_en : 'The transfer is included?',
                         type : 'checkbox',
-                        handle : 'haveTranslate'
+                        handle : 'haveTransfer'
                     }
         		]
         	}
@@ -262,5 +262,7 @@ module.exports.interactions = {
     }
     ,'yellow-transfers' : {
         mkp : true
+    },'americanada' : {
+        operaciones : true //este flag es para manejar precios de proveedores de transporte
     }
 };

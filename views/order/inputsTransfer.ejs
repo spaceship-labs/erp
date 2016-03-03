@@ -18,7 +18,7 @@
                 ng-model="transfer.hotel" 
                 typeahead-editable='true'
                 typeahead="obj as obj.name for obj in getHotels($viewValue)" 
-                typeahead-on-select="getAirports()" >
+                typeahead-on-select="getAirports(transfer)" >
         </span>
     </p>
     <p ng-if="!(reservations.hotels[0]&&reservations.hotels[0].fee)">

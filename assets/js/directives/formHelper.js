@@ -15,6 +15,10 @@
         $scope.msg = $rootScope.lang=='es'?'message':'message_en';
         $scope.translates = $rootScope.translates;
 
+        $scope.getFieldId = function(index,handle) {
+            return ('input_field_' + handle.replace(/ /g,'_') + '_' + index);
+        };
+
         $scope.getSaveStatusClass = function(){
             if ($scope.saveClass == 'fa-upload')
                 return;
@@ -128,11 +132,16 @@
             }
         };
 
-
-
-
-
-
+        $scope.fieldIsHidden = function(field){
+            //console.log('test');
+            var isHidden = false;
+            if (field.condition) {
+                var keyValues = field.condition.split('=');
+                isHidden = $scope.object[keyValues[0]] != keyValues[1];
+                //console.log(isHidden);
+            }
+            return (field.hideIfNotField && !object[field.hideIfNotField] || field.hideIfField && object[field.hideIfField]) || isHidden;
+        }
 	};
 	controller.$inject = ['$scope','$http','$rootScope','$upload'];
     var directive = function () {

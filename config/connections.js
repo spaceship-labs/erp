@@ -50,12 +50,7 @@ module.exports.connections = {
   //
   mongodb: {
     adapter   : 'sails-mongo',
-    url:  process.env.MONGOLAB_URI || null, 
-    host      : 'localhost',
-    port      : 27017,
-    user      : '',
-    password  : '',
-    database  : 'spaceerp'
+    url:  process.env.MONGOLAB_URI || 'mongodb://space:monkey@104.130.124.57:27017/cancunwatertours'
   },
 
   // PostgreSQL is another officially supported relational database. 

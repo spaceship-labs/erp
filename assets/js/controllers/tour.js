@@ -6,8 +6,9 @@ app.controller('tourCTL',function($scope,$http,$window,$rootScope){
     $scope.company = company;
     $scope.providers = providers;
     $scope.tourcategories = tourcategories;
+    $scope.types = [ { id : 'single', name : 'por persona' },{ id : 'group',name : 'por grupo' } ];
     $scope.maxpax = [{id:0,name:'No aplica'}];
-    for(var x=1;x<30;x++)
+    for(var x=1;x<50;x++)
         $scope.maxpax.push({ id: x , name: x+' persona'+( x>1?'s':'' ) });
 	$scope.getInfo = function(tour){
         tour.createdAt=(moment(tour.createdAt).format('LL'));
@@ -42,11 +43,32 @@ app.controller('tourEditCTL',function($scope,$http,$window){
     $scope.locations = locations;
     $scope.providers = providers;
     $scope.tour = tour;
+    $scope.zones = zones;
+    $scope.hotels = hotels.map(function(h){
+        var hotel = {};
+        hotel.id = h.id;
+        hotel.name = h.name;
+        hotel.location = h.location;
+        hotel.latitude = h.latitude;
+        hotel.longitude = h.longitude;
+        return hotel;
+    });
+    $scope.extra_price = {
+        fee : 0,
+        feeChild : 0,
+        description : '',
+        tour : $scope.tour.id,
+        type : 'extra_hour',
+        hour : 0
+    };
+
+    //console.log(tour);
+    $scope.types = [ { id : 'single', name : 'por persona' },{ id : 'group',name : 'por grupo' } ];
     if (angular.isUndefined($scope.tour.departurePoints)) {
         $scope.tour.departurePoints = [];
     }
     $scope.maxpax = [{id:0,name:'No aplica'}];
-    for(var x=1;x<30;x++)
+    for(var x=1;x<50;x++)
         $scope.maxpax.push({ id: x , name: x+' persona'+( x>1?'s':'' ) });
     $scope.tour.schedules = $scope.tour.schedules || [];
     for(var x in $scope.tour.schedules)
@@ -66,6 +88,9 @@ app.controller('tourEditCTL',function($scope,$http,$window){
 	$scope.content = content;
     $scope.company = company;
     $scope.saveClass = 'fa-save';
+    $scope.extra_types = [
+        { name : 'Hora extra', id : 'extra_hour' }
+    ]
     $scope.save = function(){
         $scope.saveClass = 'fa-upload';
         var form = {
@@ -135,5 +160,40 @@ app.controller('tourEditCTL',function($scope,$http,$window){
             //console.log($scope.tourRateCategories);
             $scope.getRateCategories();
         }
+    };
+
+    $scope.saveExtraPrice = function (){
+        $http.post('/tour/addExtraPrices',{ tour : $scope.tour.id, prices : $scope.tour.extra_prices },{}).success(function(result){
+            //console.log(result);
+            if (result.success)
+                $scope.tour.extra_prices = result.extra_prices;
+            else
+                console.log(result);
+        });
+    }
+
+    $scope.addExtraPrice = function(){
+        $scope.tour.extra_prices.push(angular.copy($scope.extra_price));
+        $scope.extra_price = {
+            fee : 0,
+            feeChild : 0,
+            description : '',
+            tour : $scope.tour.id,
+            type : 'extra_hour',
+            hour : 0
+        };
+    }
+
+    $scope.deleteExtraPrice = function(index){
+        var extra_price_delete = $scope.tour.extra_prices[index];
+        console.log(extra_price_delete);
+        $scope.tour.extra_prices.splice(index,1);
+    }
+
+    $scope.getZones = function(){
+        var data = {id:$scope.tour.location};
+        $http({method: 'POST', url: '/zone/getZones',data: data }).success(function (zones){
+            $scope.zones = zones;
+        });
     };
 });

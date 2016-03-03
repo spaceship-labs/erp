@@ -14,6 +14,7 @@ app.controller('tourcategoryCTL',function($scope,$http){
     $scope.categoryTypes = [
         {id : 'normal' , name : 'Categoría normal'}
         ,{ id : 'rate' , name : 'Rating'}
+        ,{ id : 'accesibility' , name : 'Accesibility'}
     ];
 });
 app.controller('tourcategoryEditCTL',function($scope,$http){
@@ -23,6 +24,7 @@ app.controller('tourcategoryEditCTL',function($scope,$http){
     $scope.categoryTypes = [
         {id : 'normal' , name : 'Categoría normal'}
         ,{ id : 'rate' , name : 'Rating'}
+        ,{ id : 'accesibility' , name : 'Accesibility'}
     ];
     $scope.classifications = [
         { id: 'aquatic' , name : "Acuático" }

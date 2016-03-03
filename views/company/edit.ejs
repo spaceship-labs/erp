@@ -10,6 +10,12 @@
 <div ng-controller='companyEditCTL' class='ng-cloak'>
 <div class='row'>
     <div class="col-md-6">
+        <div class="alert alert-block unseen">
+            <button data-dismiss="alert" class="close" type="button">×</button>
+            <h4>Mensaje</h4>
+                <p style="margin: 8px 0"><%= __('emp-actualizar') %></p>
+        </div>
+        <div profile-image object='mycompany' update-method='/company/updateIcon' delete-method='/company/destroyIcon' image-attr='icon' dir='companies'></div> 
         <div form-helper
              fields='content.company'
              object='mycompany'
@@ -22,6 +28,27 @@
     	     dir='company/files'
              restrict="apps"
                 >
+        </div>
+        <div class="widgetbox">
+            <h4 class="widgettitle">Comisiones y extras</h4>
+            <div class='widgetcontent nopadding'><form class='form stdform stdform2' method='post'>
+                <p>
+                    <label>Empresa matriz</label>
+                    <span class='field'><input type="text" class="form-control" 
+                        placeholder="Empresa"
+                        ng-model="mycompany.parentCompany" 
+                        typeahead-editable='true'
+                        typeahead="obj as obj.name for obj in getCompanies($viewValue)" ></span>
+                </p>
+                <p>
+                    <label>Comisión</label>
+                    <span class='field'><input type="text" ng-model="mycompany.gasomatic" name="gasomatic"></span>
+                </p>
+                <p>
+                    <label>Gasomatic</label>
+                    <span class='field'><input type="text" ng-model="mycompany.comision" name="comision"></span>
+                </p>
+            </form></div>
         </div>
     </div><!--span8-->
     <div class="col-md-6">
@@ -74,14 +101,6 @@
         </div>
     </div>
     <div class="col-md-4 profile-left profileEdit Admin">
-    	<div class="alert alert-block unseen">
-    		<button data-dismiss="alert" class="close" type="button">×</button>
-    		<h4>Mensaje</h4>
-    			<p style="margin: 8px 0"><%= __('emp-actualizar') %></p>
-    	</div>
-        
-        <div profile-image object='mycompany' update-method='/company/updateIcon' delete-method='/company/destroyIcon' image-attr='icon' dir='companies'></div>    
-
         <div class="widgetbox">
             <h4 class="widgettitle"><%= __('admin-conf-moneda') %></h4>
             <div class="widgetcontent">
@@ -98,12 +117,9 @@
 				<p><label for="currency_select"><%= __('company-currencies-select') %></label></p>
 				<p><select ng-model="select_currency">
 					<option ng-repeat="i in admin_currencies" ng-if="currencies_id.indexOf(i.id) == -1" value="{{i.id}}" ng-cloak>{{i.name+" ("+i.currency_code+")"}}</option>
-
 				</select></p>
 			</div>
 			<p class="stdformbutton"><button class="btn btn-primary" ng-click="add_currency()"><%= __('admin-agregar-moneda') %></button></p>
-
-
             </div>
         </div>
             
@@ -195,8 +211,11 @@
             
     </div><!--span4-->
 </div><!--row end-->
+<% if (interactions.operaciones) {%>
+    <%- partial('partials/transfersComplete') %> 
+<% } %>
 <% if (!mycompany.adminCompany) {%>
-<div class='row' ng-if="mycompany.company_type=='agency'">
+<!--<div class='row' ng-if="mycompany.company_type=='agency'">
     <div class='col-md-12'>
         <div class="widgetbox">
             <h4 class='widgettitle'>Productos</h4>
@@ -210,7 +229,7 @@
             </ul>
         </div>
     </div>
-</div><!--row end-->
+</div>--><!--row end-->
 <% } %>
 </div>
 <div id="cargando-elementos" class="ng-cloak">
