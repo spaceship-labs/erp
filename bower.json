@@ -25,7 +25,7 @@
     "angular-scroll": "~1.0.0",
     "angular-ui-bootstrap-bower": "0.14.3",
     "angular-ui-calendar": "~0.8.1",
-    "angular-ui-date": "latest",
+    "angular-ui-date": "0.0.8",
     "angular-ui-sortable": "~0.12.11",
     "angular-ui-tinymce": "0.0.12",
     "angular-xeditable": "~0.1.8",
@@ -66,7 +66,8 @@
   },
   "resolutions": {
     "jquery": "~2.x",
-    "angular": "~1.4"
+    "angular": "~1.4",
+    "tinymce-dist": "~4.3.0"
   },
   "devDependencies": {
     "jquery-steps": "~1.1.0",
