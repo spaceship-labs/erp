@@ -63,7 +63,7 @@ var jsFilesToInject = [
 	"/bower_components/bootstrap/dist/js/bootstrap.js",
 	'/bower_components/ng-file-upload/angular-file-upload-html5-shim.min.js',
 	"/bower_components/angular/angular.min.js",
-    "/bower_components/tinymce/tinymce.min.js",
+    "/bower_components/tinymce-dist/tinymce.min.js",
 	"/bower_components/ng-file-upload/angular-file-upload.js",
 	"/bower_components/chosen/chosen.jquery.min.js",
 	"/bower_components/angular-ui-bootstrap-bower/ui-bootstrap.min.js",
@@ -98,6 +98,7 @@ var jsFilesToInject = [
     "/bower_components/parsleyjs/dist/parsley.js",
     '/bower_components/angular-chroma/angular-chroma.js',
     "/bower_components/angular-scroll/angular-scroll.min.js",
+    "/bower_components/async/dist/async.min.js",
 	"/js/themejs/*.js",                                            
 	"/js/{app.js,custom.js,shared.js}",//ignore setup.js 
 	'/js/directives/*.js', 

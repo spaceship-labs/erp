@@ -65,6 +65,8 @@ module.exports = {
 		,local_iva : 'boolean'
 		,comision : 'integer'
 		,gasomatic : 'boolean'
+		,emails_contact: 'string'
+		,emails_billing: 'string'
 		,addApps : function(apps,cb){
 			if(Array.isArray(apps)){
                 var cApps = this.apps || [];

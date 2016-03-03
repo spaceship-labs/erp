@@ -12,6 +12,19 @@
                 }
             }
         };
+        $scope.optionalMarker = [];
+        if ($scope.optionalMarkers && $scope.optionalMarkers.length > 0) {
+            var newMarker = {
+                lat: $scope.center.lat,
+                lng: $scope.center.lng,
+                message: 'Nuevo item',
+                name: 'Nuevo item',
+                focus: true,
+                draggable: $scope.dragEnabled
+            };
+            $scope.optionalMarkers.push(newMarker);
+        }
+
         /*Creará un marcador con los campos que se le pasen en la directiva*/
         $scope.createMarker = function(){
             var newIndex = 'item_' + _.keys($scope.markers).length;
@@ -19,9 +32,25 @@
                 lat : $scope.center.lat ,
                 lng : $scope.center.lng ,
                 message : 'Nuevo item' ,
+                name: 'Nuevo',
                 focus : true ,
                 draggable : $scope.dragEnabled
             };
+            //$scope.optionalMarker[newIndex] = angular.copy($scope.markers[newIndex]);
+        };
+        $scope.selectOptionalMarker = function(key,optional){
+            if (optional && optional.lat) {
+                $scope.markers[key] = {
+                    lat : optional.lat,
+                    lng : optional.lng,
+                    message : optional.name,
+                    name : optional.name,
+                    focus : true,
+                    draggable : !optional.type,
+                    type : optional.type ? optional.type : 'marine',
+                    identifier : optional.identifier
+                };
+            }
         };
         $scope.save = function(){
             $scope.saveClass = 'fa-upload';
@@ -56,7 +85,7 @@
         var formatMarkers = function(){
             if($scope.markers && _.keys($scope.markers).length > 0){
                 for( var x in $scope.markers ){
-                    $scope.markers[x].draggable = $scope.dragEnabled;
+                    //$scope.markers[x].draggable = $scope.dragEnabled;
                     $scope.markers[x].focus = false;
                 }
             }else{
@@ -91,7 +120,8 @@
                 reverseGeocodeUrl : '@' , //'/home/reverseGeocode'
                 dragEnabled : '=' ,
                 multiple : '@',
-                customFields : '='
+                customFields : '=',
+                optionalMarkers : '='
             },
             templateUrl : '/template/find/geoMarker.html'
         };

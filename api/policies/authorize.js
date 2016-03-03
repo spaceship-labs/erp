@@ -11,12 +11,18 @@ var bcrypt = require('bcrypt');
 module.exports = function(req, res, next) {
   if(req.isSocket) return next();
 
+  if (!req.user && sails.config.erp_user) {
+      req.user = sails.config.erp_user;
+  }
+
   if (req.isAuthenticated()) {
     var select_company = req.session.select_company || req.user.select_company;
     req.session.lang = req.session.lang || 'es';
     req.setLocale(req.session.lang);
     req.session.select_company = select_company;
-    if (!select_company || !req.user) return res.forbidden();
+    if (!select_company || !req.user) {
+        return res.forbidden();
+    }
     if (req.options.controller != 'home' && req.options.controller != 'template' && !getPermissionByControllerAction(select_company,req.user,req.options.controller,req.options.action)) {
         return res.forbidden();
     }

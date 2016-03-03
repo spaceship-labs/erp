@@ -1,6 +1,8 @@
 var async = require('async'),
     spreadSheet = require('pyspreadsheet').SpreadsheetReader,
-    util = require('util');
+    util = require('util')
+    striptags = require('striptags')
+    Entities = require('html-entities').AllHtmlEntities;
 
 function iterDatas(data, model, fnIter, done){
     var datas = data.push ? data: [data],
@@ -134,6 +136,7 @@ function normalizeFields(single, item, next){
     if(item.required && (item.default || item.default == '') && !single[item.handle]){ 
         single[item.handle] = item.default;
     }
+
     next();
 
 }
@@ -160,10 +163,15 @@ module.exports.checkAndImport = function(data, model, done){
 //docs.
 var files = {};
 
-files.xlsx2Json = function(src, done){
+files.xlsx2Json = function(src, options, done){
+    if (!done) {
+        done = options;
+        options = {};
+    }
     spreadSheet.read(src, function(err, book){
         if(err) return done(err);
-        var bookFormat = { sheets: [] };
+        var entities = new Entities(),
+            bookFormat = { sheets: [] };
         book.sheets.forEach(function(sheet){
             var sheetFormat = {};
             sheetFormat.name = sheet.name;
@@ -180,7 +188,19 @@ files.xlsx2Json = function(src, done){
                     return;
 
                 sheetFormat.values.push(row.map(function(cell){
-                    return cell.value;
+                    var value = cell.value,
+                    isNumber = value && !!value.toFixed;
+
+                    if (value == "NULL") {
+                        return null;
+                    }
+                    
+                    if (value && !isNumber && options.removeHtmlTags) {
+                        value = entities.decode(value);
+                        value = striptags(value).trim();
+                    }
+
+                    return value;
                 }));
             });
             bookFormat.sheets.push(sheetFormat);

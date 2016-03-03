@@ -70,8 +70,11 @@ module.exports = {
         ,zone : {
             model : 'zone'
         }
+        ,provider_locations : {
+            collection : 'Place',
+            via : 'tour'
+        }
         //duration_type ?
-
 	}
 	, migrate : 'safe'
 	, attrs_labels : {
@@ -82,7 +85,7 @@ module.exports = {
 		,location : { es : 'Ciudad' , en : 'City' }
 		,categories : { es : 'Categorías' , en : 'Categories' }
 		,fee : { es : 'Tarifa' , en : 'Rate' }
-		,fee_child : { es : 'Tarífa menores' , en : 'Fee child' }
+		,feeChild : { es : 'Tarífa menores' , en : 'Fee child' }
 		,pax : { es : 'Personas' , en : 'People' }
 		,days : { es : 'Días' , en : 'Days' }
 		,seasonScheme : { es : 'Esquema de temporadas' , en : 'Seasons scheme' }

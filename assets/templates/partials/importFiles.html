@@ -2,6 +2,9 @@
     <div ng-show='error' class="alert alert-block">
         <p>{{error}}</p>
     </div>
+    <button type="button" class="btn btn-success import-button" ng-model="form.removeHtmlTags" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">
+        Limpiar HTML tags
+    </button>
     <button class="import-button"  ng-file-select="upload($files)"  >subir archivo</button>
 </div>
 <div ng-if='sheets'>

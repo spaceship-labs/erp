@@ -154,7 +154,8 @@ module.exports = {
     	form.req = req;
     	Hotel.update({id:form.id},form,function(e,hotel){
     		if(e) throw(e);
-    		Hotel.findOne(hotel.id).populate('rooms').exec(function(e,hotel){
+		
+    		Hotel.findOne(form.id).populate('rooms').exec(function(e,hotel){
     			if(e) throw(e);    			
     			hotel = formatHotel(hotel);	
     			res.json(hotel);
@@ -254,7 +255,7 @@ function timeFormat(date){
 	date = moment(date);
 	var now = moment();
 	if(now.diff(date,'days',true)<1){
-		return date.lang('es').fromNow();
+		return date.locale('es').fromNow();
 	}
-	return date.lang('es').format('LLLL');
+	return date.locale('es').format('LLLL');
 }

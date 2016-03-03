@@ -48,6 +48,7 @@ app.controller('hotelCTL',function($scope,$http,$window,$rootScope){
 });
 app.controller('hotelEditCTL',function($scope,$upload,$http,$rootScope){
     $scope.hotel = hotel;
+    console.log($scope.hotel);
 
     $scope.categories = [
         {id:1,name:'1 '+$rootScope.translates.c_stars},
@@ -62,8 +63,8 @@ app.controller('hotelEditCTL',function($scope,$upload,$http,$rootScope){
         address : $scope.hotel.address+', '+ ($scope.hotel.location?$scope.hotel.location.name : ''),
         country : $scope.hotel.location?$scope.hotel.location.country:'',
         zipcode : $scope.hotel.zipcode,
-        latitude : $scope.hotel.latitude,
-        longitude : $scope.hotel.longitude,
+        latitude : parseFloat($scope.hotel.latitude),
+        longitude : parseFloat($scope.hotel.longitude)
     };
 
     /*$http({method:'POST',url:'/hotel/find/'+hotel.id}).success(function(hotel){

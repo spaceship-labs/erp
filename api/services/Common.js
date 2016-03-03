@@ -1,3 +1,6 @@
+var striptags = require('striptags')
+    Entities = require('html-entities').AllHtmlEntities;
+
 module.exports.stringReplaceChars = function(string){
 	var replace_map = {"á" : 'a', "é" : 'e', "í" : 'i', "ó" : 'o', "ú" : 'u', "?" : '', "!" : '', "’" : '', "'" : '','/' : '+','ñ' : 'n','¿' : '','¡' : '','.' : '','°' : '','&' : '',',' : '','Â' : ''};
 	string = string.toLowerCase().replace(/[áéíóú?!’'\/ñ¿¡.°&,Â]/g, function(match){
@@ -321,4 +324,32 @@ module.exports.getIndexById = function(id,objectArray){
 			if( objectArray[x].id == id )
 				return x;
 	return -1;
+};
+module.exports.clearText = function(model, id, key, next) {
+    model.findOne({id: id}).exec(function(err, data) {
+        //console.log(err, data);
+        var entities = new Entities(),
+        text = data[key] || '',
+        clear = entities.decode(text);
+
+        clear = striptags(clear).trim();
+        if (text) {
+            data[key] = clear;//.replace(/\\/g,'');
+            data.save(next);
+        } else {
+            next();
+        }
+    });
+};
+
+module.exports.clearTextAll = function(model, find, key){
+    model.find(find).exec(function(err, res) {
+        console.log('total', res);
+        async.mapSeries(res, function(item, next) {
+            module.exports.clearText(model, item.id, key, next)
+        }, function(err) {
+            console.log('ok', err);
+        
+        });
+    });
 };

@@ -16,6 +16,7 @@ module.exports = {
 						locations:locations,
 						providers : providers,
 						tourcategories: tourcategories,
+                        zones : [],
 						page:{
 							name:req.__('sc_tour'),
 							icon:'fa fa-compass',
@@ -278,6 +279,17 @@ module.exports = {
 			});
 		})
 	},
+    removeProviderPoint : function(req,res){
+        var params = req.params.all();
+        Tour.findOne({id:params.obj}).exec(function(e,tour){
+            if(e) throw(e);
+            tour.provider_locations.remove(params.rel);
+            tour.save(function(e,tour){
+                if(e) throw(e);
+                res.json(tour)
+            });
+        })
+    },
     removeHotel : function(req,res){
         var params = req.params.all();
         Tour.findOne({id:params.obj}).exec(function(e,tour){

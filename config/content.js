@@ -408,7 +408,8 @@ module.exports.content = {
 			label_en : 'LocationProvider',
 			type : 'select',
 			handle : 'provider',
-			object : 'providers'
+			object : 'providers',
+            on_Change : 'getProviderLocations'
 		},
 		{
 			label : 'Categorías',
@@ -1102,12 +1103,28 @@ module.exports.content = {
         	,message : 'Monto de creédito que se da a la agencia'
         	,message_en : ''
         },
-		{
-			label : 'Contrato',
-			label_en : 'contract',
-			handle : 'contract',
-			type : 'file',
-		},
+	{
+		label : 'Contrato',
+		label_en : 'contract',
+		handle : 'contract',
+		type : 'file',
+	},
+	{
+		label : 'Emails de contacto',
+		label_en : 'Contact emails',
+		handle : 'emails_contact',
+        	message : 'Emails que recibiran los correos del formulario de contacto (sepearado por coma)',
+        	message_en : '',
+		type : 'text',
+	},
+	{
+		label : 'Email de facturación',
+		label_en : 'Billing emails',
+		handle : 'emails_billing',
+		type : 'text',
+        	message : 'Emails que recibiran los correos del formulario de facturación (sepearado por coma)',
+        	message_en : ''
+	},
 	],
     user : [
         {

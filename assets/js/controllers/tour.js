@@ -6,6 +6,7 @@ app.controller('tourCTL',function($scope,$http,$window,$rootScope){
     $scope.company = company;
     $scope.providers = providers;
     $scope.tourcategories = tourcategories;
+    $scope.zones = zones;
     $scope.types = [ { id : 'single', name : 'por persona' },{ id : 'group',name : 'por grupo' } ];
     $scope.maxpax = [{id:0,name:'No aplica'}];
     for(var x=1;x<50;x++)
@@ -13,7 +14,7 @@ app.controller('tourCTL',function($scope,$http,$window,$rootScope){
 	$scope.getInfo = function(tour){
         tour.createdAt=(moment(tour.createdAt).format('LL'));
         tour.updatedAt=(moment(tour.updatedAt).format('LL'));
-        var r = {}
+        var r = {};
         r[$rootScope.translates.c_name] = tour.name;
         r[$rootScope.translates.c_baseRate] = tour.fee;
         r[$rootScope.translates.c_created] = tour.createdAt;
@@ -34,6 +35,12 @@ app.controller('tourCTL',function($scope,$http,$window,$rootScope){
     $scope.setTimes = function(){
         $http({method: 'POST', url: '/tour/formatTimes',params : {} }).success(function (result){
             console.log(result);
+        });
+    };
+    $scope.getZones = function(){
+        $http({method: 'POST', url: '/zone/getZones',data: {id:$scope.tour.location} }).success(function (zones){
+            $scope.zones = zones;
+            //console.log('zones');console.log(zones);
         });
     };
 });
@@ -90,7 +97,9 @@ app.controller('tourEditCTL',function($scope,$http,$window){
     $scope.saveClass = 'fa-save';
     $scope.extra_types = [
         { name : 'Hora extra', id : 'extra_hour' }
-    ]
+    ];
+    $scope.all_provider_locations = [];
+
     $scope.save = function(){
         $scope.saveClass = 'fa-upload';
         var form = {
@@ -196,4 +205,35 @@ app.controller('tourEditCTL',function($scope,$http,$window){
             $scope.zones = zones;
         });
     };
+
+    $scope.getProviderLocations = function(){
+        $scope.all_provider_locations = [];
+        for(var i in $scope.providers){
+            if ($scope.providers[i].id == $scope.tour.provider ) {
+                console.log($scope.providers[i].departurePoints);
+                var item = $scope.providers[i];
+                for(var x in item.departurePoints) {
+                    if( typeof item.departurePoints[x] == 'string' ){
+                        item.departurePoints[x] = JSON.parse(item.departurePoints[x]);
+                    }else{
+                        item.departurePoints[x] = item.departurePoints[x];
+                    }
+                    var auxPoint = {};
+                    auxPoint.lat = item.departurePoints[x].lat;
+                    auxPoint.lng = item.departurePoints[x].lng;
+                    auxPoint.message = item.departurePoints[x].message;
+                    auxPoint.name = item.departurePoints[x].message;
+                    auxPoint.type = item.departurePoints[x].type;
+                    auxPoint.identifier = item.departurePoints[x].identifier;
+                    $scope.all_provider_locations.push(auxPoint);
+                }
+            }
+        }
+        //console.log($scope.all_provider_locations);
+    }
+    $scope.getProviderLocations();
+
+    $scope.$watch('tour.provider', function(t) {
+        $scope.getProviderLocations();
+    });
 });

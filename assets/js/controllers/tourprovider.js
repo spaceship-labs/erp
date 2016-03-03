@@ -122,4 +122,31 @@ app.controller('tourproviderEditCTL',function($scope,$http){
         lng : -86.8333,
         zoom : 6
     };
+    $scope.getLocationHotels = function(){
+        $scope.locationHotels = [];
+        for(var i in $scope.locations){
+            if ($scope.locations[i].id == $scope.provider.location ) {
+                var item = $scope.locations[i];
+                for(var x in item.hotels) {
+                    if (item.hotels[x].latitude && item.hotels[x].longitude) {
+                        var auxPoint = {};
+                        auxPoint.name = item.hotels[x].name;
+                        auxPoint.message = item.hotels[x].name;
+                        auxPoint.type = 'hotel';
+                        auxPoint.lat = parseFloat(item.hotels[x].latitude);
+                        auxPoint.lng = parseFloat(item.hotels[x].longitude);
+                        auxPoint.identifier = item.hotels[x].id;
+                        $scope.locationHotels.push(auxPoint);
+                    }
+                }
+            }
+        }
+        //console.log($scope.locationHotels);
+    };
+
+    $scope.getLocationHotels();
+
+    $scope.$watch('provider.location', function(t) {
+        $scope.getLocationHotels();
+    });
 });

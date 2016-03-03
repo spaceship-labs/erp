@@ -197,9 +197,10 @@ module.exports = {
 		});
 	}
     ,update : function(req,res) {
-        console.log(req.params.all());
-        var form = Common.formValidate(req.params.all(),['id','name','address','zipcode','description','terms','footer','company_type']);
-        console.log(form);
+        //console.log(req.params.all());
+        //var form = Common.formValidate(req.params.all(),['id','name','address','zipcode','description','terms','footer','company_type']);
+        var form = Common.formValidate(req.params.all(),['id','name','address','zipcode','description','terms','footer','company_type', 'emails_contact', 'emails_billing']);
+        //console.log(form);
         Company.update({id : form.id},form).exec(function(err,company){
            if (err) {
                console.log(err);
