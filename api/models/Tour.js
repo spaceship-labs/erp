@@ -74,6 +74,13 @@ module.exports = {
             collection : 'Place',
             via : 'tour'
         }
+        
+    ,meta_title_es:'string'
+    ,meta_description_es:'string'
+    ,meta_keywords_es:'string'
+    ,meta_title_en:'string'
+    ,meta_description_en:'string'
+    ,meta_keywords_en:'string'        
         //duration_type ?
 	}
 	, migrate : 'safe'

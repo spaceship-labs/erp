@@ -711,7 +711,43 @@ module.exports.content = {
 			,label_en : 'Transportation terms Portuguese'
 			,type : 'textarea'
 			,handle : 'transfer_term_pt'
-		}
+		},
+		{
+			label : 'Meta Title español',
+			label_en : 'Meta Title spanish',
+			type : 'text',
+			handle : 'meta_title_es',
+		},
+		{
+			label : 'Meta Title ingles',
+			label_en : 'Meta Title english',
+			type : 'text',
+			handle : 'meta_title_en',
+		},
+		{
+			label : 'Meta Descripción Español',
+			label_en : 'Meta Description Spanish',
+			type : 'textarea',
+			handle : 'meta_description_es',
+		},
+		{
+			label : 'Meta Descripción Inglés',
+			label_en : 'Meta Description English',
+			type : 'textarea',
+			handle : 'meta_description_en',
+		},
+		{
+			label : 'Meta keywords Español',
+			label_en : 'Meta keywords Spanish',
+			type : 'text',
+			handle : 'meta_keywords_es',
+		},
+		{
+			label : 'Meta keywords Inglés',
+			label_en : 'Meta keywords English',
+			type : 'text',
+			handle : 'meta_keywords_en',
+		}											
 	],
 	tourcategory : [
 		{
@@ -758,7 +794,43 @@ module.exports.content = {
 			,type : 'select'
 			,object : 'classifications'
 			,handle : 'classification'
-		}
+		},
+		{
+			label : 'Meta Title español',
+			label_en : 'Meta Title spanish',
+			type : 'text',
+			handle : 'meta_title_es',
+		},
+		{
+			label : 'Meta Title ingles',
+			label_en : 'Meta Title english',
+			type : 'text',
+			handle : 'meta_title_en',
+		},
+		{
+			label : 'Meta Descripción Español',
+			label_en : 'Meta Description Spanish',
+			type : 'textarea',
+			handle : 'meta_description_es',
+		},
+		{
+			label : 'Meta Descripción Inglés',
+			label_en : 'Meta Description English',
+			type : 'textarea',
+			handle : 'meta_description_en',
+		},
+		{
+			label : 'Meta keywords Español',
+			label_en : 'Meta keywords Spanish',
+			type : 'text',
+			handle : 'meta_keywords_es',
+		},
+		{
+			label : 'Meta keywords Inglés',
+			label_en : 'Meta keywords English',
+			type : 'text',
+			handle : 'meta_keywords_en',
+		}		
 	]
 	,location : [
 		{
