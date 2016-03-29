@@ -4,11 +4,17 @@
         <div class='row' >
             <div class="col-md-6">
                 <label>Ciudad</label>
-                <select class="form-control" ng-change="getTransferPrices('agency');getTransferPrices('provider');" ng-model="thelocation" ng-options="obj.id as obj.name for obj in locations" ></select>
+                <select class="form-control" 
+                    ng-change="getTransferPrices('agency');getTransferPrices('provider');" 
+                    ng-model="thelocation" 
+                    ng-options="obj.id as obj.name for obj in locations" ></select>
             </div>
             <div class="col-md-6">
                 <label>Servicio</label>
-                <select class="form-control" ng-change="getTransferPrices('agency');getTransferPrices('provider');" ng-model="theService" ng-options="obj as obj.name for obj in services" ></select>
+                <select class="form-control" 
+                    ng-change="getTransferPrices('agency');getTransferPrices('provider');" 
+                    ng-model="theService" 
+                    ng-options="obj as obj.name for obj in services" ></select>
             </div>
         </div>
     </div>
@@ -34,6 +40,7 @@
                         <th>Redondo<br> menores</th>
                         <th>Activo</th>
                         <th>Editar</th>
+                        <th>Borrar</th>
                     </tr>
                     <tr ng-repeat='price in TransferPricesAgency'>
                         <td>{{price.zone1.name}}</td>
@@ -88,6 +95,9 @@
                             <div class="buttons" ng-show="!rowform.$visible">
                               <button class="btn btn-primary" ng-click="rowform.$show()"><%= __('tranferprice-editar')%></button>
                             </div>
+                        </td>
+                        <td>
+                            <button class='btn btn-primary' ng-click="deletePrice(price)"><i class="fa fa-times"></i></button>
                         </td>
                     </tr>
                 </table>

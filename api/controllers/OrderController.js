@@ -6,6 +6,8 @@
  */
 var async = require('async');
 var fs = require('fs');
+var phantom = require('phantom');
+Promise = require('es6-promise').Promise;
 module.exports = {
   /*
     VISTAS
@@ -110,9 +112,29 @@ module.exports = {
     });
   },
   reportcustom : function(req,res){
+    var expectedContent = '<html><body><div>Test div</div></body></html>';
+    phantom.create(['--ignore-ssl-errors=yes', '--load-images=no']).then(function(ph) {
+      console.log('create');
+        ph.createPage().then(function(page) {
+          console.log('create page');
+          page.open('http://google.com').then(function(){
+            console.log('open');
+            page.render().then(function(){
+              console.log('render');
+              console.log('PAGE',page);
+              res.json(page);
+              ph.exit();
+            });
+          });
+        });
+    });
+  },
+  reportcustom_ : function(req,res){
     var params = req.params.all();
     if( params.type ){
-      var fields = formatFilterFields(params.fields);
+      console.log('COOKIES',req.cookies.filters);
+      //var fields = formatFilterFields(params.fields);
+      var fields = formatFilterFields(req.cookies.filters);
       if( ! req.user.isAdmin ){
         var c_ = [];
         for(c in req.user.companies ){

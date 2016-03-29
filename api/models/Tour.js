@@ -74,6 +74,7 @@ module.exports = {
             collection : 'Place',
             via : 'tour'
         }
+        ,tax : 'float' //aún no se que se va a hacer con esto, me lo mandaron de yellow :/
         //duration_type ?
 	}
 	, migrate : 'safe'

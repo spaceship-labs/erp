@@ -12,7 +12,7 @@
 		- user 		: usuario para checar permisos, User type object
 		- cb 		: callback, function
 */
-var mainIVA = .15; 
+var mainIVA = .15;
 module.exports.getReport = function(type,fields,cb){
 	var reports_available = {
 		'tours_gral' : true
@@ -97,13 +97,14 @@ module.exports.transfer_by_agency = function(fields,cb){
 			,{ label : 'Folio' , handle : 'folio', type : '' }
 			,{ label : 'Pax' , handle : 'pax', type : '' }
 			,{ label : 'Total' , handle : 'total', type : 'currency' }
+			,{ label : 'Comisión' , handle : 'comision', type : 'currency' }
 			,{ label : 'Servicio' , handle : 'name', object : 'transfer', object2:'transfer' , type : '' }
 			,{ label : 'Llegada' , handle : 'arrivalDate' , type : '' }
 			,{ label : 'Salida' , handle : 'departureDate' , type : '' }
 		]
 		,title : 'Reporte de Reservas por Agencia'
 		,rows : {}
-		,totals : { total : 0 , subtotal : 0 , iva : 0 , pax : 0, comision : 0 }
+		,totals : { total : 0 , subtotal : 0 , iva : 0 , pax : 0 }
 	};
 	var $match = {
 		reservation_type : 'transfer'
@@ -159,6 +160,7 @@ module.exports.transfer_by_agency = function(fields,cb){
 							_id : reservations[0].company
 							,pax : resultsCompany.pax
 							,total : resultsCompany.total
+							,comision : resultsCompany.total * ( reservations[0].company.comision || .08 )
 							,rows2 : []
 						};
 						for(var x in reservations){
@@ -183,8 +185,8 @@ module.exports.transfer_by_agency = function(fields,cb){
 				results.totals.iva = resultsGlobal.total*mainIVA;
 				results.totals.subtotal = resultsGlobal.total - results.totals.iva;
 				results.totals.pax = resultsGlobal.pax;
-				var comision = items[0]&&items[0]._id.comision? items[0]._id.comision/100 : .08 ;
-				results.totals.comision = results.totals.total * comision;
+				//var comision = items[0]&&items[0]._id.comision? items[0]._id.comision/100 : .08 ;
+				//results.totals.comision = results.totals.total * comision;
 				results.reportType = 'bygroup';
 				cb(results,err);
 			});//async by companies
@@ -301,6 +303,7 @@ module.exports.transfer_by_provider = function(fields,cb){
 			,{ label : 'Folio' , handle : 'folio', type : '' }
 			,{ label : 'Pax' , handle : 'pax', type : '' }
 			,{ label : 'Total' , handle : 'total', type : 'currency' }
+			,{ label : 'Comisión' , handle : 'comision', type : 'currency' }
 			,{ label : 'Agencia' , handle : 'name', object : 'company', object2:'company' , type : '' }
 			,{ label : 'Llegada' , handle : 'arrivalDate' , type : '' }
 			,{ label : 'Salida' , handle : 'departureDate' , type : '' }
@@ -366,6 +369,7 @@ module.exports.transfer_by_provider = function(fields,cb){
 									,pax : reservationGroup.pax
 									,total : reservationGroup.total
 									,rows2 : []
+									,comision : reservationGroup.total*.2
 								};
 								for(var x in reservations){
 									//aquí se van a ir agregando los rows2 de row

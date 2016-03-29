@@ -38,7 +38,7 @@ module.exports = {
         Import.files.array2Model(form.values, add, function(err, objs){
             Import.checkAndImport(objs, form.model, function(err, creates){
                 //console.log(err, creates);
-                if(err) return res.ok({success:false, error:err.message});
+                if(err) return res.ok({success:false, error:err.message||err.summary});
                 res.ok({success: true, creates: creates});
             });
         });

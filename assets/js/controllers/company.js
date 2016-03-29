@@ -293,13 +293,12 @@ app.controller('companyEditCTL',function($scope,$http,$timeout){
             console.log('results get locations',results);
             $scope.locations = results.results;
             for(var x in $scope.locations)
-                if( $scope.locations[x].url_title == 'cancun' ) $scope.thelocation = $scope.locations[x].id;
+                if( $scope.locations[x].name == 'Cancún' || $scope.locations[x].name == 'Cancun' ) $scope.thelocation = $scope.locations[x].id;
             if( ! $scope.thelocation )
-                $scope.thelocation = $scope.locations[0];
+                $scope.thelocation = $scope.locations[0].id;
             $scope.getProducts('transfer','transfers',0);
         });
     };
-    $scope.getLocations();
 
     $scope.add_currency = function(){
         if($scope.select_currency){
@@ -329,8 +328,11 @@ app.controller('companyEditCTL',function($scope,$http,$timeout){
         $http({method: 'POST',url:'/transfer/find',params:{}}).success(function(results){
             //console.log('services',results);
             $scope.services = results.results;
+            $scope.theService = $scope.services[0];
+            $scope.getTransferPrices('agency');$scope.getTransferPrices('provider');
         });
     };
+    $scope.getLocations();
     $scope.getServices();
     $scope.TransferPricesAgency = [];
     $scope.TransferPricesProvider = [];
@@ -354,7 +356,6 @@ app.controller('companyEditCTL',function($scope,$http,$timeout){
             });
         }
     };
-    //$scope.getTransferPrices('agency');$scope.getTransferPrices('provider');
     $scope.newPriceAlreadyExist = true;
     //Falta incluir el tipo de precio en esta verificación
     $scope.checkExist = function(price){
