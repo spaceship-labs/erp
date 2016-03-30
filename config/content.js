@@ -168,6 +168,42 @@ module.exports.content = {
 			handle : 'payed_services_pt',
 			message : "Separar por enter, cada línea es un elemento de lista",
 			message_en : "Separate with enter, each line is an list element",
+		},
+		{
+			label : 'Meta Title español',
+			label_en : 'Meta Title spanish',
+			type : 'text',
+			handle : 'meta_title_es',
+		},
+		{
+			label : 'Meta Title ingles',
+			label_en : 'Meta Title english',
+			type : 'text',
+			handle : 'meta_title_en',
+		},
+		{
+			label : 'Meta Descripción Español',
+			label_en : 'Meta Description Spanish',
+			type : 'textarea',
+			handle : 'meta_description_es',
+		},
+		{
+			label : 'Meta Descripción Inglés',
+			label_en : 'Meta Description English',
+			type : 'textarea',
+			handle : 'meta_description_en',
+		},
+		{
+			label : 'Meta keywords Español',
+			label_en : 'Meta keywords Spanish',
+			type : 'text',
+			handle : 'meta_keywords_es',
+		},
+		{
+			label : 'Meta keywords Inglés',
+			label_en : 'Meta keywords English',
+			type : 'text',
+			handle : 'meta_keywords_en',
 		}
 	],
 	room : [
@@ -870,6 +906,42 @@ module.exports.content = {
 			label_en : 'English description',
 			type : 'textarea',
 			handle : 'description_en',
+		},
+		{
+			label : 'Meta Title español',
+			label_en : 'Meta Title spanish',
+			type : 'text',
+			handle : 'meta_title_es',
+		},
+		{
+			label : 'Meta Title ingles',
+			label_en : 'Meta Title english',
+			type : 'text',
+			handle : 'meta_title_en',
+		},
+		{
+			label : 'Meta Descripción Español',
+			label_en : 'Meta Description Spanish',
+			type : 'textarea',
+			handle : 'meta_description_es',
+		},
+		{
+			label : 'Meta Descripción Inglés',
+			label_en : 'Meta Description English',
+			type : 'textarea',
+			handle : 'meta_description_en',
+		},
+		{
+			label : 'Meta keywords Español',
+			label_en : 'Meta keywords Spanish',
+			type : 'text',
+			handle : 'meta_keywords_es',
+		},
+		{
+			label : 'Meta keywords Inglés',
+			label_en : 'Meta keywords English',
+			type : 'text',
+			handle : 'meta_keywords_en',
 		}
 	],
 	zone : [

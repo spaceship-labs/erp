@@ -25,7 +25,14 @@ module.exports = {
       collection : 'hotel'
       ,via : 'location'
     }
+    ,meta_title_es:'string'
+    ,meta_description_es:'string'
+    ,meta_keywords_es:'string'
+    ,meta_title_en:'string'
+    ,meta_description_en:'string'
+    ,meta_keywords_en:'string'
   }
+  , migrate : 'safe'
   , attrs_labels : {
     name : { es : 'Nombre' , en : 'Name' }
     ,url_title : { es : 'Título url' , en : 'Url title' }
