@@ -84,6 +84,19 @@ module.exports = {
 				res.json(addPricesOnCompany( false , prices ));
 			});
 	},
+	activeallprices : function(req,res){
+		var params = req.params.all();
+		TransferPrice.find().exec(function(err,prices){
+			if(err) res.json(err);
+			async.mapSeries( prices, function(price,cb){
+				if( price.active ) return cb(false,price);
+				price.active = true;
+				price.save(cb);
+			},function(err,rows){
+				res.json(err,rows);
+			});
+		});
+	},
 	updatePrice : function(req,res){
 		var params = req.params.all();
 		console.log(params);

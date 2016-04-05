@@ -36,6 +36,7 @@ module.exports.getReport = function(type,fields,cb){
 		,'transfer_by_provider' : true
 	};
 	if( typeof reports_available[type] != 'undefined' ){
+		//console.log('FIELDS 2:',fields);
 		Reports[type](fields,cb);
 	}else{
 		cb(false,'Undefined report');
@@ -44,10 +45,17 @@ module.exports.getReport = function(type,fields,cb){
 /*
 	Reporte general de ventas liquidadas
 */
+var formatFields = function(fields){
+	for( x in fields )
+		if( x == 'hotel' || x == 'company' || x == 'transfer' )
+			fields[x] += "";
+	return fields;
+}
 module.exports.transfer_gral = function(fields,cb){
 	var results = false;
 	Reservation.count(function(c_err,num){
 		if(c_err) cb(results , c_err);
+		fields = formatFields(fields);
 		fields.reservation_type = 'transfer';
 		Reservation.find(fields).limit(num).sort('transfer').sort('startDate DESC')
 		.populate('transfer').populate('company')
@@ -101,20 +109,25 @@ module.exports.transfer_by_agency = function(fields,cb){
 			,{ label : 'Servicio' , handle : 'name', object : 'transfer', object2:'transfer' , type : '' }
 			,{ label : 'Llegada' , handle : 'arrivalDate' , type : '' }
 			,{ label : 'Salida' , handle : 'departureDate' , type : '' }
+			,{ label : 'Hotel' , handle : 'name', object : 'hotel', object2: 'hotel' , type : '' }
+			,{ label : 'FolioAgencia' , handle : 'folioAgency' , type : '' }
 		]
 		,title : 'Reporte de Reservas por Agencia'
 		,rows : {}
 		,totals : { total : 0 , subtotal : 0 , iva : 0 , pax : 0 }
 	};
-	var $match = {
+	var $match = fields || {};
+	$match.reservation_type = 'transfer';
+	//console.log( 'FIELDS 3:', $match );
+	/*{
 		reservation_type : 'transfer'
-		,$and : [
+		/*,$and : [
 			{ $or : [ 
 				{ createdAt : { $gte : fields.sDate , $lte : fields.eDate } } 
 				,{ cancelationDate : { $gte : fields.sDate , $lte : fields.eDate } } 
 			] }
 		]
-	};
+	}*/;
 	var $groupGral = {
 		_id : null
 		,companyIDs : { '$push' : '$company' }
@@ -129,7 +142,7 @@ module.exports.transfer_by_agency = function(fields,cb){
 	var feeSumVar = { $add : [ { $ifNull : [ '$fee', 0 ] } , { $ifNull : [ '$feeKids', 0 ] } ] };
 	var paxSumVar = { $add : [ { $ifNull : [ '$pax', 0 ] } , { $ifNull : [ '$kidPax', 0 ] }	] };
 	var $projectGral = {
-		company:1,fee:1,feeKids:1,pax:1,kidPax:1,state:1
+		company:1,fee:1,feeKids:1,pax:1,kidPax:1,state:1,hotel:1
 		,totalNeto 	: { $cond : [ { $ne : ['$state' , 'canceled'] },feeSumVar,0 ] }
 		,paxNeto 	: { $cond : [ { $ne : ['$state' , 'canceled'] },paxSumVar,0 ] }
 	};
@@ -152,16 +165,21 @@ module.exports.transfer_by_agency = function(fields,cb){
 					,{ $group : $groupGral } 
 				],function(err,resultsCompany){ 
 					resultsCompany = resultsCompany[0];
-					Reservation.find({ company : [item] , reservation_type : 'transfer' })
-					.populate('company').populate('asign').populate('transfer').exec(function(r_err,reservations){
-						console.log(reservations.length);
+					$match = formatFields($match);
+					$match.company = [item];
+					//console.log('MATCH STRING',$match);
+					Reservation.find().where( $match ) //fields && { company : [item] , reservation_type : 'transfer' }
+					.populate('company').populate('asign').populate('transfer').populate('hotel')
+					.exec(function(r_err,reservations){
+						//console.log(reservations.length);
 						if(err||reservations.length==0) theCB(err,false);
 						var aux = {
 							_id : reservations[0].company
 							,pax : resultsCompany.pax
 							,total : resultsCompany.total
-							,comision : resultsCompany.total * ( reservations[0].company.comision || .08 )
+							,comision : resultsCompany.total * ( reservations[0].company.comision?(reservations[0].company.comision/100) : .08 )
 							,rows2 : []
+							,company : reservations[0].company
 						};
 						for(var x in reservations){
 							var type = reservations[x].type
@@ -173,6 +191,8 @@ module.exports.transfer_by_agency = function(fields,cb){
 								,transfer : reservations[x].transfer
 								,arrivalDate : (reservations[x].arrival_date?moment(reservations[x].arrival_date).format('D-MM-YYYY'):'')
 								,departureDate : (reservations[x].departure_date?moment(reservations[x].departure_date).format('D-MM-YYYY'):'')
+								,hotel : reservations[x].hotel
+								,folioAgency : reservations[x].folioAgency
 							});
 						}
 						theCB(false,aux);
@@ -206,12 +226,18 @@ module.exports.transfer_by_service = function(fields,cb){
 			,{ label : 'Agencia' , handle : 'name', object : 'company', object2:'company' , type : '' }
 			,{ label : 'Llegada' , handle : 'arrivalDate' , type : '' }
 			,{ label : 'Salida' , handle : 'departureDate' , type : '' }
+			,{ label : 'Vehículo' , handle : 'car_id', object : 'vehicle', object2:'vehicle' , type : '' }
+			,{ label : 'Hotel' , handle : 'name', object : 'hotel', object2: 'hotel' , type : '' }
+			,{ label : 'FolioAgencia' , handle : 'folioAgency' , type : '' }
 		]
 		,title : 'Reporte de Reservas por Servicio'
 		,rows : {}
 		,totals : { total : 0 , subtotal : 0 , iva : 0 , pax : 0 }
 	};
-	var $match = {
+	var $match = fields || {};
+	$match.reservation_type = 'transfer';
+	//console.log( 'FIELDS 3:', $match );
+	/*var $match = {
 		reservation_type : 'transfer'
 		,$and : [
 			{ $or : [ 
@@ -219,7 +245,7 @@ module.exports.transfer_by_service = function(fields,cb){
 				,{ cancelationDate : { $gte : fields.sDate , $lte : fields.eDate } } 
 			] }
 		]
-	};
+	};*/
 	var $groupGral = {
 		_id : null
 		,transferIDs : { '$push' : '$transfer' }
@@ -257,9 +283,12 @@ module.exports.transfer_by_service = function(fields,cb){
 					,{ $group : $groupGral } 
 				],function(err,resultsCompany){ 
 					resultsCompany = resultsCompany[0];
-					console.log('resultsCompany',resultsCompany);
-					Reservation.find({ transfer : [item] , reservation_type : 'transfer' })
-					.populate('company').populate('asign').populate('transfer').exec(function(r_err,reservations){
+					//console.log('resultsCompany',resultsCompany);
+					$match = formatFields($match);
+					$match.transfer = [item];
+					Reservation.find( $match ) //fields && { transfer : [item] , reservation_type : 'transfer' }
+					.populate('company').populate('asign').populate('transfer').populate('hotel')
+					.exec(function(r_err,reservations){
 						console.log(reservations.length);
 						if(err||reservations.length==0) return theCB(err,false);
 						var aux = {
@@ -278,6 +307,9 @@ module.exports.transfer_by_service = function(fields,cb){
 								,company : reservations[x].company
 								,arrivalDate : (reservations[x].arrival_date?moment(reservations[x].arrival_date).format('D-MM-YYYY'):'')
 								,departureDate : (reservations[x].departure_date?moment(reservations[x].departure_date).format('D-MM-YYYY'):'')
+								,hotel : reservations[x].hotel
+								,folioAgency : reservations[x].folioAgency
+								,vehicle : reservations[x].vehicle
 							});
 						}
 						theCB(false,aux);
@@ -307,12 +339,17 @@ module.exports.transfer_by_provider = function(fields,cb){
 			,{ label : 'Agencia' , handle : 'name', object : 'company', object2:'company' , type : '' }
 			,{ label : 'Llegada' , handle : 'arrivalDate' , type : '' }
 			,{ label : 'Salida' , handle : 'departureDate' , type : '' }
+			,{ label : 'Hotel' , handle : 'name', object : 'hotel', object2: 'hotel' , type : '' }
+			,{ label : 'FolioAgencia' , handle : 'folioAgency' , type : '' }
 		]
 		,title : 'Reporte de Reservas por Servicio'
 		,rows : {}
 		,totals : { total : 0 , subtotal : 0 , iva : 0 , pax : 0, comision : 0 }
 	};
-	var $match = {
+	var $match = fields || {};
+	$match.reservation_type = 'transfer';
+	//console.log('FIELDS 3:',fields);
+	/*var $match = {
 		reservation_type : 'transfer'
 		,$and : [
 			{ $or : [ 
@@ -320,7 +357,7 @@ module.exports.transfer_by_provider = function(fields,cb){
 				,{ cancelationDate : { $gte : fields.sDate , $lte : fields.eDate } } 
 			] }
 		]
-	};
+	};*/
 	var $groupGral = {
 		_id : '$company'
 		,providerIDs : { '$push' : '$company' } //obtener las compañias que son los proveedores que se van a necesitar
@@ -334,7 +371,7 @@ module.exports.transfer_by_provider = function(fields,cb){
 	var feeSumVar = { $add : [ { $ifNull : [ '$fee', 0 ] } , { $ifNull : [ '$feeKids', 0 ] } ] };
 	var paxSumVar = { $add : [ { $ifNull : [ '$pax', 0 ] } , { $ifNull : [ '$kidPax', 0 ] }	] };
 	var $projectReservation = {
-		company:1,fee:1,feeKids:1,pax:1,kidPax:1,state:1,transfer:1
+		company:1,fee:1,feeKids:1,pax:1,kidPax:1,state:1,transfer:1,hotel:1
 		,totalNeto 	: { $cond : [ { $ne : ['$state' , 'canceled'] },feeSumVar,0 ] }
 		,paxNeto 	: { $cond : [ { $ne : ['$state' , 'canceled'] },paxSumVar,0 ] }
 	};
@@ -360,8 +397,14 @@ module.exports.transfer_by_provider = function(fields,cb){
 							,{ $group : $groupReservation } 
 						],function(err,reservationGroup){
 							console.log('reservationGroup',reservationGroup);
+							if( reservationGroup.length == 0 ) return theCB(false,false);
 							reservationGroup = reservationGroup[0];
-							Reservation.find({ id : item.reservationIDs }).exec(function(err,reservations){
+							$match = formatFields($match);
+							delete $match._id;
+							$match.id = item.reservationIDs;
+							console.log("MATCH",$match);
+							Reservation.find( $match ).populate('hotel').populate('company') //{ id : item.reservationIDs }
+							.exec(function(err,reservations){
 								if(err||reservations.length==0) return theCB(err,false);
 								//aquí se genera el item del row
 								var row1 = {
@@ -381,6 +424,8 @@ module.exports.transfer_by_provider = function(fields,cb){
 										,company : reservations[x].company
 										,arrivalDate : (reservations[x].arrival_date?moment(reservations[x].arrival_date).format('D-MM-YYYY'):'')
 										,departureDate : (reservations[x].departure_date?moment(reservations[x].departure_date).format('D-MM-YYYY'):'')
+										,hotel : reservations[x].hotel
+										,folioAgency : reservations[x].folioAgency
 									});
 								}
 								//Aqui se van a ir sumando totales y pax generales
@@ -390,7 +435,7 @@ module.exports.transfer_by_provider = function(fields,cb){
 							});
 						});//reservation aggregate 
 					},function(err,rows){
-						results.rows = rows;
+						results.rows = _.compact(rows);
 						results.totals.iva = results.totals.total*mainIVA;
 						results.totals.subtotal = results.totals.total - results.totals.iva;
 						results.totals.comision = results.totals.total * .2;

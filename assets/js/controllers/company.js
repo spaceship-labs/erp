@@ -407,4 +407,15 @@ app.controller('companyEditCTL',function($scope,$http,$timeout){
             });
         }
     };
+    $scope.saveAll = function(){
+        var obj = {
+            id : $scope.mycompany.id
+            ,parentCompany : $scope.mycompany.parentCompany
+            ,gasomatic : $scope.mycompany.gasomatic
+            ,comision : $scope.mycompany.comision
+        };
+        $http({method: 'POST', url: '/company/update',params:obj}).success(function(company){
+            console.log('company',company);
+        });
+    }
 });

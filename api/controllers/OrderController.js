@@ -7,7 +7,7 @@
 var async = require('async');
 var fs = require('fs');
 var phantom = require('phantom');
-Promise = require('es6-promise').Promise;
+//Promise = require('es6-promise').Promise;
 module.exports = {
   /*
     VISTAS
@@ -111,30 +111,48 @@ module.exports = {
       });
     });
   },
-  reportcustom : function(req,res){
-    var expectedContent = '<html><body><div>Test div</div></body></html>';
-    phantom.create(['--ignore-ssl-errors=yes', '--load-images=no']).then(function(ph) {
+  reportcustom : function(req,res,next){
+    res.header('Content-disposition', 'attachment; filename=file.pdf');
+    res.header('Content-type', 'application/pdf');
+    res.download('/uploads/file.pdf');
+    res.end();
+    /*var expectedContent = '<html><body><div>Test div</div></body></html>';
+    phantom.create().then(function(ph) {
       console.log('create');
         ph.createPage().then(function(page) {
           console.log('create page');
           page.open('http://google.com').then(function(){
-            console.log('open');
-            page.render().then(function(){
-              console.log('render');
-              console.log('PAGE',page);
-              res.json(page);
-              ph.exit();
-            });
+          //page.setting('content',expectedContent).then(function(){
+            console.log('OPEN');
           });
+          page.property('onLoadFinished').then(function() {  
+          //page.setting('content',expectedContent).then(function(){
+            console.log('LOAD');
+            var file = __dirname+'/../../assets/uploads/file.pdf';
+            var filemin = '/uploads/file.pdf';
+            page.render(file,{format:'pdf'}).then(function(x){
+            //page.property('content').then(function(content) {
+                ph.exit();
+                console.log('render',x);
+                res.header('Content-disposition', 'attachment; filename=file.pdf');
+                res.header('Content-type', 'application/pdf');
+                res.download(filemin);
+                res.end();
+              //});
+            });
+          });//on load
         });
-    });
+    });*/
   },
   reportcustom_ : function(req,res){
     var params = req.params.all();
     if( params.type ){
-      console.log('COOKIES',req.cookies.filters);
+      //console.log('COOKIES',JSON.parse(req.cookies.filters));
       //var fields = formatFilterFields(params.fields);
-      var fields = formatFilterFields(req.cookies.filters);
+      if(req.cookies.filters && req.cookies.filters != '')
+        var fields = formatFilterFields(JSON.parse(req.cookies.filters));
+      else
+        var fields = {};
       if( ! req.user.isAdmin ){
         var c_ = [];
         for(c in req.user.companies ){
@@ -144,6 +162,7 @@ module.exports = {
         //console.log('companies');console.log(c_);
         fields.company = { "$in" : c_ };
       }
+      console.log('FIELDS 0:',fields)
       Reports.getReport(params.type,fields,function(results,err){
           res.json({ results : results , err : err });
       });

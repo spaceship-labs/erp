@@ -127,11 +127,12 @@ module.exports = {
         }
         ,service_type : {
             type:'string',
-            enum : ['C','P','D'] //c=colectivo , p=privado , d=directo
+            enum : ['C','P','D','G','B'] //c=colectivo , p=privado , d=directo, g=group, b=bshare
         }
         ,reservation_status : {
             type:'string',
-            enum : ['C','N','M'] //c=cancelado , p=nuevo , d=modificado
+            enum : ['C','N','M','P'] //c=cancelado , p=nuevo , d=modificado
+            ,defaultsTo : 'P'
         }
         ,transfer_type : {
             type:'string',

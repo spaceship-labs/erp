@@ -57,6 +57,8 @@ app.controller('reportCTL',function($scope,$http,$window,$upload,$rootScope,$coo
         delete $scope.filters[f.field];
         $scope.isCollapsedFilter = false;
         $scope.currentPage = 1;
+        $cookies.putObject('filters',$scope.filters,{path:'/'});
+        console.log('COOKIES',$cookies.getObject('filters'));
         sendFilterFx(0);
     };
     $scope.openFilter = function(f){
@@ -99,15 +101,16 @@ app.controller('reportCTL',function($scope,$http,$window,$upload,$rootScope,$coo
         var params = { type : type , fields : $scope.filters };
         console.log('report params');
         console.log(params);
-        $window.location = '/order/reportcustom';
-        /*$http.post('/order/reportcustom',params,{}).success(function(result){
+        //$window.location = '/order/reportcustom';
+        $http.post('/order/reportcustom_',params,{}).success(function(result){
             console.log('report');
             console.log(result);
             $scope.theReport = result;
             $scope.theReport.type = type;
             $scope.theReport.template = "/template/find/" + type + ".html";
             jQuery('#reportsModal').modal('show');
-        });*/
+            
+        });
     };
     $scope.formatDate = function(date){
         var d = new Date(date);

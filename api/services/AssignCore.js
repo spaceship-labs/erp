@@ -219,12 +219,13 @@ module.exports.FormatItemToExport = function(reservation){
 };
 module.exports.getObject = function(row,type){
 	var result = {};
+	var direccion = row.destiny=='tour'||row.destiny=='aeropuerto'?'salida':'llegada';
 	if( type == 'reservation' ){
-		result.hotel = row[4];
+		result.hotel = row.hotel;
 		//result.service = row[5];
-		result.transfer = row[5];
-		result.pax = row[6];
-		result.company = row[7];
+		result.transfer = row.service;
+		result.pax = row.pax;
+		result.company = row.agency;
 		result.type = 'one_way';
 		//default data
 		result.reservation_method = 'intern';
@@ -232,29 +233,31 @@ module.exports.getObject = function(row,type){
 		result.state = { handle : 'liquidated' };
 		result.payment_method = { handle : 'creditcard' };
 		//end default data
-		if( row[0] == 'llegada' ){
+		if( direccion == 'llegada' ){
 			result.origin = 'airport';
-			result.arrival_time = moment(row[10]+' '+row[8]).format('YYYY-MM-DD HH:mm:ss');
-			console.log(result.arrival_time);
-			console.log(result.departure_time);
-			result.arrival_fly = row[1];
-			result.arrival_airline = row[2];
+			result.arrival_date = moment(row.date).format('YYYY-MM-DD HH:mm:ss');
+			result.arrival_time = moment(row.time).format('YYYY-MM-DD HH:mm:ss');
+			//console.log(result.arrival_time);
+			//console.log(result.departure_time);
+			result.arrival_fly = row.fly;
+			result.arrival_airline = row.airline;
 		}else{
 			result.origin = 'hotel';
-			result.departure_time = moment(row[10]+' '+row[8]).format('YYYY-MM-DD HH:mm:ss');
-			result.departure_fly = row[1];
-			result.departure_airline = row[2];
+			result.departure_date = moment(row.date).format('YYYY-MM-DD HH:mm:ss');
+			result.departure_time = moment(row.time).format('YYYY-MM-DD HH:mm:ss');
+			result.departure_fly = row.fly;
+			result.departure_airline = row.airline;
 		}
 	}
 	if( type == 'client' ){
-		result.name = row[3]
+		result.name = row.client
 	}
 	if( type == 'asign' ){
-		result.company = row[9].company;
-		if( row[0] == 'llegada' ){
-			result.vehicle_arrival = row[9];
+		result.company = row.vehicle.company;
+		if( direccion == 'llegada' ){
+			result.vehicle_arrival = row.vehicle;
 		}else{
-			result.vehicle_departure = row[9];
+			result.vehicle_departure = row.vehicle;
 		}
 	}
 	return result;
@@ -262,61 +265,70 @@ module.exports.getObject = function(row,type){
 module.exports.importOperation = function(err,book,req,callback){
 	if(err) return callback(err,false);
 	if( !book.sheets ) return callback({message:'no rows'},false);
+	var columns = ['fly','airline','client','origin','destiny','service','pax','agency','time','vehicle','date','folioAgency','balancedll','balancemxn','operador'];
 	book.sheets[0].values.splice(0,1);
+	var defaultCompany = req.session.select_company || req.user.select_company;
 	async.mapSeries( book.sheets[0].values, function(item,cb){
 		//0 llegada o salida?,vuelo, airline, cliente, hotel, servicio, pax, agencia, hora, unidad
-		async.parallel({
-            airline: function(done){
-                Airline.findOne({ name : item[2] }).exec(done);
-            },
-            hotel: function(done){
-                Hotel.findOne({ name : item[4] }).exec(done);
-            },
-            service: function(done){
-                Transfer.findOne({ name : item[5] }).exec(done);
-            },
-            agency : function(done){
-            	Company.findOne({ name : item[7] }).exec(done);
-            },
-            unidad : function(done){
-            	Transport.findOne({ car_id : (item[9]+'') }).populateAll().exec(done);
-            }
-        
-        }, function(err, search){
-        	console.log('------------item');
-        	console.log(item);
-        	console.log('------------search');
-        	console.log(search);
-        	if(err || !(search.hotel && search.service && search.agency && search.unidad) )
-        		return cb(err&&{search:search},false);
-        	item[2] = search.airline;
-        	item[4] = search.hotel;
-        	item[5] = search.service;
-        	item[7] = search.agency;
-        	item[9] = search.unidad;
-            var r  = AssignCore.getObject(item,'reservation');
-			var c  = AssignCore.getObject(item,'client');
-			var ta = AssignCore.getObject(item,'asign');
-			//Airport.findOne({ location : search.hotel.location }).exec(function(err,airport){
-			Location.findOne(search.hotel.location).populate('airportslist').exec(function(err,hotelLocation){
-				console.log('------------airport list');
-				console.log(hotelLocation.airportslist);
+		var item2 = {};
+		for(x in item) item2[ columns[x] ] = item[x]&&item[x]!=''&&(typeof item[x] == 'string')?item[x].toLowerCase():item[x];
+		if( !item2.vehicle && !item2.service ) return cb(false,{});
+		var adf = {};
+		if( item2.service == 'tour' || item2.origin != 'aeropuerto' )
+			adf.hotel = function(done){ Hotel.findOne({ name : item2.origin }).exec(done); };
+		else if( item2.origin == 'aeropuerto' )
+			adf.hotel = function(done){ Hotel.findOne({ name : item2.destiny }).exec(done); };
+		if( item2.service == 'tour' )
+			adf.tour = function(done){ Tour.findOne({ name : item2.destiny }).exec(done); }
+		if( item2.airline != '' )
+			adf.airline = function(done){ Airline.findOne({ name : item2.airline }).exec(done); };
+		if( item2.service != 'tour' ){
+			adf.service = function(done){ 
+				colectivos = ['bshare','directo','group'];
+				colectivosTypes = { bshare : 'B', directo : 'D', group : 'G' };
+				item2.service = item2.service;
+				if( colectivos.indexOf( item2.service ) ){
+					item2.service_type = colectivosTypes[ item2.service ];
+					item2.service = 'colectivo';
+				}else{
+					item2.service_type = 'C';
+				}
+				Transfer.findOne({ name : item2.service }).exec(done); 
+			};
+		}
+		if( item2.agency != '' )
+			adf.agency = function(done){ Company.findOne({ name : item2.agency }).exec(done); };
+		if( item2.vehicle != '' )
+			adf.unidad = function(done){ Transport.findOne({ car_id : (item2.vehicle+'') }).populateAll().exec(done); };
+		async.parallel(adf, function(err, search){
+        	item2.airline = search.airline || '';
+        	item2.hotel = search.hotel;
+        	item2.service = search.service || false;
+        	item2.agency = search.agency || defaultCompany;
+        	item2.vehicle = search.unidad || item2.vehicle;
+        	console.log('------------item',item2);
+        	if(err || !(item2.hotel && item2.agency && item2.vehicle) )
+        		return cb(err&&{search:search,item:item2},false);
+            var r  = AssignCore.getObject(item2,'reservation');
+			var c  = AssignCore.getObject(item2,'client');
+			var ta = AssignCore.getObject(item2,'asign');
+			Location.findOne(item2.hotel.location).populate('airportslist').exec(function(err,hotelLocation){
+				//console.log('------------airport list',hotelLocation.airportslist);
 				if( err || !hotelLocation.airportslist || hotelLocation.airportslist.length == 0 ) return cb(err,false);
 				var airport = hotelLocation.airportslist[0];
-				console.log('------------airport');
-				console.log(hotelLocation.airportslist);
-				console.log(airport);
-				if( err || !airport )
-					return cb(err,false);
-				var params = { zone1 : airport.zone , zone2 : search.hotel.zone };
-				AssignCore.getTransferPrice(search.agency,airport.zone,search.hotel.zone,search.service,function(err,price){
+				//console.log('------------airportlist',hotelLocation.airportslist);
+				console.log('------------airport',airport);
+				if( err || !airport ) return cb(err,false);
+				//var params = { zone1 : airport.zone , zone2 : search.hotel.zone };
+				AssignCore.getTransferPrice(item2.agency,airport.zone,item2.hotel.zone,item2.service,function(err,price){
+					console.log('PRICE ERR', err,price);
 					if(err||!price) return cb({message:'no price found'},false);
 					//crear la orden/reserva/cliente/transportasign
 					Client_.create(c).exec(function(err,client){
 						c.id = client.id;
 						console.log('client');
-						var params2 = { company : search.agency.id, client : client.id };
-						console.log(params2)
+						var params2 = { company : item2.agency.id, client : client.id };
+						console.log('params2 cre',params2)
 						OrderCore.createOrder(params2,req,function(err,order){
 							console.log('order');
 							r.transferprice = price;
@@ -345,14 +357,14 @@ module.exports.importOperation = function(err,book,req,callback){
 	});
 }
 module.exports.getTransferPrice = function(company,zone1,zone2,transfer,callback){
-	TransferPrice.findOne({ 
+	TransferPrice.findOne({
       company : company.id
       ,active : true
       ,transfer : transfer.id
-      ,type : { '$ne' : 'provider' }
-      ,"$or":[ 
-        { "$and" : [{'zone1' : zone1, 'zone2' : zone2}] } , 
-        { "$and" : [{'zone1' : zone2, 'zone2' : zone1}] } 
+      //,type : { $ne : 'provider' }
+      ,$or :[ 
+        { $and : [{zone1 : zone1, zone2 : zone2}] } , 
+        { $and : [{zone1 : zone2, zone2 : zone1}] } 
       ] 
     }).populate('transfer').exec(callback);
 }
@@ -362,7 +374,7 @@ module.exports.customGetAvailableTransfers = function(company,params){
     TransferPrice.find({ 
       company : company.id
       ,active : true
-      ,type : { '$ne' : 'provider' }
+      //,type : { '$ne' : 'provider' }
       ,"$or":[ 
         { "$and" : [{'zone1' : params.zone1, 'zone2' : params.zone2}] } , 
         { "$and" : [{'zone1' : params.zone2, 'zone2' : params.zone1}] } 
