@@ -73,10 +73,10 @@
                         <p><%= __('order-origen2')%></p>
                         <p>
                             <span class="radio">
-                                <input tabindex='13' ng-change='updateDatesFormat()' ng-model="transfer.origin" type="radio" name="origin" value="hotel" checked> Hotel
+                                <input tabindex='13' ng-change='updateDatesFormat2()' ng-model="transfer.origin" type="radio" name="origin" value="hotel" checked> Hotel
                             </span>
                             <span class="radio">
-                                <input tabindex='14' ng-change='updateDatesFormat()' ng-model="transfer.origin" type="radio" name="origin" value="airport"> Aeropuerto
+                                <input tabindex='14' ng-change='updateDatesFormat2()' ng-model="transfer.origin" type="radio" name="origin" value="airport"> Aeropuerto
                             </span>
                         </p>
                         <p><%= __('order-estado')%></p>
@@ -107,7 +107,7 @@
                     </div>
                 </div><!-- Termina sección lugares -->
                 <div class='row'>
-                    <div class='col-md-6'>
+                    <div class='col-md-6' ng-show="dtfa[0]?true:false">
                         <h4 class="widgettitle"><%= __('order-vuelof-llegada')%></h4>
                         <p><%= __('order-llegada')%></p>
                         <p>
@@ -125,7 +125,7 @@
                         <p><%= __('order-hora')%></p>
                         <p><timepicker tabindex='22' ng-model="transfer.arrival_time" ng-change="getpickuptime()" hour-step="1" minute-step="1" show-meridian="ismeridian"></timepicker></p>
                     </div>
-                    <div class='col-md-6'>
+                    <div class='col-md-6' ng-show="dtfa[1]?true:false">
                         <h4 class="widgettitle"><%= __('order-vuelof-salida')%></h4>
                         <p><%= __('order-fecha-salida')%></p>
                         <p>

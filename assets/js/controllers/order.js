@@ -1688,7 +1688,7 @@ app.controller('orderQuickCTL',function($scope,$http,$window,$rootScope){
             params.order = $scope.order.id;
             params.reservation_type = 'transfer';
             params.client = $scope.client;
-            params.transferprice = $scope.transfer.transfer.id;
+            params.transferprice = $scope.transfer.transfer;
             params.transfer = $scope.transfer.transfer.transfer.id;
             for(var x in $scope.transfer.contacts)
                 $scope.transfer.contacts[x] = $scope.client.contacts[$scope.transfer.contacts[x]];
@@ -1709,7 +1709,15 @@ app.controller('orderQuickCTL',function($scope,$http,$window,$rootScope){
         });
     }
     //Controla los inputs de fechas roundtrip/oneway
+    $scope.dtfa = [true,true];
+    $scope.updateDatesFormat2 = function(){
+        var h = $scope.transfer.origin == 'hotel'?true:false;
+        var r = $scope.transfer.type == 'round_trip'?true:false;
+        $scope.dtfa[0] = ( h && r ) || (!h);
+        $scope.dtfa[1] = ( !h && r ) || h;
+    };
     $scope.updateDatesFormat = function(){
+        /*ERROR??? POR QUE ESTO ESTÁ COMENTADO*/
         /*var h = $scope.transfer.origin == 'hotel'?true:false;
         var r = $scope.transfer.type == 'round_trip'?true:false;
         $scope.dtfa[0] = ( h && r ) || (!h);
@@ -1739,7 +1747,7 @@ app.controller('orderQuickCTL',function($scope,$http,$window,$rootScope){
         }else{
             $scope.transfer.fee = 0;
         }
-        $scope.updateDatesFormat();
+        $scope.updateDatesFormat2();
         if( transfer.arrival_time )
             transfer.arrivalpickup_time = getpickuptime(transfer,'arrival');
         if( transfer.departure_time )

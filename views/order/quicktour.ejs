@@ -70,7 +70,7 @@
                         <div ng-hide="!showReservationDate"><p>Fecha de reserva</p>
                         <p>
                             <span class='input-group calendar-container'>
-                                <input is-open="open[1]" ng-model='reservationTour.createdAt' id="" datepicker-popup required="true" />
+                                <input is-open="open[1]" ng-model='reservationTour.createdAt' id="" datepicker-popup /><!-- required="true" ?? -->
                                 <span class="input-group-btn">
                                     <button type="button" class="btn btn-default" ng-click="open($event,1)"><i class="fa fa-calendar"></i></button>
                                 </span>
