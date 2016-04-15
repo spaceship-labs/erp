@@ -49,8 +49,8 @@ module.exports.createTransferReservation = function(params, defaultUserID, defau
       			Exchange_rates.find().limit(1).sort({createdAt:-1}).exec(function(err,theExhangeRates){
       				if(err) cb(err,item);
 					theExhangeRates = theExhangeRates[0];
-					console.log('prices');
-					console.log(prices.price);
+					//console.log('prices');
+					//console.log(prices.price);
 	      			params.service_type = prices.price.transfer.service_type || 'C' ;
 	      			params.quantity = Math.ceil( params.pax / prices.price.transfer.max_pax );
 	          		params.fee = prices.price[params.type] * params.quantity;
@@ -67,9 +67,9 @@ module.exports.createTransferReservation = function(params, defaultUserID, defau
 						params.exchange_rate_sale = companies.company.exchange_rates[params.currency].sales;
 		            	params.exchange_rate_book = companies.company.exchange_rates[params.currency].book;
 					}else{
-						console.log(companies.mainCompany.name);
-						console.log(companies.mainCompany.exchange_rates);
-						console.log(params.currency);
+						//console.log(companies.mainCompany.name);
+						//console.log(companies.mainCompany.exchange_rates);
+						//console.log(params.currency);
 						params.exchange_rate_sale = companies.mainCompany.exchange_rates[params.currency].sales;
 		            	params.exchange_rate_book = companies.mainCompany.exchange_rates[params.currency].book;
 					}

@@ -9,6 +9,7 @@
     window.zones = <%- JSON.stringify(zones) %>;
 </script>
 <div ng-controller='tourEditCTL' class="editar-tour ng-cloak">
+<div class='row-fluid'>
     <div class="span6 profile-left profileEdit">
         <div profile-image 
             object='tour' 
@@ -80,7 +81,7 @@
                         <label>Tipo</label>
                         <span class='field'><select ng-model="extra_price.type" ng-options="obj.id as obj.name for obj in extra_types"></select></span>
                     </p>
-                    <p>
+                    <p ng-if="extra_price.type == 'extra_hour'">
                         <label>Tarifa ({{company.base_currency.currency_code}})</label>
                             <span class="field">
                                 <span class="input-group">
@@ -89,7 +90,7 @@
                                 </span>
                             </span>
                     </p>
-                    <p ng-if="tour.priceType == 'single'">
+                    <p ng-if="extra_price.type == 'extra_hour'&&tour.priceType == 'single'">
                         <label>Tarifa niños ({{company.base_currency.currency_code}})</label>
                             <span class="field">
                                 <span class="input-group">
@@ -97,6 +98,32 @@
                                     <input class="form-control" type="text" ng-model='extra_price.feeChild' valid-number>
                                 </span>
                             </span>
+                    </p>
+                    <p ng-if="extra_price.type == 'extra_transfer'">
+                        <label>Pax</label>
+                        <span class="field">
+                            <span class="input-group">
+                                <input class="form-control" type="text" ng-model='extra_price.pax' valid-number>
+                            </span>
+                        </span>
+                    </p>
+                    <p ng-if="extra_price.type == 'extra_transfer'">
+                        <label>Tarifa (one way)</label>
+                        <span class="field">
+                            <span class="input-group">
+                                <span class="input-group-addon">$</span>
+                                <input class="form-control" type="text" ng-model='extra_price.one_way' valid-number>
+                            </span>
+                        </span>
+                    </p>
+                    <p ng-if="extra_price.type == 'extra_transfer'">
+                        <label>Tarifa (round trip)</label>
+                        <span class="field">
+                            <span class="input-group">
+                                <span class="input-group-addon">$</span>
+                                <input class="form-control" type="text" ng-model='extra_price.round_trip' valid-number>
+                            </span>
+                        </span>
                     </p>
                     <p>
                         <label>Descripcion</label>
@@ -122,7 +149,33 @@
                         <label>Descripcion</label>
                         <span class='field'><input ng-model="extra_p.description" /></span>
                     </p>
-                    <p>
+                    <p ng-if="extra_p.type == 'extra_transfer'">
+                        <label>Pax</label>
+                        <span class="field">
+                            <span class="input-group">
+                                <input class="form-control" type="text" ng-model='extra_p.pax' valid-number>
+                            </span>
+                        </span>
+                    </p>
+                    <p ng-if="extra_p.type == 'extra_transfer'">
+                        <label>Tarifa (one way)</label>
+                        <span class="field">
+                            <span class="input-group">
+                                <span class="input-group-addon">$</span>
+                                <input class="form-control" type="text" ng-model='extra_p.one_way' valid-number>
+                            </span>
+                        </span>
+                    </p>
+                    <p ng-if="extra_p.type == 'extra_transfer'">
+                        <label>Tarifa (round trip)</label>
+                        <span class="field">
+                            <span class="input-group">
+                                <span class="input-group-addon">$</span>
+                                <input class="form-control" type="text" ng-model='extra_p.round_trip' valid-number>
+                            </span>
+                        </span>
+                    </p>
+                    <p ng-if="extra_p.type == 'extra_hour'">
                         <label>Tarifa ({{company.base_currency.currency_code}})</label>
                             <span class="field">
                                 <span class="input-group">
@@ -131,7 +184,7 @@
                                 </span>
                             </span>
                     </p>
-                    <p ng-if="tour.priceType == 'single'">
+                    <p ng-if="extra_p.type == 'extra_hour'&&tour.priceType == 'single'">
                         <label>Tarfifa niños ({{company.base_currency.currency_code}})</label>
                         <span class="field">
                             <span class="input-group">
@@ -157,6 +210,7 @@
             >
         </div> 
     </div>
+</div><!-- row DATA -->
     <div class='row-fluid'>
         <div file-manager object='tour' add-method='/tour/addFiles' remove-method='/tour/removeFiles' dir='tours/gallery' ></div>
     </div>

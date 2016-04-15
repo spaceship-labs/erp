@@ -63,9 +63,13 @@ module.exports = {
             type:'string',
             enum : ['round_trip','one_way']
         }
+        /* 
+            Diferentes tipos de reservaciones 
+            transfer_tour -> transfer dirigido a un tour, por lo tanto no hay airport ni transfer ni transferprice
+        */
         ,reservation_type : {
             type:'string',
-            enum : ['tour','hotel','transfer']
+            enum : ['tour','hotel','transfer','transfer_tour']
         }
         ,fee : { //precio de adultos a cobrar
             type : 'float',

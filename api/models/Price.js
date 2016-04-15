@@ -1,10 +1,10 @@
-
 module.exports = {
 
     attributes: {
         fee : 'float'
         ,feeChild : 'float'
-
+        ,fee_round_trip : 'float'
+        ,fee_round_trip : 'float'
         ,tour : {
             model : 'Tour'
         }
@@ -14,7 +14,7 @@ module.exports = {
         }
         ,type : {
             type : 'string',
-            enum: ['none', 'extra_hour'],
+            enum: ['none', 'extra_hour','extra_transfer'],
             defaultsTo : 'none'
         }
         ,description : {
@@ -25,7 +25,7 @@ module.exports = {
             defaultsTo : true
         }
         //optional
-        //type == 'extra_hour'
         ,hour : 'integer'
+        ,pax : 'integer'
     }
 };
