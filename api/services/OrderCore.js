@@ -79,7 +79,7 @@ module.exports.createTransferReservation = function(params, defaultUserID, defau
 					params.globalRates = theExhangeRates.rates;
 					delete params.generalFields;
 					Reservation.create(params).exec(function(err,reservation){
-	            		if(err) callback(err,false);
+	            		if(err) return callback(err,false);
 	            		theorder.reservations.push(reservation.id);
 	            		theorder.state = reservation.state;
 	            		theorder.save(function(err){

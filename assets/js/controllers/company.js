@@ -247,7 +247,7 @@ app.controller('companyEditCTL',function($scope,$http,$timeout){
         return $http.post('/transferprice/updatePrice', data);
     };
     $scope.getHotels = function(val){
-        return $htçtp.get('/hotel/find', { params: { name: val } }).then(function(response){
+        return $http.get('/hotel/find', { params: { name: val } }).then(function(response){
             return response.data.results.map(function(item){ return item; });
         });
     };

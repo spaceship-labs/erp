@@ -141,21 +141,24 @@ module.exports = {
       }
       fields.company = { "$in" : c_ };
     }
-    Reservation.native(function(e,reservation){
-      reservation.aggregate([ { $sort : { createdAt : -1 } },{ $match : fields },{ $group : { _id : "$order" } },{ $skip : skip } , { $limit : limit }
-      ],function(err,reservations){
-        var ids = [];
-        for(x in reservations) ids.push( reservations[x]._id );
-          reservation.aggregate([
-              { $match : fields } , { $group : { _id : "$order" } } , { $group : { _id : null , count : { $sum:1 } } }
-          ],function(err_c,count_){
-            if(err_c) res.json({ result:[],orders:[],count: 0 });
-            customOrdersFormat(ids,function(results){
-              res.json({ result:[],orders:results,count: (count_&&count_.length>0?count_[0].count:0) });
+      Reservation.native(function(e,reservation){
+        //{ $group : { _id : { id : '$_id',createdAt : '$createdAt',order:'$order'  },createdAt : { $push : '$createdAt' } } },{ $sort : { '_id.createdAt' : -1 } },
+        reservation.aggregate([{ $match : fields },{$sort:{ createdAt : -1 }},{ $skip : skip } , { $limit : limit },{ $group : { _id : "$order" } } //,{ $skip : skip } , { $limit : limit }
+        ],function(err,reservations){
+          console.log('reservations err',err);
+          console.log('reservations',reservations);
+          var ids = [];
+          for(x in reservations){ ids.push( reservations[x]._id ); }
+            reservation.aggregate([
+                { $match : fields }, { $sort : { createdAt : -1 } }, { $group : { _id : "$order" } }, { $group : { _id : null , count : { $sum:1 } } }
+            ],function(err_c,count_){
+              if(err_c) res.json({ result:[],orders:[],count: 0 });
+              customOrdersFormat(ids,function(results){
+                res.json({ result:[],orders:results,count: (count_&&count_.length>0?count_[0].count:0) });
+              });
             });
-          });
+        });
       });
-    });
   },
   getorder : function(req,res){
     Order.find().where(Common.getCompaniesForSearch(req.user)).sort('createdAt desc').populate('reservations').populate('user').exec(function(e,orders){

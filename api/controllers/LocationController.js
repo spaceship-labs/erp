@@ -110,7 +110,18 @@ module.exports = {
     	});
     },
     addZone : function(req,res){
-    	var reads = [
+    	Zone.create(req.params.all()).exec(function(err,z){
+    		if(err) return res.json(false);
+    		Location.findOne(z.location).exec(function(err,l){
+    			if(err) return res.json(false);
+    			l.zones.add(z.id);
+    			l.save(function(err,ll){
+    				if(err) return res.json(false);
+    				res.json(z);
+    			});
+    		});
+    	});
+    	/*var reads = [
 			function(cb){
 				Zone.create(req.params.all()).exec(cb)
 			},function(zone,cb){
@@ -127,7 +138,7 @@ module.exports = {
 			Transferprices.afterCreateZone(zones1,locations_,transfers,companies_,function(){
 				res.json(zone);
 			});
-		});
+		});*/
 		/*var form = req.params.all();
 		var location_o = form.location;
 		Zone.create(form).exec(function(e,r){

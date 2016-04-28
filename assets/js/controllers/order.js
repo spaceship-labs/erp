@@ -1224,7 +1224,7 @@ app.controller('orderEditCTL',function($scope,$http,$window){
             $scope.reservations.hotels.splice(index,1);
     };
     $scope.content = content;
-    $scope.order = order;
+    $scope.order = order;console.log('ORDER',$scope.order);
     $scope.thecompany = ordercompany;
     $scope.theclient = theclient;
     $scope.user = user;
