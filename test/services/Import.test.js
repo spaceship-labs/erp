@@ -520,11 +520,12 @@ describe('Import', function(){
             tmp = [['Name', 'Zone'], ['Air 1', 'zone 2', '<p>text </br> <strong>lol </strong></p>', 5]];
             values.push(tmp);//hoja 2
             valuesClearHtml.push([['Name', 'Zone'], ['Air 1', 'zone 2', 'text  lol', 5]]);
-        });
-
-        after(function(){
             mockery.disable();
         });
+
+        /*after(function(){
+            mockery.disable();
+        });*/
     
         describe('xlsx2Json',function(){
             
@@ -662,7 +663,7 @@ describe('Import', function(){
                 });
             
             });
-        
+
         });
     });
 
