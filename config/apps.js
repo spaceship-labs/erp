@@ -15,6 +15,15 @@ module.exports.apps = [
                 showInMenu : true,
                 controller : 'company'
 			},
+            {
+                label : 'Transportistas'
+                ,label_en : 'Providers'
+                ,icon : 'fa-car'
+                ,url : '/company/providers'
+                ,handle : 'empresas'
+                ,showInMenu : true
+                ,controller : 'company'
+            },
 			{
                 label : 'Usuarios',
 				label_en : 'Users',
@@ -49,7 +58,7 @@ module.exports.apps = [
                 label_en : 'Unities',
                 icon : 'fa-bus',
                 url : '/unity/',
-                showInMenu : true,
+                showInMenu : false,
                 controller : 'unity',
                 action : 'index'
             },
@@ -58,7 +67,7 @@ module.exports.apps = [
                 label_en : 'Unity types',
                 icon : 'fa-th-list',
                 url : '/unitytype/',
-                showInMenu : true,
+                showInMenu : false,
                 controller : 'unitytype',
                 action : 'index'
             }
@@ -448,6 +457,52 @@ module.exports.apps = [
                 ,showInMenu : true
                 ,handle : 'claim'
                 ,controller : 'claim'
+                ,action : 'index'
+            }
+        ]
+    },
+    {
+        name : 'transport'
+        ,label : 'Transportes'
+        ,label_en : 'Transport'
+        ,icon : 'fa-road'
+        ,actions : [
+            {
+                label : 'Vehiculo'
+                ,label_en : 'Car'
+                ,icon : 'fa-car'
+                ,url : '/Transport/'
+                ,showInMenu : true
+                ,handle : 'transport'
+                ,controller : 'transport'
+                ,action : 'index'
+            },
+            {
+                label : 'Tipo de vehiculo'
+                ,label_en : 'Type of Car'
+                ,icon : 'fa-car'
+                ,url : '/TransportType/'
+                ,showInMenu : true
+                ,handle : 'transporttype'
+                ,controller : 'transporttype'
+                ,action : 'index'
+            },
+            {
+                label : 'Asignar'
+                ,label_en : 'Asign'
+                ,icon : 'fa-clock-o'
+                ,url : '/TransportAsign/'
+                ,showInMenu : true
+                ,controller : 'transportasign'
+                ,action : 'index'
+            },
+            {
+                label : 'Solicitar'
+                ,label_en : 'Request'
+                ,icon : 'fa-clock-o'
+                ,url : '/TransportAsignRequest/'
+                ,showInMenu : true
+                ,controller : 'transportasignrequest'
                 ,action : 'index'
             }
         ]

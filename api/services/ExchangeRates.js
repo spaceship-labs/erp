@@ -10,7 +10,7 @@ module.exports.getCurrencies = function(cb){
 			if(err)	return cb && cb(err);
 			
 			Currency.find().exec(function(err,cu){
-				if(err)	return cb && cb(err);
+				if(err || !cu.length)	return cb && cb(err);
 
 				var currencies = {};
 				for(var i=0;i<cu.length;i++){

@@ -75,12 +75,13 @@ module.exports = {
             via : 'tour'
         }
         
-    ,meta_title_es:'string'
-    ,meta_description_es:'string'
-    ,meta_keywords_es:'string'
-    ,meta_title_en:'string'
-    ,meta_description_en:'string'
-    ,meta_keywords_en:'string'        
+	    ,meta_title_es:'string'
+	    ,meta_description_es:'string'
+	    ,meta_keywords_es:'string'
+	    ,meta_title_en:'string'
+	    ,meta_description_en:'string'
+	    ,meta_keywords_en:'string'
+        ,tax : 'float' //aún no se que se va a hacer con esto, me lo mandaron de yellow :/
         //duration_type ?
 	}
 	, migrate : 'safe'

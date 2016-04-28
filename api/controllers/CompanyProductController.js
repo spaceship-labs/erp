@@ -110,8 +110,17 @@ var getTransferPrices = function(pricesA,res,single,location,agency){
 		if(single)
 			ids.push(pricesA.transfer.id);
 		else
-			for(x in pricesA) ids.push( pricesA[x].transfer.id );
-		TransferPrice.find({ transfer : ids , location : location , company : agency }).populateAll().exec(function(err,prices){
+			for(x in pricesA) if( ids.indexOf(pricesA[x].transfer.id) == -1 ) ids.push( pricesA[x].transfer.id );
+		var params = {
+			transfer : ids
+			,company : agency
+			,"$or" : [
+				{ 'location' : location }, 
+				{ 'location2' : location } 
+			]
+		};
+		//console.log(params);
+		TransferPrice.find(params).populateAll().exec(function(err,prices){
 			//console.log(prices);
 			result = _.groupBy(prices, function(price){ return price.transfer.id; });
 			res.json(result);

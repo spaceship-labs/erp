@@ -1,4 +1,4 @@
-app.controller('reportCTL',function($scope,$http,$window,$upload,$rootScope){
+app.controller('reportCTL',function($scope,$http,$window,$upload,$rootScope,$cookies){
     $scope.content = content;
     $scope.filters = {};
     $scope.theReport = false;
@@ -57,6 +57,8 @@ app.controller('reportCTL',function($scope,$http,$window,$upload,$rootScope){
         delete $scope.filters[f.field];
         $scope.isCollapsedFilter = false;
         $scope.currentPage = 1;
+        $cookies.putObject('filters',$scope.filters,{path:'/'});
+        console.log('COOKIES',$cookies.getObject('filters'));
         sendFilterFx(0);
     };
     $scope.openFilter = function(f){
@@ -70,6 +72,8 @@ app.controller('reportCTL',function($scope,$http,$window,$upload,$rootScope){
         $scope.filters[f.field] = f;
         $scope.currentPage = 1;
         sendFilterFx(0);
+        $cookies.putObject('filters',$scope.filters,{path:'/'});
+        console.log('COOKIES',$cookies.getObject('filters'));
     };
     $scope.resetFilter = function(){
         $scope.isCollapsedFilter = false;
@@ -97,13 +101,15 @@ app.controller('reportCTL',function($scope,$http,$window,$upload,$rootScope){
         var params = { type : type , fields : $scope.filters };
         console.log('report params');
         console.log(params);
-        $http.post('/order/reportcustom',params,{}).success(function(result){
+        //$window.location = '/order/reportcustom';
+        $http.post('/order/reportcustom_',params,{}).success(function(result){
             console.log('report');
             console.log(result);
             $scope.theReport = result;
             $scope.theReport.type = type;
             $scope.theReport.template = "/template/find/" + type + ".html";
             jQuery('#reportsModal').modal('show');
+            
         });
     };
     $scope.formatDate = function(date){
@@ -131,5 +137,5 @@ app.controller('reportCTL',function($scope,$http,$window,$upload,$rootScope){
         href += '&to=' + (exportMKP.to?exportMKP.to:new Date());
         $window.location = href;
     };
-    $scope.SelectReport( 'tours_gral' );
+    //$scope.SelectReport( 'tours_gral' );
 });

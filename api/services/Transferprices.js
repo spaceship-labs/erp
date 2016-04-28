@@ -124,3 +124,59 @@ module.exports.calculatePrice = function(hotel,airport,transfer,t_type,pax,compa
 		cb(0);
 	}
 }
+/*
+	Función que devuelve los precios de una compañia 
+*/
+module.exports.getPricesbyCompany = function(company,service,type,cb){
+	if( !company ) return cb({message:'no company found'},false);
+	var fields = {
+        company : company.id
+        ,transfer : service.id
+    };
+    if( type == 'agency' )
+        fields.or = [ { type : 'agency' }, { type : { '!' : 'provider' } } ];
+    else
+        fields.type = 'provider';
+    TransferPrice.find().where(fields).populateAll().exec(cb);
+};
+module.exports.ifPriceExist = function(price,cb){
+	if( price.zone1 && price.zone2 && price.company && price.transfer ){
+		var fields = {
+			'$or' : [ 
+				{ 'zone1' : price.zone1 , 'zone2' : price.zone2 } 
+				,{ 'zone2' : price.zone1 , 'zone1' : price.zone2 } 
+			]
+			,company : price.company.id
+			,transfer : price.transfer.id
+		};
+		if( price.type && price.type == 'provider' )
+			fields.type = 'provider';
+		console.log('new price fields',fields);
+		TransferPrice.find(fields).populateAll().exec(function(err,price){
+			console.log('new price',price);
+			if( err ) return cb(err,false);
+			else return cb(false,price.length);
+		});
+	}else{
+		return cb({message:'no complete params'},false);
+	}
+};
+module.exports.newPrice = function(price,cb){
+	//validate price params
+	delete price.id;
+	Transferprices.ifPriceExist(price,function(err,result){
+		if(err) return cb(err,false);
+		if( !result ){
+			TransferPrice.create(price).exec(function(err,p){
+				if(err) return cb(err,false)
+				TransferPrice.findOne(p.id).populateAll().exec(function(err,p){
+					if(err) return cb(err,false)
+					console.log('NEW PRICE',p);
+					return cb(false,p);
+				});
+			});
+		}else{
+			return cb(false,false);
+		}
+	});
+}

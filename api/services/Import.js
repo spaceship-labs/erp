@@ -62,11 +62,14 @@ function replaceFieldsWithCollection(single, item, next, modelBase){
     if(item.object && single[item.handle2 || item.handle ]){
         var model = sails.models[item.handle],
         attr = sails.models[modelBase] && sails.models[modelBase].attributes;
-        if(!model){
-            if(attr && attr[item.handle]){
+        console.log(item.handle);
+        if(!model||typeof model == 'undefined'){
+            if(attr && attr[item.handle] && ( attr[item.handle].model || attr[item.handle].collection ) ){
                 model = sails.models[attr[item.handle].model || attr[item.handle].collection];
+                if( !model||typeof model == 'undefined' )
+                    return next();
             }else{
-                next(new Error('No model found'));
+                return next();
             }
         }
         //console.log(modelBase);

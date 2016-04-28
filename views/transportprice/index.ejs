@@ -1,0 +1,61 @@
+<script type='text/javascript'>
+	window.locations = <%- JSON.stringify(locations) %>;
+	window.zones = <%- JSON.stringify(zones) %>;
+	window.prices = <%- JSON.stringify(prices) %>;
+</script>
+<div ng-controller='transportPriceCTL' >
+
+	<p><button class="btn btn-primary" ng-click="modal = {}; location = {};" data-toggle="modal" data-target="#transportprice"><i class='fa fa-plus'></i><%= __('price') %> </button></p>
+	<br/>
+
+	<div class='row'>
+		<div class='col-sm-12'>
+			<div class="widgetcontent custom-table nopadding">
+                <table class="table table-striped">
+                    <tr class='hide-sm'>
+                        <th><%= __('order_name')%>          </th>
+                        <th><%= __('zone_from')%>           </th>
+                        <th><%= __('zone_to')%>             </th>
+                        <th><%= __('order-precio')%>        </th>
+                        <th><%= __('order_service_type')%>  </th>
+                        <th><%= __('order-editar') %>       </th>
+                    </tr>
+                    <tr ng-repeat="price in prices">
+                        <td data-title="<%= __('order_name')%>          "><span ng-bind="price.name"></span></td>
+                        <td data-title="<%= __('zone_from')%>           "><span ng-bind="price.zoneFrom.name"></span></td>
+                        <td data-title="<%= __('zone_to')%>             "><span ng-bind="price.zoneTo.name"></span></td>
+                        <td data-title="<%= __('order-precio')%>        "><span ng-bind="price.price"></span></td>
+                        <td data-title="<%= __('order_service_type')%>  "><span ng-bind="getTypeName(price.service_type)"></span></td>
+                        <td data-title="<%= __('order-editar') %>       "><a ng-click="edit(price)"><span class="table-icon fa fa-edit"></span></a></td>
+                    </tr>
+                </table>
+            </div>
+		</div>
+	</div>
+
+
+
+	<div class="clearfix"></div>
+
+    <!-- modals -->
+    <div class="modal fade" id="transportprice">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title"><%= __("price") %></h4>
+                </div>
+                <div>
+                    <form ng-class='formClass' class="form stdform stdform2" name="form">
+                        <%- partial('form') %>
+                        <p class="stdformbutton">
+                            <button ng-click='save()' class="btn btn-primary" ng-disabled="form.$invalid"><%= __('asign_save')%></button>
+                            <button type="reset" class="btn reset">Reset</button>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

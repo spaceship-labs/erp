@@ -69,7 +69,7 @@ app.controller('tourEditCTL',function($scope,$http,$window){
         hour : 0
     };
 
-    //console.log(tour);
+    console.log(tour);
     $scope.types = [ { id : 'single', name : 'por persona' },{ id : 'group',name : 'por grupo' } ];
     if (angular.isUndefined($scope.tour.departurePoints)) {
         $scope.tour.departurePoints = [];
@@ -97,6 +97,7 @@ app.controller('tourEditCTL',function($scope,$http,$window){
     $scope.saveClass = 'fa-save';
     $scope.extra_types = [
         { name : 'Hora extra', id : 'extra_hour' }
+        ,{ name : 'Transfer por pax', id : 'extra_transfer', type : 'transfer' }
     ];
     $scope.all_provider_locations = [];
 

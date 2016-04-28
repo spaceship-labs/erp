@@ -69,7 +69,7 @@
 				<timepicker ng-if='field.type == "time"' ng-model="object[field.handle]" hour-step="1" minute-step="1" show-meridian="ismeridian" id="{{getFieldId($index,field.handle)}}"></timepicker>
 
 				<span ng-if='field.type == "multi-select"'>
-					<span class='multi-tag' ng-repeat='obj in object[field.handle]'> {{obj.name}} <a href='' ng-click='removeRel(field,obj)'> x </a></span>
+					<span class='multi-tag' ng-repeat='obj in object[field.handle] track by obj.id'> {{obj.name}} <a href='' ng-click='removeRel(field,obj)'> x </a></span>
 				</span>
 				<select
 					chosen

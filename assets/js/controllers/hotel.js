@@ -21,6 +21,7 @@ app.controller('hotelCTL',function($scope,$http,$window,$rootScope){
 		block = true;
 		jQuery('#myModal input[type="submit"]').prop('disabled', true);
         $http({method: 'POST', url: '/hotel/create',data:$scope.newHotel}).success(function (result){
+            console.log(result);
             $window.location.href = '/hotel/edit/' + result.thehotel.id;
         });
 	}

@@ -12,17 +12,19 @@
             $scope.myView = view;
         };
         $scope.objects.forEach(function(object){
-            $scope.alphabetIndex.push(object.name[0].toUpperCase());
+            if(object && object.name)
+                $scope.alphabetIndex.push(object.name[0].toUpperCase());
         });
         $scope.currentLetter = $scope.alphabetIndex[0];
         $scope.objectFilter = function(obj){
+            var name = $scope.fieldName || 'name';
             if($scope.filter_by != 'name')
                 return true;
             if($scope.currentLetter && !$scope.searchInput){
-                return $scope.currentLetter == obj.name[0].toUpperCase();
+                return $scope.currentLetter == obj[name][0].toUpperCase();
             }else{
                 var regex = new RegExp('^'+$scope.searchInput,'i');
-                var name = obj.name;
+                var name = obj[name];
                 return name.match(regex);
             }
         };
@@ -32,6 +34,9 @@
 
         var getMore = function(skip){
             var params = { 'skip':skip , 'limit': 30 , 'sort' : 'name asc' };
+            if( $scope.objFilters )
+                for(var x in $scope.objFilters)
+                    params[x] = $scope.objFilters[x];
             console.log($scope.searchFind);
             if( $scope.searchFind && $scope.search_text_input != '' )
                 params.name = $scope.search_text_input;
@@ -58,10 +63,11 @@
             if(l) $scope.currentLetter = l;
         };
         $scope.$watch('objects',function(){
+            var name = $scope.fieldName || 'name';
             $scope.alphabetIndex = [];
             if($scope.objects)
                 $scope.objects.forEach(function(object){
-                    $scope.alphabetIndex.push(object.name[0].toUpperCase());
+                    $scope.alphabetIndex.push(object[name][0].toUpperCase());
                 });
             $scope.currentLetter = $scope.alphabetIndex[0];
         });
@@ -70,6 +76,7 @@
             if( $scope.getUrl ) getMore(0);
         });
         $scope.$watch('filter_by',function(newV, oldV){
+            console.log($scope.objects);
             if(newV == 'name'){
                 $scope.objects = objectDefaultsFilterByName;
                 $scope.totalItems = 4;
@@ -89,6 +96,7 @@
         	controller : controller,
         	scope : {
         		objects : '=',
+                objFilters : '=',
                 searchInput : '=',
                 dir : '@',
                 editUrl : '@',
@@ -99,6 +107,7 @@
                 typeImport : '@',
                 typeExport : '@',
                 typeExportText : '@',
+                fieldName: '@',//si no tiene campo name
                 searchFind : '=',//para agregar un buscador y afectar el getMore()
                 lang: '@',
                 getUrl : '@' // para la paginación del alfabeto, en caso de no tenerlo tampoco afecta

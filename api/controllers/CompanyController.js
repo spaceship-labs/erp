@@ -10,9 +10,10 @@ anchor = require('anchor');
 module.exports = {
 	index: function(req,res){
 		Currency.find().exec(function(err,currencies){
-			Company.find().populate('base_currency').exec(function(err,companies){
+			//Company.find().populate('base_currency').exec(function(err,companies){
 				Common.view(res.view,{
 					apps : sails.config.apps
+                    ,isAgencies : true
 					,currencies:currencies || []
 					,page:{
 						name:req.__('sc_companies')
@@ -20,9 +21,25 @@ module.exports = {
 						,controller : 'company.js'
 					}
 				},req);
-			});
+			//});
 		});
-	}, find : function(req,res){
+	}, providers : function(req,res){
+        Currency.find({ company_type : { '!' : 'transport' } }).exec(function(err,currencies){
+            //Company.find().populate('base_currency').exec(function(err,companies){
+                Common.view(res.view,{
+                    apps : sails.config.apps
+                    ,select_view: 'company/index'
+                    ,isAgencies : false
+                    ,currencies:currencies || []
+                    ,page:{
+                        name:req.__('sc_companies')
+                        ,icon:'fa fa-building'
+                        ,controller : 'company.js'
+                    }
+                },req);
+            //});
+        });
+    }, find : function(req,res){
         var params = req.params.all();
         var skip = params.skip || 0;
         var limit = params.limit || 200;
@@ -56,7 +73,7 @@ module.exports = {
         Currency.find().exec(function(err, currencies){
             Company.findOne({id:id}).populate('users').populate('hotels').populate('taxes').populate('currencies').exec(function(err,company){
                 //if(err) throw err;
-                console.log(company);
+                //console.log(company);
 		if(err || !company) return res.notFound();
                 User.find().exec(function(err,users){
                     Hotel.find().exec(function(err,hotels){
@@ -180,7 +197,10 @@ module.exports = {
 		});
 	}
     ,update : function(req,res) {
-        var form = Common.formValidate(req.params.all(),['id','name','address','zipcode','description','terms','footer', 'emails_contact', 'emails_billing']);
+        //console.log(req.params.all());
+        //var form = Common.formValidate(req.params.all(),['id','name','address','zipcode','description','terms','footer','company_type']);
+        var form = Common.formValidate(req.params.all(),['id','name','address','zipcode','description','terms','footer','company_type', 'emails_contact', 'emails_billing','base_currency']);
+        //console.log(form);
         Company.update({id : form.id},form).exec(function(err,company){
            if (err) {
                console.log(err);
@@ -286,6 +306,25 @@ module.exports = {
             });
         });
     },
+    gettransferprices : function(req,res){
+        var params = req.params.all();
+        Transferprices.getPricesbyCompany(params.company,params.transfer,params.type,function(err,prices){
+            if(err) return res.json(false);
+            res.json(prices);
+        });
+    },
+    checkpriceexist : function(req,res){
+        var params = req.params.all();
+        Transferprices.ifPriceExist(params,function(err,ifPrice){
+            res.json({err:err,result:ifPrice});
+        });
+    },
+    newprice : function(req,res){
+        var params = req.params.all();
+        Transferprices.newPrice(params,function(err,price){
+            res.json({err:err,result:price});
+        });
+    }
 };
 
 var update = {

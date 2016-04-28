@@ -1,0 +1,84 @@
+<p>
+    <label><%=__("location_from")%></label>
+    <span class="field">
+        <select 
+            ng-model='location.from'
+            ng-options="obj as obj.name for obj in locations"
+            ng-change="changeLocation('from')"
+            required
+            class='form-control' >
+        </select>
+    </span>
+</p>
+<p>
+    <label><%=__("location_to")%></label>
+    <span class="field">
+        <select 
+            ng-model='location.to'
+            ng-options="obj as obj.name for obj in locations"
+            required
+            ng-change="changeLocation('to')"
+            class='form-control' >
+        </select>
+    </span>
+</p>
+<p>
+    <label><%=__("zone_from")%></label>
+    <span class="field">
+        <select 
+            ng-model='modal.zoneFrom'
+            ng-options="obj.id as obj.name for obj in location.from.zones"
+            ng-change="getPrices()"
+            required
+            class='form-control' >
+        </select><!-- filter_zones.from -->
+    </span>
+</p>
+<p>
+    <label><%=__("zone_to")%></label>
+    <span class="field">
+        <select 
+            ng-model='modal.zoneTo'
+            ng-options="obj.id as obj.name for obj in location.to.zones"
+            ng-change="getPrices()"
+            required
+            class='form-control' >
+        </select> <!-- filter_zones.to -->
+    </span>
+</p>
+<p>
+    <label><%= __("order_service_type")%></label>
+    <span class="field">
+        <select 
+            ng-model='modal.service_type'
+            ng-options="obj.id as obj.name for obj in service_types"
+            ng-change="updatePrice()"
+            required
+            class='form-control' >
+        </select>
+    </span>
+</p>
+<p>
+    <label>Pax</label>
+    <span class="field">
+        <input type="number" ng-change="updatePrice()" ng-model="modal.pax" required>
+    </span>
+</p>
+<p>
+    <label><%=__("start_hour")%></label>
+    <span class="field">
+        <input type="time" ng-model="modal.start" required>
+    </span>
+</p>
+<p>
+    <label><%=__("end_hour")%></label>
+    <span class="field">
+        <input ng-class="{'has-error': error.invalid_end}" type="time" ng-model="modal.end">
+    </span>
+</p>
+<p>
+    <label>Total</label>
+    <span class='field'>
+        <i>{{modal.fee}}</i>
+    </span>
+</p>

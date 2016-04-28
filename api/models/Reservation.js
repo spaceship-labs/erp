@@ -35,6 +35,8 @@ module.exports = {
 			model : 'hotel' }
 		,transfer : {
 			model : 'transfer' }
+        ,asign : {
+            model : 'transportasign' }
         ,transferprice : {
             model : 'transferprice' }
         ,state : {
@@ -61,9 +63,13 @@ module.exports = {
             type:'string',
             enum : ['round_trip','one_way']
         }
+        /* 
+            Diferentes tipos de reservaciones 
+            transfer_tour -> transfer dirigido a un tour, por lo tanto no hay airport ni transfer ni transferprice
+        */
         ,reservation_type : {
             type:'string',
-            enum : ['tour','hotel','transfer']
+            enum : ['tour','hotel','transfer','transfer_tour']
         }
         ,fee : { //precio de adultos a cobrar
             type : 'float',
@@ -87,6 +93,7 @@ module.exports = {
         ,pax : 'integer'
         ,kidPax : 'integer'
 
+        ,pickup_time : 'datetime'
         ,arrival_date : 'date'
         ,arrival_fly : 'string'
         ,arrival_time : 'datetime'
@@ -124,11 +131,12 @@ module.exports = {
         }
         ,service_type : {
             type:'string',
-            enum : ['C','P','D'] //c=colectivo , p=privado , d=directo
+            enum : ['C','P','D','G','B'] //c=colectivo , p=privado , d=directo, g=group, b=bshare
         }
         ,reservation_status : {
             type:'string',
-            enum : ['C','N','M'] //c=cancelado , p=nuevo , d=modificado
+            enum : ['C','N','M','P'] //c=cancelado , p=nuevo , d=modificado
+            ,defaultsTo : 'P'
         }
         ,transfer_type : {
             type:'string',
@@ -152,6 +160,7 @@ module.exports = {
         }
         ,notes : 'string'
         ,cancelationDate : 'date'
+        ,no_show : 'boolean'
         //la idea es que prices tenga la referencia a los precios usados en la creacion de esta reserva , independientemente de que objeto vengan , tour , transfer , cupon , etc.
         ,prices : {
             collection : 'price',

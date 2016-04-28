@@ -64,10 +64,10 @@ module.exports = {
 			async.mapSeries( zones, function(zone,theCB){
 				if( zone.location ){
 					zone.locations.add(zone.location.id);
-					console.log(zone.locations);
 					zone.save( theCB );
-				}else
+				}else{
 					theCB(false,zone);
+				}
 			},function(err,results){
 				res.json({ err : err, results : results });
 			});

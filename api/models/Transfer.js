@@ -30,6 +30,10 @@ module.exports = {
     ,service_type :{
       type : 'string'
       ,enum : ['C','P','D'] //c=colectivo , p=privado , d=directo
+    },
+    transporttypes:{
+        collection: 'transportType',
+        via: 'transfers'
     }
   }
   ,labels : { es : 'Traslados', en : 'Transfers' }

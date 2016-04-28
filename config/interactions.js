@@ -262,5 +262,7 @@ module.exports.interactions = {
     }
     ,'yellow-transfers' : {
         mkp : true
+    },'americanada' : {
+        operaciones : true //este flag es para manejar precios de proveedores de transporte
     }
 };

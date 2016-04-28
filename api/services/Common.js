@@ -46,7 +46,12 @@ module.exports.view = function(view,data,req){
 	Company.findOne(data.selected_company).populate('base_currency').populate('currencies').exec(function(e,company){
         if (e) console.log(e);
 		data.selected_company = company;
-		view(data);
+        if(data.select_view){
+    		view(data.select_view, data);
+        }else{
+            view(data);
+        }
+        
 	});
 };
 module.exports.customContent = function(interactions){
@@ -313,8 +318,13 @@ module.exports.getItemById = function(id,objectArray){
 				return objectArray[x];
 	return r;
 };
-
-
+module.exports.getIndexById = function(id,objectArray){
+	if( objectArray && objectArray.length > 0 )
+		for(var x in objectArray)
+			if( objectArray[x].id == id )
+				return x;
+	return -1;
+};
 module.exports.clearText = function(model, id, key, next) {
     model.findOne({id: id}).exec(function(err, data) {
         //console.log(err, data);
@@ -343,4 +353,3 @@ module.exports.clearTextAll = function(model, find, key){
         });
     });
 };
-

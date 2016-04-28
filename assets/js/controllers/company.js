@@ -1,9 +1,21 @@
 app.controller('companyCTL',function($scope,$http,$rootScope){
     $scope.companies = [];
+    $scope.objFilters = {};
+    /*if( window.isAgencies )
+        $scope.objFilters = { company_type : 'agency' };
+    else
+        $scope.objFilters = { company_type : 'provider' };*/
+    $scope.objFilters = {  };
+        
     $scope.content = content;
     $scope.currencies = currencies;
     $scope.company = selected_company;
     $scope.user = user;
+    $scope.company_types = [
+        { id:'agency', name:'Agencia' },
+        { id:'provider', name:'Transportista' },
+        { id:'agency_provider', name : "Agencia y Transportista" }
+    ];
     //$scope.apps = apps;
 
     $scope.getInfo = function(company){
@@ -42,15 +54,17 @@ app.controller('companyEditCTL',function($scope,$http,$timeout){
     $scope.newTaxClass = 'fa-plus';
     $scope.isCollapseObj = {};
     $scope.locations = [];
+    $scope.services = [];
     $scope.exchangerates = $scope.mycompany.exchange_rates || {};
-    console.log(mycompany);
+    //$scope.mycompany.company_type = mycompany.company_type || 'agency';
+    console.log('mycompany',$scope.mycompany);
     $scope.actualCurrency = $scope.mycompany.base_currency || $scope.company.base_currency;
     $scope.messages = {
         tour : { show : false , m : '' , message_add : "Nuevo Tour agregado al catálogo: " , message_rm : 'Tour eliminado del catálogo: ' , item_name : '' , type : 'success' }
         ,transfer : { show : false , m : '' , message_add : "Nuevo Servicio agregado al catálogo: " , message_rm : 'Servicio eliminado del catálogo: ' , item_name : '' , type : 'success' }
         ,hotel : { show : false , m : '' , message_add : "Nuevo Hotel agregado al catálogo: " , message_rm : 'Hotel eliminado del catálogo: ' , item_name : '' , type : 'success' }
-
     };
+    $scope.company_types = [{id:'agency',name:'Agencia'},{id:'provider',name:'Transportista'},{ id:'agency_provider', name : "Agencia y Transportista" }];
     var setMessage = function(section,action,name,alertType,show){
         if(show){
             $scope.messages[section].m = action=='add'?$scope.messages[section].message_add:$scope.messages[section].message_rm;
@@ -205,13 +219,13 @@ app.controller('companyEditCTL',function($scope,$http,$timeout){
             ,agency : $scope.mycompany.id
         };
         if( type == 'transfer' )
-            params.location = $scope.thelocation;
+            params.location = $scope.thelocation.id;
         console.log('companyproduct');
         console.log(params);
         $http({method: 'POST', url: '/companyproduct/find',data:params}).success(function(result){
             $scope[spVar] = result;
-            //console.log('products: ' + type);
-            //console.log(result);
+            console.log('products: ' + type);
+            console.log(result);
         });
     };
     $scope.getProducts('tour','tours',0);
@@ -242,6 +256,11 @@ app.controller('companyEditCTL',function($scope,$http,$timeout){
             return response.data.results.map(function(item){ return item; });
         });
     };
+    $scope.getZones = function(val){
+        return $http.get('/zone/find', { params: { name: val } }).then(function(response){
+            return response.data.result.map(function(item){ return item; });
+        });
+    };
     $scope.saveTransferPrice = function(data,price){
         angular.extend(data, { id : price });
         return $http.post('/transferprice/updatePrice', data);
@@ -256,6 +275,11 @@ app.controller('companyEditCTL',function($scope,$http,$timeout){
             return response.data.results.map(function(item){ return item; });
         });
     };
+    $scope.getCompanies = function(val){
+        return $http.get('/company/find', { params: { name: val } }).then(function(response){
+            return response.data.results.map(function(item){ return item; });
+        });
+    };
     $scope.updateTourPrices = function(){
         var params = $scope.tourF;
         if(params.tlocation) params.tlocation = params.tlocation.id;
@@ -266,17 +290,15 @@ app.controller('companyEditCTL',function($scope,$http,$timeout){
     };
     $scope.getLocations = function(){
         $http({method: 'POST',url:'/location/customfind',params:{}}).success(function(results){
-            console.log('results get locations');
-            console.log(results);
+            console.log('results get locations',results);
             $scope.locations = results.results;
             for(var x in $scope.locations)
-                if( $scope.locations[x].url_title == 'cancun' ) $scope.thelocation = $scope.locations[x].id;
+                if( $scope.locations[x].name == 'Cancún' || $scope.locations[x].name == 'Cancun' ) $scope.thelocation = $scope.locations[x].id;
             if( ! $scope.thelocation )
-                $scope.thelocation = $scope.locations[0];
+                $scope.thelocation = $scope.locations[0].id;
             $scope.getProducts('transfer','transfers',0);
         });
-    }
-    $scope.getLocations();
+    };
 
     $scope.add_currency = function(){
         if($scope.select_currency){
@@ -301,5 +323,99 @@ app.controller('companyEditCTL',function($scope,$http,$timeout){
                                 });
         }
     
+    };
+    $scope.getServices = function(){
+        $http({method: 'POST',url:'/transfer/find',params:{}}).success(function(results){
+            //console.log('services',results);
+            $scope.services = results.results;
+            $scope.theService = $scope.services[0];
+            $scope.getTransferPrices('agency');$scope.getTransferPrices('provider');
+        });
+    };
+    $scope.getLocations();
+    $scope.getServices();
+    $scope.TransferPricesAgency = [];
+    $scope.TransferPricesProvider = [];
+    $scope.getTransferPrices = function(type){
+        //thelocation => id
+        //theService => theService.id
+        if( $scope.thelocation && $scope.theService ){
+            var params = { 
+                location : $scope.thelocation  //id
+                ,transfer : $scope.theService //obj
+                ,company : $scope.mycompany //obj
+                ,type : type //price type : agency / provider
+            };
+            console.log('get prices params',params);
+            $http({method: 'POST', url: '/company/gettransferprices',data:params}).success(function(result){
+                console.log('get prices',result);
+                if( type == 'agency' )
+                    $scope.TransferPricesAgency = result;
+                else
+                    $scope.TransferPricesProvider = result;
+            });
+        }
+    };
+    $scope.newPriceAlreadyExist = true;
+    //Falta incluir el tipo de precio en esta verificación
+    $scope.checkExist = function(price){
+        if( price.zone1 && price.zone2 && price.transfer ){
+            price.company = $scope.mycompany;
+            var params = { zone1 : price.zone1.id, zone2 : price.zone2.id, transfer : price.transfer , company : $scope.mycompany };
+            if( price.type && price.type != '' )
+                params.type = price.type;
+            $http({method: 'POST', url: '/company/checkpriceexist',data:params}).success(function(result){
+                console.log('if exist',result);
+                if(result.err)
+                    $scope.newPriceAlreadyExist = true;
+                else
+                    $scope.newPriceAlreadyExist = result.result;
+            });
+        }
+    };
+    $scope.newPrice = function(price){
+        if( !$scope.newPriceAlreadyExist && price.zone1 && price.zone2 && price.transfer ){
+            var params = { 
+                zone1 : price.zone1.id 
+                ,zone2 : price.zone2.id 
+                ,location : price.zone1.location || price.zone2.location 
+                ,location2 : price.zone2.location || false 
+                ,transfer : price.transfer 
+                ,company : $scope.mycompany 
+                ,active : true 
+                ,one_way : price.one_way||0
+                ,round_trip : price.round_trip||0
+                ,commission_agency : price.commission_agency||0
+                ,one_way_child : price.one_way_child||0
+                ,round_trip_child : price.round_trip_child||0
+            };
+            if($scope.mycompany.company_type!='agency_provider')
+                params.type = $scope.mycompany.company_type;
+            else
+                params.type = price.type;
+            $http({method: 'POST', url: '/company/newprice',data:params}).success(function(result){
+                console.log('new price',result);
+                var np = result.result;
+                if( np ){
+                    if( np.transfer.id == $scope.theService.id && ( np.location.id == $scope.thelocation || np.location2.id == $scope.thelocation ) ){
+                        if( np.type == 'agency' )
+                            $scope.TransferPricesAgency.push(np);
+                        else if( np.type == 'provider' )
+                            $scope.TransferPricesProvider.push(np)
+                    }
+                }
+            });
+        }
+    };
+    $scope.saveAll = function(){
+        var obj = {
+            id : $scope.mycompany.id
+            ,parentCompany : $scope.mycompany.parentCompany
+            ,gasomatic : $scope.mycompany.gasomatic
+            ,comision : $scope.mycompany.comision
+        };
+        $http({method: 'POST', url: '/company/update',params:obj}).success(function(company){
+            console.log('company',company);
+        });
     }
 });

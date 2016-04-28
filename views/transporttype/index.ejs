@@ -1,0 +1,38 @@
+<script type='text/javascript'>
+    window.transports = <%- JSON.stringify(transports) %>;
+    window.transporttypes = <%- JSON.stringify(types) %>;
+    window.transfers = <%- JSON.stringify(transfers) %>;
+    window.content = <%- JSON.stringify(_content) %>;
+</script>
+<div ng-controller="transporttypeCTL">
+    <div directory-listing objects='transporttypes' 
+        searchInput='searchInput' 
+        dir='transporttype' 
+        edit-url='/transporttype/edit/' 
+        get-info='getInfo' 
+        button-text="<%= __('addtransporttype') %>" 
+        button-text-import='<%= __('import') %>' 
+		type-import='transporttype'
+        get-url="/transporttype/find/"  
+        lang='<%=req.session.lang || "en"%>' 
+    ></div>
+	<div class="modal fade" id="myModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div 
+					form-helper 
+			        fields='content.transporttype' 
+			        form-footer='Agregar'
+                    action="/transporttype/create"
+			        object = 'newcompany'
+			        form-title='<%= __('addtransporttype') %>'
+                    form-save='save'
+			       	modal='true'
+			       	objects='{transports:transports, transfers:transfers}'
+			        >
+			    </div>	
+			</div>
+		</div>
+	</div>
+
+</div>

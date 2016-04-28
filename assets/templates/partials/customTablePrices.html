@@ -1,0 +1,14 @@
+<div class="customMessages">
+	<div class='c-message' ng-repeat="m in messages" ng-show="m.show">
+		<div class='box-container {{m.type}}'>
+			<p><span ng-bind="m.message"></span> <span ng-bind="m.xmessage"></span></p>
+			<p>{{getExtraMessage(m)}}</p>
+			<p>
+				<span ng-if="m.buttons">
+					<a ng-repeat="b in m.buttons" ng-click='b.action' ng-bind="b.label"></a>
+				</span>
+				<a ng-if="!m.buttons" class='btn btn-primary' ng-click="closethis(m)">Ok</a>
+			</p>
+		</div>
+	</div>
+</div>

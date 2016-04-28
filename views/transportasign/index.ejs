@@ -1,0 +1,157 @@
+<script type='text/javascript'>
+  window.all_companies = <%- JSON.stringify(companies) %>;
+  window.all_vehicles = <%- JSON.stringify(all_vehicles) %>;
+  window.current_lang = <%- JSON.stringify(req.session.lang) %>;
+  window.view_type = <%- JSON.stringify(type) %>;
+  window.locations = <%- JSON.stringify(locations) %>;
+  window.theuser = <%- JSON.stringify(req.user) %>;
+  console.log(window.theuser);
+</script>
+<div ng-controller="transportAsignCTL" class='ng-cloak' ng-cloak>
+    <div class='row'>
+        <div class="col-sm-6 col-md-6 col-xs-12">
+            <a class="btn btn-primary pull-right full-sm" data-toggle="modal" data-target="#importmodal"><i class="fa fa-upload"></i>Importar</a>
+            <a href="/TransportAsign/exportOperation" class='btn btn-primary pull-right full-sm'><i class='fa fa-download'></i> Exportar</a>
+        </div>
+    </div>
+    <br>
+    <div class='row'>
+        <div class="col-sm-6 col-md-6 col-xs-12">
+            <a class='btn btn-primary' ng-click="filterDate('prev')">Anterior</a>
+            <a class='btn btn-primary' ng-click="filterDate('today')">Hoy</a>
+            <a class='btn btn-primary' ng-click="filterDate('next')">Siguiente</a>
+            <a>{{formatDate(theDate,'DD/MM/YYYY')}}</a>
+        </div>
+        <div class="textbutton col-sm-6 col-md-6 col-xs-12">
+            <span uib-dropdown class='dropdown pull-right full-sm'>
+                <a uib-dropdown-toggle class='btn btn-primary full-width'><i class='fa fa-filter'></i> <%= __('gral_filters')%></a>
+                <ul role='menu' class='dropdown-menu'>
+                    <li ng-repeat="f in filtersArray">
+                        <a ng-click="openFilter(f)" ng-class='!f.active?"inactive":""'>{{f.label}}</a>
+                    </li>
+                </ul>
+            </span>
+            <a ng-click='resetFilter()' class='btn btn-primary pull-right full-sm'><i class='fa fa-refresh'></i> <%= __('gral_reset')%></a>
+        </div>
+    </div>
+    <%- partial('../order/partial/filters') -%> 
+    <div class='row'>
+        <div class='col-md-6'>
+            <h4 class='widgettitle'>Reservaciones asignadas</h4>
+            <ul class='orderListing' ng-repeat="(key,asigned) in reservations.asigned">
+                <li class='l-row l-separator'>{{key}}</li>
+                <li class='l-row' ng-class="x.isNew?'isNew':''" ng-repeat="x in asigned | orderBy:sortByDateHr:false">
+                    <p> Transportista : <span ng-bind="getName('company',x.asign.company)"></span></p>
+                    <p>
+                        <span ng-if="x.asign.vehicle_arrival">Vehículo(llegada): <span ng-bind="getName('vehicle',x.asign.vehicle_arrival)"></span></span>  
+                        <span ng-if="x.asign.vehicle_departure">Vehículo(salida): <span ng-bind="getName('vehicle',x.asign.vehicle_departure)"></span></span> 
+                    </p>
+                    <p> 
+                        <i class="{{getIcon(x)}}"></i> <span ng-bind="getDateHr(x,false)"></span> 
+                        | <span ng-bind="x.company.name"></span>, <span ng-bind="x.transfer.name"></span>
+                        | <span ng-bind-html="getArrivalDepartureAsigned(x) | to_trusted"></span>
+                    </p>
+                    <p>Hotel: <strong ng-bind="x.hotel.name"></strong> ( <span ng-bind="x.pax"></span> pax ) </p>
+                    <% if (req.user.company.adminCompany) { %>
+                    <a ng-click="openAssign(x)" class='listAction btn btn-primary'>Editar</a>
+                    <% } %>
+                </li>
+            </ul>
+        </div>
+        <div class='col-md-6'>
+            <h4 class='widgettitle'>Reservaciones sin asignar</h4>
+            <ul class='orderListing' ng-repeat="(key,notAsigned) in reservations.notAsigned">
+                <li class='l-row l-separator'>{{key}}</li>
+                <li class='l-row' ng-repeat="x in notAsigned | orderBy:sortByDateHr:false">
+                    <p>
+                        <i class="{{getIcon(x)}}"></i> <span ng-bind="getDateHr(x,false)"></span> 
+                        | <span ng-bind="x.company.name"></span>, <span ng-bind="x.transfer.name"></span>
+                        | <span ng-if="x.type=='round_trip'" ng-bind-html="getArrivalDepartureAsigned(x) | to_trusted"></span>
+                    </p>
+                    <p>Hotel: <strong ng-bind="x.hotel.name"></strong> ( <span ng-bind="x.pax"></span> pax ) </p>
+                    <% if (req.user.company.adminCompany) { %>
+                    <a ng-click="openAssign(x)" class='listAction btn btn-primary'>Asignar</a>
+                    <% } %>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+    <!--<div 
+        ui-calendar="uiConfig.calendar" 
+        class="span9 calendar" 
+        ng-model="eventSources" 
+        calendar="myCalendar" 
+        id="mainCalendar"
+    ></div>-->
+    <% if (req.user.company.adminCompany) { %>
+    <!-- modal create -->
+    <div class="modal fade" id="select-transport">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title"><%= __("asign") %> {{modal.day}}</h4>
+                </div>
+                <div>
+                    <form ng-class='formClass' class="form stdform stdform2" name="form">
+                        <% if(type == 'asign'){ %>
+                            <%- partial('form_asign') %>
+                        <% }else{ %>
+                            <%- partial('form_request') %>
+                        <% } %>
+                        <p class="stdformbutton">
+                            <button ng-click='save()' class="btn btn-primary" ng-disabled="form.$invalid"><%= __('asign_save')%></button>
+                            <button type="reset" class="btn reset">Reset</button>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- modal update -->
+    <div class="modal fade" id="select-transport-update">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title"><%= __("asign_update") %> Folio #{{modal.folio}} </h4>
+                </div>
+                <div>
+                    <form ng-class='formClass' class="form stdform stdform2" name="form">
+                        <%- partial('form_asign') %>
+                        <p class="stdformbutton">
+                            <button ng-click='newUpdate()' class="btn btn-primary" ng-disabled="form.$invalid"><%= __("asign_update") %></button>
+                            <button ng-click='cancel()' class="btn reset"> <%=__("gral_cancel") %></button>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <% } %>
+
+    <div id='popup_overlay' class='ng-hide ng-cloak' ng-hide="!alertMessage.show"></div>
+    <div id='popup_container' class='alert-warning ng-hide ng-cloak' ng-class="alertMessage.classType" ng-hide="!alertMessage.show">
+        <h1 id="popup_title">{{alertMessage.title || 'Error en la orden'}}</h1>
+        <div id="popup_content" class="alert" ng-show="alertMessage.show" >
+            <div id="popup_message" ng-bind="alertMessage.message"></div>
+            <div id="popup_panel">
+                <a ng-repeat="b in alertMessage.buttons" ng-click="b.action()" id="" class='btn btn-primary' ng-bind="b.label"></a>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="importmodal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Importar operación</h4>
+                </div>
+                <div import-files import-type='reservation' url='/order/edit/' upload-url="/transportAsign/importoperation" ></div>
+            </div>
+        </div>
+    </div>
+    <%- partial('../order/partial/cvsForm') -%>
+</div>

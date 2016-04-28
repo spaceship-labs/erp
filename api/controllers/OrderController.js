@@ -6,6 +6,8 @@
  */
 var async = require('async');
 var fs = require('fs');
+var phantom = require('phantom');
+//Promise = require('es6-promise').Promise;
 module.exports = {
   /*
     VISTAS
@@ -39,7 +41,7 @@ module.exports = {
     },req);
   },
   edit : function(req,res){
-    console.log( req.params.all() );
+    //console.log( req.params.all() );
     Order.findOne( req.params.id ).populate('reservations').populate('claims').populate('lostandfounds').exec(function(err,order){ Company.findOne(order.company).populate('currencies').populate('base_currency').exec(function(c_err,ordercompany){
       Reservation.find({ order : req.params.id })
       .populate('hotel').populate('tour').populate('airport').populate('client')
@@ -109,10 +111,48 @@ module.exports = {
       });
     });
   },
-  reportcustom : function(req,res){
+  reportcustom : function(req,res,next){
+    res.header('Content-disposition', 'attachment; filename=file.pdf');
+    res.header('Content-type', 'application/pdf');
+    res.download('/uploads/file.pdf');
+    res.end();
+    /*var expectedContent = '<html><body><div>Test div</div></body></html>';
+    phantom.create().then(function(ph) {
+      console.log('create');
+        ph.createPage().then(function(page) {
+          console.log('create page');
+          page.open('http://google.com').then(function(){
+          //page.setting('content',expectedContent).then(function(){
+            console.log('OPEN');
+          });
+          page.property('onLoadFinished').then(function() {  
+          //page.setting('content',expectedContent).then(function(){
+            console.log('LOAD');
+            var file = __dirname+'/../../assets/uploads/file.pdf';
+            var filemin = '/uploads/file.pdf';
+            page.render(file,{format:'pdf'}).then(function(x){
+            //page.property('content').then(function(content) {
+                ph.exit();
+                console.log('render',x);
+                res.header('Content-disposition', 'attachment; filename=file.pdf');
+                res.header('Content-type', 'application/pdf');
+                res.download(filemin);
+                res.end();
+              //});
+            });
+          });//on load
+        });
+    });*/
+  },
+  reportcustom_ : function(req,res){
     var params = req.params.all();
     if( params.type ){
-      var fields = formatFilterFields(params.fields);
+      //console.log('COOKIES',JSON.parse(req.cookies.filters));
+      //var fields = formatFilterFields(params.fields);
+      if(req.cookies.filters && req.cookies.filters != '')
+        var fields = formatFilterFields(JSON.parse(req.cookies.filters));
+      else
+        var fields = {};
       if( ! req.user.isAdmin ){
         var c_ = [];
         for(c in req.user.companies ){
@@ -122,6 +162,7 @@ module.exports = {
         //console.log('companies');console.log(c_);
         fields.company = { "$in" : c_ };
       }
+      console.log('FIELDS 0:',fields)
       Reports.getReport(params.type,fields,function(results,err){
           res.json({ results : results , err : err });
       });
@@ -145,8 +186,8 @@ module.exports = {
         //{ $group : { _id : { id : '$_id',createdAt : '$createdAt',order:'$order'  },createdAt : { $push : '$createdAt' } } },{ $sort : { '_id.createdAt' : -1 } },
         reservation.aggregate([{ $match : fields },{$sort:{ createdAt : -1 }},{ $skip : skip } , { $limit : limit },{ $group : { _id : "$order" } } //,{ $skip : skip } , { $limit : limit }
         ],function(err,reservations){
-          console.log('reservations err',err);
-          console.log('reservations',reservations);
+          //console.log('reservations err',err);
+          //console.log('reservations',reservations);
           var ids = [];
           for(x in reservations){ ids.push( reservations[x]._id ); }
             reservation.aggregate([

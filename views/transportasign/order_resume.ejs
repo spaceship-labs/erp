@@ -1,0 +1,26 @@
+<div class="widgetbox paymentInformation {{fixedItem?'fixedItem':''}}" style="width:{{PIwidth}}">
+    <a class='cursorPointer' ng-click="customCart=!customCart">
+        <h5 class="widgettitle">Resumen de reservación <i ng-hide="customCartShow" ng-bind="', $' + theTotal"></i></h5>
+    </a>
+    <div uib-collapse="customCart"><div class="widgetcontent ">
+        <div ng-show="!modal.fee && reservations.tours.length==0 && reservations.hotels.length==0">
+            <h4>No hay reservas activas</h4>
+        </div>
+        <div ng-show="modal.fee || reservations.tours.length || reservations.hotels.length">
+            <div ng-if="modal.fee">
+                <h4><strong>Reserva de traslado</strong></h4>
+                <p>
+                    <span ng-bind="modal.transfer.transfer.name"></span> 
+                    <span ng-bind="modal.type=='round_trip'?' (Viaje redondo)':' (Viaje sencillo)'"></span> 
+                    <span ng-bind="' para ' + modal.pax + ' personas'"></span> 
+                    <span class='inblock' ng-hide="( modal.type=='one_way'&&modal.origin=='hotel' ) || !modal.arrival_date" ng-bind="'Fecha de llegada: ' + formatDate(modal.arrival_date)"></span>
+                    <span class='inblock' ng-hide="( modal.type=='one_way'&&modal.origin=='airport' ) || !modal.departure_date" ng-bind="'Fecha de Salida: ' + formatDate(modal.departure_date)"></span>
+                    <span class='price' ng-bind="'$'+modal.fee+' '+(generalFields.currency?generalFields.currency.currency_code:thecompany.base_currency.currency_code)"></span></p>
+            </div>
+            <hr>
+            <h4>TOTAL : $<span ng-bind="theTotal"></span></h4>
+            <hr>
+            <p><a class="btn btn-primary pull-right full-sm" ng-click="saveAll()"><i class='fa fa-save'></i> <%= __('order-reservar')%> </a></p>
+        </div>
+    </div></div>
+</div>

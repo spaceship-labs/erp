@@ -1,0 +1,236 @@
+<div class="widgetbox">
+    <h4 class='widgettitle'>Filtros:</h4>
+    <div class='widgetcontent'>
+        <div class='row' >
+            <div class="col-md-6">
+                <label>Ciudad</label>
+                <select class="form-control" 
+                    ng-change="getTransferPrices('agency');getTransferPrices('provider');" 
+                    ng-model="thelocation" 
+                    ng-options="obj.id as obj.name for obj in locations" ></select>
+            </div>
+            <div class="col-md-6">
+                <label>Servicio</label>
+                <select class="form-control" 
+                    ng-change="getTransferPrices('agency');getTransferPrices('provider');" 
+                    ng-model="theService" 
+                    ng-options="obj as obj.name for obj in services" ></select>
+            </div>
+        </div>
+    </div>
+</div>
+<div class='custom_inline_messages' ng-class="messages.transfer.alertType" ng-hide="!messages.transfer.show">
+    <p><span ng-bind="messages.transfer.m"></span> <strong ng-bind="messages.transfer.item_name"></strong></p>
+</div>
+<div class="widgetbox" ng-if="(mycompany.company_type=='agency'||mycompany.company_type=='agency_provider')&&TransferPricesProvider">
+    <h4 class='widgettitle'>Precios de Agencia</h4>
+    <div class='widgetcontent'>
+        <div class='row' >
+            <div class="col-md-12">
+                <h4 class='secondTittle' ng-bind="theService.name"></h4>
+                <table class='table'>
+                    <tr class='hide-sm'>
+                        <th>Zona</th>
+                        <th>Zona</th>
+                        <th>Comisión <br> agencia</th>
+                        <th ng-if="price.company.id==company.id">Comisión <br> vendedor</th>
+                        <th>Sencillo <br> adultos</th>
+                        <th>Redondo <br> adultos</th>
+                        <th>Sencillo<br> menores</th>
+                        <th>Redondo<br> menores</th>
+                        <th>Activo</th>
+                        <th>Editar</th>
+                        <th>Borrar</th>
+                    </tr>
+                    <tr ng-repeat='price in TransferPricesAgency'>
+                        <td>{{price.zone1.name}}</td>
+                        <td>{{price.zone2.name}}</td>
+                        <td>
+                        <span 
+                            editable-text='price.commission_agency'
+                            e-name='commission_agency'
+                            e-form='rowform'
+                            >{{price.commission_agency || 0 }} %</span>
+                        </td>
+                        <span ng-if="price.company.id==company.id"
+                            editable-text='price.commission_user'
+                            e-name='commission_user'
+                            e-form='rowform'
+                            >{{price.commission_user || 0 }} %</span>
+                        </td>
+                        <td><span 
+                            editable-text='price.one_way'
+                            e-name='one_way'
+                            e-form='rowform'
+                        >{{price.one_way || 0 }} {{actualCurrency.currency_code}}</span></td>
+                        <td><span 
+                            editable-text='price.round_trip'
+                            e-name='round_trip'
+                            e-form='rowform'
+                        >{{price.round_trip || 0 }} {{actualCurrency.currency_code}}</span></td>
+                        <td><span 
+                            editable-text='price.one_way_child'
+                            e-name='one_way'
+                            e-form='rowform'
+                        >{{price.one_way || 0 }} {{actualCurrency.currency_code}}</span></td>
+                        <td><span 
+                            editable-text='price.round_trip_child'
+                            e-name='round_trip'
+                            e-form='rowform'
+                        >{{price.round_trip || 0 }} {{actualCurrency.currency_code}}</span></td>
+                        <td><span 
+                            editable-checkbox='price.active'
+                            e-name='active'
+                            e-form='rowform'
+                        ><i class="active-i fa {{price.active?'active fa-check-square-o':'fa-square-o'}}"></i></span></td>
+                        <td>
+                            <form editable-form name="rowform" onbeforesave="saveTransferPrice($data,price.id)" ng-show="rowform.$visible" class="form-buttons form-inline" >
+                              <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
+                                <%= __('tranferprice-guardar')%>
+                              </button>
+                              <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default">
+                                <%= __('tranferprice-cancelar')%>
+                              </button>
+                            </form>
+                            <div class="buttons" ng-show="!rowform.$visible">
+                              <button class="btn btn-primary" ng-click="rowform.$show()"><%= __('tranferprice-editar')%></button>
+                            </div>
+                        </td>
+                        <td>
+                            <button class='btn btn-primary' ng-click="deletePrice(price)"><i class="fa fa-times"></i></button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<% if ( interactions.operaciones ) {%>
+<div class="widgetbox" ng-if="(mycompany.company_type=='provider'||mycompany.company_type=='agency_provider')&&TransferPricesProvider">
+    <h4 class='widgettitle'>Precios de Proveedor</h4>
+    <div class='widgetcontent'>
+        <div class='row' >
+            <div class="col-md-12">
+                <h4 class='secondTittle' ng-bind="theService.name"></h4>
+                <table class='table'>
+                    <tr class='hide-sm'>
+                        <th>Zona</th>
+                        <th>Zona</th>
+                        <th>Comisión <br> agencia</th>
+                        <th ng-if="price.company.id==company.id">Comisión <br> vendedor</th>
+                        <th>Sencillo <br> adultos</th>
+                        <th>Redondo <br> adultos</th>
+                        <th>Sencillo<br> menores</th>
+                        <th>Redondo<br> menores</th>
+                        <th>Activo</th>
+                        <th>Editar</th>
+                    </tr>
+                    <tr ng-repeat='price in TransferPricesProvider'>
+                        <td>{{price.zone1.name}}</td>
+                        <td>{{price.zone2.name}}</td>
+                        <td>
+                        <span 
+                            editable-text='price.commission_agency'
+                            e-name='commission_agency'
+                            e-form='rowform'
+                            >{{price.commission_agency || 0 }} %</span>
+                        </td>
+                        <span ng-if="price.company.id==company.id"
+                            editable-text='price.commission_user'
+                            e-name='commission_user'
+                            e-form='rowform'
+                            >{{price.commission_user || 0 }} %</span>
+                        </td>
+                        <td><span 
+                            editable-text='price.one_way'
+                            e-name='one_way'
+                            e-form='rowform'
+                        >{{price.one_way || 0 }} {{actualCurrency.currency_code}}</span></td>
+                        <td><span 
+                            editable-text='price.round_trip'
+                            e-name='round_trip'
+                            e-form='rowform'
+                        >{{price.round_trip || 0 }} {{actualCurrency.currency_code}}</span></td>
+                        <td><span 
+                            editable-text='price.one_way_child'
+                            e-name='one_way'
+                            e-form='rowform'
+                        >{{price.one_way || 0 }} {{actualCurrency.currency_code}}</span></td>
+                        <td><span 
+                            editable-text='price.round_trip_child'
+                            e-name='round_trip'
+                            e-form='rowform'
+                        >{{price.round_trip || 0 }} {{actualCurrency.currency_code}}</span></td>
+                        <td><span 
+                            editable-checkbox='price.active'
+                            e-name='active'
+                            e-form='rowform'
+                        ><i class="active-i fa {{price.active?'active fa-check-square-o':'fa-square-o'}}"></i></span></td>
+                        <td>
+                            <form editable-form name="rowform" onbeforesave="saveTransferPrice($data,price.id)" ng-show="rowform.$visible" class="form-buttons form-inline" >
+                              <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
+                                <%= __('tranferprice-guardar')%>
+                              </button>
+                              <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default">
+                                <%= __('tranferprice-cancelar')%>
+                              </button>
+                            </form>
+                            <div class="buttons" ng-show="!rowform.$visible">
+                              <button class="btn btn-primary" ng-click="rowform.$show()"><%= __('tranferprice-editar')%></button>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<% } %>
+<div class="widgetbox">
+    <h4 class='widgettitle'>Generar precio nuevo</h4>
+    <div class='widgetcontent'>
+        <div class='row' >
+            <div class="col-md-4">
+                <input type="text" class="form-control" 
+                    placeholder="Zona 1"
+                    ng-model="newPrice.zone1" 
+                    typeahead-editable='true'
+                    typeahead="obj as obj.name for obj in getZones($viewValue)" 
+                    typeahead-on-select="checkExist(newPrice)" >
+            </div>
+            <div class="col-md-4">
+                <input type="text" class="form-control" 
+                    placeholder="Zona 2"
+                    ng-model="newPrice.zone2" 
+                    typeahead-editable='true'
+                    typeahead="obj as obj.name for obj in getZones($viewValue)" 
+                    typeahead-on-select="checkExist(newPrice)" >
+            </div>
+            <div class="col-md-4">
+                <input type="text" class="form-control" 
+                    placeholder="Servicio"
+                    ng-model="newPrice.transfer" 
+                    typeahead-editable='true'
+                    typeahead="obj as obj.name for obj in getTransfers($viewValue)" 
+                    typeahead-on-select="checkExist(newPrice)" >
+            </div>
+        </div>
+        <br>
+        <form name="newPriceForm"><div class='row' >
+            <div class="col-md-2"><input class="form-control" placeholder="% Comisión" type="text" ng-model="newPrice.commission_agency" ></div>
+            <div class="col-md-2"><input class="form-control" placeholder="($) Sencillo" type="text" ng-model="newPrice.one_way" ></div>
+            <div class="col-md-2"><input class="form-control" placeholder="($) Redondo" type="text" ng-model="newPrice.round_trip" ></div>
+            <div class="col-md-2"><input class="form-control" placeholder="($) Sencillo" type="text" ng-model="newPrice.one_way_child" ></div>
+            <div class="col-md-2"><input class="form-control" placeholder="($) Redondo" type="text" ng-model="newPrice.round_trip_child" ></div>
+            <% if (interactions.operaciones ) {%>
+            <div class="col-md-2" ng-if="mycompany.company_type=='agency_provider'">
+                <select class='form-control' ng-change="checkExist(newPrice)" ng-model="newPrice.type" ng-options="obj for obj in ['agency','provider']" ></select>
+            </div>
+            <% } %>
+        </div></form>
+        <br>
+        <div class='row' >
+            <div class="col-md-4"><button ng-click='newPrice(newPrice)' class="btn btn-primary" ng-disabled="newPriceAlreadyExist">Crear precio</button></div>
+        </div>
+    </div>
+</div>

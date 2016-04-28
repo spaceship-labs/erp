@@ -11,6 +11,13 @@ module.exports = {
 		  type : 'string',
 		  required: true
 		}
+		,legal_name : 'string'
+		,company_type : {
+			type : 'string'
+			,enum : ['provider','agency','agency_provider']
+			,defaultsTo : 'agency'
+		}
+		,parentCompany : { model : 'company' }
 		,icon:'json'
 		,description:'string'
 		,address:'string'
@@ -54,6 +61,10 @@ module.exports = {
 			, via : 'agency'
 		}
 		,adminCompany : 'boolean'
+		/*Americanada variables*/
+		,local_iva : 'boolean'
+		,comision : 'integer'
+		,gasomatic : 'boolean'
 		,emails_contact: 'string'
 		,emails_billing: 'string'
 		,addApps : function(apps,cb){

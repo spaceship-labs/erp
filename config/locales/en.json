@@ -461,4 +461,26 @@
   , "fields-sort-by": "Sort by"
   , "filter-by": "Filter by"
   , "filter-by-none": "Not filter"
+
+  ,"transports" : "Transports"
+  ,"new_transport" : "New Transport"
+  , "add_transport":"Add Transport"
+  , "start_hour": "Start hour"
+  , "end_hour" : "End hour"
+  , "asign_update": "Update"
+  , "asign_save": "Save"
+  , "asign": "Asign"
+  , "request": "Request"
+  , "transport": "Transport"
+
+  , "price_zone": "Zone"
+  , "price":"Price"
+  , "location_from": "Location departure"
+  , "location_to": "Location arrival"
+  , "zone_from": "Zone departure"
+  , "zone_to": "Zone arrival"
+
+  ,"transporttype" : "Car Type"
+  ,"addtransporttype" : "Add Car Type"
+   
 }

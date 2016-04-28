@@ -1,0 +1,29 @@
+<script type='text/javascript'>
+  window.all_companies = <%- JSON.stringify(companies) %>;
+  window.current_lang = <%- JSON.stringify(req.session.lang) %>;
+  window.view_type = <%- JSON.stringify(type) %>;
+  window.locations = <%- JSON.stringify(locations) %>;
+</script>
+<div ng-controller="transportAsignCTL">
+    <div class='row'>
+        <div class='col-md-8'>
+            <div class='widgetbox'>
+                <h4 class="widgettitle"><i class="fa fa-car"></i> Servicio de transporte</h4>
+                <div class='widgetcontent nopadding'>
+                    <%- partial('inputsTransfer') -%>
+                </div>
+            </div>
+        </div>
+        <div class='col-md-4'><%- partial('order_resume') -%></div>
+    </div>
+    <div id='popup_overlay' class='ng-hide ng-cloak' ng-hide="!alertMessage.show"></div>
+    <div id='popup_container' class='alert-warning ng-hide ng-cloak' ng-class="alertMessage.classType" ng-hide="!alertMessage.show">
+        <h1 id="popup_title">{{alertMessage.title || 'Error en la orden'}}</h1>
+        <div id="popup_content" class="alert" ng-show="alertMessage.show" >
+            <div id="popup_message" ng-bind="alertMessage.message"></div>
+            <div id="popup_panel">
+                <a ng-repeat="b in alertMessage.buttons" ng-click="b.action()" id="" class='btn btn-primary' ng-bind="b.label"></a>
+            </div>
+        </div>
+    </div>
+</div>

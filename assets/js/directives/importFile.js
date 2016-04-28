@@ -7,7 +7,8 @@
             $scope.loading = true;
             $scope.imports = [];
             $scope.upload = $upload.upload({
-                url: '/importdata/upload',
+                url: $scope.uploadUrl || '/importdata/upload',
+                file: $files, 	                
                 file: $files,
                 data: {
                     removeHtmlTags: $scope.form.removeHtmlTags
@@ -63,7 +64,8 @@
             controller: controller,
             scope: {
                 importType: '@',
-                url:'@'
+                url:'@',
+                uploadUrl : '@'
             },
             templateUrl : '/templates/partials/importFiles.html'
         };

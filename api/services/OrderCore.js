@@ -6,7 +6,7 @@ module.exports.getCancelationMotives = function(){
 		,'Otros'
 	];
 	return result;
-}
+};
 /*
 	Create section 
 		create order
@@ -30,7 +30,7 @@ module.exports.createOrder = function(params, req , callback){
 };
 module.exports.createTransferReservation = function(params, defaultUserID, defaultCompany, callback){
 	Order.findOne(params.order).exec(function(e,theorder){
-		if(e) callback(e,false);
+		if(e) return callback(e,false);
 		params.hotel = params.hotel.id || params.hotel;
 	    params.state = params.state?(params.state.handle || params.state):'liquidated';
 	    params.payment_method = params.payment_method ? params.payment_method.handle||params.payment_method : 'creditcard';
@@ -40,18 +40,22 @@ module.exports.createTransferReservation = function(params, defaultUserID, defau
 	    delete params.id;
 	    theorder.company = theorder.company || defaultCompany;
 	    OrderCore.getCompanies(theorder.company,function(err,companies){
-	    	if(err) callback(err,false);
+	    	if(err) return callback(err,false);
 	    	params.folio = theorder.folio;
 	    	params.company = companies.company;
-      		params.currency = params.currency?params.currency.id:(params.company.base_currency?params.company.base_currency:companies.mainCompany.base_currency);
+      		params.currency = params.currency?params.currency.id||params.currency:(params.company.base_currency?params.company.base_currency:companies.mainCompany.base_currency);
       		OrderCore.getTransferPrice(params.transferprice.zone1,params.transferprice.zone2,params.transfer,companies.company.id,companies.mainCompany,function(err,prices){
-      			if(err) callback(err,false);
+      			if(err) return callback(err,false);
       			Exchange_rates.find().limit(1).sort({createdAt:-1}).exec(function(err,theExhangeRates){
       				if(err) cb(err,item);
 					theExhangeRates = theExhangeRates[0];
+					//console.log('prices');
+					//console.log(prices.price);
 	      			params.service_type = prices.price.transfer.service_type || 'C' ;
 	      			params.quantity = Math.ceil( params.pax / prices.price.transfer.max_pax );
 	          		params.fee = prices.price[params.type] * params.quantity;
+	          		//console.log(params.currency);
+	          		//console.log(companies.company.base_currency);
 	          		if( params.currency != companies.company.base_currency )
 	            		params.fee *= companies.company.exchange_rates[params.currency].sales;
 	            	//se guardan los precios que se están cobrando
@@ -63,9 +67,9 @@ module.exports.createTransferReservation = function(params, defaultUserID, defau
 						params.exchange_rate_sale = companies.company.exchange_rates[params.currency].sales;
 		            	params.exchange_rate_book = companies.company.exchange_rates[params.currency].book;
 					}else{
-						console.log(companies.mainCompany.name);
-						console.log(companies.mainCompany.exchange_rates);
-						console.log(params.currency);
+						//console.log(companies.mainCompany.name);
+						//console.log(companies.mainCompany.exchange_rates);
+						//console.log(params.currency);
 						params.exchange_rate_sale = companies.mainCompany.exchange_rates[params.currency].sales;
 		            	params.exchange_rate_book = companies.mainCompany.exchange_rates[params.currency].book;
 					}
@@ -272,7 +276,8 @@ module.exports.getCompanies = function(companyID,callback){
 			});
 		}
 	});
-}
+};
+module.exports.getOrdersReservation = function(){}
 /*
 	Prices section:
 		getAvailableTransfers
@@ -332,7 +337,7 @@ module.exports.getAvailableTransfers = function(zone1,zone2,company,callback){
 	- Este cupón aún no se ha usado como tal sino hasta que se cree la orden
 */
 module.exports.validateCupon = function( token, cb ){
-	console.log( 'token' + token );
+	//console.log( 'token' + token );
 	if( !token || typeof token == 'undefined' || ( token && token == '' ) ){
 		cb({msg:'no_token'},false,false);
 		return;

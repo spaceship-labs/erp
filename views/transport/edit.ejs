@@ -1,0 +1,33 @@
+<script type='text/javascript'>
+  window.show_companies = <%- JSON.stringify(show_companies) %>;
+  window.transport = <%- JSON.stringify(transport) %>;
+</script>
+
+<div ng-controller='transportEditCTL' class="editar-usuario ng-cloak">
+  <div class='row-fluid'>
+    <div class="span4 profile-left profileEdit">
+      <div class="alert alert-block unseen">
+        <button data-dismiss="alert" class="close" type="button">×</button>
+        <h4><%= __('user-mensaje')%></h4>
+        <p style="margin: 8px 0"><%= __('user-actualizado')%></p>
+      </div>
+      <div profile-image object='transport' update-method='/transport/updateIcon' delete-method='/transport/destroyIcon' image-attr='icon' dir='transports'></div>
+    </div>
+    <div class="span8">
+      <div form-helper
+            fields='content.transport'
+            object='transport'
+            action='/transport/update/<%=transport.id%>'
+            objects='{companies: companies, serviceTypes: serviceTypes}'
+            onchanges = "{'remove_invalid' : remove_invalid}"
+            form-title='<%= __("gral_basicInfo") %>'
+            hidden-fields='hiddenFields'>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div id="cargando-elementos" class="ng-cloak">
+  <img src="/images/loaders/images-cm.gif">
+</div>

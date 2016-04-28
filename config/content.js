@@ -1164,6 +1164,14 @@ module.exports.content = {
 			required : true,
 		},
 		{
+			label : 'Tipo de empresa'
+			,label_en : 'Company type'
+			,handle : 'company_type'
+			,type : 'select'
+			,required : true
+			,object : 'company_types'
+		},
+		{
 			label : 'Direccion',
 			label_en : 'Address',
 			handle : 'address',
@@ -2280,7 +2288,89 @@ module.exports.content = {
 			,object : 'unitytypes'
 			,handle : 'unitytype'
 		}
-	]
+	],
+	transport : [
+		{
+			label: 'ID',
+			label_en: 'ID',
+			type: 'text',
+			required: true,
+			handle: 'car_id',
+			on_Change: 'remove_invalid'
+		
+		},
+		{
+			label: 'Placa',
+			label_en: 'License plate',
+			type: 'text',
+			required: true,
+			handle: 'license_plate'
+		
+		},{
+			label: 'Modelo',
+			label_en: 'Model',
+			type: 'text',
+			required: true,
+			handle: 'car_model'
+		},
+		/*{
+			label 	: 'Personas por servicio',
+			label_en : 'People by service',
+			type 	: 'number',
+			required: true,
+			handle 	: 'max_pax'
+		},*/
+		{
+			label: 'Transportista',
+			label_en: 'Company',
+			type : 'select',
+			handle : 'company',
+			object : 'companies',
+			required : true,
+		},
+	],
+	transporttype : [
+		{
+			label: 'Nombre',
+			label_en: 'Name',
+			type: 'text',
+			required: true,
+			handle: 'name',
+		},
+		{
+			label: 'Pax',
+			label_en: 'Pax',
+			type: 'number',
+			required: true,
+			handle: 'pax'
+		
+		},
+		{
+			label: 'Tipo principal de translado',
+			label_en: 'Principal transfer Type',
+			type : 'select',
+			handle : 'transfer',
+			object : 'transfers',
+		},
+		{
+			label: 'Tipos de translado',
+			label_en: 'Transfer types',
+			type : 'multi-select',
+			handle : 'transfers',
+			object : 'transfers',
+			/*required : true,*/
+			removeAction : '/transporttype/remove_transfer',
+		},
+		{
+			label : 'Vehículos',
+			label_en : 'Vehicle',
+			type : 'multi-select',
+			handle : 'transports',
+			object : 'transports',
+			removeAction : '/transporttype/remove_transport',
+		},
+	],
+
 };
 
 //module.exports.content.transferprice = module.exports.content.price;
