@@ -13,7 +13,7 @@ app.controller('cuponCTL',function($scope,$http,$window){
         cupon.hotels = cupon.hotels || [];
         cupon.tours = cupon.tours || [];
         cupon.transfers = cupon.transfers || [];
-        $http({method: 'POST', url: '/cupon/create',params:cupon}).success(function(res){
+        $http({method: 'POST', url: '/cupon/create',data:cupon}).success(function(res){
             jQuery('#myModal').modal('hide');
             if(res && res.id){
                 console.log('redirect!');
