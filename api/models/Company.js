@@ -67,6 +67,7 @@ module.exports = {
 		,gasomatic : 'boolean'
 		,emails_contact: 'string'
 		,emails_billing: 'string'
+		,isActiveGlobalDiscount: 'boolean'
 		,addApps : function(apps,cb){
 			if(Array.isArray(apps)){
                 var cApps = this.apps || [];

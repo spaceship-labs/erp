@@ -154,11 +154,19 @@ app.controller('orderCTL',function($scope,$http,$window,$upload,$rootScope){
         var total = 0;
         if (order && order.reservations) {
             total = order.reservations.reduce(function(sum,reservation){
-                return sum + reservation.fee;
+                console.log(reservation);
+                return sum + (reservation.fee + reservation.feeKids);
             },0);
         }
+        console.log(total);
         return total;
     };
+
+    $scope.getTotalTour = function(tour){
+        tour.feeKids = tour.feeKids || 0;
+        var total = tour.fee  + tour.feeKids;
+        return total;
+    }
 
     var w = angular.element($window);
     w.bind('resize', function () {

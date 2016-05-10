@@ -203,7 +203,13 @@
                     <li ng-repeat="t in theorder.tours">
                         <p><strong>Tour:</strong> {{t.tour.name}}</p>
                         <p><strong><%= __('order-adultos')%>:</strong> {{t.pax}} <span ng-if="t.kidPax"> <strong><%= __('order-menores')%>:</strong> {{t.kidPax}}</span></p>
-                        <p><strong>Fecha de Tour:</strong> {{formatDate(t.startDate)}} <strong><%= __('order-precio')%>:</strong> {{t.fee | currency}}</span></p>
+                        <p><strong>Fecha de Tour:</strong> {{formatDate(t.startDate)}}</p>
+                        <p><strong><%= __('order-precio')%>:</strong> {{ getTotalTour(t) | currency}}</span></p>
+                        <p>
+                            <strong>Descuento global aplicado: </strong>
+                            <span ng-if="t.hasGlobalDiscount">Si</span>
+                            <span ng-if="!t.hasGlobalDiscount">No</span>
+                        </p>
                     </li>
                 </ul>
             </div>
