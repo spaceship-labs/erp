@@ -35,7 +35,7 @@
                         Contactos: 
                         <span ng-repeat="c in t.contacts" ng-init="auxClient = getClientByID(c)" ng-bind="($index>0?', ':'') + auxClient.name"></span>
                     </span>
-                    <span class='price' ng-bind="'$'+((t.fee + f.feeKids)||0)+' '+(generalFields.currency?generalFields.currency.currency_code:thecompany.base_currency.currency_code)"></span>
+                    <span class='price' ng-bind="'$'+((t.fee + t.feeKids)||0)+' '+(generalFields.currency?generalFields.currency.currency_code:thecompany.base_currency.currency_code)"></span>
                 </p>
             </div>
             <div ng-if="reservations.hotels.length">

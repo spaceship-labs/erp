@@ -210,6 +210,8 @@
                             <span ng-if="t.hasGlobalDiscount">Si</span>
                             <span ng-if="!t.hasGlobalDiscount">No</span>
                         </p>
+                        <p><strong><%= __('order-estado')%></strong> : {{t.state || "---" }}</p>
+                        <p><strong><%= __('order-pago')%></strong> : {{t.payment_method || "---" }}</p>
                     </li>
                 </ul>
             </div>
