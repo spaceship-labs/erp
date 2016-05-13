@@ -31,6 +31,7 @@ module.exports = {
 		];
 		async.waterfall(reads,function(e,companies_,airports,transfers,locations,prices){
 			if(e) throw(e);
+			//TransferPrice.destroy({ location : { '!' : '56abc374e136fdc555365ac8' } }).exec(function(err,result){console.log('PRICES not cancun',result);
 			Common.view(res.view,{
 				thelocation : locations[0],
 				locations_:locations,
@@ -46,6 +47,7 @@ module.exports = {
 					controller : 'price.js',
 				}
 			},req);
+			//});
 		});
 	},
 	find : function(req,res){

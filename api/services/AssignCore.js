@@ -341,14 +341,19 @@ module.exports.importOperation = function(err,book,req,callback){
 		console.log('end');
 		return callback(err,rows);
 	});
-}
+};
+/*
+	Selecciona el precio correspondiente al tour y el pax
+*/
 module.exports.createTourTransferReservationByImport = function(req,item2,r,ta,c,cb){
 	//Select Price: depende del pax y del tour
 	if( !item2.tour.extra_prices ) return cb('no tour price',false);
-	var price = {};
+	var price = false;
 	for(x in item2.tour.extra_prices)
 		if( item2.tour.extra_prices[x].pax == r.pax )
 			price = item2.tour.extra_prices[x];
+	if( !price ) return cb('no tour price',false);
+	
 };
 /*  Obtiene los precios y los agrega a la reservación (r), 
 	luego llama a la función adecuada para generar la reserva
