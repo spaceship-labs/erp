@@ -18,6 +18,7 @@ module.exports = {
         hotel:'boolean',
         days:'integer',//if -1 infinito
         expirationDate : 'date',
+        isGlobalDiscount: 'boolean',
         //los 3 siguientes es para no tener que agregar uno por uno los elementos disponibles
         allTours : 'boolean',
         allHotels : 'boolean',

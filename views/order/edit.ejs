@@ -148,7 +148,7 @@
                                     <p><span ng-bind="item.tour.name"></span></p>
                                     <p><span ng-if="item.pax">{{item.pax}} adultos</span> </p>
                                     <p><span ng-if="item.kidPax">{{item.kidPax}} menores</span> </p>
-                                    <p>Total: $<span ng-bind="item.fee"></span></p>
+                                    <p>Total: $<span ng-bind="item.fee + item.feeKids"></span></p>
                                 </div>
                                 <span class='pull-right actions' ng-hide="!item.saved">
                                     <a ng-click="item.saved=false;" ><i class='fa fa-pencil'></i> Editar</a>

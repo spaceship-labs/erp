@@ -161,11 +161,19 @@ app.controller('orderCTL',function($scope,$http,$window,$upload,$rootScope){
         var total = 0;
         if (order && order.reservations) {
             total = order.reservations.reduce(function(sum,reservation){
-                return sum + reservation.fee;
+                console.log(reservation);
+                return sum + (reservation.fee + reservation.feeKids);
             },0);
         }
+        console.log(total);
         return total;
     };
+
+    $scope.getTotalTour = function(tour){
+        tour.feeKids = tour.feeKids || 0;
+        var total = tour.fee  + tour.feeKids;
+        return total;
+    }
 
     var w = angular.element($window);
     w.bind('resize', function () {
@@ -330,10 +338,16 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope,$document)
     var updateTotal = function(){
         var total = 0;
         total += $scope.transfer.fee||0;
-        for(var x in $scope.reservations.tours)
+        for(var x in $scope.reservations.tours){
             total += $scope.reservations.tours[x].fee || 0;
-        for(var x in $scope.reservations.hotels)
+            total += $scope.reservations.tours[x].feeKids || 0;
+        }
+        for(var x in $scope.reservations.hotels){
             total += $scope.reservations.hotels[x].fee || 0;
+            total += $scope.reservations.hotels[x].feeKids || 0;
+        }
+
+
         $scope.theTotal = total;
     }
     $scope.getMinPrice = function(item,type){
@@ -1269,10 +1283,14 @@ app.controller('orderEditCTL',function($scope,$http,$window){
     var updateTotal = function(){
         var total = 0;
         total += $scope.transfer.fee||0;
-        for(var x in $scope.reservations.tours)
+        for(var x in $scope.reservations.tours){
             total += $scope.reservations.tours[x].fee;
-        for(var x in $scope.reservations.hotels)
+            total += $scope.reservations.tours[x].feeKids;        
+        }
+        for(var x in $scope.reservations.hotels){
             total += $scope.reservations.hotels[x].fee;
+            total += $scope.reservations.hotels[x].feeKids;        
+        }
         $scope.theTotal = total;
     };
     $scope.formatReservations = function(){

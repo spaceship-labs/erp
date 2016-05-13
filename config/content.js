@@ -1289,6 +1289,14 @@ module.exports.content = {
     	message : 'Emails que recibiran los correos de reservaciones nuevas (sepearado por coma)',
     	message_en : ''
 	},
+	{
+		label: 'Activar descuento global',
+		label_en: 'Activate global discount',
+		handle: 'isActiveGlobalDiscount',
+		type:'checkbox',
+		message: 'Activar descuentos en todos los tours, basados en el porcentaje de comision',
+		message_en: 'Activate discounts in all tours, based on the commission percentage'
+	}
 	],
     user : [
         {
@@ -1937,7 +1945,13 @@ module.exports.content = {
 			label_en : 'Perpetual',
 			type : 'checkbox',
 			handle : 'perpetuo',
-		}
+		},
+		{
+			label : '¿Es descuento global?',
+			label_en : 'Is global discount?',
+			type : 'checkbox',
+			handle : 'isGlobalDiscount',
+		}		
 
 	],
 	cuponSingle : [
