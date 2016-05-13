@@ -163,9 +163,9 @@
                             <select ng-options="user.name for user in users | filter:filterUsers" ng-model="selectedUser" name="" chosen></select>
                             <button ng-if="selectedUser" class="btn btn-primary ng-scope"><%= __('emp-agregar-usuario') %></button>
                         </p>
-                        <p><a href="/users/new_user/" style="display:block;margin-top:10px"><%= __('emp-agregar-usuarios') %></a></p>
                     </form>
                     <p ng-if="mycompany.users.length == users.length"><%= __('emp-todos-usuarios') %></p>
+                    <p><a href="/users/new_user/" style="display:none;margin-top:10px"><%= __('emp-agregar-usuarios') %></a></p>
                 </div>
         </div>
 

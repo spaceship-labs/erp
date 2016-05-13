@@ -783,7 +783,19 @@ module.exports.content = {
 			label_en : 'Meta keywords English',
 			type : 'text',
 			handle : 'meta_keywords_en',
-		}											
+		},
+		{
+			label : 'Url Español'
+			,label_en : 'Url Spanish'
+			,type : 'text'
+			,handle : 'url'
+		},
+		{
+			label : 'Url Inglés'
+			,label_en : 'Url English'
+			,type : 'text'
+			,handle : 'url_en'
+		}
 	],
 	tourcategory : [
 		{
@@ -1257,8 +1269,8 @@ module.exports.content = {
 		label : 'Emails de contacto',
 		label_en : 'Contact emails',
 		handle : 'emails_contact',
-        	message : 'Emails que recibiran los correos del formulario de contacto (sepearado por coma)',
-        	message_en : '',
+    	message : 'Emails que recibiran los correos del formulario de contacto (sepearado por coma)',
+    	message_en : '',
 		type : 'text',
 	},
 	{
@@ -1266,8 +1278,16 @@ module.exports.content = {
 		label_en : 'Billing emails',
 		handle : 'emails_billing',
 		type : 'text',
-        	message : 'Emails que recibiran los correos del formulario de facturación (sepearado por coma)',
-        	message_en : ''
+    	message : 'Emails que recibiran los correos del formulario de facturación (sepearado por coma)',
+    	message_en : ''
+	},
+	{
+		label : 'Email de Reservación',
+		label_en : 'Reservation emails',
+		handle : 'emails_reservation',
+		type : 'text',
+    	message : 'Emails que recibiran los correos de reservaciones nuevas (sepearado por coma)',
+    	message_en : ''
 	},
 	],
     user : [

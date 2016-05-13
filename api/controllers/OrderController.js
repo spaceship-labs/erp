@@ -288,31 +288,16 @@ module.exports = {
   },
   updateReservation : function(req,res){
     var params = req.params.all();
-    OrderCore.updateReservations(params,function(err,results){
-      if(err) return res.json(err);
-      return res.json(results);
-    });
-    /*items = params.items || [];
-    async.mapSeries( items, function(item,cb) {
-      //item.req = req;
-      var id = item.id;
-      if( item.hotel )
-        item.hotel = item.hotel.id;
-      if( item.tour )
-        item.tour = item.tour.id;
-      if( item.client )
-        item.client = item.client.id;
-      delete item.id;
-      delete item.flag_priceupdated;
-      delete item.usePrice;
-      delete item.useER;
-      Reservation.update({id:id},item,function(err,r){
-        cb(err,r);
+    if( !params.state || !params.payment_method || !params.currency ) 
+      return res.json(false);
+    var orderParams = { state : params.state, payment_method : params.payment_method, currency : params.currency };
+    OrderCore.updateOrderParams(params.order,orderParams,function(err,order){
+      if(err) return res.json(false);
+      OrderCore.updateReservations(params,function(err,results){
+        if(err) return res.json(err);
+        return res.json(results);
       });
-    },function(err,results){
-      if(err) return res.json(err);
-      return res.json(results);
-    });*/
+    });
   },
   /*
   * Obitien los transfers disponibles dependiendo de si está activo el precio

@@ -34,9 +34,9 @@
             <td ng-class='isHiden[$index]?"hide-row":""' data-title="<%= __('order-fecha')%>">{{formatDate(order.createdAt)}}</td>
             <td ng-class='isHiden[$index]?"hide-row":""' data-title="<%= __('order-total')%>"><span  ng-bind="getTotalOrder(order) | currency"></span></td>
             <td> {{order.transfer?'1':0}} </td>
-            <td> {{order.tours.length}} </td>
-            <td> {{order.hotels.length}} </td>
-            <td> {{order.state}} </td>
+            <td ng-bind="order.tours.length"> </td>
+            <td ng-bind="order.hotels.length"> </td>
+            <td><span class="status" ng-class="getOrderStatus(order)">{{getOrderStatus(order)}}</span></td>
             <td ng-class='isHiden[$index]?"hide-row":""'><a href='#' ng-click="orderDetails(order)" ><i class='fa fa-eye'></i></a></td>
             <% if (req.user.hasPermission(req.res.locals.selected_company.id,'orders_e')) {%>
                 <td ng-class='isHiden[$index]?"hide-row":""' data-title="<%= __('order-editar')%>"><a href="/order/edit/{{order.id}}"><span class="table-icon fa fa-edit"></span></a></td>
@@ -180,6 +180,7 @@
                 <br>
                 <div class='row'>
                     <div class='col-md-6 col-sm-6'>
+                        <p><strong>Número de pasajeros</strong> : {{theorder.transfer.pax + ( theorder.transfer.kidPax||0 ) }}</p>
                         <p><strong><%= __('order-tipo')%></strong> : {{theorder.transfer.type || "---" }}</p>
                         <p><strong><%= __('order-origen')%></strong> : {{theorder.transfer.origin || "---" }}</p>
                         <p class='text-undertopline'><strong><%= __('order-llegada')%></strong></p>
@@ -188,6 +189,7 @@
                         <p><strong><%= __('order-hora')%></strong> : {{ formatTime(theorder.transfer.arrival_time) || '---' }} </p>
                     </div>
                     <div class='col-md-6 col-sm-6'>
+                        <p><strong>Servicio</strong> : {{theorder.transfer.transfer.name}}</p>
                         <p><strong><%= __('order-estado')%></strong> : {{theorder.transfer.state || "---" }}</p>
                         <p><strong><%= __('order-pago')%></strong> : {{theorder.transfer.payment_method || "---" }}</p>
                         <p class='text-undertopline'><strong><%= __('order-salida')%></strong></p>

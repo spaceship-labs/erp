@@ -7,6 +7,13 @@ app.controller('orderCTL',function($scope,$http,$window,$upload,$rootScope){
     $scope.filters = {};
     $scope.theView = 'table';
     $scope.theReport = false;
+    $scope.getOrderStatus = function(order){
+        if( order.state && order.state != '' ) return order.state;
+        if( order.transfer ) return order.transfer.state;
+        if( order.tours.length ) return order.tours[0].state;
+        if( order.hotels.length ) return order.hotels[0].state;
+        return '';
+    };
     $scope.filtersArray = [
         { label : 'Folio' , value : 'folio' , type : 'number' , field : 'folio' }
         ,{ label : $rootScope.translates.arrival_date , value : 'arrival' , type : 'date' , field : 'arrival_date' , options : { to : new Date() } }
@@ -1270,8 +1277,16 @@ app.controller('orderEditCTL',function($scope,$http,$window){
     };
     $scope.formatReservations = function(){
         //console.log($scope.order);
+        $scope.generalFields = { 
+            state : $scope.order.state||false
+            ,payment_method : $scope.order.payment_method||false
+            ,currency : $scope.order.currency||false
+        };
         for(var x in $scope.order.reservations){
             var reserve = $scope.order.reservations[x];
+            $scope.generalFields.state = $scope.generalFields.state?$scope.generalFields.state:(reserve.state || false);
+            $scope.generalFields.payment_method = $scope.generalFields.payment_method?$scope.generalFields.payment_method:(reserve.payment_method || false);
+            $scope.generalFields.currency = $scope.generalFields.currency?$scope.generalFields.currency:(reserve.currency.id || false);
             if( reserve.reservation_type == 'transfer' ){
                 $scope.transfer = reserve;
                 $scope.getTransfers();
@@ -1290,10 +1305,6 @@ app.controller('orderEditCTL',function($scope,$http,$window){
                     aux = new Date(reserve.tour.departurePoints[x].time);
                     reserve.tour.departurePoints[x].time = aux.getHours() + ':' + (aux.getMinutes()==0?'00':aux.getMinutes());
                 }
-                //console.log('tour');
-                //console.log(reserve);
-                //console.log(reserve.departureTime);
-                //console.log(reserve.departurePlace);
                 $scope.reservations.tours.push(reserve);
             }else if( reserve.reservation_type == 'hotel' )
                 $scope.reservations.hotels.push(reserve);
@@ -1307,6 +1318,7 @@ app.controller('orderEditCTL',function($scope,$http,$window){
         $scope.transfer_bk = $scope.transfer;
         //console.log($scope.reservations.tours);
         updateTotal();
+        console.log('GENERAL FIELDS',$scope.generalFields);
     };
     //abre/cierra datepickers
     $scope.open = function($event,var_open) {
@@ -1569,6 +1581,12 @@ app.controller('orderEditCTL',function($scope,$http,$window){
     $scope.customMessages = {
         oude : { show : false , type : 'alert' , message : "Selecciona una fecha para poder continuar" }
         ,ouds : { show : false , type : 'alert alert-success' , message : "La fecha ha sido actualizada" }
+    };
+    $scope.UpdateClient = function(){
+        action = "/order/updateClient";
+        $http.post(action,$scope.theclient,{}).success(function(client_) {
+            $scope.theclient = client_.client;
+        });
     };
 });
 app.controller('orderQuickCTL',function($scope,$http,$window,$rootScope){

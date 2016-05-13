@@ -36,6 +36,14 @@ module.exports = {
 			collection : 'claim', via : 'order' }
 		,lostandfounds : {
 			collection : 'lostandfound', via : 'order' }
+		,state : {
+            type:'string',
+            enum : ['pending','liquidated','canceled','error']
+        }
+        ,payment_method : {
+            type:'string',
+            enum : ['creditcard','paypal','cash','prepaid']
+        }
 	}
 	,labels : {
         es : 'Reservaciones'

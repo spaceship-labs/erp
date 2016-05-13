@@ -213,6 +213,11 @@ module.exports.updateOrderDate = function(params,callback){
 		callback('No ID',false);
 	}
 };
+module.exports.updateOrderParams = function(id,params,callback){
+	if( !id || typeof id == 'undefined' || id == '' ) return callback('no id',false);
+	var form = Common.formValidate(params,['state','payment_method','currency']);
+	Order.update({id:id},params,callback);
+}
 module.exports.cancelOrder = function(order,fields,callback){
 	Order.findOne(order).populate('reservations').exec(function(err,theorder){
 		if(err) callback(err,false);

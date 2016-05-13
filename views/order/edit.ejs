@@ -7,7 +7,7 @@
 	window.content = <%- JSON.stringify(_content) %>;
     window.userID = <%- JSON.stringify(req.user.id) %>;
     window.theclient = <%- JSON.stringify(theclient) %>;
-    console.log(window.order);
+    //console.log(window.order);
     //console.log(theclient.contacts[0]);console.log(order);console.log(hotels);
 </script>
 <div ng-controller='orderEditCTL' class="editar-reservacion ng-cloak">
@@ -50,7 +50,7 @@
                     </form>
                     <p class='order-controls'>
                         <a class='btn btn-primary secondary pull-right' ng-click="setSteps('next',false)" >Siguiente</a>
-                        <a class='btn btn-primary secondary pull-right' ng-click="createUpdateClient()">Actualizar</a>
+                        <a class='btn btn-primary secondary pull-right' ng-click="UpdateClient()">Actualizar</a>
                         <span class='clear'></span>
                     </p>
                 </div></div><!-- widgetcontent -->
@@ -188,20 +188,20 @@
                     <div class="widgetcontent stdform stdform2 nopadding">
                         <p>
                             <label><%= __('order-estado')%></label>
-                            <span class='field'><select ng-options='obj as obj.name for obj in hrevState' ng-model='generalFields.state' ></select></span>
+                            <span class='field'><select ng-options='obj.handle as obj.name for obj in hrevState' ng-model='generalFields.state' ></select></span>
                         </p>
                         <p>
                             <label><%= __('order-pago')%></label>
-                            <span class='field'><select ng-options='obj as obj.name for obj in hrevPayment' ng-model='generalFields.payment_method' ></select></span>
+                            <span class='field'><select ng-options='obj.handle as obj.name for obj in hrevPayment' ng-model='generalFields.payment_method' ></select></span>
                         </p>
-                        <p ng-show="generalFields.payment_method.handle=='creditcard'">
+                        <p ng-show="generalFields.payment_method=='creditcard'">
                             <label><%= __('order-autorizacion')%></label>
                             <span class='field'><input type='text' name='autorization_code' ng-model="generalFields.autorization_code" /></span>
                         </p>
                         <p>
                             <label>Moneda</label>
                             <span class='field'>
-                                <select ng-options="c as c.name for c in thecompany.currencies" name='currency' ng-model='generalFields.currency' ng-change='updatePriceTransfer()' ></select>
+                                <select ng-options="c.id as c.name for c in thecompany.currencies" name='currency' ng-model='generalFields.currency' ng-change='updatePriceTransfer()' ></select>
                             </span>
                         </p>
                     </div>

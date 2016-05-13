@@ -35,22 +35,6 @@
         <label>Tipo de traslado </label>
         <span class='field'><select ng-change='updatePriceTransfer()' ng-options='obj as obj.transfer.name for obj in transfers track by obj.id' ng-model='transfer.transferprice' ></select></span>
     </p>
-    <!--<p>
-        <label>Tipo de traslado</label>
-        <span class='field'><select ng-options='obj.value as obj.label for obj in service_types ' ng-model='transfer.service_type' ></select></span>
-    </p>-->
-    <p>
-        <label><%= __('order-estado')%> </label>
-        <span class='field'><select ng-options='obj.handle as obj.name for obj in hrevState' ng-model='transfer.state' ></select></span>
-    </p>
-    <p>
-        <label><%= __('order-pago')%> </label>
-        <span class='field'><select ng-options='obj.handle as obj.name for obj in hrevPayment' ng-model='transfer.payment_method' ></select></span>
-    </p>
-    <p ng-show="transfer.payment_method.handle=='creditcard'">
-        <label><%= __('order-autorizacion')%> </label>
-        <span class='field'><input type='text' name='autorization_code' ng-model="transfer.autorization_code" /></span>
-    </p>
     <h4 class="widgettitle"><%= __('order-info')%></h4>
     <p>
         <label>Número de personas</label>
@@ -79,12 +63,6 @@
             <span class="radio">
                 <input ng-change='updatePriceTransfer()' ng-model="transfer.type" type="radio" name="transtype" value="one_way" checked><%= __('order-one')%>
             </span>
-        </span>
-    </p>
-    <p>
-        <label>Moneda</label>
-        <span class='field'>
-            <select ng-options="c as c.name for c in ordercompany.currencies" name='currency' ng-model='transfer.currency' ng-change='updatePriceTransfer()' ></select>
         </span>
     </p>
     <p>

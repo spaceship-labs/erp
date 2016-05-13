@@ -15,10 +15,16 @@ module.exports = {
         if( params.item.id ){
             var item = params.item;
             //item.req = req;
-            console.log('------------------------------------item');console.log(item);console.log('item-.----------------------------------');
-            Reservation.update({id:item.id},item,function(err,r){
-                Reservation.find({id:item.id}).exec(function(error, reservation) {
-                    return res.json(reservation);
+            console.log('------------------------------------item');
+            console.log(item);
+            console.log('item-.----------------------------------');
+            var orderParams = { state : params.item.state, payment_method : params.item.payment_method, currency : params.item.currency };
+            OrderCore.updateOrderParams(params.item.order,orderParams,function(err,order){
+                if(err) return res.json(false);
+                Reservation.update({id:item.id},item,function(err,r){
+                    Reservation.find({id:item.id}).exec(function(error, reservation) {
+                        return res.json(reservation);
+                    });
                 });
             });
         }else{

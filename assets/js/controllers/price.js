@@ -5,6 +5,7 @@ app.controller('priceCTL',function($scope,$http){
 	$scope.airports = airports;
 	$scope.companies = companies_;
 	$scope.thelocation = thelocation_;
+    $scope.thetransfer = transfers[0];
 	$scope.isCollapsed = [];
 	$scope.content = content;
     for(var i = 0;i<$scope.companies.length;i++){
@@ -25,13 +26,14 @@ app.controller('priceCTL',function($scope,$http){
         return r;
         
     };
-    $scope.updatePrices = function(req,res){
+    $scope.updatePrices = function(){
     	params = { location : $scope.thelocation.id , company : $scope.thecompany.id , transfer : $scope.thetransfer.id };
     	$http({method: 'POST', url: '/transferprice/getPrices',params:params }).success(function (prices){
 			$scope.prices = prices;
 			//$scope.companies = addPricesOnCompany($scope.companies,prices);
         });
-    }
+    };
+    $scope.updatePrices();
     $scope.savePrice = function(data,price){
     	angular.extend(data, { id : price });
     	return $http.post('/transferprice/updatePrice', data);
