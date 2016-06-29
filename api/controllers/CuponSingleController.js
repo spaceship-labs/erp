@@ -8,7 +8,7 @@
 var async = require('async');
 module.exports = {
     index:function(req,res){
-        CuponSingle.find().sort('createdAt desc').populateAll().exec(function(err,cuponsSingle){
+        CuponSingle.find().limit(40).sort('createdAt desc').populateAll().exec(function(err,cuponsSingle){
             Cupon.find().exec(function(err,cupons){
                 Common.view(res.view,{
                     cuponsSingle:cuponsSingle,
@@ -47,7 +47,7 @@ module.exports = {
                     cuponSingle:cuponSingle,
                     cupons:cupons,
                     page:{
-                        name:req.__('cupon_editInstancia')+cuponSingle.cupon.name,
+                        name:req.__('cupon_editInstancia')+ (cuponSingle.cupon && cuponSingle.cupon.name) || '',
                         icon:'fa fa-ticket',
                         controller : 'cupon.js'
                     }

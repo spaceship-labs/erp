@@ -37,7 +37,29 @@ module.exports.import2Model = function(data, model, done){
 
     var modelObj = sails.models[model] || global[model] ;
     if(!modelObj) return done(new Error('Not found model'));
-    modelObj.create(data).exec(done);
+    //console.log('MODEL:',model);
+    if( model == 'cupon' ){
+        async.eachSeries(data, function(fn, fnDone){
+            modelObj.findOne({mkpid:fn.mkpid}).populate('hotels').exec(function(err,find){
+                if(err || !find ){
+                    //console.log('CREATE',fn.mkpid);
+                    modelObj.create(fn).exec(function(err,c){
+                        c.hotels.add(fn.hotels);
+                        c.save(fnDone);
+                    });
+                }else{
+                    if( fn.hotels ){
+                        find.hotels.add(fn.hotels);
+                        //console.log('UPDATE',fn,fn.hotels);
+                    }
+                    find.save(fnDone);
+                }
+            });
+        }, done);
+    }else{
+        //console.log('CREATE');
+        modelObj.create(data).exec(done);
+    }
 
 };
 
@@ -59,39 +81,54 @@ module.exports.ifContentValid = function(data, model, done){
 };
 
 function replaceFieldsWithCollection(single, item, next, modelBase){ 
+    console.log('replace?',item.handle);
     if(item.object && single[item.handle2 || item.handle ]){
+        console.log('replace? condition');
         var model = sails.models[item.handle],
         attr = sails.models[modelBase] && sails.models[modelBase].attributes;
-        console.log(item.handle);
+        //console.log(attr);
         if(!model||typeof model == 'undefined'){
+            console.log('NO MODEL');
             if(attr && attr[item.handle] && ( attr[item.handle].model || attr[item.handle].collection ) ){
+                console.log('MODEL ATTR',attr[item.handle].model,attr[item.handle].collection);
                 model = sails.models[attr[item.handle].model || attr[item.handle].collection];
                 if( !model||typeof model == 'undefined' )
                     return next();
             }else{
+                console.log('NO MODEL NO ATTR????');
                 return next();
             }
         }
-        //console.log(modelBase);
+        console.log('SEARCH');
         model.findOne({
             or: [
+                { mkpid: single[item.handle2 || item.handle]},
+                { spaceid: single[item.handle2 || item.handle]},
                 { name: single[item.handle2 || item.handle] },
+                { email: single[item.handle2 || item.handle] },
                 { name_en: single[item.handle2 || item.handle] },
-                { id: single[item.handle2 || item.handle]},
-                { mkpid: single[item.handle2 || item.handle]}
+                { id: single[item.handle2 || item.handle]}
             ]
         }).exec(function(err, find){
             if(err) return next(err);
             if(find){
+                console.log('FOUND',find.id);
                 single[item.handle2 || item.handle] = find.id;
                 next();
             }else{
-                model.create({ name: single[item.handle2 || item.handle] })
+                console.log('CREATE attr',single[item.handle2 || item.handle]);
+                if( item.handle != 'cupon' && item.handle != 'hotels' && item.handle != 'hotel' ){
+                    model.create({ name: single[item.handle2 || item.handle] })
                      .exec(function(err, newModel){
+                        //console.log(err);
                         if(err) return next(err);
                         single[item.handle2 || item.handle] = newModel.id;
                         next();
                      });
+                 }else{ 
+                    delete single[item.handle2 || item.handle];
+                    next();
+                }
             }
         });
     }else{
@@ -154,7 +191,7 @@ var steps = [ normalizeFields, ifContentValid, replaceFieldsWithCollection ]
 module.exports.checkAndImport = function(data, model, done){
 
     itersDatas(data, model, steps, function(err, dataTransform){
-        if(err) return done(err);
+        if(err) return done(err);//console.log('dataTransform',dataTransform);
         module.exports.import2Model(dataTransform, model, done); 
     });
 

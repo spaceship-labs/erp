@@ -44,7 +44,8 @@ module.exports = {
         var id = req.param('id');
         var company = req.session.select_company || req.user.select_company;
         if (id){
-            Client_.findOne({id:id,company : company }).populateAll().exec(function(err,client_){
+            Client_.findOne(id).populateAll().exec(function(err,client_){
+                //console.log(client_);
                 Product.find({ company : company }).populateAll().exec(function(err,products){
                     Common.view(res.view,{
                         page:{

@@ -1,6 +1,8 @@
 <script type='text/javascript'>
     window.client = <%- JSON.stringify(client) %>;
     window.products = <%- JSON.stringify(products) %>;
+    console.log(<%- JSON.stringify(req.session.select_company) -%>);
+    console.log(window.client);
 </script>
 <div ng-controller="clientEditCTL" class='ng-cloak'>
     <div class="col-md-6">

@@ -47,7 +47,7 @@ app.controller('cuponSingleCTL',function($scope,$http,$window){
     $scope.cupon = cupon;
     $scope.customvalidation = 'f';
     $scope.cuponsSingle = cuponsSingle.map(function(e){
-            e.name = e.cupon.name;
+            e.name = e.cupon?e.cupon.name:'';
             e.expiration = (moment(e.expiration).format('LL'));
             return e;
         });

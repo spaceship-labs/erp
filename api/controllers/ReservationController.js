@@ -14,6 +14,8 @@ module.exports = {
         var params = req.params.all();
         if( params.item.id ){
             var item = params.item;
+            if( item.company && item.company.id ) item.company = item.company.id;
+            if( item.currency && item.currency.id ) item.currency = item.currency.id;
             //item.req = req;
             console.log('------------------------------------item');
             console.log(item);

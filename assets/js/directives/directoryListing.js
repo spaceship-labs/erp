@@ -6,6 +6,7 @@
         $scope.search_text_input = '';
         $scope.alphabetIndex = [];
         $scope.totalItems = 0;
+        $scope.searching = false;
         //$scope.dlPage = 1;
         $scope.myView = 'list';
         $scope.setView = function(view){
@@ -33,6 +34,8 @@
         var objectDefaultsFilterByName = $scope.objects && $scope.objects.slice() || [];
 
         var getMore = function(skip){
+            if($scope.searching) return;
+            $scope.searching = true;
             var params = { 'skip':skip , 'limit': 30 , 'sort' : 'name asc' };
             if( $scope.objFilters )
                 for(var x in $scope.objFilters)
@@ -45,6 +48,7 @@
             }
                 
             $http.get($scope.getUrl, { params: params  }).then(function(response){ 
+                $scope.searching = false;
                 if(response.data.results && response.data.count){
                     $scope.objects = response.data.results;
                     $scope.totalItems = response.data.count;

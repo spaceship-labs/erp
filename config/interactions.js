@@ -1,5 +1,25 @@
 module.exports.interactions = {
-    default : {}
+    default : {
+        reportsList : [
+            { key: "transfer_gral", name : "Reporte Traslados (Gral.)" }
+            ,{ key: "transfer_by_agency", name : "Reporte Traslados (by Agency)" }
+            ,{ key: "transfer_by_service", name : "Reporte Traslados (by Service)" }
+            ,{ key: "transfer_by_provider", name : "Reporte Traslados (by Provider)" }
+            ,{ key: "tours_gral", name : "Reporte Tours (Gral.)" }
+            ,{ key: "tours_by_user", name : "Reporte Tours (by User)" }
+            ,{ key: "tours_by_provider", name : "Reporte Tours (by Provider)" }
+            ,{ key: "tours_by_agency", name : "Reporte Tours (by Agency)" }
+            ,{ key: "tours_by_hotel", name : "Reporte Tours (by Hotel)" }
+            ,{ key: "tours_by_payment_method", name : "Reporte Tours (by Payment)" }
+            ,{ key: "tours_by_user_list", name : "Reporte Tours Detallado (by User)" }
+            ,{ key: "tours_by_provider_list", name : "Reporte Tours Detallado (by Provider)" }
+            ,{ key: "tours_by_agency_list", name : "Reporte Tours Detallado (by Agency)" }
+            ,{ key: "tours_by_hotel_list", name : "Reporte Tours Detallado (by Hotel)" }
+            ,{ key: "tours_by_payment_method_list", name : "Reporte Tours Detallado (by Payment)" }
+            ,{ key: "tours_cupon_by_user", name : "Reporte Tours Cupón (by User)" }
+            ,{ key: "tours_commision_by_cupon", name : "Reporte Tours Comisión (by User)" }
+        ]
+    }
     ,'caribe-maya' : {
         omitServiceOnReservation : true
         ,specialReservationMessage : "Si necesitas algún pediddo especial favor de comunicarte al área de reservaciones al siguiente número gratuito: 01 800 227 42 36"
@@ -262,6 +282,22 @@ module.exports.interactions = {
     }
     ,'yellow-transfers' : {
         mkp : true
+        ,reportsList : [
+            { key: "transfer_gral", name : "Reporte Traslados (Gral.)" }
+            ,{ key: "transfer_by_agency", name : "Reporte Traslados (by Agency)" }
+            ,{ key: "transfer_by_service", name : "Reporte Traslados (by Service)" }
+            ,{ key: "tours_gral", name : "Reporte Tours (Gral.)" }
+            ,{ key: "tours_by_user", name : "Reporte Tours (by User)" }
+            ,{ key: "tours_by_agency", name : "Reporte Tours (by Agency)" }
+            ,{ key: "tours_by_hotel", name : "Reporte Tours (by Hotel)" }
+            ,{ key: "tours_by_payment_method", name : "Reporte Tours (by Payment)" }
+            ,{ key: "tours_by_user_list", name : "Reporte Tours Detallado (by User)" }
+            ,{ key: "tours_by_agency_list", name : "Reporte Tours Detallado (by Agency)" }
+            ,{ key: "tours_by_hotel_list", name : "Reporte Tours Detallado (by Hotel)" }
+            ,{ key: "tours_by_payment_method_list", name : "Reporte Tours Detallado (by Payment)" }
+            ,{ key: "tours_cupon_by_user", name : "Reporte Tours Cupón (by User)" }
+            ,{ key: "tours_commision_by_cupon", name : "Reporte Tours Comisión (by User)" }
+        ]
     },'americanada' : {
         operaciones : true //este flag es para manejar precios de proveedores de transporte
     }

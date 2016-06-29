@@ -1,4 +1,4 @@
-app.controller('hotelCTL',function($scope,$http,$window,$rootScope){
+app.controller('hotelCTL',function($scope,$http,$window,$rootScope,$upload){
     $scope.hotels = hotels;
     $scope.locations = locations;
     $scope.company = company;
@@ -14,7 +14,27 @@ app.controller('hotelCTL',function($scope,$http,$window,$rootScope){
         {id:5,name:'5 '+$rootScope.translates.c_stars},
         {id:6,name:'6 '+$rootScope.translates.c_stars},
     ];
-    
+    $scope.WFile = function($files,$e){
+        if($files) {
+            $scope.fileName = $files[0].name;
+            $scope.file = $files;
+        }
+    };
+    $scope.saveFile = function() {
+        $scope.loading = true;
+        $scope.f = { finish : false };
+        $scope.upload = $upload.upload({ url: '/hotel/uploadcvs' , file: $scope.file
+        }).progress(function(evt){ $scope.loadingProgress = parseInt(100.0 * evt.loaded / evt.total);
+        }).success(function(data, status, headers, config) {
+            $scope.loading = false;
+            $scope.loadingProgress = 0;
+            $scope.f.finish = true;
+            $scope.f.success = data.success;
+            $scope.f.results = data.result;
+            $scope.f.errors = data.errors;
+        });
+    };
+
     var block = false;
     $scope.createHotel = function(){
     	if(!block){
@@ -37,6 +57,7 @@ app.controller('hotelCTL',function($scope,$http,$window,$rootScope){
         //r[$rootScope.translates.c_phones] = hotel.phones;
         r[$rootScope.translates.c_created] = hotel.createdAt;
         r[$rootScope.translates.c_updated] = hotel.updatedAt;
+        r.spaceID = hotel.spaceid;
         return r;
         
     };

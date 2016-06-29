@@ -42,11 +42,11 @@ module.exports = {
   },
   edit : function(req,res){
     //console.log( req.params.all() );
-    Order.findOne( req.params.id ).populate('reservations').populate('claims').populate('lostandfounds').exec(function(err,order){ Company.findOne(order.company).populate('currencies').populate('base_currency').exec(function(c_err,ordercompany){
+    Order.findOne( req.params.id ).populate('reservations').populate('claims').populate('lostandfounds').populate('currency').exec(function(err,order){ 
       Reservation.find({ order : req.params.id })
       .populate('hotel').populate('tour').populate('airport').populate('client')
       .populate('currency').populate('transfer').populate('transferprice')
-      .exec(function(err,reservations){
+      .exec(function(err,reservations){ Company.findOne(order.company).populate('currencies').populate('base_currency').exec(function(c_err,ordercompany){
         Client_.find().sort('name').exec(function(e,clients_){ 
           Client_.findOne({ id : order.client}).populate('contacts').exec(function(e,theclient){
               Transfer.find().sort('name').exec(function(e,transfers){
@@ -289,10 +289,10 @@ module.exports = {
   updateReservation : function(req,res){
     var params = req.params.all();
     if( !params.state || !params.payment_method || !params.currency ) 
-      return res.json(false);
+      return res.json('no all params');
     var orderParams = { state : params.state, payment_method : params.payment_method, currency : params.currency };
     OrderCore.updateOrderParams(params.order,orderParams,function(err,order){
-      if(err) return res.json(false);
+      if(err) return res.json(err);
       OrderCore.updateReservations(params,function(err,results){
         if(err) return res.json(err);
         return res.json(results);
@@ -307,7 +307,6 @@ module.exports = {
     var params = req.params.all();
     if( params.zone1 && params.zone2 ){
       var company = params.company?params.company:(req.session.select_company || req.user.select_company);
-      //customGetAvailableTransfers(company,params,res);
       OrderCore.getAvailableTransfers(params.zone1,params.zone2,company,function(err,prices){
         if(err) res.json(false);
         res.json(prices);

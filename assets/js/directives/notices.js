@@ -80,6 +80,7 @@
                     });
                 }
             }
+            //requests = [];
             $q.all(requests.map(function(request) {
                 return $http.get(request.url);
             })).then(function(results) {

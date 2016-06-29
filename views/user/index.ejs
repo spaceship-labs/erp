@@ -6,7 +6,13 @@
 	<!--<p><button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Nuevo Usuario</button></p>
 	<br/>-->
 
-	<div directory-listing objects='users' searchInput='searchInput' dir='users' edit-url='/user/edit/' get-info='getInfo' button-text='Nuevo Usuario' get-url="/user/find/"  button-text-export='<%= __('export') %>' type-export='user' type-export-text='<%= __("sc_users") %>' lang='<%=req.session.lang || "en"%>'></div>
+	<div directory-listing objects='users' searchInput='searchInput' dir='users' edit-url='/user/edit/' get-info='getInfo' button-text='Nuevo Usuario' get-url="/user/find/"  
+		button-text-export='<%= __('export') %>' 
+		type-export='user' 
+		type-export-text='<%= __("sc_users") %>' 
+		button-text-import='<%= __('import') %>' 
+		type-import='user'
+		lang='<%=req.session.lang || "en"%>'></div>
 
 	<div class="clearfix"></div>
 	<div class="span6">

@@ -1,5 +1,5 @@
 (function () {
-    io.socket.get('/notice/find',function(data){});
+    //io.socket.get('/notice/find',function(data){});
     var controller = function($scope,$upload,$http,$modal,$rootScope){
     	$scope.translates = $rootScope.translates;
         $scope.show = true;

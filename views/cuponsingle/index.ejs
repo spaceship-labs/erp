@@ -4,9 +4,12 @@
 	window.content = <%- JSON.stringify(_content) %>;
 </script>
 <div ng-controller='cuponSingleCTL' >
-    <p><button class="btn btn-primary" data-toggle="modal" data-target="#myModal"><i class='fa fa-plus'></i> <%= __('cupon_addInstancia')%></button></p>
+    <p>
+    	<button class="btn btn-primary" data-toggle="modal" data-target="#myModal"><i class='fa fa-plus'></i> <%= __('cupon_addInstancia')%></button>
+    	<button class="btn btn-primary pull-right" data-toggle="modal" data-target="#importmodal"><span class="fa fa-plus"></span> Importar</button>
+    </p>
     <br> 
-    <div table-helper objects='cuponsSingle' columns='content.cuponSingle' route='cuponsingle'></div>
+    <div table-helper objects='cuponsSingle' columns='content.cuponsSingle' route='cuponsingle'></div>
 	<div class="modal fade" id="myModal">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -26,5 +29,15 @@
 			</div>
 		</div>
 	</div>
-
+	<div class="modal fade" id="importmodal">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	                <h4 class="modal-title">Importar Instancias cupones</h4>
+	            </div>
+	            <div import-files import-type='cuponsingle' url='/cupon/edit'></div>
+	        </div>
+	    </div>
+	</div>
 </div>

@@ -201,7 +201,7 @@
                         <p>
                             <label>Moneda</label>
                             <span class='field'>
-                                <select ng-options="c.id as c.name for c in thecompany.currencies" name='currency' ng-model='generalFields.currency' ng-change='updatePriceTransfer()' ></select>
+                                <select ng-options="c as c.name for c in thecompany.currencies track by c.id" name='currency' ng-model='generalFields.currency' ng-change='updatePriceTransfer()' ></select>
                             </span>
                         </p>
                     </div>

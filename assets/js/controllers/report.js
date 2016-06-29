@@ -1,11 +1,20 @@
 app.controller('reportCTL',function($scope,$http,$window,$upload,$rootScope,$cookies){
     $scope.content = content;
     $scope.filters = {};
+    $scope.fOpen = { from : false, to : false };
+    $scope.permanentDateFilter = { 
+        label : $rootScope.translates.reservation_date , 
+        value : 'reserve' , 
+        type : 'date' , 
+        field : 'createdAt' ,
+        model : { from : moment().subtract(1,'months'), to : moment() }
+    };
     $scope.theReport = false;
+    $scope.interactions = window.interactions;
     $scope.filtersArray = [
         { label : $rootScope.translates.arrival_date , value : 'arrival' , type : 'date' , field : 'arrival_date' , options : { to : new Date() } }
+        ,{ label : 'Tour Date' , value : 'arrival' , type : 'date' , field : 'startDate' , options : { to : new Date() } }
         ,{ label : $rootScope.translates.departure_date , value : 'departure' , type : 'date' , field : 'departure_date' , options : { to : new Date() } }
-        ,{ label : $rootScope.translates.reservation_date , value : 'reserve' , type : 'date' , field : 'createdAt' , options : { to : new Date() } }
         ,{ label : $rootScope.translates.client , value : 'client' , type : 'autocomplete' , field : 'client' , model_ : 'client_' , action : 
             function(term){
                 return $http.get('/client/find', { params: { 'name': term , 'limit': 10 , 'sort' : 'name asc' }
@@ -93,14 +102,13 @@ app.controller('reportCTL',function($scope,$http,$window,$upload,$rootScope,$coo
             console.log(f[x]);
         }
         var params = { fields : f , skip : skip };
-        console.log(f);
+        console.log('FILTERS: ',f);
         $scope.SelectReport( $scope.theReport?$scope.theReport.type:'tours_gral' )
     };
     $scope.SelectReport = function(type){
         $scope.theReport = false;
         var params = { type : type , fields : $scope.filters };
-        console.log('report params');
-        console.log(params);
+        console.log('report params',params);
         //$window.location = '/order/reportcustom';
         $http.post('/order/reportcustom_',params,{}).success(function(result){
             console.log('report');

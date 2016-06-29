@@ -1820,6 +1820,46 @@ module.exports.content = {
     		type : 'text'
     	}
     ],
+    cupon : [ //para el import de los cupones
+    	{
+			label : 'Hoteles',
+			label_en : 'Hotels',
+			type : 'multi-select',
+			handle : 'hotels',
+			handle2 : 'hotels',
+			object : 'hotels',
+		},
+		{
+			label : 'User',
+			label_en : 'User',
+			type : 'select',
+			handle : 'user',
+			object : 'user',
+		},
+		{
+			label : 'Company',
+			label_en : 'Company',
+			type : 'select',
+			handle : 'company',
+			object : 'company',
+		},
+    ],
+    cuponsingle : [
+    	{
+    		label : 'cupon'
+    		,label_en : 'cupon'
+    		,type : 'select'
+    		,handle : 'cupon'
+    		,object : 'cupon'
+    	},
+    	{
+			label : 'User',
+			label_en : 'User',
+			type : 'select',
+			handle : 'user',
+			object : 'user',
+		},
+    ],
     cupons : [
     	{
 			label : 'Nombre',
@@ -1954,7 +1994,7 @@ module.exports.content = {
 		}		
 
 	],
-	cuponSingle : [
+	cuponsSingle : [
 		{
 			label : 'Tipo',
 			label_en : 'Type',

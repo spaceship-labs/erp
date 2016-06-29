@@ -22,16 +22,6 @@
         <span class='field'><select ng-change='updatePriceTransfer()' ng-options='obj as obj.name for obj in airports track by obj.id' ng-model='transfer.airport' ></select></span>
     </p>
     <p>
-        <label><%= __('order-airline')%></label>
-        <span class='field'>
-            <input type="text" class="form-control" 
-                placeholder="<%= __('order-airline')%>"
-                ng-model="transfer.airline" 
-                typeahead-editable='true'
-                typeahead="obj as obj.name for obj in getAirlines($viewValue)" >
-        </span>
-    </p>
-    <p>
         <label>Tipo de traslado </label>
         <span class='field'><select ng-change='updatePriceTransfer()' ng-options='obj as obj.transfer.name for obj in transfers track by obj.id' ng-model='transfer.transferprice' ></select></span>
     </p>
@@ -67,7 +57,7 @@
     </p>
     <p>
         <label><%= __('order-tarifa')%> </label>
-        <span class='field'><input type='text' ng-model="transfer.fee" name='fee' /></span>
+        <span class='field'><span ng-bind="transfer.fee"></span></span>
     </p>
     <div ng-show="flag_priceupdated" class='centeralign'><div class='widgetcontent' >
         <p>Nota: Si no se selecciona y las zonas cambian entonces por default se actualizarán los precios.</p>
@@ -94,9 +84,20 @@
                 </span>
             </span>
         </p>
-        <p>
+        <!--<p>
             <label><%= __('order_a_airline')%> </label>
             <span class='field'><input ng-model="transfer.arrival_airline" type='text' name='arrival_airline' /></span>
+        </p>-->
+        <p>
+            <label><%= __('order_a_airline')%> </label>
+            <span class='field'>
+                <input type="text" class="form-control" 
+                    placeholder="<%= __('order_a_airline')%>"
+                    ng-model="transfer.arrival_airline" 
+                    name="arrival_airline"
+                    typeahead-editable='true'
+                    typeahead="obj as obj.name for obj in getAirlines($viewValue)" >
+            </span>
         </p>
         <p>
             <label><%= __('order-vuelo-llegada')%></label>
@@ -125,9 +126,20 @@
                 </span>
             </span>
         </p>
-        <p>
+        <!--<p>
             <label><%= __('order_d_airline')%> </label>
             <span class='field'><input ng-model="transfer.departure_airline" type='text' name='departure_airline' /></span>
+        </p>-->
+        <p>
+            <label><%= __('order_d_airline')%> </label>
+            <span class='field'>
+                <input type="text" class="form-control" 
+                    placeholder="<%= __('order_d_airline')%>"
+                    ng-model="transfer.departure_airline" 
+                    name="departure_airline"
+                    typeahead-editable='true'
+                    typeahead="obj as obj.name for obj in getAirlines($viewValue)" >
+            </span>
         </p>
         <p>
             <label><%= __('order-vuelo-salida')%></label>

@@ -5,6 +5,8 @@
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
 var moment = require('moment');
+var async = require('async');
+var fs = require('fs');
 module.exports = {
 	index : function(req,res){
 		//Hotel.find({company: req.session.select_company}).sort('name DESC').limit(5).populate('location').exec(function(e,hotels){
@@ -233,6 +235,40 @@ module.exports = {
 			res.json(zones);
 		});
 	},
+	uploadcvs : function(req,res){
+	    var dateValue = new Date();
+	    var dirSave = __dirname+'/../../assets/uploads/cvs/';
+	    var dateString = 'cvstest';
+	    var errors = [];
+	    req.file('file').upload({saveAs:dateString + '.csv',dirname:dirSave,maxBytes:52428800},function(e,files){
+	        if(e) res.json({text : 'error'});
+	        if (files && files[0]){
+	            var fileImported = { fileName : files[0].filename, dtStart : dateValue, status : 'processing' };
+	            var lineList = fs.readFileSync(dirSave + dateString +".csv").toString().split('\n');
+	            lineList.shift();
+	            var schemaKeyList = ['mkpid','spaceid'];
+	            async.mapSeries(lineList,function(line,callback) {
+	                var h = {};
+	                //set keys for items in reservations
+	                line.split(',').forEach(function (entry, i) { h[schemaKeyList[i]] = entry; });
+	                console.log(h['mkpid'],typeof h['mkpid']);
+	                Hotel.findOne({mkpid:parseInt(h['mkpid'])}).exec(function(err,found){
+	                	if(err||!found){ console.log('no hotel',h['mkpid']); return callback(null,false);}
+	                	found.spaceid = 'sp_' + h['spaceid']
+	                	found.save(callback);
+	                });
+	            }, function(err,result) { 
+	                if(err){ 
+	                	console.log('err: ',err);
+	                	res.json({success : false , result : [] , errors : [err] });
+	                }
+	                res.json({success : true, result : result , errors : [] });
+	            }); //async end
+	        }else{
+	          res.json({success : false , result : [] , errors : [] });
+	        }
+    	});
+  	}
 };
 
 

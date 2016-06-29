@@ -161,11 +161,10 @@ app.controller('orderCTL',function($scope,$http,$window,$upload,$rootScope){
         var total = 0;
         if (order && order.reservations) {
             total = order.reservations.reduce(function(sum,reservation){
-                console.log(reservation);
+                //console.log(reservation);
                 return sum + (reservation.fee + reservation.feeKids);
             },0);
         }
-        console.log(total);
         return total;
     };
 
@@ -1246,7 +1245,7 @@ app.controller('orderEditCTL',function($scope,$http,$window){
     };
     $scope.content = content;
     $scope.order = order;console.log('ORDER',$scope.order);
-    $scope.thecompany = ordercompany;
+    $scope.thecompany = ordercompany;console.log('COMPANY',ordercompany);
     $scope.theclient = theclient;
     $scope.user = user;
     $scope.hotels = hotels;
@@ -1304,8 +1303,9 @@ app.controller('orderEditCTL',function($scope,$http,$window){
             var reserve = $scope.order.reservations[x];
             $scope.generalFields.state = $scope.generalFields.state?$scope.generalFields.state:(reserve.state || false);
             $scope.generalFields.payment_method = $scope.generalFields.payment_method?$scope.generalFields.payment_method:(reserve.payment_method || false);
-            $scope.generalFields.currency = $scope.generalFields.currency?$scope.generalFields.currency:(reserve.currency.id || false);
+            $scope.generalFields.currency = $scope.generalFields.currency?$scope.generalFields.currency:(reserve.currency || false);
             if( reserve.reservation_type == 'transfer' ){
+                if(reserve.currency && reserve.currency.companies) delete reserve.currency.companies;
                 $scope.transfer = reserve;
                 $scope.getTransfers();
             }else if( reserve.reservation_type == 'tour' ){
@@ -1437,9 +1437,14 @@ app.controller('orderEditCTL',function($scope,$http,$window){
             //console.log(params);
             //$http({method: 'POST', url: '/order/getAvailableTransfers',params:params}).success(function (result){
             $http.post('/order/getAvailableTransfers', params , {}).success(function (result){
-                //console.log('prices');console.log(result);
-                $scope.transfers = result;
-                //console.log('transfers available');console.log(result);
+                console.log('prices',result);
+                if( result ){
+                    $scope.transfers = result;
+                    //esto para que estén todos los datos como en el create
+                    for(x in result)
+                        if( result[x].id == $scope.transfer.transferprice.id )
+                            $scope.transfer.transferprice = result[x];
+                }
             });
         }
     };
@@ -1465,11 +1470,11 @@ app.controller('orderEditCTL',function($scope,$http,$window){
                 params.item.hotel = $scope.transfer.hotel.id || false;
                 params.item.transfer = $scope.transfer.transferprice.transfer?$scope.transfer.transferprice.transfer:$scope.transfer.transfer.transfer;
                 if( $scope.generalFields ){
-                    params.state = $scope.generalFields.state;
-                    params.payment_method = $scope.generalFields.payment_method;
-                    params.autorization_code = $scope.generalFields.autorization_code;
-                    params.currency = $scope.generalFields.currency;
-                }
+                    params.item.state = $scope.generalFields.state;
+                    params.item.payment_method = $scope.generalFields.payment_method;
+                    params.item.autorization_code = $scope.generalFields.autorization_code;
+                    params.item.currency = $scope.generalFields.currency;
+                }console.log('UPDATE',params);
                 $http.post('/reservation/update/',params).success(function(result) {
                     console.log('Update transfer');
                     console.log(result);
@@ -1501,6 +1506,13 @@ app.controller('orderEditCTL',function($scope,$http,$window){
     };
     $scope.reservationTours = function(){
         var params = { items : $scope.reservations.tours };
+        if( $scope.generalFields ){
+            params.state = $scope.generalFields.state;
+            params.payment_method = $scope.generalFields.payment_method;
+            params.autorization_code = $scope.generalFields.autorization_code;
+            params.currency = $scope.generalFields.currency;
+            params.order = $scope.order.id;
+        }console.log('UPDATE',params);
         $http.post('/order/updateReservation',params,{}).success(function(result) {
             console.log('Update tours');console.log(result);
         });

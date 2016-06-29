@@ -51,16 +51,17 @@ var formatFields = function(fields){
 			fields[x] += "";
 	return fields;
 }
-module.exports.transfer_gral = function(fields,cb){
+module.exports.transfer_gral = function(fields,cb){ //filters OK
 	var results = false;
 	Reservation.count(function(c_err,num){
 		if(c_err) cb(results , c_err);
 		fields = formatFields(fields);
 		fields.reservation_type = 'transfer';
+		if(!fields.state) fields.state = 'liquidated';
 		Reservation.find(fields).limit(num).sort('transfer').sort('startDate DESC')
 		.populate('transfer').populate('company')
 		.exec(function(r_err,reservations){
-			if(r_err) cb(results,r_err);
+			if(r_err) return cb(results,r_err);
 			results = {
 				headers : [ 
 					{ label : 'Servicio' , handle : 'transfer', type : '' }
@@ -98,7 +99,7 @@ module.exports.transfer_gral = function(fields,cb){
 		resultsGlobal -> tiene los totales de todo
 		resultsCompany -> tiene los totales por compañia
 */
-module.exports.transfer_by_agency = function(fields,cb){
+module.exports.transfer_by_agency = function(fields,cb){ //filters OK
 	var results = {
 		headers : [ 
 			{ label : 'Agencia' , handle : 'name', object : '_id', object2:'_id' , type : '' }
@@ -118,16 +119,7 @@ module.exports.transfer_by_agency = function(fields,cb){
 	};
 	var $match = fields || {};
 	$match.reservation_type = 'transfer';
-	//console.log( 'FIELDS 3:', $match );
-	/*{
-		reservation_type : 'transfer'
-		/*,$and : [
-			{ $or : [ 
-				{ createdAt : { $gte : fields.sDate , $lte : fields.eDate } } 
-				,{ cancelationDate : { $gte : fields.sDate , $lte : fields.eDate } } 
-			] }
-		]
-	}*/;
+	if(!$match.state) $match.state = 'liquidated';
 	var $groupGral = {
 		_id : null
 		,companyIDs : { '$push' : '$company' }
@@ -172,7 +164,7 @@ module.exports.transfer_by_agency = function(fields,cb){
 					.populate('company').populate('asign').populate('transfer').populate('hotel')
 					.exec(function(r_err,reservations){
 						//console.log(reservations.length);
-						if(err||reservations.length==0) theCB(err,false);
+						if(err||reservations.length==0) return theCB(err,false);
 						var aux = {
 							_id : reservations[0].company
 							,pax : resultsCompany.pax
@@ -216,7 +208,7 @@ module.exports.transfer_by_agency = function(fields,cb){
 /*
 	Reporte de transfers por Servicio
 */
-module.exports.transfer_by_service = function(fields,cb){
+module.exports.transfer_by_service = function(fields,cb){ //filters ok
 	var results = {
 		headers : [ 
 			{ label : 'Servicio' , handle : 'name', object : '_id', object2:'_id' , type : '' }
@@ -236,16 +228,7 @@ module.exports.transfer_by_service = function(fields,cb){
 	};
 	var $match = fields || {};
 	$match.reservation_type = 'transfer';
-	//console.log( 'FIELDS 3:', $match );
-	/*var $match = {
-		reservation_type : 'transfer'
-		,$and : [
-			{ $or : [ 
-				{ createdAt : { $gte : fields.sDate , $lte : fields.eDate } } 
-				,{ cancelationDate : { $gte : fields.sDate , $lte : fields.eDate } } 
-			] }
-		]
-	};*/
+	if(!$match.state) $match.state = 'liquidated';
 	var $groupGral = {
 		_id : null
 		,transferIDs : { '$push' : '$transfer' }
@@ -342,22 +325,13 @@ module.exports.transfer_by_provider = function(fields,cb){
 			,{ label : 'Hotel' , handle : 'name', object : 'hotel', object2: 'hotel' , type : '' }
 			,{ label : 'FolioAgencia' , handle : 'folioAgency' , type : '' }
 		]
-		,title : 'Reporte de Reservas por Servicio'
+		,title : 'Reporte de Reservas por Proveedor'
 		,rows : {}
 		,totals : { total : 0 , subtotal : 0 , iva : 0 , pax : 0, comision : 0 }
 	};
 	var $match = fields || {};
 	$match.reservation_type = 'transfer';
-	//console.log('FIELDS 3:',fields);
-	/*var $match = {
-		reservation_type : 'transfer'
-		,$and : [
-			{ $or : [ 
-				{ createdAt : { $gte : fields.sDate , $lte : fields.eDate } } 
-				,{ cancelationDate : { $gte : fields.sDate , $lte : fields.eDate } } 
-			] }
-		]
-	};*/
+	if(!$match.state) $match.state = 'liquidated';
 	var $groupGral = {
 		_id : '$company'
 		,providerIDs : { '$push' : '$company' } //obtener las compañias que son los proveedores que se van a necesitar
@@ -466,7 +440,7 @@ module.exports.tours_gral = function(fields,cb){
 			,{ label : 'IVA' , handle : 'iva', type : 'currency' }
 			,{ label : 'Ventas netas' , handle : 'neto', type : 'currency' }
 		]
-		,title : 'Ventas Tours por Servicio'
+		,title : 'Ventas Tours'
 		,rows : {}
 		,totals : { total : 0 , subtotal : 0 , iva : 0 , pax : 0 }
 	}
@@ -477,7 +451,8 @@ module.exports.tours_gral = function(fields,cb){
 	//fields.sDate = new Date("October 13, 2014");
 	//fields.eDate = new Date("October 13, 2016");
 	fields.reservation_type = 'tour';
-	var $match = {
+	if(!fields.state) fields.state = 'liquidated';
+	var $match = fields; /*{
 		reservation_type : 'tour'
 		,$and : [
 			//{ $or : [ { state : 'pending' } , { state : 'canceled' } ] },
@@ -486,7 +461,7 @@ module.exports.tours_gral = function(fields,cb){
 				,{ cancelationDate : { $gte : fields.sDate , $lte : fields.eDate } } 
 			] }
 		]
-	};
+	};*/
 	$match = fields;
 	var $groupGral = {
 		_id : null
@@ -628,9 +603,10 @@ module.exports.tours_by_agency = function(fields,cb){
 		Para saber si es por la fecha de creación o la de reservación
 		options.dateType = '1';
 	*/
-	fields.sDate = new Date("October 13, 2014");
-	fields.eDate = new Date("October 13, 2016");
-	var $match = {
+	//fields.sDate = new Date("October 13, 2014");fields.eDate = new Date("October 13, 2016");
+	fields.reservation_type = 'tour';
+	if(!fields.state) fields.state = 'liquidated';
+	var $match = fields; /*{
 		reservation_type : 'tour'
 		,$and : [
 			//{ $or : [ { state : 'pending' } , { state : 'canceled' } ] },
@@ -639,7 +615,7 @@ module.exports.tours_by_agency = function(fields,cb){
 				,{ cancelationDate : { $gte : fields.sDate , $lte : fields.eDate } } 
 			] }
 		]
-	};
+	};*/
 	var $groupGral = {
 		_id : null
 		,usersIDs : { '$push' : '$company' }
@@ -669,7 +645,7 @@ module.exports.tours_by_agency = function(fields,cb){
 			} }
 			,{ $group : $groupGral } 
 		],function(err,resultsGlobal){ 
-			if( err || resultsGlobal.length <= 0 ){ theCB(resultsGlobal,err); }
+			if( err || resultsGlobal.length == 0 ){ return cb(resultsGlobal,err); }
 			resultsGlobal = resultsGlobal[0];
 			//obtener los proveedores;
 			Company.find({ id : resultsGlobal.usersIDs }).exec(function(err,allCompanies){
@@ -687,6 +663,7 @@ module.exports.tours_by_agency = function(fields,cb){
 					 } }
 					,{ $group : $groupTotals } 
 				],function(err,resultsTours){
+					if( err || resultsTours.length == 0 ){ return cb(resultsTours,err); }
 					if(err) console.log(err);
 					//obtiene los totales de las reservas
 					async.mapSeries( resultsTours, function(item,theCB){
@@ -712,7 +689,7 @@ module.exports.tours_by_agency = function(fields,cb){
 								 } }
 								,{ $group : $groupTotals } 
 							],function(err,resultsUsers){
-								if(err) console.log(err);
+								if(err) return theCB(err,item);
 								Tour.find({ id : item.toursIDs }).exec(function(err,allTours){
 									//obtiene los totales de las reservas
 									for( var y in resultsUsers ){
@@ -818,9 +795,10 @@ module.exports.tours_by_hotel = function(fields,cb){
 		Para saber si es por la fecha de creación o la de reservación
 		options.dateType = '1';
 	*/
-	fields.sDate = new Date("October 13, 2014");
-	fields.eDate = new Date("October 13, 2016");
-	var $match = {
+	//fields.sDate = new Date("October 13, 2014");fields.eDate = new Date("October 13, 2016");
+	fields.reservation_type = 'tour';
+	if(!fields.state) fields.state = 'liquidated';
+	var $match = fields; /*{
 		reservation_type : 'tour'
 		,$and : [
 			//{ $or : [ { state : 'pending' } , { state : 'canceled' } ] },
@@ -829,7 +807,7 @@ module.exports.tours_by_hotel = function(fields,cb){
 				,{ cancelationDate : { $gte : fields.sDate , $lte : fields.eDate } } 
 			] }
 		]
-	};
+	};*/
 	var $groupGral = {
 		_id : null
 		,hotelsIDs : { '$push' : '$hotel' }
@@ -859,7 +837,7 @@ module.exports.tours_by_hotel = function(fields,cb){
 			} }
 			,{ $group : $groupGral } 
 		],function(err,resultsGlobal){ 
-			if( err || resultsGlobal.length <= 0 ){ theCB(resultsGlobal,err); }
+			if( err || resultsGlobal.length == 0 ){ return cb(resultsGlobal,err); }
 			resultsGlobal = resultsGlobal[0];
 			//obtener los proveedores;
 			Hotel.find({ id : resultsGlobal.hotelsIDs }).exec(function(err,allHotels){
@@ -877,7 +855,7 @@ module.exports.tours_by_hotel = function(fields,cb){
 					 } }
 					,{ $group : $groupTotals } 
 				],function(err,resultsTours){
-					if(err) console.log(err);
+					if(err) return cb(resultsTours,err);
 					//obtiene los totales de las reservas
 					async.mapSeries( resultsTours, function(item,theCB){
 						item._id = getItemById( item._id, allHotels );
@@ -902,7 +880,7 @@ module.exports.tours_by_hotel = function(fields,cb){
 								 } }
 								,{ $group : $groupTotals } 
 							],function(err,resultsHotels){
-								if(err) console.log(err);
+								if(err) return theCB(err,item);
 								Tour.find({ id : item.toursIDs }).exec(function(err,allTours){
 									//obtiene los totales de las reservas
 									for( var y in resultsHotels ){
@@ -963,9 +941,12 @@ module.exports.tours_by_user = function(fields,cb){
 		Para saber si es por la fecha de creación o la de reservación
 		options.dateType = '1';
 	*/
-	fields.sDate = new Date("October 13, 2014");
-	fields.eDate = new Date("October 13, 2016");
-	var $match = {
+	//fields.sDate = new Date("October 13, 2014");fields.eDate = new Date("October 13, 2016");
+	fields.reservation_type = 'tour';
+	if(!fields.state) fields.state = 'liquidated';
+	var $match = fields;
+	delete $match.listing;
+	/*{
 		reservation_type : 'tour'
 		,$and : [
 			//{ $or : [ { state : 'pending' } , { state : 'canceled' } ] },
@@ -974,7 +955,7 @@ module.exports.tours_by_user = function(fields,cb){
 				,{ cancelationDate : { $gte : fields.sDate , $lte : fields.eDate } } 
 			] }
 		]
-	};
+	};*/
 	var $groupGral = {
 		_id : null
 		,usersIDs : { '$push' : '$user' }
@@ -1004,7 +985,8 @@ module.exports.tours_by_user = function(fields,cb){
 			} }
 			,{ $group : $groupGral } 
 		],function(err,resultsGlobal){ 
-			if( err || resultsGlobal.length <= 0 ){ theCB(resultsGlobal,err); }
+			if( err || resultsGlobal.length == 0 ){ return cb(resultsGlobal,err); }
+			console.log('resultsGlobal!!!!!!!!!!!!!!!',resultsGlobal.length,resultsGlobal);
 			resultsGlobal = resultsGlobal[0];
 			//obtener los proveedores;
 			User.find({ id : resultsGlobal.usersIDs }).exec(function(err,allUsers){
@@ -1022,7 +1004,7 @@ module.exports.tours_by_user = function(fields,cb){
 					 } }
 					,{ $group : $groupTotals } 
 				],function(err,resultsTours){
-					if(err) console.log(err);
+					if(err) return cb(resultsTours,err);
 					//obtiene los totales de las reservas
 					async.mapSeries( resultsTours, function(item,theCB){
 						//iteration
@@ -1048,8 +1030,9 @@ module.exports.tours_by_user = function(fields,cb){
 								 } }
 								,{ $group : $groupTotals } 
 							],function(err,resultsUsers){
-								if(err) console.log(err);
+								if(err) return cb(resultsUsers,err);
 								Tour.find({ id : item.toursIDs }).exec(function(err,allTours){
+									if(err) return theCB(err,item);
 									//obtiene los totales de las reservas
 									for( var y in resultsUsers ){
 										resultsUsers[y]._id = getItemById( resultsUsers[y]._id, allTours );
@@ -1176,9 +1159,10 @@ module.exports.tours_by_payment_method = function(fields,cb){
 		Para saber si es por la fecha de creación o la de reservación
 		options.dateType = '1';
 	*/
-	fields.sDate = new Date("October 13, 2014");
-	fields.eDate = new Date("October 13, 2016");
-	var $match = {
+	fields.reservation_type = 'tour';
+	if(!fields.state) fields.state = 'liquidated';
+	//fields.sDate = new Date("October 13, 2014");fields.eDate = new Date("October 13, 2016");
+	var $match = fields; /*{
 		reservation_type : 'tour'
 		,$and : [
 			//{ $or : [ { state : 'pending' } , { state : 'canceled' } ] },
@@ -1187,7 +1171,7 @@ module.exports.tours_by_payment_method = function(fields,cb){
 				,{ cancelationDate : { $gte : fields.sDate , $lte : fields.eDate } } 
 			] }
 		]
-	};
+	};*/
 	var $groupGral = {
 		_id : null
 		,toursIDs : { '$push' : '$tour' }
@@ -1217,10 +1201,11 @@ module.exports.tours_by_payment_method = function(fields,cb){
 			} }
 			,{ $group : $groupGral } 
 		],function(err,resultsGlobal){ 
-			if( err || resultsGlobal.length <= 0 ){ theCB(resultsGlobal,err); }
+			if( err || resultsGlobal.length == 0 ){ return cb(resultsGlobal,err); }
 			resultsGlobal = resultsGlobal[0];
 			//obtener los proveedores;
 			Tour.find({ id : resultsGlobal.toursIDs }).exec(function(err,allTours){
+				if( err ){ return cb(resultsGlobal,err); }
 				//iteration
 				theReservation.aggregate([ 
 					 { $sort  : {createdAt:-1} }
@@ -1235,7 +1220,7 @@ module.exports.tours_by_payment_method = function(fields,cb){
 					 } }
 					,{ $group : $groupTotals } 
 				],function(err,resultsTours){
-					if(err) console.log(err);
+					if( err ){ return cb(resultsGlobal,err); }
 					//obtiene los totales de las reservas
 					async.mapSeries( resultsTours, function(item,theCB){
 						//iteration
@@ -1264,7 +1249,7 @@ module.exports.tours_by_payment_method = function(fields,cb){
 								 } }
 								,{ $group : $groupTotals } 
 							],function(err,resultsPM){
-								if(err) console.log(err);
+								if( err ){ return theCB(err,item); }
 								//obtiene los totales de las reservas
 								for( var y in resultsPM ){
 									resultsPM[y].tour = getItemById( resultsPM[y].tour[0], allTours );
@@ -1319,9 +1304,10 @@ module.exports.tours_cupon_by_user = function(fields,cb){
 		Para saber si es por la fecha de creación o la de reservación
 		options.dateType = '1';
 	*/
-	fields.sDate = new Date("October 13, 2014");
-	fields.eDate = new Date("October 13, 2016");
-	var $match = {
+	//fields.sDate = new Date("October 13, 2014");fields.eDate = new Date("October 13, 2016");
+	fields.reservation_type = 'tour';
+	if(!fields.state) fields.state = 'liquidated';
+	var $match = fields; /*{
 		reservation_type : 'tour'
 		,$and : [
 			//{ $or : [ { state : 'pending' } , { state : 'canceled' } ] },
@@ -1330,7 +1316,7 @@ module.exports.tours_cupon_by_user = function(fields,cb){
 				,{ cancelationDate : { $gte : fields.sDate , $lte : fields.eDate } } 
 			] }
 		]
-	};
+	};*/
 	var $groupGral = {
 		_id : null
 		,toursIDs : { '$push' : '$tour' }
@@ -1363,7 +1349,7 @@ module.exports.tours_cupon_by_user = function(fields,cb){
 			} }
 			,{ $group : $groupGral } 
 		],function(err,resultsGlobal){ 
-			if( err || resultsGlobal.length <= 0 ){ theCB(resultsGlobal,err); }
+			if( err || resultsGlobal.length == 0 ){ return cb(resultsGlobal,err); }
 			resultsGlobal = resultsGlobal[0];
 			//obtener los proveedores;
 			Tour.find({ id : resultsGlobal.toursIDs }).exec(function(err,allTours){
@@ -1479,9 +1465,10 @@ module.exports.tours_by_provider = function(fields,theCB){
 		Para saber si es por la fecha de creación o la de reservación
 		options.dateType = '1';
 	*/
-	fields.sDate = new Date("October 13, 2014");
-	fields.eDate = new Date("October 13, 2016");
-	var $match = {
+	//fields.sDate = new Date("October 13, 2014");fields.eDate = new Date("October 13, 2016");
+	fields.reservation_type = 'tour';
+	if(!fields.state) fields.state = 'liquidated';
+	var $match = fields; /*{
 		reservation_type : 'tour'
 		,$and : [
 			//{ $or : [ { state : 'pending' } , { state : 'canceled' } ] },
@@ -1490,7 +1477,7 @@ module.exports.tours_by_provider = function(fields,theCB){
 				,{ cancelationDate : { $gte : fields.sDate , $lte : fields.eDate } } 
 			] }
 		]
-	};
+	};*/
 	var $groupGral = {
 		_id : null
 		,toursIDs : { '$push' : '$tour' }
@@ -1526,10 +1513,11 @@ module.exports.tours_by_provider = function(fields,theCB){
 			} }
 			,{ $group : $groupGral } 
 		],function(err,resultsGlobal){ 
+			if( err ){ return cb(resultsGlobal,err); }
 			Tour.native(function(err,theTour){
 				//console.log(resultsGlobal);
-				if( err || resultsGlobal.length <= 0 ){ 
-					theCB(resultsGlobal,err);
+				if( err || resultsGlobal.length == 0 ){ 
+					return theCB(resultsGlobal,err);
 				}
 				resultsGlobal = resultsGlobal[0];
 				theTour.aggregate([ { $sort : {createdAt : -1}}, {$match : { _id : { "$in" : resultsGlobal.toursIDs} }}, { $group : $groupTours } ],function(err,resultsTours){
@@ -1634,9 +1622,10 @@ module.exports.tours_commision_by_cupon =function(fields,cb){
 		Para saber si es por la fecha de creación o la de reservación
 		options.dateType = '1';
 	*/
-	fields.sDate = new Date("October 13, 2014");
-	fields.eDate = new Date("October 13, 2016");
-	var $match = {
+	//fields.sDate = new Date("October 13, 2014");fields.eDate = new Date("October 13, 2016");
+	fields.reservation_type = 'tour';
+	if(!fields.state) fields.state = 'liquidated';
+	var $match = fields; /*{
 		reservation_type : 'tour'
 		,$and : [
 			//{ $or : [ { state : 'pending' } , { state : 'canceled' } ] },
@@ -1645,7 +1634,7 @@ module.exports.tours_commision_by_cupon =function(fields,cb){
 				,{ cancelationDate : { $gte : fields.sDate , $lte : fields.eDate } } 
 			] }
 		]
-	};
+	};*/
 	var $groupGral = {
 		_id : null
 		,toursIDs : { '$push' : '$tour' }
@@ -1675,7 +1664,7 @@ module.exports.tours_commision_by_cupon =function(fields,cb){
 			} }
 			,{ $group : $groupGral } 
 		],function(err,resultsGlobal){ 
-			if( err || resultsGlobal.length <= 0 ){ theCB(resultsGlobal,err); }
+			if( err || resultsGlobal.length == 0 ){ return cb(resultsGlobal,err); }
 			resultsGlobal = resultsGlobal[0];
 			//obtener los proveedores;
 			Tour.find({ id : resultsGlobal.toursIDs }).exec(function(err,allTours){

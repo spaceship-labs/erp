@@ -20,6 +20,7 @@ module.exports = {
             ,via : 'cuponsingle'
         },
         expiration:'date',
+        redeem_date:'date',
         multiple:'boolean',
         times:'integer',
         description:'string'

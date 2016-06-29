@@ -8,6 +8,29 @@
     </span>
     <div class='clear'></div>
 </div></div>
+<div class="row">
+    <div class='col-md-4'>
+        <span class='customGroup'>Fecha de Inicio : </span>
+        <span class='customGroup'><span class="input-group calendar-container">
+            <input tabindex="1" is-open="fOpen.from" ng-focus="fOpen.from=true" ng-model="permanentDateFilter.model.from" datepicker-popup="">
+            <span class="input-group-btn">
+                <button tabindex="2" type="button" class="btn btn-default" ng-click="fOpen.from=true"><i class="fa fa-calendar"></i></button>
+            </span>
+        </span></span>
+    </div>
+    <div class='col-md-4'>
+        <span class='customGroup'>Fecha final : </span>
+        <span class='customGroup'><span class="input-group calendar-container">
+            <input tabindex="3" is-open="fOpen.to" ng-model="permanentDateFilter.model.to" datepicker-popup="">
+            <span class="input-group-btn">
+                <button tabindex="3" type="button" class="btn btn-default" ng-click="fOpen.to=true"><i class="fa fa-calendar"></i></button>
+            </span>
+        </span></span>
+    </div>
+    <div class='col-md-4'>
+        <button ng-click="sendFilter(permanentDateFilter)" class="btn btn-primary"><%= __('gral_filter')%></button>
+    </div>
+</div>
 <div class='row'><div class='col-md-12 filters-form' uib-collapse="!isCollapsedFilter">
     <form ng-repeat='f in filtersArray' class='stdform widgetcontent nopadding' ng-show="f.open">
         <h4 class='widgettitle'>{{f.label}}</h4>

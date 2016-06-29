@@ -37,4 +37,11 @@ module.exports = {
     }
   }
   ,labels : { es : 'Traslados', en : 'Transfers' }
+  ,afterUpdate: function(val,cb){
+    Notifications.after(Transfer,val,'update');
+    cb();
+  },beforeUpdate:function(val,cb){
+    Notifications.before(val);
+    cb();
+  }
 };

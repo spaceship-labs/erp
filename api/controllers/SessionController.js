@@ -9,7 +9,7 @@ module.exports = {
     res.redirect('/entrar');
   },
   auth: passport.authenticate('local',{
-    successRedirect: '/home/index'
+    successRedirect: '/order/'
     ,failureRedirect: '/entrar'
     ,failureFlash: true
   })

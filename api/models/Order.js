@@ -18,6 +18,9 @@ module.exports = {
 		    ,enum: ['intern', 'api', 'rep', 'agencyApi','web'] ,
 			required : true
 		}
+		,currency : {
+        	model : 'currency'
+        }
 		,client : {
 			model : 'client_', }
 		,user : {

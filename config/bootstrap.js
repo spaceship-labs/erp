@@ -21,7 +21,7 @@ module.exports.bootstrap = function (cb) {
 
   if (process.env.USERID) {
       //esto es una copia de lo que se hace al loggearse en el archivo config/passport.js
-      User.findOne(process.env.USERID).populate('companies',{sort:'createdAt',limit:20}).populate('accessList').exec(function(err,user){
+      User.findOne(process.env.USERID).populate('companies',{sort:'createdAt',limit:5}).populate('accessList').exec(function(err,user){
         if (err || !user) {
             sails.log.warn('wrond USERID','checalo!');
             sails.config.erp_user = false;

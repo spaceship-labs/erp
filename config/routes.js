@@ -22,7 +22,8 @@
 module.exports.routes = {
 
   '/': {
-     controller:'home'
+     controller:'order'
+     ,action:'index'
   },
   '/entrar': {
     controller: 'session',
