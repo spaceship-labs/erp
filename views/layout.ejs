@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="spaceerp">
+  <head>
+    <title>Spaceship ERP</title>
+<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+<script src="js/html5shiv.js"></script>
+<script src="js/respond.min.js"></script>
+<![endif]-->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Viewport mobile tag for sensible mobile support -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <meta name="robots" content="noindex">
+
+    <!-- <link rel="stylesheet" href="/styles/css/font-awesome.min.css">  -->
+    <!--STYLES-->
+    <link rel="stylesheet" href="/bower_components/roboto-fontface/roboto-fontface.css">
+    <link rel="stylesheet" href="/bower_components/lato/css/lato.css">
+    <link rel="stylesheet" href="/bower_components/sass-bootstrap-glyphicons/css/bootstrap-glyphicons.css">
+    <link rel="stylesheet" href="/bower_components/chosen/chosen.min.css">
+    <link rel="stylesheet" href="/bower_components/ng-tags-input/ng-tags-input.min.css">
+    <link rel="stylesheet" href="/bower_components/angular-loading-bar/build/loading-bar.min.css">
+    <link rel="stylesheet" href="/bower_components/fullcalendar/fullcalendar.css">
+    <link rel="stylesheet" href="/bower_components/leaflet/dist/leaflet.css">
+    <link rel="stylesheet" href="/styles/bootstrap-responsive.min.css">
+    <link rel="stylesheet" href="/styles/default.css">
+    <link rel="stylesheet" href="/styles/css/jquery.ui.css">
+    <link rel="stylesheet" href="/styles/css/isotope.css">
+    <link rel="stylesheet" href="/styles/css/colorbox.css">
+    <link rel="stylesheet" href="/styles/css/uniform.tp.css">
+    <link rel="stylesheet" href="/styles/css/colorpicker.css">
+    <link rel="stylesheet" href="/styles/css/jquery.jgrowl.css">
+    <link rel="stylesheet" href="/styles/css/jquery.alerts.css">
+    <link rel="stylesheet" href="/styles/css/jquery.tagsinput.css">
+    <link rel="stylesheet" href="/styles/css/ui.spinner.css">
+    <link rel="stylesheet" href="/styles/css/jquery.chosen.css">
+    <link rel="stylesheet" href="/styles/css/bootstrap.css">
+    <link rel="stylesheet" href="/styles/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/styles/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/bower_components/angular-xeditable/dist/css/xeditable.css">
+    <link rel="stylesheet" href="/bower_components/angular-chart.js/dist/angular-chart.css">
+    <link rel="stylesheet" href="/styles/general.css">
+    <link rel="stylesheet" href="/styles/importer.css">
+    <!--STYLES END-->
+	
+  </head>
+  <!-- <link rel="stylesheet" href="/styles/custom/<%= sails.config.template_config.cssFile %>"> -->
+
+  <!--<body>-->
+<div id="mainwrapper" class="mainwrapper">
+    <%- partial('shared/header') -%> 
+    <%- partial('shared/menu') -%> 
+    <%- partial('shared/jsVariables') -%> 
+    <div class="rightpanel">
+        <div breadcrumb></div>                
+        <div page-header></div>
+        
+        <div class="maincontent">
+            <div class="maincontentinner">
+                <div class="row nomargin">
+			     <%- body %>
+                </div><!--row-->
+                
+                <div class="footer">
+                    <div class="footer-left">
+                        <span>&copy; 2014</span>
+                    </div>
+                    <div class="footer-right">
+                        <span><%= __('layout-desarrollo')%> <a href="http://spaceshiplabs.com/">Spaceshiplabs.com</a></span>
+                    </div>
+                </div><!--footer-->
+                
+            </div><!--maincontentinner-->
+        </div><!--maincontent-->
+        
+    </div><!--rightpanel-->
+    
+</div><!--mainwrapper-->
+
+    <!--TEMPLATES-->
+    <script type="text/javascript" src="/jst.js"></script>
+    <!--TEMPLATES END-->
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAvLCjzJKSl6XQg-k0fcpPWbg8nNbKEFZI">
+    </script>
+    <!--SCRIPTS-->
+    <script src="/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="/js/dependencies/jspdf.min.js"></script>
+    <script src="/js/dependencies/sails.io.js"></script>
+    <script src="/bower_components/modernizr/modernizr.js"></script>
+    <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/bower_components/ng-file-upload/angular-file-upload-html5-shim.min.js"></script>
+    <script src="/bower_components/angular/angular.min.js"></script>
+    <script src="/bower_components/angular-cookies/angular-cookies.min.js"></script>
+    <script src="/bower_components/tinymce-dist/tinymce.min.js"></script>
+    <script src="/bower_components/ng-file-upload/angular-file-upload.min.js"></script>
+    <script src="/bower_components/chosen/chosen.jquery.min.js"></script>
+    <script src="/bower_components/angular-ui-bootstrap-bower/ui-bootstrap.min.js"></script>
+    <script src="/bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls.min.js"></script>
+    <script src="/bower_components/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+    <script src="/bower_components/jquery-form/jquery.form.js"></script>
+    <script src="/bower_components/jquery-cookie/jquery.cookie.js"></script>
+    <script src="/bower_components/flot/jquery.flot.js"></script>
+    <script src="/bower_components/flot/jquery.flot.resize.js"></script>
+    <script src="/bower_components/ng-tags-input/ng-tags-input.min.js"></script>
+    <script src="/bower_components/slimScroll/slimScroll.min.js"></script>
+    <script src="/bower_components/angular-ui-sortable/sortable.min.js"></script>
+    <script src="/bower_components/angular-ui-date/src/date.js"></script>
+    <script src="/bower_components/angular-loading-bar/build/loading-bar.min.js"></script>
+    <script src="/bower_components/angular-ui-calendar/src/calendar.js"></script>
+    <script src="/bower_components/fullcalendar/fullcalendar.js"></script>
+    <script src="/bower_components/fullcalendar/gcal.js"></script>
+    <script src="/bower_components/angular-xeditable/dist/js/xeditable.js"></script>
+    <script src="/bower_components/moment/min/moment-with-langs.min.js"></script>
+    <script src="/bower_components/moment-timezone/moment-timezone.js"></script>
+    <script src="/bower_components/underscore/underscore-min.js"></script>
+    <script src="/bower_components/leaflet/dist/leaflet.js"></script>
+    <script src="/bower_components/leaflet-plugins/layer/tile/Google.js"></script>
+    <script src="/bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.js"></script>
+    <script src="/bower_components/angular-leaflet/dist/angular-leaflet-directive.js"></script>
+    <script src="/bower_components/angular-ui-tinymce/src/tinymce.js"></script>
+    <script src="/bower_components/Chart.js/Chart.js"></script>
+    <script src="/bower_components/parsleyjs/dist/parsley.js"></script>
+    <script src="/bower_components/angular-chroma/angular-chroma.js"></script>
+    <script src="/bower_components/angular-scroll/angular-scroll.min.js"></script>
+    <script src="/bower_components/async/dist/async.min.js"></script>
+    <script src="/js/themejs/angular-chart.js"></script>
+    <script src="/js/themejs/exchange-rates.js"></script>
+    <script src="/js/themejs/responsive-tables.js"></script>
+    <script src="/js/app.js"></script>
+    <script src="/js/custom.js"></script>
+    <script src="/js/shared.js"></script>
+    <script src="/js/directives/breadcrumb.js"></script>
+    <script src="/js/directives/calendarMonth.js"></script>
+    <script src="/js/directives/customMessage.js"></script>
+    <script src="/js/directives/customTablePrices.js"></script>
+    <script src="/js/directives/dayStatsChart.js"></script>
+    <script src="/js/directives/deleteButton.js"></script>
+    <script src="/js/directives/directoryListing.js"></script>
+    <script src="/js/directives/exportFile.js"></script>
+    <script src="/js/directives/fileManager.js"></script>
+    <script src="/js/directives/formHelper.js"></script>
+    <script src="/js/directives/geoMarkers.js"></script>
+    <script src="/js/directives/geoSelector.js"></script>
+    <script src="/js/directives/importFile.js"></script>
+    <script src="/js/directives/langContent.js"></script>
+    <script src="/js/directives/notices.js"></script>
+    <script src="/js/directives/noticesreservations.js"></script>
+    <script src="/js/directives/pageHeader.js"></script>
+    <script src="/js/directives/profileImage.js"></script>
+    <script src="/js/directives/reportGenerator.js"></script>
+    <script src="/js/directives/statisticsChart.js"></script>
+    <script src="/js/directives/tableHelper.js"></script>
+    <script src="/js/directives/timeLineChart.js"></script>
+    <script src="/js/directives/validNumber.js"></script>
+    <!--SCRIPTS END-->
+    <%- partial('shared/jsTranslateVars') -%> 
+    <script src="/js/controllers/controller.js"></script>
+    <% if(page){ %>
+        <script src="/js/controllers/<%=page.controller%>"></script>
+    <% } %>
+
+
+  <!--</script>-->
+  <!--</body>-->
+</html>

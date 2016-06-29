@@ -1,8 +1,8 @@
 var passport = require('passport');
 
 module.exports = {
-  new: function(req, res) {
-    res.view({ layout: 'session_layout' });
+  new: function(req, res) { 
+    res.view('session/new',{ layout: 'session_layout' });
   },
   destroy: function(req, res) {
     req.logout();
