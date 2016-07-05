@@ -286,6 +286,7 @@ module.exports.interactions = {
             { key: "transfer_gral", name : "Reporte Traslados (Gral.)" }
             ,{ key: "transfer_by_agency", name : "Reporte Traslados (by Agency)" }
             ,{ key: "transfer_by_service", name : "Reporte Traslados (by Service)" }
+            ,{ key: "fees_report_transfers_by_agency", name : "Reporte de montos de Traslados (by Agency)" }
             ,{ key: "tours_gral", name : "Reporte Tours (Gral.)" }
             ,{ key: "tours_by_user", name : "Reporte Tours (by User)" }
             ,{ key: "tours_by_agency", name : "Reporte Tours (by Agency)" }

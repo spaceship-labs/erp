@@ -11,27 +11,7 @@
 			<span uib-dropdown class='dropdown pull-right full-sm'>
                 <a uib-dropdown-toggle class='btn btn-primary full-width'><i class='fa fa-files-o'></i> Reportes</a>
                 <ul role='menu' class='dropdown-menu' ng-init="SelectReport(interactions.reportsList[0].key)">
-                    <li>
-                        <a ng-repeat="r in interactions.reportsList" ng-click="SelectReport(r.key)" ng-bind="r.name"></a>
-                        <!--<a ng-click="SelectReport('transfer_gral')">Reporte Traslados (Gral.)</a>
-                        <a ng-click="SelectReport('transfer_by_agency')">Reporte Traslados (by Agency)</a>
-                        <a ng-click="SelectReport('transfer_by_service')">Reporte Traslados (by Service)</a>
-                        <a ng-click="SelectReport('transfer_by_provider')">Reporte Traslados (by Provider)</a>
-                        <a ng-click="SelectReport('tours_gral')">Reporte Tours (Gral.)</a>
-                        <a ng-click="SelectReport('tours_by_user')">Reporte Tours (by User)</a>
-                        <a ng-click="SelectReport('tours_by_provider')">Reporte Tours (by Provider)</a>
-                        <a ng-click="SelectReport('tours_by_agency')">Reporte Tours (by Agency)</a>
-                        <a ng-click="SelectReport('tours_by_hotel')">Reporte Tours (by Hotel)</a>
-                        <a ng-click="SelectReport('tours_by_payment_method')">Reporte Tours (by Payment)</a>
-                        <a>Reportes Detallados</a>
-                        <a ng-click="SelectReport('tours_by_user_list')">Reporte Tours Detallado (by User)</a>
-                        <a ng-click="SelectReport('tours_by_provider_list')">Reporte Tours Detallado (by Provider)</a>
-                        <a ng-click="SelectReport('tours_by_agency_list')">Reporte Tours Detallado (by Agency)</a>
-                        <a ng-click="SelectReport('tours_by_hotel_list')">Reporte Tours Detallado (by Hotel)</a>
-                        <a ng-click="SelectReport('tours_by_payment_method_list')">Reporte Tours Detallado (by Payment)</a>
-                        <a ng-click="SelectReport('tours_cupon_by_user')">Reporte Tours Cupón (by User)</a>
-                        <a ng-click="SelectReport('tours_commision_by_cupon')">Reporte Tours Comisión (by User)</a>-->
-                    </li>
+                    <li><a ng-repeat="r in interactions.reportsList" ng-click="SelectReport(r.key)" ng-bind="r.name"></a></li>
                 </ul>
             </span>
             <div class='clear'></div>

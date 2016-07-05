@@ -34,6 +34,7 @@ module.exports.getReport = function(type,fields,cb){
 		,'transfer_by_service' : true
 		,'transfer_by_agency' : true
 		,'transfer_by_provider' : true
+		,'fees_report_transfers_by_agency' : true
 	};
 	if( typeof reports_available[type] != 'undefined' ){
 		//console.log('FIELDS 2:',fields);
@@ -606,7 +607,8 @@ module.exports.tours_by_agency = function(fields,cb){
 	//fields.sDate = new Date("October 13, 2014");fields.eDate = new Date("October 13, 2016");
 	fields.reservation_type = 'tour';
 	if(!fields.state) fields.state = 'liquidated';
-	var $match = fields; /*{
+	var $match = fields; 
+	delete $match.listing;/*{
 		reservation_type : 'tour'
 		,$and : [
 			//{ $or : [ { state : 'pending' } , { state : 'canceled' } ] },
@@ -798,7 +800,8 @@ module.exports.tours_by_hotel = function(fields,cb){
 	//fields.sDate = new Date("October 13, 2014");fields.eDate = new Date("October 13, 2016");
 	fields.reservation_type = 'tour';
 	if(!fields.state) fields.state = 'liquidated';
-	var $match = fields; /*{
+	var $match = fields; 
+	delete $match.listing; /*{
 		reservation_type : 'tour'
 		,$and : [
 			//{ $or : [ { state : 'pending' } , { state : 'canceled' } ] },
@@ -1162,7 +1165,8 @@ module.exports.tours_by_payment_method = function(fields,cb){
 	fields.reservation_type = 'tour';
 	if(!fields.state) fields.state = 'liquidated';
 	//fields.sDate = new Date("October 13, 2014");fields.eDate = new Date("October 13, 2016");
-	var $match = fields; /*{
+	var $match = fields; 
+	delete $match.listing;/*{
 		reservation_type : 'tour'
 		,$and : [
 			//{ $or : [ { state : 'pending' } , { state : 'canceled' } ] },
@@ -1468,7 +1472,8 @@ module.exports.tours_by_provider = function(fields,theCB){
 	//fields.sDate = new Date("October 13, 2014");fields.eDate = new Date("October 13, 2016");
 	fields.reservation_type = 'tour';
 	if(!fields.state) fields.state = 'liquidated';
-	var $match = fields; /*{
+	var $match = fields; 
+	delete $match.listing;/*{
 		reservation_type : 'tour'
 		,$and : [
 			//{ $or : [ { state : 'pending' } , { state : 'canceled' } ] },
@@ -1987,3 +1992,275 @@ module.exports.mkpFormatItemToExport = function(reservation,cupon){
 	item[++i] = '';//reserva de agencia
 	return item;
 }
+/*
+	Reporte de ventas
+		- Total de reservaciones
+		- Total de reservaciones completadas
+		- Total de reservaciones NO comppletadas
+	Las 3 versiones se regresan deben de tener los siguiente
+		En dólares y luego en pesos se repite todo
+			-Total
+			- Callcenter
+			- callcenter creditcard
+			- callcenter paypay
+			- callcenter others
+			- Web
+			- Web creditcard
+			- Web paypal
+			- Web others
+*/
+module.exports.fees_report_transfers_by_agency = function(fields,cb){
+	var results = {
+		headers : [ 
+			{ label : 'Agencia', handle : 'company', type : '' }
+			,{ label : 'Descripción', handle : 'description', type : '' }
+			,{ label : 'Número de reservas', handle : 'quantity', type : '' }
+			,{ label : 'Total', handle : 'total', type : 'currency' }
+			,{ label : 'Pax', handle : 'pax', type : '' }
+		]
+		,title : 'Reporte de ventas por agencia'
+		,rows : {}
+		,totals : { total : 0 , subtotal : 0 , iva : 0 , pax : 0 }
+	};
+	getCurrencies(function(currencies){
+		if(!currencies) return cb([],'no currencies');
+		var $match = fields || {};
+		$match.reservation_type = 'transfer';
+		if(!$match.state) $match.state = 'liquidated';
+		var $groupGral = {
+			_id : null
+			,companyIDs : { '$push' : '$company' }
+			,total : { $sum : '$totalNeto' } //Total global
+			,pax : { $sum : '$paxNeto' } //Total Pax global
+		};
+		var feeSumVar = { $add : [ { $ifNull : [ '$fee', 0 ] } , { $ifNull : [ '$feeKids', 0 ] } ] };
+		var paxSumVar = { $add : [ { $ifNull : [ '$pax', 0 ] } , { $ifNull : [ '$kidPax', 0 ] }	] };
+		var $projectGral = {
+			company:1,fee:1,feeKids:1,pax:1,kidPax:1,state:1,hotel:1,reservation_method:1,payment_method:1
+			,totalNeto 	: { $cond : [ { $ne : ['$state' , 'canceled'] },feeSumVar,0 ] }
+			,paxNeto 	: { $cond : [ { $ne : ['$state' , 'canceled'] },paxSumVar,0 ] }
+		};
+		var conditions = {
+			dll : { //falta que le agregue la moneda
+				dllAll : { $and : [ { $eq : ['$currency', sails.models['currency'].mongo.objectId(currencies.usd.id) ] } ] } 
+				,callcenter : { $and : [ { $eq : ['$reservation_method','intern'] }, { $eq : ['$currency', sails.models['currency'].mongo.objectId(currencies.usd.id) ] } ] }
+				,callcenterCreditcard : { $and : [ { $eq : ['$reservation_method','intern'] },{ $eq : ['$payment_method','creditcard'] },{ $eq : ['$currency', sails.models['currency'].mongo.objectId(currencies.usd.id) ] } ] }
+				,callcenterConekta : { $and : [ { $eq : ['$reservation_method','intern'] },{ $eq : ['$payment_method','conekta'] },{ $eq : ['$currency', sails.models['currency'].mongo.objectId(currencies.usd.id) ] } ] }
+				,callcenterPaypal : { $and : [ { $eq : ['$reservation_method','intern'] },{ $eq : ['$payment_method','paypal'] },{ $eq : ['$currency', sails.models['currency'].mongo.objectId(currencies.usd.id) ] } ] }
+				,web : { $and : [ { $eq : ['$reservation_method','web'] },{ $eq : ['$currency', sails.models['currency'].mongo.objectId(currencies.usd.id) ] } ] }
+				,webCreditcard : { $and : [ { $eq : ['$reservation_method','web'] },{ $eq : ['$payment_method','creditcard'] },{ $eq : ['$currency', sails.models['currency'].mongo.objectId(currencies.usd.id) ] } ] }
+				,webConekta : { $and : [ { $eq : ['$reservation_method','web'] },{ $eq : ['$payment_method','conekta'] },{ $eq : ['$currency', sails.models['currency'].mongo.objectId(currencies.usd.id) ] } ] }
+				,webPaypal : { $and : [ { $eq : ['$reservation_method','web'] },{ $eq : ['$payment_method','paypal'] },{ $eq : ['$currency', sails.models['currency'].mongo.objectId(currencies.usd.id) ] } ] }
+			}
+			,mxn : {
+				mxnAll : { $and : [ { $eq : ['$currency', sails.models['currency'].mongo.objectId(currencies.mxn.id) ] } ] } 
+				,callcenter : { $and : [ { $eq : ['$reservation_method','intern'] },{ $eq : ['$currency', sails.models['currency'].mongo.objectId(currencies.mxn.id) ] } ] }
+				,callcenterCreditcard : { $and : [ { $eq : ['$reservation_method','intern'] },{ $eq : ['$payment_method','creditcard'] },{ $eq : ['$currency', sails.models['currency'].mongo.objectId(currencies.mxn.id) ] } ] }
+				,callcenterConekta : { $and : [ { $eq : ['$reservation_method','intern'] },{ $eq : ['$payment_method','conekta'] },{ $eq : ['$currency', sails.models['currency'].mongo.objectId(currencies.mxn.id) ] } ] }
+				,callcenterPaypal : { $and : [ { $eq : ['$reservation_method','intern'] },{ $eq : ['$payment_method','paypal'] },{ $eq : ['$currency', sails.models['currency'].mongo.objectId(currencies.mxn.id) ] } ] }
+				,web : { $and : [ { $eq : ['$reservation_method','web'] },{ $eq : ['$currency', sails.models['currency'].mongo.objectId(currencies.mxn.id) ] } ] }
+				,webCreditcard : { $and : [ { $eq : ['$reservation_method','web'] },{ $eq : ['$payment_method','creditcard'] },{ $eq : ['$currency', sails.models['currency'].mongo.objectId(currencies.mxn.id) ] } ] }
+				,webConekta : { $and : [ { $eq : ['$reservation_method','web'] },{ $eq : ['$payment_method','conekta'] },{ $eq : ['$currency', sails.models['currency'].mongo.objectId(currencies.mxn.id) ] } ] }
+				,webPaypal : { $and : [ { $eq : ['$reservation_method','web'] },{ $eq : ['$payment_method','paypal'] },{ $eq : ['$currency', sails.models['currency'].mongo.objectId(currencies.mxn.id) ] } ] }
+			}
+		};
+		var $groupCompany = {
+			_id : null
+			,companyIDs : { '$push' : '$company' }
+			,total : { $sum : '$totalNeto' } //Total de la compañía
+			,pax : { $sum : '$paxNeto' } //Total Pax de la compañía
+			,dll_all : { $sum : '$dll_all' }
+			,dll_allPax : { $sum : '$dll_allPax' }
+			,dll_totalCallcenter : { $sum : '$dll_totalCallcenter' }
+			,dll_totalCallcenterCC : { $sum : '$dll_totalCallcenterCC' }
+			,dll_totalCallcenterPP : { $sum : '$dll_totalCallcenterPP' }
+			,dll_totalCallcenterCK : { $sum : '$dll_totalCallcenterCK' }
+			,dll_paxCallcenter : { $sum : '$dll_paxCallcenter' }
+			,dll_paxCallcenterCC : { $sum : '$dll_paxCallcenterCC' }
+			,dll_paxCallcenterPP : { $sum : '$dll_paxCallcenterPP' }
+			,dll_paxCallcenterCK : { $sum : '$dll_paxCallcenterCK' }
+			,dll_totalWeb : { $sum : '$dll_totalWeb' }
+			,dll_totalWebCC : { $sum : '$dll_totalWebCC' }
+			,dll_totalWebPP : { $sum : '$dll_totalWebPP' }
+			,dll_totalWebCK : { $sum : '$dll_totalWebCK' }
+			,dll_paxWeb : { $sum : '$dll_paxWeb' }
+			,dll_paxWebCC : { $sum : '$dll_paxWebCC' }
+			,dll_paxWebPP : { $sum : '$dll_paxWebPP' }
+			,dll_paxWebCK : { $sum : '$dll_paxWebCK' }
+			,mxn_all : { $sum : '$mxn_all' }
+			,mxn_allPax : { $sum : '$mxn_allPax' }
+			,mxn_totalCallcenter : { $sum : '$mxn_totalCallcenter' }
+			,mxn_totalCallcenterCC : { $sum : '$mxn_totalCallcenterCC' }
+			,mxn_totalCallcenterPP : { $sum : '$mxn_totalCallcenterPP' }
+			,mxn_totalCallcenterCK : { $sum : '$mxn_totalCallcenterCK' }
+			,mxn_paxCallcenter : { $sum : '$mxn_paxCallcenter' }
+			,mxn_paxCallcenterCC : { $sum : '$mxn_paxCallcenterCC' }
+			,mxn_paxCallcenterPP : { $sum : '$mxn_paxCallcenterPP' }
+			,mxn_paxCallcenterCK : { $sum : '$mxn_paxCallcenterCK' }
+			,mxn_totalWeb : { $sum : '$mxn_totalWeb' }
+			,mxn_totalWebCC : { $sum : '$mxn_totalWebCC' }
+			,mxn_totalWebPP : { $sum : '$mxn_totalWebPP' }
+			,mxn_totalWebCK : { $sum : '$mxn_totalWebCK' }
+			,mxn_paxWeb : { $sum : '$mxn_paxWeb' }
+			,mxn_paxWebCC : { $sum : '$mxn_paxWebCC' }
+			,mxn_paxWebPP : { $sum : '$mxn_paxWebPP' }
+			,mxn_paxWebCK : { $sum : '$mxn_paxWebCK' }
+		};
+		var $projectCompany = {
+			company:1,fee:1,feeKids:1,pax:1,kidPax:1,state:1,hotel:1,reservation_method:1,payment_method:1,currency:1
+			,totalNeto 	: { $cond : [ { $ne : ['$state' , 'canceled'] },feeSumVar,0 ] }
+			,paxNeto 	: { $cond : [ { $ne : ['$state' , 'canceled'] },paxSumVar,0 ] }
+			//faltaría agregar validación por DLL global
+			,dll_all : { $cond : [ conditions.dll.dllAll ,feeSumVar,0 ] }
+			,dll_allPax : { $cond : [ conditions.dll.dllAll ,paxSumVar,0 ] }
+			,dll_totalCallcenter : { $cond : [ conditions.dll.callcenter ,feeSumVar,0 ] }
+			,dll_totalCallcenterCC : { $cond : [ conditions.dll.callcenterCreditcard ,feeSumVar,0 ] }  
+			,dll_totalCallcenterPP 	: { $cond : [ conditions.dll.callcenterPaypal ,feeSumVar,0 ] } 
+			,dll_totalCallcenterCK 	: { $cond : [ conditions.dll.callcenterConekta ,feeSumVar,0 ] } 
+			,dll_paxCallcenter 	: { $cond : [ conditions.dll.callcenter ,paxSumVar,0 ] } 
+			,dll_paxCallcenterCC 	: { $cond : [ conditions.dll.callcenterCreditcard ,paxSumVar,0 ] } 
+			,dll_paxCallcenterPP 	: { $cond : [ conditions.dll.callcenterPaypal ,paxSumVar,0 ] } 
+			,dll_paxCallcenterCK 	: { $cond : [ conditions.dll.callcenterConekta ,paxSumVar,0 ] } 
+			,dll_totalWeb : { $cond : [ conditions.dll.web ,feeSumVar,0 ] }
+			,dll_totalWebCC : { $cond : [ conditions.dll.webCreditcard ,feeSumVar,0 ] }  
+			,dll_totalWebPP 	: { $cond : [ conditions.dll.webPaypal ,feeSumVar,0 ] } 
+			,dll_totalWebCK 	: { $cond : [ conditions.dll.webConekta ,feeSumVar,0 ] } 
+			,dll_paxWeb 	: { $cond : [ conditions.dll.web ,paxSumVar,0 ] } 
+			,dll_paxWebCC 	: { $cond : [ conditions.dll.webCreditcard ,paxSumVar,0 ] } 
+			,dll_paxWebCK 	: { $cond : [ conditions.dll.webConekta ,paxSumVar,0 ] } 
+			,dll_paxWebCK 	: { $cond : [ conditions.dll.webConekta ,paxSumVar,0 ] } 
+			//faltaría agregar validación por MXN global
+			,mxn_all : { $cond : [ conditions.mxn.mxnAll ,feeSumVar,0 ] }
+			,mxn_allPax : { $cond : [ conditions.mxn.dllAll ,paxSumVar,0 ] }
+			,mxn_totalCallcenter : { $cond : [ conditions.mxn.callcenter ,feeSumVar,0 ] }
+			,mxn_totalCallcenterCC : { $cond : [ conditions.mxn.callcenterCreditcard ,feeSumVar,0 ] }  
+			,mxn_totalCallcenterPP 	: { $cond : [ conditions.mxn.callcenterPaypal ,feeSumVar,0 ] } 
+			,mxn_totalCallcenterCK 	: { $cond : [ conditions.mxn.callcenterConekta ,feeSumVar,0 ] } 
+			,mxn_paxCallcenter 	: { $cond : [ conditions.mxn.callcenter ,paxSumVar,0 ] } 
+			,mxn_paxCallcenterCC 	: { $cond : [ conditions.mxn.callcenterCreditcard ,paxSumVar,0 ] } 
+			,mxn_paxCallcenterPP 	: { $cond : [ conditions.mxn.callcenterPaypal ,paxSumVar,0 ] } 
+			,mxn_paxCallcenterCK 	: { $cond : [ conditions.mxn.callcenterConekta ,paxSumVar,0 ] } 
+			,mxn_totalWeb : { $cond : [ conditions.mxn.web ,feeSumVar,0 ] }
+			,mxn_totalWebCC : { $cond : [ conditions.mxn.webCreditcard ,feeSumVar,0 ] }  
+			,mxn_totalWebPP 	: { $cond : [ conditions.mxn.webPaypal ,feeSumVar,0 ] } 
+			,mxn_totalWebCK 	: { $cond : [ conditions.mxn.webConekta ,feeSumVar,0 ] } 
+			,mxn_paxWeb 	: { $cond : [ conditions.mxn.web ,paxSumVar,0 ] } 
+			,mxn_paxWebCC 	: { $cond : [ conditions.mxn.webCreditcard ,paxSumVar,0 ] } 
+			,mxn_paxWebPP 	: { $cond : [ conditions.mxn.webPaypal ,paxSumVar,0 ] } 
+			,mxn_paxWebCK 	: { $cond : [ conditions.mxn.webConekta ,paxSumVar,0 ] } 
+		};
+		Reservation.native(function(err,theReservation){
+			//en este agregate tenemos los globales (posiblemente innecesario) y las compañias (lo más importante)
+			theReservation.aggregate([ { $sort : { createdAt : -1 } }, { $match : $match }, { $project : $projectGral }, { $group : $groupGral } ],function(err,resultsGlobal){ 
+				if(err || resultsGlobal.length==0) return cb(false,err);
+				resultsGlobal = resultsGlobal[0];
+				if( !resultsGlobal.companyIDs )  return cb(false,{ err: 'no results' });
+				var companyIDs = _.map(resultsGlobal.companyIDs, function(x){ return x.toString(); });
+				companyIDs = _.uniq(companyIDs);
+				async.mapSeries( companyIDs, function(item,theCB){
+					Company.findOne(item).exec(function(err,thisCompany){
+						if(err||!thisCompany) return theCB(err,false);
+						$match.company = sails.models['company'].mongo.objectId( item );
+						//se tendría que hacer 3 veces este aggregate para validar lo de las fechas 
+						theReservation.aggregate([ { $sort : { createdAt : -1 } }, { $match : $match }, { $project : $projectCompany }, { $group : $groupCompany }  ],function(err,resultsCompany1){ 
+							if(err || resultsCompany1.length==0) return theCB(err,false);
+							resultsCompany1 = resultsCompany1[0];
+							//console.log('111111111111111111111111111111111111111111111111111111111111111111111111111111111',resultsCompany1);
+							var aux = {
+								company : thisCompany.name
+								,description : 'Resultados totales'
+								,pax : resultsCompany1.pax
+								,total : resultsCompany1.total
+								,quantity : 1
+								,type:'c'
+								,rows2 : getAllTotalsByAgency([],resultsCompany1)
+							};
+							//el match va a cambiar para validar que un serivicio haya sido dado o no
+							$match2 = $match;
+							$match2.$or = [
+								{ $and : [ { type : 'one_way' }, { origin : 'airport' } ,{ arrival_date : { $ne : null } },{ arrival_date : { $ne:'' } },{ arrival_date : { $lte : new Date() } } ]}
+								,{ $and : [ { type : 'one_way' }, { origin : 'hotel' } ,{ departure_date : { $ne : null } },{ departure_date : { $ne:'' } },{ departure_date : { $lte : new Date() } } ]}
+								,{ $and : [  { type : 'round_trip' }  ,{ arrival_date : { $ne:null } } ,{ arrival_date : { $ne:'' } } ,{ arrival_date : { $lte : new Date() } } ]} ];
+							theReservation.aggregate([ { $sort : { createdAt : -1 } }, { $match : $match2 }, { $project : $projectCompany }, { $group : $groupCompany }  ],function(err,resultsCompany2){ 
+								if(!err&&resultsCompany2.length>0){
+									resultsCompany2 = resultsCompany2[0];
+									//console.log('22222222222222222222222222222222222222222222222222222222222222222222222222',resultsCompany2);
+									aux.rows2.push({ company:'',description:'Reservas Completadas',pax:'',total:'',quantity:'',type:'c' });
+									aux.rows2 = getAllTotalsByAgency(aux.rows2,resultsCompany2);
+								}
+								$match2.$or = [
+									{ $and : [ { type : 'one_way' }, { origin : 'airport' }, { arrival_date : { $ne : null } },{ arrival_date : { $ne:'' } },{ arrival_date : { $gt : new Date() } } ] }
+									,{ $and : [ { type : 'one_way' }, { origin : 'hotel' } ,{ departure_date : { $ne : null } },{ departure_date : { $ne:'' } },{ departure_date : { $gt : new Date() } } ] }
+									,{ $and : [ { type : 'round_trip' }, { arrival_date : { $ne:null } } ,{ arrival_date : { $ne:'' } } ,{ arrival_date : { $gt : new Date() } } ] } ];
+								theReservation.aggregate([ { $sort : { createdAt : -1 } }, { $match : $match2 }, { $project : $projectCompany }, { $group : $groupCompany }  ],function(err,resultsCompany3){ 
+									if(!err&&resultsCompany3.length>0){
+										resultsCompany3 = resultsCompany3[0];
+										//console.log('33333333333333333333333333333333333333333333333333333333333333333333333',resultsCompany3);
+										aux.rows2.push({ company:'',description:'Reservas NO Completadas',pax:'',total:'',quantity:'',type:'c' });
+										aux.rows2 = getAllTotalsByAgency(aux.rows2,resultsCompany3);
+									}
+									theCB(false,aux);
+								});//aggregate by company 3
+							});//aggregate by company 2
+						});//aggregate by company 1
+					});
+				},function(err,items){
+					//agregar los resultados
+					results.rows = items;
+					results.totals.total = resultsGlobal.total;
+					results.totals.iva = resultsGlobal.total*mainIVA;
+					results.totals.subtotal = resultsGlobal.total - results.totals.iva;
+					results.totals.pax = resultsGlobal.pax;
+					results.reportType = 'bygroup';
+					cb(results,err);
+				});//async by companies
+			});//global aggregate
+		});//.native close
+	});
+};
+function getCurrencies(cb){
+	Currency.find({ currency_code : ['USD','MXN'] }).exec(function(err,currencies){
+		console.log(err);
+		if(err || !currencies || currencies.length==0 ) return cb(false);
+		var r  = {};
+		for(x in currencies){
+			if( currencies[x].currency_code == 'USD' )
+				r.usd = currencies[x];
+			if( currencies[x].currency_code == 'MXN' )
+				r.mxn = currencies[x];
+		}
+		return cb(r);
+	});
+}
+function getAllTotalsByAgency(r,x){
+	var y = [ //falta agregat global DLL y MXN
+		{ t : 'dll_all', p : 'dll_allPax', q: 1, d : 'Total de Dólares' }
+		,{ t : 'dll_totalCallcenter', p : 'dll_paxCallcenter', q: 1, d : 'Callcenter' }
+		,{ t : 'dll_totalCallcenterCC', p : 'dll_paxCallcenterCC', q: 1, d : 'Callcenter Credit card' }
+		,{ t : 'dll_totalCallcenterPP', p : 'dll_paxCallcenterPP', q: 1, d : 'Callcenter Paypal' }
+		,{ t : 'dll_totalCallcenterCK', p : 'dll_paxCallcenterCK', q: 1, d : 'Callcenter Conekta' }
+		,{ t : 'dll_totalWeb', p : 'dll_paxWeb', q: 1, d : 'Web' }
+		,{ t : 'dll_totalWebCC', p : 'dll_paxWebCC', q: 1, d : 'Web Credit card' }
+		,{ t : 'dll_totalWebPP', p : 'dll_paxWebPP', q: 1, d : 'Web Paypal' }
+		,{ t : 'dll_totalWebCK', p : 'dll_paxWebCK', q: 1, d : 'Web Conekta' }
+		,{ t : 'mxn_all', p : 'mxn_allPax', q: 1, d : 'Total de Pesos Mexicanos' }
+		,{ t : 'mxn_totalCallcenter', p : 'mxn_paxCallcenter', q: 1, d : 'Callcenter' }
+		,{ t : 'mxn_totalCallcenterCC', p : 'mxn_paxCallcenterCC', q: 1, d : 'Callcenter Credit card' }
+		,{ t : 'mxn_totalCallcenterPP', p : 'mxn_paxCallcenterPP', q: 1, d : 'Callcenter Paypal' }
+		,{ t : 'mxn_totalCallcenterCK', p : 'mxn_paxCallcenterCK', q: 1, d : 'Callcenter Conekta' }
+		,{ t : 'mxn_totalWeb', p : 'mxn_paxWeb', q: 1, d : 'Web' }
+		,{ t : 'mxn_totalWebCC', p : 'mxn_paxWebCC', q: 1, d : 'Web Credit card' }
+		,{ t : 'mxn_totalWebPP', p : 'mxn_paxWebPP', q: 1, d : 'Web Paypal' }
+		,{ t : 'mxn_totalWebCK', p : 'mxn_paxWebCK', q: 1, d : 'Web Conekta' }
+	];
+	for( i in y ){
+		r.push({
+			company : ''
+			,description : y[i].d
+			,pax : x[y[i].p]
+			,total : x[y[i].t]
+			,quantity : y[i].q
+		});
+	}
+	return r;
+};

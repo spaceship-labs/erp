@@ -49,7 +49,7 @@ module.exports = {
             ,defaultsTo : 'intern' }
         ,payment_method : {
             type:'string',
-            enum : ['creditcard','paypal','cash','prepaid']
+            enum : ['creditcard','paypal','cash','prepaid','conekta']
         }
         ,travelType : {
             type : 'string'

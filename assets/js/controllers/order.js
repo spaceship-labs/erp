@@ -133,7 +133,7 @@ app.controller('orderCTL',function($scope,$http,$window,$upload,$rootScope){
         else return false;
     };
     $scope.formatTime = function(time){
-        var t = moment(time);
+        var t = moment(time).zone("-05:00");
         if(time) return t.format("HH:mm");
         else return false;
     };

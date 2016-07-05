@@ -18,7 +18,7 @@
 							<span ng-if="h.type=='currency'&&h.object" ng-bind="r[h.object][h.handle] | currency:'$ ':3"></span>
 						</td>
 					</tr>
-					<tr ng-repeat="r2 in r.rows2">
+					<tr ng-repeat="r2 in r.rows2" ng-class="r2.type=='c'?'underlight':''">
 						<td ng-repeat="h in object.results.headers">
 							<span ng-if='h.type!="currency"&&!h.object2' ng-bind="r2[h.handle]"></span>
 							<span ng-if='h.type!="currency"&&h.object2' ng-bind="r2[h.object2][h.handle]"></span>
