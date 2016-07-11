@@ -25,9 +25,10 @@ module.exports = {
 				}
                 delete users[i].password;
 			}
+
 			Common.view(res.view,{
 				 apps: sails.config.apps,
-				 users:users,
+				 users:[],
 				 page:{
 					name:req.__('sc_users')
 					,icon:'fa fa-users'		
@@ -36,8 +37,27 @@ module.exports = {
 			},req);
 		});			
 	}
-
-	, all: function(req,res){
+	,find : function(req,res){
+		var params = req.params.all();
+		var skip = params.skip || 0;
+		var limit = params.limit || 200;
+		//console.log(params);
+		if( typeof params.id == 'undefined' ) delete params.id;
+		delete params.skip;
+		delete params.limit;
+		delete params.company;
+		delete params.adminCompany;
+		//params.company = req.session.select_company;
+        if(params.name) params.name = new RegExp(params.name,"i");
+        User.find(params,{password:0}).skip(skip).limit(limit).exec(function(err,users){
+        	if(err) res.json('err');
+        	User.count(params).exec(function(e,count){
+        		if(e) res.json('err');
+            	res.json({ results : users , count : count });
+        	});
+        });
+	}
+	,all: function(req,res){
 		var find = {}
 		, select_company = req.session.select_company || req.user.select_company;
 		find['companies.'+select_company] ={$exists:1};
@@ -65,7 +85,8 @@ module.exports = {
 		Company.findOne({id:select_company}).exec(function(err,company){
 			if(err) return res.json({text : 'error'});
 			User.create(form).exec(function(err,user){
-				if(err) return res.forbidden();
+				console.log(err);
+				if(err) return res.json({text : 'error'});
 				user.companies.add(company.id);
 				user.setPassword(password);
                 return res.json({url : '/user/edit/'+user.id});

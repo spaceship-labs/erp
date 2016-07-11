@@ -14,6 +14,13 @@ app.controller('orderCTL',function($scope,$http,$window,$upload,$rootScope){
         if( order.hotels.length ) return order.hotels[0].state;
         return '';
     };
+    $scope.getCurrencyCode = function(order){
+        console.log(order);
+        if( order.reservations.length>0 && order.reservations[0].currency )
+            return order.reservations[0].currency.currency_code;
+        else
+            return '';
+    };
     $scope.filtersArray = [
         { label : 'Folio' , value : 'folio' , type : 'number' , field : 'folio' }
         ,{ label : $rootScope.translates.arrival_date , value : 'arrival' , type : 'date' , field : 'arrival_date' , options : { to : new Date() } }

@@ -28,7 +28,7 @@ module.exports = {
       type : 'String'
       ,enum : [ 'aquatic', 'land' ]
     }
-    ,url : 'strings'
+    ,url : 'string'
     ,meta_title_es:'string'
     ,meta_description_es:'string'
     ,meta_keywords_es:'string'

@@ -8,6 +8,16 @@ module.exports.getCancelationMotives = function(){
 	return result;
 };
 /*
+	Función temporal para asignar usuario: "Web user" a las reservas sin usuario de la página
+*/
+module.exports.asignUser = function(cb){
+	//Order.update({ user: { $exists : true } },{ user: '56abb2dde136fdc555365997' }).exec(function(err,orders){ // as admin ¬¬
+	Order.update({ user: { $exists : false } },{ user: '5783c25d85528e0c27d6e05b' }).exec(function(err,orders){ // as web user
+		console.log('orders updated without user',err,orders.length);
+		cb();
+	});
+};
+/*
 	Create section 
 		create order
 		create reservations transfers and tours/hotels

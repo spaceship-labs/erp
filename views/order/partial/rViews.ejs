@@ -23,16 +23,16 @@
             <td class='show-sm th'>
                 <a class='pull-right btn' ng-click="isHiden[$index]=!isHiden[$index]"><i class='fa fa-{{isHiden[$index]?"plus":"minus"}}'></i> {{isHiden[$index]?"<%= __('gral_expand')%>":"<%= __('gral_close')%>"}}</a>
                 <span><%= __('order_reservfor')%> <strong ng-bind='order.company.name'></strong>, 
-                <%= __('order_createdby')%> <strong ng-bind="order.user.name + ' ' + order.user.last_name"></strong>,
+                <%= __('order_createdby')%> <strong ng-bind="order.user.name + ' ' + (order.user.last_name||'')"></strong>,
                 <%= __('order_for')%> <strong ng-bind="order.client.name + ' ' + order.client.last_name"></strong>
                 </span>
             </td>
             <td ng-class='isHiden[$index]?"hide-row":""' data-title="Folio" ng-bind="order.folio"></td>
-            <td ng-class='isHiden[$index]?"hide-row":""' data-title="<%= __('order-usuario')%>" ng-bind="order.user.name + ' ' + order.user.last_name + ', ' + order.company.name"><</td>
+            <td ng-class='isHiden[$index]?"hide-row":""' data-title="<%= __('order-usuario')%>" ng-bind="order.user.name + ' ' + (order.user.last_name||'') + ', ' + order.company.name"><</td>
             <!--<td ng-class='isHiden[$index]?"hide-row":""' data-title="<%= __('order-empresa')%>" ng-bind="order.company.name"></td>-->
             <td ng-class='isHiden[$index]?"hide-row":""' data-title='<%= __('order-cliente')%>'>{{(order.client.name + ' ' + order.client.last_name) || "---" }}</td>
             <td ng-class='isHiden[$index]?"hide-row":""' data-title="<%= __('order-fecha')%>">{{formatDate(order.createdAt)}}</td>
-            <td ng-class='isHiden[$index]?"hide-row":""' data-title="<%= __('order-total')%>"><span  ng-bind="getTotalOrder(order) | currency"></span></td>
+            <td ng-class='isHiden[$index]?"hide-row":""' data-title="<%= __('order-total')%>"><span  ng-bind="getTotalOrder(order) | currency"></span> <span ng-bind="getCurrencyCode(order)"></span></td>
             <td> {{order.transfer?'1':0}} </td>
             <td ng-bind="order.tours.length"> </td>
             <td ng-bind="order.hotels.length"> </td>
@@ -56,7 +56,7 @@
                 <div class='content-border'>
                     <p><strong>Folio : </strong> {{order.folio}} </p>
                     <p><strong><%= __('order-fecha')%> : </strong> {{formatDate(order.createdAt)}} </p>
-                    <p><strong><%= __('order-usuario')%> : </strong> {{order.user.name + ' ' + order.user.last_name}} , <%= __('order_for')%> <strong><%= __('order_agency')%> : </strong> {{order.company.name}} </p>
+                    <p><strong><%= __('order-usuario')%> : </strong> {{order.user.name + ' ' + (order.user.last_name||'')}} , <%= __('order_for')%> <strong><%= __('order_agency')%> : </strong> {{order.company.name}} </p>
                     <p><strong><%= __('order-cliente')%> : </strong> {{(order.client.name + ' ' + order.client.last_name) || "---" }} </p>
                 </div>
             </div>
@@ -167,7 +167,7 @@
                 <p class='text-center'>
                     <strong>Folio : </strong> {{theorder.folio}} 
                     <strong>Fecha de reservación : </strong> {{formatDate(theorder.createdAt)}} 
-                    <strong><%= __('order-usuario')%> : </strong> {{theorder.user.name + ' ' + theorder.user.last_name}} 
+                    <strong><%= __('order-usuario')%> : </strong> {{theorder.user.name + ' ' + (theorder.user.last_name||'')}} 
                 </p><p class='text-center'>
                     <strong>Agencia : </strong> {{theorder.company.name}} 
                     <strong><%= __('order-cliente')%> : </strong> {{(theorder.client.name + ' ' + theorder.client.last_name) || "---" }}

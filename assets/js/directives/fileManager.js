@@ -54,15 +54,30 @@
                 url: $scope.addMethod,
                 data: {id: $scope.object.id,uid:uid,index:0},
                 file: $files,
-            }).progress(function(evt){
-                $scope.loading[0] = parseInt(100.0 * evt.loaded / evt.total);
-            }).success(function(data, status, headers, config) {
+            }).then(function (resp) {
+            	var data = resp.data;
+            	console.log('Upload',data);
                 var index_uid = $scope.uids.indexOf(0);
                 $scope.loading = [];
                 $scope.uids.splice(index_uid, 1);
                 $scope.object.files = data.files;
                 $scope.page = Math.ceil($scope.object.files.length/$scope.pageLength) -1;
-            });
+	        }, function (resp) {
+	            console.log('Error status: ', resp);
+        	}, function (evt) {
+            	$scope.loading[0] = parseInt(100.0 * evt.loaded / evt.total);
+        	});
+            /*.progress(function(evt){
+                $scope.loading[0] = parseInt(100.0 * evt.loaded / evt.total);
+            }).success(function(data, status, headers, config) {
+            	//if(!data) return;
+            	console.log('Upload',data);
+                var index_uid = $scope.uids.indexOf(0);
+                $scope.loading = [];
+                $scope.uids.splice(index_uid, 1);
+                $scope.object.files = data.files;
+                $scope.page = Math.ceil($scope.object.files.length/$scope.pageLength) -1;
+            });*/
         };
 		$scope.fileFilter = function () {
 			return function(file){

@@ -109,6 +109,7 @@ module.exports.transfer_by_agency = function(fields,cb){ //filters OK
 			,{ label : 'Total' , handle : 'total', type : 'currency' }
 			,{ label : 'Comisión' , handle : 'comision', type : 'currency' }
 			,{ label : 'Servicio' , handle : 'name', object : 'transfer', object2:'transfer' , type : '' }
+			,{ label : 'Fecha de reservación' , handle : 'createdAt' , type : '' }
 			,{ label : 'Llegada' , handle : 'arrivalDate' , type : '' }
 			,{ label : 'Salida' , handle : 'departureDate' , type : '' }
 			,{ label : 'Hotel' , handle : 'name', object : 'hotel', object2: 'hotel' , type : '' }
@@ -182,6 +183,7 @@ module.exports.transfer_by_agency = function(fields,cb){ //filters OK
 								,pax : reservations[x].pax + ( reservations[x].kidPax || 0 )
 								,total : reservations[x].fee + ( reservations[x].feeKids || 0 )
 								,transfer : reservations[x].transfer
+								,createdAt : moment(reservations[x].createdAt).format('D-MM-YYYY')
 								,arrivalDate : (reservations[x].arrival_date?moment(reservations[x].arrival_date).format('D-MM-YYYY'):'')
 								,departureDate : (reservations[x].departure_date?moment(reservations[x].departure_date).format('D-MM-YYYY'):'')
 								,hotel : reservations[x].hotel
@@ -217,6 +219,7 @@ module.exports.transfer_by_service = function(fields,cb){ //filters ok
 			,{ label : 'Pax' , handle : 'pax', type : '' }
 			,{ label : 'Total' , handle : 'total', type : 'currency' }
 			,{ label : 'Agencia' , handle : 'name', object : 'company', object2:'company' , type : '' }
+			,{ label : 'Fecha reservación' , handle : 'createdAt' , type : '' }
 			,{ label : 'Llegada' , handle : 'arrivalDate' , type : '' }
 			,{ label : 'Salida' , handle : 'departureDate' , type : '' }
 			,{ label : 'Vehículo' , handle : 'car_id', object : 'vehicle', object2:'vehicle' , type : '' }
@@ -289,6 +292,7 @@ module.exports.transfer_by_service = function(fields,cb){ //filters ok
 								,pax : reservations[x].pax + ( reservations[x].kidPax || 0 )
 								,total : reservations[x].fee + ( reservations[x].feeKids || 0 )
 								,company : reservations[x].company
+								,createdAt : moment(reservations[x].createdAt).format('D-MM-YYYY')
 								,arrivalDate : (reservations[x].arrival_date?moment(reservations[x].arrival_date).format('D-MM-YYYY'):'')
 								,departureDate : (reservations[x].departure_date?moment(reservations[x].departure_date).format('D-MM-YYYY'):'')
 								,hotel : reservations[x].hotel

@@ -304,13 +304,19 @@ module.exports = {
 	addFiles : function(req,res){
 		form = req.params.all();
     	Tour.findOne({id:form.id}).exec(function(e,tour){
-    		if(e) throw(e);
+    		if(e){
+                console.log('FIND tour',e); //throw(e);
+                return res.json(false);
+            }
     		tour.addFiles(req,{
     			dir : 'tours/gallery',
     			profile: 'gallery'
     		},function(e,tour){
-    			if(e) throw(e);
-    			res.json(tour);
+    			if(e){ 
+                    console.log('ADD tour',e); //throw(e);
+                }
+                console.log('RETURN');
+    			return res.json(tour);
     		});
     	});
 	},

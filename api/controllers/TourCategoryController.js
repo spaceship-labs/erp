@@ -21,23 +21,23 @@ module.exports = {
 		},req);
 	});
   }
-  ,edit : function(req,res){
-  	TourCategory.findOne(req.params.id).exec(function(e,tourcategory){
-		Common.view(res.view,{
-			tourcategory:tourcategory,
-			page:{
-				name:'Tour Categories'
-				,saveButton : true
-				,icon:'fa fa-folder'
-				,controller : 'tourcategories.js'
-			},
-			breadcrumb : [
-				{label : 'Categorías de tours' , url : '/tourcategory/'}
-				,{label : 'Categorías de tours : ' + tourcategory.name}
-			]
-		},req);
-	});
-  }
+	,edit : function(req,res){
+		TourCategory.findOne(req.params.id).exec(function(e,tourcategory){
+			Common.view(res.view,{
+				tourcategory:tourcategory,
+				page:{
+					name:'Tour Categories'
+					,saveButton : true
+					,icon:'fa fa-folder'
+					,controller : 'tourcategories.js'
+				},
+				breadcrumb : [
+					{label : 'Categorías de tours' , url : '/tourcategory/'}
+					,{label : 'Categorías de tours : ' + tourcategory.name}
+				]
+			},req);
+		});
+	}
 	,find : function(req,res){
 		var params = req.params.all();
 		var skip = params.skip || 0;
@@ -58,7 +58,7 @@ module.exports = {
 			});
 		});
 	}
-  ,updateIcon: function(req,res){
+  	,updateIcon: function(req,res){
     	form = req.params.all();
 		TourCategory.updateAvatar(req,{
 			dir : 'tourcateories',

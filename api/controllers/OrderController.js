@@ -13,11 +13,13 @@ module.exports = {
     VISTAS
   */
   index: function (req, res) {
+    //OrderCore.asignUser(function(){
   	Common.view(res.view,{
       cancelationMotives : OrderCore.getCancelationMotives()
   		,page:{ name:req.__('sc_reservations'), icon:'fa fa-car', controller : 'order.js' }
   		,breadcrumb : [ {label : req.__('sc_reservations')} ]
   	},req);
+    //});
   },
   neworder : function(req,res){
     var select_company = req.session.select_company || req.user.select_company;
@@ -521,7 +523,7 @@ function formatFilterFields(f){
 var customOrdersFormat = function(ids,callback){
   var reads = [
     function(cb){
-      Order.find().where({ id : ids }).sort({'createdAt':-1}).populate('client').populate('reservations').populate('user').populate('company').exec(cb)
+      Order.find().where({ id : ids }).sort({'createdAt':-1}).populate('client').populate('reservations').populate('user').populate('company').populate('currency').exec(cb)
     },function(orders,cb){
       var tours = [], hotels = [], transfers = [], airports = [];
       for( var x in orders ){

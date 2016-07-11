@@ -42,8 +42,7 @@ module.exports.models = {
             object.icon = files[0];
             object.save(cb);
             if(opts.file) 
-                Files.removeFile(opts,function(err){
-	    	});
+                Files.removeFile(opts,function(err){ });
         });
         return;
       }
@@ -65,7 +64,7 @@ module.exports.models = {
           else callback(null,crops);
         },
       ],function(e,results){
-        if(e) console.log(e);
+        if(e) console.log('err async',e);
         object.save(cb);
       });
     },
@@ -83,7 +82,7 @@ module.exports.models = {
         }
         Files.saveFiles(req,opts,function(e,files){
             //console.log('files');console.log(files);console.log('files END');
-            if(e) return cb(e,files);
+            if(e) return cb(e,object);
             object.files = objectFiles;
             async.mapSeries(files,function(file,async_callback){
                 var callback = req.onProgress.nextElement(files,async_callback);
@@ -95,11 +94,11 @@ module.exports.models = {
                     callback(null,file);
             },function(e,crops){
                 if(e) return cb(e,crops);
-                //console.log('objectFiles');console.log(objectFiles);console.log('objectFiles END');
+                console.log('objectFiles');console.log(objectFiles);console.log('objectFiles END');
                 object.files = objectFiles;
                 object.save(cb);
                 return objectFiles;
-            });  			
+            }); 
         });
     },
     removeFiles : function(req,opts,cb){

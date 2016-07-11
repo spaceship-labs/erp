@@ -15,17 +15,19 @@ fileTypes2Crop = {
 module.exports.saveFiles = function(req,opts,cb){
 	var dirSave = __dirname+'/../../assets/uploads/'+opts.dir+'/';
 	var $files = req.file && req.file('file')._files || [],
-	maxBytes = 22020096;//max 21mb.
+	maxBytes = 12582912;//max ~12mb.
+	//maxBytes = 22020096;//max 21mb.
 	if($files.length){
 		if(req._fileparser.form.bytesExpected>=maxBytes){
 			//cb(new Error('exceeds maxBytes')); //throw en controllers
-			cb(false,[]);
+			console.log('exceeds maxBytes');
+			return cb({msg:'exceeds maxBytes'},[]);
 		}
 		var fFiles = [];
 		//async.map($files, function(file, async_cb) {
 			//console.log('file');
 			//console.log(file);
-		var uploadOptions = {	
+		var uploadOptions = { 
 			saveAs:makeFileName,
 			dirname:dirSave,
 			onProgress:(req.onProgress && req.onProgress.fileProgress || null),
