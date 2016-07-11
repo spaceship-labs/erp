@@ -12,7 +12,8 @@ module.exports.getCancelationMotives = function(){
 */
 module.exports.asignUser = function(cb){
 	//Order.update({ user: { $exists : true } },{ user: '56abb2dde136fdc555365997' }).exec(function(err,orders){ // as admin ¬¬
-	Order.update({ user: { $exists : false } },{ user: '5783c25d85528e0c27d6e05b' }).exec(function(err,orders){ // as web user
+	//Order.update({ user: { $exists : false } },{ user: '5783c25d85528e0c27d6e05b' }).exec(function(err,orders){ // as web user
+	Order.update({ currency: { $exists : false } },{ currency: '56abb299e136fdc555365983' }).exec(function(err,orders){ // add currency USD
 		console.log('orders updated without user',err,orders.length);
 		cb();
 	});

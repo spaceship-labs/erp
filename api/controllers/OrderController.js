@@ -13,8 +13,8 @@ module.exports = {
     VISTAS
   */
   index: function (req, res) {
-    //OrderCore.asignUser(function(){
-  	Common.view(res.view,{
+    OrderCore.asignUser(function(){
+  	//Common.view(res.view,{
       cancelationMotives : OrderCore.getCancelationMotives()
   		,page:{ name:req.__('sc_reservations'), icon:'fa fa-car', controller : 'order.js' }
   		,breadcrumb : [ {label : req.__('sc_reservations')} ]
