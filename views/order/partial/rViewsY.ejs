@@ -1,0 +1,244 @@
+<div ng-if="theView=='table'" class='row'><div class='col-md-12'>
+   <div class="widgetcontent custom-table nopadding ng-cloak">
+    <table class="table table-striped">
+        <tr class='hide-sm'>
+            <th> Folio </th><!-- <%= __('order-id')%> -->
+            <th> <%= __('order-usuario')%> </th>
+            <th> <%= __('order-cliente')%> </th>
+            <th> <%= __('order-fecha')%> </th>
+            <th> <%= __('order-total')%> </th>
+            <th> Reservas </th>
+            <th> Hotel </th>
+            <th> Pago </th>
+            <th> <%= __('d_seemore')%> </th>
+            <% if (req.user.hasPermission(req.res.locals.selected_company.id,'orders_e_s')) {%>
+            <th> <%= __('order-editar')%> </th>
+            <% } %>
+            <% if (req.user.hasPermission(req.res.locals.selected_company.id,'orders_d_s')) {%>
+                <th> Cancelar </th>
+            <% } %>
+        </tr>
+        <tr ng-repeat='order in orders | filter:searchText'>
+            <td class='show-sm th'>
+                <a class='pull-right btn' ng-click="isHiden[$index]=!isHiden[$index]"><i class='fa fa-{{isHiden[$index]?"plus":"minus"}}'></i> {{isHiden[$index]?"<%= __('gral_expand')%>":"<%= __('gral_close')%>"}}</a>
+                <span><%= __('order_reservfor')%> <strong ng-bind='order.company.name'></strong>, 
+                <%= __('order_createdby')%> <strong ng-bind="order.user.name + ' ' + (order.user.last_name||'')"></strong>,
+                <%= __('order_for')%> <strong ng-bind="order.client.name + ' ' + order.client.last_name"></strong>
+                </span>
+            </td>
+            <td ng-class='isHiden[$index]?"hide-row":""' data-title="Folio" ng-bind="order.folio"></td>
+            <td ng-class='isHiden[$index]?"hide-row":""' data-title="<%= __('order-usuario')%>" ng-bind="order.user.name + ' ' + (order.user.last_name||'') + ', ' + order.company.name"><</td>
+            <!--<td ng-class='isHiden[$index]?"hide-row":""' data-title="<%= __('order-empresa')%>" ng-bind="order.company.name"></td>-->
+            <td ng-class='isHiden[$index]?"hide-row":""' data-title='<%= __('order-cliente')%>'>{{(order.client.name + ' ' + order.client.last_name) || "---" }}</td>
+            <td ng-class='isHiden[$index]?"hide-row":""' data-title="<%= __('order-fecha')%>">{{formatDate(order.createdAt)}}</td>
+            <td ng-class='isHiden[$index]?"hide-row":""' data-title="<%= __('order-total')%>"><span  ng-bind="getTotalOrder(order) | currency"></span> <span ng-bind="getCurrencyCode(order)"></span></td>
+            <td>
+                <p><strong>Transfer: </strong> <span ng-bind="order.transfer?'1':0"></span></p>
+                <p><strong>Tours: </strong> <span ng-bind="order.tours.length"></span></p>
+            </td>
+            <td>
+                <p><strong>Hotel:</strong> <span ng-bind="order.transfer.hotel.name"></span></p>
+                <p><strong>Zona:</strong> <span ng-bind="order.transfer.hotel.zone.name"></span></p>
+            </td>
+            <td>
+                <p><strong>Estado de pago: </strong><span class="status" ng-class="getOrderStatus(order)">{{getOrderStatus(order)}}</span></p>
+                <p><strong>Método de pago: </strong><span ng-bind="order.payment_method"></span></p>
+                <p ng-if="order.payment_method=='paypal'"><strong>Paypal ID: </strong><span ng-bind="order.paypalPayerID"></span></p>
+                <p ng-if="order.payment_method=='creditcard'"><strong>CC code: </strong><span ng-bind="order.autorization_code||''"></span></p>
+                <p ng-if="order.payment_method=='conekta'"><strong>Conekta code: </strong><span ng-bind="order.authorization_code||''"></span></p>
+            </td>
+            <td ng-class='isHiden[$index]?"hide-row":""'><a href='#' ng-click="orderDetails(order)" ><i class='fa fa-eye'></i></a></td>
+            <% if (req.user.hasPermission(req.res.locals.selected_company.id,'orders_e')) {%>
+                <td ng-class='isHiden[$index]?"hide-row":""' data-title="<%= __('order-editar')%>"><a href="/order/edit/{{order.id}}"><span class="table-icon fa fa-edit"></span></a></td>
+            <% } %>
+            <% if (req.user.hasPermission(req.res.locals.selected_company.id,'orders_d')) {%>
+                <td ng-class='isHiden[$index]?"hide-row":""' data-title="Cancelar"><a ng-click="openCancelOrder(order)" ><span class="table-icon fa fa-trash-o"></span></a></td>
+            <% } %>
+        </tr>
+    </table>
+    </div>
+</div></div>
+<div class='cardsContainer' ng-if="theView=='list'" class='row'><div class='col-md-12'>
+    <div class='card' ng-repeat='order in orders | filter:searchText'>
+        <div class='row '>
+            <div class='col-md-4'>
+                <h4><a class='icon'><i class='fa fa-tag'></i></a><%= __('order_title')%></h4>
+                <div class='content-border'>
+                    <p><strong>Folio : </strong> {{order.folio}} </p>
+                    <p><strong><%= __('order-fecha')%> : </strong> {{formatDate(order.createdAt)}} </p>
+                    <p><strong><%= __('order-usuario')%> : </strong> {{order.user.name + ' ' + (order.user.last_name||'')}} , <%= __('order_for')%> <strong><%= __('order_agency')%> : </strong> {{order.company.name}} </p>
+                    <p><strong><%= __('order-cliente')%> : </strong> {{(order.client.name + ' ' + order.client.last_name) || "---" }} </p>
+                </div>
+            </div>
+            <div class='col-md-8'>
+                <h4>
+                    <a class='icon'><i class='fa fa-plane'></i></a><%= __('order-reservar-tras')%>
+                    <span class='actions'>
+                        <a href="/order/edit/{{order.id}}"><span class="table-icon fa fa-edit"></span></a>
+                        <a ng-click="openCancelOrder(order)"><span class="table-icon fa fa-trash-o"></span></a>
+                    </span>
+                </h4>
+                <div ng-if="order.transfer" class='content-border'><div class='row'>
+                    <div class='col-md-3'>
+                        <p class='font-uppercase'><strong><%= __('gral_data')%></strong></p>
+                        <p><strong><%= __('order-hotel')%></strong> : {{order.transfer.hotel.name || "---" }} </p>
+                        <p><strong><%= __('order-aeropuerto')%></strong> : {{order.transfer.airport.name || "---" }} </p>
+                        <p><strong><%= __('order-total')%></strong> : {{order.transfer.fee}} </p>
+                    </div>
+                    <div class='col-md-3'>
+                        <p class='font-uppercase'><strong><%= __('order-estado')%></strong></p>
+                        <p><strong><%= __('order-tipo')%></strong> : {{order.transfer.type || "---" }}</p>
+                        <p><strong><%= __('order-origen')%></strong> : {{order.transfer.origin || "---" }}</p>
+                        <p><strong><%= __('order-estado')%></strong> : {{order.transfer.state || "---" }}</p>
+                        <p><strong><%= __('order-pago')%></strong> : {{order.transfer.payment_method || "---" }}</p>
+                    </div>
+                    <div class='col-md-3'>
+                        <p class='font-uppercase'><strong><%= __('order-llegada')%></strong></p>
+                        <p><strong><%= __('order-vuelo-llegada')%></strong> : {{ order.transfer.arrival_fly  || '---' }}</p>
+                        <p><strong><%= __('Fecha de llegada')%></strong> : {{ formatDate(order.transfer.arrival_date) || '---' }} </p>
+                        <p><strong><%= __('order-hora')%></strong> : {{ formatTime(order.transfer.arrival_time) || '---' }} </p>
+                    </div>
+                    <div class='col-md-3'>
+                        <p class='font-uppercase'><strong><%= __('order-salida')%></strong></p>
+                        <p><strong><%= __('order-vuelo-salida')%></strong> : {{ order.transfer.departure_fly  || '---' }}</p>
+                        <p><strong><%= __('order-fecha-salida')%></strong> : {{ formatDate(order.transfer.departure_date) || '---' }} </p>
+                        <p><strong><%= __('order-hora-salida')%></strong> : {{ formatTime(order.transfer.departure_time) || '---' }} </p>
+                    </div>
+                </div></div>
+            </div>
+        </div>
+        <div class='row'><div class='col-md-12'>
+            <h4 class='secondary' ng-if="order.tours.length || order.hotels.length">
+                <%= __('order_reservs')%>: 
+                <span ng-if="order.tours.length">{{order.tours.length}} <%= __('order_tours')%></span> 
+                <span ng-if="order.tours.length && order.hotels.length"><%= __('gral_and')%> </span>
+                <span ng-if="order.hotels.length">{{order.hotels.length}} <%= __('order_hotels')%></span> 
+            </h4>
+            <ul class='small-item'>
+                <li ng-repeat="t in order.tours">
+                    <span class='icon fa fa-compass'></span>
+                    <p> 
+                        <strong>Tour:</strong> {{t.tour.name}}  
+                        <strong>Fecha:</strong> {{formatDate(t.startDate)}}
+                        <strong><%= __('order-adultos')%>:</strong> {{t.pax}} 
+                        <span ng-if="t.kidPax"><strong><%= __('order-menores')%>:</strong> {{t.kidPax}}</span> 
+                        <strong><%= __('order-precio')%>:</strong> {{t.fee}}
+                    </p>
+                    <div class='clear'></div>
+                </li>
+                <li ng-repeat="t in order.hotels">
+                    <span class='icon fa fa-building-o'></span>
+                    <p>
+                        <strong>Holtel:</strong> {{t.hotel.name}} 
+                        <strong>Fecha</strong>{{formatDate(t.startDate)}} - {{formatDate(t.endDate)}} 
+                        <strong><%= __('order-cuartos')%>:</strong> {{t.roomsNumber}} ( {{t.roomType}} ) 
+                        <strong>Adultos:</strong> {{t.pax}} 
+                        <span ng-if="t.childrenNumber"><strong><%= __('order-menores')%>:</strong> {{t.kidPax}} </span> 
+                        <strong><%= __('order-precio')%>:</strong> {{t.fee}}
+                    </p>
+                    <div class='clear'></div>
+                </li>
+            </ul>
+        </div></div>
+    </div>
+</div></div>
+<div class='modal fade invoiceModal' id="cancelModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title ng-binding"><span class='icon fa fa-trash-o'></span>Cancelar reservación</h4>
+            </div>
+            <form class='form stdform stdform2' name='cancelForm' ng-submit="cancelOrder()" >
+                <p>
+                    <label>Motivos</label> 
+                    <span class='field'><select ng-model="cancelation.motive" ng-options="obj for obj in cancelationMotives"></select> </span>
+                </p>
+                <p>
+                    <label>Otros motivos</label>
+                    <span class='field'><input type='text' ng-model="cancelation.others"></span>
+                </p>
+                <p class='stdformbutton'>
+                    <button ng-disabled="!(cancelation.motive||cancelation.others)" type="submit" class='btn btn-primary'>Cancelar reservación</button>
+                    <button type="buttom" data-dismiss="modal" aria-hidden="true" class='btn'>Cerrar</button>
+                </p>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade invoiceModal" id="orderModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title ng-binding"><span class='icon fa fa-tag'></span><%= __('order_title')%></h4>
+            </div>
+            <div class='modal-data'>
+                <p class='text-center'>
+                    <strong>Folio : </strong> {{theorder.folio}} 
+                    <strong>Fecha de reservación : </strong> {{formatDate(theorder.createdAt)}} 
+                    <strong><%= __('order-usuario')%> : </strong> {{theorder.user.name + ' ' + (theorder.user.last_name||'')}} 
+                </p><p class='text-center'>
+                    <strong>Agencia : </strong> {{theorder.company.name}} 
+                    <strong><%= __('order-cliente')%> : </strong> {{(theorder.client.name + ' ' + theorder.client.last_name) || "---" }}
+                </p>
+            </div>
+            <h4 ng-if="theorder.transfer"><i class='icon fa fa-plane'></i><%= __('order-reservar-tras')%></h4>
+            <div class='modal-data' ng-if="theorder.transfer">
+                <p><strong><%= __('order-hotel')%></strong> : {{theorder.transfer.hotel.name || "---" }} </p>
+                <p><strong><%= __('order-aeropuerto')%></strong> : {{theorder.transfer.airport.name || "---" }} </p>
+                <br>
+                <div class='row'>
+                    <div class='col-md-6 col-sm-6'>
+                        <p><strong>Número de pasajeros</strong> : {{theorder.transfer.pax + ( theorder.transfer.kidPax||0 ) }}</p>
+                        <p><strong><%= __('order-tipo')%></strong> : {{theorder.transfer.type || "---" }}</p>
+                        <p><strong><%= __('order-origen')%></strong> : {{theorder.transfer.origin || "---" }}</p>
+                        <p class='text-undertopline'><strong><%= __('order-llegada')%></strong></p>
+                        <p><strong><%= __('order-vuelo-llegada')%></strong> : {{ theorder.transfer.arrival_fly  || '---' }}</p>
+                        <p><strong><%= __('order-llegada2')%></strong> : {{ formatDate(theorder.transfer.arrival_date) || '---' }} </p>
+                        <p><strong><%= __('order-hora')%></strong> : {{ formatTime(theorder.transfer.arrival_time) || '---' }} </p>
+                    </div>
+                    <div class='col-md-6 col-sm-6'>
+                        <p><strong>Servicio</strong> : {{theorder.transfer.transfer.name}}</p>
+                        <p><strong><%= __('order-estado')%></strong> : {{theorder.transfer.state || "---" }}</p>
+                        <p><strong><%= __('order-pago')%></strong> : {{theorder.transfer.payment_method || "---" }}</p>
+                        <p class='text-undertopline'><strong><%= __('order-salida')%></strong></p>
+                        <p><strong><%= __('order-vuelo-salida')%></strong> : {{ theorder.transfer.departure_fly  || '---' }}</p>
+                        <p><strong><%= __('order-fecha-salida')%></strong> : {{ formatDate(theorder.transfer.departure_date) || '---' }} </p>
+                        <p><strong><%= __('order-hora-salida')%></strong> : {{ formatTime(theorder.transfer.departure_time) || '---' }} </p>
+                    </div>
+                </div>
+            </div>
+            <h4 ng-if="theorder.tours.length"><i class='icon fa fa-compass'></i><%= __('order-reservar-tour')%></h4>
+            <div class='modal-data' ng-if="theorder.tours.length">
+                <ul ng-if="theorder.tours.length" class='small-item'>
+                    <li ng-repeat="t in theorder.tours">
+                        <p><strong>Tour:</strong> {{t.tour.name}}</p>
+                        <p><strong><%= __('order-adultos')%>:</strong> {{t.pax}} <span ng-if="t.kidPax"> <strong><%= __('order-menores')%>:</strong> {{t.kidPax}}</span></p>
+                        <p><strong>Fecha de Tour:</strong> {{formatDate(t.startDate)}}</p>
+                        <p><strong><%= __('order-precio')%>:</strong> {{ getTotalTour(t) | currency}}</span></p>
+                        <p>
+                            <strong>Descuento global aplicado: </strong>
+                            <span ng-if="t.hasGlobalDiscount">Si</span>
+                            <span ng-if="!t.hasGlobalDiscount">No</span>
+                        </p>
+                        <p><strong><%= __('order-estado')%></strong> : {{t.state || "---" }}</p>
+                        <p><strong><%= __('order-pago')%></strong> : {{t.payment_method || "---" }}</p>
+                    </li>
+                </ul>
+            </div>
+            <h4 ng-if="theorder.hotels.length"><i class='icon fa fa-building-o'></i><%= __('order-reservar-hotel')%></h4>
+            <div class='modal-data' ng-if="theorder.hotels.length">
+                <ul class='small-item'>
+                    <li ng-repeat="t in theorder.hotels">
+                        <p><strong>Hotel:</strong> {{t.hotel.name}}</p>
+                        <p><strong>Checkin: </strong>{{formatDate(t.startDate)}} <strong>Checkout: </strong>{{formatDate(t.endDate)}}</p>
+                        <p><strong><%= __('order-cuartos')%>:<strong> {{t.roomsNumber}} ( {{getRoom(t)}} ) <strong><%= __('order-adultos')%>:</strong> {{t.pax}}</p>
+                        <p><span ng-if="t.kidPax"><strong><%= __('order-menores')%>:</strong> {{t.kidPax}}</span> <strong><%= __('order-precio')%>:</strong> {{t.fee}}</span></p>
+                    </li>
+                </ul>
+            </div>
+            <h4><strong><%= __('order-total')%></strong> : <span ng-bind="getTotalOrder(theorder) | currency"></span></h4>
+        </div>
+    </div>
+</div>

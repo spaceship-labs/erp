@@ -13,8 +13,8 @@ module.exports = {
     VISTAS
   */
   index: function (req, res) {
-    OrderCore.asignUser(function(){
-  	//Common.view(res.view,{
+    //OrderCore.asignUser(function(){
+  	Common.view(res.view,{
       cancelationMotives : OrderCore.getCancelationMotives()
   		,page:{ name:req.__('sc_reservations'), icon:'fa fa-car', controller : 'order.js' }
   		,breadcrumb : [ {label : req.__('sc_reservations')} ]
@@ -535,7 +535,7 @@ var customOrdersFormat = function(ids,callback){
         }
       }
       Tour.find({id : tours}).exec(function(t_e,r_tours){
-        Hotel.find({id : hotels}).populate('rooms').exec(function(h_e,r_hotels){
+        Hotel.find({id : hotels}).populate('zone').populate('rooms').exec(function(h_e,r_hotels){
           Airport.find({id : airports}).exec(function(a_e,r_airports){
             Transfer.find({id : transfers}).exec(function(tr_e,r_transfers){
               //cb(null,{ tours : r_tours , hotels : r_hotels , airports : r_airports , transfers : r_transfers });

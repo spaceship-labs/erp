@@ -45,7 +45,7 @@ module.exports = {
         }
         ,payment_method : {
             type:'string',
-            enum : ['creditcard','paypal','cash','prepaid']
+            enum : ['creditcard','paypal','cash','prepaid','conekta']
         }
 	}
 	,labels : {

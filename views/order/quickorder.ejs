@@ -161,7 +161,7 @@
                         <p><select tabindex='30' ng-options='obj as obj.name for obj in hrevPayment' ng-model='transfer.payment_method' ></select></p>
                         <div ng-show="transfer.payment_method.handle=='creditcard'">
                             <p><%= __('order-autorizacion')%></p>
-                            <p><input tabindex='31' type='text' name='autorization_code' ng-model="transfer.autorization_code" /></p>
+                            <p><input tabindex='31' type='text' name='authorization_code' ng-model="transfer.authorization_code" /></p>
                         </div>
                     </div>
                     <div class='col-md-6'>

@@ -194,9 +194,13 @@
                             <label><%= __('order-pago')%></label>
                             <span class='field'><select ng-options='obj.handle as obj.name for obj in hrevPayment' ng-model='generalFields.payment_method' ></select></span>
                         </p>
-                        <p ng-show="generalFields.payment_method=='creditcard'">
+                        <p ng-show="generalFields.payment_method=='paypal'">
                             <label><%= __('order-autorizacion')%></label>
-                            <span class='field'><input type='text' name='autorization_code' ng-model="generalFields.autorization_code" /></span>
+                            <span class='field'><input type='text' name='PayerID' ng-model="generalFields.PayerID" /></span>
+                        </p>
+                        <p ng-show="generalFields.payment_method=='conekta'||generalFields.payment_method=='creditcard'">
+                            <label><%= __('order-autorizacion')%></label>
+                            <span class='field'><input type='text' name='authorization_code' ng-model="generalFields.authorization_code" /></span>
                         </p>
                         <p>
                             <label>Moneda</label>

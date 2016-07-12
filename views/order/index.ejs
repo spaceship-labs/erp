@@ -69,7 +69,11 @@
         </div>
     </div>
     <br>
-    <%- partial('partial/rViews') -%>
+    <% if( interactions.mkp ){ %>
+        <%- partial('partial/rViewsY') -%>
+    <% }else{ %>
+        <%- partial('partial/rViews') -%>
+    <% } %>
 	<div class="clearfix"></div>
     <%- partial('partial/cvsForm') -%>
     </div>

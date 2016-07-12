@@ -13,9 +13,17 @@ module.exports.getCancelationMotives = function(){
 module.exports.asignUser = function(cb){
 	//Order.update({ user: { $exists : true } },{ user: '56abb2dde136fdc555365997' }).exec(function(err,orders){ // as admin ¬¬
 	//Order.update({ user: { $exists : false } },{ user: '5783c25d85528e0c27d6e05b' }).exec(function(err,orders){ // as web user
-	Order.update({ currency: { $exists : false } },{ currency: '56abb299e136fdc555365983' }).exec(function(err,orders){ // add currency USD
-		console.log('orders updated without user',err,orders.length);
-		cb();
+	/*Order.update({ currency: { $exists : false } },{ currency: '56abb299e136fdc555365983' }).exec(function(err,orders){ // add currency USD
+		console.log('orders updated without user',err,orders.length);cb();
+	});*/
+	Order.find().populate('reservations').exec(function(err,os){
+		async.mapSeries( os, function(o,cb2) {
+				if(!o.reservations||(o.reservations&&o.reservations.length==0)) return cb2(o);
+				o.payment_method = o.reservations[0].payment_method;
+				o.save(cb2);
+		},function(err,r){
+			cb();
+		});
 	});
 };
 /*

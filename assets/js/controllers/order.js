@@ -16,8 +16,8 @@ app.controller('orderCTL',function($scope,$http,$window,$upload,$rootScope){
     };
     $scope.getCurrencyCode = function(order){
         console.log(order);
-        if( order.reservations.length>0 && order.reservations[0].currency )
-            return order.reservations[0].currency.currency_code;
+        if( order.currency )
+            return order.currency.currency_code;
         else
             return '';
     };
@@ -390,6 +390,7 @@ app.controller('orderNewCTL',function($scope,$http,$window,$rootScope,$document)
     $scope.hrevState = [{ handle : 'pending' , name : 'Pendiente' } , { handle : 'liquidated' , name : 'Liquidado' }, { handle : 'canceled' , name : 'Cancelado' }];
     $scope.hrevPayment = [ 
         { handle : 'creditcard' , name : 'Tarjeta de crédito' }
+        ,{ handle : 'conekta' , name : 'Conekta' }
         ,{ handle : 'paypal' , name : 'Paypal' }
         ,{ handle : 'cash' , name : 'Efectivo' }
         ,{ handle : 'prepaid' , name : 'Prepago' }
@@ -1265,6 +1266,7 @@ app.controller('orderEditCTL',function($scope,$http,$window){
     $scope.hrevState = [{ handle : 'pending' , name : 'Pendiente' } , { handle : 'liquidated' , name : 'Liquidado' }, { handle : 'canceled' , name : 'Cancelado' }];
     $scope.hrevPayment = [ 
         { handle : 'creditcard' , name : 'Tarjeta de crédito' }
+        ,{ handle : 'conekta' , name : 'Conekta' }
         ,{ handle : 'paypal' , name : 'Paypal' }
         ,{ handle : 'cash' , name : 'Efectivo' }
         ,{ handle : 'prepaid' , name : 'Prepago' }
@@ -1305,6 +1307,8 @@ app.controller('orderEditCTL',function($scope,$http,$window){
             state : $scope.order.state||false
             ,payment_method : $scope.order.payment_method||false
             ,currency : $scope.order.currency||false
+            ,authorization_code : $scope.order.authorization_code||''
+            ,PayerID : $scope.order.PayerID||''
         };
         for(var x in $scope.order.reservations){
             var reserve = $scope.order.reservations[x];
@@ -1448,6 +1452,7 @@ app.controller('orderEditCTL',function($scope,$http,$window){
                 if( result ){
                     $scope.transfers = result;
                     //esto para que estén todos los datos como en el create
+                    if(!$scope.transfer.transferprice) return;
                     for(x in result)
                         if( result[x].id == $scope.transfer.transferprice.id )
                             $scope.transfer.transferprice = result[x];

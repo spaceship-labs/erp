@@ -1,7 +1,9 @@
     <!--<h4 class="widgettitle"><%= __('order-info')%></h4>-->
+<% if( interactions.specialReservationMessage ){ %>
 <p class='inlineMessage'>
-    Si necesitas algún pediddo especial favor de comunicarte al área de reservaciones al siguiente número gratuito: 01 800 227 42 36
+    <%= interactions.specialReservationMessage %>
 </p>
+<% } %>
     <p>
         <label><%= __('order-hotel')%> </label>
         <span class='field'>
