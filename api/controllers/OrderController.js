@@ -46,13 +46,16 @@ module.exports = {
     //console.log( req.params.all() );
     Order.findOne( req.params.id ).populate('reservations').populate('claims').populate('lostandfounds').populate('currency').exec(function(err,order){ 
       Reservation.find({ order : req.params.id })
-      .populate('hotel').populate('tour').populate('airport').populate('client')
-      .populate('currency').populate('transfer').populate('transferprice')
-      .exec(function(err,reservations){ Company.findOne(order.company).populate('currencies').populate('base_currency').exec(function(c_err,ordercompany){
+      .populateAll()
+      .exec(function(err,reservations){ 
+        //.populate('hotel').populate('tour').populate('airport').populate('client')
+        //.populate('currency').populate('transfer').populate('transferprice')
+        Company.findOne(order.company).populate('currencies').populate('base_currency').exec(function(c_err,ordercompany){
         Client_.find().sort('name').exec(function(e,clients_){ 
           Client_.findOne({ id : order.client}).populate('contacts').exec(function(e,theclient){
               Transfer.find().sort('name').exec(function(e,transfers){
                   Hotel.find().limit(1).sort('name').populate('location').populate('rooms').exec(function(e,hotels){
+                    OrderCore.formatReservationsTransferPrices(req.session.main_company,reservations,function(reservations){
                     //console.log('order', order);
                     order.reservations = reservations || [];
                     Common.view(res.view,{
@@ -72,6 +75,7 @@ module.exports = {
                         { label : order.id }
                       ]
                     },req);
+                  });//ordercore format reservations
               }); }); // transfer / hotel
         }); }); // client
       });//reservation
@@ -232,7 +236,7 @@ module.exports = {
         if(form){
             Client_.update({id:form.id},form).exec(function(err,client_){
                 if(err) return res.json({client:false ,text:'Ocurrio un error.'});
-                res.json({client: client_ ,text:'Cliente actualizado.'});
+                res.json({client: client_[0] ,text:'Cliente actualizado.'});
             });
         }
     },
@@ -336,6 +340,20 @@ module.exports = {
       res.json(result);
     });
   }
+  ,importorder : function(req,res){
+    var form = req.params.all(),
+        dir = 'tmpImport',
+        dirSave = __dirname+'/../../assets/uploads/'+dir+'/';
+    Files.saveFiles(req, {dir: dir, disableCloud: true }, function(err, files){
+        if(err && !files.length) return res.ok({ success:false, error: err.message });
+        Import.files.xlsx2Json(dirSave + files[0].filename, function(err, book){
+            OrderCore.importOperation(err,book,req,function(err,result){
+                if(err) return res.ok({ success:false, error: err.message});
+                res.ok({success: true, sheets:result.sheets});
+            });
+        });
+    });
+  }
   /*
     Función que recive un cvs para importar reservas
   */
@@ -360,13 +378,16 @@ module.exports = {
                 //set keys for items in reservations
                 line.split(',').forEach(function (entry, i) { reservation[schemaKeyList[i]] = entry; });
                 var reads = [
-                    function(cbt){ Hotel.findOne({ name : reservation['Hotel'].replace(/(")/g, "") }).exec(function(err,hotels){ cbt(err,hotels) })
-                    },function(hotels,cbt){ Airport.findOne({ name : reservation['Airport'].replace(/(")/g, "") }).exec(function(err,airports){ cbt(err,hotels,airports) })
-                    },function(hotels,airports,cbt){ Transfer.findOne({ name : reservation['transfer'].replace(/(")/g, "") }).exec(function(err,transfers){ cbt(err,hotels,airports,transfers) }) }
+                    function(cbt){ 
+                      Hotel.findOne({ name : reservation['Hotel'].replace(/(")/g, "") }).exec(function(err,hotels){ cbt(err,hotels) })
+                    },function(hotels,cbt){ 
+                      Airport.findOne({ name : reservation['Airport'].replace(/(")/g, "") }).exec(function(err,airports){ cbt(err,hotels,airports) })
+                    },function(hotels,airports,cbt){ 
+                      Transfer.findOne({ name : reservation['transfer'].replace(/(")/g, "") }).exec(function(err,transfers){ cbt(err,hotels,airports,transfers) }) }
                 ];
                 var index = 0;
                 async.waterfall(reads,function(e,hotels,airports,transfers){
-                    console.log(' ----------------------: ' + reservation['referencia']);
+                    console.log(' ----------------------: ', reservation);
                     if(e) throw(e);
                     var ash = []; //array de campos que han causado error
                     if(typeof hotels != 'undefined' && hotels.id ) reservation['Hotel'] = hotels.id;
@@ -415,7 +436,6 @@ module.exports = {
     });
   }
 };
-
 /*
   'service','client','pax','arrival_date','arrival_fly','arrival_time','Hotel','transfer',
   'departure_date','departure_fly','departure_time','note','agency','Airport';
@@ -450,7 +470,7 @@ function formatReservation(r){
   result.reservation.reservation_type = 'transfer';
   result.reservation.type = 'one_way';
   result.reservation.state = 'pending';
-  result.reservation.payment_method = 'i don´t care';
+  result.reservation.payment_method = 'creditcard';
   //hay que calcular este monto
   result.reservation.fee = '0.0';
   //Client fields

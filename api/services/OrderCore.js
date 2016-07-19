@@ -1,3 +1,6 @@
+var moment = require('moment-timezone');
+
+
 module.exports.getCancelationMotives = function(){
 	var result = [
 		'Mal tiempo'
@@ -235,7 +238,13 @@ module.exports.updateOrderDate = function(params,callback){
 module.exports.updateOrderParams = function(id,params,callback){
 	if( !id || typeof id == 'undefined' || id == '' ) return callback('no id',false);
 	var form = Common.formValidate(params,['state','payment_method','currency']);
-	Order.update({id:id},params,callback);
+	Order.findOne(id).exec(function(err,order){
+		order.state = params.state;
+		order.payment_method = params.payment_method;
+		order.currency = params.currency;
+		order.save(callback);
+	});
+	//Order.update({id:id},params,callback);
 }
 module.exports.cancelOrder = function(order,fields,callback){
 	Order.findOne(order).populate('reservations').exec(function(err,theorder){
@@ -328,7 +337,7 @@ module.exports.getTransferPrice = function(zone1,zone2,transfer,company,mainComp
 		    });
     	}
     });
-}
+};
 module.exports.getAvailableTransfers = function(zone1,zone2,company,callback){
 	//if(company.adminCompany){
 	    TransferPrice.find({ 
@@ -402,4 +411,225 @@ module.exports.validateCuponItems = function( item, cupon, type ){
 				return true;
 	}
 	return false;
+};
+/*Import functions*/
+/*
+	Esta función formatea el archivo de excel (OPERACIÓN) quer recibe para generar las reservas
+*/
+module.exports.importOperation = function(err,book,req,callback){
+	if(err) return callback(err,false);
+	if( !book.sheets ) return callback({message:'no rows'},false);
+	var columns = ['airline','client','origin','destiny','service','pax','date','time','fly','notes','agency'];
+	book.sheets[0].values.splice(0,1);
+	var defaultCompany = req.session.select_company || req.user.select_company;
+	var errorRegisters = [];
+	async.mapSeries( book.sheets[0].values, function(item,cb){
+		var item2 = {};
+		for(x in item) item2[ columns[x] ] = item[x]&&item[x]!=''&&(typeof item[x] == 'string')?item[x].toLowerCase():item[x];
+		item.unshift('');
+		if( !item2.service ){ 
+			item2._err = 'Serivicio requerido';
+			return cb(false,item2);
+		}
+		var adf = {};
+		if( item2.service == 'tour' || item2.origin != 'aeropuerto' )
+			adf.hotel = function(done){ Hotel.findOne({ name : item2.origin }).exec(done); };
+		else if( item2.origin == 'aeropuerto' )
+			adf.hotel = function(done){ Hotel.findOne({ name : item2.destiny }).exec(done); };
+		//if( item2.service == 'tour' ) adf.tour = function(done){ Tour.findOne({ name : item2.destiny }).exec(done); }
+		if( item2.airline != '' )
+			adf.airline = function(done){ Airline.findOne({ name : item2.airline }).exec(done); };
+		if( item2.service != 'tour' )
+			adf.service = function(done){ Transfer.findOne({ name : item2.service }).exec(done); };
+		if( item2.agency != '' )
+			adf.agency = function(done){ Company.findOne({ name : item2.agency }).exec(done); };
+		async.parallel(adf, function(err, search){
+        	item2.airline = search.airline || '';
+        	item2.hotel = search.hotel;
+        	item2.service = search.service || item2.service;
+        	item2.agency = search.agency || defaultCompany;
+        	//console.log('------------item',item2);
+        	if(err){
+        		//item._err = "error en busqueda, revisar datos";
+        		item[0] = "error en busqueda, revisar datos";
+        		return cb(false,item);
+        	}
+        	if(!item2.hotel ){
+        		//item._err = "No se encontró hotel en la base de datos";
+        		item[0] = "No se encontró hotel en la base de datos";
+        		return cb(false,item);
+        	}
+        	if( !item2.agency ){
+        		//item._err = "No se encontró agencia en la base de datos";
+        		item[0] = "No se encontró agencia en la base de datos";
+        		return cb(false,item);
+        	}
+			OrderCore.getCompanies(item2.agency.id,function(err,companies){
+				if(err){
+					console.log('COMPANIES ERR',err);
+        			//item2._err = ;
+        			item[0] = "No se encontró agencia en la base de datos";
+        			return cb(false,item);
+        		}
+				item2.agency = companies.company;
+				var r  = OrderCore.getObject(item2,'reservation');
+				var c  = OrderCore.getObject(item2,'client');
+				Client_.create(c).exec(function(err,client){ 
+					Exchange_rates.find().limit(1).sort({createdAt:-1}).exec(function(err,theExhangeRates){
+						r.globalRates = theExhangeRates.rates;
+						r.user = req.user.id;
+						r.client = client.id;
+						r.currency = r.company.base_currency || companies.mainCompany.base_currency;
+						console.log('THE R',r);
+						OrderCore.createTransferReservationByImport(req,r,client,companies,function(err,r){
+							if(err) item[0] = err;
+							return cb(false,item);
+						});
+					});//getTransferPrice
+				});//create client
+			});
+        });
+	},function(err,rows){
+		//results
+		console.log('GLOBAL ERR:',err);
+		console.log('end');
+		columns.unshift('_err');
+		book.sheets[0].values.unshift(columns);
+		return callback(err,book);
+	});
+};
+/*  Obtiene los precios y los agrega a la reservación (r), luego llama a la función adecuada para generar la reserva
+	req 		: request var of the system
+	r 			: reservation object
+	c 			: client object
+	companies 	: company and maincompany(if necesary)
+	cb 			: callback 
+*/
+module.exports.createTransferReservationByImport = function(req,r,c,companies,cb){
+	Location.findOne(r.hotel.location).populate('airportslist').exec(function(err,hotelLocation){
+		if( err || !hotelLocation.airportslist || hotelLocation.airportslist.length == 0 ){
+			//r._err = "No se encontró Aeropuerto relacionado a esta ubicación";
+			return cb("No se encontró Aeropuerto relacionado a esta ubicación",r);
+		}
+		var airport = hotelLocation.airportslist[0];
+		if( err || !airport ){
+			//r._err = "No se encontró Aeropuerto relacionado a esta ubicación";
+			return cb("No se encontró Aeropuerto relacionado a esta ubicación",r);
+		}
+		OrderCore.getTransferPrice(airport.zone,r.hotel.zone,r.transfer.id,companies.company.id,companies.mainCompany,function(err,prices){
+			console.log('PRICES ERR:',err);
+			if(err||!prices||!prices.price){
+				//r._err = "No se encontró precio disponible para este servicio";
+				return cb("No se encontró precio disponible para este servicio",r);
+			} //return cb({message:'no price found'},false);//price contiene price y mainPrice para agregar a la reser
+			r.airport = airport.id;
+			r.service_type = prices.price.transfer.service_type || 'C' ;
+			r.quantity = Math.ceil( r.pax / prices.price.transfer.max_pax );
+	        r.fee = prices.price[r.type] * r.quantity;
+	        r.fee_adults = prices.price.one_way;
+			r.fee_adults_rt = prices.price.round_trip;
+			r.fee_kids = prices.price.one_way_child;
+			r.fee_kids_rt = prices.price.round_trip_child;
+			if( companies.company.exchange_rates && companies.company.exchange_rates[r.currency] ){
+				r.exchange_rate_sale = companies.company.exchange_rates[r.currency].sales;
+            	r.exchange_rate_book = companies.company.exchange_rates[r.currency].book;
+			}else{
+				r.exchange_rate_sale = companies.mainCompany.exchange_rates[r.currency].sales;
+            	r.exchange_rate_book = companies.mainCompany.exchange_rates[r.currency].book;
+			}
+			if( companies.mainCompany && prices.mainPrice ){
+				r.main_fee_adults 		= prices.mainPrice.one_way;
+				r.main_fee_adults_rt 	= prices.mainPrice.round_trip;
+				r.main_fee_kids 		= prices.mainPrice.one_way_child;
+				r.main_fee_kids_rt 	= prices.mainPrice.round_trip_child;
+			}
+			console.log('Create reservation by import')
+			OrderCore.createReservationByImport(r,req,cb);
+		});//Exchange_rates
+	});
+};
+module.exports.createReservationByImport = function(r,req,cb){
+	r.company = r.company.id;
+	r.hotel = r.hotel.id;
+	r.transfer = r.transfer.id;
+	r.airline = r.airline&&r.airline!=''?r.airline.id:r.airline;
+	var params2 = { company : r.company, client : r.client };
+	//console.log('params2 cre',params2)
+	OrderCore.createOrder(params2,req,function(err,order){
+		Order.findOne( order.id ).exec(function(err,order){
+			r.order = order.id;
+			r.folio = order.folio;
+			console.log('RESERVATION: ', r.order, r.folio);
+			Reservation.create(r).exec(function(err,reservation){
+	    		if(err){
+					//r._err = "Error al crear la reserva";
+					return cb("Error al crear la reserva",r);
+				} //return cb(err,false);
+	    		order.reservations.add(reservation.id);
+	    		order.state = reservation.state;
+	    		result.payment_method = 'creditcard';
+	    		console.log('ORDER SAVED',order);
+	    		order.save(cb);
+	  		});//Reservation create
+		});//order findone
+	});//create order
+};
+module.exports.getObject = function(row,type){
+  var result = {};
+  var direccion = row.destiny=='tour'||row.destiny=='aeropuerto'?'salida':'llegada';
+  if( type == 'reservation' ){
+    result.hotel = row.hotel;
+    //result.service = row[5];
+    result.transfer = row.service;
+    result.pax = row.pax;
+    result.company = row.agency;
+    result.type = 'one_way';
+    //default data
+    result.reservation_method = 'intern';
+    result.reservation_type = 'transfer';
+    result.state = 'liquidated';//{ handle : 'liquidated' };
+    result.payment_method = 'creditcard';//{ handle : 'creditcard' };
+    //end default data
+    if( direccion == 'llegada' ){
+      result.origin = 'airport';
+      result.arrival_date = moment(row.date).format('YYYY-MM-DD HH:mm:ss');
+      result.arrival_time = moment(row.time).format('YYYY-MM-DD HH:mm:ss');
+      //console.log(result.arrival_time);
+      //console.log(result.departure_time);
+      result.arrival_fly = row.fly;
+      result.arrival_airline = row.airline;
+    }else{
+      result.origin = 'hotel';
+      result.departure_date = moment(row.date).format('YYYY-MM-DD HH:mm:ss');
+      result.departure_time = moment(row.time).format('YYYY-MM-DD HH:mm:ss');
+      result.departure_fly = row.fly;
+      result.departure_airline = row.airline;
+    }
+  }
+  if( type == 'client' ){
+    result.name = row.client
+  }
+  return result;
+};
+module.exports.formatReservationsTransferPrices = function(c,rs,callback){
+	async.mapSeries( rs, function(r,cb){
+		if( r.reservation_type != 'transfer' || r.transferprice) return cb(false,r);
+		if( !r.hotel || !r.airport || !r.transfer ) return cb(false,r);
+		TransferPrice.findOne({ 
+			company : c.id, active : true, transfer : r.transfer.id
+	      	,"$or" : [ 
+	        	{ "$and" : [{'zone1' : r.hotel.zone, 'zone2' : r.airport.zone}] } , 
+	        	{ "$and" : [{'zone1' : r.airport.zone, 'zone2' : r.hotel.zone}] } 
+	      	] 
+    	}).exec(function(err,tp){
+    		if(err||!tp) return cb(false,r);
+    		r.transferprice = tp.id;
+    		r.save(function(err,rr){
+    			console.log('SAVED');
+    			r.transferprice = tp;
+    		});
+    	});
+	},function(err,reservations){
+		return callback(reservations);
+	});
 }

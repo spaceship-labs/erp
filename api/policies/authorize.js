@@ -20,6 +20,8 @@ module.exports = function(req, res, next) {
     req.session.lang = req.session.lang || 'es';
     req.setLocale(req.session.lang);
     req.session.select_company = select_company;
+    Company.findOne({ adminCompany : true }).exec(function(err,company){
+      req.session.main_company = company;
     if (!select_company || !req.user) {
         return res.forbidden();
     }
@@ -46,6 +48,7 @@ module.exports = function(req, res, next) {
     }else{
       return next();
     }
+    });
   } else {
     Company.find().exec(function(err, companies){
       if (companies.length > 0) {

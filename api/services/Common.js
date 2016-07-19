@@ -290,8 +290,33 @@ function equals(a,b){
     return a==b;
 }
 module.exports.equals = equals;
+module.exports.orderCustomAI = function(val, done){
+  Counter.native(function(err, counter){
+    counter.findAndModify({ name: 'folio' }, [], { $inc: { seq : 1} }, {}, function (err, object) {
+      if(err) {
+        return cb(val);
+      }
+      if (object && (object.value || object.seq)) {
+        updateSeq(val, object, done);
+      } else {
+        Counter.create({name: 'folio', seq: 2}).exec(function(err, counter) {
+          counter.seq = 1;
+          if (err) {
+            return cb(val);
+          }
+          updateSeq(val, counter, done);
+        });
+      }
 
-module.exports.orderCustomAI = function(val,cb){
+    });
+  });
+};
+function updateSeq(val, object, done) {
+  object = object.name ? object : object.value;
+  val.folio = object.seq;
+  done(val);
+}
+/*module.exports.orderCustomAI = function(val,cb){
 	Counter.native(function(err, counter){
 	    counter.findAndModify(
 	        { name: 'folio' }
@@ -303,13 +328,10 @@ module.exports.orderCustomAI = function(val,cb){
 	           console.log(object);
 	           val.folio = object.seq;
 	           cb(val);
-	           /*Order.update({ id:val.id },{ folio:object.seq},function(o_err,order){
-	           	val.folio = order.folio;
-	           });*/
 	        }
 	    );
 	})
-};
+};*/
 module.exports.getItemById = function(id,objectArray){
 	var r = false;
 	if( objectArray && objectArray.length > 0 )

@@ -16,6 +16,18 @@ module.exports = {
             var item = params.item;
             if( item.company && item.company.id ) item.company = item.company.id;
             if( item.currency && item.currency.id ) item.currency = item.currency.id;
+            if( item.airport && item.airport.id ) item.airport = item.airport.id;
+            if( item.client && item.client.id ) item.client = item.client.id;
+            if( item.departure_airline && item.departure_airline.id ) item.departure_airline = item.departure_airline.id;
+            if( item.arrival_airline && item.arrival_airline.id ) item.arrival_airline = item.arrival_airline.id;
+            if( item.order && item.order.id ) item.order = item.order.id;
+            if( item.transfer && item.transfer.id ) item.transfer = item.transfer.id;
+            if( item.transferprice && item.transferprice.id ) item.transferprice = item.transferprice.id;
+            if( item.user && item.user.id ) item.user = item.user.id;
+            if( item.hotel && item.hotel.id ) item.hotel = item.hotel.id;
+            if( item.tour && item.tour.id ) item.tour = item.tour.id;
+            if( item.prices && item.prices.id ) item.prices = item.prices.id;
+            if( item.cuponsingle && item.cuponsingle.id ) item.cuponsingle = item.cuponsingle.id;
             //item.req = req;
             console.log('------------------------------------item');
             console.log(item);
@@ -23,6 +35,8 @@ module.exports = {
             var orderParams = { state : params.item.state, payment_method : params.item.payment_method, currency : params.item.currency };
             OrderCore.updateOrderParams(params.item.order,orderParams,function(err,order){
                 if(err) return res.json(false);
+                if(order && order.id)
+                    item.order = order.id;
                 Reservation.update({id:item.id},item,function(err,r){
                     Reservation.find({id:item.id}).exec(function(error, reservation) {
                         return res.json(reservation);

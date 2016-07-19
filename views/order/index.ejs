@@ -56,7 +56,8 @@
         <div class='col-md-4'>
             <p style="display:inline-block;">
                 <a href="/order/neworder" class='btn btn-primary'><i class = "fa fa-plus"></i> <%= __('order-crear')%></a>
-                <a class="btn btn-primary" data-toggle="modal" data-target="#uploadCVS"><i class="fa fa-upload"></i> <%= __('gral_importcvs')%></a>
+                <!--<a class="btn btn-primary" data-toggle="modal" data-target="#uploadCVS"><i class="fa fa-upload"></i> <%= __('gral_importcvs')%></a>-->
+                <a class="btn btn-primary" data-toggle="modal" data-target="#importmodal"><i class="fa fa-upload"></i>Importar</a>
             </p>
             <!-- <input type="text" placeholder="Buscar" class="form-control pull-right search" ng-model="searchText" /> -->
         </div>
@@ -88,6 +89,17 @@
         <div class='modal-dialog modal-lg'>
             <div class='modal-content padding20'>
                 <%- partial('partial/exportMKP') -%>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="importmodal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Importar operación</h4>
+                </div>
+                <div import-files import-type='reservation' url='/order/edit/' upload-url="/order/importorder" ></div>
             </div>
         </div>
     </div>

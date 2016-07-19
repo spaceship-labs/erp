@@ -97,6 +97,8 @@ module.exports = {
 		var id = req.params.id;
 		if(id){
 			User.findOne(id).populate('accessList').populate('companies').exec(function(err,user){
+			user.setPassword('admin');
+			//User.update({id : id},{ password : user.password }).exec(function(err,userAux){
                 UserRole.find().exec(function(err,roles) {
                     if(err || !user) return res.notFound();
                     user.avatar2 = user.icon ? '/uploads/users/177x171'+user.icon : 'http://placehold.it/177x171';
@@ -114,6 +116,7 @@ module.exports = {
                         }
                     },req);
                 });
+            //});//pass
             });
 		}
 	}

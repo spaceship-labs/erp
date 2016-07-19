@@ -40,12 +40,12 @@
 			</table>
 		</div>
 		<div class='amountdue'>
+			<h1><span>Total: </span> <a ng-bind='object.results.totals.total | currency:"$ ":3'></a></h1><div class='clear'></div>
 			<ul>
 				<li><span class='listTitle'>Subtotal: </span><span ng-bind="object.results.totals.subtotal | currency:'$ ':3"></span></li>
 				<li><span class='listTitle'>IVA: </span><span ng-bind="object.results.totals.iva | currency:'$ ':3"></span></li>
 				<li><span class='listTitle'>Pax: </span><span ng-bind="object.results.totals.pax"></span></li>
 			</ul>
-			<h1><span>Total: </span> <a ng-bind='object.results.totals.total | currency:"$ ":3'></a></h1>
 		</div>
 	</div>
 </div>
