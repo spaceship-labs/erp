@@ -627,6 +627,7 @@ module.exports.formatReservationsTransferPrices = function(c,rs,callback){
     		r.save(function(err,rr){
     			console.log('SAVED');
     			r.transferprice = tp;
+    			cb(r);
     		});
     	});
 	},function(err,reservations){

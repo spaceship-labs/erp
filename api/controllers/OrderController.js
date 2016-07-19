@@ -108,10 +108,22 @@ module.exports = {
     });
   },
   reporteespecial : function(req,res){
-    var fields = {};
+    if(req.cookies.filters && req.cookies.filters != '')
+      var fields = formatFilterFields(JSON.parse(req.cookies.filters));
+    else
+      var fields = {};
+    if( ! req.user.isAdmin ){
+      var c_ = [];
+      for(c in req.user.companies ){
+        if( req.user.companies[c].id )
+          c_.push( sails.models['company'].mongo.objectId(req.user.companies[c].id) );
+      }
+      fields.company = { "$in" : c_ };
+    }
+    console.log('FIELDS 0:',fields)
     Reports.getReport('logisticsReport',fields,function(results,err){
       Export.mkp_report(results,function(err,csv){
-        var name = 'Reporte de montos ' + '.csv';
+        var name = 'Reporte mkp' + '.csv';
         res.attachment(name);
         res.end(csv, 'UTF-8');
       });

@@ -1318,10 +1318,8 @@ app.controller('orderEditCTL',function($scope,$http,$window){
             if( reserve.reservation_type == 'transfer' ){
                 if(reserve.currency && reserve.currency.companies) delete reserve.currency.companies;
                 $scope.transfer = reserve;
-                if($scope.transfer.arrival_time)
-                    $scope.transfer.arrival_time = moment($scope.transfer.arrival_time).zone("-05:00");
-                if($scope.transfer.departure_time)
-                    $scope.transfer.departure_time = moment($scope.transfer.departure_time).zone("-05:00");
+                //if($scope.transfer.arrival_time) $scope.transfer.arrival_time = moment($scope.transfer.arrival_time).zone("-05:00");
+                //if($scope.transfer.departure_time) $scope.transfer.departure_time = moment($scope.transfer.departure_time).zone("-05:00");
                 console.log('TRANSFER',$scope.transfer);
                 $scope.getTransfers();
             }else if( reserve.reservation_type == 'tour' ){
