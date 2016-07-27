@@ -487,4 +487,9 @@
 
   ,"transporttype" : "Tipo de vehiculo"
   ,"addtransporttype" : "Agregar tipo de vehiculo"
+  ,"departure_points":"Puntos de salida"
+  ,"departure_points_1":"Puntos de salida para los tours"
+  ,"departure_points_2":"Agregar Punto de Salida"
+  ,"departure_points_3":"Información de Punto de Salida"
+  ,"departure_points_4":""
 }

@@ -1,0 +1,46 @@
+<script type='text/javascript'>
+	window.departurepoints = <%- JSON.stringify(departurepoints) %>;
+</script>
+<div ng-controller='dpCTL'>
+	<p>
+		<a class="btn btn-primary" href="/departurepoint/newpoint"><i class='fa fa-plus'></i> <%= __('departure_points') %> </a>
+	</p>
+	<!--<p class="import-button">
+		<button class="btn btn-primary" data-toggle="modal" data-target="#importmodal"><span class="fa fa-plus"></span><%=__('import')%></button>
+	</p>-->
+	<br/>
+	<div table-helper 
+		objects='departurepoints' 
+		columns='content.departurepoint' 
+		button-text-import='<%= __('import') %>' 
+		type-import='departurepoint' 
+		route='departurepoint'>
+	</div>
+	<div class="clearfix"></div>
+	<!--<div class="modal fade" id="myModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div 
+					form-helper 
+			        fields='content.departurepoints' 
+			        form-footer='<%= __('order-agregar') %>'
+			        form-save = 'createdp'
+			        object = 'departurepoints'
+			        form-title='<%= __('departure_points_2') %>'
+			       	modal='true'
+			        >
+			    </div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="importmodal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title"><%= __('import') %></h4>
+				</div>
+			<div import-files import-type='departurepoints' ></div>
+		</div>
+	</div>-->
+</div>

@@ -288,6 +288,16 @@ module.exports.apps = [
                 controller : 'tourcategory',
                 action : 'index'
             }
+            ,{
+                label : 'Puntos de salida de Tours',
+                label_en : 'Tours Departure points',
+                icon : 'fa-car',
+                url : '/departurepoint/',
+                handle : 'departurepoint',
+                showInMenu : true,
+                controller : 'departurepoint',
+                action : 'index'
+            }
         ]
     },
     /* transfers */

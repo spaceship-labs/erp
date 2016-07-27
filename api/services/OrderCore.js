@@ -523,6 +523,7 @@ module.exports.createTransferReservationByImport = function(req,r,c,companies,cb
 				return cb("No se encontró precio disponible para este servicio",r);
 			} //return cb({message:'no price found'},false);//price contiene price y mainPrice para agregar a la reser
 			r.airport = airport.id;
+			r.transferprice = prices.price.id;
 			r.service_type = prices.price.transfer.service_type || 'C' ;
 			r.quantity = Math.ceil( r.pax / prices.price.transfer.max_pax );
 	        r.fee = prices.price[r.type] * r.quantity;
@@ -567,7 +568,7 @@ module.exports.createReservationByImport = function(r,req,cb){
 				} //return cb(err,false);
 	    		order.reservations.add(reservation.id);
 	    		order.state = reservation.state;
-	    		result.payment_method = 'creditcard';
+	    		order.payment_method = 'creditcard';
 	    		console.log('ORDER SAVED',order);
 	    		order.save(cb);
 	  		});//Reservation create

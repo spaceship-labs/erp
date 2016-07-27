@@ -5,6 +5,7 @@
     window.tourcategories = <%- JSON.stringify(tourcategories) %>;
     window.interactions = <%- JSON.stringify(interactions) %>;
     console.log(interactions);
+    console.log('P',window.provider);
     //console.log(company);
 </script>
 <div ng-controller='tourproviderEditCTL' class="ng-cloak">
@@ -167,7 +168,7 @@
                  markers = "provider.departurePoints"
                  sizes = "{ height: '350px' }"
                  drag-enabled = "true"
-                 optional-markers="locationHotels"
+                 optional-markers="{hotels:locationHotels,zones:locationZones}"
                     ></div>
             </div>
         </div>

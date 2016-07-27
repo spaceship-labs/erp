@@ -456,6 +456,14 @@ module.exports.content = {
 			removeAction : '/tour/removeCategory'
 		},
 		{
+			label : 'Puntos de partida',
+			label_en : 'Departure Points',
+			type : 'multi-select',
+			handle : 'departurepoints',
+			object : 'departurepoints',
+			removeAction : '/tour/removePoint'
+		},
+		{
 			label : 'Ubicación',
 			label_en : 'Location',
 			type : 'select',
@@ -879,6 +887,41 @@ module.exports.content = {
 			type : 'text',
 			handle : 'meta_keywords_en',
 		}		
+	]
+	,departurepoint : [
+		{
+			label : 'Tipo'
+			,label_en : 'Type'
+			,type : 'select'
+			,handle : 'type'
+		},
+		{
+			label : 'Nombre'
+			,label_en : 'Name'
+			,type : 'text'
+			,handle : 'name'
+		},
+		{
+			label : 'Descripción'
+			,label_en : 'Description'
+			,type : 'text'
+			,handle : 'description'
+		}
+		,{
+			label : 'Hotel'
+			,label_en : 'Hotel'
+			,type : 'select'
+			,handle : 'hotel'
+			,object : 'hotels'
+			,condition : 'type=hotel'
+		}
+		,{
+			label : 'Zona'
+			,label_en : 'Zone'
+			,type : 'text'
+			,object : 'zones'
+			,handle : 'zone'
+		}
 	]
 	,location : [
 		{

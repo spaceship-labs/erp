@@ -48,6 +48,7 @@ app.controller('tourCTL',function($scope,$http,$window,$rootScope){
 app.controller('tourEditCTL',function($scope,$http,$window){
     $scope.schemes = schemes;
     $scope.locations = locations;
+    $scope.departurepoints = dps;
     $scope.providers = providers;
     $scope.tour = tour;
     $scope.zones = zones;
@@ -69,7 +70,7 @@ app.controller('tourEditCTL',function($scope,$http,$window){
         hour : 0
     };
 
-    console.log(tour);
+    //console.log(tour);
     $scope.types = [ { id : 'single', name : 'por persona' },{ id : 'group',name : 'por grupo' } ];
     if (angular.isUndefined($scope.tour.departurePoints)) {
         $scope.tour.departurePoints = [];

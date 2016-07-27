@@ -13,7 +13,7 @@
             }
         };
         $scope.optionalMarker = [];
-        if ($scope.optionalMarkers && $scope.optionalMarkers.length > 0) {
+        if ($scope.optionalMarkers.hotels && $scope.optionalMarkers.hotels.length > 0) {
             var newMarker = {
                 lat: $scope.center.lat,
                 lng: $scope.center.lng,
@@ -22,7 +22,8 @@
                 focus: true,
                 draggable: $scope.dragEnabled
             };
-            $scope.optionalMarkers.push(newMarker);
+            $scope.optionalMarkers.hotels.push(newMarker);
+            $scope.optionalMarkers.zones.push(newMarker);
         }
 
         /*Creará un marcador con los campos que se le pasen en la directiva*/

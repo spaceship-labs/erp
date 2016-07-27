@@ -8,7 +8,9 @@
 		<table class='table stdform stdform2' ng-if='dragEnabled'>
 			<thead>
 		        <tr>
-                    <th ng-if="optionalMarkers.length > 0">Escoje</th>
+		        	<th>Punto seleccionado</th>
+                    <th ng-if="optionalMarkers.hotels.length > 0">Hotel</th>
+                    <th ng-if="optionalMarkers.zones.length > 0">Zona</th>
 		        	<th class='ng-hide' ng-bind="translates.d_lat"></th>
 		        	<th class='ng-hide' ng-bind="translates.d_lon"></th>
 		        	<th ng-bind="translates.d_dec"></th>
@@ -17,11 +19,19 @@
 		        </tr>
 		    </thead>
 		    <tbody>
-				<tr ng-repeat='(key,marker) in markers'>
-                    <td ng-if="optionalMarkers.length > 0">
+				<tr ng-repeat='(key,marker) in markers' ng-init="optionalMarker[key]=marker;">
+					<td>{{ marker.type }} : {{ marker.name }}</td>
+                    <td ng-if="optionalMarkers.hotels.length > 0">
                         <select
                                 ng-model="optionalMarker[key]"
-                                ng-options="obj as obj.name for obj in optionalMarkers"
+                                ng-options="obj as obj.name for obj in optionalMarkers.hotels"
+                                ng-change="selectOptionalMarker(key,optionalMarker[key])" >
+                        </select>
+                    </td>
+                    <td ng-if="optionalMarkers.zones.length > 0">
+                        <select
+                                ng-model="optionalMarker[key]"
+                                ng-options="obj as obj.name for obj in optionalMarkers.zones"
                                 ng-change="selectOptionalMarker(key,optionalMarker[key])" >
                         </select>
                     </td>
@@ -43,7 +53,7 @@
 		    </tbody>
 		</table>
 	</div>
-	<div class="widgetcontent">
+	<div class="widgetcontent" >
 		<p ng-if='dragEnabled'  ng-bind="translates.d_markLegend"></p>
 		<leaflet width="{{sizes.width}}" height="{{sizes.height}}" markers='markers' center='center' layers="layers"></leaflet>
 	</div>

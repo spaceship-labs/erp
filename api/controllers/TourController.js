@@ -138,7 +138,7 @@ module.exports = {
 		}); }); // create and findOne
 	},
 	edit : function(req,res){
-		Tour.findOne(req.params.id).populate('categories',{type:{$ne:'rate'}}).populate('extra_prices',{ type : { $ne : 'none' } }).populate('transferHotels').exec(function(e,tour){
+		Tour.findOne(req.params.id).populate('departurepoints').populate('categories',{type:{$ne:'rate'}}).populate('extra_prices',{ type : { $ne : 'none' } }).populate('transferHotels').exec(function(e,tour){
             if(e) {
                 console.log(e);
                 return res.redirect("/tour/");
@@ -147,6 +147,7 @@ module.exports = {
                 return res.notFound();
             }
             TourCategory.find({type:{ $ne:'rate' }}).exec(function(tc_err,tourcategories){
+                DeparturePoint.find().populateAll().exec(function(tc_err,dps){
                 //console.log(tour);
                 Hotel.find({},{select: ['id', 'name','latitude','longitude']} ).exec(function(e,hotels){
                     Location.find({}).sort('name').exec(function(e,locations){
@@ -158,6 +159,7 @@ module.exports = {
                                     //for(var x in tour.categories) tour.categories[x] = Common.getItemById(tour.categories[x].id,tourcategories);
                                     Common.view(res.view, {
                                         tour: tour,
+                                        dps: dps,
                                         locations: locations,
                                         schemes: schemes,
                                         providers: providers,
@@ -180,7 +182,7 @@ module.exports = {
                         });//seasons and providers
                     });//location
                 });//hotels
-
+            }); //dp
 		}); }); //tour and tour category
 	},
 	updateIcon: function(req,res){
@@ -221,9 +223,11 @@ module.exports = {
     		form.days = new_days;
     	}
     	var rates = form.rates;
-    	var cats = form.categories;
+        var cats = form.categories;
+    	var dps = form.departurepoints;
     	delete form.rates;
-    	delete form.categories;
+        delete form.categories;
+    	delete form.departurepoints;
         Tour.findOne(id).exec(function(e,tour){
 
             //TODO pasar a validacion que regresa el precio nuevo o vacio
@@ -259,10 +263,10 @@ module.exports = {
             if (differentFee) {
                 Price.create(price).exec(function(errPrice,newPrice){
                     form.price = newPrice.id;
-                    tourUpdate(res,id,form,rates,cats);
+                    tourUpdate(res,id,form,rates,cats,dps);
                 });
             } else {
-                tourUpdate(res,id,form,rates,cats);
+                tourUpdate(res,id,form,rates,cats,dps);
             }
 
 
@@ -279,6 +283,17 @@ module.exports = {
 			});
 		})
 	},
+    removePoint : function(req,res){
+        var params = req.params.all();
+        Tour.findOne({id:params.obj}).exec(function(e,tour){
+            if(e) throw(e);
+            tour.departurepoints.remove(params.rel);
+            tour.save(function(e,tour){
+                if(e) throw(e);
+                res.json(tour)
+            });
+        })
+    },
     removeProviderPoint : function(req,res){
         var params = req.params.all();
         Tour.findOne({id:params.obj}).exec(function(e,tour){
@@ -419,13 +434,14 @@ var formatDuration = function(tours,thecb){
 	});
 };
 
-var tourUpdate = function(res,id,form,rates,cats) {
+var tourUpdate = function(res,id,form,rates,cats,dps) {
     Tour.update({id:id},form,function(err,tour_update){
         if(err) throw(err);
         Tour.findOne(id).exec(function(e,tour) {
             if( rates ){
                 for( x in rates ) tour.categories.add( rates[x].category.id );
                 for( x in cats ) tour.categories.add( cats[x].id );
+                for( x in dps ) tour.departurepoints.add( dps[x].id );
                 tour.save(function(tour_){
                     //ahora se van a actualizar los valores con un foreach async
                     async.mapSeries( rates, function(item,theCB){
@@ -450,6 +466,7 @@ var tourUpdate = function(res,id,form,rates,cats) {
                 });
             }else{
                 for( x in cats ) tour.categories.add( cats[x].id );
+                for( x in dps ) tour.departurepoints.add( dps[x].id );
                 tour.save(function(tour_){
                     Tour.findOne(id).populate('categories').exec(function(e,tour){
                         if(e) throw(e);

@@ -482,5 +482,10 @@
 
   ,"transporttype" : "Car Type"
   ,"addtransporttype" : "Add Car Type"
+  ,"departure_points":"Departure Points"
+  ,"departure_points_1":"Departure Points for Tours"
+  ,"departure_points_2":"Add Departure Point"
+  ,"departure_points_3":"Departure Point Information"
+  ,"departure_points_4":""
    
 }

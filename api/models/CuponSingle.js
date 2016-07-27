@@ -19,10 +19,17 @@ module.exports = {
             collection : 'order'
             ,via : 'cuponsingle'
         },
+        reservations : {
+            collection : 'reservation'
+            ,via : 'cuponsingle'
+        },
         expiration:'date',
         redeem_date:'date',
         multiple:'boolean',
-        times:'integer',
+        times:{
+            type : 'integer'
+            ,defaultsTo : 0
+        },
         description:'string'
     },
     beforeCreate:function(val,cb){ 

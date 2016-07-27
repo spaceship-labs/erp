@@ -7,6 +7,7 @@
 var async = require('async');
 var fs = require('fs');
 var phantom = require('phantom');
+var moment = require('moment-timezone');
 //Promise = require('es6-promise').Promise;
 module.exports = {
   /*
@@ -366,6 +367,123 @@ module.exports = {
         });
     });
   }
+  ,exportreservations : function(req,res){
+    if(req.cookies.filters && req.cookies.filters != '')
+      var fields = formatFilterFields(JSON.parse(req.cookies.filters));
+    else
+      var fields = {};
+    if( ! req.user.isAdmin ){
+      var c_ = [];
+      for(c in req.user.companies ){
+        if( req.user.companies[c].id )
+          c_.push( sails.models['company'].mongo.objectId(req.user.companies[c].id) );
+      }
+      fields.company = { "$in" : c_ };
+    }
+    fields.reservation_type = 'transfer';
+    fields.state = 'liquidated';
+    console.log('FIELDS 0:',fields);
+        var columns = ['Folio','Client','Email','Phone','Pax','Precio web total','Total','Currency','Descuento(%)','Cupon',
+        'Agency','Precio agencia','Agencia diferencia','User',
+        'Flight Number(arrival)','Arrival date','Arrival time',
+        'Hotel','Region','Flight Number(departure)','Pickup Date Departure','Pickup Time Departure','Departure date','Departure time',
+        'Quantity','Reservation type','Payment method','Airport','Service','Reservation date','Status','Notes'];
+        /*
+            NOTA: Como sólo se exportan las reservas de los transportes podemos obtener directamente la reserva 
+            sin tener que agruparlo por su 'order'
+            - Serán 3 estados por la cuestion de los 'round trip', puede darse a medias un servicio, 3 = completado
+        */
+        //var list = [];
+        //list.push(columns);
+        Reservation.find().where( fields )
+        .populate('transfer').populate('client').populate('company').populate('order').populate('cuponsingle').populate('user').populate('hotel').populate('airport')
+        .exec(function(e,reservations){
+          async.mapSeries( reservations, function(item,cb2) {
+                var i = 0;
+                if(!item.order||!item.hotel||!item.airport){
+                  console.log('ITEM ERR',item);
+                  return cb2(false,[item.id,'Error, datos incompletos']); // esto cambia a un return cb() cuando cambie a async
+                }
+                adf = {};
+                adf.hotel = function(done){ Hotel.findOne(item.hotel).populate('zone').exec(done); };
+                adf.airport = function(done){ Airport.findOne(item.airport).populate('zone').exec(done); };
+                if( item.cuponsingle&&item.cuponsingle.item )
+                  adf.cupon = function(done){ Cupon.findOne(itemcuponsingle.cupon).populate('cupon').exec(done); };
+                if( item.company.adminCompany ){
+                  adf.agencyPrice = function(done){
+                    TransferPrice.findOne({ 
+                      active:true, company:item.company.id, transfer:item.transfer.id,
+                      "$or" : [ 
+                        { "$and" : [{'zone1' : item.hotel.zone, 'zone2' : item.airport.zone}] } , 
+                        { "$and" : [{'zone1' : item.airport.zone, 'zone2' : item.hotel.zone}] } 
+                      ]
+                    }).exec(done);
+                  };
+                }
+                async.parallel(adf, function(err, search){
+                  item.hotel = search.hotel;
+                  item.airport = search.airport;
+                  cupon = search.cupon?search.cupon:false;
+                  var x = [];
+                  var q = Math.ceil( item.pax / item.transfer.max_pax );
+                  x[i] = item.order.folio; //0: folio  formatDate(item.createdAt,'date');
+                  x[++i] = item.client?item.client.name:''; //1: client name
+                  x[++i] = item.client?item.client.email:''; //2: client email
+                  x[++i] = item.client?item.client.phone:''; //3: client phone
+                  x[++i] = item.pax; //4: pax
+                  x[++i] = item.fee; //5: precio web total
+                  x[++i] = item.fee; //6: total*************
+                  x[++i] = item.currency?item.currency.currency_code:'USD'; //7: currency
+                  if( cupon ){
+                    if( item.type == 'one_way' && cupon.simple_discount )
+                      x[++i] = cupon.simple_discount; //8: discountt
+                    else if( item.type == 'round_trip' && cupon.round_discount )
+                      x[++i] = cupon.round_discount; //8: discountt
+                    else
+                      x[++i] = cupon.gral_discount; //8: discountt
+                  }else
+                    x[++i] = 0; //8: discountt
+                  x[++i] = item.cuponsingle?item.cuponsingle.token:'';//9: cupon
+                  x[++i] = item.company.name;//10:agency
+                  if( search.agencyPrice ){
+                    var agencyp = q * ( item.type=='one_way'?parseFloat(search.agencyPrice.one_way):parseFloat(search.agencyPrice.round_trip) );
+                    x[++i] = agencyp;//11: agency price
+                    x[++i] = item.fee - agencyp;//12: agency diff
+                  }else{
+                    x[++i] = 0;//11: agency price
+                    x[++i] = 0;//12: agency diff
+                  }
+                  x[++i] = item.user?item.user.name:'';//13: user
+                  x[++i] = item.arrival_fly;//14: arrival flight
+                  x[++i] = formatDate(item.arrival_date,'date');//15: arrival date
+                  x[++i] = formatDate(item.arrival_time,'time');//16: arrival time
+                  x[++i] = item.hotel?item.hotel.name:'';//17: hotel
+                  x[++i] = item.hotel?item.hotel.zone.name:'';//18: zone
+                  x[++i] = item.departure_fly;//19: departure fligth
+                  x[++i] = formatDate(item.pickup_time,'date');//20: pickup date
+                  x[++i] = formatDate(item.pickup_time,'time');//21: pickup time
+                  x[++i] = formatDate(item.departure_time,'time');;//22: departure date
+                  x[++i] = formatDate(item.departurepickup_time,'time');;//23: departure time
+                  x[++i] = q;//24: quantity
+                  x[++i] = item.type;//25: reservation type : one_way / round_trip
+                  x[++i] = item.payment_method;//26: payment method
+                  x[++i] = item.airport.name;//27: airport
+                  x[++i] = item.transfer.name;//28: service
+                  x[++i] = formatDate(item.createdAt,'date');//29: reservation date
+                  x[++i] = item.state;//30: status
+                  x[++i] = item.notes;//31: notes
+                  cb2(false,x);
+                });
+            },function(err,list){
+              var name = 'Reservations -' + moment().tz('America/Mexico_City').format('D-MM-YYYY') + '.csv';
+              list.unshift(columns);
+              Export.mkp_report(list,function(err,csv){
+                  res.attachment(name);
+                  res.end(csv, 'UTF-8');
+              });
+            });
+        }); 
+    }
   /*
     Función que recive un cvs para importar reservas
   */
@@ -448,6 +566,28 @@ module.exports = {
     });
   }
 };
+//regresa una fecha de la sb a el formato que necesita MKP
+function formatDate(date,type){
+    r = '';
+    if(date && type == 'date'){
+        var aux = new Date(date);
+        var m = aux.getMonth() + 1;
+        m = m<10?'0'+m:m+'';
+        r = aux.getFullYear() + m;
+        m = aux.getDate();
+        m = m<10?'0'+m:m;
+        r += m;
+    }else if( date && type == 'time' ){
+        var aux = new Date(date);
+        var m = aux.getHours();
+        m = m<10?'0'+m:m+'';
+        r = m;
+        var m = aux.getMinutes();
+        m = m<10?'0'+m:m+'';
+        r += m;
+    }
+    return r;
+}
 /*
   'service','client','pax','arrival_date','arrival_fly','arrival_time','Hotel','transfer',
   'departure_date','departure_fly','departure_time','note','agency','Airport';
@@ -519,8 +659,8 @@ function formatFilterFields(f){
   for( var x in f ){
     if( f[x].model ){
       if( f[x].type == 'date' ){
-        var from = {}; from[f[x].field] = { '$gte' : new Date(f[x].model.from) };
-        var to = {}; to[f[x].field] = { '$lte' : new Date(f[x].model.to) };
+        var from = {}; from[f[x].field] = { '$gte' : new Date( moment(f[x].model.from).format('MM/DD/YYYY') ) };
+        var to = {}; to[f[x].field] = { '$lte' : new Date( moment(f[x].model.to).hour(23).format() ) };
         if( f[x].field == 'arrival_date' ){
           fx['$or'] = [ 
             { $and : [ from, to ] }, 
@@ -528,6 +668,8 @@ function formatFilterFields(f){
             { $and : [ { cancelationDate : { '$gte' : new Date(f[x].model.from) } }, { cancelationDate : { '$lte' : new Date(f[x].model.to) } } ] }
             ]
         }else{
+          console.log('FROM',from);
+          console.log('TO',to);
           fx['$and'] = [from,to];
         }
       }else if( f[x].type == 'autocomplete' ){

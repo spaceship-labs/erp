@@ -11,7 +11,7 @@ module.exports = {
 			model : 'location' }
 		,days : 'array'
 		,schedules : 'array'
-		,departurePoints : 'json'
+		//,departurePoints : 'json'
 		,seasonScheme : {
 			model:'seasonScheme',
 			via:'tours' }
@@ -83,6 +83,10 @@ module.exports = {
 	    ,meta_keywords_en:'string'
         ,tax : 'float' //aún no se que se va a hacer con esto, me lo mandaron de yellow :/
         //duration_type ?
+        ,departurepoints : {
+        	collection : 'departurepoint'
+        	,via : 'tours'
+        }
 	}
 	, migrate : 'safe'
 	, attrs_labels : {

@@ -1777,16 +1777,14 @@ module.exports.logisticsReport = function(options,theCB){
 	options.eDate = new Date("October 13, 2016");
 	var $match = {
 		reservation_type : 'transfer'
-		/*,state : 'liquidated'
+		,assigned : { "$ne" : '3' }
+		,state : 'liquidated'
 		,$and : [
 			{ notes : { '$ne' : 'no reservar' } }
 			,{ notes : { '$ne' : 'no-reservar' } } 
 		]
-		,company : sails.models['company'].mongo.objectId('55b120357c4a37ed13757e43')*/
 	};
 	if( options.dateType == '1' ){
-		//$match.$and.push({ createdAt : { '$gte' : options.sDate } });
-		//$match.$and.push({ createdAt : { '$lte' : options.eDate } });
 	}else{
 		$match.$and.push({ createdAt : { '$gte' : options.sDate } });
 		$match.$and.push({ departure_date : { '$lte' : options.eDate } });
@@ -1803,7 +1801,7 @@ module.exports.logisticsReport = function(options,theCB){
 			,'Nombre hotel','Habitación','Nmbre pasajero','Apellidos pasajero','Adultos','Niños'
 			,'Fecha llegada','Hora llegada','Fecha salida','Clave aerolinea salida','Nombre aerolinea'
 			,'Hora vuelo','Hora pickup','Precio','Precio niño','Descuento','Subtotal','Total','Moneda','Tipo de cambio'
-			,'Observaciones','Clave agencia','Nombre agencia','Reserva de agencia']);
+			,'Observaciones','Clave agencia','Nombre agencia','Reserva de agencia','ID']);
 		if( list_reservations ){ for( var x in list_reservations ){
 			var l = list_reservations[x];
 			var item = Reports.mkpFormatItemToExport(l,false);
@@ -1814,24 +1812,9 @@ module.exports.logisticsReport = function(options,theCB){
 };
 module.exports.totalsReport = function(options,theCB){
 	var name = 'Totals report -' + moment().tz('America/Mexico_City').format('D-MM-YYYY') + '.csv';
-	options.dateType = '1';
-	options.sDate = new Date("October 13, 2014");
-	options.eDate = new Date("October 13, 2016");
-	var $match = {
-		/*state : 'liquidated',
-		$and : [
-			{ notes : { '$ne' : 'no reservar' } }
-			,{ notes : { '$ne' : 'no-reservar' } } 
-		]
-		,company : sails.models['company'].mongo.objectId('55b120357c4a37ed13757e43')*/
-	};
-	if( options.dateType == '1' ){
-		//$match.$and.push({ createdAt : { '$gte' : options.sDate } });
-		//$match.$and.push({ createdAt : { '$lte' : options.eDate } });
-	}else{
-		$match.$and.push({ createdAt : { '$gte' : options.sDate } });
-		$match.$and.push({ departure_date : { '$lte' : options.eDate } });
-	}
+	var $match = options;
+	$match.reservation_type = 'transfer';
+    $match.state = 'liquidated';
 	console.log($match);
 	//agregarlo los _id para poder agreguparlo bien
 	var $groupGral = {
@@ -1843,13 +1826,13 @@ module.exports.totalsReport = function(options,theCB){
 		,cupon : { $push : '$cupon' }
 		,hotel : { $push : '$hotel' }
 	};
-	console.log($groupGral);
+	//console.log($groupGral);
 	var $groupForPopulate = {
 		_id : null
 		,hotels : { $push : '$hotel' }
 		,cupons : { $push : '$cupon' }
 	};
-	Reservation.find( $match ).populate('currency').populate('transfer').populate('airport')
+	Reservation.find( $match ).populate('currency').populate('transfer').populate('airport').populate('company').populate('transferprice')
 	.exec(function(r_err,list_reservations){
 		if(r_err) theCB(false,r_err);
 		Reservation.native(function(err,theReservation){
@@ -1862,7 +1845,7 @@ module.exports.totalsReport = function(options,theCB){
 						{ $match : $match }, 
 						{ $group : $groupGral } ],
 						function(err,resultsGlobal){ 
-							console.log(resultsGlobal); 
+							//console.log(resultsGlobal); 
 							cb(err,resultsGlobal); 
 						});
 				},function( resultsGlobal , cb ){
@@ -1887,53 +1870,119 @@ module.exports.totalsReport = function(options,theCB){
 				}
 			];//reads END
 			async.waterfall(reads,function(err,resultsGlobal,resultsByMethod,resultsBypayment,resultsForPopulate,resultsPopulated){
-				console.log('results');
-				console.log(resultsGlobal);
-				console.log(resultsByMethod);
-				console.log(resultsBypayment);
+				//console.log('results');
+				//console.log(resultsGlobal);
+				//console.log(resultsByMethod);
+				//console.log(resultsBypayment);
 				//console.log(resultsForPopulate);
 				//console.log(resultsPopulated);
 				var toCSV = [];
-				toCSV.push(['referencia', 'Pax', 'Total web', 'Descuento', 'Cupón', 'Precio yellow', 'Precio agencia', 'Diferencia yellow/agencia', 'Agencia diferencia', 'Comisión', 'Precio neto', 'Moneda', 'Region', 'Amount of Services', 'Service type', 'Metodo de pago', 'Airport', 'Servicio', 'Reservation Date', 'Status', 'Servicio completado'])
-				if( list_reservations ){ for( var x in list_reservations ){
-					var l = list_reservations[x];
-					var i = 0;
-					var item = [];
-					var cupon = getItemById( l.cupon, resultsPopulated.cupons );
-					var travelType = 'O';
-	    			if( l.type == 'one_way' ) travelType = l.origin == 'hotel'?'R':'L';
-					item[i] = l.folio;
-					item[++i] = l.pax;
-					item[++i] = l.fee + l.feeKids;
-					if( cupon )
-						item[++i] = l.type=='round_trip'?cupon.cupon.round_discount:cupon.cupon.simple_discount;//descuento
-					else
-						item[++i] = 0;
-					item[++i] = cupon?cupon.token:'no';//cupón
-					item[++i] = 0;//precio yellow
-					item[++i] = 0;//precio agencia
-					item[++i] = 0;//diferencia yellow/agencia
-					item[++i] = 0;//diferencia agencia
-					item[++i] = l.commission_agency;//comisión
-					item[++i] = l.commission_agency ? l.fee - ( l.fee * l.commission_agency ) : l.fee;//precio neto?
-					item[++i] = l.currency.currency_code;
-					var hotel = getItemById(l.hotel,resultsPopulated.hotels);
-					item[++i] = hotel.zone?hotel.zone.name:'NOOOOOOOOOOOOOOOOOOOOOO';
-					item[++i] = l.quantity;//cantidad
-					item[++i] = l.type;//service type
-					item[++i] = l.payment_method;
-					item[++i] = l.airport.name;
-					item[++i] = l.transfer.name;
-					item[++i] = l.createdAt;
-					item[++i] = l.state;
-					item[++i] = 'completado';
-					toCSV.push(item);
-				} }
-				theCB(toCSV,false);
+				toCSV.push(['referencia', 'Pax', 'Total web', 'Descuento', 'Cupón', 'Precio yellow', 'Precio agencia', 'Diferencia yellow/agencia', 'Agencia diferencia', 'Comisión', 'Precio neto', 'Moneda', 'Region', 'Amount of Services', 'Service type', 'Metodo de pago', 'Airport', 'Servicio', 'Reservation Date', 'Status', 'Servicio completado']);
+				if( list_reservations ){ 
+					async.mapSeries( list_reservations, function(l,cb2) {
+						if(!l.order||!l.hotel||!l.airport){
+		                  //console.log('ITEM ERR',l);
+		                  return cb2(false,[l.id,'Error, datos incompletos']);
+		                }
+		                if( l.company.adminCompany ){
+		                	TransferPrice.findOne({ company : l.company.id, active : true, transfer : l.transfer.is
+		                	  	,"$or" : [ 
+						        	{ "$and" : [{'zone1' : l.hotel.zone, 'zone2' : l.airport.zone}] } , 
+                        			{ "$and" : [{'zone1' : l.airport.zone, 'zone2' : l.hotel.zone}] } 
+						      	] 
+						    }).populate('transfer').exec(function(err,p){
+						    	resultsPopulated.price = p;
+						    	item = getItemTotalsReport(l,resultsPopulated);
+		                		cb2(false,item);
+						    });
+		                }else{
+		                	item = getItemTotalsReport(l,resultsPopulated);
+		                	cb2(false,item);
+		                }
+						//toCSV.push(item);
+					},function(err,list){
+						//console.log('LIST',list);
+						list.unshift(['referencia', 'Pax', 'Total web', 'Descuento', 'Cupón', 'Precio yellow', 'Precio agencia', 'Diferencia yellow/agencia', 'Agencia diferencia', 'Comisión', 'Precio neto', 'Moneda', 'Region', 'Amount of Services', 'Service type', 'Metodo de pago', 'Airport', 'Servicio', 'Reservation Date', 'Status', 'Servicio completado']);
+						theCB(list,false);
+					});
+				}else{
+					theCB(toCSV,false);
+				}
 			});//async waterfall END
 		});
 	});//reservation find END
 };
+/*
+	$yellowTotal 		: Precio que cobra yellow, siempre debe de ser el transferprice
+	$agencyTotal		: Precio que se le da a la agencia
+	$priceDiff  		: Diferencia entre $yellosTotal y $agencyTotal
+	$agencyPriceDiff 	: Diferencia entre $fee y $agencyTotal
+	$agencyComision 	: Comisión que se lleva la agencia, debe de tomarse del transferprice de la agencia
+	$agencyNeto 		: $fee menos la comisión de la agencia
+*/
+function getItemTotalsReport(l,resultsPopulated){
+	var item = [];
+	var cupon = getItemById( l.cupon, resultsPopulated.cupons );
+	i = 0;
+	item[i] = l.folio;
+	item[++i] = l.pax;
+	item[++i] = l.fee;
+	if( cupon )
+		item[++i] = l.type=='round_trip'?cupon.cupon.round_discount:cupon.cupon.simple_discount;//descuento
+	else
+		item[++i] = 0;
+	item[++i] = cupon?cupon.token:'no';//cupón
+	var priceY = l.type == 'one_way'? l.transferprice.one_way : l.transferprice.round_trip;
+	var priceA = resultsPopulated.price?(l.type == 'one_way'? resultsPopulated.price.one_way : resultsPopulated.price.round_trip):priceY;
+	item[++i] = priceY*l.quantity;//precio yellow
+	item[++i] = priceA*l.quantity;//precio agencia
+	item[++i] = (priceY*l.quantity) - (priceA*l.quantity);//diferencia yellow/agencia
+	item[++i] = l.fee - (priceA*l.quantity);//diferencia agencia
+	if( resultsPopulated.price ){
+		item[++i] = resultsPopulated.price.commission_agency;//comisión
+		item[++i] = l.fee - ( l.fee * resultsPopulated.price.commission_agency/100 );//precio neto?
+	}else{
+		item[++i] = 0;
+		item[++i] = l.fee;
+	}
+	item[++i] = l.currency.currency_code;
+	var hotel = getItemById(l.hotel,resultsPopulated.hotels);
+	item[++i] = hotel.zone.name;
+	item[++i] = l.quantity;//cantidad
+	item[++i] = l.type;//service type
+	item[++i] = l.payment_method;
+	item[++i] = l.airport.name;
+	item[++i] = l.transfer.name;
+	item[++i] = moment(l.createdAt).format('D-MM-YYYY');
+	item[++i] = l.state;
+	item[++i] = getServiceComplete(l);
+	return item;
+}
+/* 
+	Esta funcion nos regresará si el servicio se ha completado o no 
+	Sólo recibe el objeto reservación para hacer todos los calculos
+*/
+var getServiceComplete = function(r){
+	var result = 'NO';
+	if( r.type == 'one_way' )
+		result = compareDatesCompleteService( (r.origin == 'hotel'?r.departure_date:r.arrival_date) )?'Completado':'NO';
+	if( r.type == 'round_trip' ){
+		var d1 = compareDatesCompleteService( r.arrival_date );
+		var d2 = compareDatesCompleteService( r.departure_date );
+		if( d1 && d2 )
+			result = 'Completado';
+		if( d1 || d2 )
+			result = 'Medio';
+	}
+	return result;
+}
+var compareDatesCompleteService = function(d){
+	if(!d) return false;
+	var today = moment();
+	var date = moment(d);
+	if( !date.isValid() ) return false;
+	return today.diff(date,'days') > 0?true:false;
+}
 var getItemById = function(id,objectArray){
 	var r = false;
 	if( objectArray && objectArray.length > 0 )
@@ -1994,6 +2043,7 @@ module.exports.mkpFormatItemToExport = function(reservation,cupon){
 	item[++i] = reservation.company.mkpid||'';
 	item[++i] = reservation.company.name;
 	item[++i] = '';//reserva de agencia
+	item[++i] = reservation.order.id;//reserva de agencia
 	return item;
 }
 /*

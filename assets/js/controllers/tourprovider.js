@@ -129,13 +129,14 @@ app.controller('tourproviderEditCTL',function($scope,$http){
                 var item = $scope.locations[i];
                 for(var x in item.hotels) {
                     if (item.hotels[x].latitude && item.hotels[x].longitude) {
-                        var auxPoint = {};
-                        auxPoint.name = item.hotels[x].name;
-                        auxPoint.message = item.hotels[x].name;
-                        auxPoint.type = 'hotel';
-                        auxPoint.lat = parseFloat(item.hotels[x].latitude);
-                        auxPoint.lng = parseFloat(item.hotels[x].longitude);
-                        auxPoint.identifier = item.hotels[x].id;
+                        var auxPoint = {
+                            name : item.hotels[x].name,
+                            message : item.hotels[x].name,
+                            type : 'hotel',
+                            lat : parseFloat(item.hotels[x].latitude),
+                            lng : parseFloat(item.hotels[x].longitude),
+                            identifier : item.hotels[x].id
+                        };
                         $scope.locationHotels.push(auxPoint);
                     }
                 }
@@ -143,10 +144,31 @@ app.controller('tourproviderEditCTL',function($scope,$http){
         }
         //console.log($scope.locationHotels);
     };
+    $scope.getLocationZones = function(){
+        $scope.locationZones = [];
+        var center = { lat : 21.1667, lng : -86.8333, zoom : 5 };
+        for(var i in $scope.locations){
+            if ($scope.locations[i].id == $scope.provider.location ) {
+                var item = $scope.locations[i];
+                for(var x in item.zones) {
+                    var auxPoint = {
+                        name : item.zones[x].name,
+                        message : item.zones[x].name,
+                        type : 'zone',
+                        lat : center.lat,
+                        lng : center.lng,
+                        identifier : item.zones[x].id
+                    };
+                    $scope.locationZones.push(auxPoint);
+                }
+            }
+        }
+    };
 
     $scope.getLocationHotels();
 
     $scope.$watch('provider.location', function(t) {
         $scope.getLocationHotels();
+        $scope.getLocationZones();
     });
 });
