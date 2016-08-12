@@ -1880,12 +1880,12 @@ module.exports.totalsReport = function(options,theCB){
 				toCSV.push(['referencia', 'Pax', 'Total web', 'Descuento', 'Cupón', 'Precio yellow', 'Precio agencia', 'Diferencia yellow/agencia', 'Agencia diferencia', 'Comisión', 'Precio neto', 'Moneda', 'Region', 'Amount of Services', 'Service type', 'Metodo de pago', 'Airport', 'Servicio', 'Reservation Date', 'Status', 'Servicio completado']);
 				if( list_reservations ){ 
 					async.mapSeries( list_reservations, function(l,cb2) {
-						if(!l.order||!l.hotel||!l.airport){
+						if(!l.order||!l.hotel||!l.airport||!l.transferprice){
 		                  //console.log('ITEM ERR',l);
 		                  return cb2(false,[l.id,'Error, datos incompletos']);
 		                }
 		                if( l.company.adminCompany ){
-		                	TransferPrice.findOne({ company : l.company.id, active : true, transfer : l.transfer.is
+		                	TransferPrice.findOne({ company : l.company.id, active : true, transfer : l.transfer.id
 		                	  	,"$or" : [ 
 						        	{ "$and" : [{'zone1' : l.hotel.zone, 'zone2' : l.airport.zone}] } , 
                         			{ "$and" : [{'zone1' : l.airport.zone, 'zone2' : l.hotel.zone}] } 
